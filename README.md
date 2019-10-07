@@ -1,7 +1,4 @@
 # skin.swan-alpha
- a kodi skin
-![imgur](https://i.imgur.com/7GUN7vl.jpg)
-
 <img src='./resources/fanart.jpg'>
 
 ## Features
@@ -23,7 +20,7 @@
 >      StudioLogo Resource Addon Support (colored, monochrome)
 		
 ### What is/will be bad
->	PVR Support (will never have on other than PVR Demo Client to test)
+>	PVR Support (will never have one other than PVR Demo Client to test)
 >	
 >	Game Support (not good as long as main skin is done)
 
