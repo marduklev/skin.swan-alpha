@@ -25,6 +25,8 @@
 >	Game Support (not good as long as main skin is done)
 
 ### Early Previews on 1st Stage
-
+1st steps testing settings : widgets,addondialogs,setting,bg image and colors, homelayouts
 - https://streamable.com/oprah
+
+- https://streamable.com/rvezy
 
