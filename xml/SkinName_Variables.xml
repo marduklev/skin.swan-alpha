@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includes>
+	<!-- Settings -->
+	<variable name="InfoDialog_Header">
+		<!-- VideoInfo -->
+		<value condition="Container.Content(Movies) | String.IsEqual(ListItem.DBType,movie)">$LOCALIZE[24007]</value>
+		<value condition="Container.Content(Musicvideos) | String.IsEqual(ListItem.DBType,musicvideo)">$LOCALIZE[24015]</value>
+		<value condition="Container.Content(TVShows) | String.IsEqual(ListItem.DBType,tvshow)">$LOCALIZE[20351]</value>
+		<value condition="Container.Content(Episodes) | String.IsEqual(ListItem.DBType,episode)">$LOCALIZE[20352]</value>
+		<!--Musicinfo -->
+		<value condition="Container.Content(Artists) | String.IsEqual(ListItem.DBType,artist)">$LOCALIZE[24017]</value>
+		<value condition="Container.Content(Albums) | String.IsEqual(ListItem.DBType,album)">$LOCALIZE[24016]</value>
+		<value condition="Container.Content(Songs) | String.IsEqual(ListItem.DBType,song)">$LOCALIZE[658]</value>
+		<value>$LOCALIZE[29943]</value>
+	</variable>
+	
+	<variable name="AddonStatus">
+		<value condition="!String.IsEmpty(ListItem.AddonBroken)">icons/status/disable.png</value>
+		<value condition="ListItem.Property(addon.orphaned)">icons/status/orphan.png</value>
+		<value condition="ListItem.Property(addon.downloading)">icons/status/install.png</value>
+		<value condition="ListItem.Property(addon.isinstalled) + !ListItem.Property(addon.isenabled)">icons/status/disable.png</value>
+		<value condition="ListItem.Property(addon.hasupdate)">icons/status/update.png</value>
+		<value condition="ListItem.Property(addon.isinstalled)">icons/status/tickmark.png</value>
+	</variable>
+	<!-- no other way than ignore kodi setting for resume widget ,mixed content 
+			0 choose
+			1 play
+			2 resume
+			3 info
+			-->
+	<include name="RespectBool_selectaction">
+		<onclick condition="String.IsEqual(Window(home).property(myvideos.selectaction),3)">Action(Info)</onclick>
+		<onclick condition="![ListItem.IsFolder | ListItem.IsCollection] + ListItem.IsResumable + !String.IsEqual(Window(home).property(myvideos.selectaction),3) + [String.IsEqual(Window(home).property(myvideos.selectaction),2) | String.IsEqual(Window(home).property(myvideos.selectaction),1)]">PlayMedia($ESCINFO[ListItem.FilenameAndPath],resume)</onclick>
+	</include>	
+
+	<!-- playmedia - depending to kodi bool -->
+	
+	<variable name="bool_defaultselectaction_noinfo">
+		<value condition="![ListItem.IsFolder | ListItem.IsCollection] + [String.IsEqual(Window(home).property(myvideos.selectaction),2) | String.IsEqual(Window(home).property(myvideos.selectaction),1)]">PlayMedia($INFO[ListItem.FilenameAndPath],resume)</value>
+		<value>PlayMedia($INFO[ListItem.FilenameAndPath])</value>
+	</variable>
+	
+	<!-- ######### -->
+	<!--   ARTWORK  -->
+	<!-- ######### -->
+	<variable name="ListItemClearLogo">
+		<value condition="!String.IsEmpty(ListItem.Art(tvshow.clearlogo))">$INFO[ListItem.Art(tvshow.clearlogo)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(artist.clearlogo))">$INFO[ListItem.Art(artist.clearlogo)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(albumartist.clearlogo))">$INFO[ListItem.Art(albumartist.clearlogo)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(clearlogo))">$INFO[ListItem.Art(clearlogo)]</value>
+		<!-- <value condition="!String.IsEmpty(Container(xy).ListItem.Art(clearlogo))">$INFO[Container(xy).ListItem.Art(clearlogo)]</value>
+		<value condition="!String.IsEmpty(Container.ListItem.Art(clearlogo))">$INFO[Container.ListItem.Art(clearlogo)]</value> -->
+		<!-- custom -
+		<value condition="!String.IsEmpty(Container.ListItem.Property(ListItem.Art(clearlogo)))">$INFO[Container.ListItem.Property(ListItem.Art(clearlogo))]</value>
+		-->
+	</variable>
+	<variable name="ListItemPlot">
+		<value condition="!String.IsEmpty(ListItem.Plot)">$INFO[ListItem.Plot]</value>
+		<!-- <value condition="!String.IsEmpty(ListItem.PlotOutline)">$INFO[ListItem.PlotOutline]</value> -->
+		<value condition="!String.IsEmpty(ListItem.Property(Album_Description))">$INFO[ListItem.Property(Album_Description)]$INFO[ListItem.ContributorAndRole,[CR],]</value>
+		<value condition="!String.IsEmpty(ListItem.Property(Artist_Description))">$INFO[ListItem.Property(Artist_Description)]$INFO[ListItem.ContributorAndRole,[CR],]</value>
+		<value condition="!String.IsEmpty(ListItem.AddonDescription)">$INFO[ListItem.AddonDescription]</value>
+		<value condition="!String.IsEmpty(ListItem.AddonSummary)">$INFO[ListItem.AddonSummary]</value>
+		<value>$LOCALIZE[19055]</value>
+	</variable>
+	
+	<!-- ######### -->
+	<!--   COLORS  -->
+	<!-- ######### -->
+	
+	<!-- BG Common-->
+	<variable name="BackgroundColor">
+		<value condition="!String.IsEmpty(Skin.String(BackgroundColor))">$INFO[Skin.String(BackgroundColor)]</value>
+		<value>BackgroundColor</value>
+	</variable>
+	<variable name="BackgroundImage_CDiffuse">
+		<value condition="!String.IsEmpty(Skin.String(BackgroundImage_CDiffuse))">$INFO[Skin.String(BackgroundImage_CDiffuse)]</value>
+		<value>BackgroundImage_CDiffuse</value>
+	</variable>
+	<variable name="BackgroundOverlay_CDiffuse">
+		<value condition="!String.IsEmpty(Skin.String(BackgroundOverlay_CDiffuse))">$INFO[Skin.String(BackgroundOverlay_CDiffuse)]</value>
+		<value>BackgroundOverlay_CDiffuse</value>
+	</variable>
+	
+	<!-- BG HOME-->
+	<variable name="BackgroundColor_Home">
+		<value condition="!String.IsEmpty(Skin.String(BackgroundColor_Home))">$INFO[Skin.String(BackgroundColor_Home)]</value>
+		<value>BackgroundColor_Home</value>
+	</variable>
+	<variable name="BackgroundOverlay_CDiffuse_Home">
+		<value condition="!String.IsEmpty(Skin.String(BackgroundOverlay_CDiffuse_Home))">$INFO[Skin.String(BackgroundOverlay_CDiffuse_Home)]</value>
+		<value>BackgroundOverlay_CDiffuse_Home</value>
+	</variable>
+	
+	<!-- HEADER BAR -->
+	<variable name="Header_BG">
+		<value condition="!String.IsEmpty(Skin.String(Header_BG))">$INFO[Skin.String(Header_BG)]</value>
+		<value>Header_BG</value>
+	</variable>
+	<variable name="Header_TextMain">
+		<value condition="!String.IsEmpty(Skin.String(Header_TextMain))">$INFO[Skin.String(Header_TextMain)]</value>
+		<value>Header_TextMain</value>
+	</variable>
+	<variable name="Header_TextSecondary">
+		<value condition="!String.IsEmpty(Skin.String(Header_TextSecondary))">$INFO[Skin.String(Header_TextSecondary)]</value>
+		<value>Header_TextSecondary</value>
+	</variable>
+	
+	<!-- HEADLINES - revisit if need - settings,my**nav, ? -->
+	<variable name="Headingline_FO">
+		<value condition="!String.IsEmpty(Skin.String(Headingline_FO))">$INFO[Skin.String(Headingline_FO)]</value>
+		<value>Headingline_FO</value>
+	</variable>
+	<variable name="Headingline_NF">
+		<value condition="!String.IsEmpty(Skin.String(Headingline_NF))">$INFO[Skin.String(Headingline_NF)]</value>
+		<value>Headingline_NF</value>
+	</variable>
+	
+	<!-- HOME WIDGETS -->
+	<variable name="Headingline_Widget">
+		<value condition="!String.IsEmpty(Skin.String(Headingline_Widget))">$INFO[Skin.String(Headingline_Widget)]</value>
+		<value>Headingline_Widget</value>
+	</variable>
+	<variable name="Container_item_fo">
+		<value condition="!String.IsEmpty(Skin.String(Container_item_fo))">$INFO[Skin.String(Container_item_fo)]</value>
+		<value>Container_item_fo</value>
+	</variable>
+	<variable name="Container_item_nf">
+		<value condition="!String.IsEmpty(Skin.String(Container_item_nf))">$INFO[Skin.String(Container_item_nf)]</value>
+		<value>Container_item_nf</value>
+	</variable>
+	<variable name="Container_label_itemtag">
+		<value condition="!String.IsEmpty(Skin.String(Container_label_itemtag))">$INFO[Skin.String(Container_label_itemtag)]</value>
+		<value>Container_label_itemtag</value>
+	</variable>
+	<variable name="Container_label2_itemtag">
+		<value condition="!String.IsEmpty(Skin.String(Container_label2_itemtag))">$INFO[Skin.String(Container_label2_itemtag)]</value>
+		<value>Container_label2_itemtag</value>
+	</variable>
+	
+	<variable name="Widget_Progress_Watched">
+		<value condition="!String.IsEmpty(Skin.String(Widget_Progress_Watched))">$INFO[Skin.String(Widget_Progress_Watched)]</value>
+		<value>Widget_Progress_Watched</value>
+	</variable>
+	<variable name="Widget_Progress_Remain">
+		<value condition="!String.IsEmpty(Skin.String(Widget_Progress_Remain))">$INFO[Skin.String(Widget_Progress_Remain)]</value>
+		<value>Widget_Progress_Remain</value>
+	</variable>
+	<variable name="Widget_DimOverlay_Icon">
+		<value condition="!String.IsEmpty(Skin.String(Widget_DimOverlay_Icon))">$INFO[Skin.String(Widget_DimOverlay_Icon)]</value>
+		<value>Widget_DimOverlay_Icon</value>
+	</variable>
+	
+	<!-- BUTTONS -->
+	<variable name="Button_Text_FO">
+		<value condition="!String.IsEmpty(Skin.String(Button_Text_FO))">$INFO[Skin.String(Button_Text_FO)]</value>
+		<value>Button_Text_FO</value>
+	</variable>
+	<variable name="Button_Text_NF">
+		<value condition="!String.IsEmpty(Skin.String(Button_Text_NF))">$INFO[Skin.String(Button_Text_NF)]</value>
+		<value>Button_Text_NF</value>
+	</variable>
+	<variable name="Button_Panel_FO">
+		<value condition="!String.IsEmpty(Skin.String(Button_Panel_FO))">$INFO[Skin.String(Button_Panel_FO)]</value>
+		<value>Button_Panel_FO</value>
+	</variable>
+	<variable name="Button_Panel_NF">
+		<value condition="!String.IsEmpty(Skin.String(Button_Panel_NF))">$INFO[Skin.String(Button_Panel_NF)]</value>
+		<value>Button_Panel_NF</value>
+	</variable>
+	<variable name="Button_Selected">
+		<value condition="!String.IsEmpty(Skin.String(Button_Selected))">$INFO[Skin.String(Button_Selected)]</value>
+		<value>Button_Selected</value>
+	</variable>
+	<!-- experimental may not simple handling -->
+	<variable name="Button_IconColor_FO">
+		<value condition="!String.IsEmpty(Skin.String(Button_IconColor_FO))">$INFO[Skin.String(Button_IconColor_FO)]</value>
+		<value>Button_IconColor_FO</value>
+	</variable>
+			
+	<!-- SCROLLBAR -->
+	<variable name="scrollbar_panel">
+		<value condition="!String.IsEmpty(Skin.String(scrollbar_panel))">$INFO[Skin.String(scrollbar_panel)]</value>
+		<value>scrollbar_panel</value>
+	</variable>
+	<variable name="scrollbar_slider_fo">
+		<value condition="!String.IsEmpty(Skin.String(scrollbar_slider_fo))">$INFO[Skin.String(scrollbar_slider_fo)]</value>
+		<value>scrollbar_slider_fo</value>
+	</variable>
+	<variable name="scrollbar_slider_nf">
+		<value condition="!String.IsEmpty(Skin.String(scrollbar_slider_nf))">$INFO[Skin.String(scrollbar_slider_nf)]</value>
+		<value>scrollbar_slider_nf</value>
+	</variable>
+
+	<!-- ######### -->
+	<!--   DIALOG  -->
+	<!-- ######### -->
+	<variable name="image_dialogselect">
+		<value condition="!String.IsEmpty(Container(6).ListItem.Icon)">$INFO[Container(6).ListItem.Icon]</value>
+		<value condition="!String.IsEmpty(Container(3).ListItem.Icon)">$INFO[Container(3).ListItem.Icon]</value>
+		<value condition="String.IsEmpty(Container(3).ListItem.Icon) + String.IsEmpty(Container(6).ListItem.Icon)">$VAR[imagedialogselectfallbacks]</value>
+	</variable>
+	
+	<variable name="imagedialogselectfallbacks">
+	<!-- ColorBox -->
+		<value condition="String.IsEqual(Control.GetLabel(1),Set default Pallete) + Container(3).Position(0)">special://skin/extras/dialogimages/colorpalette_basic.jpg</value>
+		<value condition="String.IsEqual(Control.GetLabel(1),Set default Pallete) + Container(3).Position(1)">special://skin/extras/dialogimages/colorpalette_rainbow.jpg</value>
+		<value condition="String.IsEqual(Control.GetLabel(1),Set default Pallete) + Container(3).Position(2)">special://skin/extras/dialogimages/colorpalette_materialdesign.jpg</value>
+		<value condition="String.IsEqual(Control.GetLabel(1),Set default Pallete) + Container(3).Position(3)">special://skin/extras/dialogimages/colorpalette_webcolors.jpg</value>
+	<!-- Home Layout -->
+		<value condition="String.IsEqual(Control.GetLabel(1),Choose Homelayout) + Container(3).Position(0)">special://skin/extras/homelayouts/Spotlight.png</value>
+		<value condition="String.IsEqual(Control.GetLabel(1),Choose HomeLayout) + Container(3).Position(1)">special://skin/extras/homelayouts/WidgetsOnly.png</value>
+	<!-- Widget Layout Type -->
+		<value condition="String.IsEqual(Control.GetLabel(1),$LOCALIZE[21858]) + Container(3).Position(0)">special://skin/extras/widgetlayouts/poster.jpg</value>
+		<value condition="String.IsEqual(Control.GetLabel(1),$LOCALIZE[21858]) + Container(3).Position(1)">special://skin/extras/widgetlayouts/landscape.jpg</value>
+		<value condition="String.IsEqual(Control.GetLabel(1),$LOCALIZE[21858]) + Container(3).Position(2)">special://skin/extras/widgetlayouts/square.jpg</value>
+		<value condition="String.IsEqual(Control.GetLabel(1),$LOCALIZE[21858]) + Container(3).Position(3)">special://skin/extras/widgetlayouts/circle.jpg</value>
+		<value condition="String.IsEqual(Control.GetLabel(1),$LOCALIZE[21858]) + Container(3).Position(4)">special://skin/extras/widgetlayouts/banner.jpg</value>
+		
+	</variable>
+	
+</includes>

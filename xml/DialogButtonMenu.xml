@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 	
+ID 		Type 	Description
+3100 	label 	Label of the focused button  
+
+decide if wanna of skinshortcuts 
+-->
+<window>
+	<defaultcontrol always="true">6000</defaultcontrol>
+	<controls>
+		<control type="group">
+			<include content="Animation_OpenClose">
+				<param name="slide_start" default="0,0" />
+				<param name="slide_end" default="0,0" />
+			</include>
+			<control type="image">
+				<width>100%</width>
+				<height>100%</height>
+				<texture colordiffuse="CC000000">colors/white.png</texture>
+				<aspectratio>stretch</aspectratio>
+			</control>
+			
+			<control type="image">
+				<centertop>50%</centertop>
+				<width>100%</width>
+				<height>300</height>
+				<texture colordiffuse="ffCCCCCC">colors/white.png</texture>
+				<aspectratio>stretch</aspectratio>
+			</control>
+
+			<!-- Time -->
+			<control type="grouplist">
+				<right>0</right>
+				<left>0</left>
+				<height>110</height>
+				<width>100%</width>
+				<align>center</align>
+				<centertop>25%</centertop>
+				<itemgap>10</itemgap>
+				<orientation>horizontal</orientation>
+				<usecontrolcoords>true</usecontrolcoords>
+				<control type="label">
+					<width>auto</width>
+					<height>148</height>
+					<font>font52_title</font>
+					<label>$INFO[System.Time(HH)]</label>
+				</control>
+				<control type="label">
+					<animation effect="fade" start="100" end="30" tween="sine" easing="inout" time="800" pulse="true" reversible="false" condition="true">Conditional</animation>
+					<width>auto</width>
+					<height>148</height>
+					<font>font52_title</font>
+					<label>:</label>
+				</control>
+				<control type="label">
+					<width>auto</width>
+					<height>148</height>
+					<font>font52_title</font>
+					<label>$INFO[System.Time(mm)]</label>
+					
+				</control>
+			</control>
+
+			<!-- Items -->
+			<control type="group">
+				<centerleft>51%</centerleft>
+				<centertop>50%</centertop>
+				<width>98%</width>
+				<height>300</height>
+				<include content="Container_Nested_IconLabel">
+					<param name="containertype" value="list" />
+					<param name="movement" />
+					<param name="focusposition" />
+					<param name="id" value="6000" />
+					<param name="tagnf" value="grey" />
+					<param name="tagfo" value="green" />
+					<param name="layout" value="ThumbLayout_Settingssquare" />
+					<param name="visible" value="Integer.IsGreater(Container(6000).NumItems,0) | Container(6000).IsUpdating]" />
+					<content>
+					<item>
+						<label>$LOCALIZE[10000]</label>
+						<icon>icons/home.png</icon>
+						<onclick>Dialog.Close(all,true)</onclick>
+						<onclick>ActivateWindow(home)</onclick>
+						<visible>!Window.IsVisible(loginscreen) + !Window.IsVisible(home)</visible>
+					</item>
+					<item>
+						<label>$LOCALIZE[5]</label>
+						<icon>icons/FINISHED_800on1000_settings1.png</icon>
+						<onclick>Dialog.Close(all,true)</onclick>
+						<onclick>ActivateWindow(settings)</onclick>
+						<visible>!Window.IsVisible(loginscreen) + !Window.IsVisible(settings) + !Skin.HasSetting(HidePowerSettings)</visible>
+					</item>
+					<item>
+						<label>$LOCALIZE[13012]</label>
+						<icon>icons/left.png</icon>
+						<onclick>Quit()</onclick>
+						<visible>System.Platform.Android | [System.ShowExitButton + [!Skin.HasSetting(HidePowerExit) | Window.IsVisible(loginscreen)]]</visible>
+					</item>
+					<item>
+						<label>$LOCALIZE[13016]</label>
+						<icon>icons/shutdown_out.png</icon>
+						<onclick>Powerdown()</onclick>
+						<visible>System.CanPowerDown + [!Skin.HasSetting(HidePowerOff) | Window.IsVisible(loginscreen)]</visible>
+					</item>
+					<item>
+						<label>$LOCALIZE[20150]</label>
+						<onclick>AlarmClock(shutdowntimer,Shutdown())</onclick>
+						<visible>!System.HasAlarm(shutdowntimer) + !Skin.HasSetting(HidePowerTimer)</visible>
+						<visible>System.CanPowerDown | System.CanSuspend | System.CanHibernate</visible>
+					</item>
+					<item>
+						<label>$LOCALIZE[20151] $INFO[System.AlarmPos,(,)]</label>
+						<onclick>CancelAlarm(shutdowntimer)</onclick>
+						<visible>System.HasAlarm(shutdowntimer) + !Skin.HasSetting(HidePowerTimer)</visible>
+					</item>
+					<item>
+						<label>$LOCALIZE[13011]</label>
+						<onclick>Suspend()</onclick>
+						<visible>System.CanSuspend + [!Skin.HasSetting(HidePowerSuspend) | Window.IsVisible(loginscreen)]</visible>
+					</item>
+					<item>
+						<label>$LOCALIZE[13010]</label>
+						<label2></label2>
+						<onclick>Hibernate()</onclick>
+						<visible>System.CanHibernate + [!Skin.HasSetting(HidePowerHibernate) | Window.IsVisible(loginscreen)]</visible>
+					</item>
+					<item>
+						<label>$LOCALIZE[13017]</label>
+						<label2></label2>
+						<onclick>InhibitIdleShutdown(true)</onclick>
+						<visible>System.HasShutdown + !System.IsInhibit + !Skin.HasSetting(HidePowerIdleShutdown)</visible>
+					</item>
+					<item>
+						<label>$LOCALIZE[13018]</label>
+						<label2></label2>
+						<onclick>InhibitIdleShutdown(false)</onclick>
+						<visible>System.HasShutdown + System.IsInhibit + !Skin.HasSetting(HidePowerIdleShutdown)</visible>
+					</item>
+					<item>
+						<label>$LOCALIZE[20126] $INFO[system.profilename]</label>
+						<label2></label2>
+						<onclick>Dialog.Close(all,true)</onclick>
+						<onclick>System.LogOff</onclick>
+						<visible>System.HasLoginScreen | Integer.IsGreater(System.ProfileCount,1)</visible>
+						<visible>System.Loggedon</visible>
+					</item>
+					<item>
+						<label>$LOCALIZE[20046]</label>
+						<label2></label2>
+						<onclick>mastermode</onclick>
+						<visible>System.HasLocks + System.IsMaster + !Window.IsVisible(loginscreen)</visible>
+					</item>
+					<item>
+						<label>$LOCALIZE[20045]</label>
+						<label2></label2>
+						<onclick>mastermode</onclick>
+						<visible>System.HasLocks + !System.IsMaster + !Window.IsVisible(loginscreen)</visible>
+					</item>
+					</content>
+				</include>
+			
+			</control>
+		</control>
+		<include content="swan_debug_overlay" />
+	</controls>
+</window>

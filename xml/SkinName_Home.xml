@@ -1,0 +1,643 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includes>
+
+	<include name="Home_Layout_WidgetOnly">
+		<include>Home_Widgets</include>
+	</include>
+
+	<include name="Home_Layout_InfoPanelTop">
+		
+		<control type="group">
+			<description>S P O T L I G H T  A R T W O R K</description>
+			<include content="DefArtwork">
+				<param name="diffuse" value="test/Spotlight_left_diffuse.png" />
+				<param name="visible" value="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
+			</include>
+			<include content="DefArtwork">
+				<param name="diffuse" value="test/Spotlight_right_diffuse.png" />
+				<param name="visible" value="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
+			</include>
+		</control>
+				
+		<control type="grouplist">
+			<description>S P O T L I G H T  M E T A D A T A</description>
+			<width>65%</width>
+			<height>250</height>
+			<top>10</top>
+			<bottom>10</bottom>
+			<orientation>vertical</orientation>
+			<itemgap>10</itemgap>
+			<usecontrolcoords>true</usecontrolcoords>
+			
+			<include content="pos_left" condition="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)">
+				<param name="left" value="60" />
+			</include>
+			<include content="pos_right" condition="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)">
+				<param name="right" value="60" />
+			</include>
+			<animation time="300" effect="slide" end="0,200" reversible="true" easing="inout" condition="ControlGroup(9000).HasFocus">Conditional</animation>
+		
+			
+			<control type="image" id="1601">
+				<description>clearlogo, didnt need respect alignment setting ?</description>
+				<visible>!String.IsEmpty(Control.GetLabel(1601))</visible>
+				<height>245</height>
+				<bordersize>10</bordersize>
+				<aspectratio align="center" aligny="top">keep</aspectratio>
+				<texture background="true">$VAR[ListItemClearLogo]</texture>
+			</control>
+			
+			<control type="textbox">
+				<description>Fallback Label</description>
+				<visible>String.IsEmpty(Control.GetLabel(1601))</visible>
+				<height>235</height>
+				<wrapmultiline>true</wrapmultiline>
+				<font>Netflix_Title</font>
+				<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
+				<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
+					<param name="align" value="center" />
+				</include>
+				<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+					<param name="align" value="right" />
+				</include>
+				<aligny>bottom</aligny>
+				<textcolor>white</textcolor>
+				<label>Home Clear Logo Fallback</label>
+			</control>
+			
+			<include>Meta_Uncommon_Top</include>
+			
+			<control type="grouplist" id="588688">
+				<visible>String.IsEqual(ListItem.DBTYPE,episode)</visible>
+				<orientation>vertical</orientation>
+				<height>125</height>
+				<fadetime>300</fadetime>
+				<control type="label">
+					<visible>!Integer.IsGreater(ListItem.PercentPlayed,0)</visible>
+					<height>25</height>
+					<font>Netflix_Plot</font>
+					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
+						<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
+							<param name="align" value="center" />
+						</include>
+						<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+							<param name="align" value="right" />
+						</include>
+					<aligny>center</aligny>
+					<textcolor>white</textcolor>
+					<label>[CAPITALIZE][B]Next Episode[/B][/CAPITALIZE]</label>
+				</control>
+				<control type="label">
+					<height>25</height>
+					<font>Netflix_Plot</font>
+					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
+					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
+						<param name="align" value="center" />
+					</include>
+					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+						<param name="align" value="right" />
+					</include>
+					<aligny>center</aligny>
+					<textcolor>white</textcolor>
+					<label>NetflixEpisodeInfoLabel</label>
+				</control>
+				<control type="group">
+					<description> progress bar and continue label ,align center correction needed</description>
+					<visible>Integer.IsGreater(ListItem.PercentPlayed,0)</visible>
+					<height>40</height>
+					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
+					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
+						<param name="align" value="center" />
+					</include>
+					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+						<param name="align" value="right" />
+					</include>
+					<aligny>center</aligny>
+					<control type="progress">
+						<description>progress bar</description>
+						<right>3</right>
+						<top>16</top>
+						<width>150</width>
+						<height>5</height>
+						<texturebg colordiffuse="B1FFFFFF" border="2">colors/white.png</texturebg>
+						<lefttexture></lefttexture>
+						<midtexture colordiffuse="red" border="2">colors/white.png</midtexture>
+						<righttexture></righttexture>
+						<info>ListItem.PercentPlayed</info>
+					</control>
+					<control type="label">
+						<description>continue watching unlocalized</description>
+						<right>175</right>
+						<height>30</height>
+						<align>right</align>
+						<font>Netflix_Plot</font>
+						<textcolor>red</textcolor>
+						<label>[B]continue watching[/B]</label>
+					</control>
+				</control>
+			</control>
+			
+			<include content="Home_Plot">
+				<param name="visible" value="!String.IsEqual(ListItem.DBTYPE,episode)" />
+				<param name="maxheight" value="205" />
+				<param name="top" value="0" />
+			</include>
+			
+			<include content="Home_Plot">
+				<param name="visible" value="String.IsEqual(ListItem.DBTYPE,episode)" />
+				<param name="maxheight" value="125" />
+				<param name="top" value="5" />
+			</include>
+			
+			<include content="Meta_Genre_Bottom" />
+				
+		</control>
+			
+		<include>Home_Widgets</include>
+				
+	</include>
+
+	<!-- <variable name="Home_Layout_Spotlight">
+		<value condition="!String.IsEqual(Skin.String(SpotlightMetadataAlign),left)">test/Spotlight_left_diffuse.png</value>
+		<value>test/Spotlight_right_diffuse.png</value>
+	</variable>
+	 -->
+
+	<include name="Home_Layout_Spotlight">
+		
+		<control type="group">
+			<description>S P O T L I G H T  A R T W O R K</description>
+			<include content="DefArtwork">
+				<param name="diffuse" value="test/Spotlight_left_diffuse.png" />
+				<param name="visible" value="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
+			</include>
+			<include content="DefArtwork">
+				<param name="diffuse" value="test/Spotlight_right_diffuse.png" />
+				<param name="visible" value="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
+			</include>
+		</control>
+				
+		<control type="grouplist">
+			<description>S P O T L I G H T  M E T A D A T A</description>
+			<width>39%</width>
+			<height>650</height>
+			<top>10</top>
+			<bottom>10</bottom>
+			<orientation>vertical</orientation>
+			<itemgap>10</itemgap>
+			<usecontrolcoords>true</usecontrolcoords>
+			
+			<include content="pos_left" condition="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)">
+				<param name="left" value="60" />
+			</include>
+			<include content="pos_right" condition="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)">
+				<param name="right" value="60" />
+			</include>
+			<animation time="300" effect="slide" end="0,200" reversible="true" easing="inout" condition="ControlGroup(9000).HasFocus">Conditional</animation>
+		
+			
+			<control type="image" id="1601">
+				<description>clearlogo, didnt need respect alignment setting ?</description>
+				<visible>!String.IsEmpty(Control.GetLabel(1601))</visible>
+				<height>245</height>
+				<bordersize>10</bordersize>
+				<aspectratio align="center" aligny="top">keep</aspectratio>
+				<texture background="true">$VAR[ListItemClearLogo]</texture>
+			</control>
+			
+			<control type="textbox">
+				<description>Fallback Label</description>
+				<visible>String.IsEmpty(Control.GetLabel(1601))</visible>
+				<height>235</height>
+				<wrapmultiline>true</wrapmultiline>
+				<font>Netflix_Title</font>
+				<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
+				<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
+					<param name="align" value="center" />
+				</include>
+				<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+					<param name="align" value="right" />
+				</include>
+				<aligny>bottom</aligny>
+				<textcolor>white</textcolor>
+				<label>Home Clear Logo Fallback</label>
+			</control>
+			
+			<include>Meta_Uncommon_Top</include>
+			
+			<control type="grouplist" id="588688">
+				<visible>String.IsEqual(ListItem.DBTYPE,episode)</visible>
+				<orientation>vertical</orientation>
+				<height>125</height>
+				<fadetime>300</fadetime>
+				<control type="label">
+					<visible>!Integer.IsGreater(ListItem.PercentPlayed,0)</visible>
+					<height>25</height>
+					<font>Netflix_Plot</font>
+					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
+						<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
+							<param name="align" value="center" />
+						</include>
+						<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+							<param name="align" value="right" />
+						</include>
+					<aligny>center</aligny>
+					<textcolor>white</textcolor>
+					<label>[CAPITALIZE][B]Next Episode[/B][/CAPITALIZE]</label>
+				</control>
+				<control type="label">
+					<height>25</height>
+					<font>Netflix_Plot</font>
+					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
+					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
+						<param name="align" value="center" />
+					</include>
+					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+						<param name="align" value="right" />
+					</include>
+					<aligny>center</aligny>
+					<textcolor>white</textcolor>
+					<label>NetflixEpisodeInfoLabel</label>
+				</control>
+				<control type="group">
+					<description> progress bar and continue label ,align center correction needed</description>
+					<visible>Integer.IsGreater(ListItem.PercentPlayed,0)</visible>
+					<height>40</height>
+					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
+					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
+						<param name="align" value="center" />
+					</include>
+					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+						<param name="align" value="right" />
+					</include>
+					<aligny>center</aligny>
+					<control type="progress">
+						<description>progress bar</description>
+						<right>3</right>
+						<top>16</top>
+						<width>150</width>
+						<height>5</height>
+						<texturebg colordiffuse="B1FFFFFF" border="2">colors/white.png</texturebg>
+						<lefttexture></lefttexture>
+						<midtexture colordiffuse="red" border="2">colors/white.png</midtexture>
+						<righttexture></righttexture>
+						<info>ListItem.PercentPlayed</info>
+					</control>
+					<control type="label">
+						<description>continue watching unlocalized</description>
+						<right>175</right>
+						<height>30</height>
+						<align>right</align>
+						<font>Netflix_Plot</font>
+						<textcolor>red</textcolor>
+						<label>[B]continue watching[/B]</label>
+					</control>
+				</control>
+			</control>
+			
+			<include content="Home_Plot">
+				<param name="visible" value="!String.IsEqual(ListItem.DBTYPE,episode)" />
+				<param name="maxheight" value="205" />
+				<param name="top" value="0" />
+			</include>
+			
+			<include content="Home_Plot">
+				<param name="visible" value="String.IsEqual(ListItem.DBTYPE,episode)" />
+				<param name="maxheight" value="125" />
+				<param name="top" value="5" />
+			</include>
+			
+			<include content="Meta_Genre_Bottom" />
+		</control>
+			
+		<include>Home_Widgets</include>
+				
+	</include>
+
+	<include name="Home_menucontrol">
+		<control type="grouplist" id="9000">
+					
+			<animation time="300" effect="slide" start="0,0" end="0,180" reversible="true" easing="inout">Focus</animation>
+			<animation time="300" effect="slide" start="0,180" end="0,0" reversible="true" easing="inout">UnFocus</animation>
+			
+			<left>100</left>
+			<top>-130</top>
+			<height>79</height>
+			<width>1750</width>
+			<orientation>vertical</orientation>
+			<usecontrolcoords>true</usecontrolcoords>
+			<scrolltime tween="cubic" easing="in">300</scrolltime>
+			<pagecontrol />
+			<ondown>5555</ondown>
+			<onup>5555</onup>
+			
+			<control type="button" id="100000">
+				<top></top>
+				<height>80</height>
+				<width>300</width>
+				
+				<texturefocus colordiffuse="white">colors/white.png</texturefocus>	
+				<texturenofocus colordiffuse="grey" border="10">netflix/frame/slimframe_hardedge.png</texturenofocus>
+	
+				<font>font13</font>
+				<textcolor>grey</textcolor>
+				<focusedcolor>black</focusedcolor>
+				<disabledcolor>green</disabledcolor>
+				<invalidcolor>orange</invalidcolor>
+				<textoffsetx>8</textoffsetx>
+				<aligny>top</aligny>
+				<pulseonselect>no</pulseonselect>
+				<label>   goto:settings</label>
+				<onclick>ActivateWindow(settings)</onclick>
+			</control>
+							
+			<include content="HUB_Container">
+				<height>80</height>
+				<description>test container as main main menu</description>
+				<param name="type" value="panel" />
+				<param name="id" value="7600" />
+				
+				<param name="tagoverlay" value="true" />
+				<param name="tagbottom" value="false" />
+				<param name="itemwidth" value="195" />
+				<param name="itemheight" value="78" />
+				<param name="width" value="200" />
+				<param name="height" value="78" />
+				<param name="layout" value="HUB_Layouts" />
+				<param name="visible" value="Integer.IsGreater(Container(7600).NumItems,0) | Container(7600).IsUpdating" />
+				<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(7600).NumItems,0) | Container(7600).IsUpdating">Conditional</animation>
+				
+				<content target="videos">library://video</content>
+			</include>
+		</control>
+	</include>
+
+	<include name="Home_WidgetPositioning">
+		<param name="height" default="90%" />
+		<param name="bottom" default="60" />
+		<definition>
+			<height>$PARAM[height]</height>
+			<bottom>$PARAM[bottom]</bottom>
+		</definition>
+	</include>
+
+	<include name="Home_Plot">
+		<control type="textbox">
+			<visible>$PARAM[visible]</visible>
+			<top>$PARAM[top]</top>
+			<height min="50" max="$PARAM[maxheight]">auto</height>
+			<label>$VAR[Home_Var_PLot]</label>
+			<textcolor>white</textcolor>
+			<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
+			<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
+				<param name="align" value="center" />
+			</include>
+			<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+				<param name="align" value="right" />
+			</include>
+			<font>Netflix_Plot</font>
+		</control>
+	</include>
+
+	<include name="Meta_Uncommon_Top">
+		<control type="grouplist">
+			<orientation>horizontal</orientation>
+			<usecontrolcoords>true</usecontrolcoords>
+			<height>50</height>
+			<itemgap>10</itemgap>
+			
+			<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
+			<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
+				<param name="align" value="center" />
+			</include>
+			<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+				<param name="align" value="right" />
+			</include>
+			<include content="StarsRating_ImageVariable" />
+			<control type="label">
+				<visible>!String.IsEmpty(ListItem.Year)</visible>	
+				<top>5</top>
+				<left>10</left>
+				<height>35</height>
+				<width>auto</width>
+				<aligny>center</aligny>
+				<font>Netflix_DetailRow</font>
+				<label>$INFO[ListItem.Year,[B],[/B]]</label>
+				<textcolor>white</textcolor>
+			</control>
+			
+			<control type="button">
+				<width min="50">auto</width>
+				<font>Netflix_DetailRow</font>
+				<label>$INFO[ListItem.MPAA,[B],[/B]]</label>
+				<aligny>top</aligny>
+				<align>center</align>
+				<textcolor>white</textcolor>
+				<disabledcolor>white</disabledcolor>
+				<posy>3</posy>
+				<height>40</height>
+				<textoffsetx>20</textoffsetx>
+				<textoffsety>4</textoffsety>
+				<texturenofocus border="-2" colordiffuse="white">flags/detailframe.png</texturenofocus>
+				<enable>false</enable>
+				<visible>!String.IsEmpty(ListItem.MPAA)</visible>
+			</control>
+			
+			<!-- var, details -->
+			<control type="label">
+				<posy>5</posy>
+				<width>auto</width>
+				<label>$VAR[Meta_Top_Details]</label>
+				<height>35</height>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<font>Netflix_DetailRow</font>
+			</control>
+			
+			<include content="FramedCodecInfo">
+				<param name="id" value="611114" />
+				<param name="label_id" value="6111141" />
+				<param name="infolabel" value="$VAR[Simple_Resolution,[B],[/B]]" />
+			</include>
+			<control type="group">
+				<left>-10</left>
+				<width>70</width>
+				<include content="FramedCodecInfo">
+					<param name="id" value="611115" />
+					<param name="label_id" value="6111151" />
+					<param name="infolabel" value="$VAR[Simple_AudioChannel,[B],[/B]]" />
+				</include>
+			</control>
+			<!-- Games: Number of players -->
+			<!-- <control type="group">
+				<top>0</top>
+				<width>250</width>
+				<height>50</height>
+				<visible>!String.IsEmpty(ListItem.Property(nplayers))</visible>
+				<control type="image">
+					<top>-5</top>
+					<width>50</width>
+					<height>50</height>
+					<texture colordiffuse="$INFO[Skin.String(NetflixDetailsFlagColor)]">DefaultActor.png</texture>					
+				</control>
+				<control type="label">
+					<left>55</left>
+					<width>100%</width>
+					<label>$INFO[ListItem.Property(nplayers)]</label>
+					<height>40</height>
+					<aligny>center</aligny>
+					<align>left</align>
+					<textcolor>$VAR[CodecSameLabelColorAsFrames]</textcolor>
+					<font>Bold26</font>
+				</control>	 
+			</control> -->
+		</control>
+	</include>
+
+	<include name="Meta_Genre_Bottom">
+		<control type="grouplist">
+			<visible>!String.IsEmpty(ListItem.Genre)</visible>
+			<height>60</height>
+			<orientation>horizontal</orientation>
+			<itemgap>10</itemgap>
+			<usecontrolcoords>true</usecontrolcoords>
+			<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
+			<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
+				<param name="align" value="center" />
+			</include>
+			<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+				<param name="align" value="right" />
+			</include>
+			<control type="group">
+				<height>60</height>
+				<width>60</width>
+				<control type="image">
+					<texture aligny="center" align="center">diffuse/roundmask.png</texture>
+					<colordiffuse>red</colordiffuse>
+				</control>
+				<control type="image">
+					<texture aligny="center" align="center">flags/genre.png</texture>
+					<aspectratio>keep</aspectratio>
+					<colordiffuse>black</colordiffuse>
+				</control>
+			</control>
+			<control type="label">
+				<width>auto</width>
+				<height>50</height>
+				<aligny>center</aligny>
+				<label>$INFO[ListItem.Genre,[B],[/B]]</label>
+				<textcolor>grey</textcolor>
+				<font>Netflix_DetailRow</font>
+			</control>
+		</control>
+	</include>
+
+	<include name="StarsRating_ImageVariable">
+		<param name="width" default="150" />
+		<param name="height" default="40" />
+		<definition>
+		<control type="image">
+			<width>$PARAM[width]</width>
+			<height>$PARAM[height]</height>
+			<aspectratio align="left" aligny="center">keep</aspectratio>
+			<colordiffuse>red</colordiffuse>
+			<texture background="true">$VAR[StarsRating_ImageVariable]</texture>
+		</control>
+		</definition>
+	</include>
+
+	<include name="FramedCodecInfo">
+		<control type="group" id="$PARAM[id]">	
+			<visible>!String.IsEmpty(Control.GetLabel($PARAM[label_id]))</visible>
+			<left>2</left>
+			<posy>5</posy>
+			<width>70</width>
+			<height>40</height>
+			<fadetime>150</fadetime>
+			<control type="image">
+				<description>use netflix bg</description>
+				<bordersize>2</bordersize>
+				<width>60</width>
+				<height>35</height>
+				<texture colordiffuse="black">colors/white50.png</texture>
+			</control>
+			<control type="image">
+				<width>60</width>
+				<height>35</height>
+				<texture colordiffuse="white">flags/slimframe_softedge.png</texture>
+			</control>
+			<control type="label" id="$PARAM[label_id]">
+				<width>60</width>
+				<height>35</height>
+				<aligny>center</aligny>
+				<align>center</align>
+				<textcolor>white</textcolor>
+				<font>Netflix_DetailRow</font>
+				<scroll>false</scroll>
+				<label>$PARAM[infolabel]</label>
+			</control>
+		</control>
+	</include>
+
+	<variable name="Simple_Resolution">
+		<value condition="ListItem.IsStereoscopic">3D</value>
+		<value condition="Integer.IsGreater(ListItem.VideoResolution,1080) | String.IsEqual(ListItem.VideoResolution,4K)">UHD</value>
+		<value condition="Integer.IsGreater(ListItem.VideoResolution,700)">HD</value>
+		<value condition="!String.IsEmpty(ListItem.VideoResolution)">SD</value>
+	</variable>
+
+	<variable name="Simple_AudioChannel">
+		<value condition="String.IsEqual(ListItem.AudioChannels,1)">1.0</value>
+		<value condition="String.IsEqual(ListItem.AudioChannels,2)">2.0</value>
+		<value condition="String.IsEqual(ListItem.AudioChannels,3)">2.1</value>
+		<value condition="String.IsEqual(ListItem.AudioChannels,4)">4.0</value>
+		<value condition="String.IsEqual(ListItem.AudioChannels,5)">5.0</value>
+		<value condition="String.IsEqual(ListItem.AudioChannels,6)">5.1</value>
+		<value condition="String.IsEqual(ListItem.AudioChannels,7)">6.1</value>
+		<value condition="String.IsEqual(ListItem.AudioChannels,8)">7.1</value>
+		<value condition="String.IsEqual(ListItem.AudioChannels,9)">8.1</value>
+        <value condition="String.IsEqual(ListItem.AudioChannels,10)">9.1</value>
+        <value condition="!String.IsEmpty(ListItem.Channels)">$INFO[ListItem.Channels]</value>
+	</variable>
+
+	<variable name="Home_Var_PLot">
+		<!-- <value condition="!String.IsEmpty(ListItem.PlotOutline)">$INFO[ListItem.PlotOutline]</value> mostly not translated info , make optional -->
+		<value condition="!String.IsEmpty(ListItem.Plot)">$INFO[ListItem.Plot]</value>
+		<value condition="!String.IsEmpty(ListItem.Property(Album_Description))">$INFO[ListItem.Property(Album_Description)]$INFO[ListItem.ContributorAndRole,[CR],]</value>
+		<value condition="!String.IsEmpty(ListItem.Property(Artist_Description))">$INFO[ListItem.Property(Artist_Description)]$INFO[ListItem.ContributorAndRole,[CR],]</value>
+		<value condition="String.IsEqual(ListItem.DBTYPE,musicvideo)">$INFO[ListItem.Artist]$INFO[ListItem.Title,[CR],]</value>
+		<value condition="!String.IsEmpty(ListItem.AddonDescription)">$INFO[ListItem.AddonDescription]</value>
+		<value condition="!String.IsEmpty(ListItem.AddonSummary)">$INFO[ListItem.AddonSummary]</value>
+		<value>$LOCALIZE[19055]</value>
+	</variable>
+
+	<variable name="Meta_Top_Details">
+		<value condition="[Container.Content(episodes) | String.IsEqual(ListItem.DBTYPE,episode) | String.IsEqual(ListItem.Property(DBTYPE),episode)] + ListItem.Property(season_finale)">$VAR[ListItemDuration,, $LOCALIZE[31336]] </value>
+		<value condition="[Container.Content(episodes) | String.IsEqual(ListItem.DBTYPE,episode) | String.IsEqual(ListItem.Property(DBTYPE),episode)] + ListItem.Property(series_finale)">$VAR[ListItemDuration,, $LOCALIZE[31335]] </value>
+		<value condition="[Container.Content(episodes) | String.IsEqual(ListItem.DBTYPE,episode) | String.IsEqual(ListItem.Property(DBTYPE),episode)]">$VAR[ListItemDuration]</value>
+		<value condition="Container.Content(MusicVideos) + [!String.IsEmpty(ListItem.Duration) | !String.IsEmpty(ListItem.Year)]">$VAR[ListItemDuration]</value>					  
+		<value condition="Container.Content(Movies) + !String.IsEmpty(ListItem.Duration)">[B]$VAR[ListItemDuration][/B]</value>
+		<value condition="Container.Content(TVShows) + Integer.IsGreater(ListItem.Property(TotalSeasons),1) + Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),0) + !String.IsEmpty(ListItem.Property(TotalEpisodes))">$INFO[ListItem.Property(TotalSeasons),[B], $LOCALIZE[33054][/B]]$INFO[ListItem.Property(UnWatchedEpisodes), (, $LOCALIZE[31092])]</value>
+		<value condition="Container.Content(TVShows) + Integer.IsGreater(ListItem.Property(TotalSeasons),1) + !Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),0) + !String.IsEmpty(ListItem.Property(TotalEpisodes))">$INFO[ListItem.Property(TotalSeasons),[B], $LOCALIZE[33054][/B]]</value>																																																																																							
+		<value condition="Container.Content(TVShows) + Integer.IsEqual(ListItem.Property(TotalSeasons),1) + Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),0) + !String.IsEmpty(ListItem.Property(TotalEpisodes))">$INFO[ListItem.Property(TotalSeasons),[B], $LOCALIZE[36904][/B]]$INFO[ListItem.Property(UnWatchedEpisodes), (, $LOCALIZE[31092])]</value>
+		<value condition="Container.Content(TVShows) + Integer.IsEqual(ListItem.Property(TotalSeasons),1) + !Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),0) + !String.IsEmpty(ListItem.Property(TotalEpisodes))">$INFO[ListItem.Property(TotalSeasons),[B], $LOCALIZE[36904][/B]]</value>																																																																																							
+		<value condition="Container.Content(Seasons) + Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),0) + !String.IsEmpty(ListItem.Property(TotalEpisodes))">$INFO[ListItem.Property(TotalEpisodes),[B], $LOCALIZE[20360][/B]]$INFO[ListItem.Property(UnWatchedEpisodes), (, $LOCALIZE[31092])]</value>
+		<value condition="Container.Content(Seasons) + !Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),0) + !String.IsEmpty(ListItem.Property(TotalEpisodes))">$INFO[ListItem.Property(TotalEpisodes),[B], $LOCALIZE[20360][/B]]</value>																																																																																							
+ 		<value condition="!String.IsEmpty(ListItem.Duration)">$VAR[ListItemDuration]</value>
+		<value condition="String.Contains(ListItem.Path,videodb://movies/sets/)">$INFO[ListItem.Label]</value>
+		<value>$INFO[ListItem.Label2]</value>
+	</variable>
+
+	<variable name="StarsRating_ImageVariable">
+        <value condition="!String.IsEmpty(ListItem.UserRating)">$INFO[ListItem.UserRating,rating/stars/,.png]</value>
+        <value condition="!String.IsEmpty(ListItem.Rating)">$INFO[ListItem.Rating,rating/stars/,.png]</value>
+    </variable>
+
+	<variable name="ListItemDuration">
+		<value condition="![!String.IsEmpty(ListItem.Artist) | Container.Content(Songs) | Container.Content(Musicvideos)] + !Skin.HasSetting(DisableHoursDuration) + Integer.IsGreater(ListItem.Duration(h),0)">$INFO[ListItem.Duration(h),,h ]$INFO[ListItem.Duration(m),,min]</value>		
+		<value condition="![!String.IsEmpty(ListItem.Artist) | Container.Content(Songs) | Container.Content(Musicvideos)] + Skin.HasSetting(DisableHoursDuration) + !String.IsEmpty(ListItem.Duration)">$INFO[ListItem.Duration(mins),, min]</value>
+		<value condition="![!String.IsEmpty(ListItem.Artist) | Container.Content(Songs) | Container.Content(Musicvideos)] + !Skin.HasSetting(DisableHoursDuration) + Integer.IsEqual(ListItem.Duration(h),0)">$INFO[ListItem.Duration(mins),, min]</value>
+		<value condition="[!String.IsEmpty(ListItem.Artist) | Container.Content(Songs) | Container.Content(Musicvideos)] + !Skin.HasSetting(DisableHoursDuration) + !String.IsEmpty(ListItem.Duration)">$INFO[ListItem.Duration,, min]</value>	
+	</variable>
+
+</includes>

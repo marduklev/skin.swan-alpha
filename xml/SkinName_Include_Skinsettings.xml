@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includes>
+	 <include name="DefaultSkinSettings">
+        <include condition="!Skin.HasSetting(FirstRun001)">DefaultSkinSettingsValues</include>
+        <!-- initialize some addons on startup -->
+        <include condition="String.IsEmpty(Window(Home).Property(startupDone))">startupskinsettingsvalues</include>
+    </include>
+	
+	<include name="startupskinsettingsvalues">
+        <onload condition="System.HasAddon(script.games.rom.collection.browser)">RunScript(script.games.rom.collection.browser,limit=10)</onload>
+        
+		<!-- 1st WIDGET onload-->
+		<onload condition="String.IsEmpty(Skin.String(UserWidget1_path))">Skin.SetString(UserWidget1_path,library://video/movies/titles.xml/)</onload>
+		<onload condition="String.IsEmpty(Skin.String(UserWidget1_name))">Skin.SetString(UserWidget1_name, [I]1st Run WIDGET[/I] [B]Go  to Widget Settings To Asign your Widgets[/B])</onload>
+		<onload condition="String.IsEmpty(Skin.String(UserWidget1_target))">Skin.SetString(UserWidget1_target,videos)</onload>
+		<onload condition="String.IsEmpty(Skin.String(UserWidget1_layout))">Skin.SetString(UserWidget1_layout,poster)</onload>
+		<onload condition="String.IsEmpty(Skin.String(UserWidget1_layout)) + Skin.HasSetting(UserWidget1_forceTag)">Skin.ToggleSetting(UserWidget1_forceTag)</onload>
+		<onload>Skin.ToggleSetting(FirstRun001)</onload>
+	</include>
+
+
+	<include name="swan_debug_overlay">
+		<control type="group">
+			<visible>Skin.HasSetting(SwanDebug)</visible>
+			
+				<control type="image">
+					<description>top header</description>
+					<top>0</top>
+					<width>100%</width>
+					<height>100</height>
+					<texture>colors/white.png</texture>
+					<colordiffuse>AA11E7B1</colordiffuse>
+					<aspectratio>stretch</aspectratio>
+				</control>
+				<control type="group">
+					<!-- <right>40</right>
+					<left>40</left> -->
+					<centerleft>50%</centerleft>
+					<width>95%</width>
+					<top>150</top>
+					<height>72%</height>
+					<control type="image">
+					<description>hot spot area</description>
+						
+						<texture>colors/white.png</texture>
+						<colordiffuse>CCA0A0A0</colordiffuse>
+						<aspectratio>stretch</aspectratio>
+					</control>
+					<control type="textbox">
+						<font>debug</font>
+						<aligny>top</aligny>
+						<align>left</align>
+						<top>10</top>
+						<left>5</left>
+						<textcolor>black</textcolor>
+						<label>
+
+
+
+CUSTUM SKINSTRINGS 
+SpotlightMetadataAlign - $INFO[Skin.String(SpotlightMetadataAlign)]
+
+
+widget 1 $INFO[Skin.String(UserWidget1_target.label)]
+$INFO[Skin.String(UserWidget1_target.label)]
+listitem.icon :         $INFO[listitem.icon]
+listitem.art(icon) :    $INFO[listitem.art(icon)]
+listitem.thumb :        $INFO[listitem.thumb]
+listitem.art thumb :    $INFO[listitem.art(thumb)]
+
+listitem.filenameandpath :    $INFO[listitem.filenameandpath]
+$INFO[listitem.dbid,listitem.dbid :    ,    ]
+$INFO[listitem.DBTYPE,listitem.DBTYPE :    ,    ]
+$INFO[listitem.label,label:    ,    ]
+$INFO[listitem.label2,label2 :    ,    ]
+$INFO[container.listitem.label,container.label :    ,    ]
+$INFO[container.listitem.label2,container.label2 :    ,    ]
+</label>
+					</control>
+					<control type="textbox">
+						<font>debug</font>
+						<aligny>top</aligny>
+						<align>right</align>
+						<top>10</top>
+						<right>15</right>
+						<textcolor>black</textcolor>
+						<label>Property(xmlfile) :     $INFO[Window.Property(xmlfile)]
+System.CurrentWindow :     $INFO[System.CurrentWindow]
+System.CurrentControl :     $INFO[System.CurrentControl]
+System.CurrentControlID :     $INFO[System.CurrentControlID]
+
+</label>
+					</control>
+					
+				</control>
+				<control type="image">
+				<description>footer space</description>
+					<bottom>10</bottom>
+					<aligny>top</aligny>
+					<width>100%</width>
+					<height>100</height>
+					<texture>colors/white.png</texture>
+					<colordiffuse>AA11E7B1</colordiffuse>
+					<aspectratio>stretch</aspectratio>
+				</control>
+		</control>
+	</include>
+
+	<!-- Skinsettings - ButtonList -->
+	<include name="ButtonList">
+		<param name="id" />
+		<param name="top" default="160" />
+		<param name="bottom" default="140" />
+		<param name="left" default="0" />
+		<param name="right" default="0" />
+		<param name="itemgap" default="3" />
+		<definition>
+			<control type="grouplist" id="$PARAM[id]">
+			<nested />
+				<top>$PARAM[top]</top>
+				<left>$PARAM[left]</left>
+				<right>$PARAM[right]</right>
+				<bottom>$PARAM[bottom]</bottom>
+				<itemgap>$PARAM[itemgap]</itemgap>
+				<pagecontrol>60</pagecontrol>
+				<onleft>9000</onleft>
+				<onright>60</onright>
+				<onup>$PARAM[id]</onup>
+				<ondown>$PARAM[id]</ondown>
+			</control>
+		</definition>
+	</include>
+
+	<include name="SkinSettings_ColorButton">
+		<param name="visible" default="true" />
+		<definition>
+			<control type="button" id="7$PARAM[id]">
+				<width>100%</width>
+				<align>left</align>
+				<height>50</height>
+				<font>arial26</font>
+				<textoffsetx>40</textoffsetx>
+				<textwidth>950</textwidth>
+				<label>$PARAM[label]</label>
+				<label2>[COLOR=$VAR[$PARAM[skinsetting]]]██[/COLOR]</label2>
+				<onclick>RunScript(script.skin.helper.colorpicker,action=COLORPICKER,skinstring=$PARAM[skinsetting],header=$PARAM[label],palette=$INFO[Skin.String(defaultcolorpalette)])</onclick>
+				<visible>System.HasAddon(script.skin.helper.colorpicker)</visible>
+			</control>
+		</definition>
+	</include>
+
+	<include name="SkinSettings_SetStringRadioButton">
+		<radiowidth>47</radiowidth>
+		<radioheight>25</radioheight>
+		<textureradioonfocus colordiffuse="$VAR[Button_Text_FO]">icons/settings1.png</textureradioonfocus>
+		<textureradioonnofocus colordiffuse="$VAR[Button_Text_NF]">icons/settings1.png</textureradioonnofocus>
+		<textureradioofffocus colordiffuse="$VAR[Button_Text_FO]">icons/settings1.png</textureradioofffocus>
+		<textureradiooffnofocus colordiffuse="$VAR[Button_Text_NF]">icons/settings1.png</textureradiooffnofocus>
+		<textureradioondisabled colordiffuse="disabled">icons/settings1.png</textureradioondisabled>
+		<textureradiooffdisabled colordiffuse="disabled">icons/settings1.png</textureradiooffdisabled>
+		<label>$PARAM[label]</label>
+		<label2>$PARAM[label2]   </label2>
+	</include>
+
+	<!-- Skin settings headline -->
+	<include name="SectionHeadline">
+		<param name="height" default="100" />
+		<param name="width" default="100%" />
+		<param name="align" default="center" />
+		<param name="aligny" default="center" />
+		<definition>
+		
+		<control type="group" id="$PARAM[id]">
+			<height>$PARAM[height]</height>
+			<control type="label">
+				<font>Reg22</font>
+				<height>$PARAM[height]</height>
+				<width>$PARAM[width]</width>
+				<align>$PARAM[align]</align>
+				<aligny>$PARAM[aligny]</aligny>
+				<label>$PARAM[label]</label>
+				<textcolor>$VAR[Headingline_FO]</textcolor>
+			</control>
+		</control>
+		</definition>
+	</include>
+
+</includes>
