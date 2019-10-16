@@ -7,26 +7,47 @@
 				<param name="id" value="$PARAM[id]0"/>
 				<param name="height" value="60"/>
 				<param name="align" default="left" />
-				<param name="label" value="WIDGET $PARAM[nr]$INFO[Skin.String(UserWidget$PARAM[nr]_name), - ]"/>
+				<param name="label" value="WIDGET $PARAM[nr]$INFO[Skin.String(UserWidget$PARAM[nr]_name), - ] $INFO[Skin.String(UserWidget$PARAM[nr]_type),[I](,)[/I]]"/>
 		</include>
 		
-		<control type="button" id="$PARAM[id]1">
-			<description>use script just to set path, grouping=widget, nothing more required for now</description>
-			<onclick>RunScript(script.skinshortcuts,type=shortcuts&amp;showNone=True&amp;custom=True&amp;grouping=widget&amp;skinLabel=UserWidget$PARAM[nr]_name&amp;skinAction=UserWidget$PARAM[nr]_action&amp;skinList=UserWidget$PARAM[nr]_path)</onclick>
-			<label>                        Set Path</label>
+		<control type="radiobutton" id="$PARAM[id]1">
+			<description>
+              type=shortcuts
+              custom=[True/False]              A boolean saying where the user can type their own shortcut
+              showNone=[True/False]            A boolean saying 'None' option will be shown
+              grouping=[grouping]              The custom groupings that will be shown to the user
+              skinLabel=[skinLabel]            The skin string the script will save the label of the selected shortcut to
+              skinAction=[skinAction]          The skin string the script will save the action of the selected shortcut to
+              skinList=[skinList]              The skin string the script will save the action of the selected shortcut, without any 'ActivateWindow' elements, to 
+              skinType=[skinType]              The skin string the script will save the type of the selected shortcut to 
+              skinThumbnail=[skinThumbnail])   The skin string the script will save the thumbnail of the selected shortcut to
+			</description>
+			<radioposx>200</radioposx>
+			<radioposxy>5</radioposxy>
+			<radiowidth>42</radiowidth>
+			<radioheight>20</radioheight>
+			<textureradioonfocus colordiffuse="$VAR[Button_Text_FO]">icons/settings1.png</textureradioonfocus>
+			<textureradioonnofocus colordiffuse="$VAR[Button_Text_NF]">icons/settings1.png</textureradioonnofocus>
+			<textureradioofffocus colordiffuse="$VAR[Button_Text_FO]">icons/settings1.png</textureradioofffocus>
+			<textureradiooffnofocus colordiffuse="$VAR[Button_Text_NF]">icons/settings1.png</textureradiooffnofocus>
+			<textureradioondisabled colordiffuse="disabled">icons/settings1.png</textureradioondisabled>
+			<textureradiooffdisabled colordiffuse="disabled">icons/settings1.png</textureradiooffdisabled>
+			<label>                             Set Widget Path</label>
 			<label2>$INFO[Skin.String(UserWidget$PARAM[nr]_path)]</label2>
+			<onclick>RunScript(script.skinshortcuts,type=shortcuts&amp;showNone=True&amp;custom=True&amp;grouping=widget&amp;skinList=UserWidget$PARAM[nr]_path&amp;skinLabel=UserWidget$PARAM[nr]_name&amp;skinType=UserWidget$PARAM[nr]_type)</onclick>
 		</control>
 		
 		<control type="button" id="$PARAM[id]2">
+			<description>$INFO[Window(home).Property(custom_widget_nr)]</description>
 			<height>80</height>
 			<visible>!String.IsEmpty(Skin.String(UserWidget$PARAM[nr]_path))</visible>
 			<onclick>SetProperty(custom_widget_nr,$PARAM[nr],home)</onclick>
 			<onclick>ActivateWindow(1103)</onclick>
 			<label>                        $INFO[Skin.String(UserWidget$PARAM[nr]_layout.label),[B]$LOCALIZE[21858][/B]: ]</label>
-			<label2>$INFO[Skin.String(UserWidget$PARAM[nr]_target.label),[B]$LOCALIZE[467][/B]: ,]$INFO[Skin.String(UserWidget$PARAM[nr]_sortby),   [B]$LOCALIZE[581][/B]: ',']$INFO[Skin.String(UserWidget$PARAM[nr]_sortorder),   [B]$LOCALIZE[21429][/B]: ',']$INFO[Skin.String(UserWidget$PARAM[nr]_limit),   $LOCALIZE[21427]: (,)]</label2>
+			<label2>$INFO[Skin.String(UserWidget$PARAM[nr]_target),[B]$LOCALIZE[467][/B]: ,]$INFO[Skin.String(UserWidget$PARAM[nr]_sortby),   [B]$LOCALIZE[581][/B]: ',']$INFO[Skin.String(UserWidget$PARAM[nr]_sortorder),   [B]$LOCALIZE[21429][/B]: ',']$INFO[Skin.String(UserWidget$PARAM[nr]_limit),   $LOCALIZE[21427]: (,)]</label2>
 		</control>
 		<control type="group" id="$PARAM[id]3">
-			<description>DONT removed group control</description>
+			<description>DONT remove group control</description>
 			<control type="image">
 				<visible>Container(9000).HasFocus(1)</visible>
 				<visible>!String.IsEmpty(Skin.String(UserWidget$PARAM[nr]_path))</visible>
@@ -35,20 +56,18 @@
 				<left>4</left>
 				<height>130</height>
 				<width>180</width>
-				<bordersize>3</bordersize>
-				<bordertexture>colors/black.png</bordertexture>
+				<bordersize>2</bordersize>
+				<bordertexture colordiffuse="FF101010">colors/white.png</bordertexture>
 				<texture>$INFO[Skin.String(UserWidget$PARAM[nr]_layout),special://skin/extras/widgetlayouts/,.jpg]</texture>
 				<aspectratio>keep</aspectratio>
 			</control>
 		</control>
-		
-		
 	</include>
 	
 	<!-- SkinSettings.xml widget script.embuary helper - set attributes - call custom window 1103 -->
 	<include name="CustomWidgetConfigTemplate">
+		
 		<control type="button" id="11031">
-			
 			<onclick>Skin.SetString(UserWidget$PARAM[nr]_name)</onclick>
 			<label>Widget Name</label>
 			<label2>$INFO[Skin.String(UserWidget$PARAM[nr]_name)]</label2>
@@ -140,22 +159,28 @@
 			<onclick>SetProperty(Dialog.6.BuiltIn,Skin.SetString(UserWidget$PARAM[nr]_sortby,artist))</onclick>
 			<onclick>SetProperty(Dialog.7.Label,Album)</onclick>
 			<onclick>SetProperty(Dialog.7.BuiltIn,Skin.SetString(UserWidget$PARAM[nr]_sortby,album))</onclick>
-			<onclick>SetProperty(Dialog.8.Label,Random)</onclick>
-			<onclick>SetProperty(Dialog.8.BuiltIn,Skin.SetString(UserWidget$PARAM[nr]_sortby,random))</onclick>
-			<onclick>SetProperty(Dialog.9.Label,Year)</onclick>
-			<onclick>SetProperty(Dialog.9.BuiltIn,Skin.SetString(UserWidget$PARAM[nr]_sortby,year))</onclick>
-			<onclick>SetProperty(Dialog.10.Label,DateAdded)</onclick>
-			<onclick>SetProperty(Dialog.10.BuiltIn,Skin.SetString(UserWidget$PARAM[nr]_sortby,dateadded))</onclick>
-			<onclick>SetProperty(Dialog.11.Label,LastPlayed)</onclick>
-			<onclick>SetProperty(Dialog.11.BuiltIn,Skin.SetString(UserWidget$PARAM[nr]_sortby,lastplayed))</onclick>
-			<onclick>SetProperty(Dialog.12.Label,PlayCount)</onclick>
-			<onclick>SetProperty(Dialog.12.BuiltIn,Skin.SetString(UserWidget$PARAM[nr]_sortby,playcount))</onclick>
-			<onclick>SetProperty(Dialog.13.Label,Season)</onclick>
-			<onclick>SetProperty(Dialog.13.BuiltIn,Skin.SetString(UserWidget$PARAM[nr]_sortby,season))</onclick>
-			<onclick>SetProperty(Dialog.14.Label,Episode)</onclick>
-			<onclick>SetProperty(Dialog.14.BuiltIn,Skin.SetString(UserWidget$PARAM[nr]_sortby,episode))</onclick>
-			<onclick>SetProperty(Dialog.15.Label,TrackNumber)</onclick>
-			<onclick>SetProperty(Dialog.15.BuiltIn,Skin.SetString(UserWidget$PARAM[nr]_sortby,tracknumber))</onclick>
+			<onclick>SetProperty(Dialog.8.Label,Rating)</onclick>
+			<onclick>SetProperty(Dialog.8.BuiltIn,Skin.SetString(UserWidget$PARAM[nr]_sortby,rating))</onclick>
+			<onclick>SetProperty(Dialog.9.Label,Random)</onclick>
+			<onclick>SetProperty(Dialog.9.BuiltIn,Skin.SetString(UserWidget$PARAM[nr]_sortby,random))</onclick>
+			<onclick>SetProperty(Dialog.10.Label,Year)</onclick>
+			<onclick>SetProperty(Dialog.10.BuiltIn,Skin.SetString(UserWidget$PARAM[nr]_sortby,year))</onclick>
+			<onclick>SetProperty(Dialog.11.Label,DateAdded)</onclick>
+			<onclick>SetProperty(Dialog.11.BuiltIn,Skin.SetString(UserWidget$PARAM[nr]_sortby,dateadded))</onclick>
+			<onclick>SetProperty(Dialog.12.Label,LastPlayed)</onclick>
+			<onclick>SetProperty(Dialog.12.BuiltIn,Skin.SetString(UserWidget$PARAM[nr]_sortby,lastplayed))</onclick>
+			<onclick>SetProperty(Dialog.13.Label,PlayCount)</onclick>
+			<onclick>SetProperty(Dialog.13.BuiltIn,Skin.SetString(UserWidget$PARAM[nr]_sortby,playcount))</onclick>
+			<onclick>SetProperty(Dialog.14.Label,Season)</onclick>
+			<onclick>SetProperty(Dialog.14.BuiltIn,Skin.SetString(UserWidget$PARAM[nr]_sortby,season))</onclick>
+			<onclick>SetProperty(Dialog.15.Label,Episode)</onclick>
+			<onclick>SetProperty(Dialog.15.BuiltIn,Skin.SetString(UserWidget$PARAM[nr]_sortby,episode))</onclick>
+			<onclick>SetProperty(Dialog.16.Label,TrackNumber)</onclick>
+			<onclick>SetProperty(Dialog.16.BuiltIn,Skin.SetString(UserWidget$PARAM[nr]_sortby,tracknumber))</onclick>
+			<!-- 
+			SetProperty(Dialog.18.Label,Imdb Top 250)
+			SetProperty(Dialog.18.BuiltIn,Skin.SetString(UserWidget$PARAM[nr]_sortby,Top250)) 
+			-->
 			<onclick>RunScript(script.embuary.helper,action=createselect,header=$LOCALIZE[581])</onclick>
 			<label2>$INFO[Skin.String(UserWidget$PARAM[nr]_sortby),',']</label2>
 		</control>
