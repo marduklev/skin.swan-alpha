@@ -37,9 +37,30 @@
 	<include file="SkinName_Variables.xml" />
 
 
+<!-- constants stereoscopcic estuary -->
+	<constant name="DepthDialog">0.50</constant>
+	<constant name="DepthDialog+">0.52</constant>
+	<constant name="DepthDialog-">0.48</constant>
+	<constant name="DepthMax">0.54</constant>
+	<constant name="DepthOSD">0.40</constant>
+	<constant name="DepthOSD+">0.44</constant>
+	<constant name="DepthContentPopout">0.10</constant>
+	<constant name="DepthContentPanel">0.05</constant>
+	<constant name="DepthBars">0.12</constant>
+	<constant name="DepthBackground">-0.80</constant>
+	<constant name="DepthBackground2">-0.78</constant>
+	<constant name="DepthSideBlade">0.10</constant>
+	
+	
+	<constant name="bg_alpha">79</constant>
+	<constant name="dialogbuttons_itemgap">-20</constant>
+	<constant name="list_y_offset">0</constant>
+	<constant name="list_item_height">80</constant>
+	
+	
+	
 	<!-- EXP -->
 	<expression name="Infodialog_IsActive">Window.IsActive(musicinformation) | Window.IsActive(songinformation) | Window.IsActive(movieinformation) | Window.IsActive(addoninformation) | Window.IsActive(pvrguideinfo) | Window.IsActive(pvrrecordinginfo) | Window.IsActive(pictureinfo) | Window.IsVisible(script-script.extendedinfo-DialogVideoInfo.xml) | Window.IsVisible(script-script.extendedinfo-DialogInfo.xml) | Window.IsVisible(script-script.extendedinfo-VideoList.xml)</expression>
-	<expression name="sidebar_visible">ControlGroup(9000).HasFocus | Control.HasFocus(6130) | Control.HasFocus(6131) | Window.IsActive(MyPlaylist.xml)</expression>
 	
 	<!-- Layout Positioning -->
 	<include name="height">
@@ -72,6 +93,24 @@
 		<align>$PARAM[align]</align>
 	</include>
 	
+	<include name="bg_gradientmulticolor">
+		<param name="layer1_top" default="ff011222" />
+		<param name="layer1_bottom" default="ff000000" />
+		<param name="layer2" default="FF080808" />
+		<param name="layer2_visible" default="false" />
+		<definition>
+			<control type="image">
+				<texture colordiffuse="$PARAM[layer1_top]">hub/diffuse_linear_vert_50_trans.png</texture>
+				<bordertexture flipy="true" colordiffuse="$PARAM[layer1_bottom]">hub/diffuse_linear_vert.png</bordertexture>
+				<aspectratio>stretch</aspectratio>
+			</control>
+			<control type="image">
+				<visible>$PARAM[layer2_visible]</visible>
+				<texture colordiffuse="$PARAM[layer2]" flipy="true">hub/diffuse_linear_vert_50_trans.png</texture>
+				<aspectratio>stretch</aspectratio>
+			</control>
+		</definition>
+	</include>
 	
 	
 	<include name="inc_alignment">
@@ -80,6 +119,26 @@
 		</include>
 	</include>
 
+	<include name="DefaultDialogButton">
+		<param name="width">300</param>
+		<param name="height">100</param>
+		<param name="wrapmultiline">false</param>
+		<param name="font">font25_title</param>
+		<param name="visible">true</param>
+		<definition>
+			<control type="button" id="$PARAM[id]">
+				<width>$PARAM[width]</width>
+				<height>$PARAM[height]</height>
+				<label>$PARAM[label]</label>
+				<font>$PARAM[font]</font>
+				<textoffsetx>30</textoffsetx>
+				<wrapmultiline>$PARAM[wrapmultiline]</wrapmultiline>
+				<align>center</align>
+				<visible>$PARAM[visible]</visible>
+			</control>
+		</definition>
+	</include>
+	
 	<include name="HiddenObject">
 		<left>-3000</left>
 		<top>-3000</top>
@@ -106,4 +165,78 @@
 		</definition>
 	</include>
 	
+	<!-- HUB test hc color-->
+	<include name="hub_button">
+		<control type="radiobutton" id="$PARAM[id]">
+			<width>300</width>
+            <height>25</height>
+			
+			<radiowidth>45</radiowidth>
+			<radioheight>45</radioheight>
+			<radioposx>25</radioposx>
+			<textureradioonfocus colordiffuse="white">$PARAM[radio_icon]</textureradioonfocus>
+			<textureradioonnofocus colordiffuse="grey">$PARAM[radio_icon]</textureradioonnofocus>
+			<textureradioofffocus colordiffuse="white">$PARAM[radio_icon]</textureradioofffocus>
+			<textureradiooffnofocus colordiffuse="grey">$PARAM[radio_icon]</textureradiooffnofocus>
+			<texturefocus />
+			<texturenofocus />
+			<textoffsetx>80</textoffsetx>
+			<font>MenucontrolItem</font>
+			<label>$PARAM[label]</label>
+			<onclick>$PARAM[action]</onclick>
+			<onclick>$PARAM[property]</onclick>
+			<focusedcolor>white</focusedcolor>
+			<textcolor>grey</textcolor>
+			<selectedcolor>green</selectedcolor>
+			<pulseonselect>no</pulseonselect>
+		</control>
+	</include>
+	
+	<include name="spacer_h">
+	<param name="gap" default="10" />
+		<definition>
+			<control type="label" id="$PARAM[id]">
+				<height>$PARAM[gap]</height>
+				<font />
+				<textcolor />
+			</control>
+	</definition>
+	</include>
+	
+	<include name="hub_sectionheader">
+		<control type="label" id="$PARAM[id]">
+			<height>30</height>
+			<width>300</width>
+			<font>font12</font>
+			<align>left</align>
+			<textcolor>white</textcolor>
+			<label>[B]$PARAM[label]section[/B]</label>
+		</control>
+	</include>
+	
+	<variable name="MovieGenreIconVarList">
+       <value condition="Skin.String(MovieGenreIconPack.path,resource://resource.images.moviegenreicons.poster/)">resource://resource.images.moviegenreicons.poster/$INFO[ListItem.Label].jpg</value>
+       <value condition="Skin.String(MovieGenreIconPack.path,resource://resource.images.moviegenreicons.coloured/)">resource://resource.images.moviegenreicons.coloured/$INFO[ListItem.Label].jpg</value>
+       <value condition="Skin.String(MovieGenreIconPack.path,resource://resource.images.moviegenreicons.white/)">resource://resource.images.moviegenreicons.white/$INFO[ListItem.Label].jpg</value>
+       <value condition="Skin.String(MovieGenreIconPack.path,resource://resource.images.moviegenreicons.transparent/)">resource://resource.images.moviegenreicons.transparent/$INFO[ListItem.Label].jpg</value>
+       <value condition="Skin.String(MovieGenreIconPack.path,resource://resource.images.moviegenreicons.grey/)">resource://resource.images.moviegenreicons.grey/$INFO[ListItem.Label].jpg</value>
+       <value condition="Skin.String(MovieGenreIconPack.path,resource://resource.images.moviegenreicons.filmstrip/)">resource://resource.images.moviegenreicons.filmstrip/$INFO[ListItem.Label].jpg</value>
+       <value condition="Skin.String(MovieGenreIconPack.path,resource://resource.images.moviegenreicons.arctic.zephyr/)">resource://resource.images.moviegenreicons.arctic.zephyr/$INFO[ListItem.Label].png</value>
+       <value condition="Skin.String(MovieGenreIconPack.path,resource://resource.images.moviegenreicons.xzener-flat/)">resource://resource.images.moviegenreicons.xzener-flat/$INFO[ListItem.Label].png</value>
+       <value condition="Skin.String(MovieGenreIconPack.path,resource://resource.images.moviegenreicons.xzener-reflection/)">resource://resource.images.moviegenreicons.xzener-reflection/$INFO[ListItem.Label].png</value>
+       <value condition="Skin.String(MovieGenreIconPack.path,resource://resource.images.moviegenreicons.arctic.zephyr/)">resource://resource.images.moviegenreicons.arctic.zephyr/$INFO[ListItem.Label].png</value>
+       <value condition="Skin.String(MovieGenreIconPack.path)">http://localhost:52307/getvarimage&amp;title=$INFO{Skin.String(MovieGenreIconPack.path)}$INFO[ListItem.Label]$INFO{Skin.String(MovieGenreIconPack.ext)}&amp;fallback=DefaultGenre.png</value>
+       <value>DefaultGenre.png</value>
+    </variable>
+
+    <variable name="MusicGenreIconVarList">
+       <value condition="Skin.String(MusicGenreIconPack.path,resource://resource.images.musicgenreicons.text/)">resource://resource.images.musicgenreicons.text/$INFO[ListItem.Label].jpg</value>
+       <value condition="Skin.String(MusicGenreIconPack.path,resource://resource.images.musicgenreicons.grey/)">resource://resource.images.musicgenreicons.grey/$INFO[ListItem.Label].jpg</value>
+       <value condition="Skin.String(MusicGenreIconPack.path,resource://resource.images.musicgenreicons.poster/)">resource://resource.images.musicgenreicons.poster/$INFO[ListItem.Label].jpg</value>
+       <value condition="Skin.String(MusicGenreIconPack.path,resource://resource.images.musicgenreicons.coloured/)">resource://resource.images.musicgenreicons.coloured/$INFO[ListItem.Label].jpg</value>
+       <!-- last resort: use webservice - will only work for non-texture packed resource addons or manual folders -->
+       <value condition="Skin.String(MusicGenreIconPack.path)">http://localhost:52307/getvarimage&amp;title=$INFO{Skin.String(MusicGenreIconPack.path)}$INFO[ListItem.Label]$INFO{Skin.String(MusicGenreIconPack.ext)}&amp;fallback=DefaultGenre.png</value>
+       <value>DefaultGenre.png</value>
+    </variable>
+
 </includes>
