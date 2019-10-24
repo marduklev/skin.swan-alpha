@@ -1,0 +1,1617 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includes>
+
+<!-- MOVE ME START -->
+	
+	<include name="studiologo_image">
+		<fadetime>200</fadetime>
+		<texture background="true">$VAR[image_StudioLogo]</texture>
+		<colordiffuse>white</colordiffuse>
+	</include>
+	<variable name="image_StudioLogo">
+		<value>resource://resource.images.studios.white/$INFO[ListItem.Studio,,.png]</value>
+    </variable>
+	<variable name="AdvancedRatings_TextColor">
+		<value condition="Window.IsVisible(movieinformation) + !Skin.HasSetting(UseNetflixInfoDialog)">$INFO[Skin.String(ViewDetailsTextColor)]</value>																																				 
+        <value condition="[Control.IsVisible(523) | Control.IsVisible(525) | [Control.IsVisible(526) + Skin.HasSetting(View526_DisableFanArt) + Skin.HasSetting(View_526_nofooterbar)] | [Control.IsVisible(527) + Skin.HasSetting(View527_DisableFanArt)]] | [Window.IsActive(Home) + Skin.String(HomeLayout, netflix2)] | [Window.IsVisible(movieinformation) + Skin.HasSetting(UseNetflixInfoDialog)]">$INFO[Skin.String(RatingsLogoColor)]</value> <!-- default  $INFO[Skin.String(ViewDetailsTextColor)] -->       
+		<value condition="Skin.String(FooterTextColor) + !Skin.String(FooterPanelColor, None)">$INFO[Skin.String(FooterTextColor)]</value>
+        <value>ffffffff</value>
+    </variable>
+	<variable name="DiscArtImage">
+        <value condition="!String.IsEmpty(ListItem.Art(cartridge))">$INFO[ListItem.Art(cartridge)]</value>
+        <value condition="!String.IsEmpty(ListItem.Art(discart))">$INFO[ListItem.Art(discart)]</value>
+        <value condition="!String.IsEmpty(ListItem.Art(landscape)) + Skin.HasSetting(EnableFakeDiscArt)">$INFO[ListItem.Art(landscape)]</value>
+        <value condition="!String.IsEmpty(ListItem.Art(fanart)) + Skin.HasSetting(EnableFakeDiscArt)">$INFO[ListItem.Art(fanart)]</value>
+	</variable>
+	<variable name="rating_value_texture">
+        <value condition="!String.IsEmpty(ListItem.UserRating)">$INFO[ListItem.UserRating,rating/,.png]</value>
+        <value condition="!String.IsEmpty(ListItem.Rating)">$INFO[ListItem.Rating,rating/,.png]</value>
+		<value>rating/0.0.png</value>
+    </variable>
+	<variable name="premiere_date">
+        <value condition="!String.IsEmpty(ListItem.Premiered)">$INFO[ListItem.Premiered]</value>
+        <value condition="!String.IsEmpty(ListItem.Year)">$INFO[ListItem.Year]</value>
+    </variable>
+	<variable name="ListItemDurationWithEndTime">
+        <value condition="!String.IsEmpty(ListItem.Duration) + !String.IsEmpty(ListItem.EndTimeResume)">$VAR[ListItemDuration,, ]$INFO[ListItem.EndTimeResume, - $LOCALIZE[31112]: ,]</value>
+		<value condition="!String.IsEmpty(ListItem.Duration) + !String.IsEmpty(ListItem.EndTime)">$VAR[ListItemDuration,, - ]$INFO[ListItem.EndTime,$LOCALIZE[31112]: ,]</value>
+		<value>$VAR[ListItemDuration]</value>
+    </variable>
+	<variable name="PercentPlayed">
+		<value condition="!Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable">watched 0%</value>
+		<value condition="Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable">watched 100%</value>
+		<value>$INFO[ListItem.PercentPlayed,watched ,%]</value>
+	</variable>
+	<variable name="Plots">
+		<value condition="Container.content(addons) + !String.IsEmpty(ListItem.AddonDescription)">$INFO[ListItem.AddonDescription]</value>
+		<value condition="Container.Content(Seasons) + !String.IsEmpty(ListItem.Plot) + !String.IsEmpty(ListItem.Title)">$INFO[ListItem.Plot]</value>
+		<value condition="Container.Content(Seasons) + !String.IsEmpty(Container.ShowPlot) + !String.IsEmpty(ListItem.Title)">$INFO[Container.ShowPlot]</value>
+		<value condition="Container.Content(albums) + !String.IsEmpty(ListItem.Property(Album_Description))">$INFO[ListItem.Property(Album_Description)]</value>
+		<value condition="Container.Content(artists) + !String.IsEmpty(ListItem.Property(Artist_Description))">$INFO[ListItem.Property(Artist_Description)]</value>
+		<value condition="Container.Content(songs) + !String.IsEmpty(ListItem.Comment)">$INFO[ListItem.Comment]</value>
+		<value condition="Container.Content(songs) + !String.IsEmpty(ListItem.Property(Album_Description))">$INFO[ListItem.Property(Album_Description)]</value>
+		<value condition="Container.Content(songs) + !String.IsEmpty(ListItem.Property(Artist_Description))">$INFO[ListItem.Property(Artist_Description)]</value>
+		<value condition="Window.IsActive(tvchannels) + !String.IsEmpty(ListItem.Plot)">$INFO[ListItem.Season,S,]$INFO[ListItem.Episode,E, - ]$INFO[ListItem.EpisodeName,,[CR]]$INFO[ListItem.Plot]$INFO[Container.ListItem.NextTitle,[CR][CR][B]$LOCALIZE[19031]: [/B]]</value>
+		<value condition="Window.IsActive(pictures ) + !String.IsEmpty(ListItem.PictureDesc)">$INFO[ListItem.PictureDesc]</value>
+		<value condition="Window.IsActive(pictures ) + !String.IsEmpty(ListItem.PictureComment)">$INFO[ListItem.PictureComment]</value>
+		<value condition="Window.IsActive(pictures ) + !String.IsEmpty(ListItem.PictureKeywords)">$INFO[ListItem.PictureKeywords]</value>
+		<value condition="!String.IsEmpty(ListItem.Plot)">$INFO[ListItem.Plot]</value>
+		<value condition="!String.IsEmpty(ListItem.Property(Plot))">$INFO[ListItem.Property(Plot)]</value>
+		<value condition="!String.IsEmpty(ListItem.Comment)">$INFO[ListItem.Comment]</value>
+		<value condition="!String.IsEmpty(Window(home).property(SkinHelper.ListItem.ExtendedPlot))">$INFO[Window(home).property(SkinHelper.ListItem.ExtendedPlot)]</value>
+		<value condition="!String.IsEmpty(Window(home).property(SkinHelper.ListItem.Plot))">$INFO[Window(home).property(SkinHelper.ListItem.Plot)]</value>
+	</variable>
+	<variable name="VideoInfoHeader_Title">
+		<value condition="Control.HasFocus(8601) | Control.HasFocus(8606) | Control.HasFocus(8607)"></value>
+		<value condition="Control.HasFocus(8610)">$INFO[Container.ListItem.Season,$LOCALIZE[20373] [B],[/B] • ]$INFO[Container.ListItem.Episode,$LOCALIZE[20452] [B],[/B]]$INFO[Container.ListItem.Title,[B] : ,[/B]]</value>
+		<value>$INFO[Container.ListItem.Label,[B],[/B]]</value>
+	</variable>
+	<variable name="VideoInfoHeader_Seperator">
+		<value condition="Control.HasFocus(8601) | Control.HasFocus(8606) | Control.HasFocus(8607)"></value>
+		<value> | </value>
+	</variable>
+	<variable name="EmbuaryCast">
+		<value condition="String.IsEqual(ListItem.DBType,movie) + !String.IsEmpty(ListItem.DBID) + !String.IsEqual(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=movie&amp;dbid=$INFO[ListItem.DBID]</value>
+		<value condition="String.IsEqual(ListItem.DBType,movie) + String.IsEqual(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=movie&amp;title='$ESCINFO[ListItem.Title]'</value>
+		<value condition="String.IsEqual(ListItem.DBType,tvshow) + !String.IsEmpty(ListItem.DBID) + !String.IsEqual(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[ListItem.DBID]</value>
+		<value condition="String.IsEqual(ListItem.DBType,tvshow) + String.IsEqual(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem.TVShowTitle]'</value>
+		<value condition="[String.IsEqual(ListItem.DBType,episode) | String.IsEqual(ListItem.DBType,season)] + !String.IsEmpty(ListItem.DBID)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem.TVShowTitle]'</value>
+		<value condition="Container.Content(seasons) + !String.IsEmpty(ListItem(1).DBID)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem(1).TVShowTitle]'</value>
+		<value condition="Container.Content(seasons) + !String.IsEmpty(ListItem(2).DBID)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem(2).TVShowTitle]'</value>
+		<value>-</value>
+	</variable>
+	<!-- videoinfo -->
+	<include name="VideoInfo_ContainerHeader">
+		<definition>
+            <control type="group" id="$PARAM[groupid]">
+                <top>50</top>
+                <height>50</height>
+                <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) | Container($PARAM[id]).IsUpdating</visible>
+                <nested />
+				<control type="grouplist">
+                    <height>52</height>
+                    <orientation>horizontal</orientation>
+                    <usecontrolcoords>true</usecontrolcoords>
+                    <itemgap>10</itemgap>
+                    <control type="label">
+                        <top>18</top>
+                        <left>15</left>
+                        <width>auto</width>
+                        <label>$PARAM[label]</label>
+                        <aligny>center</aligny>
+                        <textcolor>white</textcolor>
+						<font>Bold30</font>
+                        <height>24</height>
+                        <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) | !Container($PARAM[id]).IsUpdating</visible>
+                    </control>
+					<control type="label">
+                        <top>16</top>
+                        <width>auto</width>
+                        <label>$VAR[VideoInfoHeader_Seperator]</label>
+						<aligny>center</aligny>
+                        <textcolor>green</textcolor>
+                        <font>Bold36</font>
+                        <height>24</height>
+                        <visible>Control.HasFocus($PARAM[id])</visible>
+                        <visible>!String.IsEmpty(Container($PARAM[id]).ListItem.Label)</visible>
+                        <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) + !Container($PARAM[id]).IsUpdating</visible>
+                    </control>
+					<control type="label">
+                        <top>20</top>
+                        <width>auto</width>
+						<label>$VAR[VideoInfoHeader_Title]</label>
+                        <aligny>center</aligny>
+						<textcolor>white</textcolor>
+						<font>Reg30</font>
+                        <height>24</height>
+                        <visible>Control.HasFocus($PARAM[id])</visible>
+                        <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) + !Container($PARAM[id]).IsUpdating</visible>
+                    </control>
+					<control type="image">
+						<visible>Container($PARAM[id]).IsUpdating</visible>
+						<top>10</top>
+						<width>40</width>
+						<height>40</height>
+						<aspectratio scalediffuse="false" align="center" aligny="center">keep</aspectratio>
+						<texture colordiffuse="green">special://skin/extras/busy/skypishball.apng</texture>
+						<aspectratio align="center" aligny="center">keep</aspectratio>
+					</control>
+					
+				</control>
+            </control>
+        </definition>
+    </include>
+	<include name="VideoInfo_Container">
+		<control type="$PARAM[type]" id="$PARAM[id]">
+			<nested />
+			<scrolltime tween="quadratic">400</scrolltime>
+			<top>50</top>
+			
+			<onclick condition="Control.HasFocus(8606)">SetFocus(9001)</onclick>
+			<onclick condition="Control.HasFocus(8607)">SetFocus(9002)</onclick>
+			
+			<onclick condition="Control.HasFocus(8601) + String.IsEqual(Skin.String(videoinfo_castaction),library_search) + !String.IsEmpty(Skin.String(SearchTerm))">Skin.Reset(SearchTerm)</onclick>
+			<onclick condition="Control.HasFocus(8601) + String.IsEqual(Skin.String(videoinfo_castaction),library_search)">Dialog.Close(movieinformation,true)</onclick>
+			<onclick condition="Control.HasFocus(8601) + String.IsEqual(Skin.String(videoinfo_castaction),library_search)">Skin.SetString(SearchTerm,$INFO[ListItem.Label])</onclick>
+			<onclick condition="Control.HasFocus(8601) + String.IsEqual(Skin.String(videoinfo_castaction),library_search)">ActivateWindow(1100),return</onclick>
+			<onclick condition="Control.HasFocus(8601) + String.IsEqual(Skin.String(videoinfo_castaction),extendedinfo)">RunScript(script.extendedinfo,info=extendedactorinfo,name=$INFO[ListItem.Label])</onclick>
+			<oninfo condition="Control.HasFocus(8601)">RunScript(script.extendedinfo,info=extendedactorinfo,name=$INFO[ListItem.Label])</oninfo>
+	
+			
+			<preloaditems>2</preloaditems>
+			<movement>$PARAM[movement]</movement>
+			<orientation>horizontal</orientation>
+			<height>385</height>
+			<visible>$PARAM[visible]</visible>
+			<itemlayout height="$PARAM[height]" width="$PARAM[width]">
+				<control type="group">
+					<width>$PARAM[width]</width>
+					<height>$PARAM[height]</height>
+					<include content="$PARAM[layout]">
+						<param name="WatchedIndicator" value="WatchedIndicatorNormal" />
+						<param name="colordiffuse" value="$VAR[ViewDetailsPanelColor]" />
+						<param name="border" value="thumbsborder_unfocused" />
+					</include>
+					<control type="group">
+						<top>-2</top>
+						<include content="Tag_NF">
+							<param name="tagwidth" value="$PARAM[width]"/>
+							<param name="tagtop" value="$PARAM[height]" />
+						</include>
+					</control>
+				</control>
+			</itemlayout>
+			<focusedlayout height="$PARAM[height]" width="$PARAM[width]">
+				<control type="group">
+					<width>$PARAM[width]</width>
+					<height>$PARAM[height]</height>
+					<include>Focus_Zoom_Animation</include>
+					<control type="group">
+						<visible>Control.HasFocus($PARAM[id])</visible>
+						<include content="$PARAM[layout]">
+							<param name="WatchedIndicator" value="WatchedIndicatorNormal" />
+							<param name="colordiffuse" value="$VAR[ViewDetailsBorderFocusColor]" />
+							<param name="border" value="thumbsborder_focused" />
+						</include>
+						<include condition="Skin.HasSetting(LibItems_FocusOverlay)">FocusOverlay</include>
+					</control>
+					<control type="group">
+						<visible>!Control.HasFocus($PARAM[id])</visible>
+						<include content="$PARAM[layout]">
+							<param name="WatchedIndicator" value="WatchedIndicatorNormal" />
+							<param name="colordiffuse" value="$VAR[ViewDetailsPanelColor]" />
+							<param name="border" value="thumbsborder_unfocused" />
+						</include>
+					</control>
+					<control type="group">
+						<top>-2</top>
+						<include content="Tag_FO">
+							<param name="tagwidth" value="$PARAM[width]"/>
+							<param name="tagtop" value="$PARAM[height]" />
+						</include>
+					</control>
+				</control>
+			</focusedlayout>
+		</control>
+	</include>
+	<!-- MOVE ME END -->
+	<include name="Dialog_Containers">
+		<param name="Container_Height" default="67%" />
+		<definition>
+		<control type="list" id="$PARAM[id]">
+			<posx>640</posx>
+			<posy>250</posy>
+			<width>640</width>
+			<height>$PARAM[Container_Height]</height>
+			<onleft>$PARAM[onleft]</onleft>
+			<onright>60</onright>
+			<onup>$PARAM[id]</onup>
+			<ondown>$PARAM[id]</ondown>
+			<pagecontrol>60</pagecontrol>
+			<scrolltime tween="cubic" easing="out">300</scrolltime>
+			
+			<itemlayout height="$PARAM[layout_height]">
+				<control type="image">
+					<visible>String.IsEmpty(ListItem.Icon)</visible>
+					<texture>misc/separator.png</texture>
+				</control>
+				<control type="image">
+					<visible>!String.IsEmpty(ListItem.Icon)</visible>
+					<width>$PARAM[layout_height]</width>
+					<height>$PARAM[layout_height]</height>
+					<bordersize>7</bordersize>
+					<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
+					<texture diffuse="diffuse/roundmask.png" fallback="defaultaddon.png">$INFO[ListItem.Icon]</texture>
+				</control>
+				<control type="image">
+					<left>85</left>
+					<top>5</top>
+					<width>32</width>
+					<height>32</height>
+					<texture>$VAR[AddonStatus]</texture>
+				</control>
+				<control type="label">
+					<left>$PARAM[layout_height]</left>
+					<label>$INFO[ListItem.Label]</label>
+					<scroll>true</scroll>
+					<visible>$PARAM[icon_visible]</visible>
+				</control>
+				<control type="label">
+					<left>20</left>
+					<label>$INFO[ListItem.Label]</label>
+					<scroll>true</scroll>
+					<visible>!$PARAM[icon_visible]</visible>
+				</control>
+			</itemlayout>
+			<focusedlayout height="$PARAM[layout_height]">
+				<control type="image">
+					<texture>colors/white.png</texture>
+					<colordiffuse>$VAR[Button_Panel_FO]</colordiffuse>
+					<!-- <visible>!Control.HasFocus(60)</visible> -->
+				</control>
+				<control type="image">
+					<visible>String.IsEmpty(ListItem.Icon)</visible>
+					<texture>misc/separator.png</texture>
+				</control>
+				<control type="image">
+					<visible>!String.IsEmpty(ListItem.Icon)</visible>
+					<width>$PARAM[layout_height].9</width>
+					<height>$PARAM[layout_height]</height>
+					<bordersize>7</bordersize>
+					<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
+					<texture diffuse="diffuse/roundmask.png" fallback="defaultaddon.png">$INFO[ListItem.Icon]</texture>
+				</control>
+				<control type="image">
+					<left>85</left>
+					<top>5</top>
+					<width>32</width>
+					<height>32</height>
+					<texture>$VAR[AddonStatus]</texture>
+					<visible>Window.IsActive(addonbrowser)</visible>
+				</control>
+				<control type="label">
+					<left>$PARAM[layout_height].9</left>
+					<label>$INFO[ListItem.Label,[B],[/B]]</label>
+					<scroll>true</scroll>
+					<visible>$PARAM[icon_visible]</visible>
+				</control>
+				<control type="label">
+					<left>20</left>
+					<label>$INFO[ListItem.Label,[B],[/B]]</label>
+					<scroll>true</scroll>
+					<visible>!$PARAM[icon_visible]</visible>
+				</control>
+			</focusedlayout>
+		</control>
+		<control type="scrollbar" id="60">
+			<left>66.7%</left>
+			<posy>250</posy>
+			<height>$PARAM[Container_Height]</height>
+			<onleft>$PARAM[id]</onleft>
+		</control>
+		</definition>
+	</include>
+	
+	<include name="Dialog_CommonInfo">
+		<param name="Def_Icon" default="$INFO[ListItem.Icon]" />
+		<param name="Header_posy" default="170" />
+		<definition>
+			<control type="image">
+				<left>5%</left>
+				<centertop>50%</centertop>
+				<width>460</width>
+				<height>460</height>
+				<aspectratio>keep</aspectratio>
+				<fadetime>150</fadetime>
+				<texture>$PARAM[Def_Icon]</texture>
+			</control>
+			<control type="label">
+				<posy>$PARAM[Header_posy]</posy>
+				<label>$PARAM[Header_label]</label>
+				<font>Header_Dialog</font>
+				<left>33.3%</left>
+				<width>33.3%</width>
+				<height>100</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<wrapmultiline>true</wrapmultiline>
+			</control>
+			<control type="textbox">
+				<left>68%</left>
+				<width>30%</width>
+				<height>100%</height>
+				<label>$PARAM[Item_Description]</label>
+				<font>Reg22</font>
+			</control>
+		</definition>
+	</include>
+	
+	
+	<include name="HUB_Container">
+		<control type="$PARAM[type]" id="$PARAM[id]">
+			<nested />
+			<scrolltime tween="quadratic">400</scrolltime>
+			<top>50</top>
+			<preloaditems>2</preloaditems>
+			<orientation>horizontal</orientation>
+			
+			<visible>$PARAM[visible]</visible>
+			<itemlayout height="$PARAM[height]" width="$PARAM[width]">
+				<control type="group">
+					<width>$PARAM[itemwidth]</width>
+					<height>$PARAM[itemheight]</height>
+					<include content="$PARAM[layout]">
+						<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+						<param name="autoscroll" value="false" />
+						<param name="bordersize" value="6" />
+					</include>
+					<control type="textbox">
+						<visible>$PARAM[tagoverlay]</visible>
+						<align>center</align>
+						<aligny>center</aligny>
+						<wrapmultiline>true</wrapmultiline>
+						<left>20</left>
+						<right>20</right>
+						<font>Bold34</font>
+						<textcolor>black</textcolor>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+				</control>
+				<control type="textbox">
+					<visible>$PARAM[tagbottom]</visible>
+					<wrapmultiline>true</wrapmultiline>
+					<top>$PARAM[itemheight]</top>
+					<left>20</left>
+					<right>20</right>
+					<font>Bold34</font>
+					<textcolor>black</textcolor>
+					<label>$INFO[ListItem.Label]</label>
+				</control>
+			</itemlayout>
+			<focusedlayout height="$PARAM[height]" width="$PARAM[width]">
+				<control type="group">
+					<width>$PARAM[itemwidth]</width>
+					<height>$PARAM[itemheight]</height>
+					<include>Item_Focus_Animation</include>
+					<control type="group">
+						<include content="$PARAM[layout]">
+							<param name="colordiffuse" value="$VAR[Container_item_fo]" />
+							<param name="autoscroll" value="true" />
+							<param name="bordersize" value="8" />
+						</include>
+						<control type="textbox">
+							<visible>$PARAM[tagoverlay]</visible>
+							<align>center</align>
+							<aligny>center</aligny>
+							<wrapmultiline>true</wrapmultiline>
+							<left>20</left>
+							<right>20</right>
+							<font>Bold34</font>
+							<textcolor>black</textcolor>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+						<include condition="Skin.HasSetting(LibItems_FocusOverlay)">FocusOverlay</include>
+					</control>
+					<control type="textbox">
+						<visible>$PARAM[tagbottom]</visible>
+						<wrapmultiline>true</wrapmultiline>
+						<top>$PARAM[itemheight]</top>
+						<left>20</left>
+						<right>20</right>
+						<font>Bold34</font>
+						<textcolor>black</textcolor>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+				</control>
+			</focusedlayout>
+		</control>
+	</include>
+	
+	
+	
+	<!-- 
+	
+	compare the layouts and get universal using only fanart vars
+	
+	- square,circle,disc	Resolution 	1000w x 1000h					Aspect Ratio 	1:1 
+	- PosterVar				Resolution 	1000w x 1500h					Aspect Ratio 	2:3 
+	- BANNER 				Resolution 	1000w x 185h				 	Aspect Ratio 	200:37 
+ 	- ClearLogo 			Resolution 	800w x 310h						Aspect Ratio 	80:31 
+	- fanart,landscape		Resolution 	1920w x 1080h, 1000w x 562h		Aspect Ratio 	16:9 
+										960w x 540h 
+	480x270
+	
+	notes to updaTE CONTAINER LAYOUTS -
+	USE PARAM[CONTAINER_pos_TOP] <top>50</top>
+	
+	call container using params
+		- visible, height, witdh, itemwidth, itemheight, 
+				include -> layout(*merge and compare using params - stretched,keep,clearlogo overlay, tags, bordersize,autoscroll,tag overlay-e.g. genre,fanartvariable)
+				include -> watched indicator
+				
+				include -> progress bar overlay, or use in layout include
+	
+	-->
+	
+	
+	<!-- Zoom-InOut On focused Item ,includesanimations.xml -->
+	<include name="Item_Focus_Animation">
+		<animation type="Focus" reversible="false">
+			<effect type="zoom" end="115,115" time="200" tween="sine" easing="out" center="auto" />
+			<effect type="zoom" end="93,93" time="150" tween="sine" delay="200" easing="out" center="auto" />
+		</animation>
+	</include>
+	<include name="Item_Focus_Animation_rightalign">
+		<animation type="Focus" reversible="false">
+			<effect alignx="true" type="zoom" end="115,115" time="200" tween="sine" easing="out" center="auto" />
+			<effect type="slide" end="-10,0" time="200" tween="sine" easing="out" center="auto" />
+			<effect alignx="true" type="zoom" end="93,93" time="150" tween="sine" delay="200" easing="out" center="auto" />
+			
+		</animation>
+	</include>
+	
+	<!-- dimm focus listitem overlay -->
+	<include name="FocusOverlay">
+		<control type="group">
+		<visible>$PARAM[get_circle]</visible>
+			<animation reversible="false" effect="fade" start="0" end="100" time="350" tween="quadratic" easing="in">Focus</animation>
+			<animation reversible="false" effect="fade" start="100" end="0" time="0">UnFocus</animation>
+			<control type="image">
+				<bordersize>8</bordersize>
+				<colordiffuse>ff000000</colordiffuse>
+				<texture>overlay/overlay_dimm.png</texture>
+			</control>
+			<control type="group">
+				<control type="image">
+					<centerleft>50%</centerleft>
+					<centertop>50%</centertop>
+					<width>35%</width>
+					<height>35%</height>
+					<colordiffuse>$VAR[Widget_DimOverlay_Icon]</colordiffuse>
+					<aspectratio scalediffuse="false" align="center" aligny="center">keep</aspectratio>
+					<texture>overlay/overlay_button_play.png</texture>
+					<visible>![String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,artist) | String.IsEqual(ListItem.DBType,album) | ListItem.IsFolder | String.IsEqual(ListItem.Property(IsFolder),true)]</visible>
+					</control>
+				<control type="image">
+					<centerleft>50%</centerleft>
+					<centertop>50%</centertop>
+					<width>25%</width>
+					<height>25%</height>
+					<colordiffuse>$VAR[Widget_DimOverlay_Icon]</colordiffuse>
+					<aspectratio scalediffuse="false" align="center" aligny="center">keep</aspectratio>
+					<texture>overlay/overlay_button_folder.png</texture>
+					<visible>[String.IsEqual(ListItem.Label,..) | String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,artist) | String.IsEqual(ListItem.DBType,album)]</visible>
+				</control>
+			</control>
+		</control>
+	</include>
+	
+	<!-- HUB LAYOUT - Genre,Studio-->
+	<include name="HUB_Layouts">
+		<control type="image">
+            <bordersize>5</bordersize>
+            <texture border="5" background="true" colordiffuse="$PARAM[colordiffuse]">buttons/Genre_Red.png</texture>
+            <aspectratio scalediffuse="false" align="center" aligny="center">scale</aspectratio>
+        </control>
+		<control type="multiimage">
+            <description>multi image for sections</description>
+			<left>8</left>
+            <right>8</right>
+            <top>8</top>
+            <bottom>8</bottom>
+            <imagepath background="true" diffuse="home/home_matte2.png" fallback="home/titan.png">$INFO[ListItem.Icon]</imagepath>
+            <aspectratio scalediffuse="false" align="center" aligny="top">scale</aspectratio>
+            
+            <fadetime>450</fadetime>
+            <include condition="Skin.HasSetting(RandomizeBackground)">randomizeImages</include>
+            <visible>!String.IsEmpty(ListItem.Property(defaultID))</visible>
+        </control>
+		
+    </include>
+	
+	<!-- Container Header : label- sep - focused item label - busy -->
+	<include name="Universal_ContainerHeader">
+		
+		
+		<definition>
+            <control type="group" id="$PARAM[groupid]">
+                <top>50</top>
+                <height>50</height>
+                <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) | Container($PARAM[id]).IsUpdating</visible>
+                <nested />
+				<control type="grouplist">
+                    <height>52</height>
+                    <orientation>horizontal</orientation>
+                    <usecontrolcoords>true</usecontrolcoords>
+                    <itemgap>10</itemgap>
+                    <control type="label">
+                        <top>18</top>
+                        <left>15</left>
+                        <width>auto</width>
+                        <label>[B]$PARAM[label][/B]</label>
+                        <aligny>center</aligny>
+                        <textcolor>$VAR[Headingline_Widget]</textcolor>
+						<font>Bold30</font>
+                        <height>24</height>
+                        <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) | !Container($PARAM[id]).IsUpdating</visible>
+                    </control>
+					<control type="label">
+                        <top>16</top>
+                        <width>auto</width>
+                        <label>$VAR[VideoInfoHeader_Seperator]</label>
+						<aligny>center</aligny>
+                        <textcolor>cyan</textcolor>
+                        <font>Bold36</font>
+                        <height>24</height>
+                        <visible>Control.HasFocus($PARAM[id])</visible>
+                        <visible>!String.IsEmpty(Container($PARAM[id]).ListItem.Label)</visible>
+                        <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) + !Container($PARAM[id]).IsUpdating</visible>
+                    </control>
+					<control type="label">
+                        <top>20</top>
+                        <width>auto</width>
+						<label>$VAR[VideoInfoHeader_Title]</label>
+                        <aligny>center</aligny>
+						<textcolor>$VAR[Headingline_Widget]</textcolor>
+						<font>Reg30</font>
+                        <height>24</height>
+						<visible></visible>
+                        <visible>[!Window.IsActive(home) + Control.HasFocus($PARAM[id])] | [[Window.IsActive(home) + Skin.HasSetting(ShowFocusedLabelInHeader_Home)] + Control.HasFocus($PARAM[id])]</visible>
+                        <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) + !Container($PARAM[id]).IsUpdating</visible>
+                    </control>
+					<control type="image">
+						<visible>Container($PARAM[id]).IsUpdating</visible>
+						<top>10</top>
+						<width>40</width>
+						<height>40</height>
+						<aspectratio scalediffuse="false" align="center" aligny="center">keep</aspectratio>
+						<texture colordiffuse="cyan">special://skin/extras/busy/skypishball.apng</texture>
+						<aspectratio align="center" aligny="center">keep</aspectratio>
+					</control>
+					
+				</control>
+            </control>
+        </definition>
+    </include>
+	<!-- Experimental - universal layout, will get issue, restricted in focuslayout,itemlayout - stuff need to be playced also here -->
+	
+	
+	
+	
+	
+	<!-- 
+	
+- square,circle,disc		 Resolution 	1000w x 1000h								Aspect Ratio 	1:1 
+- PosterVar				  	 Resolution 	1000w x 1500h								Aspect Ratio 	2:3 , 1:1.5
+- BANNER 					 Resolution 	1000w x 185h				 			 	Aspect Ratio 	200:37 , 1:0.185
+- ClearLogo 				 Resolution 	800w x 310h									 Aspect Ratio 	80:31 , 1:0.3875
+- fanart,landscape	  		 Resolution 	1920w x 1080h, 1000w x 562h	  Aspect Ratio 	16:9 ,  1:0.5625
+																 960w x 540h 
+																 480x270
+	
+	notes to updaTE CONTAINER LAYOUTS -
+	USE PARAM[CONTAINER_pos_TOP] <top>50</top>
+	
+	call container using params
+		- visible, height, witdh, itemwidth, itemheight, 
+				include -> layout(*merge and compare using params - stretched,keep,clearlogo overlay, tags, bordersize,autoscroll,tag overlay-e.g. genre,fanartvariable)
+				include -> watched indicator
+				
+				include -> progress bar overlay, or use in layout include
+	
+	-->
+	
+	<!-- ##################### -->
+	<!--  Container TYPE UNI   -->
+	<!-- ##################### -->
+	
+	<include name="Universal_Container">
+	
+		<param name="type" default="panel" />
+		<param name="type_height" default="400" />
+		<param name="type_pos_top" default="50" />
+		<param name="orientation" default="horizontal" />
+		
+		<param name="circle_visible" default="false" />
+		<param name="tags_visible" default="false" />
+		<param name="ls_overlay_visible" default="false" />
+		<param name="banner_overlay_visible" default="false" />
+		
+		<definition>
+		<control type="$PARAM[type]" id="$PARAM[id]">
+			<nested />
+			<orientation>$PARAM[orientation]</orientation>
+			<preloaditems>2</preloaditems>
+			<scrolltime tween="quadratic">400</scrolltime>
+			
+			<height>$PARAM[type_height]</height>
+			<top>$PARAM[type_pos_top]</top>
+			
+			<visible>$PARAM[visible]</visible>
+			<itemlayout height="$PARAM[layout_height]" width="$PARAM[layout_width]">
+				<control type="group">
+					<width>$PARAM[itemwidth]</width>
+					<height>$PARAM[itemheight]</height>
+					<include content="UniversalLayout">
+						<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+						<param name="artwork" value="$PARAM[layout]" />
+						<param name="get_circle" value="$PARAM[circle_visible]" />
+						<param name="get_tags" value="$PARAM[tags_visible]" />
+						<param name="get_landscapelogo" value="$PARAM[ls_overlay_visible]" />
+						<param name="get_bannerlogo" value="$PARAM[banner_overlay_visible]" />
+						<param name="autoscroll" value="false" />
+						<param name="bordersize_bg" value="6" />
+					</include>
+				</control>
+			</itemlayout>
+			<focusedlayout height="$PARAM[layout_height]" width="$PARAM[layout_width]">
+				<control type="group">
+					<width>$PARAM[itemwidth]</width>
+					<height>$PARAM[itemheight]</height>
+					<include>Item_Focus_Animation</include>
+					<control type="group">
+						<include content="UniversalLayout">
+							<param name="colordiffuse" value="$VAR[Container_item_fo]" />
+							<param name="artwork" value="$PARAM[layout]" />
+							<param name="get_circle" value="$PARAM[circle_visible]" />
+							<param name="get_tags" value="$PARAM[tags_visible]" />
+							<param name="get_landscapelogo" value="$PARAM[ls_overlay_visible]" />
+							<param name="get_bannerlogo" value="$PARAM[banner_overlay_visible]" />
+							<param name="autoscroll" value="true" />
+							<param name="bordersize_bg" value="4" />
+						</include>
+						<control type="group">
+							<visible>!$PARAM[circle_visible]</visible>
+							<include>FocusOverlay</include>
+						</control>
+					</control>
+				</control>			
+			</focusedlayout>
+		</control>
+		</definition>
+	</include>
+	
+	<!-- slpit layouts -->
+	<!-- reason need cond height ,bottom etx for progress bar, tags, etc -->
+	
+	<include name="UniversalLayout">
+		<param name="has_progressbar" default="false" />
+		<param name="has_watchedindicator" default="false" />
+		<param name="image_fallback_aligny" default="center" />
+		<param name="get_circle" default="false" />
+		<param name="get_landscapelogo" default="false" />
+		
+		<definition>
+		
+		<control type="image">
+			<description>bordertexture</description>
+            <texture>artworkdiffuse/$PARAM[artwork].png</texture>
+			<colordiffuse>$PARAM[colordiffuse]</colordiffuse>
+			<bordersize>$PARAM[bordersize_bg]</bordersize>
+        </control>
+		
+		<control type="image">
+			<description>kodi default, aspectratio scalediffuse="true" aligny="center" align="center">stretch</description>
+			<texture background="true" diffuse="artworkdiffuse/$PARAM[artwork].png" fallback="DefaultVideo.png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
+			<bordersize>8</bordersize>
+			<visible>!String.IsEmpty(ListItem.Art($PARAM[artwork]))</visible>
+		</control>
+		
+		<control type="image">
+			<description>Fallback aspect keep</description>
+			<texture background="true" diffuse="artworkdiffuse/$PARAM[artwork].png" fallback="DefaultVideo.png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
+			<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
+			<bordersize>8</bordersize>
+			<visible>String.IsEmpty(ListItem.Art($PARAM[artwork]))</visible>
+		</control>
+
+		<control type="group">
+			<visible>$PARAM[get_circle]</visible>
+			
+			<description>ClearLogo Overlay - also nice on non circle</description>
+			<control type="image">
+				<visible>
+					[!String.IsEmpty(ListItem.Art(clearlogo)) + !$EXP[IsEpisode]] | 
+					[!String.IsEmpty(ListItem.Art(tvshow.clearlogo)) + $EXP[IsEpisode]] | 
+					!String.IsEmpty(ListItem.Art(artist.clearlogo)) | 
+					!String.IsEmpty(ListItem.Art(albumartist.clearlogo))
+				</visible>
+				<top>70%</top>
+				<height>50%</height>
+				<left>10</left>
+				<right>10</right>
+				<texture background="true">$VAR[ListItemClearLogo]</texture>
+				<aspectratio align="center" aligny="center">keep</aspectratio>
+			</control>
+			<control type="textbox">
+				<description>43.3 1 row</description>
+				<visible>
+					String.IsEmpty(ListItem.Art(tvshow.clearlogo)) +
+					String.IsEmpty(ListItem.Art(artist.clearlogo)) +
+					String.IsEmpty(ListItem.Art(albumartist.clearlogo)) +
+					String.IsEmpty(ListItem.Art(clearlogo))
+				</visible>
+				<visible>!String.IsEqual(ListItem.label,..)</visible>
+				<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
+				<top>89%</top>
+				<left>10</left>
+				<right>10</right>
+				<wrapmultiline>true</wrapmultiline>
+				<height max="80">auto</height>
+				<font>CircleTag_Small</font>
+				<align>center</align>
+				<aligny>top</aligny>
+				<textcolor>$VAR[Container_label_itemtag]</textcolor>
+				<selectedcolor>white</selectedcolor>
+				<label>$INFO[ListItem.Label,[B],[/B]]</label>
+			</control>
+		</control>
+		<control type="group">
+			<visible>$PARAM[get_landscapelogo]</visible>
+			<description>ClearLogo Overlay - fanart</description>
+			<control type="image">
+				<visible>
+				[$EXP[IsEpisode] | 
+					[[$EXP[IsMovie] | $EXP[IsTVShow] | $EXP[IsArtist]] + 
+						String.IsEmpty(ListItem.Art(tvshow.landscape)) +
+						String.IsEmpty(ListItem.Art(artist.landscape)) +
+						String.IsEmpty(ListItem.Art(albumartist.landscape)) +
+						String.IsEmpty(ListItem.Art(landscape))]
+				]
+				</visible>
+				<visible>
+					[!String.IsEmpty(ListItem.Art(clearlogo)) + !$EXP[IsEpisode]] | 
+					[!String.IsEmpty(ListItem.Art(tvshow.clearlogo)) + $EXP[IsEpisode]] | 
+					!String.IsEmpty(ListItem.Art(artist.clearlogo)) | 
+					!String.IsEmpty(ListItem.Art(albumartist.clearlogo))
+				</visible>
+				<bottom>20</bottom>
+				<left>10</left>
+				<right>10</right>
+				<height>50%</height>
+				<width>50%</width>
+				
+				<texture background="true">$VAR[ListItemClearLogo]</texture>
+				<aspectratio align="left" aligny="bottom">keep</aspectratio>
+			</control>
+			
+		</control>
+		
+		<control type="group">
+			<visible>$PARAM[get_bannerlogo]</visible>
+			<description>ClearLogo Overlay - Banner</description>
+			<control type="image">
+				<visible>
+					String.IsEmpty(ListItem.Art(tvshow.banner)) +
+					String.IsEmpty(ListItem.Art(artist.banner)) +
+					String.IsEmpty(ListItem.Art(albumartist.banner)) +
+					String.IsEmpty(ListItem.Art(banner))
+				</visible>
+				<visible>
+					[!String.IsEmpty(ListItem.Art(clearlogo)) + !$EXP[IsEpisode]] | 
+					[!String.IsEmpty(ListItem.Art(tvshow.clearlogo)) + $EXP[IsEpisode]] | 
+					!String.IsEmpty(ListItem.Art(artist.clearlogo)) | 
+					!String.IsEmpty(ListItem.Art(albumartist.clearlogo))
+				</visible>
+				<bordersize>15</bordersize>
+				<aspectratio scalediffuse="false" align="center" aligny="center">keep</aspectratio>
+				<texture background="true">$VAR[ListItemClearLogo]</texture>
+			</control>
+			<control type="label">
+				<visible>[String.IsEqual(ListItem.DBTYPE,album) | String.IsEqual(ListItem.DBTYPE,song) | String.IsEqual(ListItem.DBTYPE,episode)]</visible>
+				<visible>
+					[!String.IsEqual(ListItem.DBTYPE,album) | !String.IsEqual(ListItem.DBTYPE,song) | !String.IsEqual(ListItem.DBTYPE,episode)] +
+					String.IsEmpty(ListItem.Art(tvshow.banner)) +
+					String.IsEmpty(ListItem.Art(artist.banner)) +
+					String.IsEmpty(ListItem.Art(albumartist.banner)) +
+					String.IsEmpty(ListItem.Art(banner)) + 
+					String.IsEmpty(ListItem.Art(tvshow.clearlogo)) +
+					String.IsEmpty(ListItem.Art(artist.clearlogo)) +
+					String.IsEmpty(ListItem.Art(albumartist.clearlogo)) +
+					String.IsEmpty(ListItem.Art(clearlogo))
+				</visible>
+				<left>5%</left>
+				<width>90%</width>
+				<height>100%</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>$INFO[ListItem.Label]</label>
+				<font>CircleTag</font>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+			</control>	
+		</control>
+		
+		<control type="group">
+			<description>ProgressBar No Shadow</description>
+			<visible>!$PARAM[get_circle]</visible>
+			<visible>[$EXP[IsMovie] | $EXP[IsEpisode]]</visible>
+			<left>4%</left>
+			<right>4%</right>
+            <include content="ProgressBarOverlay" />
+        </control>
+		
+		<control type="group">
+			<description>Taglines Bottom, $EXP[forceTags_visible]</description>
+			<visible>$PARAM[get_tags] | $EXP[forceTags_visible]</visible>
+			
+			<control type="textbox">
+				<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
+				<top>101%</top>
+				<left>10</left>
+				<right>10</right>
+				<wrapmultiline>true</wrapmultiline>
+				<height>60</height>
+				<font>CommonTag</font>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>$VAR[Container_label_itemtag]</textcolor>
+				<selectedcolor>white</selectedcolor>
+				<label>$VAR[Tags_Bottom]</label>
+			</control>
+		</control>
+		
+		<!-- <control type="group">
+			<description>watched indicators top right - num items</description>
+			
+			<control type="image">
+				<top>15</top>
+				<right>20</right>
+				<width>70</width>
+				<height>35</height>
+				<texture>overlay/watchedfull.png</texture>
+				<colordiffuse>CC000000</colordiffuse>
+			</control>
+			<control type="image">
+				<top>15</top>
+				<right>20</right>
+				<width>70</width>
+				<height>35</height>
+				<bordersize>2</bordersize>
+				<texture>overlay/watchedfull.png</texture>
+				<colordiffuse>orange</colordiffuse>
+			</control>
+			<control type="label">
+				<top>18</top>
+				<right>25</right>
+				<width>60</width>
+				<align>center</align>
+				<font>NumItemsTop</font>
+				<label>11/25</label>
+				<textcolor>black</textcolor>
+			</control>
+        
+        </control> -->
+        </definition>
+    </include>
+	
+	
+	
+	<!-- COMMON LAYOUTS - Poster , square, circle , Landscape , Banner -->
+	
+	<!-- COMMON xyz -->
+	
+	<include name="WatchedIndicatorLayout">
+		<top>0</top>
+		<right>0</right>
+    </include>
+	<include name="ProgressBarOverlay">
+		<!-- <control type="image">
+			<bottom>-1%</bottom>
+			<height>20%</height>
+			<bordersize>8</bordersize>
+			<align>center</align>
+			<texture border="7">diffuse/gradient.png</texture>
+			<colordiffuse>ff000000</colordiffuse>
+		</control> -->
+		<control type="progress">
+			<bottom>-1%</bottom>
+			<height>4</height>
+			<visible>Integer.IsGreater(ListItem.PercentPlayed,0)</visible>
+			<info>ListItem.PercentPlayed</info>
+		</control>
+		<control type="image">
+			<bottom>-1%</bottom>
+			<height>4</height>
+			<texture colordiffuse="$VAR[Widget_Progress_Watched]" border="2">colors/white.png</texture>
+			<visible>Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable</visible>
+		</control>
+		<control type="image">
+			<bottom>-1%</bottom>
+			<height>4</height>
+			<texture colordiffuse="$VAR[Widget_Progress_Remain]" border="2">colors/white.png</texture>
+			<visible>!Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable</visible>
+		</control>
+	</include>
+	
+	
+	<!-- CIRCLED LAYOUT Param visibility ?default params 
+bottom
+top-->
+	<include name="ClearLogoOverlay">
+		
+		
+		<control type="image">
+			<visible>
+				[!String.IsEmpty(ListItem.Art(clearlogo)) + !$EXP[IsEpisode]] | 
+				[!String.IsEmpty(ListItem.Art(tvshow.clearlogo)) + $EXP[IsEpisode]] | 
+				!String.IsEmpty(ListItem.Art(artist.clearlogo)) | 
+				!String.IsEmpty(ListItem.Art(albumartist.clearlogo))
+			</visible>
+			<bottom>-70</bottom>
+			<height>50%</height>
+			<texture background="true">$VAR[ListItemClearLogo]</texture>
+			<aspectratio align="center" aligny="center">keep</aspectratio>
+		</control>
+		<control type="textbox">
+			<visible>
+				String.IsEmpty(ListItem.Art(tvshow.clearlogo)) +
+				String.IsEmpty(ListItem.Art(artist.clearlogo)) +
+				String.IsEmpty(ListItem.Art(albumartist.clearlogo)) +
+				String.IsEmpty(ListItem.Art(clearlogo))</visible>
+			<visible>!String.IsEqual(ListItem.label,..)</visible>
+			<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
+			<bottom>-70</bottom>
+			<left>5</left>
+			<right>5</right>
+			<wrapmultiline>true</wrapmultiline>
+			<height max="105">auto</height>
+			<font>CircleTag</font>
+			<align>center</align>
+			<aligny>center</aligny>
+			<textcolor>$VAR[Container_label_itemtag]</textcolor>
+			<selectedcolor>white</selectedcolor>
+			<label>$INFO[ListItem.Label,[B],[/B]]</label>
+		</control>
+	</include>
+	
+	
+	<include name="Simple_ContainerHeader">
+		<param name="align" default="left" />
+		<definition>
+			<control type="group" id="$PARAM[groupid]">
+				<top>50</top>
+				<height>70</height>
+				<description>merge me later with universal header, used for settings heading,centered big bold</description>
+				<visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) | Container($PARAM[id]).IsUpdating</visible>
+				<nested />
+				<control type="label">
+					<visible>Control.HasFocus($PARAM[id])</visible>
+					<top>5</top>
+					<width>auto</width>
+					<label>$PARAM[label]</label>
+					<aligny>center</aligny>
+					<align>$PARAM[align]</align>
+					<textcolor>$VAR[Headingline_FO]</textcolor>
+					<font>Header_SettingsSections</font>
+					<height>24</height>
+					<visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) | !Container($PARAM[id]).IsUpdating</visible>
+				</control>
+				<control type="label">
+					<visible>!Control.HasFocus($PARAM[id])</visible>
+					<top>5</top>
+					<width>auto</width>
+					<label>$PARAM[label]</label>
+					<aligny>center</aligny>
+					<align>$PARAM[align]</align>
+					<textcolor>$VAR[Headingline_NF]</textcolor>
+					<font>Header_SettingsSections</font>
+					<height>24</height>
+					<visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) | !Container($PARAM[id]).IsUpdating</visible>
+				</control>
+			</control>
+		</definition>
+	</include>
+	
+	
+	<!-- Simple Icon and Tag Bottom fixedlist nested 
+	prepare merge dialog button menu 
+	
+	handle icon as button
+	
+	-->
+	<include name="Container_Nested_IconLabel">
+		<param name="containertype" default="fixedlist" />
+		<param name="containerheight" default="300" />
+		<param name="width" default="300" />
+		<param name="height" default="150" />
+		<param name="movement" default="5" />
+		<param name="focusposition" default="0" />
+		<definition>
+		<control type="$PARAM[containertype]" id="$PARAM[id]">
+			<nested />
+			<top>50</top>
+			<left>10</left>
+			<width>100%</width>
+			<height>$PARAM[containerheight]</height>
+			
+			<focusposition>$PARAM[focusposition]</focusposition>
+			<movement>$PARAM[movement]</movement>
+			<orientation>horizontal</orientation>
+			<scrolltime tween="quadratic">400</scrolltime>
+			
+			<include condition="!Window(shutdownmenu)" content="Bounce_Right">
+				<param name="id">$PARAM[id]</param>
+			</include>
+			<onright condition="!Window.IsVisible(shutdownmenu)">SetProperty(BounceRight,1,home)</onright>
+						
+			<itemlayout height="$PARAM[height]" width="$PARAM[width]">
+				<control type="image">
+					<centerleft>50%</centerleft>
+					<width>90%</width>
+					<height>90%</height>
+					<texture>$INFO[ListItem.Icon]</texture>
+					<colordiffuse>$VAR[Button_Text_NF]</colordiffuse>
+					<align>center</align>
+					<aspectratio>keep</aspectratio>
+				</control>
+				<control type="textbox">
+					<height>60</height>
+					<top>$PARAM[height].9</top>
+					<width>$PARAM[width]</width>
+					<align>center</align>
+					<wrapmultiline>true</wrapmultiline>
+					<label>$INFO[ListItem.Label]</label>
+					<textcolor>$VAR[Button_Text_NF]</textcolor>
+					<font>font27_narrow</font>
+				</control>
+			</itemlayout>
+			<focusedlayout height="$PARAM[height]" width="$PARAM[width]">
+				<control type="group">
+				<include>Item_Focus_Animation</include>
+				<control type="image">
+					<visible>!Control.HasFocus($PARAM[id])</visible>
+					<centerleft>50%</centerleft>
+					<width>90%</width>
+					<height>90%</height>
+					<texture>$INFO[ListItem.Icon]</texture>
+					<colordiffuse>$VAR[Button_Text_NF]</colordiffuse>
+					<align>center</align>
+					<aspectratio align="center" aligny="center">keep</aspectratio>
+				</control>
+				<control type="image">
+					<visible>Control.HasFocus($PARAM[id])</visible>
+					<centerleft>50%</centerleft>
+					<width>90%</width>
+					<height>90%</height>
+					<texture>$INFO[ListItem.Icon]</texture>
+					<colordiffuse>$VAR[Button_IconColor_FO]</colordiffuse>
+					<align>center</align>
+					<aspectratio align="center" aligny="center">keep</aspectratio>
+				</control>
+				<control type="textbox">
+					<visible>!Control.HasFocus($PARAM[id])</visible>
+					<height>60</height>
+					<top>$PARAM[height]</top>
+					<width>$PARAM[width]</width>
+					<align>center</align>
+					<wrapmultiline>true</wrapmultiline>
+					<label>$INFO[ListItem.Label]</label>
+					<textcolor>$VAR[Button_Text_NF]</textcolor>
+					<font>font27_narrow</font>
+				</control>
+				<control type="textbox">
+					<visible>Control.HasFocus($PARAM[id])</visible>
+					<height>60</height>
+					<top>$PARAM[height]</top>
+					<width>106%</width>
+					<left>-3%</left>
+					<align>center</align>
+					<wrapmultiline>true</wrapmultiline>
+					<label>$INFO[ListItem.Label,[B],[/B]]</label>
+					<textcolor>$VAR[Button_IconColor_FO]</textcolor>
+					<font>font27_narrow</font>
+				</control>
+				</control>
+			</focusedlayout>
+		</control>
+		</definition>
+	</include>
+
+	<!-- Dialogs ? -->
+	<include name="DialogBG">
+		<control type="image">
+			<include>FullScreenDimensions</include>
+			<texture border="15">colors/white</texture>
+			<aspectratio>stretch</aspectratio>
+			<colordiffuse>orange</colordiffuse>
+		</control>
+		<control type="image">
+			<include>FullScreenDimensions</include>
+			<bordersize>2</bordersize>
+			<!-- <texture border="15">colors/white</texture> -->
+			<texture border="15">backgrounds/pattern4.jpg</texture>
+			<aspectratio>stretch</aspectratio>
+			<colordiffuse>$VAR[BackgroundColor]</colordiffuse> <!-- $VAR[BackgroundColor] blueish FF0E597E -->
+		</control>
+	</include>
+	
+	
+	<!-- benötigt überarbeitung 
+	
+	kodi.wiki/view/Image_Control
+	
+	-->
+	<!-- include same icon different cond 40,41-->
+	<include name="Image_CondVis">
+		<param name="colordiffuse" default="FFFFFFFF" />
+		
+		
+		<definition>
+		<control type="image" id="$PARAM[id]">
+			<visible>$PARAM[visible]</visible>
+			<height>135</height>
+			<width>135</width>
+			<bordersize>4</bordersize>
+			<texture background="true" diffuse="diffuse/roundmask.png">$PARAM[texturepath]</texture>
+			<aspectratio scalediffuse="false" aligny="bottom" align="center">keep</aspectratio>
+			<colordiffuse>$PARAM[colordiffuse]</colordiffuse>
+		</control>
+		</definition>
+	</include>
+	
+	
+	<!-- Tags Text VAR
+	NEED add sec color for LABEL 2 Container_label2_itemtag
+	-->
+	<variable name="Tags_Bottom">
+		<value condition="!$EXP[IsSeason] + [$EXP[IsEpisode] | !String.IsEmpty(ListItem.Episode)]">$INFO[ListItem.Season,[B]s,[/B]]$INFO[ListItem.Episode,[B]e,[/B] -]$INFO[ListItem.Title,[B],[/B]]$INFO[ListItem.Duration(mm), (, min)][CR][COLOR=$VAR[Container_label2_itemtag]]$INFO[ListItem.Year][/COLOR]</value>
+		<value condition="$EXP[IsSong]">$INFO[ListItem.Label,[B],[/B]][CR][COLOR=$VAR[Container_label2_itemtag]]$INFO[ListItem.Album]$INFO[ListItem.Year, (,)][/COLOR]</value>
+		<value condition="!String.IsEmpty(ListItem.Year)">$INFO[ListItem.Label,[B],[/B]][CR][COLOR=$VAR[Container_label2_itemtag]]$INFO[ListItem.Year][/COLOR]</value>
+		<value>$INFO[ListItem.Label,[B],[/B]][CR][COLOR=$VAR[Container_label2_itemtag]]$INFO[ListItem.Label2][/COLOR]</value>
+	</variable>
+	
+	<!-- ################ -->
+	<!--   ARTWORK ImageLayout_$PARAM[artwork] -->
+	<!-- ######### -->
+	
+	<!-- Artwork Thumb -->
+	<include name="DefArtwork">
+		<param name="visible" default="true" />
+		<param name="width" default="1344" />
+		<param name="height" default="770" />
+		<definition>
+		<control type="image">
+			<visible>$PARAM[visible]</visible>
+			<fadetime>350</fadetime>
+			<include content="pos_left" condition="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
+			<include content="pos_right" condition="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
+			<top>0</top>
+			<width>$PARAM[width]</width>
+			<height>$PARAM[height]</height>         
+			<texture background="true" diffuse="$PARAM[diffuse]">$VAR[ArtworkThumb]</texture>
+			<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
+			<animation effect="zoom" start="110" end="130" center="auto" time="12000" tween="cubic" easing="inout" pulse="true" condition="Skin.HasSetting(BackgroundAnimation)">Conditional</animation>
+			<animation effect="slide" start="-10,-10" end="10,10" time="8000" tween="cubic" easing="inout" pulse="true" condition="Skin.HasSetting(BackgroundAnimation)">Conditional</animation>
+			<animation effect="fade" start="100" end="0" delay="200" time="1000" pulse="false" condition="Player.HasVideo">Conditional</animation>
+		</control>
+		</definition>
+	</include>
+	
+	 <variable name="ArtworkThumb">
+    	<!-- animated fanart background -->
+        <value condition="!String.IsEmpty(ListItem.Art(animatedfanart)) + Skin.HasSetting(AnimatedFanart)">$INFO[ListItem.Art(animatedfanart)]</value>
+        <!-- native 	extrafanart backgrounds -->
+		<value condition="Control.IsVisible(99007)">$INFO[Control.GetLabel(99007)]</value>					 
+		<!-- normal fanart background -->
+        <value condition="Control.IsVisible(99006) + !String.IsEmpty(Control.GetLabel(99006))">$INFO[Control.GetLabel(99006)]</value>
+		<!-- fallback home sections -->
+		<value condition="xy">$INFO[Container(9000).ListItem.Property(FanartThumb)]</value>
+	</variable>
+	
+	
+	<!-- TITAN VARS 
+	square 1:1	 						squarePosterThumb
+	thumb,landscape 16:9				LandscapeImage, LandscapeImage
+	poster								PosterThumbList
+	circle								FanartLandscapeImage
+	banner								BannerImage + BannerImageFallback
+	HUB_Layouts							Genre_Red.png
+	-->
+	<!-- END -->
+	
+	
+	<variable name="ListItemImage_ClearLogo">
+		<value condition="!String.IsEmpty(ListItem.Art(tvshow.clearlogo))">$INFO[ListItem.Art(tvshow.clearlogo)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(artist.clearlogo))">$INFO[ListItem.Art(artist.clearlogo)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(albumartist.clearlogo))">$INFO[ListItem.Art(albumartist.clearlogo)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(clearlogo))">$INFO[ListItem.Art(clearlogo)]</value>
+		<!-- <value condition="!String.IsEmpty(Container(xy).ListItem.Art(clearlogo))">$INFO[Container(xy).ListItem.Art(clearlogo)]</value>
+		<value condition="!String.IsEmpty(Container.ListItem.Art(clearlogo))">$INFO[Container.ListItem.Art(clearlogo)]</value> -->
+		<!-- custom -
+		<value condition="!String.IsEmpty(Container.ListItem.Property(ListItem.Art(clearlogo)))">$INFO[Container.ListItem.Property(ListItem.Art(clearlogo))]</value>
+		-->
+	</variable>
+	<variable name="ImageLayout_poster">
+		<value condition="Skin.HasSetting(EnableAnimatedPosters) + !String.IsEmpty(ListItem.Art(animatedposter))">$INFO[ListItem.Art(animatedposter)]</value> <!-- make var !Skin.HasSetting(AnimatedPostersDisabledInLists) -->
+		
+		<value condition="Container.Content(seasons) + String.StartsWith(ListItem.Label,*) + !String.IsEmpty(ListItem.Art(tvshow.poster))">$INFO[ListItem.Art(tvshow.poster)]</value>
+		
+		<value condition="!String.IsEmpty(ListItem.Art(season.poster))">$INFO[ListItem.Art(season.poster)]</value>
+		
+		<value condition="!String.IsEmpty(ListItem.Art(tvshow.poster))">$INFO[ListItem.Art(tvshow.poster)]</value>
+		
+		<value condition="!String.IsEmpty(ListItem.Art(poster))">$INFO[ListItem.Art(poster)]</value>
+		
+		<value condition="!String.IsEmpty(ListItem.Property(poster))">$INFO[ListItem.Property(poster)]</value>
+		
+		<value condition="Container.Content(seasons) + !String.IsEmpty(ListItem.Icon)">$INFO[ListItem.Icon]</value>
+		
+		<value condition="!String.IsEmpty(ListItem.Thumb)">$INFO[ListItem.Thumb]</value>
+		
+		<value condition="String.IsEqual(ListItem.Label,..)">dialogs/filebrowser/DefaultFolderBack.png</value>
+		
+		<value condition="String.IsEqual(ListItem.Label,$LOCALIZE[21452])">dialogs/filebrowser/DefaultAddSource.png</value>
+		
+		<value condition="[Container.Content(genres) | String.IsEqual(ListItem.DBTYPE,genre)] + String.Contains(ListItem.FolderPath,music)">$VAR[MusicGenreIconVarList]</value>
+		<value condition="[Container.Content(genres) | String.IsEqual(ListItem.DBTYPE,genre)]">$VAR[MovieGenreIconVarList]</value>
+		
+		<value condition="Container.Content(studios)">$INFO[Skin.String(studiologos.path)]$INFO[ListItem.Label].png</value>
+		
+		<value condition="Container.Content(actors) + String.IsEmpty(ListItem.Thumb)">DefaultActorPoster.png</value>
+		
+		<value condition="Container.Content(directors) + String.IsEmpty(ListItem.Thumb)">DefaultActorPoster.png</value>
+		
+		<value condition="!String.IsEmpty(ListItem.Property(character)) + String.IsEmpty(ListItem.Thumb)">DefaultActorPoster.png</value>
+		<value condition="!String.IsEmpty(ListItem.Property(job)) + String.IsEmpty(ListItem.Thumb)">DefaultActorPoster.png</value>
+		
+		<value condition="Container.Content(years)">DefaultYear.png</value>
+		
+		<value condition="Container.Content(countries)">DefaultCountry.png</value>
+		
+		<value condition="Container.Content(tags)">DefaultTags.png</value>
+		
+		<value condition="!String.IsEmpty(ListItem.Icon)">$INFO[ListItem.Icon]</value>
+		
+	</variable>
+	
+	
+    
+	<variable name="ImageLayout_fanart">
+		<value condition="!String.IsEqual(ListItem.label,..) + [Container.Content(albums) | Container.Content(songs)]">$INFO[ListItem.Thumb]</value>
+		
+		<value condition="[$EXP[IsEpisode] | String.Contains(ListItem.Path,youtube)] + !String.IsEmpty(ListItem.Art(Thumb))">$INFO[ListItem.Thumb]</value>
+        
+		<value condition="!String.IsEmpty(ListItem.Property(fanart))">$INFO[ListItem.Property(fanart)]</value>
+        
+		<value condition="!String.IsEmpty(ListItem.Art(fanart))">$INFO[ListItem.Art(fanart)]</value>
+		<value condition="!String.IsEmpty(ListItem.Property(landscape))">$INFO[ListItem.Property(landscape)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(season.landscape)) + !Skin.HasSetting(DisableLandscapeThumbs)">$INFO[ListItem.Art(season.landscape)]</value>
+        <value condition="!String.IsEmpty(ListItem.Art(landscape)) + !Skin.HasSetting(DisableLandscapeThumbs)">$INFO[ListItem.Art(landscape)]</value>
+        <value condition="!String.IsEmpty(ListItem.Art(tvshow.landscape)) + !Skin.HasSetting(DisableLandscapeThumbs)">$INFO[ListItem.Art(tvshow.landscape)]</value>
+		<value condition="String.IsEqual(ListItem.Label,..)">dialogs/filebrowser/DefaultFolderBack2.png</value>
+        
+		<value condition="[Container.Content(genres) | String.IsEqual(ListItem.DBTYPE,genre)] + String.Contains(ListItem.Folderpath,video)">$VAR[MovieGenreIconVarList]</value>
+        <value condition="[Container.Content(genres) | String.IsEqual(ListItem.DBTYPE,genre)] + [Window.IsActive(music) | String.Contains(ListItem.Folderpath,music)]">$VAR[MusicGenreIconVarList]</value>
+        
+		<value condition="Window.IsActive(tvrecordings) + !String.IsEmpty(ListItem.Art(thumb))">$INFO[ListItem.Thumb]</value>
+		
+		<value condition="Container.Content(studios)">$INFO[Skin.String(SkinHelper.studiologos.path)]$INFO[ListItem.Label].png</value>
+		
+		<value condition="Container.Content(actors) + String.IsEmpty(ListItem.Thumb)">resource://resource.images.skinicons.wide/ActorPoster.png</value>
+		
+		<value condition="Container.Content(directors) + String.IsEmpty(ListItem.Thumb)">resource://resource.images.skinicons.wide/ActorPoster.png</value>
+		
+		<value condition="Container.Content(artists) + String.IsEmpty(ListItem.Thumb)">resource://resource.images.skinicons.wide/artist.png</value>
+        
+		<value condition="Container.Content(years)">resource://resource.images.skinicons.wide/year.png</value>
+		
+		<value condition="Container.Content(countries)">resource://resource.images.skinicons.wide/Country.png</value>
+		
+		<value condition="Container.Content(tags)">resource://resource.images.skinicons.wide/Tags.png</value>
+        
+		<value condition="!String.IsEmpty(ListItem.Thumb)">$INFO[ListItem.Thumb]</value>
+		
+		<value condition="!String.IsEmpty(ListItem.Icon)">$INFO[ListItem.Icon]</value>
+    </variable>
+	
+	<variable name="ImageLayout_circle">
+		<value>$VAR[ImageLayout_fanart]</value>
+    </variable>
+	
+	<variable name="ImageLayout_landscape">
+		<value condition="!String.IsEqual(ListItem.label,..) + [Container.Content(albums) | Container.Content(songs)]">$INFO[ListItem.Thumb]</value>
+		
+		<value condition="[$EXP[IsEpisode] | String.Contains(ListItem.Path,youtube)] + !String.IsEmpty(ListItem.Art(Thumb))">$INFO[ListItem.Thumb]</value>
+        
+		<value condition="!String.IsEmpty(ListItem.Art(season.landscape)) + !Skin.HasSetting(DisableLandscapeThumbs)">$INFO[ListItem.Art(season.landscape)]</value>
+        <value condition="!String.IsEmpty(ListItem.Art(landscape))">$INFO[ListItem.Art(landscape)]</value>
+		
+        
+		<value condition="!String.IsEmpty(ListItem.Art(fanart))">$INFO[ListItem.Art(fanart)]</value>
+		
+		
+        <value condition="!String.IsEmpty(ListItem.Art(tvshow.landscape)) + !Skin.HasSetting(DisableLandscapeThumbs)">$INFO[ListItem.Art(tvshow.landscape)]</value>
+		<value condition="String.IsEqual(ListItem.Label,..)">dialogs/filebrowser/DefaultFolderBack2.png</value>
+        
+		<value condition="[Container.Content(genres) | String.IsEqual(ListItem.DBTYPE,genre)] + String.Contains(ListItem.Folderpath,video)">$VAR[MovieGenreIconVarList]</value>
+        <value condition="[Container.Content(genres) | String.IsEqual(ListItem.DBTYPE,genre)] + [Window.IsActive(music) | String.Contains(ListItem.Folderpath,music)]">$VAR[MusicGenreIconVarList]</value>
+        
+		<value condition="Window.IsActive(tvrecordings) + !String.IsEmpty(ListItem.Art(thumb))">$INFO[ListItem.Thumb]</value>
+		
+		<value condition="Container.Content(studios)">$INFO[Skin.String(SkinHelper.studiologos.path)]$INFO[ListItem.Label].png</value>
+		
+		<value condition="Container.Content(actors) + String.IsEmpty(ListItem.Thumb)">resource://resource.images.skinicons.wide/ActorPoster.png</value>
+		
+		<value condition="Container.Content(directors) + String.IsEmpty(ListItem.Thumb)">resource://resource.images.skinicons.wide/ActorPoster.png</value>
+		
+		<value condition="Container.Content(artists) + String.IsEmpty(ListItem.Thumb)">resource://resource.images.skinicons.wide/artist.png</value>
+        
+		<value condition="Container.Content(years)">resource://resource.images.skinicons.wide/year.png</value>
+		
+		<value condition="Container.Content(countries)">resource://resource.images.skinicons.wide/Country.png</value>
+		
+		<value condition="Container.Content(tags)">resource://resource.images.skinicons.wide/Tags.png</value>
+        
+		<value condition="!String.IsEmpty(ListItem.Thumb)">$INFO[ListItem.Thumb]</value>
+		
+		<value condition="!String.IsEmpty(ListItem.Icon)">$INFO[ListItem.Icon]</value>
+    </variable>
+	
+	
+	
+	<variable name="ImageLayout_banner">
+		<!-- defaults stretch -->
+		<value condition="!String.IsEmpty(ListItem.Art(artist.banner))">$INFO[ListItem.Art(artist.banner)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(albumartist.banner))">$INFO[ListItem.Art(albumartist.banner)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(tvshow.banner))">$INFO[ListItem.Art(tvshow.banner)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(banner))">$INFO[ListItem.Art(banner)]</value>
+		<!-- Fallbacks scale use universal fallback in future -->
+		<value condition="!String.IsEmpty(ListItem.Art(artist.fanart))">$INFO[ListItem.Art(artist.fanart)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(albumartist.fanart))">$INFO[ListItem.Art(albumartist.fanart)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(tvshow.fanart))">$INFO[ListItem.Art(tvshow.fanart)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(fanart))">$INFO[ListItem.Art(fanart)]</value>
+		<value>$INFO[ListItem.Thumb]</value>
+	</variable>
+	
+	<!-- square thumb vars -->
+	<variable name="ImageLayout_square">
+        <value condition="[Container.Content(genres) | String.IsEqual(ListItem.DBTYPE,genre)] + String.Contains(ListItem.FolderPath,music)">$VAR[MusicGenreIconVarList]</value>
+        <value condition="[Container.Content(genres) | String.IsEqual(ListItem.DBTYPE,genre)]">$VAR[MovieGenreIconVarList]</value>
+        <value condition="!String.IsEmpty(ListItem.Thumb)">$INFO[ListItem.Thumb]</value>  <!-- thumb is good, and didnt need var conditions, as it choose correct content, https://forum.kodi.tv/showthread.php?tid=298565&pid=2693890#pid2693890-->
+        <value condition="!String.IsEmpty(ListItem.Art(fanart)) + [Container.Content(movies) | Container.Content(seasons) | Container.Content(tvshows)]">$INFO[ListItem.Art(fanart)]</value>
+        <value condition="String.IsEqual(ListItem.Label,..)">dialogs/filebrowser/DefaultFolderBack.png</value>
+        <value condition="String.IsEqual(ListItem.Label,$LOCALIZE[21452])">dialogs/filebrowser/DefaultAddSource.png</value>
+        <value condition="!String.IsEmpty(ListItem.Icon)">$INFO[ListItem.Icon]</value>
+        <value condition="Window.IsActive(Music) | Container.Content(albums) | Container.Content(songs)">dialogs/filebrowser/DefaultAudio.png</value>
+        <value condition="!String.IsEmpty(ListItem.Property(FanArt))">$INFO[ListItem.Property(FanArt)]</value>
+    </variable>
+	
+	<variable name="ImageLayout_thumb">
+		<value>$VAR[ImageLayout_poster]</value>
+	</variable>
+	
+	<!-- THUMB LAYOUT 		
+	,clearlogo fallback overlay bottom left-->
+	<include name="ThumbsViewLayout">
+        <control type="image">
+			<texture background="true">home/home_matte2.png</texture>
+			<colordiffuse>$PARAM[colordiffuse]</colordiffuse>
+			<bordersize>$PARAM[bordersize_bg]</bordersize>
+        </control>
+		<control type="image">
+            <bordersize>$PARAM[bordersize_artwork]</bordersize>
+            <texture background="true" diffuse="home/home_matte2.png" fallback="colors/color_keyboard.png">$VAR[LandscapeImage]</texture>
+            <aspectratio scalediffuse="false" align="center" aligny="center">stretch</aspectratio>
+            <visible>![!String.IsEmpty(ListItem.Thumb) + String.IsEqual(ListItem.Thumb,ListItem.Property(channellogo))]</visible>
+            <visible>String.IsEmpty(ListItem.Property(defaultID))</visible>
+        </control>
+		<control type="image" description="check, better use params overlayvisability true or false in the calls">
+            <width>50%</width>
+			<height>50%</height>
+			<left>15</left>
+			<bottom>10</bottom>
+			<aspectratio align="left" aligny="bottom">keep</aspectratio>
+			<texture background="true">$VAR[ClearLogoFallback]</texture>
+            <aspectratio scalediffuse="false" align="center" aligny="bottom">keep</aspectratio>
+			<visible>
+			[[String.IsEqual(ListItem.DBType,episode) | Container.Content(episodes)] + ![Control.IsVisible(511) | Control.IsVisible(512) | Control.IsVisible(525)]] | 
+			![String.IsEqual(ListItem.DBType,episode) | Container.Content(episodes)] + String.IsEmpty(ListItem.Art(landscape)) + String.IsEmpty(ListItem.Property(landscape)) + String.IsEmpty(ListItem.Art(tvshow.landscape)) + String.IsEmpty(ListItem.Art(season.landscape))
+			</visible>
+			<visible>String.IsEmpty(ListItem.Property(defaultID))</visible>
+			<visible>!Window.IsVisible(script-script.extendedinfo-DialogInfo.xml)</visible>
+		</control>
+		<control type="group">
+            <right>8</right>
+            <top>8</top>
+            <include content="WatchedIndicator" />
+        </control>
+        <include>TagOverlay</include>
+    </include>
+	
+	<!-- LANDSCAPE LAYOUT , clearlogo fallback overlay bottom left -->
+	<include name="LandscapeLayout">
+        <control type="image">
+            <texture diffuse="home/home_matte2.png">colors/color_white.png</texture>
+			<colordiffuse>$PARAM[colordiffuse]</colordiffuse>
+			<bordersize>$PARAM[bordersize_bg]</bordersize>
+        </control>
+		<control type="image">
+            <bordersize>$PARAM[bordersize_artwork]</bordersize>
+            <texture background="true" diffuse="home/home_matte2.png" fallback="colors/color_keyboard.png">$VAR[LandscapeImage]</texture>
+            <aspectratio scalediffuse="false" align="center" aligny="top">scale</aspectratio>
+            <visible>![!String.IsEmpty(ListItem.Thumb) + String.IsEqual(ListItem.Thumb,ListItem.Property(channellogo))]</visible>
+            <visible>String.IsEmpty(ListItem.Property(defaultID))</visible>
+        </control>
+		<control type="image">
+            <width>50%</width>
+			<height>50%</height>
+			<left>15</left>
+			<bottom>10</bottom>
+			<aspectratio align="left" aligny="bottom">keep</aspectratio>
+			<texture background="true">$VAR[ClearLogoFallback]</texture>
+            <aspectratio scalediffuse="false" align="center" aligny="bottom">keep</aspectratio>
+            <visible>String.IsEmpty(Listitem.Art(landscape)) + String.IsEmpty(ListItem.Property(landscape)) + !String.IsEqual(ListItem.DBTYPE,episode) + !String.IsEqual(ListItem.Property(DBTYPE),episode) + !Container.Content(episodes)</visible>
+            <visible>String.IsEmpty(ListItem.Property(defaultID))</visible>
+        </control>
+		<control type="group">
+            <right>8</right>
+            <top>8</top>
+            <include content="WatchedIndicator" />
+        </control>
+        <include>TagOverlay</include>
+    </include>
+	   	
+	<!-- POSTER LAYOUT -->
+	<include name="PosterPanelLayout">
+		<control type="image">
+			<texture>diffuse/poster.png</texture>
+			<colordiffuse>$PARAM[colordiffuse]</colordiffuse>
+			<bordersize>$PARAM[bordersize_bg]</bordersize>
+		</control>
+		<control type="image">
+			<description>Normal thumb stretched aspect</description>
+			<texture border="1" background="true" diffuse="diffuse/poster.png" fallback="DefaultVideo.png">$VAR[PosterThumbList]</texture>
+			<aspectratio scalediffuse="true" aligny="bottom" align="center">stretch</aspectratio>
+			<bordersize>$PARAM[bordersize_artwork]</bordersize>
+			<visible>!String.IsEmpty(ListItem.Art(poster)) | !String.IsEmpty(ListItem.Art(tvshow.poster)) | $EXP[InGameMode]</visible>
+		</control>
+		<control type="image">
+			<description>Fallback Poster thumb keep aspect for all other</description>
+			<texture border="1" background="true" diffuse="diffuse/poster.png" fallback="DefaultVideo.png">$VAR[PosterThumbList]</texture>
+			<aspectratio scalediffuse="false" aligny="top" align="center">keep</aspectratio>
+			<bordersize>$PARAM[bordersize_artwork]</bordersize>
+			<visible>[String.IsEmpty(ListItem.Art(poster)) + String.IsEmpty(ListItem.Art(tvshow.poster))] + !$EXP[InGameMode]</visible>
+		</control>
+		<control type="group">
+            <right>8</right>
+            <top>8</top>
+            <include content="WatchedIndicator" />
+        </control>
+        <include>TagOverlay</include>
+		
+	</include>
+	
+	<!-- CIRCLED LAYOUT ,clearlogo overlay bottom -->
+	<include name="Circle_Layout">
+		<control type="image">
+			<texture border="0">diffuse/roundmask.png</texture>
+			<colordiffuse>$PARAM[colordiffuse]</colordiffuse>
+		</control>
+		<control type="image">
+			<texture border="1" background="true" diffuse="diffuse/roundmask.png" fallback="DefaultVideo.png">$VAR[FanartLandscapeImage]</texture>
+			<aspectratio scalediffuse="false" aligny="bottom" align="center">scale</aspectratio>
+			<bordersize>$PARAM[bordersize]</bordersize>
+		</control>
+		<control type="image">
+			<visible>
+				[!String.IsEmpty(ListItem.Art(clearlogo)) + !$EXP[IsEpisode]] | 
+				[!String.IsEmpty(ListItem.Art(tvshow.clearlogo)) + $EXP[IsEpisode]] | 
+				!String.IsEmpty(ListItem.Art(artist.clearlogo)) | 
+				!String.IsEmpty(ListItem.Art(albumartist.clearlogo))
+			</visible>
+			<bottom>-70</bottom>
+			<height>50%</height>
+			<texture background="true" fallback="colors/color_transparent.png">$VAR[ListItemClearLogo]</texture>
+			<aspectratio align="center" aligny="center">keep</aspectratio>
+		</control>
+		<control type="textbox">
+			<visible>
+				String.IsEmpty(ListItem.Art(tvshow.clearlogo)) +
+				String.IsEmpty(ListItem.Art(artist.clearlogo)) +
+				String.IsEmpty(ListItem.Art(albumartist.clearlogo)) +
+				String.IsEmpty(ListItem.Art(clearlogo))</visible>
+			<visible>!String.IsEqual(ListItem.label,..)</visible>
+			<visible>!Window.IsVisible(3019)</visible>
+			<autoscroll delay="3000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
+			<bottom>-70</bottom>
+			<left>5</left>
+			<right>5</right>
+			<wrapmultiline>true</wrapmultiline>
+			<height max="105">auto</height>
+			<font>Bold40</font>
+			<!-- <font>Title_CircleC_Header46</font> -->
+			<align>center</align>
+			<aligny>center</aligny>
+			<textcolor>$INFO[Skin.String(ViewDetailsHighlightTextColor)]</textcolor>
+			<selectedcolor>$INFO[Skin.String(ViewDetailsHighlightTextColor)]</selectedcolor>
+			<label>$INFO[ListItem.Label,[B],[/B]]</label>
+		</control>
+	</include>
+	
+	<!-- BANNER LAYOUT 	,clearlogo fallback overlay centered -->
+	<include name="BannerLayout">
+		<control type="image">
+			<texture border="5">diffuse/banner.png</texture>
+			<colordiffuse>$PARAM[colordiffuse]</colordiffuse>
+			<bordersize>$PARAM[bordersize_bg]</bordersize>
+		</control>
+		<control type="image">
+            <bordersize>$PARAM[bordersize_artwork]</bordersize>
+            <texture fallback="resource://resource.images.skinicons.wide/video.png" diffuse="diffuse/banner.png" border="5" background="true">$VAR[BannerImage]</texture>
+            <aspectratio align="center" aligny="center">stretch</aspectratio>
+            <visible>!String.IsEmpty(ListItem.Art(banner)) | !String.IsEmpty(ListItem.Art(tvshow.banner)) | !String.IsEmpty(ListItem.Property(banner))</visible>
+        </control>
+        <control type="image">
+            <bordersize>8</bordersize>
+            <texture fallback="resource://resource.images.skinicons.wide/video.png" diffuse="diffuse/banner.png" border="0" background="true">$VAR[BannerImageFallback]</texture>
+            <aspectratio align="center" aligny="center" scalediffuse="false">scale</aspectratio>
+            <visible>String.IsEmpty(ListItem.Art(banner)) + String.IsEmpty(ListItem.Art(tvshow.banner)) + String.IsEmpty(ListItem.Property(banner))</visible>
+        </control>
+		<control type="image">
+            <bordersize>15</bordersize>
+            <aspectratio scalediffuse="false" align="center" aligny="center">keep</aspectratio>
+            <texture background="true">$INFO[ListItem.Art(clearlogo)]</texture>
+            <visible>String.IsEmpty(ListItem.Art(banner)) + String.IsEmpty(ListItem.Art(tvshow.banner)) + String.IsEmpty(ListItem.Property(banner))</visible>
+        </control>
+        <control type="label">
+            <left>5%</left>
+            <width>90%</width>
+            <height>100%</height>
+            <align>center</align>
+            <label>$INFO[ListItem.Label]</label>
+            <font>Bold34</font>
+            <shadowcolor>black</shadowcolor>
+            <visible>String.IsEmpty(ListItem.Art(banner)) + String.IsEmpty(ListItem.Art(tvshow.banner)) + String.IsEmpty(ListItem.Art(clearlogo)) + String.IsEmpty(ListItem.Property(banner))</visible>
+            <visible>!String.IsEmpty(ListItem.Art(fanart))</visible>
+        </control>
+        <control type="group">
+            <right>8</right>
+            <top>8</top>
+            <include content="WatchedIndicator" />
+        </control>
+	</include>
+	
+	<!-- square 1:1 -->
+	<include name="squarePosterPanelLayout">
+       <control type="image">
+            <texture>diffuse/music_cover.png</texture>
+			<colordiffuse>$PARAM[colordiffuse]</colordiffuse>
+			<bordersize>$PARAM[bordersize_bg]</bordersize>
+        </control>
+        <control type="image">
+            <bordersize>$PARAM[bordersize_artwork]</bordersize>
+			<texture background="true" diffuse="diffuse/music_cover.png" fallback="DefaultMusicRecentlyPlayed.png" border="0">$VAR[squarePosterThumb]</texture>
+			<aspectratio scalediffuse="false" aligny="center">scale</aspectratio>
+        </control>
+		<control type="group">
+            <right>8</right>
+            <top>8</top>
+            <include content="WatchedIndicator" />
+        </control>
+        <include>TagOverlay</include>
+    </include>
+
+	
+
+</includes>
