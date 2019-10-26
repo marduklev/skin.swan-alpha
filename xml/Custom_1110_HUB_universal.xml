@@ -4,15 +4,32 @@
 	<menucontrol>111098</menucontrol>
 	<defaultcontrol always="true">111098</defaultcontrol>
 	<animation effect="fade" start="0" end="100" time="325">WindowOpenClose</animation>
-	
 	<onload>ClearProperty(InitializeMusicHUB,home)</onload>
 	<controls>
 	
+	
+	<!-- ######### -->
+	<!-- WIP NOTES -->
+	<!-- ######### -->
+			<!-- override onclick action for conatainers to stay in hub via set props to let cond groups gain its visibility -->
+					<!-- - e.g. click an artist item dont target music(nav), instead set prop + to gain hub artist /album+song  -->
+			
+			<!-- decisions needed which props are needed for sidepanel buttons, + same as above decide to leave hub via ActivateWindow ,or just set props to let cond groups gain its visibility -->
+			
+			<!-- define laouts ,visible based on props na and-in,or-ing, just handle like a bool to keep it clean -->
+			 <!-- - songs -->
+			 <!-- - artist (artists 1 row, albums with song content based on focused artist) -->
+			 <!-- - common () -->
+			 <!-- - album (?) -->
+			 <!-- - PVR Radio (cant test) -->
+			 <!-- - youtube  (channels,playlist,search results) -->
+			 <!-- - spotify (?) -->
+	 
 	<!-- 
 	ids [windowid]+[2digitnum]
 	
 	top bar 111099
-	left bar/menucontrol  111099 
+	left bar/menucontrol  111098 
 	widgets 111097
 	global scrollbar 111060
 	-->
@@ -61,28 +78,59 @@
 					<label />
 				</control>
 				
-				<control type="label" id="$PARAM[id]">
+				<control type="label">
 					<height>1</height>
 					<width>200</width>
 					<font />
 					<textcolor />
 				</control>
-				<control type="label" id="$PARAM[id]">
+				<control type="textbox">
 					<height>50</height>
-					<width>1420</width>
+					<align>justify</align>
+					<width>1300</width>
 					<font>MenucontrolItem</font>
 					<textcolor>white</textcolor>
-					<label>| place for button and/or player bar hjhjbnjnbjhvhvs jnbhsvgh s                                            |</label>
+					<label>| place for button and/or player bar hjhjbnjnbjhvhvs jnbhsvgh s |</label>
 				</control>
-				
 			</control>	
 			
 	
 	</control>
+	
 	<!-- menuconrol left -->
+	
+	
+MusicVideos 				videodb://musicvideos/
+MusicVideoGenres 			videodb://musicvideos/genres/
+MusicVideoTitles 			videodb://musicvideos/titles/
+MusicVideoYears 			videodb://musicvideos/years/
+MusicVideoArtists 			videodb://musicvideos/artists/
+MusicVideoAlbums 			videodb://musicvideos/albums/
+MusicVideoDirectors 		videodb://musicvideos/directors/
+MusicVideoStudios 			videodb://musicvideos/studios/
+RecentlyAddedMusicVideos 	videodb://recentlyaddedmusicvideos/ 
+
+ (	addons://sources/video/ )
+
+Root 	library://music/
+  	 
+Genres 	
+Artists 	
+Albums 	
+Song 	
+
+
+<!-- Top100 	musicdb://top100/ -->
+<!-- Top100Songs 	musicdb://top100/songs/ -->
+<!-- Top100Albums 	musicdb://top100/albums/ -->
+<!-- RecentlyPlayedAlbums 	 -->
+<!-- Singles 	musicdb://singles/ -->
+<!-- Playlists 	special://musicplaylists/ -->
+<!-- pvr://recordings/radio/active/DIRECTORY/  -->
+	
 	<control type="group">
 		<height>100%</height>
-        <width>300</width>
+        <width>16%</width>
 		<posy>100</posy>
 			
 			<include content="bg_gradientmulticolor">
@@ -112,11 +160,11 @@
 					<param name="label" value="$LOCALIZE[10516]" />
 				</include>
 				
-				
 				<include content="hub_button">
+					<param name="visible" value="PVR.HasRadioChannels" />
 					<param name="id" value="02" />
 					<param name="property" value="" />
-					<param name="action" value="" />
+					<param name="action" value="ActivateWindow(PVR,pvr://channels/radio/,return)" />
 					<param name="label" value="$LOCALIZE[19024]" />
 					<param name="radio_icon" value="defaultaddonartistinfo.png" />
 				</include>
@@ -124,120 +172,137 @@
 				<include content="hub_button">
 					<param name="id" value="03" />
 					<param name="property" value="" />
-					<param name="action" value="" />
+					<param name="action" value="ActivateWindow(Music,sources://music/,return)" />
 					<param name="label" value="$LOCALIZE[2]" />
 					<param name="radio_icon" value="defaultaddonmusic.png" />
 				</include>
 				
 				<include content="hub_button">
 					<param name="id" value="04" />
-					<param name="property" value="" />
-					<param name="action" value="" />
+					<param name="property" value="musicvideos" />
+					<param name="action" value="ActivateWindow(Videos,videodb://musicvideos/titles/,return)" />
 					<param name="label" value="$LOCALIZE[20389]" />
 					<param name="radio_icon" value="defaultmusicvideos.png" />
 				</include>
 				
 				<include content="hub_button">
 					<param name="id" value="05" />
-					<param name="property" value="" />
-					<param name="action" value="" />
+					<param name="property" value="musicaddons" />
+					<param name="action" value="ActivateWindow(Music,addons://sources/audio/,return)" />
 					<param name="label" value="$LOCALIZE[1038]" />
 					<param name="radio_icon" value="defaultaddonlibrary.png" />
 				</include>
 				
 				<include content="hub_button">
+					<param name="visible" value="System.HasAddon(plugin.video.youtube)" />
 					<param name="id" value="06" />
-					<param name="property" value="" />
-					<param name="action" value="" />
+					<param name="property" value="musicaddons" />
+					<param name="action" value="RunPlugin(plugin.video.youtube)" />
 					<param name="label" value="You Tube" />
 					<param name="radio_icon" value="icons/youtube_1.png" />
+				</include>
+				<include content="hub_button">
+					<param name="visible" value="System.HasAddon(plugin.audio.spotify)" />
+					<param name="id" value="07" />
+					<param name="property" value="musicaddons" />
+					<param name="action" value="RunPlugin(plugin.audio.spotify)" />
+					<param name="label" value="Spotify" />
+					<param name="radio_icon" value="icons/spotify.png" />
+				</include>
+				<include content="hub_button">
+					<param name="visible" value="System.HasAddon(plugin.audio.soundcloud)" />
+					<param name="id" value="08" />
+					<param name="property" value="musicaddons" />
+					<param name="action" value="RunPlugin(plugin.audio.soundcloud)" />
+					<param name="label" value="Soundcloud" />
+					<param name="radio_icon" value="icons/sound2.png" />
+				</include>
+				
+				<include content="spacer_h">
+					<param name="id" value="10" />
+					<param name="gap" value="30" />
+				</include>
+				
+				<include content="hub_sectionheader">
+					<param name="id" value="11" />
+					<param name="label" value="$LOCALIZE[21866]" />
+				</include>
+				
+				
+				<include content="hub_button">
+					<param name="id" value="12" />
+					<param name="property" value="artists" />
+					<param name="action" value="ActivateWindow(Music,musicdb://artists/,return)" />
+					<param name="label" value="$LOCALIZE[133]" />
+					<param name="radio_icon" value="defaultmusicartists.png" />
+				</include>
+				
+				<include content="hub_button">
+					<param name="id" value="13" />
+					<param name="property" value="albums" />
+					<param name="action" value="ActivateWindow(Music,musicdb://albums/,return)" />
+					<param name="label" value="$LOCALIZE[132]" />
+					<param name="radio_icon" value="defaultmusicalbums.png" />
+				</include>
+				<include content="hub_button">
+					<param name="id" value="14" />
+					<param name="property" value="albums" />
+					<param name="action" value="ActivateWindow(Music,musicdb://compilations/,return)" />
+					<param name="label" value="$LOCALIZE[521]" />
+					<param name="radio_icon" value="defaultmusiccompilations.png" />
+				</include>
+				
+				<include content="hub_button">
+					<param name="id" value="15" />
+					<param name="property" value="songs" />
+					<param name="action" value="ActivateWindow(Music,musicdb://songs/,return)" />
+					<param name="label" value="$LOCALIZE[134]" />
+					<param name="radio_icon" value="defaultaddonaudiodecoder.png" />
+				</include>
+				
+				<include content="hub_button">
+					<param name="id" value="16" />
+					<param name="property" value="" />
+					<param name="action" value="ActivateWindow(Music,musicdb://genres/,return)" />
+					<param name="label" value="$LOCALIZE[135]" />
+					<param name="radio_icon" value="defaultmusicgenres.png" />
+				</include>
+				
+				<include content="hub_button">
+					<param name="id" value="17" />
+					<param name="property" value="" />
+					<param name="action" value="ActivateWindow(Music,musicdb://years/,return)" />
+					<param name="label" value="$LOCALIZE[345]" />
+					<param name="radio_icon" value="defaultyear.png" />
 				</include>
 				
 				<include content="spacer_h">
 					<param name="id" value="20" />
 					<param name="gap" value="30" />
 				</include>
-				
 				<include content="hub_sectionheader">
 					<param name="id" value="21" />
-					<param name="label" value="$LOCALIZE[21866]" />
-				</include>
-				
-				
-				<include content="hub_button">
-					<param name="id" value="22" />
-					<param name="property" value="artists" />
-					<param name="action" value="" />
-					<param name="label" value="$LOCALIZE[133]" />
-					<param name="radio_icon" value="defaultmusicartists.png" />
-				</include>
-				
-				<include content="hub_button">
-					<param name="id" value="23" />
-					<param name="property" value="albums" />
-					<param name="action" value="" />
-					<param name="label" value="$LOCALIZE[132]" />
-					<param name="radio_icon" value="defaultmusicalbums.png" />
-				</include>
-				<include content="hub_button">
-					<param name="id" value="25" />
-					<param name="property" value="albums" />
-					<param name="action" value="" />
-					<param name="label" value="$LOCALIZE[521]" />
-					<param name="radio_icon" value="defaultmusiccompilations.png" />
-				</include>
-				
-				<include content="hub_button">
-					<param name="id" value="25" />
-					<param name="property" value="songs" />
-					<param name="action" value="" />
-					<param name="label" value="$LOCALIZE[134]" />
-					<param name="radio_icon" value="defaultaddonaudiodecoder.png" />
-				</include>
-				
-				<include content="hub_button">
-					<param name="id" value="26" />
-					<param name="property" value="" />
-					<param name="action" value="" />
-					<param name="label" value="$LOCALIZE[135]" />
-					<param name="radio_icon" value="defaultmusicgenres.png" />
-				</include>
-				
-				<include content="hub_button">
-					<param name="id" value="27" />
-					<param name="property" value="" />
-					<param name="action" value="" />
-					<param name="label" value="$LOCALIZE[345]" />
-					<param name="radio_icon" value="defaultyear.png" />
-				</include>
-				
-				<include content="spacer_h">
-					<param name="id" value="30" />
-					<param name="gap" value="30" />
-				</include>
-				<include content="hub_sectionheader">
-					<param name="id" value="31" />
 					<param name="label" value="$LOCALIZE[20382]" />
 				</include>
 				
 				<include content="hub_button">
-					<param name="id" value="25" />
+					<param name="id" value="22" />
 					<param name="property" value="albumsrecent" />
-					<param name="action" value="" />
+					<param name="action" value="ActivateWindow(Music,musicdb://recentlyaddedalbums/,return)" />
 					<param name="label" value="$LOCALIZE[359]" />
 					<param name="radio_icon" value="defaultaddonaudiodecoder.png" />
 				</include>
 				<include content="hub_button">
-					<param name="id" value="25" />
+					<param name="id" value="23" />
 					<param name="property" value="" />
-					<param name="action" value="" />
+					<param name="action" value="ActivateWindow(Music,musicdb://recentlyplayedalbums/,return)" />
 					<param name="label" value="$LOCALIZE[517]" />
 					<param name="radio_icon" value="defaultaddonaudiodecoder.png" />
 				</include>
 				<include content="hub_button">
-					<param name="id" value="25" />
+					<param name="id" value="24" />
 					<param name="property" value="" />
-					<param name="action" value="" />
+					<param name="action" value="ActivateWindow(PVR,pvr://channels/radio/,return)" />
 					<param name="label" value="$LOCALIZE[20390]" />
 					<param name="radio_icon" value="defaultaddonaudiodecoder.png" />
 				</include>
@@ -287,8 +352,8 @@
 			<bottom>5</bottom>
 			<pagecontrol>111060</pagecontrol>	
 				
-			<left>350</left>
-			<width>1520</width>
+			<left>19%</left>
+			<width>81%</width>
 			<orientation>vertical</orientation>
 			
 			<usecontrolcoords>true</usecontrolcoords>
@@ -304,6 +369,8 @@
 				<description>1st row alignment correction</description>
 				<height>-20</height>
 			</control>
+			
+			<!-- include condition="Skin.HasSetting(Force_StayInMusicHub)">hub_music_OverrideOnClick" /> -->
 			
 			<include content="Universal_ContainerHeader">
 				<param name="groupid" value="6001" />
@@ -361,7 +428,6 @@
 				
 				<content>
 				<item id="999">
-					<description>hidden if empty workaround, iam unable to get working visible condition, slide on 2 items</description>
 					<label>$LOCALIZE[284]</label>
 					<label2 />
 					<visible>String.IsEmpty(Container(5001).ListitemNoWrap(0).Artist) + String.IsEmpty(Container(5001).ListitemNoWrap(1).Artist)</visible>

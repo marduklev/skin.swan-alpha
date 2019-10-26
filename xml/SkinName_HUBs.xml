@@ -190,4 +190,85 @@
 		<value>musicdb://songs/</value>
 	</variable>
 	
+	<!-- HUB -->
+		
+	<!-- e.g.
+	SetProperty(HUB_Music,albums,home) 	
+	
+	SetProperty(HUB_Music,albums,home)
+	ClearProperty(HUB_Music,home)
+	String.Is[Equal,EndsWith,StartsWith,Contains](Window.Property(HUB_Music),albums)
+	 -->
+	<!-- //kodi.wiki/view/Add-on:YouTube -->
+	
+	<include name="hub_music_OverrideOnClick">
+	
+	<!-- decide for visible conditions first,keep the idea 
+	
+	e.g. click on artist - go to hub content by artist (album,songs,musicvideos)
+	 -> set content albums
+	 <value condition="!String.IsEmpty(Control.GetLabel(100002).index(1))">
+	 
+	 
+	 musicdb://albums/?xsp=
+	 
+	 MME Tools - decode
+	 {"order":{"direction":"ascending","ignorefolders":0,"method":"sortyear"},"rules":{"and":[{"field":"albumartist","operator":"contains","value":["$INFO[Window.Property(Artistname)]"]}]},"type":"albums"}
+	 
+	 MME Tools - need be decoded (NOTE '[' = '%5B')
+	 %20%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22,%22ignorefolders%22%3A0,%22method%22%3A%22sortyear%22%7D,%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22albumartist%22,%22operator%22%3A%22contains%22,%22value%22%3A%5B%22$INFO[Window.Property(Artistname)]%22%5D%7D%5D%7D,%22type%22%3A%22albums%22%7D
+
+		
+	
+	-->
+	
+		<!-- <onclick condition="!String.IsEmpty(ListItem.dbtype)">SetProperty(HUB_Music,$INFO[ListItem.dbtype],home)</onclick> -->
+		<onclick condition="String.IsEmpty(ListItem.dbtype)">SetProperty(HUB_Music,addon,home)</onclick>
+		
+		<onclick condition="String.IsEqual(ListItem.DBType,artist)">SetProperty(xy)</onclick>
+		<onclick condition="String.IsEqual(ListItem.DBType,album)">SetProperty(xy)</onclick>
+		<onclick condition="String.IsEqual(ListItem.DBType,song)">SetProperty(xy)</onclick>
+		<onclick condition="String.IsEqual(ListItem.DBType,musicvideo)">SetProperty(xy)</onclick>
+		<onclick condition="String.IsEqual(ListItem.DBType,?ADDON?)">SetProperty(xy)</onclick>
+
+	</include>
+
+	<include name="hub_sectionheader">
+		<control type="label" id="$PARAM[id]">
+			<height>30</height>
+			<width>300</width>
+			<font>MenucontrolSectionHeading</font>
+			<align>left</align>
+			<textcolor>white</textcolor>
+			<label>$PARAM[label]</label>
+		</control>
+	</include>
+	
+	<include name="hub_button">
+		<param name="visible" default="true" />
+		<definition>
+			<control type="radiobutton" id="$PARAM[id]">
+				<visible>$PARAM[visible]</visible>
+				<width>100%</width>
+				<height>25</height>
+				<radiowidth>40</radiowidth>
+				<radioheight>40</radioheight>
+				<radioposx>10</radioposx>
+				<textureradioonfocus colordiffuse="white">defaultaddonartistinfo.png</textureradioonfocus>
+				<textureradioonnofocus colordiffuse="grey">$PARAM[radio_icon]</textureradioonnofocus>
+				<textureradioofffocus colordiffuse="white">$PARAM[radio_icon]</textureradioofffocus>
+				<textureradiooffnofocus colordiffuse="grey">$PARAM[radio_icon]</textureradiooffnofocus>
+				<texturefocus />
+				<texturenofocus />
+				<font>MenucontrolItem</font>
+				<label>     $PARAM[label]</label>
+				<onfocus>SetProperty(MusicHUB_VisContent,$PARAM[property],home)</onfocus>
+				<onclick>$PARAM[action]</onclick>
+				<focusedcolor>white</focusedcolor>
+				<textcolor>grey</textcolor>
+				<selectedcolor>green</selectedcolor>
+				<pulseonselect>no</pulseonselect>
+			</control>
+		</definition>
+	</include>
 </includes>
