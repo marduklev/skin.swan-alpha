@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 	<!-- SkinSettings.xml widget script.skinshortcuts - set path-->
-	<include name="CustomWidgetTemplate">
+	<include name="Widget_SetPath_ButtonTemplate">
 		
 		<include content="SectionHeadline">
 				<param name="id" value="$PARAM[id]0"/>
 				<param name="height" value="60"/>
-				<param name="align" default="left" />
-				<param name="label" value="WIDGET $PARAM[nr]$INFO[Skin.String(UserWidget$PARAM[nr]_name), - ] $INFO[Skin.String(UserWidget$PARAM[nr]_type),[I](,)[/I]]"/>
+				<param name="align" value="left" />
+				<param name="label" value="WIDGET $PARAM[nr]$INFO[Skin.String(UserWidget$PARAM[nr]_name), : [B],[/B]]"/>
 		</include>
 		
 		<control type="radiobutton" id="$PARAM[id]1">
 			<description>
-              type=shortcuts
+            type=shortcuts  - cant pre set a target
               custom=[True/False]              A boolean saying where the user can type their own shortcut
               showNone=[True/False]            A boolean saying 'None' option will be shown
               grouping=[grouping]              The custom groupings that will be shown to the user
@@ -21,6 +21,18 @@
               skinList=[skinList]              The skin string the script will save the action of the selected shortcut, without any 'ActivateWindow' elements, to 
               skinType=[skinType]              The skin string the script will save the type of the selected shortcut to 
               skinThumbnail=[skinThumbnail])   The skin string the script will save the thumbnail of the selected shortcut to
+			  
+			type=widgets - can pre set a target
+			RunScript(script.skinshortcuts,type=widgets&amp;custom=True&amp;showNone=True&amp;grouping=widget&amp;skinWidgetPath=UserWidget$PARAM[nr]_path&amp;skinWidgetName=UserWidget$PARAM[nr]_name&amp;skinWidgetType=UserWidget$PARAM[nr]_type)&amp;skinWidgetTarget=UserWidget$PARAM[nr]_target)
+			
+              custom=[True/False]              A boolean saying where the user can type their own shortcut
+              showNone=[True/False]            A boolean saying 'None' option will be shown
+              grouping=[grouping]              The custom groupings that will be shown to the user
+              skinWidget                       The skin string the script will save the `widget` property of the selected widget to |
+              skinWidgetType                   The skin string the script will save the `widgetType` property of the selected widget to |
+              skinWidgetName                   The skin string the script will save the `widgetName` property of the selected widget to |
+              skinWidgetTarget                 The skin string the script will save the `widgetTarget` property of the selected widget to |
+              skinWidgetPath                   The skin string the script will save the `widgetPath` property of the selected widget to |
 			</description>
 			<radioposx>200</radioposx>
 			<radioposxy>5</radioposxy>
@@ -34,7 +46,7 @@
 			<textureradiooffdisabled colordiffuse="disabled">icons/settings1.png</textureradiooffdisabled>
 			<label>                             Set Widget Path</label>
 			<label2>$INFO[Skin.String(UserWidget$PARAM[nr]_path)]</label2>
-			<onclick>RunScript(script.skinshortcuts,type=shortcuts&amp;showNone=True&amp;custom=True&amp;grouping=widget&amp;skinList=UserWidget$PARAM[nr]_path&amp;skinLabel=UserWidget$PARAM[nr]_name&amp;skinType=UserWidget$PARAM[nr]_type)</onclick>
+			<onclick>RunScript(script.skinshortcuts,type=shortcuts&amp;custom=True&amp;showNone=True&amp;grouping=widget&amp;skinLabel=UserWidget$PARAM[nr]_name&amp;skinList=UserWidget$PARAM[nr]_path)</onclick>
 		</control>
 		
 		<control type="button" id="$PARAM[id]2">
@@ -57,15 +69,14 @@
 				<height>130</height>
 				<width>180</width>
 				<bordersize>2</bordersize>
-				<bordertexture colordiffuse="FF101010">colors/white.png</bordertexture>
-				<texture>$INFO[Skin.String(UserWidget$PARAM[nr]_layout),special://skin/extras/widgetlayouts/,.jpg]</texture>
+				<texture fallback="special://skin/extras/widgetlayouts/nolayout.png">$INFO[Skin.String(UserWidget$PARAM[nr]_layout),special://skin/extras/widgetlayouts/,.jpg]</texture>
 				<aspectratio>keep</aspectratio>
 			</control>
 		</control>
 	</include>
 	
 	<!-- SkinSettings.xml widget script.embuary helper - set attributes - call custom window 1103 -->
-	<include name="CustomWidgetConfigTemplate">
+	<include name="Widget_SetAttributes_ButtonTemplate">
 		
 		<control type="button" id="11031">
 			<onclick>Skin.SetString(UserWidget$PARAM[nr]_name)</onclick>
@@ -84,8 +95,8 @@
 			<onclick>SetProperty(Dialog.4.Label,$LOCALIZE[29921])</onclick>
 			<onclick>SetProperty(Dialog.4.BuiltIn,Skin.Reset(UserWidget$PARAM[nr]_target)||Skin.SetString(UserWidget$PARAM[nr]_target.label,$LOCALIZE[29921]))</onclick>
 			<onclick>RunScript(script.embuary.helper,action=createselect,header=$LOCALIZE[467])</onclick>
-			<label>Content Type</label>
-			<label2>$INFO[Skin.String(UserWidget$PARAM[nr]_target.label)]</label2>
+			<label>Set Content Type</label>
+			<label2>$INFO[Skin.String(UserWidget$PARAM[nr]_target)]</label2>
 		</control>
 		<control type="button" id="11033">
 			<description>Set Layout</description>
@@ -204,10 +215,9 @@
 		</control>
 	</include>
 	
-	
 	<!-- widget container -->
 	<!-- <include>RespectBool_selectaction</include> -->
-	<include name="Widget_Container">
+	<include name="Widget_Container_Template">
 		<control type="$PARAM[type]" id="$PARAM[id]">
 			<nested />
 			<scrolltime tween="quadratic">400</scrolltime>
@@ -217,31 +227,38 @@
 			<orientation>horizontal</orientation>
 			<height>350</height>
 			<visible>$PARAM[visible]</visible>
+			<description>kodi.wiki/view/Skinning_Manual#Filling_containers</description>
 			
 			<include content="WidgetHome_landscape" condition="String.IsEqual(Skin.String(UserWidget$PARAM[nr]_layout),landscape)">
 				<param name="nr" value="$PARAM[nr]" />
+				<param name="id" value="$PARAM[id]" />
 			</include>
 			<include content="WidgetHome_poster" condition="String.IsEqual(Skin.String(UserWidget$PARAM[nr]_layout),poster)">
 				<param name="nr" value="$PARAM[nr]" />
+				<param name="id" value="$PARAM[id]" />
 			</include>
 			<include content="WidgetHome_square" condition="String.IsEqual(Skin.String(UserWidget$PARAM[nr]_layout),square)">
 				<param name="nr" value="$PARAM[nr]" />
+				<param name="id" value="$PARAM[id]" />
 			</include>
 			<include content="WidgetHome_circle" condition="String.IsEqual(Skin.String(UserWidget$PARAM[nr]_layout),circle)">
 				<param name="nr" value="$PARAM[nr]" />
+				<param name="id" value="$PARAM[id]" />
 			</include>
 			<include content="WidgetHome_banner" condition="String.IsEqual(Skin.String(UserWidget$PARAM[nr]_layout),banner)">
 				<param name="nr" value="$PARAM[nr]" />
+				<param name="id" value="$PARAM[id]" />
 			</include>
 			<include content="WidgetHome_textpanel" condition="String.IsEqual(Skin.String(UserWidget$PARAM[nr]_layout),textpanel)">
 				<param name="nr" value="$PARAM[nr]" />
+				<param name="id" value="$PARAM[id]" />
 			</include>
-		<content target="$INFO[Skin.String(UserWidget$PARAM[nr]_target)]" limit="$INFO[Skin.String(UserWidget$PARAM[nr]_limit)]" sortorder="$INFO[Skin.String(UserWidget$PARAM[nr]_sortorder)]" sortby="$INFO[Skin.String(UserWidget$PARAM[nr]_sortby)]">$INFO[Skin.String(UserWidget$PARAM[nr]_path)]</content>	
+			<content target="$INFO[Skin.String(UserWidget$PARAM[nr]_target)]" limit="$INFO[Skin.String(UserWidget$PARAM[nr]_limit)]" sortorder="$INFO[Skin.String(UserWidget$PARAM[nr]_sortorder)]" sortby="$INFO[Skin.String(UserWidget$PARAM[nr]_sortby)]">$INFO[Skin.String(UserWidget$PARAM[nr]_path)]</content>	
 		</control>
 		
 	</include>
 
-	<!-- Layouts -->
+	<!-- widget Layouts -->
 	<include name="WidgetHome_textpanel">
 			<itemlayout height="110" width="310">
 				<control type="group">
@@ -335,7 +352,23 @@
 					</include>
 				</control>
 			</itemlayout>
-			<focusedlayout height="300" width="200">
+			<focusedlayout height="300" width="200" condition="!Control.HasFocus($PARAM[id])">
+				<control type="group">
+					<width>195</width>
+					<height>295</height>
+					<include content="UniversalLayout">
+						<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+						<param name="artwork" value="poster" />
+						<param name="get_circle" value="false" />
+						<param name="get_tags" value="Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)" />
+						<param name="get_landscapelogo" value="false" />
+						<param name="get_bannerlogo" value="false" />
+						<param name="autoscroll" value="false" />
+						<param name="bordersize_bg" value="6" />
+					</include>
+				</control>
+			</focusedlayout>
+			<focusedlayout height="300" width="200" condition="Control.HasFocus($PARAM[id])">
 				<control type="group">
 					<width>195</width>
 					<height>295</height>
@@ -357,167 +390,169 @@
 			</focusedlayout>
 		</include>
 		
-		<include name="WidgetHome_landscape">
-			<itemlayout height="280" width="500">
+	<include name="WidgetHome_landscape">
+		<itemlayout height="280" width="500">
+			<control type="group">
+				<height>270</height>
+				<width>480</width>
+				<include content="UniversalLayout">
+					<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+					<param name="artwork" value="landscape" />
+					<param name="get_circle" value="false" />
+					<param name="get_tags" value="Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)" />
+					<param name="get_landscapelogo" value="true" />
+					<param name="get_bannerlogo" value="false" />
+					<param name="autoscroll" value="false" />
+					<param name="bordersize_bg" value="6" />
+				</include>
+			</control>
+		</itemlayout>
+		<focusedlayout height="280" width="500">
+			<control type="group">
+				<width>480</width>
+				<height>270</height>
+				<include>Item_Focus_Animation</include>
 				<control type="group">
-					<height>270</height>
-					<width>480</width>
 					<include content="UniversalLayout">
-						<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+						<param name="colordiffuse" value="$VAR[Container_item_fo]" />
 						<param name="artwork" value="landscape" />
 						<param name="get_circle" value="false" />
 						<param name="get_tags" value="Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)" />
 						<param name="get_landscapelogo" value="true" />
 						<param name="get_bannerlogo" value="false" />
-						<param name="autoscroll" value="false" />
-						<param name="bordersize_bg" value="6" />
+						<param name="autoscroll" value="true" />
+						<param name="bordersize_bg" value="4" />
 					</include>
+					<include>FocusOverlay</include>
 				</control>
-			</itemlayout>
-			<focusedlayout height="280" width="500">
+			</control>
+			
+					
+		</focusedlayout>
+	</include>
+	
+	<include name="WidgetHome_circle">
+		<itemlayout height="350" width="260">
+			<control type="group">
+				<height>250</height>
+				<width>250</width>
+				<include content="UniversalLayout">
+					<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+					<param name="artwork" value="circle" />
+					<param name="get_circle" value="true" />
+					<param name="get_tags" value="false" />
+					<param name="get_landscapelogo" value="false" />
+					<param name="get_bannerlogo" value="false" />
+					<param name="autoscroll" value="false" />
+					<param name="bordersize_bg" value="6" />
+				</include>
+			</control>
+		</itemlayout>
+		<focusedlayout height="350" width="260">
+			<control type="group">
+				<height>250</height>
+				<width>250</width>
+				<include>Item_Focus_Animation</include>
 				<control type="group">
-					<width>480</width>
-					<height>270</height>
-					<include>Item_Focus_Animation</include>
-					<control type="group">
-						<include content="UniversalLayout">
-							<param name="colordiffuse" value="$VAR[Container_item_fo]" />
-							<param name="artwork" value="landscape" />
-							<param name="get_circle" value="false" />
-							<param name="get_tags" value="Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)" />
-							<param name="get_landscapelogo" value="true" />
-							<param name="get_bannerlogo" value="false" />
-							<param name="autoscroll" value="true" />
-							<param name="bordersize_bg" value="4" />
-						</include>
-						<include>FocusOverlay</include>
-					</control>
-				</control>
-				
-						
-			</focusedlayout>
-		</include>
-		<include name="WidgetHome_circle">
-			<itemlayout height="350" width="260">
-				<control type="group">
-					<height>250</height>
-					<width>250</width>
 					<include content="UniversalLayout">
-						<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+						<param name="colordiffuse" value="$VAR[Container_item_fo]" />
 						<param name="artwork" value="circle" />
 						<param name="get_circle" value="true" />
 						<param name="get_tags" value="false" />
 						<param name="get_landscapelogo" value="false" />
 						<param name="get_bannerlogo" value="false" />
-						<param name="autoscroll" value="false" />
-						<param name="bordersize_bg" value="6" />
+						<param name="autoscroll" value="true" />
+						<param name="bordersize_bg" value="4" />
 					</include>
+					
 				</control>
-			</itemlayout>
-			<focusedlayout height="350" width="260">
+			</control>
+			
+					
+		</focusedlayout>
+	</include>
+	
+	<include name="WidgetHome_square">
+		<itemlayout height="290" width="290">
+			<control type="group">
+				<height>280</height>
+				<width>280</width>
+				<include content="UniversalLayout">
+					<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+					<param name="artwork" value="thumb" />
+					<param name="get_circle" value="false" />
+					<param name="get_tags" value="Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)" />
+					<param name="get_landscapelogo" value="false" />
+					<param name="get_bannerlogo" value="false" />
+					<param name="autoscroll" value="false" />
+					<param name="bordersize_bg" value="6" />
+				</include>
+			</control>
+		</itemlayout>
+		<focusedlayout height="290" width="290">
+			<control type="group">
+				<height>280</height>
+				<width>280</width>
+				<include>Item_Focus_Animation</include>
 				<control type="group">
-					<height>250</height>
-					<width>250</width>
-					<include>Item_Focus_Animation</include>
-					<control type="group">
-						<include content="UniversalLayout">
-							<param name="colordiffuse" value="$VAR[Container_item_fo]" />
-							<param name="artwork" value="circle" />
-							<param name="get_circle" value="true" />
-							<param name="get_tags" value="false" />
-							<param name="get_landscapelogo" value="false" />
-							<param name="get_bannerlogo" value="false" />
-							<param name="autoscroll" value="true" />
-							<param name="bordersize_bg" value="4" />
-						</include>
-						
-					</control>
-				</control>
-				
-						
-			</focusedlayout>
-		</include>
-		
-		<include name="WidgetHome_square">
-			<itemlayout height="290" width="290">
-				<control type="group">
-					<height>280</height>
-					<width>280</width>
 					<include content="UniversalLayout">
-						<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+						<param name="colordiffuse" value="$VAR[Container_item_fo]" />
 						<param name="artwork" value="thumb" />
 						<param name="get_circle" value="false" />
 						<param name="get_tags" value="Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)" />
 						<param name="get_landscapelogo" value="false" />
 						<param name="get_bannerlogo" value="false" />
-						<param name="autoscroll" value="false" />
-						<param name="bordersize_bg" value="6" />
+						<param name="autoscroll" value="true" />
+						<param name="bordersize_bg" value="4" />
 					</include>
+					
 				</control>
-			</itemlayout>
-			<focusedlayout height="290" width="290">
+			</control>
+			
+					
+		</focusedlayout>
+	</include>
+	
+	<include name="WidgetHome_banner">
+		<itemlayout height="175" width="770">
+			<control type="group">
+				<height>110</height>
+				<width>760</width>
+				<include content="UniversalLayout">
+					<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+					<param name="artwork" value="banner" />
+					<param name="get_circle" value="false" />
+					<param name="get_tags" value="true" />
+					<param name="get_landscapelogo" value="false" />
+					<param name="get_bannerlogo" value="true" />
+					<param name="autoscroll" value="false" />
+					<param name="bordersize_bg" value="6" />
+				</include>
+			</control>
+		</itemlayout>
+		<focusedlayout height="175" width="770">
+			<control type="group">
+				<height>110</height>
+				<width>760</width>
+				<include>Item_Focus_Animation</include>
 				<control type="group">
-					<height>280</height>
-					<width>280</width>
-					<include>Item_Focus_Animation</include>
-					<control type="group">
-						<include content="UniversalLayout">
-							<param name="colordiffuse" value="$VAR[Container_item_fo]" />
-							<param name="artwork" value="thumb" />
-							<param name="get_circle" value="false" />
-							<param name="get_tags" value="Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)" />
-							<param name="get_landscapelogo" value="false" />
-							<param name="get_bannerlogo" value="false" />
-							<param name="autoscroll" value="true" />
-							<param name="bordersize_bg" value="4" />
-						</include>
-						
-					</control>
-				</control>
-				
-						
-			</focusedlayout>
-		</include>
-		<include name="WidgetHome_banner">
-			<itemlayout height="175" width="770">
-				<control type="group">
-					<height>110</height>
-					<width>760</width>
 					<include content="UniversalLayout">
-						<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+						<param name="colordiffuse" value="$VAR[Container_item_fo]" />
 						<param name="artwork" value="banner" />
 						<param name="get_circle" value="false" />
 						<param name="get_tags" value="true" />
 						<param name="get_landscapelogo" value="false" />
 						<param name="get_bannerlogo" value="true" />
-						<param name="autoscroll" value="false" />
-						<param name="bordersize_bg" value="6" />
+						<param name="autoscroll" value="true" />
+						<param name="bordersize_bg" value="4" />
 					</include>
+					
 				</control>
-			</itemlayout>
-			<focusedlayout height="175" width="770">
-				<control type="group">
-					<height>110</height>
-					<width>760</width>
-					<include>Item_Focus_Animation</include>
-					<control type="group">
-						<include content="UniversalLayout">
-							<param name="colordiffuse" value="$VAR[Container_item_fo]" />
-							<param name="artwork" value="banner" />
-							<param name="get_circle" value="false" />
-							<param name="get_tags" value="true" />
-							<param name="get_landscapelogo" value="false" />
-							<param name="get_bannerlogo" value="true" />
-							<param name="autoscroll" value="true" />
-							<param name="bordersize_bg" value="4" />
-						</include>
-						
-					</control>
-				</control>
-			</focusedlayout>
-		</include>
+			</control>
+		</focusedlayout>
+	</include>
 		
-	<!-- widgets -->
+	<!-- widget grouplist calls -->
 	<include name="Home_Widgets">
 		<control type="grouplist" id="5555">
 			<animation time="300" effect="slide" end="0,200" reversible="true" easing="inout" condition="ControlGroup(9000).HasFocus">Conditional</animation>
@@ -555,13 +590,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget1_name)]" />
 				<visible>Control.IsVisible(5001)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget1_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget1_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="1" />
 				<param name="id" value="5001" />
 				<param name="visible" value="Integer.IsGreater(Container(5001).NumItems,0) | Container(5001).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget1_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget1_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="1" />
 				<param name="id" value="5001" />
@@ -574,13 +609,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget2_name)]" />
 				<visible>Control.IsVisible(5002)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget2_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget2_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="2" />
 				<param name="id" value="5002" />
 				<param name="visible" value="Integer.IsGreater(Container(5002).NumItems,0) | Container(5002).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget2_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget2_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="2" />
 				<param name="id" value="5002" />
@@ -593,13 +628,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget3_name)]" />
 				<visible>Control.IsVisible(5003)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget3_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget3_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="3" />
 				<param name="id" value="5003" />
 				<param name="visible" value="Integer.IsGreater(Container(5003).NumItems,0) | Container(5003).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget3_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget3_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="3" />
 				<param name="id" value="5003" />
@@ -612,13 +647,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget4_name)]" />
 				<visible>Control.IsVisible(5004)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget4_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget4_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="4" />
 				<param name="id" value="5004" />
 				<param name="visible" value="Integer.IsGreater(Container(5004).NumItems,0) | Container(5004).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget4_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget4_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="4" />
 				<param name="id" value="5004" />
@@ -631,13 +666,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget5_name)]" />
 				<visible>Control.IsVisible(5005)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget5_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget5_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="5" />
 				<param name="id" value="5005" />
 				<param name="visible" value="Integer.IsGreater(Container(5005).NumItems,0) | Container(5005).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget5_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget5_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="5" />
 				<param name="id" value="5005" />
@@ -650,13 +685,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget6_name)]" />
 				<visible>Control.IsVisible(5006)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget6_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget6_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="6" />
 				<param name="id" value="5006" />
 				<param name="visible" value="Integer.IsGreater(Container(5006).NumItems,0) | Container(5006).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget6_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget6_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="6" />
 				<param name="id" value="5006" />
@@ -669,13 +704,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget7_name)]" />
 				<visible>Control.IsVisible(5007)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget7_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget7_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="7" />
 				<param name="id" value="5007" />
 				<param name="visible" value="Integer.IsGreater(Container(5007).NumItems,0) | Container(5007).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget7_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget7_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="7" />
 				<param name="id" value="5007" />
@@ -688,13 +723,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget8_name)]" />
 				<visible>Control.IsVisible(5008)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget8_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget8_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="8" />
 				<param name="id" value="5008" />
 				<param name="visible" value="Integer.IsGreater(Container(5008).NumItems,0) | Container(5008).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget8_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget8_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="8" />
 				<param name="id" value="5008" />
@@ -707,13 +742,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget9_name)]" />
 				<visible>Control.IsVisible(5009)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget9_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget9_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="9" />
 				<param name="id" value="5009" />
 				<param name="visible" value="Integer.IsGreater(Container(5009).NumItems,0) | Container(5009).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget9_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget9_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="9" />
 				<param name="id" value="5009" />
@@ -726,13 +761,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget10_name)]" />
 				<visible>Control.IsVisible(5010)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget10_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget10_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="10" />
 				<param name="id" value="5010" />
 				<param name="visible" value="Integer.IsGreater(Container(5010).NumItems,0) | Container(5010).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget10_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget10_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="10" />
 				<param name="id" value="5010" />
@@ -745,13 +780,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget11_name)]" />
 				<visible>Control.IsVisible(5011)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget11_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget11_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="11" />
 				<param name="id" value="5011" />
 				<param name="visible" value="Integer.IsGreater(Container(5011).NumItems,0) | Container(5011).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget11_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget11_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="11" />
 				<param name="id" value="5011" />
@@ -764,13 +799,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget12_name)]" />
 				<visible>Control.IsVisible(5012)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget12_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget12_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="12" />
 				<param name="id" value="5012" />
 				<param name="visible" value="Integer.IsGreater(Container(5012).NumItems,0) | Container(5012).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget12_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget12_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="12" />
 				<param name="id" value="5012" />
@@ -783,13 +818,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget13_name)]" />
 				<visible>Control.IsVisible(5013)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget13_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget13_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="13" />
 				<param name="id" value="5013" />
 				<param name="visible" value="Integer.IsGreater(Container(5013).NumItems,0) | Container(5013).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget13_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget13_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="13" />
 				<param name="id" value="5013" />
@@ -802,13 +837,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget14_name)]" />
 				<visible>Control.IsVisible(5014)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget14_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget14_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="14" />
 				<param name="id" value="5014" />
 				<param name="visible" value="Integer.IsGreater(Container(5014).NumItems,0) | Container(5014).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget14_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget14_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="14" />
 				<param name="id" value="5014" />
@@ -821,13 +856,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget15_name)]" />
 				<visible>Control.IsVisible(5015)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget15_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget15_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="15" />
 				<param name="id" value="5015" />
 				<param name="visible" value="Integer.IsGreater(Container(5015).NumItems,0) | Container(5015).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget15_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget15_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="15" />
 				<param name="id" value="5015" />
@@ -840,13 +875,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget16_name)]" />
 				<visible>Control.IsVisible(5016)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget16_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget16_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="16" />
 				<param name="id" value="5016" />
 				<param name="visible" value="Integer.IsGreater(Container(5016).NumItems,0) | Container(5016).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget16_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget16_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="16" />
 				<param name="id" value="5016" />
@@ -859,13 +894,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget17_name)]" />
 				<visible>Control.IsVisible(5017)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget17_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget17_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="7" />
 				<param name="id" value="5017" />
 				<param name="visible" value="Integer.IsGreater(Container(5017).NumItems,0) | Container(5017).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget17_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget17_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="7" />
 				<param name="id" value="5017" />
@@ -878,13 +913,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget18_name)]" />
 				<visible>Control.IsVisible(5018)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget18_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget18_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="18" />
 				<param name="id" value="5018" />
 				<param name="visible" value="Integer.IsGreater(Container(5018).NumItems,0) | Container(5018).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget18_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget18_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="18" />
 				<param name="id" value="5018" />
@@ -897,13 +932,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget19_name)]" />
 				<visible>Control.IsVisible(5019)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget19_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget19_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="19" />
 				<param name="id" value="5019" />
 				<param name="visible" value="Integer.IsGreater(Container(5019).NumItems,0) | Container(5019).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget19_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget19_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="19" />
 				<param name="id" value="5019" />
@@ -916,13 +951,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget20_name)]" />
 				<visible>Control.IsVisible(5020)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget20_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget20_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="20" />
 				<param name="id" value="5020" />
 				<param name="visible" value="Integer.IsGreater(Container(5020).NumItems,0) | Container(5020).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget20_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget20_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="20" />
 				<param name="id" value="5020" />
@@ -935,13 +970,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget21_name)]" />
 				<visible>Control.IsVisible(5021)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget21_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget21_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="21" />
 				<param name="id" value="5021" />
 				<param name="visible" value="Integer.IsGreater(Container(5021).NumItems,0) | Container(5021).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget21_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget21_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="21" />
 				<param name="id" value="5021" />
@@ -954,13 +989,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget22_name)]" />
 				<visible>Control.IsVisible(5022)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget22_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget22_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="22" />
 				<param name="id" value="5022" />
 				<param name="visible" value="Integer.IsGreater(Container(5022).NumItems,0) | Container(5022).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget22_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget22_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="22" />
 				<param name="id" value="5022" />
@@ -973,13 +1008,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget23_name)]" />
 				<visible>Control.IsVisible(5023)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget23_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget23_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="23" />
 				<param name="id" value="5023" />
 				<param name="visible" value="Integer.IsGreater(Container(5023).NumItems,0) | Container(5023).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget23_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget23_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="23" />
 				<param name="id" value="5023" />
@@ -992,13 +1027,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget24_name)]" />
 				<visible>Control.IsVisible(5024)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget24_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget24_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="24" />
 				<param name="id" value="5024" />
 				<param name="visible" value="Integer.IsGreater(Container(5024).NumItems,0) | Container(5024).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget24_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget24_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="24" />
 				<param name="id" value="5024" />
@@ -1011,13 +1046,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget25_name)]" />
 				<visible>Control.IsVisible(5025)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget25_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget25_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="25" />
 				<param name="id" value="5025" />
 				<param name="visible" value="Integer.IsGreater(Container(5025).NumItems,0) | Container(5025).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget25_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget25_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="25" />
 				<param name="id" value="5025" />
@@ -1030,13 +1065,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget26_name)]" />
 				<visible>Control.IsVisible(5026)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget26_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget26_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="26" />
 				<param name="id" value="5026" />
 				<param name="visible" value="Integer.IsGreater(Container(5026).NumItems,0) | Container(5026).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget26_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget26_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="26" />
 				<param name="id" value="5026" />
@@ -1049,13 +1084,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget27_name)]" />
 				<visible>Control.IsVisible(5027)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget27_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget27_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="27" />
 				<param name="id" value="5027" />
 				<param name="visible" value="Integer.IsGreater(Container(5027).NumItems,0) | Container(5027).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget27_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget27_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="27" />
 				<param name="id" value="5027" />
@@ -1068,13 +1103,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget28_name)]" />
 				<visible>Control.IsVisible(5028)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget28_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget28_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="28" />
 				<param name="id" value="5028" />
 				<param name="visible" value="Integer.IsGreater(Container(5028).NumItems,0) | Container(5028).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget28_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget28_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="28" />
 				<param name="id" value="5028" />
@@ -1087,13 +1122,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget29_name)]" />
 				<visible>Control.IsVisible(5029)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget29_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget29_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="29" />
 				<param name="id" value="5029" />
 				<param name="visible" value="Integer.IsGreater(Container(5029).NumItems,0) | Container(5029).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget29_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget29_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="29" />
 				<param name="id" value="5029" />
@@ -1106,13 +1141,13 @@
 				<param name="label" value="$INFO[Skin.String(UserWidget30_name)]" />
 				<visible>Control.IsVisible(5030)</visible>
 			</include>
-			<include content="Widget_Container" condition="!Skin.HasSetting(UserWidget30_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="!Skin.HasSetting(UserWidget30_forceFixedlist)">
 				<param name="type" value="panel" />
 				<param name="nr" value="30" />
 				<param name="id" value="5030" />
 				<param name="visible" value="Integer.IsGreater(Container(5030).NumItems,0) | Container(5030).IsUpdating" />
 			</include>
-			<include content="Widget_Container" condition="Skin.HasSetting(UserWidget30_forceFixedlist)">
+			<include content="Widget_Container_Template" condition="Skin.HasSetting(UserWidget30_forceFixedlist)">
 				<param name="type" value="fixedlist" />
 				<param name="nr" value="30" />
 				<param name="id" value="5030" />
