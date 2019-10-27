@@ -4,27 +4,11 @@
 	<menucontrol>111098</menucontrol>
 	<defaultcontrol always="true">111098</defaultcontrol>
 	<animation effect="fade" start="0" end="100" time="325">WindowOpenClose</animation>
-	<onload>ClearProperty(InitializeMusicHUB,home)</onload>
+	<onload>SetProperty(HUB_Music,common,home)</onload>
+	<onunload>ClearProperty(HUB_Music,home)</onunload>
 	<controls>
 	
 	
-	<!-- ######### -->
-	<!-- WIP NOTES -->
-	<!-- ######### -->
-			<!-- override onclick action for conatainers to stay in hub via set props to let cond groups gain its visibility -->
-					<!-- - e.g. click an artist item dont target music(nav), instead set prop + to gain hub artist /album+song  -->
-			
-			<!-- decisions needed which props are needed for sidepanel buttons, + same as above decide to leave hub via ActivateWindow ,or just set props to let cond groups gain its visibility -->
-			
-			<!-- define laouts ,visible based on props na and-in,or-ing, just handle like a bool to keep it clean -->
-			 <!-- - songs -->
-			 <!-- - artist (artists 1 row, albums with song content based on focused artist) -->
-			 <!-- - common () -->
-			 <!-- - album (?) -->
-			 <!-- - PVR Radio (cant test) -->
-			 <!-- - youtube  (channels,playlist,search results) -->
-			 <!-- - spotify (?) -->
-	 
 	<!-- 
 	ids [windowid]+[2digitnum]
 	
@@ -84,320 +68,341 @@
 					<font />
 					<textcolor />
 				</control>
-				<control type="textbox">
-					<height>50</height>
-					<align>justify</align>
-					<width>1300</width>
-					<font>MenucontrolItem</font>
-					<textcolor>white</textcolor>
-					<label>| place for button and/or player bar hjhjbnjnbjhvhvs jnbhsvgh s |</label>
-				</control>
+				
 			</control>	
 			
 	
 	</control>
+		
+		<control type="image">
+			<visible>String.StartsWith(Window(home).Property(HUB_Music),Is)</visible>
+			<fadetime>350</fadetime>
+			<right>0</right>
+			<top>100</top>
+			<width>84%</width>
+			<texture background="true" colordiffuse="dd555555" diffuse="diffuse/gradient_cliffhanger.png">$INFO[Window(home).Property(HUB_artwork)]</texture>
+			<aspectratio scalediffuse="true" align="right" aligny="top">keep</aspectratio>
+			<animation effect="fade" start="100" end="60" time="0" condition="true">Conditional</animation>
+		</control>
+		<control type="image">
+			<visible>String.StartsWith(Window(home).Property(HUB_Music),Is)</visible>
+			<fadetime>350</fadetime>
+			<right>0</right>
+			<top>100</top>
+			<width>84%</width>
+			<texture background="true" colordiffuse="55ffffff" diffuse="diffuse/gradient_cliffhanger.png">colors/white.png</texture>
+			<aspectratio scalediffuse="true" align="right" aligny="top">stretch</aspectratio>
+		</control>
+		
+		<control type="image">
+			<visible>String.StartsWith(Window(home).Property(HUB_Music),Is)</visible>
+			<fadetime>350</fadetime>
+			<left>17%</left>
+			<bottom>5</bottom>
+			<width>600</width>
+			<height>600</height>   
+			<bordersize>4</bordersize>
+			<bordertexture colordiffuse="ff181818">colors/white.png</bordertexture>
+			<texture background="true" colordiffuse="white">$INFO[Container(5010).ListItem.Art(thumb)]</texture>
+			<aspectratio scalediffuse="true" align="left" aligny="top">keep</aspectratio>
+		</control>
 	
-	<!-- menuconrol left -->
-	
-	
-MusicVideos 				videodb://musicvideos/
-MusicVideoGenres 			videodb://musicvideos/genres/
-MusicVideoTitles 			videodb://musicvideos/titles/
-MusicVideoYears 			videodb://musicvideos/years/
-MusicVideoArtists 			videodb://musicvideos/artists/
-MusicVideoAlbums 			videodb://musicvideos/albums/
-MusicVideoDirectors 		videodb://musicvideos/directors/
-MusicVideoStudios 			videodb://musicvideos/studios/
-RecentlyAddedMusicVideos 	videodb://recentlyaddedmusicvideos/ 
 
- (	addons://sources/video/ )
-
-Root 	library://music/
-  	 
-Genres 	
-Artists 	
-Albums 	
-Song 	
-
-
-<!-- Top100 	musicdb://top100/ -->
-<!-- Top100Songs 	musicdb://top100/songs/ -->
-<!-- Top100Albums 	musicdb://top100/albums/ -->
-<!-- RecentlyPlayedAlbums 	 -->
-<!-- Singles 	musicdb://singles/ -->
-<!-- Playlists 	special://musicplaylists/ -->
-<!-- pvr://recordings/radio/active/DIRECTORY/  -->
 	
 	<control type="group">
 		<height>100%</height>
         <width>16%</width>
 		<posy>100</posy>
 			
-			<include content="bg_gradientmulticolor">
-				<param name="layer2_visible" value="false" />
+		<include content="bg_gradientmulticolor">
+			<param name="layer2_visible" value="false" />
+		</include>
+		
+		<control type="grouplist" id="111098">
+			<posx>10</posx>
+			<onup>100002</onup>
+			<ondown>111098</ondown>
+			<onleft>111097</onleft>
+			<onright>111097</onright>
+			<orientation>vertical</orientation>
+			<itemgap>10</itemgap>
+			
+			<include content="hub_sectionheader">
+				<param name="id" value="01" />
+				<param name="label" value="$LOCALIZE[10516]" />
 			</include>
 			
-			<!-- 
-			testing colors
-			<include content="bg_gradientmulticolor">
-				<param name="layer1_top" value="black" />
-				<param name="layer1_bottom" value="green" />
-				<param name="layer2" value="black" />
-				<param name="layer2_visible" value="true" />
-			</include> -->
+			<include content="hub_button">
+				<param name="visible" value="PVR.HasRadioChannels" />
+				<param name="id" value="02" />
+				<param name="property" value="pvr" />
+				<param name="action" value="ActivateWindow(PVR,pvr://channels/radio/,return)" />
+				<param name="label" value="$LOCALIZE[19024]" />
+				<param name="radio_icon" value="defaultaddonartistinfo.png" />
+			</include>
 			
-			<control type="grouplist" id="111098">
-				<posx>10</posx>
-				<onup>100002</onup>
-				<ondown>111098</ondown>
-				<onleft>111097</onleft>
-				<onright>111097</onright>
+			<include content="hub_button">
+				<param name="id" value="03" />
+				<param name="property" value="common" />
+				<param name="action" value="ActivateWindow(Music,sources://music/,return)" />
+				<param name="label" value="$LOCALIZE[2]" />
+				<param name="radio_icon" value="defaultaddonmusic.png" />
+			</include>
+			
+			<include content="hub_button">
+				<param name="id" value="04" />
+				<param name="property" value="musicvideos" />
+				<param name="action" value="ActivateWindow(Videos,videodb://musicvideos/titles/,return)" />
+				<param name="label" value="$LOCALIZE[20389]" />
+				<param name="radio_icon" value="defaultmusicvideos.png" />
+			</include>
+			
+			<include content="hub_button">
+				<param name="id" value="05" />
+				<param name="property" value="musicaddons" />
+				<param name="action" value="ActivateWindow(Music,addons://sources/audio/,return)" />
+				<param name="label" value="$LOCALIZE[1038]" />
+				<param name="radio_icon" value="defaultaddonlibrary.png" />
+			</include>
+			
+			<include content="hub_button">
+				<param name="visible" value="System.HasAddon(plugin.video.youtube)" />
+				<param name="id" value="06" />
+				<param name="property" value="musicaddons" />
+				<param name="action" value="RunPlugin(plugin.video.youtube)" />
+				<param name="label" value="You Tube" />
+				<param name="radio_icon" value="icons/youtube_1.png" />
+			</include>
+			<include content="hub_button">
+				<param name="visible" value="System.HasAddon(plugin.audio.spotify)" />
+				<param name="id" value="07" />
+				<param name="property" value="musicaddons" />
+				<param name="action" value="RunPlugin(plugin.audio.spotify)" />
+				<param name="label" value="Spotify" />
+				<param name="radio_icon" value="icons/spotify.png" />
+			</include>
+			<include content="hub_button">
+				<param name="visible" value="System.HasAddon(plugin.audio.soundcloud)" />
+				<param name="id" value="08" />
+				<param name="property" value="musicaddons" />
+				<param name="action" value="RunPlugin(plugin.audio.soundcloud)" />
+				<param name="label" value="Soundcloud" />
+				<param name="radio_icon" value="icons/sound2.png" />
+			</include>
+			
+			<include content="spacer_h">
+				<param name="id" value="10" />
+				<param name="gap" value="30" />
+			</include>
+			
+			<include content="hub_sectionheader">
+				<param name="id" value="11" />
+				<param name="label" value="$LOCALIZE[21866]" />
+			</include>
+			
+			<include content="hub_button">
+				<param name="id" value="12" />
+				<param name="property" value="artists" />
+				<param name="action" value="ActivateWindow(Music,musicdb://artists/,return)" />
+				<param name="label" value="$LOCALIZE[133]" />
+				<param name="radio_icon" value="defaultmusicartists.png" />
+			</include>
+			
+			<include content="hub_button">
+				<param name="id" value="13" />
+				<param name="property" value="albums" />
+				<param name="action" value="ActivateWindow(Music,musicdb://albums/,return)" />
+				<param name="label" value="$LOCALIZE[132]" />
+				<param name="radio_icon" value="defaultmusicalbums.png" />
+			</include>
+			<include content="hub_button">
+				<param name="id" value="14" />
+				<param name="property" value="albums" />
+				<param name="action" value="ActivateWindow(Music,musicdb://compilations/,return)" />
+				<param name="label" value="$LOCALIZE[521]" />
+				<param name="radio_icon" value="defaultmusiccompilations.png" />
+			</include>
+			
+			<include content="hub_button">
+				<param name="id" value="15" />
+				<param name="property" value="songs" />
+				<param name="action" value="ActivateWindow(Music,musicdb://songs/,return)" />
+				<param name="label" value="$LOCALIZE[134]" />
+				<param name="radio_icon" value="defaultaddonaudiodecoder.png" />
+			</include>
+			
+			<include content="hub_button">
+				<param name="id" value="16" />
+				<param name="property" value="artists" />
+				<param name="action" value="ActivateWindow(Music,musicdb://genres/,return)" />
+				<param name="label" value="$LOCALIZE[135]" />
+				<param name="radio_icon" value="defaultmusicgenres.png" />
+			</include>
+			
+			<include content="hub_button">
+				<param name="id" value="17" />
+				<param name="property" value="albums" />
+				<param name="action" value="ActivateWindow(Music,musicdb://years/,return)" />
+				<param name="label" value="$LOCALIZE[345]" />
+				<param name="radio_icon" value="defaultyear.png" />
+			</include>
+			
+			<include content="spacer_h">
+				<param name="id" value="20" />
+				<param name="gap" value="30" />
+			</include>
+			<include content="hub_sectionheader">
+				<param name="id" value="21" />
+				<param name="label" value="$LOCALIZE[20382]" />
+			</include>
+			
+			<include content="hub_button">
+				<param name="id" value="22" />
+				<param name="property" value="albums" />
+				<param name="action" value="ActivateWindow(Music,musicdb://recentlyaddedalbums/,return)" />
+				<param name="label" value="$LOCALIZE[359]" />
+				<param name="radio_icon" value="defaultaddonaudiodecoder.png" />
+			</include>
+			<include content="hub_button">
+				<param name="id" value="23" />
+				<param name="property" value="albums" />
+				<param name="action" value="ActivateWindow(Music,musicdb://recentlyplayedalbums/,return)" />
+				<param name="label" value="$LOCALIZE[517]" />
+				<param name="radio_icon" value="defaultaddonaudiodecoder.png" />
+			</include>
+			<include content="hub_button">
+				<param name="id" value="24" />
+				<param name="property" value="musicvideos" />
+				<param name="action" value="ActivateWindow(Videos,videodb://recentlyaddedmusicvideos/,return)" />
+				<param name="label" value="$LOCALIZE[20390]" />
+				<param name="radio_icon" value="defaultaddonaudiodecoder.png" />
+			</include>
+			
+			<include content="spacer_h">
+				<param name="id" value="40" />
+				<param name="gap" value="100" />
+			</include>
+			
+			<include content="hub_sectionheader">
+				<param name="id" value="41" />
+				<param name="label" value="Meine Playlists" />
+			</include>
+			
+			<control type="panel" id="42">
+				<description>doesnt it it here</description>
+				<preloaditems>2</preloaditems>
 				<orientation>vertical</orientation>
-				<itemgap>10</itemgap>
+				<width>300</width>
+				<height>159</height>
 				
-				<include content="hub_sectionheader">
-					<param name="id" value="01" />
-					<param name="label" value="$LOCALIZE[10516]" />
-				</include>
+				<onleft>01</onleft>
+				<onright>41</onright>
+				<onup>41</onup>
+				<ondown>42</ondown>
 				
-				<include content="hub_button">
-					<param name="visible" value="PVR.HasRadioChannels" />
-					<param name="id" value="02" />
-					<param name="property" value="" />
-					<param name="action" value="ActivateWindow(PVR,pvr://channels/radio/,return)" />
-					<param name="label" value="$LOCALIZE[19024]" />
-					<param name="radio_icon" value="defaultaddonartistinfo.png" />
-				</include>
+				<!-- <onclick>ActivateWindow(Music,special://musicplaylists/,return)</onclick> -->
+				<onclick>SetProperty(HUB_Music,playlists,home)</onclick>
 				
-				<include content="hub_button">
-					<param name="id" value="03" />
-					<param name="property" value="" />
-					<param name="action" value="ActivateWindow(Music,sources://music/,return)" />
-					<param name="label" value="$LOCALIZE[2]" />
-					<param name="radio_icon" value="defaultaddonmusic.png" />
-				</include>
+				<scrolltime tween="quadratic">400</scrolltime>
+				<autoscroll>true</autoscroll>
 				
-				<include content="hub_button">
-					<param name="id" value="04" />
-					<param name="property" value="musicvideos" />
-					<param name="action" value="ActivateWindow(Videos,videodb://musicvideos/titles/,return)" />
-					<param name="label" value="$LOCALIZE[20389]" />
-					<param name="radio_icon" value="defaultmusicvideos.png" />
-				</include>
-				
-				<include content="hub_button">
-					<param name="id" value="05" />
-					<param name="property" value="musicaddons" />
-					<param name="action" value="ActivateWindow(Music,addons://sources/audio/,return)" />
-					<param name="label" value="$LOCALIZE[1038]" />
-					<param name="radio_icon" value="defaultaddonlibrary.png" />
-				</include>
-				
-				<include content="hub_button">
-					<param name="visible" value="System.HasAddon(plugin.video.youtube)" />
-					<param name="id" value="06" />
-					<param name="property" value="musicaddons" />
-					<param name="action" value="RunPlugin(plugin.video.youtube)" />
-					<param name="label" value="You Tube" />
-					<param name="radio_icon" value="icons/youtube_1.png" />
-				</include>
-				<include content="hub_button">
-					<param name="visible" value="System.HasAddon(plugin.audio.spotify)" />
-					<param name="id" value="07" />
-					<param name="property" value="musicaddons" />
-					<param name="action" value="RunPlugin(plugin.audio.spotify)" />
-					<param name="label" value="Spotify" />
-					<param name="radio_icon" value="icons/spotify.png" />
-				</include>
-				<include content="hub_button">
-					<param name="visible" value="System.HasAddon(plugin.audio.soundcloud)" />
-					<param name="id" value="08" />
-					<param name="property" value="musicaddons" />
-					<param name="action" value="RunPlugin(plugin.audio.soundcloud)" />
-					<param name="label" value="Soundcloud" />
-					<param name="radio_icon" value="icons/sound2.png" />
-				</include>
-				
-				<include content="spacer_h">
-					<param name="id" value="10" />
-					<param name="gap" value="30" />
-				</include>
-				
-				<include content="hub_sectionheader">
-					<param name="id" value="11" />
-					<param name="label" value="$LOCALIZE[21866]" />
-				</include>
-				
-				
-				<include content="hub_button">
-					<param name="id" value="12" />
-					<param name="property" value="artists" />
-					<param name="action" value="ActivateWindow(Music,musicdb://artists/,return)" />
-					<param name="label" value="$LOCALIZE[133]" />
-					<param name="radio_icon" value="defaultmusicartists.png" />
-				</include>
-				
-				<include content="hub_button">
-					<param name="id" value="13" />
-					<param name="property" value="albums" />
-					<param name="action" value="ActivateWindow(Music,musicdb://albums/,return)" />
-					<param name="label" value="$LOCALIZE[132]" />
-					<param name="radio_icon" value="defaultmusicalbums.png" />
-				</include>
-				<include content="hub_button">
-					<param name="id" value="14" />
-					<param name="property" value="albums" />
-					<param name="action" value="ActivateWindow(Music,musicdb://compilations/,return)" />
-					<param name="label" value="$LOCALIZE[521]" />
-					<param name="radio_icon" value="defaultmusiccompilations.png" />
-				</include>
-				
-				<include content="hub_button">
-					<param name="id" value="15" />
-					<param name="property" value="songs" />
-					<param name="action" value="ActivateWindow(Music,musicdb://songs/,return)" />
-					<param name="label" value="$LOCALIZE[134]" />
-					<param name="radio_icon" value="defaultaddonaudiodecoder.png" />
-				</include>
-				
-				<include content="hub_button">
-					<param name="id" value="16" />
-					<param name="property" value="" />
-					<param name="action" value="ActivateWindow(Music,musicdb://genres/,return)" />
-					<param name="label" value="$LOCALIZE[135]" />
-					<param name="radio_icon" value="defaultmusicgenres.png" />
-				</include>
-				
-				<include content="hub_button">
-					<param name="id" value="17" />
-					<param name="property" value="" />
-					<param name="action" value="ActivateWindow(Music,musicdb://years/,return)" />
-					<param name="label" value="$LOCALIZE[345]" />
-					<param name="radio_icon" value="defaultyear.png" />
-				</include>
-				
-				<include content="spacer_h">
-					<param name="id" value="20" />
-					<param name="gap" value="30" />
-				</include>
-				<include content="hub_sectionheader">
-					<param name="id" value="21" />
-					<param name="label" value="$LOCALIZE[20382]" />
-				</include>
-				
-				<include content="hub_button">
-					<param name="id" value="22" />
-					<param name="property" value="albumsrecent" />
-					<param name="action" value="ActivateWindow(Music,musicdb://recentlyaddedalbums/,return)" />
-					<param name="label" value="$LOCALIZE[359]" />
-					<param name="radio_icon" value="defaultaddonaudiodecoder.png" />
-				</include>
-				<include content="hub_button">
-					<param name="id" value="23" />
-					<param name="property" value="" />
-					<param name="action" value="ActivateWindow(Music,musicdb://recentlyplayedalbums/,return)" />
-					<param name="label" value="$LOCALIZE[517]" />
-					<param name="radio_icon" value="defaultaddonaudiodecoder.png" />
-				</include>
-				<include content="hub_button">
-					<param name="id" value="24" />
-					<param name="property" value="" />
-					<param name="action" value="ActivateWindow(PVR,pvr://channels/radio/,return)" />
-					<param name="label" value="$LOCALIZE[20390]" />
-					<param name="radio_icon" value="defaultaddonaudiodecoder.png" />
-				</include>
-				
-				<include content="spacer_h">
-					<param name="id" value="40" />
-					<param name="gap" value="100" />
-				</include>
-				
-				<include content="hub_sectionheader">
-					<param name="id" value="41" />
-					<param name="label" value="Meine Playlists" />
-				</include>
-				
-				
-				<include content="hub_button">
-					<param name="id" value="42" />
-					<param name="property" value="" />
-					<param name="action" value="" />
-					<param name="label" value="Neo Folk" />
-					<param name="radio_icon" value="defaultmusicplaylists.png" />
-				</include>
-				
-				<include content="hub_button">
-					<param name="id" value="43" />
-					<param name="property" value="" />
-					<param name="action" value="" />
-					<param name="label" value="When we where Young" />
-					<param name="radio_icon" value="defaultmusicplaylists.png" />
-				</include>
-				
-				<include content="hub_button">
-					<param name="id" value="44" />
-					<param name="property" value="" />
-					<param name="action" value="" />
-					<param name="label" value="Best Of 'Gothi 'n' Post-Punk" />
-					<param name="radio_icon" value="defaultmusicplaylists.png" />
-				</include>
+				<itemlayout height="40" width="240">
+					<control type="image">
+						<top>-5</top>
+						<width>40</width>
+						<height>40</height>
+						<left>10</left>
+						<texture colordiffuse="grey">defaultplaylist.png</texture>
+					</control>
+					<control type="textbox">
+						<left>60</left>
+						<width>110%</width>
+						<height>25</height>
+						<textcolor>grey</textcolor>
+						<font>MenucontrolItem</font>
+						<autoscroll>false</autoscroll>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+				</itemlayout>
+				<focusedlayout  height="40" width="240">
+					<control type="image">
+						<top>-5</top>
+						<width>40</width>
+						<height>40</height>
+						<left>10</left>
+						<texture colordiffuse="white">defaultplaylist.png</texture>
+					</control>
+					<control type="textbox">
+						<left>60</left>
+						<width>110%</width>
+						<height>25</height>
+						<font>MenucontrolItem</font>
+						<textcolor>white</textcolor>
+						<autoscroll>true</autoscroll>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+					
+							
+				</focusedlayout>
+				<content>special://musicplaylists/</content>
+				<content>special://skin/playlists/music/</content>
 			</control>
 		</control>
+	</control>
 		
-		<!-- bg ccolor tintet artwork diffuse bg ? -->
-			
 		<control type="grouplist" id="111097">
 			
 			<top>150</top>
 			<bottom>5</bottom>
-			<pagecontrol>111060</pagecontrol>	
-				
 			<left>19%</left>
 			<width>81%</width>
-			<orientation>vertical</orientation>
+			<itemgap>-40</itemgap>
 			
+			<orientation>vertical</orientation>
 			<usecontrolcoords>true</usecontrolcoords>
 			<scrolltime tween="cubic" easing="in">300</scrolltime>
-			<itemgap>-40</itemgap>
+			
 			
 			<ondown>111097</ondown>
 			<onup>100002</onup>
-				
+			
+			<pagecontrol>111060</pagecontrol>
 			<onleft>111060</onleft>
-				
+			
 			<control type="group" id="5556">
 				<description>1st row alignment correction</description>
 				<height>-20</height>
 			</control>
 			
-			<!-- include condition="Skin.HasSetting(Force_StayInMusicHub)">hub_music_OverrideOnClick" /> -->
-			
-			<include content="Universal_ContainerHeader">
+			<include content="HUB_ContainerHeader">
 				<param name="groupid" value="6001" />
 				<param name="id" value="5001" />
 				<param name="label" value="A R T I S T S" />
+				<visible>Control.IsVisible(5001)</visible>
 			</include>
 			
 			<control type="panel" id="5001">
-				<!-- <visible>Integer.IsGreaterOrEqual(Container(5001).NumAllItems,7)</visible> -->
 				<description>hardcoded content artist</description>
+				
+				<visible>String.IsEqual(Window(home).Property(HUB_Music),common)</visible>
+				<include condition="Skin.HasSetting(Force_StayInMusicHub)" content="hub_music_OverrideOnClick" />
+				
 				<left>5</left>
+				<top>50</top>
 				<width>1600</width>
 				<height>850</height>
 				
-				<top>50</top>
-				<preloaditems>2</preloaditems>
-				<orientation>vertical</orientation>
-				
 				<onleft>111060</onleft>
-				<onright>500160</onright>
+				
 				<onup>100002</onup>
 				<ondown>5002</ondown>
 				
-				<scrolltime tween="quadratic">400</scrolltime>
-				<autoscroll>true</autoscroll>
-				
+				<onright>500160</onright>
 				<pagecontrol>500160</pagecontrol>
+				
+				<preloaditems>2</preloaditems>
+				<orientation>vertical</orientation>
+				<scrolltime tween="quadratic">400</scrolltime>
 				
 				<itemlayout height="300" width="420">
 					<control type="group">
@@ -427,43 +432,46 @@ Song
 				</focusedlayout>
 				
 				<content>
-				<item id="999">
-					<label>$LOCALIZE[284]</label>
-					<label2 />
-					<visible>String.IsEmpty(Container(5001).ListitemNoWrap(0).Artist) + String.IsEmpty(Container(5001).ListitemNoWrap(1).Artist)</visible>
-					<icon>special://skin/extras/emptyonsearch/emptywidget.png</icon>
-					<thumb>special://skin/extras/emptyonsearch/emptywidget.png</thumb>
-				</item>
+					<item id="999">
+						<label>$LOCALIZE[284]</label>
+						<label2 />
+						<visible>String.IsEmpty(Container(5001).ListitemNoWrap(0).Artist) + String.IsEmpty(Container(5001).ListitemNoWrap(1).Artist)</visible>
+						<icon>special://skin/extras/emptyonsearch/emptywidget.png</icon>
+						<thumb>special://skin/extras/emptyonsearch/emptywidget.png</thumb>
+					</item>
 				</content>
-				<content target="music" limit="50">$VAR[HUB_content_artists_1]</content>
+				<content target="music">$VAR[HUB_content_artists]</content>
 			</control>
 			
-			
-			<include content="Universal_ContainerHeader">
+			<include content="HUB_ContainerHeader">
 				<param name="groupid" value="6004" />
 				<param name="id" value="5004" />
 				<param name="label" value="Albums" />
+				<visible>Control.IsVisible(5004)</visible>
 			</include>
 			<control type="panel" id="5004">
 				<description>hardcoded content albums</description>
+				
+				<visible>String.IsEqual(Window(home).Property(HUB_Music),albums) | String.IsEqual(Window(home).Property(HUB_Music),common)</visible>
+				<include condition="Skin.HasSetting(Force_StayInMusicHub)" content="hub_music_OverrideOnClick" />
+				
 				<left>5</left>
 				<width>1600</width>
 				<height>610</height>
 				
 				<top>50</top>
-				<preloaditems>2</preloaditems>
-				<orientation>vertical</orientation>
 				
 				<onleft>111060</onleft>
-				<onright>500160</onright>
 				
 				<onup>5004</onup>
 				<ondown>5004</ondown>
+				<onright>500460</onright>
+				<pagecontrol>500460</pagecontrol>
 				
+				<preloaditems>2</preloaditems>
+				<orientation>vertical</orientation>
 				<scrolltime tween="quadratic">400</scrolltime>
 				<autoscroll>true</autoscroll>
-				
-				<pagecontrol>500161</pagecontrol>
 				
 				<itemlayout height="300" width="300">
 					<control type="group">
@@ -487,32 +495,31 @@ Song
 								<param name="autoscroll" value="true" />
 								<param name="bordersize_bg" value="4" />
 							</include>
-							
 						</control>
 					</control>
-					
-							
 				</focusedlayout>
 				<content>
 					<item id="888">
-						<description>hidden if empty workaround</description>
-						<label>No Results Found</label>
+						<label>$LOCALIZE[284]</label>
 						<label2 />
 						<visible>String.IsEmpty(Container(5004).ListitemNoWrap(0).Album) + String.IsEmpty(Container(5004).ListitemNoWrap(1).Album)</visible>
 						<icon>$VAR[emptywidget]</icon>
 						<thumb>$VAR[emptywidget]</thumb>
 					</item>
-				  </content>
-				<content limit="50">$VAR[HUB_content_albums_1]</content>
+				</content>
+				<content sortby="year" sortorder="ascending" limit="0">$VAR[HUB_content_albums_artist_or_title]</content>
 			</control>
 			
-			<include content="Universal_ContainerHeader">
+			<include content="HUB_ContainerHeader">
 				<param name="groupid" value="6005" />
 				<param name="id" value="5005" />
 				<param name="label" value="Songs" />
+				<visible>Control.IsVisible(5005)</visible>
 			</include>
 			<control type="panel" id="5005">
 				<description>hardcoded content songs</description>
+				<visible>String.IsEqual(Window(home).Property(HUB_Music),songs) | String.IsEqual(Window(home).Property(HUB_Music),common)</visible>
+				
 				<left>5</left>
 				<width>1600</width>
 				<height>200</height>
@@ -521,15 +528,14 @@ Song
 				<orientation>vertical</orientation>
 				
 				<onleft>111060</onleft>
-				<onright>500160</onright>
+				<onright>260</onright>
+				<pagecontrol>260</pagecontrol>
 				
 				<onup>5005</onup>
 				<ondown>5005</ondown>
 				
 				<scrolltime tween="quadratic">400</scrolltime>
 				<autoscroll>true</autoscroll>
-				
-				<pagecontrol>500161</pagecontrol>
 				
 				<itemlayout height="100" width="500">
 					<control type="group">
@@ -553,42 +559,60 @@ Song
 								<param name="autoscroll" value="true" />
 								<param name="bordersize_bg" value="4" />
 							</include>
-							
+						</control>
+						<control type="image">
+							<centertop>50%</centertop>
+							<visible>!ListItem.IsPlaying</visible>
+							<left>14</left>
+							<visible>true</visible>
+							<width>60</width>
+							<height>60</height>
+							<texture diffuse="artworkdiffuse/circle.png" background="true">overlay/overlay_button_play.png</texture>
+							<colordiffuse>white</colordiffuse>
+							<bordersize>2</bordersize>
+							<bordertexture colordiffuse="55000000">artworkdiffuse/circle.png</bordertexture>
 						</control>
 					</control>
-					
-							
 				</focusedlayout>
 				<content>
 					<item id="777">
-						<description>hidden if empty workaround</description>
-						<label>No Results Found</label>
+						<label>$LOCALIZE[284]</label>
 						<label2 />
 						<visible>String.IsEmpty(Container(5005).ListitemNoWrap(0).Title) + String.IsEmpty(Container(5005).ListitemNoWrap(1).Title)</visible>
 						<icon>special://skin/extras/emptyonsearch/emptywidget.png</icon>
 						<thumb>special://skin/extras/emptyonsearch/emptywidget.png</thumb>
 					</item>
 				  </content>
-				<content limit="20">$VAR[HUB_content_songs_1]</content>
+				<content sortby="title" sortorder="ascending">$VAR[HUB_content_songs_title_or_artist]</content>
+				<!-- limit needed ? <content>$VAR[HUB_content_songs_title]</content> -->
+				<!-- no limit needed <content>$VAR[HUB_content_songs_artist]</content> -->
 			</control>
 			
-			<include content="Universal_ContainerHeader">
+			<include content="HUB_ContainerHeader">
 				<param name="groupid" value="6006" />
 				<param name="id" value="5006" />
-				<param name="label" value="TEST CIRCLE" />
+				<param name="label" value="Music Videos" />
+				<visible>Control.IsVisible(5006)</visible>
 			</include>
 			<control type="panel" id="5006">
-				<description>hardcoded content songs</description>
+				<description>hardcoded content Music Videos</description>
+				<visible>
+				[String.IsEqual(Window(home).Property(HUB_Music),common) | 
+				String.IsEqual(Window(home).Property(HUB_Music),artists) | 
+				String.IsEqual(Window(home).Property(HUB_Music),songs) | 
+				String.IsEqual(Window(home).Property(HUB_Music),musicvideos)]
+				</visible>
 				<left>5</left>
 				<width>1600</width>
-				<height>630</height>
+				<height>850</height>
 				
 				<top>50</top>
 				<preloaditems>2</preloaditems>
 				<orientation>vertical</orientation>
 				
 				<onleft>111060</onleft>
-				<onright>500160</onright>
+				<onright>660</onright>
+				<pagecontrol>660</pagecontrol>
 				
 				<onup>5002</onup>
 				<ondown>5002</ondown>
@@ -596,63 +620,132 @@ Song
 				<scrolltime tween="quadratic">400</scrolltime>
 				<autoscroll>true</autoscroll>
 				
-				<pagecontrol>500161</pagecontrol>
-				<itemlayout height="360" width="310">
+				<itemlayout height="300" width="420">
 					<control type="group">
-						<height>260</height>
-						<width>260</width>
-						<include content="HUB_Circle">
+						<height>243</height>
+						<width>405</width>
+						<include content="HUB_Landscape">
 							<param name="colordiffuse" value="$VAR[Container_item_nf]" />
-							<param name="artwork" value="circle" />
 							<param name="autoscroll" value="false" />
-							<param name="bordersize_bg" value="4" />
+							<param name="bordersize_bg" value="6" />
 						</include>
 					</control>
 				</itemlayout>
-				<focusedlayout height="360" width="310">
+				<focusedlayout height="300" width="420">
 					<control type="group">
-						<height>260</height>
-						<width>260</width>
+						<height>243</height>
+						<width>405</width>
 						<include>Item_Focus_Animation</include>
 						<control type="group">
-							<include content="HUB_Circle">
+							<include content="HUB_Landscape">
 								<param name="colordiffuse" value="$VAR[Container_item_fo]" />
 								<param name="autoscroll" value="true" />
-								<param name="bordersize_bg" value="6" />
+								<param name="bordersize_bg" value="4" />
 							</include>
-							
+							<include>FocusOverlay</include>
 						</control>
 					</control>
-					
-							
 				</focusedlayout>
 				<content>
 					<item id="666">
-						<description>hidden if empty workaround</description>
-						<label>No Results Found</label>
+						<label>$LOCALIZE[284]</label>
 						<label2 />
 						<visible>String.IsEmpty(Container(5006).ListitemNoWrap(0).Artist) + String.IsEmpty(Container(5006).ListitemNoWrap(1).Artist)</visible>
 						
 						<icon>special://skin/extras/emptyonsearch/emptywidget.png</icon>
 						<thumb>special://skin/extras/emptyonsearch/emptywidget.png</thumb>
 					</item>
-				  </content>
-				<content limit="20">$VAR[HUB_content_artists_2]</content>
+				</content>
+				<content sortby="artist" sortorder="ascending" limit="0" target="videos">$VAR[HUB_content_musicvideo_titles_or_artist]</content>
+			</control>
+			
+			
+			<!-- ################### -->
+			<!-- SPECIAL ARTIST VIEW -->
+			<!-- String.IsEqual(Window(home).Property(HUB_Music),IsHUBartistContent) -->
+			<!-- ################### -->
+			
+			<control type="panel" id="5010">
+				<description>hardcoded content Music Videos</description>
+				<visible>String.IsEqual(Window(home).Property(HUB_Music),IsHUBartistContent)</visible>
+				
+				<top>400</top>
+				<left>600</left>
+				<width>950</width>
+				<height>599</height>
+				
+				<preloaditems>2</preloaditems>
+				<orientation>vertical</orientation>
+				<scrolltime tween="quadratic">400</scrolltime>
+				<autoscroll>true</autoscroll>
+				
+				<pagecontrol>500161</pagecontrol>
+				
+				<onright></onright>
+				<onup>5002</onup>
+				<ondown>5002</ondown>
+				<onback>SetProperty(HUB_Music,common,home)</onback>
+				<onback>ClearProperty(HUB_artwork,home)</onback>
+				<onback>ClearProperty(HUB_Music_artists,home)</onback>
+				<onback>111098</onback>
+				
+				<itemlayout height="100" width="900">
+					<control type="group">
+						<height>90</height>
+						<width>880</width>
+						<include content="HUB_box">
+							<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+							<param name="autoscroll" value="false" />
+							<param name="bordersize_bg" value="6" />
+						</include>
+					</control>
+				</itemlayout>
+				<focusedlayout height="100" width="900">
+					<control type="group">
+						<height>90</height>
+						<width>880</width>
+						<control type="group">
+							<include content="HUB_box">
+								<param name="colordiffuse" value="$VAR[Container_item_fo]" />
+								<param name="autoscroll" value="true" />
+								<param name="bordersize_bg" value="4" />
+							</include>
+						</control>
+						<control type="image">
+							<centertop>50%</centertop>
+							<visible>!ListItem.IsPlaying</visible>
+							<left>14</left>
+							<visible>true</visible>
+							<width>60</width>
+							<height>60</height>
+							<texture diffuse="artworkdiffuse/circle.png" background="true">overlay/overlay_button_play.png</texture>
+							<colordiffuse>white</colordiffuse>
+							<bordersize>2</bordersize>
+							<bordertexture colordiffuse="55000000">artworkdiffuse/circle.png</bordertexture>
+						</control>
+					</control>
+				</focusedlayout>
+				<content sortby="year" sortorder="ascending">$VAR[HUB_Artist]</content>
 			</control>
 			
 			
 		</control>
-		 
+		
 		<control type="scrollbar" id="111060">
-			<description>[windowid]60 all containers</description>
+			<description>all containers, slide left, NonSkin BUG:sometimes need scroll input to set page exist true</description>
+			<showonepage>true</showonepage>
+			<visible>true</visible>
+			
 			<left>301</left>
 			<top>100</top>
-			<onup>100002</onup>
+			<height>980</height>
+			<onup>111060</onup>
 			<ondown>111060</ondown>
 			<onleft>111098</onleft>
 			<onright>111097</onright>
-			<height>1200</height>
+			
 		</control>
+		
 		
 		<control type="scrollbar" id="500160">
 			<description>current container</description>
@@ -665,6 +758,20 @@ Song
 			<onleft>5001</onleft>
 			<height>800</height>
 		</control>
+		
+		<control type="scrollbar" id="500460">
+			<description>current container albums</description>
+			<visible>String.IsEqual(Window(home).Property(HUB_Music),common)</visible>
+			<right>10</right>
+			<top>180</top>
+			
+			<onup>500460</onup>
+			<ondown>500460</ondown>
+			
+			<onleft>5004</onleft>
+			<height>800</height>
+		</control>
 	
+	<include content="swan_debug_overlay" />
 	</controls>
 </window>
