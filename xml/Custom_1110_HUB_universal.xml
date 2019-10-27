@@ -518,7 +518,7 @@
 			</include>
 			<control type="panel" id="5005">
 				<description>hardcoded content songs</description>
-				<visible>String.IsEqual(Window(home).Property(HUB_Music),songs) | String.IsEqual(Window(home).Property(HUB_Music),common)</visible>
+				<visible>String.IsEqual(Window(home).Property(HUB_Music),common)</visible>
 				
 				<left>5</left>
 				<width>1600</width>
@@ -587,20 +587,95 @@
 				<!-- limit needed ? <content>$VAR[HUB_content_songs_title]</content> -->
 				<!-- no limit needed <content>$VAR[HUB_content_songs_artist]</content> -->
 			</control>
-			
 			<include content="HUB_ContainerHeader">
 				<param name="groupid" value="6006" />
 				<param name="id" value="5006" />
-				<param name="label" value="Music Videos" />
+				<param name="label" value="Songs" />
 				<visible>Control.IsVisible(5006)</visible>
 			</include>
 			<control type="panel" id="5006">
+				<description>hardcoded content songs</description>
+				<visible>String.IsEqual(Window(home).Property(HUB_Music),songs)</visible>
+				
+				<left>5</left>
+				<width>1600</width>
+				<height>799</height>
+				<top>50</top>
+				<preloaditems>2</preloaditems>
+				<orientation>vertical</orientation>
+				
+				<onleft>111060</onleft>
+				<onright>260</onright>
+				<pagecontrol>260</pagecontrol>
+				
+				<onup>5005</onup>
+				<ondown>5005</ondown>
+				
+				<scrolltime tween="quadratic">400</scrolltime>
+				<autoscroll>true</autoscroll>
+				
+				<itemlayout height="100" width="500">
+					<control type="group">
+						<height>90</height>
+						<width>480</width>
+						<include content="HUB_box">
+							<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+							<param name="autoscroll" value="false" />
+							<param name="bordersize_bg" value="6" />
+						</include>
+					</control>
+				</itemlayout>
+				<focusedlayout height="100" width="500">
+					<control type="group">
+						<height>90</height>
+						<width>480</width>
+						<include>Item_Focus_Animation</include>
+						<control type="group">
+							<include content="HUB_box">
+								<param name="colordiffuse" value="$VAR[Container_item_fo]" />
+								<param name="autoscroll" value="true" />
+								<param name="bordersize_bg" value="4" />
+							</include>
+						</control>
+						<control type="image">
+							<centertop>50%</centertop>
+							<visible>!ListItem.IsPlaying</visible>
+							<left>14</left>
+							<visible>true</visible>
+							<width>60</width>
+							<height>60</height>
+							<texture diffuse="artworkdiffuse/circle.png" background="true">overlay/overlay_button_play.png</texture>
+							<colordiffuse>white</colordiffuse>
+							<bordersize>2</bordersize>
+							<bordertexture colordiffuse="55000000">artworkdiffuse/circle.png</bordertexture>
+						</control>
+					</control>
+				</focusedlayout>
+				<content>
+					<item id="777">
+						<label>$LOCALIZE[284]</label>
+						<label2 />
+						<visible>String.IsEmpty(Container(5006).ListitemNoWrap(0).Title) + String.IsEmpty(Container(5006).ListitemNoWrap(1).Title)</visible>
+						<icon>special://skin/extras/emptyonsearch/emptywidget.png</icon>
+						<thumb>special://skin/extras/emptyonsearch/emptywidget.png</thumb>
+					</item>
+				  </content>
+				<content sortby="title" sortorder="ascending">$VAR[HUB_content_songs_title_or_artist]</content>
+			</control>
+			
+			<include content="HUB_ContainerHeader">
+				<param name="groupid" value="6007" />
+				<param name="id" value="5007" />
+				<param name="label" value="Music Videos" />
+				<visible>Control.IsVisible(5007)</visible>
+			</include>
+			<control type="panel" id="5007">
 				<description>hardcoded content Music Videos</description>
 				<visible>
-				[String.IsEqual(Window(home).Property(HUB_Music),common) | 
+				String.IsEqual(Window(home).Property(HUB_Music),common) | 
 				String.IsEqual(Window(home).Property(HUB_Music),artists) | 
 				String.IsEqual(Window(home).Property(HUB_Music),songs) | 
-				String.IsEqual(Window(home).Property(HUB_Music),musicvideos)]
+				String.IsEqual(Window(home).Property(HUB_Music),musicvideos)
 				</visible>
 				<left>5</left>
 				<width>1600</width>
@@ -650,8 +725,7 @@
 					<item id="666">
 						<label>$LOCALIZE[284]</label>
 						<label2 />
-						<visible>String.IsEmpty(Container(5006).ListitemNoWrap(0).Artist) + String.IsEmpty(Container(5006).ListitemNoWrap(1).Artist)</visible>
-						
+						<visible>String.IsEmpty(Container(5007).ListitemNoWrap(0).Artist) + String.IsEmpty(Container(5007).ListitemNoWrap(1).Artist)</visible>
 						<icon>special://skin/extras/emptyonsearch/emptywidget.png</icon>
 						<thumb>special://skin/extras/emptyonsearch/emptywidget.png</thumb>
 					</item>
@@ -739,7 +813,7 @@
 			<left>301</left>
 			<top>100</top>
 			<height>980</height>
-			<onup>111060</onup>
+			<onup>111099</onup>
 			<ondown>111060</ondown>
 			<onleft>111098</onleft>
 			<onright>111097</onright>
