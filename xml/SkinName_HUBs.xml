@@ -290,9 +290,9 @@
 	<!-- Container Header : label- sep - focused item label - busy -->
 	<include name="HUB_ContainerHeader">
 		
-		
 		<definition>
             <control type="group" id="$PARAM[groupid]">
+				<visible>Control.IsVisible($PARAM[id])</visible>
                 <top>50</top>
                 <height>55</height>
                 <nested />
@@ -312,9 +312,7 @@
 						<textcolor>black</textcolor>
 						<font>font29</font>
 						<height>22</height>
-						<visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) | !Container($PARAM[id]).IsUpdating</visible>
 					</control>
-						
 					<control type="label">
                         <top>0</top>
                         <width>auto</width>
@@ -323,9 +321,8 @@
                         <textcolor>cyan</textcolor>
                         <font>Bold36</font>
                         <height>50</height>
-                        <visible>Control.HasFocus($PARAM[id])</visible>
+                        <visible>Control.HasFocus($PARAM[id]) + !Container($PARAM[id]).IsUpdating</visible>
                         <visible>!String.IsEmpty(Container($PARAM[id]).ListItem.Label)</visible>
-                        <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) + !Container($PARAM[id]).IsUpdating</visible>
                     </control>
 					<control type="label">
                         <top>20</top>
@@ -335,9 +332,7 @@
 						<textcolor>$VAR[Headingline_Widget]</textcolor>
 						<font>font27</font>
                         <height>24</height>
-						<visible></visible>
-                        <visible>[!Window.IsActive(home) + Control.HasFocus($PARAM[id])] | [[Window.IsActive(home) + Skin.HasSetting(ShowFocusedLabelInHeader_Home)] + Control.HasFocus($PARAM[id])]</visible>
-                        <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) + !Container($PARAM[id]).IsUpdating</visible>
+						<visible>Control.HasFocus($PARAM[id]) + !Container($PARAM[id]).IsUpdating</visible>
                     </control>
 					<control type="image">
 						<visible>Container($PARAM[id]).IsUpdating</visible>
@@ -348,19 +343,18 @@
 						<texture colordiffuse="cyan">special://skin/extras/busy/skypishball.apng</texture>
 						<aspectratio align="center" aligny="center">keep</aspectratio>
 					</control>
-					
 				</control>
 				<control type="label">
-							<top>32</top>
-							<left>11</left>
-							<width>auto</width>
-							<label>$INFO[Container($PARAM[id]).NumItems, numitems (,)]</label>
-							<aligny>center</aligny>
-							<textcolor>black</textcolor>
-							<font>HUB_WidgetSubHeader</font>
-							<height>24</height>
-							<visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) | !Container($PARAM[id]).IsUpdating</visible>
-						</control>
+					<top>32</top>
+					<left>11</left>
+					<width>auto</width>
+					<label>$INFO[Container($PARAM[id]).NumItems, numitems (,)]</label>
+					<aligny>center</aligny>
+					<textcolor>black</textcolor>
+					<font>HUB_WidgetSubHeader</font>
+					<height>24</height>
+					<visible>!Container($PARAM[id]).IsUpdating</visible>
+				</control>
             </control>
         </definition>
     </include>
@@ -368,7 +362,8 @@
 	<!-- ########## -->
 	<!-- Content -->
 	<!-- ########## -->
-<!-- contains 	True if the field contains the parameter as a substring
+<!-- 
+contains 	True if the field contains the parameter as a substring
 doesnotcontain 	True if the field does not contain the parameter as a substring
 is 	True if the field matches the parameter exactly
 isnot 	True if the field does not match the parameter exactly
@@ -385,7 +380,7 @@ notinthelast 	True if the field does not fall in the last range specified by the
 			 <!-- MME Tools - decoded -->
 			 <!-- {"order":{"direction":"ascending","ignorefolders":0,"method":"sortyear"},"rules":{"and":[{"field":"albumartist","operator":"contains","value":["$INFO[Window.Property(Artistname)]"]}]},"type":"albums"} -->
 			 
-			 <!-- MME Tools - encoded (NOTE '[' = '%5B') -->
+			 <!-- MME Tools - encoded -->
 			 <!--musicdb://albums/?xsp= %20%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22,%22ignorefolders%22%3A0,%22method%22%3A%22sortyear%22%7D,%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22albumartist%22,%22operator%22%3A%22contains%22,%22value%22%3A%5B%22$INFO[Window.Property(Artistname)]%22%5D%7D%5D%7D,%22type%22%3A%22albums%22%7D -->
 				
 				
@@ -416,8 +411,8 @@ notinthelast 	True if the field does not fall in the last range specified by the
 	albumartist contains label or album contains label
 	{"rules":{"or":[{"field":"albumartist","operator":"contains","value":["$INFO[Control.GetLabel(100002).index(1)]"]},{"field":"album","operator":"contains","value":["$INFO[Control.GetLabel(100002).index(1)]"]}]},"type":"albums"}
 	
-	predefine attribution
-	musicdb://artists/?xsp={"order":{"direction":"ascending","ignorefolders":0,"method":"sorttitle"},"rules":{"and":[{"field":"artist","operator":"contains","value":["$INFO[Control.GetLabel(100002).index(1)]"]}]},"type":"artists"}
+	predefine attributes
+	{"order":{"direction":"ascending","ignorefolders":0,"method":"sorttitle"},"rules":{"and":[{"field":"artist","operator":"contains","value":["$INFO[Control.GetLabel(100002).index(1)]"]}]},"type":"artists"}
 	-->
 	 <!-- erkennt keine sonderzeichen z.b. & -->
 	<variable name="HUB_content_artists">
@@ -518,9 +513,9 @@ notinthelast 	True if the field does not fall in the last range specified by the
 			</control>
 		</definition>
 	</include>
+	
 	<include name="HUB_Scrollbar_left">
 		<pagecontrol>$PARAM[scrollbar_id]</pagecontrol>
 		<onleft>$PARAM[scrollbar_id]</onleft>
 	</include>
-	
 </includes>

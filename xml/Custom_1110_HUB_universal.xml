@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window type="window" id="1110">
-	<backgroundcolor>FFFFFFFF</backgroundcolor>
+	<backgroundcolor>BackgroundColor_HUB</backgroundcolor>
 	<menucontrol>111098</menucontrol>
 	<defaultcontrol always="true">111098</defaultcontrol>
 	<animation effect="fade" start="0" end="100" time="325">WindowOpenClose</animation>
@@ -21,7 +21,7 @@
 	<control type="group">
 		<height>100</height>
         <width>100%</width>
-		<description>H U B   H E A D E R    B A R</description>	
+		<description>H U B    H E A D E R    B A R</description>	
 			<include content="bg_gradientmulticolor">
 				<param name="layer1_top" value="darkblue" />
 				<param name="layer1_bottom" value="ff000000" />
@@ -74,50 +74,60 @@
 	
 	</control>
 		
-		<control type="image">
-			<visible>String.StartsWith(Window(home).Property(HUB_Music),Is)</visible>
-			<fadetime>350</fadetime>
-			<right>0</right>
-			<top>100</top>
-			<width>84%</width>
-			<texture background="true" colordiffuse="dd555555" diffuse="diffuse/gradient_cliffhanger.png">$INFO[Window(home).Property(HUB_artwork)]</texture>
-			<aspectratio scalediffuse="true" align="right" aligny="top">keep</aspectratio>
-			<animation effect="fade" start="100" end="60" time="0" condition="true">Conditional</animation>
-		</control>
-		<control type="image">
-			<visible>String.StartsWith(Window(home).Property(HUB_Music),Is)</visible>
-			<fadetime>350</fadetime>
-			<right>0</right>
-			<top>100</top>
-			<width>84%</width>
-			<texture background="true" colordiffuse="55ffffff" diffuse="diffuse/gradient_cliffhanger.png">colors/white.png</texture>
-			<aspectratio scalediffuse="true" align="right" aligny="top">stretch</aspectratio>
-		</control>
+	<control type="group">
+		<right>0</right>
+		<top>100</top>
+		<width>84%</width>
+		<description>B G    F A N A R T    M U S I C V I D E O</description>
 		
 		<control type="image">
 			<visible>String.StartsWith(Window(home).Property(HUB_Music),Is)</visible>
 			<fadetime>350</fadetime>
-			<left>17%</left>
-			<bottom>5</bottom>
-			<width>600</width>
-			<height>600</height>   
-			<bordersize>4</bordersize>
-			<bordertexture colordiffuse="ff181818">colors/white.png</bordertexture>
-			<texture background="true" colordiffuse="white">$INFO[Container(5010).ListItem.Art(thumb)]</texture>
-			<aspectratio scalediffuse="true" align="left" aligny="top">keep</aspectratio>
+			<bordertexture diffuse="diffuse/landscape_gradient_100.png" colordiffuse="ffffffff">colors/white.png</bordertexture>
+			<texture background="true" diffuse="diffuse/landscape_gradient_soft.png">$INFO[Window(home).Property(HUB_artwork)]</texture>
+			<aspectratio scalediffuse="true" align="right" aligny="top">keep</aspectratio>
 		</control>
+		<control type="image">
+			<description>hard the get perfect alpha - bright vs dark fanart</description>
+			<visible>String.StartsWith(Window(home).Property(HUB_Music),Is)</visible>
+			<fadetime>350</fadetime>
+			<bordertexture diffuse="diffuse/landscape_gradient_100.png" colordiffuse="12ffffff">colors/white.png</bordertexture>
+			<texture diffuse="diffuse/landscape_gradient_100.png" colordiffuse="BackgroundColor_HUB">colors/white70.png</texture>
+			<aspectratio scalediffuse="true" align="right" aligny="top">scale</aspectratio>
+		</control>
+		
+		<control type="group">
+			<description>BG VideoControl</description>
+			<visible>Player.HasVideo + String.Contains(Player.dbtype,musicvideo)</visible>
+			<control type="videowindow" />
+			<control type="image">
+				<description>overlay</description>
+				<texture colordiffuse="white">overlay/Netflix_origin.png</texture>
+			</control>
+		</control>
+	</control>
 	
-
+	<control type="image" description="test Album thumb position">
+		<visible>String.StartsWith(Window(home).Property(HUB_Music),Is)</visible>
+		<fadetime>350</fadetime>
+		<left>17%</left>
+		<bottom>20</bottom>
+		<width>600</width>
+		<height>600</height>   
+		<bordersize>4</bordersize>
+		<bordertexture colordiffuse="ff181818">colors/white.png</bordertexture>
+		<texture background="true" colordiffuse="white">$INFO[Container(5010).ListItem.Art(thumb)]</texture>
+		<aspectratio scalediffuse="true" align="left" aligny="bottom">keep</aspectratio>
+	</control>
 	
 	<control type="group">
+		<description>S I D E    B A R    L E F T</description>
 		<height>100%</height>
         <width>16%</width>
 		<posy>100</posy>
-			
 		<include content="bg_gradientmulticolor">
 			<param name="layer2_visible" value="false" />
 		</include>
-		
 		<control type="grouplist" id="111098">
 			<posx>10</posx>
 			<onup>100002</onup>
@@ -192,12 +202,11 @@
 			
 			<include content="spacer_h">
 				<param name="id" value="10" />
-				<param name="gap" value="30" />
 			</include>
 			
 			<include content="hub_sectionheader">
 				<param name="id" value="11" />
-				<param name="label" value="$LOCALIZE[21866]" />
+				<param name="label" value="$LOCALIZE[31148]" />
 			</include>
 			
 			<include content="hub_button">
@@ -249,7 +258,6 @@
 			
 			<include content="spacer_h">
 				<param name="id" value="20" />
-				<param name="gap" value="30" />
 			</include>
 			<include content="hub_sectionheader">
 				<param name="id" value="21" />
@@ -356,12 +364,10 @@
 			<bottom>5</bottom>
 			<left>19%</left>
 			<width>81%</width>
-			<itemgap>-40</itemgap>
-			
+			<itemgap>-45</itemgap>
 			<orientation>vertical</orientation>
 			<usecontrolcoords>true</usecontrolcoords>
 			<scrolltime tween="cubic" easing="in">300</scrolltime>
-			
 			
 			<ondown>111097</ondown>
 			<onup>100002</onup>
@@ -369,16 +375,15 @@
 			<pagecontrol>111060</pagecontrol>
 			<onleft>111060</onleft>
 			
-			<control type="group" id="5556">
-				<description>1st row alignment correction</description>
-				<height>-20</height>
-			</control>
+			<include content="spacer_h">
+				<param name="id" value="5000" />
+				<param name="gap" value="0" />
+			</include>
 			
 			<include content="HUB_ContainerHeader">
 				<param name="groupid" value="6001" />
 				<param name="id" value="5001" />
 				<param name="label" value="A R T I S T S" />
-				<visible>Control.IsVisible(5001)</visible>
 			</include>
 			
 			<control type="panel" id="5001">
@@ -447,7 +452,6 @@
 				<param name="groupid" value="6004" />
 				<param name="id" value="5004" />
 				<param name="label" value="Albums" />
-				<visible>Control.IsVisible(5004)</visible>
 			</include>
 			<control type="panel" id="5004">
 				<description>hardcoded content albums</description>
@@ -514,7 +518,6 @@
 				<param name="groupid" value="6005" />
 				<param name="id" value="5005" />
 				<param name="label" value="Songs" />
-				<visible>Control.IsVisible(5005)</visible>
 			</include>
 			<control type="panel" id="5005">
 				<description>hardcoded content songs</description>
@@ -591,7 +594,6 @@
 				<param name="groupid" value="6006" />
 				<param name="id" value="5006" />
 				<param name="label" value="Songs" />
-				<visible>Control.IsVisible(5006)</visible>
 			</include>
 			<control type="panel" id="5006">
 				<description>hardcoded content songs</description>
@@ -667,7 +669,6 @@
 				<param name="groupid" value="6007" />
 				<param name="id" value="5007" />
 				<param name="label" value="Music Videos" />
-				<visible>Control.IsVisible(5007)</visible>
 			</include>
 			<control type="panel" id="5007">
 				<description>hardcoded content Music Videos</description>
@@ -739,11 +740,14 @@
 			<!-- String.IsEqual(Window(home).Property(HUB_Music),IsHUBartistContent) -->
 			<!-- ################### -->
 			
+			<include content="spacer_h">
+				<param name="id" value="6010" />
+				<param name="gap" value="400" />
+			</include>
 			<control type="panel" id="5010">
 				<description>hardcoded content Music Videos</description>
 				<visible>String.IsEqual(Window(home).Property(HUB_Music),IsHUBartistContent)</visible>
 				
-				<top>400</top>
 				<left>600</left>
 				<width>950</width>
 				<height>599</height>
@@ -801,8 +805,6 @@
 				</focusedlayout>
 				<content sortby="year" sortorder="ascending">$VAR[HUB_Artist]</content>
 			</control>
-			
-			
 		</control>
 		
 		<control type="scrollbar" id="111060">
