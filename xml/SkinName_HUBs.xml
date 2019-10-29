@@ -66,8 +66,6 @@
 		</control>
 	</include>
 	
-	
-	
 	<include name="HUB_square">
 		<control type="image">
 			<description>bordertexture</description>
@@ -96,7 +94,6 @@
 				<label>$VAR[Tags_Bottom]</label>
 		</control>
 	</include>
-	
 	
 	
 	<include name="HUB_box_old">
@@ -212,7 +209,74 @@
 			<texture>rating/stars/$INFO[ListItem.Rating].png</texture>
 		</control>
 	</include>
-	
+	<include name="HUB_box_test">
+		<control type="image">
+			<visible>!String.IsEqual(Window(home).Property(HUB_Music),IsHUBartistContent)</visible>
+			<left>50</left>
+			<bordertexture colordiffuse="$PARAM[colordiffuse]">artworkdiffuse/banner.png</bordertexture>
+			<texture background="true" diffuse="artworkdiffuse/banner.png" fallback="DefaultAudio.png">artworkdiffuse/banner.png</texture>
+			<colordiffuse>FF202020</colordiffuse>
+			<bordersize>3</bordersize>
+		</control>
+		<control type="image">
+			<visible>!String.IsEqual(Window(home).Property(HUB_Music),IsHUBartistContent)</visible>
+			<description>thumb vis on prop yy</description>
+			<visible>true</visible>
+			<width>90</width>
+			<height>90</height>
+			<texture background="true" diffuse="artworkdiffuse/circle.png" fallback="DefaultAudio.png">$INFO[ListItem.Art(thumb)]</texture>
+			<bordertexture colordiffuse="white">artworkdiffuse/circle.png</bordertexture>
+			<bordersize>2</bordersize>
+		</control>
+		<control type="image">
+			<description>playing equalizer</description>
+			<centertop>50%</centertop>
+			<left>14</left>
+			<width>40</width>
+			<height>40</height>
+			<texture background="true">misc/playingsong.gif</texture>
+			<colordiffuse>cyan</colordiffuse>
+			<bordersize>4</bordersize>
+			<visible>ListItem.IsPlaying</visible>
+			<bordertexture colordiffuse="55000000">artworkdiffuse/circle.png</bordertexture>
+		</control>
+		<control type="textbox">
+			<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
+			<wrapmultiline>false</wrapmultiline>
+			<font>CommonTag</font>
+			<width>700</width>
+			<left>90</left>
+			<align>left</align>
+			<aligny>center</aligny>
+			<textcolor>FF3E3E3E</textcolor>
+			<selectedcolor>FF3E3E3E</selectedcolor>
+			<label>[B]$INFO[ListItem.TrackNumber,,   ]$INFO[ListItem.Title][/B][COLOR=grey]$INFO[ListItem.Artist,    ,][/COLOR]</label>
+		</control>
+		<control type="textbox">
+			<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
+			<wrapmultiline>true</wrapmultiline>
+			<font>CommonTag</font>
+			<width>100</width>
+			<right>10</right>
+			<align>right</align>
+			<aligny>center</aligny>
+			<textcolor>FF3E3E3E</textcolor>
+			<selectedcolor>FF3E3E3E</selectedcolor>
+			<label>$INFO[ListItem.Duration]</label>
+			<label2>test</label2>
+		</control>
+		<control type="image">
+			<description>testing stars rating</description>
+			<right>100</right>
+			<visible>true</visible>
+			<width>100</width>
+			<height>40</height>
+			<colordiffuse>black</colordiffuse>
+			<bordersize>4</bordersize>
+			<aspectratio align="center">keep</aspectratio>
+			<texture>rating/stars/7.2.png</texture>
+		</control>
+	</include>
 	
 	
 	<include name="HUB_Circle">
@@ -470,9 +534,13 @@ notinthelast 	True if the field does not fall in the last range specified by the
 	<variable name="HUB_Artist">
 		<value>musicdb://songs/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(HUB_Music_artist)]%22%5D%7D%5D%7D%2C%22type%22%3A%22songs%22%7D</value>
 	</variable>
+	<variable name="HUB_Albums_by_Artist">
+		<value>musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(HUB_Music_artist)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</value>
+	</variable>
+	<variable name="HUB_Songs_by_AlbumArtist">
+		<value>musicdb://songs/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22album%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Container(5110).ListItem.Label]%22%5D%7D%5D%7D%2C%22type%22%3A%22songs%22%7D</value>
+	</variable>
 	
-	
-
 	<!-- ######### -->
 	<!-- Side  Bar -->
 	<!-- ######### -->
