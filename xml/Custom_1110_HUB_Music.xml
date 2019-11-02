@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window type="window" id="1110">
-	<backgroundcolor>BackgroundColor_HUB</backgroundcolor>
+	<backgroundcolor>$VAR[BackgroundColor_HUB]</backgroundcolor>
 	<menucontrol>111098</menucontrol>
 	<defaultcontrol always="true">111098</defaultcontrol>
 	<animation effect="fade" start="0" end="100" time="325">WindowOpenClose</animation>
 	<onload>SetProperty(HUB_Music,common,home)</onload>
+	
+	<onunload>ClearProperty(HUB_artwork,home)</onunload>
+	<onunload>ClearProperty(HUB_EncodedArtist,home)</onunload>
+	<onunload>ClearProperty(HUB_Music_artist,home)</onunload>
 	<onunload>ClearProperty(HUB_Music,home)</onunload>
 	<controls>
 	
@@ -22,13 +26,10 @@
 		<height>100</height>
         <width>100%</width>
 		<description>H U B    H E A D E R    B A R</description>	
-			<include content="bg_gradientmulticolor">
-				<param name="layer1_top" value="darkblue" />
-				<param name="layer1_bottom" value="ff000000" />
-				<param name="layer2" value="black" />
-				<param name="layer2_visible" value="true" />
-			</include>
-			
+			<control type="image">
+				<texture colordiffuse="$VAR[PanelGradient1_HUB]">colors/white.png</texture>
+				<aspectratio>stretch</aspectratio>
+			</control>
 			<!-- Item Bar -->
 			<control type="grouplist" id="111099">
 				<top>10</top>
@@ -48,8 +49,8 @@
 					<height>60</height>
 					<width>400</width>
 					<hinttext>$LOCALIZE[19140]</hinttext>
-					<texturefocus colordiffuse="44FFFFFF">buttons/button_6to1_Trans.png</texturefocus>	
-					<texturenofocus colordiffuse="22FFFFFF">buttons/button_6to1_Trans.png</texturenofocus>
+					<texturefocus diffuse="buttons/button_6to1_Trans.png" colordiffuse="$VAR[BackgroundColor_HUB]">colors/white70.png</texturefocus>	
+					<texturenofocus diffuse="buttons/button_6to1_Trans.png" colordiffuse="$VAR[BackgroundColor_HUB]">colors/white50.png</texturenofocus>
 					<font>SearchControl</font>
 					<textoffsetx>20</textoffsetx>
 					<textoffsety>15</textoffsety>
@@ -83,38 +84,41 @@
 		<control type="image">
 			<visible>String.StartsWith(Window(home).Property(HUB_Music),Is)</visible>
 			<fadetime>350</fadetime>
-			<bordertexture diffuse="diffuse/landscape_gradient_100.png" colordiffuse="ffffffff">colors/white.png</bordertexture>
+			<bordertexture diffuse="diffuse/landscape_gradient_100.png" colordiffuse="$VAR[BackgroundColor_HUB]">colors/white.png</bordertexture>
 			<texture background="true" diffuse="diffuse/landscape_gradient_soft.png">$INFO[Window(home).Property(HUB_artwork)]</texture>
 			<aspectratio scalediffuse="true" align="right" aligny="top">keep</aspectratio>
 		</control>
-		<control type="image">
-			<description>hard the get perfect alpha - bright vs dark fanart</description>
-			<visible>String.StartsWith(Window(home).Property(HUB_Music),Is)</visible>
-			<fadetime>350</fadetime>
-			<bordertexture diffuse="diffuse/landscape_gradient_100.png" colordiffuse="12ffffff">colors/white.png</bordertexture>
-			<texture diffuse="diffuse/landscape_gradient_100.png" colordiffuse="BackgroundColor_HUB">colors/white70.png</texture>
-			<aspectratio scalediffuse="true" align="right" aligny="top">scale</aspectratio>
-		</control>
-		
 		<control type="group">
 			<description>BG VideoControl</description>
-			<visible>Player.HasVideo + String.Contains(Player.dbtype,musicvideo)</visible>
+			<visible>Player.HasVideo</visible>
 			<control type="videowindow" />
 			<control type="image">
-				<description>overlay</description>
-				<texture colordiffuse="white">overlay/Netflix_origin.png</texture>
+				<description>hard the get perfect alpha - bright vs dark fanart</description>
+				<fadetime>350</fadetime>
+				<bordersize>0</bordersize>
+				<texture colordiffuse="$VAR[BackgroundColor_HUB]">colors/white50.png</texture>
+				<aspectratio scalediffuse="true" align="right" aligny="top">scale</aspectratio>
 			</control>
 		</control>
-	</control>
-	
+		<control type="image">
+			<description>hard the get perfect alpha - as bg texture - stay with 10 percent 686868grey</description>
+			<visible>String.StartsWith(Window(home).Property(HUB_Music),Is)</visible>
+			<visible>!Player.HasVideo</visible>
+			<fadetime>350</fadetime>
+			<bordertexture diffuse="diffuse/landscape_gradient_100.png" colordiffuse="1A686868">colors/white.png</bordertexture>
+			<texture diffuse="diffuse/landscape_gradient_100.png" colordiffuse="$VAR[BackgroundColor_HUB]">colors/white70.png</texture>
+			<aspectratio scalediffuse="true" align="right" aligny="top">stretch</aspectratio>
+		</control>
 		
+		
+	</control>
 	<control type="group">
 		<description>S I D E    B A R    L E F T</description>
 		<height>100%</height>
         <width>16%</width>
 		<posy>100</posy>
 		<include content="bg_gradientmulticolor">
-			<param name="layer2_visible" value="false" />
+			<param name="layer2_visible" value="true" />
 		</include>
 		<control type="grouplist" id="111098">
 			<posx>10</posx>
@@ -166,7 +170,7 @@
 			<include content="hub_button">
 				<param name="visible" value="System.HasAddon(plugin.video.youtube)" />
 				<param name="id" value="06" />
-				<param name="property" value="musicaddons" />
+				<param name="property" value="youtube" />
 				<param name="action" value="RunPlugin(plugin.video.youtube)" />
 				<param name="label" value="You Tube" />
 				<param name="radio_icon" value="icons/youtube_1.png" />
@@ -308,13 +312,13 @@
 						<width>40</width>
 						<height>40</height>
 						<left>10</left>
-						<texture colordiffuse="grey">defaultplaylist.png</texture>
+						<texture colordiffuse="$VAR[Panel_Text_nf_HUB]">defaultplaylist.png</texture>
 					</control>
 					<control type="textbox">
 						<left>60</left>
 						<width>110%</width>
 						<height>25</height>
-						<textcolor>grey</textcolor>
+						<textcolor>$VAR[Panel_Text_nf_HUB]</textcolor>
 						<font>MenucontrolItem</font>
 						<autoscroll>false</autoscroll>
 						<label>$INFO[ListItem.Label]</label>
@@ -326,19 +330,17 @@
 						<width>40</width>
 						<height>40</height>
 						<left>10</left>
-						<texture colordiffuse="white">defaultplaylist.png</texture>
+						<texture colordiffuse="$VAR[Panel_Text_fo_HUB]">defaultplaylist.png</texture>
 					</control>
 					<control type="textbox">
 						<left>60</left>
 						<width>110%</width>
 						<height>25</height>
 						<font>MenucontrolItem</font>
-						<textcolor>white</textcolor>
+						<textcolor>$VAR[Panel_Text_fo_HUB]</textcolor>
 						<autoscroll>true</autoscroll>
 						<label>$INFO[ListItem.Label]</label>
 					</control>
-					
-							
 				</focusedlayout>
 				<content>special://musicplaylists/</content>
 				<content>special://skin/playlists/music/</content>
@@ -445,6 +447,7 @@
 			<description>hardcoded content albums</description>
 			
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),albums) | String.IsEqual(Window(home).Property(HUB_Music),common)</visible>
+			
 			<include condition="Skin.HasSetting(Force_StayInMusicHub)" content="hub_music_OverrideOnClick" />
 			
 			<left>5</left>
@@ -578,6 +581,75 @@
 			<!-- limit needed ? <content>$VAR[HUB_content_songs_title]</content> -->
 			<!-- no limit needed <content>$VAR[HUB_content_songs_artist]</content> -->
 		</control>
+		
+		<include content="HUB_ContainerHeader">
+			<param name="groupid" value="6009" />
+			<param name="id" value="5009" />
+			<param name="label" value="Songs" />
+		</include>
+		<control type="panel" id="5009">
+			<description>hardcoded content songs</description>
+			<visible>String.IsEqual(Window(home).Property(HUB_Music),youtube)</visible>
+			
+			<left>5</left>
+			<top>50</top>
+			<width>1600</width>
+			<height>850</height>
+			
+			<preloaditems>2</preloaditems>
+			<orientation>vertical</orientation>
+			
+			<onleft>111060</onleft>
+			<onright>260</onright>
+			<pagecontrol>260</pagecontrol>
+			
+			<onup>5009</onup>
+			<ondown>5009</ondown>
+			
+			<scrolltime tween="quadratic">400</scrolltime>
+			<autoscroll>true</autoscroll>
+			
+			
+			
+			
+			<itemlayout height="300" width="420">
+				<control type="group">
+					<height>243</height>
+					<width>405</width>
+					<include content="HUB_Landscape">
+						<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+						<param name="autoscroll" value="false" />
+						<param name="bordersize_bg" value="6" />
+					</include>
+				</control>
+			</itemlayout>
+			<focusedlayout height="300" width="420">
+				<control type="group">
+					<height>243</height>
+					<width>405</width>
+					<include>Item_Focus_Animation</include>
+					<control type="group">
+						<include content="HUB_Landscape">
+							<param name="colordiffuse" value="$VAR[Container_item_fo]" />
+							<param name="autoscroll" value="true" />
+							<param name="bordersize_bg" value="4" />
+						</include>
+						<include>FocusOverlay</include>
+					</control>
+				</control>
+			</focusedlayout>
+			<content>
+				<item id="777">
+					<label>$LOCALIZE[284]</label>
+					<label2 />
+					<visible>String.IsEmpty(Container(5005).ListitemNoWrap(0).Title) + String.IsEmpty(Container(5005).ListitemNoWrap(1).Title)</visible>
+					<icon>special://skin/extras/emptyonsearch/emptywidget.png</icon>
+					<thumb>special://skin/extras/emptyonsearch/emptywidget.png</thumb>
+				</item>
+			  </content>
+			<content target="videos" sortby="file" limit="25">plugin://plugin.video.youtube/search/?q=$INFO[Control.GetLabel(100002).index(1)]</content>
+		</control>
+		
 		<include content="HUB_ContainerHeader">
 			<param name="groupid" value="6006" />
 			<param name="id" value="5006" />
@@ -651,6 +723,76 @@
 				</item>
 			  </content>
 			<content sortby="title" sortorder="ascending">$VAR[HUB_content_songs_title_or_artist]</content>
+		</control>
+		
+		<!-- ARTIST MUSICVIDEOS TEST -->
+		<include content="HUB_ContainerHeader">
+			<param name="groupid" value="6008" />
+			<param name="id" value="5008" />
+			<param name="label" value="CIRCLE ARTIST MUSICVIDEOS" />
+		</include>
+		<control type="panel" id="5008">
+			<description>hardcoded content Music Videos</description>
+			<visible>
+			String.IsEqual(Window(home).Property(HUB_Music),common) | 
+			String.IsEqual(Window(home).Property(HUB_Music),artists) | 
+			String.IsEqual(Window(home).Property(HUB_Music),songs) | 
+			String.IsEqual(Window(home).Property(HUB_Music),musicvideos)
+			</visible>
+			<left>5</left>
+			<width>1600</width>
+			<height>400</height>
+			
+			<top>50</top>
+			<preloaditems>2</preloaditems>
+			<orientation>horizontal</orientation>
+			
+			<onleft>111060</onleft>
+			<onright>660</onright>
+			<pagecontrol>660</pagecontrol>
+			
+			<onup>5002</onup>
+			<ondown>5002</ondown>
+			
+			<scrolltime tween="quadratic">400</scrolltime>
+			<autoscroll>true</autoscroll>
+			
+			<itemlayout height="300" width="420">
+				<control type="group">
+					<height>250</height>
+					<width>250</width>
+					<include content="HUB_Circle">
+						<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+						<param name="autoscroll" value="false" />
+						<param name="bordersize_bg" value="6" />
+					</include>
+				</control>
+			</itemlayout>
+			<focusedlayout height="300" width="420">
+				<control type="group">
+					<height>250</height>
+					<width>250</width>
+					<include>Item_Focus_Animation</include>
+					<control type="group">
+						<include content="HUB_Circle">
+							<param name="colordiffuse" value="$VAR[Container_item_fo]" />
+							<param name="autoscroll" value="true" />
+							<param name="bordersize_bg" value="4" />
+						</include>
+						<include>FocusOverlay</include>
+					</control>
+				</control>
+			</focusedlayout>
+			<content>
+				<item id="666">
+					<label>$LOCALIZE[284]</label>
+					<label2 />
+					<visible>String.IsEmpty(Container(5008).ListitemNoWrap(0).Artist) + String.IsEmpty(Container(5008).ListitemNoWrap(1).Artist)</visible>
+					<icon>special://skin/extras/emptyonsearch/emptywidget.png</icon>
+					<thumb>special://skin/extras/emptyonsearch/emptywidget.png</thumb>
+				</item>
+			</content>
+			<content sortby="artist" sortorder="ascending" limit="7" target="videos">$VAR[HUB_content_artists]</content>
 		</control>
 		
 		<include content="HUB_ContainerHeader">
@@ -732,32 +874,31 @@
 		
 		
 		-->
-		<control type="group" id="6010">
+		<control type="group" id="6020">
 			<height>350</height>
 			<width>100%</width>
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),IsHUBartistContent)</visible>
 				
-			<control type="textbox" id="6011">
+			<control type="textbox" id="6021">
 				<top>160</top>
 				<aligny>top</aligny>
 				<height>50</height>
 				<width>100%</width>
 				<font>HUB_WidgetHeader</font>
-				<label>$INFO[Container(5110).ListItem.Albumartist,[B],[/B]]</label>
+				<label>$INFO[Container(5120).ListItem.Albumartist,[B],[/B]]</label>
 				<textcolor>black</textcolor>
 			</control>
-			<control type="textbox" id="6012">
+			<control type="textbox" id="6022">
 				<top>200</top>
 				<height>200</height>
 				<aligny>top</aligny>
 				<width>100%</width>
 				<font>CommonTag</font>
-				<label>$INFO[Container(5110).NumAllItems,Albums (,)][CR]another label[CR]another another label</label>
+				<label>$INFO[Container(5120).NumAllItems,Albums (,)][CR][CR]$INFO[ListItem.Property(Artist_YearsActive)]</label>
 				<textcolor>black</textcolor>
 			</control>
 		</control>
-		
-		<control type="grouplist" id="5010">
+		<control type="grouplist" id="5020">
 			<description>experimental Artist Albums
 add slide namination visible change
             </description>
@@ -776,11 +917,11 @@ add slide namination visible change
 			<onleft>6060</onleft>
 			<onright>7060</onright>
 			
-			<control type="panel" id="5110">
+			<control type="panel" id="5120">
 				
 				
 				<width>450</width>
-				<height>675</height>
+				<height>680</height>
 				<preloaditems>2</preloaditems>
 				<orientation>vertical</orientation>
 				
@@ -795,12 +936,11 @@ add slide namination visible change
 				<onup>5002</onup>
 				<ondown>5002</ondown>
 				
-				<onback>SetProperty(HUB_Music,common,home)</onback>
-				<onback>ClearProperty(HUB_artwork,home)</onback>
-				<onback>ClearProperty(HUB_Music_artists,home)</onback>
+				<include content="hub_music_ClearPropsOnBack" />
+				
 				<onback>111098</onback>
 			
-				<itemlayout height="800" width="500">
+				<itemlayout height="680" width="500">
 					<control type="group">
 						<height>450</height>
 						<width>450</width>
@@ -812,10 +952,20 @@ add slide namination visible change
 								<bordertexture colordiffuse="cc000000">artworkdiffuse/newthumb.png</bordertexture>
 								<aspectratio scalediffuse="true" align="left" aligny="top">keep</aspectratio>
 							</control>
+							<control type="textbox">
+								<top>460</top>
+								<height>350</height>
+								<font>HubAT</font>
+								<textcolor>ff1818181</textcolor>
+								<label>$INFO[ListItem.Album]$INFO[ListItem.Year,  (,)]</label>
+								<aligny>top</aligny>
+								<wrapmultiline>true</wrapmultiline>
+							</control>
 						</control>
 					</control>
+					
 				</itemlayout>
-				<focusedlayout height="800" width="500">
+				<focusedlayout height="680" width="500">
 					<control type="group">
 						<height>450</height>
 						<width>450</width>
@@ -827,13 +977,23 @@ add slide namination visible change
 								<bordertexture colordiffuse="cyan">artworkdiffuse/newthumb.png</bordertexture>
 								<aspectratio scalediffuse="true" align="left" aligny="top">keep</aspectratio>
 							</control>
+							<control type="textbox">
+								<top>460</top>
+								<height>350</height>
+								<font>HubAT</font>
+								<textcolor>ff1818181</textcolor>
+								<label>$INFO[ListItem.Album]$INFO[ListItem.Year,  (,)]</label>
+								<aligny>top</aligny>
+								<wrapmultiline>true</wrapmultiline>
+							</control>
 						</control>
 					</control>
+					
 				</focusedlayout>
 				<content sortby="year" sortorder="ascending">$VAR[HUB_Albums_by_Artist]</content>
 			</control>
-			<control type="panel" id="5111">
-				<description>take a damn ong time to load songs lists, once done its ok</description>
+			
+			<control type="panel" id="5121">
 				<width>1020</width>
 				<height>679</height>
 				
@@ -848,13 +1008,11 @@ add slide namination visible change
 				
 				<onright>7060</onright>
 				
-				<onup>5111</onup>
-				<ondown>5111</ondown>
-				<!-- <ondown>Control.Move(5010,1)</ondown> -->
+				<onup>5121</onup>
+				<ondown>5121</ondown>
 				
-				<onback>SetProperty(HUB_Music,common,home)</onback>
-				<onback>ClearProperty(HUB_artwork,home)</onback>
-				<onback>ClearProperty(HUB_Music_artists,home)</onback>
+				<include content="hub_music_ClearPropsOnBack" />
+				
 				<onback>111098</onback>
 			
 				<itemlayout height="50" width="1000">
@@ -902,7 +1060,7 @@ add slide namination visible change
 				</control>
 				</focusedlayout>
 				<!-- much faster than xsp method in that case -->
-				<content target="music" sortby="tracknumber" sortorder="ascending">$INFO[Container(5110).ListItem.FolderPath]</content>
+				<content target="music" sortby="tracknumber" sortorder="ascending">$INFO[Container(5120).ListItem.FolderPath]</content>
 				<!-- xsp method pretty slow here, up to 30sec -->
 				<!-- <content sortby="tracknumber" sortorder="ascending">$VAR[HUB_Songs_by_AlbumArtist]</content> -->
 			</control>
@@ -959,7 +1117,7 @@ add slide namination visible change
 			
 			<onup>6060</onup>
 			<ondown>6060</ondown>
-			<onright>5110</onright>
+			<onright>5120</onright>
 			
 			<onleft></onleft>
 			<height>675</height>
@@ -975,7 +1133,7 @@ add slide namination visible change
 			
 			<onright></onright>
 			
-			<onleft>5111</onleft>
+			<onleft>5121</onleft>
 			
 			<height>675</height>
 		</control>

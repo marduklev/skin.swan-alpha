@@ -16,7 +16,7 @@
 			<description>kodi default, aspectratio scalediffuse="true" aligny="center" align="center">stretch</description>
 			<texture background="true" diffuse="artworkdiffuse/landscape.png" fallback="DefaultAudio.png">$VAR[ImageLayout_landscape]</texture>
 			<bordersize>8</bordersize>
-			<visible>!String.IsEmpty(ListItem.Art(landscape)</visible>
+			<visible>!String.IsEmpty(ListItem.Art(landscape))</visible>
 		</control>
 		<control type="image">
 			<description>Fallback aspect keep</description>
@@ -60,9 +60,9 @@
 				<font>CommonTag</font>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>$VAR[Container_label_itemtag]</textcolor>
+				<textcolor>$VAR[HUB_maintextcolor]</textcolor>
 				<selectedcolor>white</selectedcolor>
-				<label>$VAR[Tags_Bottom]</label>
+				<label>$VAR[HUB_Tags_Bottom]</label>
 		</control>
 	</include>
 	
@@ -89,9 +89,9 @@
 				<font>CommonTag</font>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>$VAR[Container_label_itemtag]</textcolor>
+				<textcolor>$VAR[HUB_maintextcolor]</textcolor>
 				<selectedcolor>white</selectedcolor>
-				<label>$VAR[Tags_Bottom]</label>
+				<label>$VAR[HUB_Tags_Bottom]</label>
 		</control>
 	</include>
 	
@@ -285,34 +285,13 @@
 	<include name="HUB_Circle">
 		<control type="image">
 			<description>Fallback aspect keep</description>
-			<bordertexture colordiffuse="$PARAM[colordiffuse]">artworkdiffuse/circle.png</bordertexture>
-			<texture background="true" diffuse="artworkdiffuse/circle.png" fallback="DefaultVideo.png">$VAR[ImageLayout_circle]</texture>
+			<bordertexture colordiffuse="artworkdiffuse/circle.png">artworkdiffuse/circle.png</bordertexture>
+			<texture background="true" diffuse="artworkdiffuse/circle.png" fallback="DefaultArtist.png">$VAR[ImageLayout_circle]</texture>
 			<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
 			<bordersize>$PARAM[bordersize_bg]</bordersize>
 		</control>
-
-		<control type="image">
-				<visible>
-					[!String.IsEmpty(ListItem.Art(clearlogo)) + !$EXP[IsEpisode]] | 
-					[!String.IsEmpty(ListItem.Art(tvshow.clearlogo)) + $EXP[IsEpisode]] | 
-					!String.IsEmpty(ListItem.Art(artist.clearlogo)) | 
-					!String.IsEmpty(ListItem.Art(albumartist.clearlogo))
-				</visible>
-				<top>70%</top>
-				<height>50%</height>
-				<left>10</left>
-				<right>10</right>
-				<texture background="true">$VAR[ListItemClearLogo]</texture>
-				<aspectratio align="center" aligny="center">keep</aspectratio>
-		</control>
-			
+		
 		<control type="group">
-			<!-- <visible>
-				String.IsEmpty(ListItem.Art(tvshow.clearlogo)) +
-				String.IsEmpty(ListItem.Art(artist.clearlogo)) +
-				String.IsEmpty(ListItem.Art(albumartist.clearlogo)) +
-				String.IsEmpty(ListItem.Art(clearlogo))
-			</visible> -->
 			<control type="textbox">
 				<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
 				<top>107%</top>
@@ -323,40 +302,46 @@
 				<font>CommonTag</font>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>$VAR[Container_label_itemtag]</textcolor>
+				<textcolor>$VAR[HUB_maintextcolor]</textcolor>
 				<selectedcolor>white</selectedcolor>
-				<label>$VAR[Tags_Bottom]</label>
+				<label>$VAR[HUB_Tags_Bottom]</label>
 			</control>
 		</control>
 	</include>
 	
+	<variable name="HUB_Tags_Bottom">
+		<value condition="!$EXP[IsSeason] + [$EXP[IsEpisode] | !String.IsEmpty(ListItem.Episode)]">$INFO[ListItem.Season,[B]s,[/B]]$INFO[ListItem.Episode,[B]e,[/B] -]$INFO[ListItem.Title,[B],[/B]]$INFO[ListItem.Duration(mm), (, min)][CR][COLOR=$VAR[HUB_secondarytextcolor]]$INFO[ListItem.Year][/COLOR]</value>
+		<value condition="$EXP[IsSong]">$INFO[ListItem.Label,[B],[/B]][CR][COLOR=$VAR[HUB_secondarytextcolor]]$INFO[ListItem.Album]$INFO[ListItem.Year, (,)][/COLOR]</value>
+		<value condition="!String.IsEmpty(ListItem.Year)">$INFO[ListItem.Label,[B],[/B]][CR][COLOR=$VAR[HUB_secondarytextcolor]]$INFO[ListItem.Year][/COLOR]</value>
+		<value>$INFO[ListItem.Label,[B],[/B]][CR][COLOR=$VAR[HUB_secondarytextcolor]]$INFO[ListItem.Label2][/COLOR]</value>
+	</variable>
+	
 	<!-- ########## -->
 	<!-- Containers -->
 	<!-- ########## -->
-	<!-- 
-	SetProperty(HUB_Music,albums,home) 	
-	SetProperty(HUB_Music,albums,home)
-	ClearProperty(HUB_Music,home)
-	String.Is[Equal,EndsWith,StartsWith,Contains](Window.Property(HUB_Music),albums) 
-	
-		e.g. albumsrecent, albums, albumstop100 use String.StartsWith 
-	-->
 	<include name="hub_music_OverrideOnClick">
 		<param name="goto" default="artist" />
 		<definition>
+			<onclick condition="!String.IsEmpty(ListItem.Artist)">RunScript(script.embuary.helper,action=encode,string='"$INFO[ListItem.Artist]"',prop=HUB_EncodedArtist)"</onclick>
 			<onclick condition="!String.IsEmpty(ListItem.Artist)">SetProperty(HUB_Music_$PARAM[goto],$INFO[ListItem.$PARAM[goto]],home)</onclick>
 			<onclick condition="!String.IsEmpty(ListItem.Art(fanart))">SetProperty(HUB_artwork,$INFO[ListItem.Art(fanart)],home)</onclick>
 			<onclick condition="String.IsEmpty(ListItem.Art(fanart)) + !String.IsEmpty(ListItem.Art(landscape))">SetProperty(HUB_artwork,$INFO[ListItem.Art(fanart)],home)</onclick>
 			<onclick condition="String.IsEmpty(ListItem.Art(fanart)) + String.IsEmpty(ListItem.Art(landscape)) + !String.IsEmpty(ListItem.Art(thumb))">SetProperty(HUB_artwork,$INFO[ListItem.Art(thumb)],home)</onclick>
 			<onclick condition="!String.IsEmpty(ListItem.dbtype)">SetProperty(HUB_Music,$INFO[ListItem.dbtype,IsHUB,Content],home)</onclick>
-			<onclick>5010</onclick>
+		</definition>
+	</include>
+	<include name="hub_music_ClearPropsOnBack">
+		<param name="comefrom" default="artist" />
+		<definition>
+			<onback>SetProperty(HUB_Music,common,home)</onback>
+			<onback>ClearProperty(HUB_artwork,home)</onback>
+			<onback>ClearProperty(HUB_EncodedArtist,home)</onback>
+			<onback>ClearProperty(HUB_Music_$PARAM[comefrom],home)</onback>
 		</definition>
 	</include>
 	
-	
 	<!-- Container Header : label- sep - focused item label - busy -->
 	<include name="HUB_ContainerHeader">
-		
 		<definition>
             <control type="group" id="$PARAM[groupid]">
 				<visible>Control.IsVisible($PARAM[id])</visible>
@@ -376,7 +361,7 @@
 						<width>auto</width>
 						<label>[B]$PARAM[label][/B]</label>
 						<aligny>center</aligny>
-						<textcolor>black</textcolor>
+						<textcolor>$VAR[HUB_maintextcolor]</textcolor>
 						<font>font29</font>
 						<height>22</height>
 					</control>
@@ -385,7 +370,7 @@
                         <width>auto</width>
                         <label>$VAR[VideoInfoHeader_Seperator]</label>
 						<aligny>center</aligny>
-                        <textcolor>cyan</textcolor>
+                        <textcolor>$VAR[HUB_highlighttextcolor]</textcolor>
                         <font>Bold36</font>
                         <height>50</height>
                         <visible>Control.HasFocus($PARAM[id]) + !Container($PARAM[id]).IsUpdating</visible>
@@ -396,7 +381,7 @@
                         <width>auto</width>
 						<label>$VAR[VideoInfoHeader_Title]</label>
                         <aligny>center</aligny>
-						<textcolor>$VAR[Headingline_Widget]</textcolor>
+						<textcolor>$VAR[HUB_maintextcolor]</textcolor>
 						<font>font27</font>
                         <height>24</height>
 						<visible>Control.HasFocus($PARAM[id]) + !Container($PARAM[id]).IsUpdating</visible>
@@ -407,7 +392,7 @@
 						<width>40</width>
 						<height>40</height>
 						<aspectratio scalediffuse="false" align="center" aligny="center">keep</aspectratio>
-						<texture colordiffuse="cyan">special://skin/extras/busy/skypishball.apng</texture>
+						<texture colordiffuse="$VAR[HUB_highlighttextcolor]">special://skin/extras/busy/skypishball.apng</texture>
 						<aspectratio align="center" aligny="center">keep</aspectratio>
 					</control>
 				</control>
@@ -417,7 +402,7 @@
 					<width>auto</width>
 					<label>$INFO[Container($PARAM[id]).NumItems, numitems (,)]</label>
 					<aligny>center</aligny>
-					<textcolor>black</textcolor>
+					<textcolor>$VAR[HUB_maintextcolor]</textcolor>
 					<font>HUB_WidgetSubHeader</font>
 					<height>24</height>
 					<visible>!Container($PARAM[id]).IsUpdating</visible>
@@ -499,7 +484,6 @@ notinthelast 	True if the field does not fall in the last range specified by the
 		<value>musicdb://albums/</value>
 	</variable>
 	
-	
 	<variable name="HUB_content_songs_title">
 		<value condition="!String.IsEmpty(Control.GetLabel(100002).index(1))">musicdb://songs/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(100002).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22songs%22%7D</value>
 		<value>musicdb://songs/</value>
@@ -512,7 +496,6 @@ notinthelast 	True if the field does not fall in the last range specified by the
 		<value>musicdb://songs/</value>
 	</variable>
 	
-	
 	<variable name="HUB_content_musicvideo_titles">
 		<value condition="!String.IsEmpty(Control.GetLabel(100002).index(1))">videodb://musicvideos/titles?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(100002).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</value>
 		<value>videodb://musicvideos/titles/</value>
@@ -521,7 +504,6 @@ notinthelast 	True if the field does not fall in the last range specified by the
 		<value condition="!String.IsEmpty(Control.GetLabel(100002).index(1))">videodb://musicvideos/titles?xsp=%7B%22rules%22%3A%7B%22or%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(100002).index(1)]%22%5D%7D%2C%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(100002).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</value>
 		<value>videodb://musicvideos/titles/</value>
 	</variable>
-	
 	
 			<!-- revisit - cant filter musicvideo folder -->
 			<variable name="HUB_content_musicvideo_artist">
@@ -534,12 +516,10 @@ notinthelast 	True if the field does not fall in the last range specified by the
 			</variable>
 	
 	<!-- artist hub test -->
-	<variable name="HUB_Artist">
-		<value>musicdb://songs/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(HUB_Music_artist)]%22%5D%7D%5D%7D%2C%22type%22%3A%22songs%22%7D</value>
-	</variable>
 	<variable name="HUB_Albums_by_Artist">
-		<value>musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(HUB_Music_artist)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</value>
+		<value>musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(HUB_EncodedArtist)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</value>
 	</variable>
+	<!-- pretty slow - use container folderpath instead -->
 	<variable name="HUB_Songs_by_AlbumArtist">
 		<value>musicdb://songs/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22album%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Container(5110).ListItem.Label]%22%5D%7D%5D%7D%2C%22type%22%3A%22songs%22%7D</value>
 	</variable>
@@ -553,7 +533,7 @@ notinthelast 	True if the field does not fall in the last range specified by the
 			<width>300</width>
 			<font>MenucontrolSectionHeading</font>
 			<align>left</align>
-			<textcolor>white</textcolor>
+			<textcolor>$VAR[Panel_Text_fo_HUB]</textcolor>
 			<label>$PARAM[label]</label>
 		</control>
 	</include>
@@ -567,26 +547,20 @@ notinthelast 	True if the field does not fall in the last range specified by the
 				<radiowidth>40</radiowidth>
 				<radioheight>40</radioheight>
 				<radioposx>10</radioposx>
-				<textureradioonfocus colordiffuse="white">$PARAM[radio_icon]</textureradioonfocus>
-				<textureradioonnofocus colordiffuse="grey">$PARAM[radio_icon]</textureradioonnofocus>
-				<textureradioofffocus colordiffuse="white">$PARAM[radio_icon]</textureradioofffocus>
-				<textureradiooffnofocus colordiffuse="grey">$PARAM[radio_icon]</textureradiooffnofocus>
+				<textureradioonfocus colordiffuse="$VAR[Panel_Text_fo_HUB]">$PARAM[radio_icon]</textureradioonfocus>
+				<textureradioonnofocus colordiffuse="$VAR[Panel_Text_nf_HUB]">$PARAM[radio_icon]</textureradioonnofocus>
+				<textureradioofffocus colordiffuse="$VAR[Panel_Text_fo_HUB]">$PARAM[radio_icon]</textureradioofffocus>
+				<textureradiooffnofocus colordiffuse="$VAR[Panel_Text_nf_HUB]">$PARAM[radio_icon]</textureradiooffnofocus>
 				<texturefocus />
 				<texturenofocus />
 				<font>MenucontrolItem</font>
 				<label>     $PARAM[label]</label>
 				<onclick>SetProperty(HUB_Music,$PARAM[property],home)</onclick>
-				<!-- onclick include based on skinsetting  $PARAM[action] -->
-				<focusedcolor>white</focusedcolor>
-				<textcolor>grey</textcolor>
+				<focusedcolor>$VAR[Panel_Text_fo_HUB]</focusedcolor>
+				<textcolor>$VAR[Panel_Text_nf_HUB]</textcolor>
 				<selectedcolor>green</selectedcolor>
 				<pulseonselect>no</pulseonselect>
 			</control>
 		</definition>
-	</include>
-	
-	<include name="HUB_Scrollbar_left">
-		<pagecontrol>$PARAM[scrollbar_id]</pagecontrol>
-		<onleft>$PARAM[scrollbar_id]</onleft>
 	</include>
 </includes>

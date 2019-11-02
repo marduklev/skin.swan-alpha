@@ -4,7 +4,7 @@
 		<control type="image">
 			<width>100%</width>
 			<height>110</height>
-			<texture colordiffuse="$VAR[Header_BG]">colors/white.png</texture>
+			<texture colordiffuse="$VAR[Header_BG]">$VAR[HeaderBarTexture]</texture>
 			<aspectratio>stretch</aspectratio>
 		</control>
 		<control type="grouplist">
@@ -19,11 +19,11 @@
 			<height>40</height>
 			<width>99%</width>
 				<control type="label">
-					<description>Main Section Name left</description>
+					<description>Main Section Name left,  temp System.CurrentWindow later VAR</description>
 					<with>auto</with>
 					<height>50</height>
 					<aligny>bottom</aligny>
-					<label>[B]H E A D E R[/B] var[Label_HeaderBar]</label>
+					<label>[UPPERCASE][B]$INFO[System.CurrentWindow][/B][/UPPERCASE]</label>
 					<font>HeaderBar_Main</font>
 					<textcolor>$VAR[Header_TextMain]</textcolor>
 				</control>
@@ -228,8 +228,8 @@
 			<include>HiddenObject</include>
 			<control type="image" id="99006">
 				<texture background="true">$VAR[FanartBackground]</texture>
-				<visible>Skin.HasSetting(ShowFanartBackground) | $EXP[IsNetflixLayout] | Control.IsVisible(507) | Window.IsActive(filebrowser) </visible>
-				<include condition="Window.IsMedia">disabledFanart</include>
+				<visible>Skin.HasSetting(ShowFanartBackground) | $EXP[IsNetflixLayout] | Window.IsActive(filebrowser)</visible>
+				<!-- <include condition="Window.IsMedia">disabledFanart</include> EXP VIEW -->
 			</control>
 			<include condition="Skin.HasSetting(ShowFanartBackground) + Skin.HasSetting(EnableRotatingExtraFanart)">Rotating_ExtraFanartBackground</include>
 		</control>
@@ -396,5 +396,12 @@
 		<value condition="Window.IsActive(MyWeather.xml)">$INFO[Skin.String(WeatherFanArtPack.path)]$INFO[Window(Weather).Property(Current.fanartCode)]$INFO[Skin.String(WeatherFanArtPack.ext)]</value>
 		<value condition="Skin.String(BackgroundTexture)">$INFO[Skin.String(BackgroundTexture)]</value>
 		<value>special://skin/extras/backgroundimages/pattern1.jpg</value>
+	</variable>
+	
+	
+	
+	<variable name="HeaderBarTexture">
+		<value condition="!String.IsEmpty(Skin.String(HeaderBarTexture))">$INFO[Skin.String(HeaderBarTexture)]</value>
+		<value>colors/white.png</value>
 	</variable>
 </includes>
