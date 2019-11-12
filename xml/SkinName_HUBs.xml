@@ -285,7 +285,7 @@
 	<include name="HUB_Circle">
 		<control type="image">
 			<description>Fallback aspect keep</description>
-			<bordertexture colordiffuse="artworkdiffuse/circle.png">artworkdiffuse/circle.png</bordertexture>
+			<bordertexture colordiffuse="$PARAM[colordiffuse]">artworkdiffuse/circle.png</bordertexture>
 			<texture background="true" diffuse="artworkdiffuse/circle.png" fallback="DefaultArtist.png">$VAR[ImageLayout_circle]</texture>
 			<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
 			<bordersize>$PARAM[bordersize_bg]</bordersize>
@@ -294,7 +294,7 @@
 		<control type="group">
 			<control type="textbox">
 				<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
-				<top>107%</top>
+				<top>106%</top>
 				<left>10</left>
 				<right>10</right>
 				<wrapmultiline>true</wrapmultiline>
@@ -322,7 +322,7 @@
 	<include name="hub_music_OverrideOnClick">
 		<param name="goto" default="artist" />
 		<definition>
-			<onclick condition="!String.IsEmpty(ListItem.Artist)">RunScript(script.embuary.helper,action=encode,string='"$INFO[ListItem.Artist]"',prop=HUB_EncodedArtist)"</onclick>
+			<onclick condition="!String.IsEmpty(ListItem.Artist)">RunScript(script.embuary.helper,action=encode,string='"$INFO[ListItem.Artist]"',prop=HUB_EncodedArtist)</onclick>
 			<onclick condition="!String.IsEmpty(ListItem.Artist)">SetProperty(HUB_Music_$PARAM[goto],$INFO[ListItem.$PARAM[goto]],home)</onclick>
 			<onclick condition="!String.IsEmpty(ListItem.Art(fanart))">SetProperty(HUB_artwork,$INFO[ListItem.Art(fanart)],home)</onclick>
 			<onclick condition="String.IsEmpty(ListItem.Art(fanart)) + !String.IsEmpty(ListItem.Art(landscape))">SetProperty(HUB_artwork,$INFO[ListItem.Art(fanart)],home)</onclick>
@@ -562,5 +562,36 @@ notinthelast 	True if the field does not fall in the last range specified by the
 				<pulseonselect>no</pulseonselect>
 			</control>
 		</definition>
+	</include>
+	
+	<!-- Top Bar -->
+	<include name="HUB_Button_sendclick_playlist">
+		<param name="target" default="musicplaylist" />
+		<definition>
+		<control type="radiobutton" id="4$PARAM[id]">
+			<include>button_circleradio</include>
+			<onclick>SendClick($PARAM[target],$PARAM[action])</onclick>
+		</control>
+		</definition>
+	</include>
+	
+	
+	<include name="HUB_Button_action_window">
+		<control type="radiobutton" id="4$PARAM[id]">
+			<include>button_circleradio</include>
+			<onclick>Action($PARAM[key_action],$PARAM[target])</onclick>
+			<onclick>$PARAM[action2]</onclick>
+		</control>
+	</include>
+		
+	<include name="button_circleradio">
+			<height>25</height>
+			<width>25</width>
+			<radiowidth>40</radiowidth>
+			<radioheight>40</radioheight>
+			<textureradioonfocus colordiffuse="$VAR[Panel_Text_fo_HUB]">defaultaddon.png</textureradioonfocus>
+			<textureradioonnofocus colordiffuse="$VAR[Panel_Text_nf_HUB]">defaultaddon.png</textureradioonnofocus>
+			<textureradioofffocus colordiffuse="$VAR[Panel_Text_fo_HUB]">defaultaddon.png</textureradioofffocus>
+			<textureradiooffnofocus colordiffuse="$VAR[Panel_Text_nf_HUB]">defaultaddon.png</textureradiooffnofocus>
 	</include>
 </includes>

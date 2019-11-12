@@ -70,17 +70,81 @@
 					<textcolor />
 				</control>
 				
+				
+<!-- 
+
+Player.HasMedia 	Returns true if the player has an audio or video file. 	
+Player.HasAudio 	Returns true if the player has an audio file. 	
+Player.HasDuration 	Returns true if Media isn't a true stream 	
+Player.HasVideo 	Returns true if the player has a video file. 	
+Player.Passthrough 	Returns true if the player is using audio passthrough. 	
+Player.Playing 	Returns true if the player is currently playing (ie not ffwding, rewinding or paused.) 	
+Player.Paused 	Returns true if the player is paused. 	
+Player.Forwarding 	Returns true if the player is fast forwarding. 	
+Player.Forwarding2x 	Returns true if the player is fast forwarding at 2x. 	
+Player.Forwarding4x 	Returns true if the player is fast forwarding at 4x. 	
+Player.Forwarding8x 	Returns true if the player is fast forwarding at 8x. 	
+Player.Forwarding16x 	Returns true if the player is fast forwarding at 16x. 	
+Player.Forwarding32x 	Returns true if the player is fast forwarding at 32x. 	
+Player.Rewinding 	Returns true if the player is rewinding. 	
+Player.Rewinding2x 	Returns true if the player is rewinding at 2x. 	
+Player.Rewinding4x 	Returns true if the player is rewinding at 4x. 	
+Player.Rewinding8x 	Returns true if the player is rewinding at 8x. 	
+Player.Rewinding16x 	Returns true if the player is rewinding at 16x. 	
+Player.Rewinding32x 	Returns true if the player is rewinding at 32x. 	
+Player.PauseEnabled 	Returns true if the currently playing stream can be paused. 	
+Player.Caching 	Returns true if the player is current re-caching data (internet based video playback). 	
+Player.DisplayAfterSeek 	Returns true for the first 2.5 seconds after a seek. 	
+Player.Seeking 	Returns true if a seek is in progress 	
+Player.SeekEnabled 	Returns true if player can seek 	
+Player.ShowTime 	Returns true if the user has requested the time to show (occurs in video fullscreen) 	
+Player.ShowInfo 	Returns true if the user has requested the song info to show (occurs in visualisation fullscreen and slideshow) 	
+Player.IsInternetStream 	Returns true if the player is playing an internet stream. 	
+Player.Muted 	Returns true if the volume is muted. 	
+Player.Process(videohwdecoder) 	Returns true if the currently playing video is decoded in hardware 	v17 addition
+Player.TempoEnabled 	Returns true if the current player supports changing the playback speed 	v17 addition
+Player.IsTempo 	Returns true if the current playbackspeed is not equal to 1 	v17 addition
+Player.HasGame 	Returns true if the player is playing a game 	v18
+Player.HasResolutions 	Returns true when multiple resolutions are available 	v18
+Player.FrameAdvance 	Returns true if player is in frame advance mode 	v18 
+
+MusicPlayer.HasNext 	Returns true if the music player has a next song queued in the Playlist. 	
+MusicPlayer.HasPrevious 	Returns true if the music player has a a Previous Song in the Playlist . 	
+MusicPlayer.Offset(number).Exists 	Returns true if the music players playlist has a song queued in position (number). 	
+MusicPlayer.Content(parameter) 	Returns true if the current audio you are playing matches the specified content. The following values are accepted: files, livetv 	
+MusicPartyMode.Enabled
+
+Playlist.IsRandom 	Returns true if the player is in random mode. 	
+Playlist.IsRepeat 	Returns true if the player is in repeat all mode. 	
+Playlist.IsRepeatOne 	Returns true if the player is in repeat one mode.
+
+notes
+start song from nav will create player, start playing offset
+start from hub will not, only play selected ,even target is set and xsp used
+-->
+				
+				<!-- testing -->
+				<control type="button" id="498">
+					<visible>Player.Playing + MusicPlayer.HasNext</visible>
+					<height>25</height>
+					<width>25</width>
+					<onclick>playlist</onclick>
+					<label>playlist</label>
+				</control>
+		
+			
+				
+				
 			</control>	
 			
 	
 	</control>
 		
 	<control type="group">
+	<description>B G    F A N A R T    M U S I C V I D E O</description>
 		<right>0</right>
 		<top>100</top>
 		<width>84%</width>
-		<description>B G    F A N A R T    M U S I C V I D E O</description>
-		
 		<control type="image">
 			<visible>String.StartsWith(Window(home).Property(HUB_Music),Is)</visible>
 			<fadetime>350</fadetime>
@@ -109,9 +173,8 @@
 			<texture diffuse="diffuse/landscape_gradient_100.png" colordiffuse="$VAR[BackgroundColor_HUB]">colors/white70.png</texture>
 			<aspectratio scalediffuse="true" align="right" aligny="top">stretch</aspectratio>
 		</control>
-		
-		
 	</control>
+	
 	<control type="group">
 		<description>S I D E    B A R    L E F T</description>
 		<height>100%</height>
@@ -377,8 +440,7 @@
 		</include>
 		
 		<control type="panel" id="5001">
-			<description>hardcoded content artist</description>
-			
+			<description>Common Artists</description>
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),common)</visible>
 			<include condition="Skin.HasSetting(Force_StayInMusicHub)" content="hub_music_OverrideOnClick" />
 			
@@ -441,10 +503,10 @@
 		<include content="HUB_ContainerHeader">
 			<param name="groupid" value="6004" />
 			<param name="id" value="5004" />
-			<param name="label" value="Albums" />
+			<param name="label" value="A L B U M S" />
 		</include>
 		<control type="panel" id="5004">
-			<description>hardcoded content albums</description>
+			<description>Common albums</description>
 			
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),albums) | String.IsEqual(Window(home).Property(HUB_Music),common)</visible>
 			
@@ -508,10 +570,10 @@
 		<include content="HUB_ContainerHeader">
 			<param name="groupid" value="6005" />
 			<param name="id" value="5005" />
-			<param name="label" value="Songs" />
+			<param name="label" value="S O N G S" />
 		</include>
 		<control type="panel" id="5005">
-			<description>hardcoded content songs</description>
+			<description>common songs</description>
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),common)</visible>
 			
 			<left>5</left>
@@ -585,10 +647,10 @@
 		<include content="HUB_ContainerHeader">
 			<param name="groupid" value="6009" />
 			<param name="id" value="5009" />
-			<param name="label" value="Songs" />
+			<param name="label" value="You Tube" />
 		</include>
 		<control type="panel" id="5009">
-			<description>hardcoded content songs</description>
+			<description>YouTube no filter</description>
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),youtube)</visible>
 			
 			<left>5</left>
@@ -608,9 +670,6 @@
 			
 			<scrolltime tween="quadratic">400</scrolltime>
 			<autoscroll>true</autoscroll>
-			
-			
-			
 			
 			<itemlayout height="300" width="420">
 				<control type="group">
@@ -653,10 +712,10 @@
 		<include content="HUB_ContainerHeader">
 			<param name="groupid" value="6006" />
 			<param name="id" value="5006" />
-			<param name="label" value="Songs" />
+			<param name="label" value="S O N G S" />
 		</include>
 		<control type="panel" id="5006">
-			<description>hardcoded content songs</description>
+			<description>Songs</description>
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),songs)</visible>
 			
 			<left>5</left>
@@ -725,24 +784,17 @@
 			<content sortby="title" sortorder="ascending">$VAR[HUB_content_songs_title_or_artist]</content>
 		</control>
 		
-		<!-- ARTIST MUSICVIDEOS TEST -->
 		<include content="HUB_ContainerHeader">
 			<param name="groupid" value="6008" />
 			<param name="id" value="5008" />
-			<param name="label" value="CIRCLE ARTIST MUSICVIDEOS" />
+			<param name="label" value="ARTISTS - ALBUMS + MUSICVIDEOS" />
 		</include>
 		<control type="panel" id="5008">
-			<description>hardcoded content Music Videos</description>
-			<visible>
-			String.IsEqual(Window(home).Property(HUB_Music),common) | 
-			String.IsEqual(Window(home).Property(HUB_Music),artists) | 
-			String.IsEqual(Window(home).Property(HUB_Music),songs) | 
-			String.IsEqual(Window(home).Property(HUB_Music),musicvideos)
-			</visible>
+			<description>e.g. experimentalprop artist or album - circle top 1 row + container below filled with albums by focused artist</description>
+			<visible>String.IsEqual(Window(home).Property(HUB_Music),artists)</visible>
 			<left>5</left>
 			<width>1600</width>
-			<height>400</height>
-			
+			<height>450</height>
 			<top>50</top>
 			<preloaditems>2</preloaditems>
 			<orientation>horizontal</orientation>
@@ -757,29 +809,33 @@
 			<scrolltime tween="quadratic">400</scrolltime>
 			<autoscroll>true</autoscroll>
 			
-			<itemlayout height="300" width="420">
+			<itemlayout height="400" width="450">
 				<control type="group">
-					<height>250</height>
-					<width>250</width>
+					<top>30</top>
+					<height>300</height>
+					<width>300</width>
 					<include content="HUB_Circle">
 						<param name="colordiffuse" value="$VAR[Container_item_nf]" />
 						<param name="autoscroll" value="false" />
-						<param name="bordersize_bg" value="6" />
+						<param name="bordersize_bg" value="4" />
 					</include>
 				</control>
 			</itemlayout>
-			<focusedlayout height="300" width="420">
+			<focusedlayout  height="400" width="450">
 				<control type="group">
-					<height>250</height>
-					<width>250</width>
+					<top>30</top>
+					<height>300</height>
+					<width>300</width>
 					<include>Item_Focus_Animation</include>
 					<control type="group">
 						<include content="HUB_Circle">
 							<param name="colordiffuse" value="$VAR[Container_item_fo]" />
 							<param name="autoscroll" value="true" />
-							<param name="bordersize_bg" value="4" />
+							<param name="bordersize_bg" value="2" />
 						</include>
-						<include>FocusOverlay</include>
+						<include content="FocusOverlay">
+							<param name="diffusedimtext" value="artworkdiffuse/circle.png" />
+						</include>
 					</control>
 				</control>
 			</focusedlayout>
@@ -792,8 +848,67 @@
 					<thumb>special://skin/extras/emptyonsearch/emptywidget.png</thumb>
 				</item>
 			</content>
-			<content sortby="artist" sortorder="ascending" limit="7" target="videos">$VAR[HUB_content_artists]</content>
+			<content sortby="artist" target="music">$VAR[HUB_content_artists]</content>
 		</control>
+		
+		
+		<control type="panel" id="5011">
+			<description>Common albums</description>
+			
+			<visible>String.IsEqual(Window(home).Property(HUB_Music),artists)</visible>
+			
+			<include condition="Skin.HasSetting(Force_StayInMusicHub)" content="hub_music_OverrideOnClick" />
+			
+			<left>5</left>
+			<width>1600</width>
+			<height>400</height>
+			
+			<top>50</top>
+			
+			<onleft>111060</onleft>
+			
+			<onup>5004</onup>
+			<ondown>5004</ondown>
+			<onright>500460</onright>
+			<pagecontrol>500460</pagecontrol>
+			
+			<preloaditems>2</preloaditems>
+			<orientation>horizontal</orientation>
+			<scrolltime tween="quadratic">400</scrolltime>
+			<autoscroll>true</autoscroll>
+			
+			<itemlayout height="300" width="300">
+				<control type="group">
+					<height>280</height>
+					<width>280</width>
+					<include content="HUB_square">
+						<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+						<param name="autoscroll" value="false" />
+						<param name="bordersize_bg" value="6" />
+					</include>
+				</control>
+			</itemlayout>
+			<focusedlayout height="300" width="300">
+				<control type="group">
+					<height>280</height>
+					<width>280</width>
+					<include>Item_Focus_Animation</include>
+					<control type="group">
+						<include content="HUB_square">
+							<param name="colordiffuse" value="$VAR[Container_item_fo]" />
+							<param name="autoscroll" value="true" />
+							<param name="bordersize_bg" value="4" />
+						</include>
+					</control>
+				</control>
+			</focusedlayout>
+			<!-- <content target="music" sortby="year" sortorder="ascending" limit="0">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22albumartist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Container(5008).ListItem.Artist]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</content> -->
+			<content target="music" sortby="year" sortorder="ascending" limit="0">$INFO[Container(5008).ListItem.FolderPath]</content>
+		</control>
+		
+		
+		
+		
 		
 		<include content="HUB_ContainerHeader">
 			<param name="groupid" value="6007" />
@@ -804,8 +919,6 @@
 			<description>hardcoded content Music Videos</description>
 			<visible>
 			String.IsEqual(Window(home).Property(HUB_Music),common) | 
-			String.IsEqual(Window(home).Property(HUB_Music),artists) | 
-			String.IsEqual(Window(home).Property(HUB_Music),songs) | 
 			String.IsEqual(Window(home).Property(HUB_Music),musicvideos)
 			</visible>
 			<left>5</left>
@@ -899,9 +1012,7 @@
 			</control>
 		</control>
 		<control type="grouplist" id="5020">
-			<description>experimental Artist Albums
-add slide namination visible change
-            </description>
+			<description>albums</description>
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),IsHUBartistContent)</visible>
 			<left>0</left>
 			<height>675</height>
@@ -937,6 +1048,9 @@ add slide namination visible change
 				<ondown>5002</ondown>
 				
 				<include content="hub_music_ClearPropsOnBack" />
+				<!-- <onclick condition="!Player.HasAudio">PlayMedia($ESCINFO[ListItem.FilenameAndPath],isdir)</onclick> -->
+				<!-- <onclick>RunScript(script.embuary.helper,action=playallid=5120)</onclick> -->
+				<onclick>RunScript(script.playalbum,albumid=$INFO[ListItem.DBID])</onclick>
 				
 				<onback>111098</onback>
 			
@@ -1003,7 +1117,9 @@ add slide namination visible change
 				<scrolltime tween="quadratic">400</scrolltime>
 				<autoscroll>true</autoscroll>
 				
-				
+				<!-- unable to get correct album id even if label is correct <onclick>RunScript(script.playalbum,albumid=$INFO[Container(5120).ListItem.DBID]&amp;tracknr=$INFO[ListItem.TrackNumber])</onclick> -->
+				<!-- play always at 1st song of album <onclick>RunScript(script.playalbum,songid=$INFO[ListItem.DBID])</onclick> -->
+				<!-- <onclick>RunScript(script.embuary.helper,action=playall,id=5121,method=fromhere)</onclick> -->
 				<pagecontrol>7060</pagecontrol>
 				
 				<onright>7060</onright>
@@ -1057,10 +1173,10 @@ add slide namination visible change
 					</control>
 				</control>
 				</focusedlayout>
-				<!-- much faster than xsp method in that case -->
 				<content target="music" sortby="tracknumber" sortorder="ascending">$INFO[Container(5120).ListItem.FolderPath]</content>
-				<!-- xsp method pretty slow here, up to 30sec -->
-				<!-- <content sortby="tracknumber" sortorder="ascending">$VAR[HUB_Songs_by_AlbumArtist]</content> -->
+				<!-- xsp method pretty slow here, up to 30sec
+				<content sortby="tracknumber" sortorder="ascending">$VAR[HUB_Songs_by_AlbumArtist]</content>
+				 -->
 			</control>
 		</control>
 	</control>

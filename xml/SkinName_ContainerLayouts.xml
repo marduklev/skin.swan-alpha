@@ -472,6 +472,8 @@
 	
 	<!-- dimm focus listitem overlay -->
 	<include name="FocusOverlay">
+	<param name="diffusedimtext" default="" />
+		<definition>
 		<control type="group">
 		<visible>$PARAM[get_circle]</visible>
 			<animation reversible="false" effect="fade" start="0" end="100" time="350" tween="quadratic" easing="in">Focus</animation>
@@ -479,7 +481,7 @@
 			<control type="image">
 				<bordersize>8</bordersize>
 				<colordiffuse>ff000000</colordiffuse>
-				<texture>overlay/overlay_dimm.png</texture>
+				<texture diffuse="$PARAM[diffusedimtext]">overlay/overlay_dimm.png</texture>
 			</control>
 			<control type="group">
 				<control type="image">
@@ -490,6 +492,7 @@
 					<colordiffuse>$VAR[Widget_DimOverlay_Icon]</colordiffuse>
 					<aspectratio scalediffuse="false" align="center" aligny="center">keep</aspectratio>
 					<texture>overlay/overlay_button_play.png</texture>
+					<visible>!String.IsEqual(ListItem.Label,$LOCALIZE[284])</visible>
 					<visible>![String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,artist) | String.IsEqual(ListItem.DBType,album) | ListItem.IsFolder | String.IsEqual(ListItem.Property(IsFolder),true)]</visible>
 					</control>
 				<control type="image">
@@ -500,10 +503,12 @@
 					<colordiffuse>$VAR[Widget_DimOverlay_Icon]</colordiffuse>
 					<aspectratio scalediffuse="false" align="center" aligny="center">keep</aspectratio>
 					<texture>overlay/overlay_button_folder.png</texture>
+					<visible>!String.IsEqual(ListItem.Label,$LOCALIZE[284])</visible>
 					<visible>[String.IsEqual(ListItem.Label,..) | String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,artist) | String.IsEqual(ListItem.DBType,album)]</visible>
 				</control>
 			</control>
 		</control>
+		</definition>
 	</include>
 	
 	<!-- HUB LAYOUT - Genre,Studio-->
