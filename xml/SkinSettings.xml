@@ -20,7 +20,7 @@
 				<description>Sections</description>
 				<left>10</left>
 				<width>27%</width>
-				<top>160</top>
+				<top>180</top>
 				<height>82%</height>
 				<onleft>10000</onleft>
 				<onright>10000</onright>
@@ -51,6 +51,15 @@
 							<textcolor>$VAR[Button_Text_FO]</textcolor>
 							<label>$INFO[ListItem.Label,[B],[/B]]</label>
 						</control>
+						<control type="image">
+							<textoffsetx>30</textoffsetx>
+							<height>50</height>
+							<align>right</align>
+							<aligny>center</aligny>
+							<!-- <texture flipx="true" colordiffuse="$VAR[Button_Panel_FO]">hub/diffuse_linear_hor_50_trans.png</texture> -->
+						</control>
+						
+			
 					</control>
 				</focusedlayout>
 				<content>
@@ -101,7 +110,6 @@
 			
 			<right>20</right>
 			<width>70%</width>
-			
 			<!-- WIDGETS -->
 			<include content="ButtonList">
 				<param name="id" value="1" />
@@ -110,6 +118,12 @@
 				<description>WIDGETS</description>
 				<visible>Container(9000).HasFocus($PARAM[id])</visible>
 				
+					<include content="SectionHeadline">
+						<param name="id" value="$PARAM[id]00"/>
+						<param name="label" value=""/>
+						<param name="height" value="15" />
+					</include>
+					
 					<include content="Widget_SetPath_ButtonTemplate">
 						<param name="id" value="$PARAM[id]01"/>
 						<param name="nr" value="1"/>
@@ -305,16 +319,20 @@
 				<visible>Container(9000).HasFocus($PARAM[id])</visible>
 				<description>Artwork</description>
 				
-				<control type="radiobutton" id="$PARAM[id]00">
-					<label>use custom debug window</label>
-					<onclick>Skin.ToggleSetting(SwanDebug)</onclick>
-					<selected>Skin.HasSetting(SwanDebug)</selected>
-				</control>
+				<include content="SectionHeadline">
+					<param name="id" value="$PARAM[id]000"/>
+					<param name="label" value=""/>
+				</include>
 				
 				<control type="radiobutton" id="$PARAM[id]01">
 					<label>Dont Leave HUB when select folder Items</label>
 					<onclick>Skin.ToggleSetting(Force_StayInMusicHub)</onclick>
 					<selected>Skin.HasSetting(Force_StayInMusicHub)</selected>
+				</control>
+				<control type="radiobutton" id="$PARAM[id]02">
+					<label>Dont Leave HUB when select folder Items</label>
+					<onclick>Skin.ToggleSetting(MusicHUB_StartUprecommendation)</onclick>
+					<selected>Skin.HasSetting(MusicHUB_StartUprecommendation)</selected>
 				</control>
 			</include>
 			
@@ -328,6 +346,11 @@
 				<description></description>
 				<visible>Container(9000).HasFocus($PARAM[id])</visible>
 				
+				<include content="SectionHeadline">
+					<param name="id" value="$PARAM[id]000"/>
+					<param name="label" value="A R T O W R K     S T U F F"/>
+				</include>
+				
 				<control type="radiobutton" id="$PARAM[id]01">
 					<label>Show Fanart as Background if available</label>
 					<onclick>Skin.ToggleSetting(ShowFanartBackground)</onclick>
@@ -337,7 +360,7 @@
 				
 				<control type="radiobutton" id="$PARAM[id]02">
 					<include content="SkinSettings_SettingsRadioButton">
-						<param name="label" value="Set Background Image (groundlayer)" />
+						<param name="label" value="Set Background Image (middle layer)" />
 						<param name="label2" value="" />
 					</include>
 					<onclick>Skin.Reset(BackgroundTexture)</onclick>
@@ -345,14 +368,22 @@
 				</control>
 				<control type="radiobutton" id="$PARAM[id]03">
 					<include content="SkinSettings_SettingsRadioButton">
-						<param name="label" value="Set Background Overlay Image (top layer)" />
+						<param name="label" value="Set Common Background Overlay Image (top layer)" />
 						<param name="label2" value="" />
 					</include>
 					<onclick>Skin.Reset(BackgroundOverlayTexture)</onclick>
 					<onclick>Skin.SetImage(BackgroundOverlayTexture,special://skin/extras/backgroundoverlay)</onclick>
 				</control>
-				
 				<control type="radiobutton" id="$PARAM[id]04">
+					<include content="SkinSettings_SettingsRadioButton">
+						<param name="label" value="Set Home Background Overlay Image" />
+						<param name="label2" value="" />
+					</include>
+					<onclick>Skin.Reset(BackgroundOverlayTextureHome)</onclick>
+					<onclick>Skin.SetImage(BackgroundOverlayTextureHome,special://skin/extras/backgroundoverlay)</onclick>
+				</control>
+				
+				<control type="radiobutton" id="$PARAM[id]05">
 					<include content="SkinSettings_SettingsRadioButton">
 						<param name="label" value="Set HeaderBar Image" />
 						<param name="label2" value="" />
@@ -361,27 +392,27 @@
 					<onclick>Skin.SetImage(HeaderBarTexture,special://skin/extras/headerbartextures)</onclick>
 				</control>
 				
-				<control type="radiobutton" id="$PARAM[id]05">
+				<control type="radiobutton" id="$PARAM[id]06">
 					<label>Animate Background Image/Fanart</label>
 					<onclick>Skin.ToggleSetting(BackgroundAnimation)</onclick>
 					<selected>Skin.HasSetting(BackgroundAnimation)</selected>
 				</control>
 				
-				<control type="radiobutton" id="$PARAM[id]06">
+				<control type="radiobutton" id="$PARAM[id]07">
 					<label>Prefer Animated Fanart (if available)</label>
 					
 					<onclick>Skin.ToggleSetting(AnimatedFanart)</onclick>
 					<selected>Skin.HasSetting(AnimatedFanart)</selected>
 					
 				</control>
-				<control type="radiobutton" id="$PARAM[id]07">
+				<control type="radiobutton" id="$PARAM[id]08">
 					<label>Prefer Animated Poster (if available)</label>
 					
 					<onclick>Skin.ToggleSetting(AnimatedPoster)</onclick>
 					<selected>Skin.HasSetting(AnimatedPoster)</selected>
 					
 				</control>
-				<control type="radiobutton" id="$PARAM[id]08">
+				<control type="radiobutton" id="$PARAM[id]09">
 					<label>Prefer Rotating Extra Fanart (if available)</label>
 					
 					<onclick>Skin.ToggleSetting(EnableRotatingExtraFanart)</onclick>

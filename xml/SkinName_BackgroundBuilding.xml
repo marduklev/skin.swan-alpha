@@ -250,24 +250,43 @@
 				<timeperimage>6000</timeperimage>
 				<loop>yes</loop>
 				<visible>!$EXP[IsNetflixLayout]</visible>
-				<!-- Animated Art -->
 				<animation effect="zoom" start="110" end="130" center="auto" time="10000" tween="cubic" easing="inout" pulse="true" condition="Skin.HasSetting(BackgroundAnimation) | Window.IsActive(settings)">Conditional</animation>
 				<animation effect="slide" start="-10,-10" end="10,10" time="8000" tween="cubic" easing="inout" pulse="true" condition="Skin.HasSetting(BackgroundAnimation) | Window.IsActive(settings)">Conditional</animation>
 			</control>
 			
+			<include content="BG_Overlay" condition="!Window.IsActive(home) + !String.IsEmpty(Skin.String(BackgroundOverlayTexture))" />
 			
-			<!-- TOP - 3rd LAYER -->
-			<control type="image">
-				<depth>DepthBackground2</depth>
-				<visible>!String.IsEmpty(Skin.String(BackgroundOverlayTexture))</visible>
-				<texture>$INFO[Skin.String(BackgroundOverlayTexture)]</texture>
-				<colordiffuse>$VAR[BackgroundOverlay_CDiffuse]</colordiffuse>
-				<!-- <animation effect="fade" start="100" end="40" delay="200" time="1500" pulse="false" condition="Player.HasVideo + !$EXP[IsNetflixLayout]">Conditional</animation> -->
-			</control>
+			<include content="BG_Overlay" condition="Window.IsActive(home) + !String.IsEmpty(Skin.String(BackgroundOverlayTextureHome))">
+				<param name="texture" value="$INFO[Skin.String(BackgroundOverlayTextureHome)]" />
+				<param name="colordiffuse" value="$VAR[BackgroundOverlay_CDiffuse_Home]" />
+			</include>
+			
+			
 		</control>
        
         
     </include>
+	
+	<!-- TOP - 3rd LAYER -->
+	<!-- <animation effect="fade" start="100" end="40" delay="200" time="1500" pulse="false" condition="Player.HasVideo + !$EXP[IsNetflixLayout]">Conditional</animation> -->
+			
+	<include name="BG_Overlay">
+		<param name="texture" default="$INFO[Skin.String(BackgroundOverlayTexture)]" />
+		<param name="colordiffuse" default="$VAR[BackgroundOverlay_CDiffuse]" />
+		<definition>
+			<control type="image">
+				<description>in dialog use colors based on condition - home - generell, decide if overlay should be visible - exp'infodialogactive'</description>
+				<depth>DepthBackground2</depth>
+				<texture>$PARAM[texture]</texture>
+				<colordiffuse>$PARAM[colordiffuse]</colordiffuse>
+			</control>
+		</definition>
+	</include>
+	
+	<!-- <variable name=""> -->
+	<!-- comon $INFO[Skin.String(BackgroundOverlayTexture)] -->
+	<!-- home $INFO[Skin.String(BackgroundOverlayTextureHome)] -->
+	<!-- </variable> -->
 	
 	<include name="Rotating_ExtraFanartBackground">
 		<control type="fadelabel" id="99007">

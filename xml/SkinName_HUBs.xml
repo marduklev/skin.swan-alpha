@@ -43,26 +43,23 @@
 				<right>10</right>
 				<height>50%</height>
 				<width>50%</width>
-				
 				<texture background="true">$VAR[ListItemClearLogo]</texture>
 				<aspectratio align="left" aligny="bottom">keep</aspectratio>
 			</control>
-			
 		</control>
-		
 		<control type="textbox">
-				<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
-				<bottom>-55</bottom>
-				<left>10</left>
-				<right>10</right>
-				<wrapmultiline>true</wrapmultiline>
-				<height>60</height>
-				<font>CommonTag</font>
-				<align>center</align>
-				<aligny>center</aligny>
-				<textcolor>$VAR[HUB_maintextcolor]</textcolor>
-				<selectedcolor>white</selectedcolor>
-				<label>$VAR[HUB_Tags_Bottom]</label>
+			<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
+			<bottom>-55</bottom>
+			<left>10</left>
+			<right>10</right>
+			<wrapmultiline>true</wrapmultiline>
+			<height>60</height>
+			<font>CommonTag</font>
+			<align>center</align>
+			<aligny>center</aligny>
+			<textcolor>$VAR[HUB_maintextcolor]</textcolor>
+			<selectedcolor>white</selectedcolor>
+			<label>$VAR[HUB_Tags_Bottom]</label>
 		</control>
 	</include>
 	
@@ -80,18 +77,18 @@
 		</control>
 		
 		<control type="textbox">
-				<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
-				<bottom>-30</bottom>
-				<left>10</left>
-				<right>10</right>
-				<wrapmultiline>true</wrapmultiline>
-				<height>60</height>
-				<font>CommonTag</font>
-				<align>center</align>
-				<aligny>center</aligny>
-				<textcolor>$VAR[HUB_maintextcolor]</textcolor>
-				<selectedcolor>white</selectedcolor>
-				<label>$VAR[HUB_Tags_Bottom]</label>
+			<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
+			<bottom>-30</bottom>
+			<left>10</left>
+			<right>10</right>
+			<wrapmultiline>true</wrapmultiline>
+			<height>60</height>
+			<font>CommonTag</font>
+			<align>center</align>
+			<aligny>center</aligny>
+			<textcolor>$VAR[HUB_maintextcolor]</textcolor>
+			<selectedcolor>white</selectedcolor>
+			<label>$VAR[HUB_Tags_Bottom]</label>
 		</control>
 	</include>
 	
@@ -319,32 +316,12 @@
 	<!-- ########## -->
 	<!-- Containers -->
 	<!-- ########## -->
-	<include name="hub_music_OverrideOnClick">
-		<param name="goto" default="artist" />
-		<definition>
-			<onclick condition="!String.IsEmpty(ListItem.Artist)">RunScript(script.embuary.helper,action=encode,string='"$INFO[ListItem.Artist]"',prop=HUB_EncodedArtist)</onclick>
-			<onclick condition="!String.IsEmpty(ListItem.Artist)">SetProperty(HUB_Music_$PARAM[goto],$INFO[ListItem.$PARAM[goto]],home)</onclick>
-			<onclick condition="!String.IsEmpty(ListItem.Art(fanart))">SetProperty(HUB_artwork,$INFO[ListItem.Art(fanart)],home)</onclick>
-			<onclick condition="String.IsEmpty(ListItem.Art(fanart)) + !String.IsEmpty(ListItem.Art(landscape))">SetProperty(HUB_artwork,$INFO[ListItem.Art(fanart)],home)</onclick>
-			<onclick condition="String.IsEmpty(ListItem.Art(fanart)) + String.IsEmpty(ListItem.Art(landscape)) + !String.IsEmpty(ListItem.Art(thumb))">SetProperty(HUB_artwork,$INFO[ListItem.Art(thumb)],home)</onclick>
-			<onclick condition="!String.IsEmpty(ListItem.dbtype)">SetProperty(HUB_Music,$INFO[ListItem.dbtype,IsHUB,Content],home)</onclick>
-		</definition>
-	</include>
-	<include name="hub_music_ClearPropsOnBack">
-		<param name="comefrom" default="artist" />
-		<definition>
-			<onback>SetProperty(HUB_Music,common,home)</onback>
-			<onback>ClearProperty(HUB_artwork,home)</onback>
-			<onback>ClearProperty(HUB_EncodedArtist,home)</onback>
-			<onback>ClearProperty(HUB_Music_$PARAM[comefrom],home)</onback>
-		</definition>
-	</include>
 	
 	<!-- Container Header : label- sep - focused item label - busy -->
 	<include name="HUB_ContainerHeader">
 		<definition>
-            <control type="group" id="$PARAM[groupid]">
-				<visible>Control.IsVisible($PARAM[id])</visible>
+            <control type="group" id="60$PARAM[id]">
+				<visible>Control.IsVisible(50$PARAM[id])</visible>
                 <top>50</top>
                 <height>55</height>
                 <nested />
@@ -366,29 +343,28 @@
 						<height>22</height>
 					</control>
 					<control type="label">
-                        <top>0</top>
-                        <width>auto</width>
-                        <label>$VAR[VideoInfoHeader_Seperator]</label>
-						<aligny>center</aligny>
+						<top>-2</top>
+						<height>50</height>
+						<width>auto</width>
+                        <label> | </label>
+						<aligny>top</aligny>
                         <textcolor>$VAR[HUB_highlighttextcolor]</textcolor>
                         <font>Bold36</font>
-                        <height>50</height>
-                        <visible>Control.HasFocus($PARAM[id]) + !Container($PARAM[id]).IsUpdating</visible>
-                        <visible>!String.IsEmpty(Container($PARAM[id]).ListItem.Label)</visible>
+                        <visible>Control.HasFocus(50$PARAM[id]) + !Container(50$PARAM[id]).IsUpdating</visible>
+                        <visible>!String.IsEmpty(Container(50$PARAM[id]).ListItem.Label)</visible>
                     </control>
 					<control type="label">
-                        <top>20</top>
+						<top>10</top>
                         <width>auto</width>
-						<label>$VAR[VideoInfoHeader_Title]</label>
+						<label>$INFO[Container.ListItem.Artist,[B],[/B]]</label>
                         <aligny>center</aligny>
 						<textcolor>$VAR[HUB_maintextcolor]</textcolor>
 						<font>font27</font>
                         <height>24</height>
-						<visible>Control.HasFocus($PARAM[id]) + !Container($PARAM[id]).IsUpdating</visible>
+						<visible>Control.HasFocus(50$PARAM[id]) + !Container(50$PARAM[id]).IsUpdating</visible>
                     </control>
 					<control type="image">
-						<visible>Container($PARAM[id]).IsUpdating</visible>
-						<top>10</top>
+						<visible>Container(50$PARAM[id]).IsUpdating</visible>
 						<width>40</width>
 						<height>40</height>
 						<aspectratio scalediffuse="false" align="center" aligny="center">keep</aspectratio>
@@ -400,16 +376,133 @@
 					<top>32</top>
 					<left>11</left>
 					<width>auto</width>
-					<label>$INFO[Container($PARAM[id]).NumItems, numitems (,)]</label>
+					<label>$INFO[Container(50$PARAM[id]).NumItems, numitems (,)]</label>
 					<aligny>center</aligny>
 					<textcolor>$VAR[HUB_maintextcolor]</textcolor>
 					<font>HUB_WidgetSubHeader</font>
 					<height>24</height>
-					<visible>!Container($PARAM[id]).IsUpdating</visible>
+					<visible>!Container(50$PARAM[id]).IsUpdating</visible>
 				</control>
             </control>
         </definition>
     </include>
+	
+	<include name="Hub_ContainerCommon">
+		<param name="type" default="panel" />
+		<param name="onleft" default="111060" />
+		
+		<param name="top" default="50" />
+		<param name="width" default="1600" />
+		<param name="orientation" default="vertical" />
+		<param name="bordersize_nf" default="6" />
+		<param name="bordersize_fo" default="4" />
+		<param name="diffusedimtext" default="" />
+		<param name="animation_fo" default="Item_Focus_Animation" />
+		<param name="is_song_common" default="false" />
+		<definition>
+		
+		<control type="$PARAM[type]" id="50$PARAM[id]">
+			<nested />
+			<left>5</left>
+			<top>$PARAM[top]</top>
+			<height>$PARAM[containerheight]</height>
+			<width>$PARAM[width]</width>
+			<onleft>60$PARAM[id]60</onleft>
+			<onup>$PARAM[onup]</onup>
+			<onright>50$PARAM[id]60</onright>
+			<pagecontrol>50$PARAM[id]60</pagecontrol>
+			<orientation>$PARAM[orientation]</orientation>
+			<scrolltime tween="quadratic">400</scrolltime>
+			<preloaditems>2</preloaditems>
+			
+			
+			<itemlayout height="$PARAM[layoutheight]" width="$PARAM[layoutwidth]">
+				<control type="group">
+					<width>$PARAM[itemwidth]</width>
+					<height>$PARAM[itemheight]</height>
+					<include content="$PARAM[layout]">
+						<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+						<param name="autoscroll" value="false" />
+						<param name="bordersize_bg" value="$PARAM[bordersize_nf]" />
+					</include>
+				</control>
+			</itemlayout>
+			<focusedlayout height="$PARAM[layoutheight]" width="$PARAM[layoutwidth]">
+				<control type="group">
+					<width>$PARAM[itemwidth]</width>
+					<height>$PARAM[itemheight]</height>
+					<include>Focus_Zoom_Animation</include>
+					<include>$PARAM[animation_fo]</include>
+					<control type="group">
+						<include content="$PARAM[layout]">
+							<param name="colordiffuse" value="$VAR[Container_item_fo]" />
+							<param name="autoscroll" value="false" />
+							<param name="bordersize_bg" value="$PARAM[bordersize_fo]" />
+						</include>
+						<include content="FocusOverlay">
+							<param name="diffusedimtext" value="$PARAM[diffusedimtext]" />
+						</include>
+						<control type="group">
+							<visible>$PARAM[is_song_common]</visible>
+							<control type="image">
+								<description>playbutton_song</description>
+								<centertop>50%</centertop>
+								<visible></visible>
+								<visible>!ListItem.IsPlaying</visible>
+								<left>14</left>
+								<visible>true</visible>
+								<width>60</width>
+								<height>60</height>
+								<texture diffuse="artworkdiffuse/circle.png" background="true">overlay/overlay_button_play.png</texture>
+								<colordiffuse>white</colordiffuse>
+								<bordersize>2</bordersize>
+								<bordertexture colordiffuse="55000000">artworkdiffuse/circle.png</bordertexture>
+							</control>
+						</control>
+						
+					</control>
+				</control>			
+			</focusedlayout>
+		</control>
+		</definition>
+	</include>
+	
+	<include name="emptywidget">
+		<content>
+			<item id="9$PARAM[id]">
+				<label>$LOCALIZE[284]</label>
+				<label2 />
+				<visible>String.IsEmpty(Container(50$PARAM[id]).ListitemNoWrap(0).Artist) + String.IsEmpty(container(50$PARAM[id]).ListitemNoWrap(1).Artist)</visible>
+				<icon>special://skin/extras/emptyonsearch/emptywidget.png</icon>
+				<thumb>special://skin/extras/emptyonsearch/emptywidget.png</thumb>
+			</item>
+		</content>
+	</include>
+	
+	
+	
+	<include name="hub_music_OverrideOnClick">
+		<param name="goto" default="artist" />
+		<definition>
+			<onclick condition="!String.IsEmpty(ListItem.Artist)">RunScript(script.embuary.helper,action=encode,string='"$INFO[ListItem.Artist]"',prop=HUB_EncodedArtist)</onclick>
+			<onclick condition="!String.IsEmpty(ListItem.Artist)">SetProperty(HUB_Music_$PARAM[goto],$INFO[ListItem.$PARAM[goto]],home)</onclick>
+			<onclick condition="!String.IsEmpty(ListItem.Art(fanart))">SetProperty(HUB_artwork,$INFO[ListItem.Art(fanart)],home)</onclick>
+			<onclick condition="String.IsEmpty(ListItem.Art(fanart)) + !String.IsEmpty(ListItem.Art(landscape))">SetProperty(HUB_artwork,$INFO[ListItem.Art(fanart)],home)</onclick>
+			<onclick condition="String.IsEmpty(ListItem.Art(fanart)) + String.IsEmpty(ListItem.Art(landscape)) + !String.IsEmpty(ListItem.Art(thumb))">SetProperty(HUB_artwork,$INFO[ListItem.Art(thumb)],home)</onclick>
+			<onclick condition="!String.IsEmpty(ListItem.dbtype)">SetProperty(HUB_Music,$INFO[ListItem.dbtype,IsHUB,Content],home)</onclick>
+		</definition>
+	</include>
+	<include name="hub_music_ClearPropsOnBack">
+		<param name="comefrom" default="artist" />
+		<definition>
+			<onback>SetProperty(HUB_Music,common,home)</onback>
+			<onback>ClearProperty(HUB_artwork,home)</onback>
+			<onback>ClearProperty(HUB_EncodedArtist,home)</onback>
+			<onback>ClearProperty(HUB_Music_$PARAM[comefrom],home)</onback>
+		</definition>
+	</include>
+	
+	
 	
 	<!-- ########## -->
 	<!-- Content -->
