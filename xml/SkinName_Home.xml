@@ -240,41 +240,10 @@
 					<textcolor>white</textcolor>
 					<label>[CAPITALIZE]$INFO[ListItem.Title,[B],[/B]][CR]$INFO[ListItem.Season,$LOCALIZE[36904] ,]$INFO[ListItem.Episode, $LOCALIZE[36906] ,][/CAPITALIZE]</label>
 				</control>
-				<control type="grouplist">
-					<orientation>horizontal</orientation>
-					<itemgap>10</itemgap>
-					<usecontrolcoords>true</usecontrolcoords>
+				<control type="label">
 					<height>30</height>
-					
-					<!-- 
-					<height>30</height>
-					<visible>Integer.IsGreater(ListItem.PercentPlayed,0)</visible>
-					
-					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
-					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
-						<param name="align" value="center" />
-					</include>
-					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
-						<param name="align" value="right" />
-					</include>
-					
-					<control type="progress">
-						<top>16</top>
-						<width>150</width>
-						<height>5</height>
-						<texturebg colordiffuse="B1FFFFFF" border="2">colors/white.png</texturebg>
-						<lefttexture></lefttexture>
-						<midtexture colordiffuse="red" border="2">colors/white.png</midtexture>
-						<righttexture></righttexture>
-						<info>ListItem.PercentPlayed</info>
-					</control>
-					<control type="label">
-						<height>30</height>
-						<width>auto</width>
-						<font>Netflix_Plot</font>
-						<textcolor>red</textcolor>
-						<label>[B]continue watching[/B]</label>
-					</control> -->
+					<font />
+					<textcolor />
 				</control>
 			</control>
 			
@@ -420,9 +389,10 @@
 
 	<include name="Home_Plot">
 		<control type="textbox">
+			<description>terrible auto scroll even if not exceed height</description>
 			<visible>$PARAM[visible]</visible>
 			<top>$PARAM[top]</top>
-			<height min="60" max="$PARAM[maxheight]">auto</height>
+			<height min="80" max="$PARAM[maxheight]">auto</height>
 			<aligny>top</aligny>
 			<label>$VAR[Home_Var_PLot]</label>
 			<textcolor>white</textcolor>
@@ -572,9 +542,10 @@
 
 	<include name="StarsRating_ImageVariable">
 		<param name="width" default="150" />
-		<param name="height" default="40" />
+		<param name="height" default="45" />
 		<definition>
 		<control type="image">
+			<visible>!String.IsEmpty(ListItem.UserRating) | !String.IsEmpty(ListItem.Rating)</visible>
 			<width>$PARAM[width]</width>
 			<height>$PARAM[height]</height>
 			<aspectratio align="left" aligny="center">keep</aspectratio>
@@ -639,30 +610,30 @@
 	</variable>
 
 	<variable name="Home_Var_PLot">
-		<!-- <value condition="!String.IsEmpty(ListItem.PlotOutline)">$INFO[ListItem.PlotOutline]</value> mostly not translated info , make optional -->
 		<value condition="!String.IsEmpty(ListItem.Plot)">$INFO[ListItem.Plot]</value>
 		<value condition="!String.IsEmpty(ListItem.Property(Album_Description))">$INFO[ListItem.Property(Album_Description)]$INFO[ListItem.ContributorAndRole,[CR],]</value>
 		<value condition="!String.IsEmpty(ListItem.Property(Artist_Description))">$INFO[ListItem.Property(Artist_Description)]$INFO[ListItem.ContributorAndRole,[CR],]</value>
 		<value condition="String.IsEqual(ListItem.DBTYPE,musicvideo)">$INFO[ListItem.Artist]$INFO[ListItem.Title,[CR],]</value>
 		<value condition="!String.IsEmpty(ListItem.AddonDescription)">$INFO[ListItem.AddonDescription]</value>
 		<value condition="!String.IsEmpty(ListItem.AddonSummary)">$INFO[ListItem.AddonSummary]</value>
+		<value condition="$EXP[IsSong]">$INFO[ListItem.AlbumArtist,$LOCALIZE[557] : [B],[/B]][CR]$INFO[ListItem.Album,$LOCALIZE[558] : ,]</value>
+		<value condition="Control.HasFocus(7600) | ControlGroup(9000).HasFocus() | String.IsEqual(ListItem.DBTYPE,genre) | String.IsEqual(ListItem.DBTYPE,studio) | String.IsEqual(ListItem.DBTYPE,actor) | String.IsEqual(ListItem.DBTYPE,year) | String.IsEqual(ListItem.DBTYPE,director) | String.IsEqual(ListItem.DBTYPE,country) | String.IsEqual(ListItem.DBTYPE,tag)"></value>
 		<value>$LOCALIZE[19055]</value>
 	</variable>
 
 	<variable name="Meta_Top_Details">
-		<value condition="[Container.Content(episodes) | String.IsEqual(ListItem.DBTYPE,episode) | String.IsEqual(ListItem.Property(DBTYPE),episode)] + ListItem.Property(season_finale)">$VAR[ListItemDuration,, $LOCALIZE[31336]] </value>
-		<value condition="[Container.Content(episodes) | String.IsEqual(ListItem.DBTYPE,episode) | String.IsEqual(ListItem.Property(DBTYPE),episode)] + ListItem.Property(series_finale)">$VAR[ListItemDuration,, $LOCALIZE[31335]] </value>
-		<value condition="[Container.Content(episodes) | String.IsEqual(ListItem.DBTYPE,episode) | String.IsEqual(ListItem.Property(DBTYPE),episode)]">$VAR[ListItemDuration]</value>
-		<value condition="Container.Content(MusicVideos) + [!String.IsEmpty(ListItem.Duration) | !String.IsEmpty(ListItem.Year)]">$VAR[ListItemDuration]</value>					  
-		<value condition="Container.Content(Movies) + !String.IsEmpty(ListItem.Duration)">[B]$VAR[ListItemDuration][/B]</value>
-		<value condition="Container.Content(TVShows) + Integer.IsGreater(ListItem.Property(TotalSeasons),1) + Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),0) + !String.IsEmpty(ListItem.Property(TotalEpisodes))">$INFO[ListItem.Property(TotalSeasons),[B], $LOCALIZE[33054][/B]]$INFO[ListItem.Property(UnWatchedEpisodes), (, $LOCALIZE[31092])]</value>
-		<value condition="Container.Content(TVShows) + Integer.IsGreater(ListItem.Property(TotalSeasons),1) + !Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),0) + !String.IsEmpty(ListItem.Property(TotalEpisodes))">$INFO[ListItem.Property(TotalSeasons),[B], $LOCALIZE[33054][/B]]</value>																																																																																							
-		<value condition="Container.Content(TVShows) + Integer.IsEqual(ListItem.Property(TotalSeasons),1) + Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),0) + !String.IsEmpty(ListItem.Property(TotalEpisodes))">$INFO[ListItem.Property(TotalSeasons),[B], $LOCALIZE[36904][/B]]$INFO[ListItem.Property(UnWatchedEpisodes), (, $LOCALIZE[31092])]</value>
-		<value condition="Container.Content(TVShows) + Integer.IsEqual(ListItem.Property(TotalSeasons),1) + !Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),0) + !String.IsEmpty(ListItem.Property(TotalEpisodes))">$INFO[ListItem.Property(TotalSeasons),[B], $LOCALIZE[36904][/B]]</value>																																																																																							
-		<value condition="Container.Content(Seasons) + Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),0) + !String.IsEmpty(ListItem.Property(TotalEpisodes))">$INFO[ListItem.Property(TotalEpisodes),[B], $LOCALIZE[20360][/B]]$INFO[ListItem.Property(UnWatchedEpisodes), (, $LOCALIZE[31092])]</value>
-		<value condition="Container.Content(Seasons) + !Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),0) + !String.IsEmpty(ListItem.Property(TotalEpisodes))">$INFO[ListItem.Property(TotalEpisodes),[B], $LOCALIZE[20360][/B]]</value>																																																																																							
- 		<value condition="!String.IsEmpty(ListItem.Duration)">$VAR[ListItemDuration]</value>
-		<value condition="String.Contains(ListItem.Path,videodb://movies/sets/)">$INFO[ListItem.Label]</value>
+		<value condition="String.IsEqual(ListItem.DBTYPE,tvshow) + Integer.IsGreater(ListItem.Property(TotalSeasons),1) + Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),0) + !String.IsEmpty(ListItem.Property(TotalEpisodes))">$INFO[ListItem.Property(TotalSeasons),[B], $LOCALIZE[33054][/B]]$INFO[ListItem.Property(UnWatchedEpisodes), (, $LOCALIZE[16101])]</value>
+		<value condition="String.IsEqual(ListItem.DBTYPE,tvshow) + Integer.IsGreater(ListItem.Property(TotalSeasons),1) + !Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),0) + !String.IsEmpty(ListItem.Property(TotalEpisodes))">$INFO[ListItem.Property(TotalSeasons),[B], $LOCALIZE[33054][/B]]</value>																																																																																							
+		<value condition="String.IsEqual(ListItem.DBTYPE,tvshow) + Integer.IsEqual(ListItem.Property(TotalSeasons),1) + Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),0) + !String.IsEmpty(ListItem.Property(TotalEpisodes))">$INFO[ListItem.Property(TotalSeasons),[B], $LOCALIZE[36904][/B]]$INFO[ListItem.Property(UnWatchedEpisodes), (, $LOCALIZE[16101])]</value>
+		<value condition="String.IsEqual(ListItem.DBTYPE,tvshow) + Integer.IsEqual(ListItem.Property(TotalSeasons),1) + !Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),0) + !String.IsEmpty(ListItem.Property(TotalEpisodes))">$INFO[ListItem.Property(TotalSeasons),[B], $LOCALIZE[36904][/B]]</value>																																																																																							
+		<value condition="String.IsEqual(ListItem.DBTYPE,season) + Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),0) + !String.IsEmpty(ListItem.Property(TotalEpisodes))">$INFO[ListItem.Property(TotalEpisodes),[B], $LOCALIZE[20360][/B]]$INFO[ListItem.Property(UnWatchedEpisodes), (, $LOCALIZE[16101])]</value>
+		<value condition="String.IsEqual(ListItem.DBTYPE,season) + !Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),0) + !String.IsEmpty(ListItem.Property(TotalEpisodes))">$INFO[ListItem.Property(TotalEpisodes),[B], $LOCALIZE[20360][/B]]</value>
+		<value condition="String.IsEqual(ListItem.DBTYPE,tvshow)">$INFO[ListItem.Property(TotalSeasons),[B], $LOCALIZE[33054][/B]]$INFO[ListItem.Property(UnWatchedEpisodes), (, $LOCALIZE[16101])]</value>		
+ 		<value condition="String.Contains(ListItem.Path,videodb://movies/sets/) | String.IsEqual(ListItem.DBTYPE,set)">$INFO[ListItem.Label]$INFO[ListItem.Label,,]</value>
+		<value condition="String.IsEqual(ListItem.DBTYPE,album) + ![String.IsEmpty(ListItem.art(albumartist.clearlogo)) + String.IsEmpty(ListItem.art(artist.clearlogo))]">$INFO[ListItem.AlbumArtist]$INFO[ListItem.Album, • ,]</value>
+		<value condition="String.IsEqual(ListItem.DBTYPE,album) + [String.IsEmpty(ListItem.art(albumartist.clearlogo)) + String.IsEmpty(ListItem.art(artist.clearlogo))]">$INFO[ListItem.Album,| [B],[/B]]</value>
+		<value condition="String.IsEqual(ListItem.DBTYPE,song) + ![String.IsEmpty(ListItem.art(albumartist.clearlogo)) + String.IsEmpty(ListItem.art(artist.clearlogo))]">$INFO[ListItem.AlbumArtist]$INFO[ListItem.Album, • ,]</value>
+		<value condition="!String.IsEmpty(ListItem.Duration)">$VAR[ListItemDuration]</value>
 		<value>$INFO[ListItem.Label2]</value>
 	</variable>
 
@@ -672,14 +643,14 @@
     </variable>
 
 	<variable name="ListItemDuration">
-		<value condition="![!String.IsEmpty(ListItem.Artist) | Container.Content(Songs) | Container.Content(Musicvideos)] + !Skin.HasSetting(DisableHoursDuration) + Integer.IsGreater(ListItem.Duration(h),0)">$INFO[ListItem.Duration(h),,h ]$INFO[ListItem.Duration(m),,min]</value>		
-		<value condition="![!String.IsEmpty(ListItem.Artist) | Container.Content(Songs) | Container.Content(Musicvideos)] + Skin.HasSetting(DisableHoursDuration) + !String.IsEmpty(ListItem.Duration)">$INFO[ListItem.Duration(mins),, min]</value>
-		<value condition="![!String.IsEmpty(ListItem.Artist) | Container.Content(Songs) | Container.Content(Musicvideos)] + !Skin.HasSetting(DisableHoursDuration) + Integer.IsEqual(ListItem.Duration(h),0)">$INFO[ListItem.Duration(mins),, min]</value>
-		<value condition="[!String.IsEmpty(ListItem.Artist) | Container.Content(Songs) | Container.Content(Musicvideos)] + !Skin.HasSetting(DisableHoursDuration) + !String.IsEmpty(ListItem.Duration)">$INFO[ListItem.Duration,, min]</value>	
+		<value condition="String.IsEqual(ListItem.DBTYPE,song) | String.IsEqual(ListItem.DBTYPE,musicvideo)">$INFO[ListItem.Duration,, min]</value>
+		<value condition="!Integer.IsGreater(ListItem.Duration(h),0)">$INFO[ListItem.Duration(m),, min]</value>
+		<value>$INFO[ListItem.Duration(h),,h ]$INFO[ListItem.Duration(m),,min]</value>
 	</variable>
+	
 	<variable name="ClearLogo_FallbackHome">
 		<value condition="$EXP[IsSong]">$INFO[ListItem.AlbumArtist,[B],[/B]][CR]$INFO[ListItem.title]</value>
-		<value condition="$EXP[IsAlbum]">$INFO[ListItem.AlbumArtist,[B],[/B]][CR]$INFO[ListItem.title]$INFO[ListItem.year, (,)]</value>
+		<value condition="$EXP[IsAlbum]">$INFO[ListItem.AlbumArtist,[B],[/B]]</value>
 		<value condition="$EXP[IsEpisode]">$INFO[ListItem.tvshowtitle]</value>		
 		<value>$INFO[ListItem.Label]</value>	
 	</variable>

@@ -307,7 +307,7 @@
 	</include>
 	
 	<variable name="HUB_Tags_Bottom">
-		<value condition="!$EXP[IsSeason] + [$EXP[IsEpisode] | !String.IsEmpty(ListItem.Episode)]">$INFO[ListItem.Season,[B]s,[/B]]$INFO[ListItem.Episode,[B]e,[/B] -]$INFO[ListItem.Title,[B],[/B]]$INFO[ListItem.Duration(mm), (, min)][CR][COLOR=$VAR[HUB_secondarytextcolor]]$INFO[ListItem.Year][/COLOR]</value>
+		<value condition="!$EXP[IsSeason] + [$EXP[IsEpisode]]">$INFO[ListItem.Season,[B]s,[/B]]$INFO[ListItem.Episode,[B]e,[/B] -]$INFO[ListItem.Title,[B],[/B]]$INFO[ListItem.Duration(mm), (, min)][CR][COLOR=$VAR[HUB_secondarytextcolor]]$INFO[ListItem.Year][/COLOR]</value>
 		<value condition="$EXP[IsSong]">$INFO[ListItem.Label,[B],[/B]][CR][COLOR=$VAR[HUB_secondarytextcolor]]$INFO[ListItem.Album]$INFO[ListItem.Year, (,)][/COLOR]</value>
 		<value condition="!String.IsEmpty(ListItem.Year)">$INFO[ListItem.Label,[B],[/B]][CR][COLOR=$VAR[HUB_secondarytextcolor]]$INFO[ListItem.Year][/COLOR]</value>
 		<value>$INFO[ListItem.Label,[B],[/B]][CR][COLOR=$VAR[HUB_secondarytextcolor]]$INFO[ListItem.Label2][/COLOR]</value>
@@ -566,7 +566,7 @@ notinthelast 	True if the field does not fall in the last range specified by the
 	</variable>
 	
 	<variable name="HUB_content_albums_title">
-		<value condition="!String.IsEmpty(Control.GetLabel(100002).index(1))">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(100002).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</value>
+		<value condition="!String.IsEmpty(Control.GetLabel(100002).index(1))">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22album%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(100002).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</value>
 		<value>musicdb://albums/</value>
 	</variable>
 	<variable name="HUB_content_albums_artist">
@@ -610,7 +610,7 @@ notinthelast 	True if the field does not fall in the last range specified by the
 	
 	<!-- artist hub test -->
 	<variable name="HUB_Albums_by_Artist">
-		<value>musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(HUB_EncodedArtist)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</value>
+		<value condition="String.IsEqual(Window(home).Property(HUB_Music),IsHUBartistContent)">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(HUB_EncodedArtist)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</value>
 	</variable>
 	<!-- pretty slow - use container folderpath instead -->
 	<variable name="HUB_Songs_by_AlbumArtist">
