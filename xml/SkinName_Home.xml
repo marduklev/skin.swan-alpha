@@ -62,7 +62,7 @@
 				</include>
 				<aligny>bottom</aligny>
 				<textcolor>white</textcolor>
-				<label>Home Clear Logo Fallback</label>
+				<label>$VAR[ClearLogo_FallbackHome]</label>
 			</control>
 			
 			<include>Meta_Uncommon_Top</include>
@@ -214,7 +214,7 @@
 				</include>
 				<aligny>bottom</aligny>
 				<textcolor>white</textcolor>
-				<label>Home Clear Logo Fallback</label>
+				<label>$VAR[ClearLogo_FallbackHome]</label>
 			</control>
 			
 			<include>Meta_Uncommon_Top</include>
@@ -224,23 +224,10 @@
 				<orientation>vertical</orientation>
 				<height>125</height>
 				<fadetime>300</fadetime>
+				<itemgap>10</itemgap>
+				
 				<control type="label">
-					<visible>!Integer.IsGreater(ListItem.PercentPlayed,0)</visible>
-					<height>25</height>
-					<font>Netflix_Plot</font>
-					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
-						<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
-							<param name="align" value="center" />
-						</include>
-						<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
-							<param name="align" value="right" />
-						</include>
-					<aligny>center</aligny>
-					<textcolor>white</textcolor>
-					<label>[CAPITALIZE][B]Next Episode[/B][/CAPITALIZE]</label>
-				</control>
-				<control type="label">
-					<height>25</height>
+					<height>60</height>
 					<font>Netflix_Plot</font>
 					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
 					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
@@ -251,13 +238,16 @@
 					</include>
 					<aligny>center</aligny>
 					<textcolor>white</textcolor>
-					<label>NetflixEpisodeInfoLabel</label>
+					<label>[CAPITALIZE]$INFO[ListItem.Title,[B],[/B]][CR]$INFO[ListItem.Season,$LOCALIZE[36904] ,]$INFO[ListItem.Episode, $LOCALIZE[36906] ,][/CAPITALIZE]</label>
 				</control>
 				<control type="grouplist">
 					<orientation>horizontal</orientation>
 					<itemgap>10</itemgap>
 					<usecontrolcoords>true</usecontrolcoords>
-					<height>40</height>
+					<height>30</height>
+					
+					<!-- 
+					<height>30</height>
 					<visible>Integer.IsGreater(ListItem.PercentPlayed,0)</visible>
 					
 					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
@@ -284,20 +274,19 @@
 						<font>Netflix_Plot</font>
 						<textcolor>red</textcolor>
 						<label>[B]continue watching[/B]</label>
-					</control>
+					</control> -->
 				</control>
 			</control>
 			
 			<include content="Home_Plot">
-				<param name="visible" value="!String.IsEqual(ListItem.DBTYPE,episode)" />
+				<param name="visible" value="![$EXP[IsEpisode]]" />
 				<param name="maxheight" value="205" />
 				<param name="top" value="0" />
 			</include>
-			
 			<include content="Home_Plot">
-				<param name="visible" value="String.IsEqual(ListItem.DBTYPE,episode)" />
-				<param name="maxheight" value="125" />
-				<param name="top" value="5" />
+				<param name="visible" value="$EXP[IsEpisode]" />
+				<param name="maxheight" value="160" />
+				<param name="top" value="0" />
 			</include>
 			
 			<include content="Meta_Genre_Bottom" />
@@ -433,7 +422,8 @@
 		<control type="textbox">
 			<visible>$PARAM[visible]</visible>
 			<top>$PARAM[top]</top>
-			<height min="50" max="$PARAM[maxheight]">auto</height>
+			<height min="60" max="$PARAM[maxheight]">auto</height>
+			<aligny>top</aligny>
 			<label>$VAR[Home_Var_PLot]</label>
 			<textcolor>white</textcolor>
 			<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
@@ -687,5 +677,12 @@
 		<value condition="![!String.IsEmpty(ListItem.Artist) | Container.Content(Songs) | Container.Content(Musicvideos)] + !Skin.HasSetting(DisableHoursDuration) + Integer.IsEqual(ListItem.Duration(h),0)">$INFO[ListItem.Duration(mins),, min]</value>
 		<value condition="[!String.IsEmpty(ListItem.Artist) | Container.Content(Songs) | Container.Content(Musicvideos)] + !Skin.HasSetting(DisableHoursDuration) + !String.IsEmpty(ListItem.Duration)">$INFO[ListItem.Duration,, min]</value>	
 	</variable>
+	<variable name="ClearLogo_FallbackHome">
+		<value condition="$EXP[IsSong]">$INFO[ListItem.AlbumArtist,[B],[/B]][CR]$INFO[ListItem.title]</value>
+		<value condition="$EXP[IsAlbum]">$INFO[ListItem.AlbumArtist,[B],[/B]][CR]$INFO[ListItem.title]$INFO[ListItem.year, (,)]</value>
+		<value condition="$EXP[IsEpisode]">$INFO[ListItem.tvshowtitle]</value>		
+		<value>$INFO[ListItem.Label]</value>	
+	</variable>
+	
 
 </includes>
