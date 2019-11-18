@@ -219,6 +219,7 @@
 		<param name="Container_Height" default="67%" />
 		<definition>
 		<control type="list" id="$PARAM[id]">
+			<animation effect="fade" start="100" end="0" time="200" tween="sine" condition="Window.IsActive(AddonBrowser) + Window.IsTopMost(addoninformation)">Conditional</animation>
 			<posx>640</posx>
 			<posy>250</posy>
 			<width>640</width>
@@ -237,6 +238,8 @@
 				</control>
 				<control type="image">
 					<visible>!String.IsEmpty(ListItem.Icon)</visible>
+					<visible>!ListItem.Property(addon.downloading)</visible>
+					<visible>!ListItem.Property(addon.hasupdate)</visible>
 					<width>$PARAM[layout_height]</width>
 					<height>$PARAM[layout_height]</height>
 					<bordersize>7</bordersize>
@@ -244,6 +247,28 @@
 					<texture diffuse="diffuse/roundmask.png" fallback="defaultaddon.png">$INFO[ListItem.Icon]</texture>
 				</control>
 				<control type="image">
+					<visible>!String.IsEmpty(ListItem.Icon)</visible>
+					<visible>ListItem.Property(addon.downloading)</visible>
+					<width>$PARAM[layout_height]</width>
+					<height>$PARAM[layout_height]</height>
+					<bordersize>30</bordersize>
+					<aspectratio scalediffuse="false" aligny="center" align="center">keep</aspectratio>
+					<texture diffuse="diffuse/roundmask.png" fallback="defaultaddon.png">$INFO[ListItem.Icon]</texture>
+					<bordertexture>special://skin/extras/busy/busyload2.apng</bordertexture>
+				</control>
+				<control type="image">
+					<visible>!String.IsEmpty(ListItem.Icon)</visible>
+					<visible>ListItem.Property(addon.hasupdate)</visible>
+					<visible>!ListItem.Property(addon.downloading)</visible>
+					<width>$PARAM[layout_height]</width>
+					<height>$PARAM[layout_height]</height>
+					<bordersize>30</bordersize>
+					<aspectratio scalediffuse="false" aligny="center" align="center">keep</aspectratio>
+					<texture diffuse="diffuse/roundmask.png" fallback="defaultaddon.png">$INFO[ListItem.Icon]</texture>
+					<bordertexture>icons/status/update2.png</bordertexture>
+				</control>
+				<control type="image">
+					<visible>[!String.IsEmpty(ListItem.AddonBroken) | !String.IsEmpty(ListItem.Property(addon.orphaned) | [!String.IsEmpty(ListItem.Property(addon.isinstalled)) + String.IsEmpty(ListItem.Property(addon.isenabled))] | !String.IsEmpty(ListItem.Property(addon.isinstalled))]</visible>
 					<left>85</left>
 					<top>5</top>
 					<width>32</width>
@@ -267,7 +292,6 @@
 				<control type="image">
 					<texture>colors/white.png</texture>
 					<colordiffuse>$VAR[Button_Panel_FO]</colordiffuse>
-					<!-- <visible>!Control.HasFocus(60)</visible> -->
 				</control>
 				<control type="image">
 					<visible>String.IsEmpty(ListItem.Icon)</visible>
@@ -275,13 +299,37 @@
 				</control>
 				<control type="image">
 					<visible>!String.IsEmpty(ListItem.Icon)</visible>
-					<width>$PARAM[layout_height].9</width>
+					<visible>!ListItem.Property(addon.downloading)</visible>
+					<visible>!ListItem.Property(addon.hasupdate)</visible>
+					<width>$PARAM[layout_height]</width>
 					<height>$PARAM[layout_height]</height>
 					<bordersize>7</bordersize>
 					<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
 					<texture diffuse="diffuse/roundmask.png" fallback="defaultaddon.png">$INFO[ListItem.Icon]</texture>
 				</control>
 				<control type="image">
+					<visible>!String.IsEmpty(ListItem.Icon)</visible>
+					<visible>ListItem.Property(addon.downloading)</visible>
+					<width>$PARAM[layout_height]</width>
+					<height>$PARAM[layout_height]</height>
+					<bordersize>30</bordersize>
+					<aspectratio scalediffuse="false" aligny="center" align="center">keep</aspectratio>
+					<texture diffuse="diffuse/roundmask.png" fallback="defaultaddon.png">$INFO[ListItem.Icon]</texture>
+					<bordertexture>special://skin/extras/busy/busyload2.apng</bordertexture>
+				</control>
+				<control type="image">
+					<visible>!String.IsEmpty(ListItem.Icon)</visible>
+					<visible>ListItem.Property(addon.hasupdate)</visible>
+					<visible>!ListItem.Property(addon.downloading)</visible>
+					<width>$PARAM[layout_height]</width>
+					<height>$PARAM[layout_height]</height>
+					<bordersize>30</bordersize>
+					<aspectratio scalediffuse="false" aligny="center" align="center">keep</aspectratio>
+					<texture diffuse="diffuse/roundmask.png" fallback="defaultaddon.png">$INFO[ListItem.Icon]</texture>
+					<bordertexture>icons/status/update2.png</bordertexture>
+				</control>
+				<control type="image">
+					<visible>[!String.IsEmpty(ListItem.AddonBroken) | !String.IsEmpty(ListItem.Property(addon.orphaned) | [!String.IsEmpty(ListItem.Property(addon.isinstalled)) + String.IsEmpty(ListItem.Property(addon.isenabled))] | !String.IsEmpty(ListItem.Property(addon.isinstalled))]</visible>
 					<left>85</left>
 					<top>5</top>
 					<width>32</width>
@@ -337,7 +385,16 @@
 				<wrapmultiline>true</wrapmultiline>
 			</control>
 			<control type="textbox">
+				<visible>!Window.IsTopMost(addoninformation)</visible>
 				<left>68%</left>
+				<width>30%</width>
+				<height>100%</height>
+				<label>$PARAM[Item_Description]</label>
+				<font>Reg22</font>
+			</control>
+			<control type="textbox">
+				<visible>Window.IsTopMost(addoninformation)</visible>
+				<left>34%</left>
 				<width>30%</width>
 				<height>100%</height>
 				<label>$PARAM[Item_Description]</label>
