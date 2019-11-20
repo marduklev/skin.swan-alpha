@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
-	<!-- Settings -->
 	<variable name="InfoDialog_Header">
-		<!-- VideoInfo -->
 		<value condition="Container.Content(Movies) | String.IsEqual(ListItem.DBType,movie)">$LOCALIZE[24007]</value>
 		<value condition="Container.Content(Musicvideos) | String.IsEqual(ListItem.DBType,musicvideo)">$LOCALIZE[24015]</value>
 		<value condition="Container.Content(TVShows) | String.IsEqual(ListItem.DBType,tvshow)">$LOCALIZE[20351]</value>
 		<value condition="Container.Content(Episodes) | String.IsEqual(ListItem.DBType,episode)">$LOCALIZE[20352]</value>
-		<!--Musicinfo -->
 		<value condition="Container.Content(Artists) | String.IsEqual(ListItem.DBType,artist)">$LOCALIZE[24017]</value>
 		<value condition="Container.Content(Albums) | String.IsEqual(ListItem.DBType,album)">$LOCALIZE[24016]</value>
 		<value condition="Container.Content(Songs) | String.IsEqual(ListItem.DBType,song)">$LOCALIZE[658]</value>
@@ -16,12 +13,16 @@
 	
 	<variable name="AddonStatus">
 		<value condition="!String.IsEmpty(ListItem.AddonBroken)">icons/status/disable.png</value>
-		<value condition="!String.IsEmpty(ListItem.Property(addon.orphaned))">icons/status/orphan.png</value>
-		<value condition="!String.IsEmpty(ListItem.Property(addon.isinstalled)) + String.IsEmpty(ListItem.Property(addon.isenabled))">icons/status/disable.png</value>
-		<value condition="ListItem.Property(addon.isinstalled)">icons/status/tickmark.png</value>
+		<value condition="ListItem.Property(addon.orphaned)">icons/status/orphan.png</value>
+		<value condition="ListItem.Property(addon.isinstalled) + !ListItem.Property(addon.isenabled)">icons/status/disable.png</value>
+		<value condition="ListItem.Property(addon.isinstalled)">icons/status/tickmark2.png</value>
 		<value></value>
 	</variable>
-	
+	<variable name="test">
+		<value condition="!String.IsEmpty(ListItem.AddonBroken)">icons/status/disable.png</value>
+		<value condition="ListItem.Property(addon.isinstalled) + !ListItem.Property(addon.isenabled)">icons/status/disable.png</value>
+		<value>icons/status/update2.png</value>
+	</variable>
 	<variable name="addonupdate">
 		<value condition="ListItem.Property(addon.downloading)">$INFO[ListItem.Property(addon.status)]</value>
 		<value></value>
@@ -48,20 +49,17 @@
 	<!-- ######### -->
 	<!--   ARTWORK  -->
 	<!-- ######### -->
+	
 	<variable name="ListItemClearLogo">
 		<value condition="!String.IsEmpty(ListItem.Art(tvshow.clearlogo))">$INFO[ListItem.Art(tvshow.clearlogo)]</value>
 		<value condition="!String.IsEmpty(ListItem.Art(artist.clearlogo))">$INFO[ListItem.Art(artist.clearlogo)]</value>
 		<value condition="!String.IsEmpty(ListItem.Art(albumartist.clearlogo))">$INFO[ListItem.Art(albumartist.clearlogo)]</value>
 		<value condition="!String.IsEmpty(ListItem.Art(clearlogo))">$INFO[ListItem.Art(clearlogo)]</value>
-		<!-- <value condition="!String.IsEmpty(Container(xy).ListItem.Art(clearlogo))">$INFO[Container(xy).ListItem.Art(clearlogo)]</value>
-		<value condition="!String.IsEmpty(Container.ListItem.Art(clearlogo))">$INFO[Container.ListItem.Art(clearlogo)]</value> -->
-		<!-- custom -
-		<value condition="!String.IsEmpty(Container.ListItem.Property(ListItem.Art(clearlogo)))">$INFO[Container.ListItem.Property(ListItem.Art(clearlogo))]</value>
-		-->
 	</variable>
+	
+	<!-- make optional or remove <value condition="!String.IsEmpty(ListItem.PlotOutline)">$INFO[ListItem.PlotOutline]</value> -->
 	<variable name="ListItemPlot">
 		<value condition="!String.IsEmpty(ListItem.Plot)">$INFO[ListItem.Plot]</value>
-		<!-- <value condition="!String.IsEmpty(ListItem.PlotOutline)">$INFO[ListItem.PlotOutline]</value> -->
 		<value condition="!String.IsEmpty(ListItem.Property(Album_Description))">$INFO[ListItem.Property(Album_Description)]$INFO[ListItem.ContributorAndRole,[CR],]</value>
 		<value condition="!String.IsEmpty(ListItem.Property(Artist_Description))">$INFO[ListItem.Property(Artist_Description)]$INFO[ListItem.ContributorAndRole,[CR],]</value>
 		<value condition="!String.IsEmpty(ListItem.AddonDescription)">$INFO[ListItem.AddonDescription]</value>
@@ -92,7 +90,6 @@
 		<value condition="!String.IsEmpty(Skin.String(BackgroundColor_Home))">$INFO[Skin.String(BackgroundColor_Home)]</value>
 		<value>BackgroundColor_Home</value>
 	</variable>
-	<!-- ?? -->
 	<variable name="BackgroundOverlay_CDiffuse_Home">
 		<value condition="!String.IsEmpty(Skin.String(BackgroundOverlay_CDiffuse_Home))">$INFO[Skin.String(BackgroundOverlay_CDiffuse_Home)]</value>
 		<value>BackgroundOverlay_CDiffuse_Home</value>

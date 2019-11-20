@@ -66,7 +66,7 @@
 		<value condition="Control.HasFocus(8610)">$INFO[Container.ListItem.Season,$LOCALIZE[20373] [B],[/B] • ]$INFO[Container.ListItem.Episode,$LOCALIZE[20452] [B],[/B]]$INFO[Container.ListItem.Title,[B] : ,[/B]]</value>
 		<value>$INFO[Container.ListItem.Label,[B],[/B]]</value>
 	</variable>
-	<variable name="VideoInfoHeader_Seperator">
+	<variable name="Widget_HeadingSeperator">
 		<value condition="Control.HasFocus(8601) | Control.HasFocus(8606) | Control.HasFocus(8607)"></value>
 		<value> | </value>
 	</variable>
@@ -107,7 +107,7 @@
 					<control type="label">
                         <top>16</top>
                         <width>auto</width>
-                        <label>$VAR[VideoInfoHeader_Seperator]</label>
+                        <label>$VAR[Widget_HeadingSeperator]</label>
 						<aligny>center</aligny>
                         <textcolor>green</textcolor>
                         <font>Bold36</font>
@@ -225,12 +225,11 @@
 			<width>640</width>
 			<height>$PARAM[Container_Height]</height>
 			<onleft>$PARAM[onleft]</onleft>
-			<onright>60</onright>
+			<onright>$PARAM[id]60</onright>
 			<onup>$PARAM[id]</onup>
 			<ondown>$PARAM[id]</ondown>
-			<pagecontrol>60</pagecontrol>
+			<pagecontrol>$PARAM[id]60</pagecontrol>
 			<scrolltime tween="cubic" easing="out">300</scrolltime>
-			
 			<itemlayout height="$PARAM[layout_height]">
 				<control type="image">
 					<visible>String.IsEmpty(ListItem.Icon)</visible>
@@ -254,7 +253,7 @@
 					<bordersize>30</bordersize>
 					<aspectratio scalediffuse="false" aligny="center" align="center">keep</aspectratio>
 					<texture diffuse="diffuse/roundmask.png" fallback="defaultaddon.png">$INFO[ListItem.Icon]</texture>
-					<bordertexture>special://skin/extras/busy/busyload2.apng</bordertexture>
+					<bordertexture colordiffuse="$VAR[Button_Text_NF]">special://skin/extras/busy/busyload2.apng</bordertexture>
 				</control>
 				<control type="image">
 					<visible>!String.IsEmpty(ListItem.Icon)</visible>
@@ -265,25 +264,28 @@
 					<bordersize>30</bordersize>
 					<aspectratio scalediffuse="false" aligny="center" align="center">keep</aspectratio>
 					<texture diffuse="diffuse/roundmask.png" fallback="defaultaddon.png">$INFO[ListItem.Icon]</texture>
-					<bordertexture>icons/status/update2.png</bordertexture>
+					<bordertexture colordiffuse="$VAR[Button_Text_FO]">icons/status/update2.png</bordertexture>
 				</control>
 				<control type="image">
-					<visible>[!String.IsEmpty(ListItem.AddonBroken) | !String.IsEmpty(ListItem.Property(addon.orphaned) | [!String.IsEmpty(ListItem.Property(addon.isinstalled)) + String.IsEmpty(ListItem.Property(addon.isenabled))] | !String.IsEmpty(ListItem.Property(addon.isinstalled))]</visible>
+					<visible>[!String.IsEmpty(ListItem.AddonBroken) | ListItem.Property(addon.orphaned) | ListItem.Property(addon.isinstalled)]</visible>
+					<visible>!ListItem.Property(addon.downloading)</visible>
 					<left>85</left>
 					<top>5</top>
 					<width>32</width>
 					<height>32</height>
-					<texture>$VAR[AddonStatus]</texture>
+					<texture colordiffuse="$VAR[Button_Text_NF]">$VAR[AddonStatus]</texture>
 				</control>
 				<control type="label">
 					<left>$PARAM[layout_height]</left>
 					<label>$INFO[ListItem.Label]$VAR[addonupdate,  ,]</label>
+					<textcolor>$VAR[Button_Text_NF]</textcolor>
 					<scroll>true</scroll>
 					<visible>$PARAM[icon_visible]</visible>
 				</control>
 				<control type="label">
 					<left>20</left>
 					<label>$INFO[ListItem.Label]</label>
+					<textcolor>$VAR[Button_Text_NF]</textcolor>
 					<scroll>true</scroll>
 					<visible>!$PARAM[icon_visible]</visible>
 				</control>
@@ -315,7 +317,7 @@
 					<bordersize>30</bordersize>
 					<aspectratio scalediffuse="false" aligny="center" align="center">keep</aspectratio>
 					<texture diffuse="diffuse/roundmask.png" fallback="defaultaddon.png">$INFO[ListItem.Icon]</texture>
-					<bordertexture>special://skin/extras/busy/busyload2.apng</bordertexture>
+					<bordertexture colordiffuse="$VAR[Button_Text_FO]">special://skin/extras/busy/busyload2.apng</bordertexture>
 				</control>
 				<control type="image">
 					<visible>!String.IsEmpty(ListItem.Icon)</visible>
@@ -326,32 +328,35 @@
 					<bordersize>30</bordersize>
 					<aspectratio scalediffuse="false" aligny="center" align="center">keep</aspectratio>
 					<texture diffuse="diffuse/roundmask.png" fallback="defaultaddon.png">$INFO[ListItem.Icon]</texture>
-					<bordertexture>icons/status/update2.png</bordertexture>
+					<bordertexture colordiffuse="$VAR[Button_Text_FO]">icons/status/update2.png</bordertexture>
 				</control>
 				<control type="image">
-					<visible>[!String.IsEmpty(ListItem.AddonBroken) | !String.IsEmpty(ListItem.Property(addon.orphaned) | [!String.IsEmpty(ListItem.Property(addon.isinstalled)) + String.IsEmpty(ListItem.Property(addon.isenabled))] | !String.IsEmpty(ListItem.Property(addon.isinstalled))]</visible>
+					<visible>[!String.IsEmpty(ListItem.AddonBroken) | ListItem.Property(addon.orphaned) | ListItem.Property(addon.isinstalled)]</visible>
+					<visible>!ListItem.Property(addon.downloading)</visible>
 					<left>85</left>
 					<top>5</top>
 					<width>32</width>
 					<height>32</height>
-					<texture>$VAR[AddonStatus]</texture>
+					<texture colordiffuse="$VAR[Button_Text_FO]">$VAR[AddonStatus]</texture>
 					<visible>Window.IsActive(addonbrowser)</visible>
 				</control>
 				<control type="label">
 					<left>$PARAM[layout_height].9</left>
 					<label>$INFO[ListItem.Label,[B],[/B]]$VAR[addonupdate,  ,]</label>
+					<textcolor>$VAR[Button_Text_FO]</textcolor>
 					<scroll>true</scroll>
 					<visible>$PARAM[icon_visible]</visible>
 				</control>
 				<control type="label">
 					<left>20</left>
 					<label>$INFO[ListItem.Label,[B],[/B]]</label>
+					<textcolor>$VAR[Button_Text_FO]</textcolor>
 					<scroll>true</scroll>
 					<visible>!$PARAM[icon_visible]</visible>
 				</control>
 			</focusedlayout>
 		</control>
-		<control type="scrollbar" id="60">
+		<control type="scrollbar" id="$PARAM[id]60">
 			<left>66.7%</left>
 			<posy>250</posy>
 			<height>$PARAM[Container_Height]</height>
@@ -363,6 +368,7 @@
 	<include name="Dialog_CommonInfo">
 		<param name="Def_Icon" default="$INFO[ListItem.Icon]" />
 		<param name="Header_posy" default="170" />
+		<param name="Header_label" default="[UPPERCASE][B]$INFO[System.CurrentWindow][/B][/UPPERCASE]" />
 		<definition>
 			<control type="image">
 				<left>5%</left>
@@ -376,6 +382,7 @@
 			<control type="label">
 				<posy>$PARAM[Header_posy]</posy>
 				<label>$PARAM[Header_label]</label>
+				<textcolor>$VAR[Button_Text_NF]</textcolor>
 				<font>Header_Dialog</font>
 				<left>33.3%</left>
 				<width>33.3%</width>
@@ -390,6 +397,7 @@
 				<width>30%</width>
 				<height>100%</height>
 				<label>$PARAM[Item_Description]</label>
+				<textcolor>ffffffff</textcolor>
 				<font>Reg22</font>
 			</control>
 			<control type="textbox">
@@ -398,6 +406,7 @@
 				<width>30%</width>
 				<height>100%</height>
 				<label>$PARAM[Item_Description]</label>
+				<textcolor>$VAR[Button_Text_FO]</textcolor>
 				<font>Reg22</font>
 			</control>
 		</definition>
@@ -620,7 +629,7 @@
 					<control type="label">
                         <top>16</top>
                         <width>auto</width>
-                        <label>$VAR[VideoInfoHeader_Seperator]</label>
+                        <label>$VAR[Widget_HeadingSeperator]</label>
 						<aligny>center</aligny>
                         <textcolor>cyan</textcolor>
                         <font>Bold36</font>
