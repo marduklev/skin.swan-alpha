@@ -3,7 +3,8 @@
 
 	<!-- BG -->
 	<expression name="IsNetflixLayout">
-		[Window.IsActive(home) + String.IsEqual(Skin.String(HomeLayout),Spotlight)]
+		[Window.IsActive(home) + String.IsEqual(Skin.String(HomeLayout),Spotlight)] |
+		[!Window.(home) + [Control.IsVisible(58) + Container.Content(seasons)]]
 	</expression>
 
 	<!-- Content -->
@@ -24,4 +25,7 @@
 	<expression name="forceTags_visible">[control.IsVisible(52) + SkinHasSettings(52_useTag)]</expression>
 	<!-- Playing video content-->
 	<expression name="PlayerHasVideo">[Player.HasVideo | Player.HasGame]</expression>
+	
+	<!-- trailer playing -->
+	<expression name="TrailerPlaying">Player.HasVideo + !String.IsEmpty(Window(Home).Property(TrailerPlaying))</expression>
 </includes>

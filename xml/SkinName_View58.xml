@@ -1,0 +1,718 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includes>
+
+	<include name="view58">
+		
+		<control type="group">
+		<visible>Control.IsVisible(58)</visible>
+		
+			<!-- <control type="button">
+				<top>300</top>
+				<height>300</height>
+				<label>Property Is TrailerPlaying [CR]not cleared via XML</label>
+				<visible>String.IsEqual(Window(Home).Property(TrailerPlaying),true)</visible>
+			</control> -->
+			
+			<control type="grouplist" id="250580">
+				
+				<animation reversible="true" time="300" effect="fade" start="100" end="0,0" condition="String.IsEqual(Window(Home).Property(TrailerPlaying),true)">Conditional</animation>
+				
+				<!-- put in visible animation -->
+				<description>test view layout - give other id later</description>
+				<visible>Container.Content(seasons)</visible>
+				<width>100%</width>
+				<height>100%</height>
+				<top>110</top>
+				<pagecontrol>5860</pagecontrol>
+				<onleft>5860</onleft>
+				
+				<onup>250580</onup>
+				<ondown>250580</ondown>
+				<scrolltime tween="quadratic">400</scrolltime>
+				<itemgap>0</itemgap>
+				<orientation>vertical</orientation>
+				<usecontrolcoords>true</usecontrolcoords>
+				
+				<control type="button" id="250581">
+					<texturefocus />
+					<texturenofocus />
+					<onfocus>RunScript(script.embuary.helper,action=lookforfile,file='"$INFO[listitem.path]$INFO[listitem.FolderName,,-trailer.mp4]"',prop=trailer_avail)</onfocus>
+					<height>1</height>
+				</control>
+			
+				<control type="group" id="250582">
+					<description>PAGE 1</description>
+					<width>1920</width>
+					<height>960</height>
+					<!-- <height>$INFO[System.ScreenHeight]</height> -->
+					<include content="DefArtwork">
+						<param name="diffuse" value="test/Spotlight_left_diffuse.png" />
+						<param name="visible" value="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
+					</include>
+					<include content="DefArtwork">
+						<param name="width" value="" />
+						<param name="height" value="95%" />
+						<param name="diffuse" value="hub/diffuse_linear_hor_50_trans.png" />
+						<param name="visible" value="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
+					</include>
+				
+					<!-- <control description="test" type="image">
+						<texture colordiffuse="red" background="true">colors/white70.png</texture>
+					</control> -->
+						
+					<control type="grouplist">
+						<description>S P O T L I G H T  M E T A D A T A</description>
+						<width>39%</width>
+						<height>650</height>
+						<top>400</top>
+						<bottom>10</bottom>
+						<orientation>vertical</orientation>
+						<itemgap>10</itemgap>
+						<usecontrolcoords>true</usecontrolcoords>
+					
+						<include content="pos_left" condition="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)">
+							<param name="left" value="60" />
+						</include>
+						<include content="pos_right" condition="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)">
+							<param name="right" value="60" />
+						</include>
+						<animation time="300" effect="slide" end="0,200" reversible="true" easing="inout" condition="ControlGroup(9000).HasFocus">Conditional</animation>
+			
+						<control type="grouplist">
+							<orientation>horizontal</orientation>
+							<usecontrolcoords>true</usecontrolcoords>
+							<height>50</height>
+							<itemgap>10</itemgap>
+							
+							<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
+							<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
+								<param name="align" value="center" />
+							</include>
+							<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+								<param name="align" value="right" />
+							</include>
+							<include content="StarsRating_ImageVariable" />
+							<control type="label">
+								<visible>!String.IsEmpty(ListItem.Year)</visible>	
+								<top>5</top>
+								<left>10</left>
+								<height>35</height>
+								<width>auto</width>
+								<aligny>center</aligny>
+								<font>Netflix_DetailRow</font>
+								<label>$INFO[ListItem.Year,[B],[/B]]</label>
+								<textcolor>white</textcolor>
+							</control>
+							
+							<control type="button">
+								<width min="50">auto</width>
+								<font>Netflix_DetailRow</font>
+								<label>$INFO[ListItem.MPAA,[B],[/B]]</label>
+								<aligny>top</aligny>
+								<align>center</align>
+								<textcolor>white</textcolor>
+								<disabledcolor>white</disabledcolor>
+								<posy>3</posy>
+								<height>40</height>
+								<textoffsetx>20</textoffsetx>
+								<textoffsety>4</textoffsety>
+								<texturenofocus border="-2" colordiffuse="white">flags/detailframe.png</texturenofocus>
+								<enable>false</enable>
+								<visible>!String.IsEmpty(ListItem.MPAA)</visible>
+							</control>
+							
+							<!-- var, details -->
+							<control type="label">
+								<posy>5</posy>
+								<width>auto</width>
+								<label>$INFO[ListItem.Property(TotalSeasons)]</label>
+								<height>35</height>
+								<aligny>center</aligny>
+								<textcolor>white</textcolor>
+								<font>Netflix_DetailRow</font>
+							</control>
+							
+							
+							
+						</control>
+						<control type="textbox">
+							<top>0</top>
+							<height min="80" max="205">auto</height>
+							<width>100%</width>
+							<aligny>top</aligny>
+							<label>$VAR[Home_Var_PLot]</label>
+							<textcolor>white</textcolor>
+							<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
+							<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
+								<param name="align" value="center" />
+							</include>
+							<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+								<param name="align" value="right" />
+							</include>
+							<font>Netflix_Plot</font>
+						</control>
+					</control>
+				</control>
+				
+				<control type="group" id="250583">
+					<description>PAGE 2</description>
+					<left>100</left>
+					<width>1820</width>
+					<height>960</height>
+					
+					
+					<include content="Special_Header">
+						<param name="id" value="250584" />
+						<param name="pos_top" value="200" />
+						<param name="widgetdesc" value="Nächste Episode[CR]$INFO[Container(250585).ListItem.Plot]" />
+						
+					</include>
+				
+					<control type="panel" id="250585">
+						<top>350</top>
+						
+						<onup>250581</onup>
+						<ondown>SetFocus(250586,0)</ondown>
+						
+						<width>100%</width>
+						<height>760</height>
+						<onleft>111060</onleft>
+						
+						<preloaditems>2</preloaditems>
+						<orientation>horizontal</orientation>
+						<scrolltime tween="quadratic">400</scrolltime>
+						
+						<itemlayout height="400" width="840">
+							<control type="group">
+								<height>388</height>
+								<width>648</width>
+								<include content="HUB_Landscape">
+									<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+									<param name="autoscroll" value="false" />
+									<param name="bordersize_bg" value="6" />
+								</include>
+							</control>
+						</itemlayout>
+						<focusedlayout height="400" width="840">
+							<control type="group">
+								<height>388</height>
+								<width>648</width>
+								<control type="group">
+									<include content="HUB_Landscape">
+										<param name="colordiffuse" value="$VAR[Container_item_fo]" />
+										<param name="autoscroll" value="true" />
+										<param name="bordersize_bg" value="4" />
+									</include>
+									<include>FocusOverlay</include>
+								</control>
+							</control>
+						</focusedlayout>
+						<content sortby="playcount" limit="1">videodb://tvshows/titles/-1/-1/-1/-1/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22tvshow%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[ListItem.TVShowTitle]%22%5D%7D%2C%5B%7B%22field%22%3A%22inprogress%22%2C%22operator%22%3A%22false%22%7D%5D%5D%7D%2C%22type%22%3A%22episodes%22%7D</content>
+					</control>
+				</control>
+				
+				<control type="group" id="250586">
+					<description>PAGE 3</description>
+					<left>130</left>
+					<width>1820</width>
+					<height>960</height>
+					
+					
+			
+					<include content="Special_Header">
+						<param name="pos_top" value="30" />
+						<param name="id" value="575757" />
+						<param name="widgetdesc" value="B e s e t z u n g" />
+						<param name="smal_top_vis" value="false" />
+						<param name="smal_bottom_vis" value="false" />
+						<param name="2nd_row_vis" value="false" />
+						<param name="3rd_row_vis" value="false" />
+					</include>
+					
+					<control type="panel" id="250587">
+						<onup>250585</onup>
+						<ondown condition="Control.IsVisible(250588)">250588</ondown>
+						<ondown condition="!Control.IsVisible(250588)">250589</ondown>
+						<top>80</top>
+						<width>1620</width>
+						<height>350</height>
+						
+						<preloaditems>2</preloaditems>
+						<orientation>horizontal</orientation>
+						<scrolltime tween="quadratic">400</scrolltime>
+					
+					<!-- 
+					onclick actions
+					- get thumb and set to prop - to call it in search window
+					- activate search window 
+					-->
+					
+					<itemlayout height="400" width="270">
+						<control type="group">
+							<height>250</height>
+							<width>250</width>
+							<include content="Circle_CastWidget">
+								<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+								<param name="autoscroll" value="false" />
+								<param name="bordersize_bg" value="6" />
+							</include>
+						</control>
+					</itemlayout>
+					<focusedlayout height="400" width="270">
+						<control type="group">
+							<height>250</height>
+							<width>250</width>
+							<include>Item_Focus_Animation</include>
+							<control type="group">
+								<include content="Circle_CastWidget">
+									<param name="colordiffuse" value="$VAR[Container_item_fo]" />
+									<param name="autoscroll" value="true" />
+									<param name="bordersize_bg" value="4" />
+								</include>
+							</control>
+						</control>
+					</focusedlayout>
+					<content>plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[container.listitem.dbid]&amp;idtype=season</content>
+				</control>
+				<include content="Special_Header">
+						<param name="pos_top" value="450" />
+						<param name="id" value="57575868" />
+						<param name="widgetdesc" value="T R A I L E R" />
+						<param name="smal_top_vis" value="false" />
+						<param name="smal_bottom_vis" value="false" />
+						<param name="2nd_row_vis" value="false" />
+						<param name="3rd_row_vis" value="false" />
+					</include>
+				<control type="panel" id="250588">
+					<description>trailer yt</description>
+					<top>500</top>
+					<height>300</height>
+					<width>1920</width>
+					<onup>250587</onup>
+					<ondown>2505811</ondown>
+					<preloaditems>2</preloaditems>
+					<orientation>horizontal</orientation>
+					<scrolltime tween="quadratic">400</scrolltime>
+					<visible>!Integer.IsGreater(Container(250589).NumItems,0)</visible>
+					<itemlayout height="250" width="440">
+							<control type="group">
+								<width>432</width>
+								<height>243</height>
+								<include content="HUB_Landscape">
+									<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+									<param name="autoscroll" value="false" />
+									<param name="bordersize_bg" value="6" />
+								</include>
+							</control>
+						</itemlayout>
+						<focusedlayout height="250" width="440">
+							<control type="group">
+								<width>432</width>
+								<height>243</height>
+								<control type="group">
+									<include content="HUB_Landscape">
+										<param name="colordiffuse" value="$VAR[Container_item_fo]" />
+										<param name="autoscroll" value="true" />
+										<param name="bordersize_bg" value="4" />
+									</include>
+								</control>
+							</control>
+						</focusedlayout>
+						<content target="videos" sortby="file" limit="3">plugin://plugin.video.youtube/search/?q=$INFO[ListItem.TVShowTitle,,Trailer]</content>
+					</control>
+					
+					<control type="panel" id="250589">
+						<description>trailer local</description>
+						<top>520</top>
+						<height>300</height>
+						<width>1920</width>
+						<onup>250587</onup>
+						
+						<ondown condition="Control.IsVisible(2505811)">2505811</ondown>
+						<ondown condition="!Control.IsVisible(2505811)">250581</ondown>
+						
+						<preloaditems>2</preloaditems>
+						<orientation>horizontal</orientation>
+						<scrolltime tween="quadratic">400</scrolltime>
+						<visible>!String.IsEmpty(Window(home).Property(trailer_avail))</visible>
+					
+						<itemlayout height="250" width="440">
+								<control type="group">
+									<width>432</width>
+									<height>243</height>
+									<include content="HUB_Landscape">
+										<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+										<param name="autoscroll" value="false" />
+										<param name="bordersize_bg" value="6" />
+									</include>
+								</control>
+							</itemlayout>
+							<focusedlayout height="250" width="440">
+								<control type="group">
+									<width>432</width>
+									<height>243</height>
+									<control type="group">
+										<include content="HUB_Landscape">
+											<param name="colordiffuse" value="$VAR[Container_item_fo]" />
+											<param name="autoscroll" value="true" />
+											<param name="bordersize_bg" value="4" />
+										</include>
+									</control>
+								</control>
+							</focusedlayout>
+						<content>
+						<item id="9">
+							<label>Local Trailer</label>
+							<label2 />
+							<visible>!String.IsEmpty(Window(home).Property(trailer_avail))</visible>
+							<onclick>SetProperty(TrailerPlaying,true,home)</onclick>
+							<onclick>PlayMedia($INFO[listitem.path]$INFO[ListItem.FolderName,,-trailer.mp4],1)</onclick>
+							<icon>$INFO[ListItem.Art(tvshow.landscape)]</icon>
+							<thumb>$INFO[ListItem.Art(tvshow.landscape)]</thumb>
+						</item>
+					</content>
+					</control>
+				</control>
+				
+				<control type="group" id="2505810">
+					<description>PAGE 4, similiar</description>
+					<left>100</left>
+					<width>1820</width>
+					<height>960</height>
+					<visible>[Integer.IsGreater(Container(2505811).NumItems,0) | Container(2505811).IsUpdating]</visible>
+					
+					<include content="Special_Header">
+						<param name="pos_top" value="130" />
+						<param name="id" value="57575868" />
+						<param name="widgetdesc" value="S I M I L I A R to $INFO[ListItem.TVShowTitle]" />
+						<param name="smal_top_vis" value="false" />
+						<param name="smal_bottom_vis" value="false" />
+						<param name="2nd_row_vis" value="false" />
+						<param name="3rd_row_vis" value="false" />
+					</include>
+					
+					<control type="panel" id="2505811">
+						<description>2 rows hor orientation , similiar, landscape</description>
+					<top>200</top>
+					<left>30</left>
+					<height>500</height>
+					<width>1920</width>
+					
+					<onup condition="Control.IsVisible(250589)">250589</onup>
+					<onup condition="Control.IsVisible(250588)">250588</onup>
+					<onup condition="![Control.IsVisible(250588) + Control.IsVisible(250589)]">250586</onup>
+					
+					<ondown>250581</ondown>
+					<preloaditems>2</preloaditems>
+					<orientation>horizontal</orientation>
+					<scrolltime tween="quadratic">400</scrolltime>
+					
+					<itemlayout height="250" width="440">
+							<control type="group">
+								<width>432</width>
+								<height>243</height>
+								<include content="LS_SuggestionWidget">
+									<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+									<param name="autoscroll" value="false" />
+									<param name="bordersize_bg" value="6" />
+								</include>
+							</control>
+						</itemlayout>
+						<focusedlayout height="250" width="440">
+							<control type="group">
+								<width>432</width>
+								<height>243</height>
+								<control type="group">
+									<include content="LS_SuggestionWidget">
+										<param name="colordiffuse" value="$VAR[Container_item_fo]" />
+										<param name="autoscroll" value="true" />
+										<param name="bordersize_bg" value="4" />
+									</include>
+								</control>
+							</control>
+						</focusedlayout>
+						<content>plugin://script.embuary.helper/?info=getsimilar&amp;type=tvshow&amp;dbid=$INFO[Container(2000).ListItem.dbid]&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</content>
+					</control>
+				
+			</control>
+				
+				
+				
+				
+				
+			
+			</control>
+			
+			<!-- 	
+			issues
+			 -->
+			https://streamable.com/oyeql
+			
+			
+			<control type="group">
+				<description>ClearLogo Overlay</description>
+				<top>240</top>
+				<left>50</left>
+				<include>ClearLogo_or_Title</include>
+				<animation time="200" effect="slide" start="0,0" end="50,-150" tween="quadratic" condition="!Control.HasFocus(250581)">Conditional</animation>
+				<animation reversible="false" time="0" effect="zoom" alignx="true" aligny="true" start="100,100" end="70,70" tween="quadratic" condition="!Control.HasFocus(250581)">Conditional</animation>
+			</control>
+			
+			<control type="list" id="58">
+				<description>
+	videodb://tvshows/titles/$INFO[Container(2000).ListItem.dbid]/ : native kodi path substitution (non xsp),f**k
+	videodb://tvshows/titles/$INFO[Container(2000).ListItem.dbid]/?xsp=%7b%22order%22%3a%7b%22direction%22%3a%22ascending%22%2c%22ignorefolders%22%3a0%2c%22method%22%3a%22sorttitle%22%7d%2c%22type%22%3a%22tvshows%22%7d
+
+	?xsp=%7b%22order%22%3a%7b%22direction%22%3a%22ascending%22%2c%22ignorefolders%22%3a0%2c%22method%22%3a%22sorttitle%22%7d%2c%22type%22%3a%22tvshows%22%7d
+	?xsp={"order":{"direction":"ascending","ignorefolders":0,"method":"sorttitle"},"type":"tvshows"}
+
+	?xsp={"order":{"direction":"ascending","ignorefolders":0,"method":"sorttitle"},"type":"tvshows"}
+
+	things to consider :(/?
+
+	3 	button 				method Select sort method (sort by: name, date size, etc...)
+	4 	togglebutton 		direction Select sortmode (ascending or descending)
+	10 	button 				Show only watched, unwatched or all videos
+	14 	button 				Show only unwatched or all videos
+	15 	label 				Filter label
+	19 	radiobutton / edit 	Filter the media files to only show items that include the specified string in the name
+
+
+	</description>
+				<include>HiddenContainer</include>
+				<onfocus>SetFocus(250581)</onfocus>
+				<visible>Container.Content(seasons)</visible>
+				
+				<!-- <onfocus>SetFocus(250580,0,absolute)</onfocus> -->
+			</control>
+			
+			
+			<control type="group">
+				<visible>$EXP[TrailerPlaying]</visible>
+				<include content="SpotlightVideoWindow">
+					<param name="width" value="1395" />
+					<param name="height" value="884" />
+				</include>
+			</control>
+		
+		</control>
+				
+	</include>
+	<include name="Special_Header">
+	<param name="pos_top" default="200" />
+		<definition>
+            <control type="group" id="$PARAM[id]1">
+				<control type="grouplist">
+                    <top>$PARAM[pos_top]</top>
+					<height>200</height>
+					<width>100%</width>
+                    <align>left</align>
+					<orientation>horizontal</orientation>
+                    <usecontrolcoords>true</usecontrolcoords>
+                    <itemgap>10</itemgap>
+					
+					<control type="label">
+						<height>200</height>
+						<width>auto</width>
+                        <label>|</label>
+						<aligny>bottom</aligny>
+                        <textcolor>red</textcolor>
+                        <font>Bold36</font>
+                    </control>
+					
+					<control type="label">
+						<left>15</left>
+						<height>200</height>
+						<width>auto</width>
+						<label>$PARAM[widgetdesc]</label>
+						<aligny>top</aligny>
+						<textcolor>$VAR[HUB_maintextcolor]</textcolor>
+						<font>font29</font>
+					</control>
+					
+					<control type="label">
+						<height>200</height>
+						<width>auto</width>
+                        <label> |</label>
+						<aligny>bottom</aligny>
+                        <textcolor>red</textcolor>
+                        <font>Bold36</font>
+                    </control>
+					<control type="label">
+						<visible>$PARAM[2nd_row_vis]</visible>
+						<left>15</left>
+						<height>200</height>
+						<width>auto</width>
+						<label>$INFO[Container(250585).ListItem.Title,[B],[/B]][CR]$INFO[Container(250585).ListItem.Season,   - S, ]$INFO[Container(250585).ListItem.Episode, e,]</label>
+						<aligny>top</aligny>
+						<textcolor>$VAR[HUB_maintextcolor]</textcolor>
+						<font>font29</font>
+					</control>
+					<control type="label">
+					<visible>$PARAM[3rd_row_vis]</visible>
+						<top>10</top>
+                        <width>auto</width>
+						<label>test2 focused</label>
+                        <aligny>center</aligny>
+						<textcolor>$VAR[HUB_maintextcolor]</textcolor>
+						<font>font27</font>
+                        <height>24</height>
+					</control>
+				</control>
+				<control type="label">
+					<visible>$PARAM[smal_top_vis]</visible>
+					<top>30</top>
+					<left>11</left>
+					<align>left</align>
+					<width>auto</width>
+					<label>$INFO[Container.NumItems, numitems (,)][CR]2nd roe</label>
+					<textcolor>white</textcolor>
+					<font>HUB_WidgetSubHeader</font>
+					<height>24</height>
+				</control>
+				<control type="textbox">
+					<visible>$PARAM[smal_bottom_vis]</visible>
+					<top>30</top>
+					<right>11</right>
+					<align>right</align>
+					<width>auto</width>
+					<label>$INFO[Container.NumItems, numitems (,)]</label>
+					<textcolor>white</textcolor>
+					<font>HUB_WidgetSubHeader</font>
+					<height>24</height>
+				</control>
+            </control>
+        </definition>
+    </include>
+	
+	
+	<include name="Circle_CastWidget">
+		<control type="image">
+			<description>Fallback aspect keep</description>
+			<bordertexture colordiffuse="$PARAM[colordiffuse]">artworkdiffuse/circle.png</bordertexture>
+			<texture background="true" diffuse="artworkdiffuse/circle.png" fallback="DefaultArtist.png">$INFO[ListItem.Thumb]</texture>
+			<aspectratio scalediffuse="false" aligny="top" align="center">scale</aspectratio>
+			<bordersize>$PARAM[bordersize_bg]</bordersize>
+		</control>
+		
+		<control type="group">
+			<control type="textbox">
+				<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
+				<top>106%</top>
+				<left>10</left>
+				<right>10</right>
+				<wrapmultiline>true</wrapmultiline>
+				<height>60</height>
+				<font>CommonTag</font>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>$VAR[HUB_maintextcolor]</textcolor>
+				<selectedcolor>white</selectedcolor>
+				<label>$VAR[HUB_Tags_Bottom]</label>
+			</control>
+		</control>
+	</include>
+	
+	<include name="ClearLogo_or_Title">
+		<control type="image" id="1601">
+			<visible>!String.IsEmpty(Control.GetLabel(1601))</visible>
+			<height>265</height>
+			<bordersize>10</bordersize>
+			<aspectratio align="left" aligny="top">keep</aspectratio>
+			<texture background="true">$VAR[ListItemClearLogo]</texture>
+		</control>
+		
+		<control type="textbox">
+			<description>Fallback Label</description>
+			<visible>String.IsEmpty(Control.GetLabel(1601))</visible>
+			<height>255</height>
+			<wrapmultiline>true</wrapmultiline>
+			<font>Netflix_Title</font>
+			<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
+			<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
+				<param name="align" value="center" />
+			</include>
+			<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+				<param name="align" value="right" />
+			</include>
+			<aligny>bottom</aligny>
+			<textcolor>white</textcolor>
+			<label>$INFO[ListItem.TVShowTitle]</label>
+		</control>
+	</include>
+	
+	<include name="LS_SuggestionWidget">
+		<control type="image">
+			<description>bordertexture</description>
+            <texture>artworkdiffuse/landscape.png</texture>
+			<colordiffuse>$PARAM[colordiffuse]</colordiffuse>
+			<bordersize>$PARAM[bordersize_bg]</bordersize>
+        </control>
+		<control type="image">
+			<description>kodi default, aspectratio scalediffuse="true" aligny="center" align="center">stretch</description>
+			<texture background="true" diffuse="artworkdiffuse/landscape.png" fallback="DefaultAudio.png">$VAR[ImageLayout_landscape]</texture>
+			<bordersize>8</bordersize>
+			<visible>!String.IsEmpty(ListItem.Art(landscape))</visible>
+		</control>
+		<control type="image">
+			<description>Fallback aspect keep</description>
+			<texture background="true" diffuse="artworkdiffuse/$PARAM[artwork].png" fallback="DefaultAudio.png">$VAR[ImageLayout_landscape]</texture>
+			<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
+			<bordersize>8</bordersize>
+			<visible>String.IsEmpty(ListItem.Art(landscape))</visible>
+		</control>
+		<control type="group">
+			<description>ClearLogo Overlay - fanart</description>
+			<control type="image">
+				<visible>
+					[String.IsEmpty(ListItem.Art(artist.landscape)) +
+					String.IsEmpty(ListItem.Art(albumartist.landscape)) +
+					String.IsEmpty(ListItem.Art(landscape))]
+				</visible>
+				<visible>
+					[!String.IsEmpty(ListItem.Art(clearlogo)) | 
+					!String.IsEmpty(ListItem.Art(artist.clearlogo)) | 
+					!String.IsEmpty(ListItem.Art(albumartist.clearlogo))]
+				</visible>
+				<bottom>20</bottom>
+				<left>10</left>
+				<right>10</right>
+				<height>50%</height>
+				<width>50%</width>
+				<texture background="true">$VAR[ListItemClearLogo]</texture>
+				<aspectratio align="left" aligny="bottom">keep</aspectratio>
+			</control>
+		</control>
+	</include>
+	
+	<include name="SpotlightVideoWindow">
+		<right>0</right>
+		<top>0</top>
+		<width>$PARAM[width]</width>
+		<height>$PARAM[height]</height>
+		<control type="videowindow">
+		</control>	
+		<control type="image">
+			<texture colordiffuse="ff010101">overlay/Netflix_origin.png</texture>
+		</control>
+		<animation effect="slide" start="0" end="0,-60" time="0" condition="Integer.IsEqual(VideoPlayer.VideoAspect,2.4) | Integer.IsEqual(VideoPlayer.VideoAspect,1.85) | Integer.IsEqual(VideoPlayer.VideoAspect,2.35) | Integer.IsEqual(VideoPlayer.VideoAspect,2.55) | Integer.IsEqual(VideoPlayer.VideoAspect,2.76)" reversible="true">Conditional</animation>
+	</include>
+	
+	<!-- Embcon/Native DB vars -->
+	<variable name="View_Cast_Content">
+		<!-- embycon -->
+		<value condition="String.StartsWith(ListItem.Path,plugin://plugin.video.embycon) + Container.Content(seasons) + ListItem.IsParentFolder">plugin://plugin.video.embycon?mode=WIDGET_CONTENT_CAST&amp;id=$INFO[ListItem(1).Property(id)]</value>
+		<value condition="String.StartsWith(ListItem.Path,plugin://plugin.video.embycon)">plugin://plugin.video.embycon?mode=WIDGET_CONTENT_CAST&amp;id=$INFO[ListItem.Property(id)]</value>
+		<!-- based on content -->
+		<value condition="!Window.IsVisible(movieinformation) + Container.Content(seasons) + Integer.IsGreater(ListItemAbsolute(0).DBID) + !String.IsEqual(ListItemAbsolute(0).Label,$LOCALIZE[20366]) + !ListItem.IsParentFolder">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[ListItemAbsolute(0).DBID]&amp;idtype=season</value>
+		<value condition="!Window.IsVisible(movieinformation) + Container.Content(seasons) + Integer.IsGreater(ListItemAbsolute(1).DBID) + !String.IsEqual(ListItemAbsolute(1).Label,$LOCALIZE[20366])">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[ListItemAbsolute(1).DBID]&amp;idtype=season</value>
+		<value condition="!Window.IsVisible(movieinformation) + Container.Content(seasons) + Integer.IsGreater(ListItemAbsolute(2).DBID)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[ListItemAbsolute(2).DBID]&amp;idtype=season</value>
+		<value condition="!Window.IsVisible(movieinformation) + Container.Content(episodes) + Integer.IsGreater(ListItemAbsolute(1).DBID) + ListItem.IsParentFolder">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[ListItemAbsolute(1).DBID]&amp;idtype=episode</value>
+		<!-- based on listitem -->
+		<value condition="String.IsEqual(ListItem.DBType,movie) + Integer.IsGreater(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=movie&amp;dbid=$INFO[ListItem.DBID]</value>
+		<value condition="String.IsEqual(ListItem.DBType,tvshow) + Integer.IsGreater(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[ListItem.DBID]</value>
+		<value condition="String.IsEqual(ListItem.DBType,episode) + Integer.IsGreater(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=episode&amp;dbid=$INFO[ListItem.DBID]</value>
+		<value condition="String.IsEqual(ListItem.DBType,season) + Integer.IsGreater(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[ListItem.DBID]&amp;idtype=season</value>
+		<value>-</value>
+	</variable>
+</includes>
