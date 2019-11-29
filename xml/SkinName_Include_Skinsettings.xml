@@ -220,69 +220,96 @@
 		</definition>
 	</include>
 
-	<include name="filebrowser_panelcontainer">
-		<control type="panel" id="$PARAM[id]">
-				<left>20</left>
-				<top>100</top>
-				<width>940</width>
-				<height>700</height>
+	<include name="Simple_container_IconLabel">
+		<param name="type" default="panel" />
+		<param name="height" default="68%" />
+		<param name="width" default="50%" />
+		<definition>
+			<control type="$PARAM[type]" id="$PARAM[id]">
+				
+				<bottom>4%</bottom>
+				<height>$PARAM[height]</height>
+				<width>$PARAM[width]</width>
+				<centerleft>50%</centerleft>
 				<onleft>9000</onleft>
-				<onright>60</onright>
-				<onup>450</onup>
-				<ondown>450</ondown>
-				<pagecontrol>60</pagecontrol>
-				<scrolltime>200</scrolltime>
-				<itemlayout height="70" width="940">
-					<control type="image">
-						<left>10</left>
-						<top>10</top>
-						<width>50</width>
-						<height>50</height>
-						<texture>$INFO[ListItem.Icon]</texture>
-						<aspectratio>keep</aspectratio>
-					</control>
+				<onright condition="Control.IsVisible($PARAM[id]60)">$PARAM[id]60</onright>
+				<onright condition="!Control.IsVisible($PARAM[id]60)">9000</onright>
+				<pagecontrol>$PARAM[id]60</pagecontrol>
+				<onup>$PARAM[onup]</onup>
+				<ondown>$PARAM[id]</ondown>
+				
+				<itemlayout height="60" width="940" condition="!Window.IsTopMost(mediasource)">
 					<control type="label">
-						<left>75</left>
-						<top>0</top>
-						<right>20</right>
-						<height>70</height>
-						<aligny>center</aligny>
+						<visible>Window.IsTopMost(mediasource)</visible>
+						<font>debug</font>
+						<left>10</left>
+						<right>10</right>
 						<textcolor>$VAR[Button_Text_NF]</textcolor>
 						<label>$INFO[ListItem.Label]</label>
 					</control>
+					<control type="group">
+						<visible>!Window.IsTopMost(mediasource)</visible>
+						<control type="image">
+							<bordersize>5</bordersize>
+							<width>70</width>
+							<texture>$INFO[ListItem.Icon]</texture>
+							<aspectratio aligny="center" align="center">keep</aspectratio>
+						</control>
+						<control type="label">
+							<font>debug</font>
+							<textoffsetx>80</textoffsetx>
+							<right>20</right>
+							<height>60</height>
+							<aligny>center</aligny>
+							<textcolor>$VAR[Button_Text_FO]</textcolor>
+							<selectedcolor>green</selectedcolor>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+					</control>
 				</itemlayout>
-				<focusedlayout height="70" width="940">
+				<focusedlayout height="60" width="890">
 					<control type="image">
-						<left>0</left>
-						<top>0</top>
-						<right>0</right>
-						<height>71</height>
+						<height>60</height>
 						<visible>Control.HasFocus($PARAM[id])</visible>
 						<texture colordiffuse="$VAR[Button_Panel_FO]">colors/white.png</texture>
 					</control>
-					<control type="image">
-						<left>10</left>
-						<top>10</top>
-						<width>50</width>
-						<height>50</height>
-						<texture>$INFO[ListItem.Icon]</texture>
-						<aspectratio>keep</aspectratio>
-					</control>
 					<control type="label">
-						<left>75</left>
-						<top>0</top>
-						<right>20</right>
-						<height>70</height>
-						<aligny>center</aligny>
-						<textcolor>$VAR[Button_Text_FO]</textcolor>
-						<selectedcolor>green</selectedcolor>
+						<visible>Window.IsTopMost(mediasource)</visible>
+						<font>debug</font>
+						<left>10</left>
+						<right>10</right>
+						<textcolor>$VAR[Button_Text_NF]</textcolor>
 						<label>$INFO[ListItem.Label]</label>
 					</control>
+					<control type="group">
+						<visible>!Window.IsTopMost(mediasource)</visible>
+						<control type="image">
+							<width>70</width>
+							<bordersize>5</bordersize>
+							<texture>$INFO[ListItem.Icon]</texture>
+							<aspectratio aligny="center" align="center">keep</aspectratio>
+						</control>
+						<control type="label">
+							<font>debug</font>
+							<textoffsetx>80</textoffsetx>
+							<right>20</right>
+							<height>60</height>
+							<aligny>center</aligny>
+							<textcolor>$VAR[Button_Text_FO]</textcolor>
+							<selectedcolor>green</selectedcolor>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+					</control>
 				</focusedlayout>
+				
 			</control>
+			</definition>
 		</include>
 		
 		<include name="Dialog_BGPanel">
+			<param name="height" default="50%" />
+			<param name="bg_top_visible" default="false" />
+			<definition>
 			<control type="button">
 				<left>-2000</left>
 				<top>-2000</top>
@@ -305,7 +332,7 @@
 			</control>
 			<control type="image">
 				<description>bg heading</description>
-				<bottom>50%</bottom>
+				<bottom>$PARAM[height]</bottom>
 				<bordersize>0,0,0,1</bordersize>
 				<bordertexture colordiffuse="$VAR[Button_Selected]">colors/white80.png</bordertexture>
 				<height>10%</height>
@@ -315,12 +342,12 @@
 			<control type="image">
 				<description>bg bottom</description>
 				<bottom>0</bottom>
-				<height>50%</height>
+				<height>$PARAM[height]</height>
 				<aspectratio>stretch</aspectratio>
 				<texture colordiffuse="$VAR[BackgroundColor_Dialog]">colors/white.png</texture>
 			</control>
-
-	</include>
+			</definition>
+		</include>
 		<!-- <control type="panel" id="451">
 				<left>20</left>
 				<top>100</top>
