@@ -113,9 +113,6 @@ Playlist.IsRandom 	Returns true if the player is in random mode.
 Playlist.IsRepeat 	Returns true if the player is in repeat all mode. 	
 Playlist.IsRepeatOne 	Returns true if the player is in repeat one mode.
 
-notes
-start song from nav will create player, start playing offset
-start from hub will not, only play selected ,even target is set and xsp used
 -->
 				
 				<!-- testing -->
@@ -201,7 +198,6 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 			<visible>Player.HasVideo</visible>
 			<control type="videowindow" />
 			<control type="image">
-				<description>hard the get perfect alpha - bright vs dark fanart</description>
 				<fadetime>350</fadetime>
 				<bordersize>0</bordersize>
 				<texture colordiffuse="$VAR[BackgroundColor_HUB]">colors/white50.png</texture>
@@ -209,7 +205,7 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 			</control>
 		</control>
 		<control type="image">
-			<description>hard the get perfect alpha - as bg texture - stay with 10 percent 686868grey</description>
+			<description>10percentgrey</description>
 			<visible>String.StartsWith(Window(home).Property(HUB_Music),Is)</visible>
 			<visible>!Player.HasVideo</visible>
 			<fadetime>350</fadetime>
@@ -282,7 +278,7 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 				<param name="label" value="You Tube" />
 				<param name="radio_icon" value="icons/youtube_1.png" />
 			</include>
-			<include content="hub_button">
+			<!-- <include content="hub_button">
 				<param name="visible" value="System.HasAddon(plugin.audio.spotify)" />
 				<param name="id" value="07" />
 				<param name="property" value="musicaddons" />
@@ -297,7 +293,7 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 				<param name="action" value="RunPlugin(plugin.audio.soundcloud)" />
 				<param name="label" value="Soundcloud" />
 				<param name="radio_icon" value="icons/sound2.png" />
-			</include>
+			</include> -->
 			
 			<include content="spacer_h">
 				<param name="id" value="10" />
@@ -551,7 +547,7 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 		<control type="panel" id="5002">
 			<description>Common albums</description>
 			
-			<visible>String.IsEqual(Window(home).Property(HUB_Music),albums) | String.IsEqual(Window(home).Property(HUB_Music),common)</visible>
+			<visible>String.IsEqual(Window(home).Property(HUB_Music),common)</visible>
 			
 			<include condition="Skin.HasSetting(Force_StayInMusicHub)" content="hub_music_OverrideOnClick" />
 			
@@ -738,7 +734,6 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 		<control type="panel" id="5010">
 			<description>prop artist top 1 row search empty</description>
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),artists)</visible>
-			<visible>String.Empty(Control.GetLabel(100002).index(1))</visible>
 			<left>5</left>
 			<width>1600</width>
 			<height>450</height>
@@ -749,6 +744,8 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 			<onleft>111060</onleft>
 			<onright>660</onright>
 			<pagecontrol>660</pagecontrol>
+			
+			<include condition="Skin.HasSetting(Force_StayInMusicHub)" content="hub_music_OverrideOnClick" />
 			
 			<onup>5002</onup>
 			<ondown>5002</ondown>
@@ -842,15 +839,70 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 					</control>
 				</control>
 			</focusedlayout>
-			<!-- <content target="music" sortby="year" sortorder="ascending" limit="0">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22albumartist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Container(5010).ListItem.Artist]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</content> -->
-			<content target="music" sortby="year" sortorder="ascending" limit="0">$INFO[Container(5010).ListItem.FolderPath]</content>
+			<content target="music" sortby="year" sortorder="ascending">$INFO[Container(5010).ListItem.FolderPath]</content>
 		</control>
 		
 		<include content="HUB_ContainerHeader">
 			<param name="id" value="12" />
-			<param name="label" value="S O N G S" />
+			<param name="label" value="A L B U M S" />
 		</include>
 		<control type="panel" id="5012">
+			<description>Common albums</description>
+			
+			<visible>String.IsEqual(Window(home).Property(HUB_Music),albums)</visible>
+			
+			<include condition="Skin.HasSetting(Force_StayInMusicHub)" content="hub_music_OverrideOnClick" />
+			
+			<left>5</left>
+			<width>1600</width>
+			<height>820</height>
+			
+			<top>50</top>
+			<onleft>111060</onleft>
+			
+			
+			
+			<preloaditems>2</preloaditems>
+			<orientation>vertical</orientation>
+			<scrolltime tween="quadratic">400</scrolltime>
+			<autoscroll>true</autoscroll>
+			
+			<itemlayout  height="400" width="390">
+				<control type="group">
+					<height>380</height>
+					<width>380</width>
+					<include content="HUB_square">
+						<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+						<param name="autoscroll" value="false" />
+						<param name="bordersize_bg" value="6" />
+					</include>
+				</control>
+			</itemlayout>
+			<focusedlayout height="400" width="390">
+				<control type="group">
+					<height>380</height>
+					<width>380</width>
+					<include>Item_Focus_Animation</include>
+					<control type="group">
+						<include content="HUB_square">
+							<param name="colordiffuse" value="$VAR[Container_item_fo]" />
+							<param name="autoscroll" value="true" />
+							<param name="bordersize_bg" value="4" />
+						</include>
+					</control>
+				</control>
+			</focusedlayout>
+			<include content="emptywidget">
+				<param name="id" value="12" />
+			</include>
+			<content sortby="year" sortorder="ascending" limit="0">$VAR[HUB_content_albums_title]</content>
+		</control>
+		
+		<include content="HUB_ContainerHeader">
+			<param name="id" value="13" />
+			<param name="label" value="S O N G S" />
+		</include>
+		<control type="panel" id="5013">
 			<description>Songs</description>
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),songs)</visible>
 			
@@ -910,13 +962,13 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 			</focusedlayout>
 			<content>
 				<include content="emptywidget">
-				<param name="id" value="12" />
+				<param name="id" value="13" />
 			</include>
 			  </content>
 			<content sortby="title" sortorder="ascending">$VAR[HUB_content_songs_title_or_artist]</content>
 		</control>
 		
-		<include content="HUB_ContainerHeader">
+		<!-- <include content="HUB_ContainerHeader">
 			<param name="id" value="40" />
 			<param name="label" value="Soundcloud Album Search" />
 		</include>
@@ -972,7 +1024,7 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 			<include content="emptywidget">
 				<param name="id" value="40" />
 			</include>
-			<content target="videos" sortby="file" limit="25">plugin://plugin.audio.soundcloud/search/?action=albums&amp;?query=$INFO[Control.GetLabel(100002).index(1)]</content>
+			<content>plugin://plugin.audio.soundcloud/search/?action=albums&amp;?query=$INFO[Control.GetLabel(100002).index(1)]</content>
 		</control>
 		<include content="HUB_ContainerHeader">
 			<param name="id" value="41" />
@@ -1030,9 +1082,9 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 				<param name="id" value="41" />
 			</include>
 			
-			<!-- <content target="videos" sortby="file" limit="25">plugin://plugin.audio.soundcloud/charts/?action=top</content> -->
-			<content target="music">plugin://plugin.audio.soundcloud/discover/?selection=soundcloud%3Aselections%3Aplaylist-dicovery%3Achill</content>
-		</control>
+			<content>plugin://plugin.audio.soundcloud/charts/?action=top</content>
+			<content>plugin://plugin.audio.soundcloud/discover/?selection=soundcloud%3Aselections%3Aplaylist-dicovery%3Achill</content>
+		</control> -->
 		
 		
 		
@@ -1148,7 +1200,7 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 			
 			<scrolltime tween="cubic" easing="in">300</scrolltime>
 			
-			<onleft>6060</onleft>
+			<onleft>111098</onleft>
 			<onright>7060</onright>
 			
 			<control type="panel" id="5120">
@@ -1163,15 +1215,13 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 				<autoscroll>true</autoscroll>
 				
 				
-				<pagecontrol>6060</pagecontrol>
+				<pagecontrol />
 				
 				
 				<onup>5002</onup>
 				<ondown>5002</ondown>
 				
 				<include content="hub_music_ClearPropsOnBack" />
-				<!-- <onclick condition="!Player.HasAudio">PlayMedia($ESCINFO[ListItem.FilenameAndPath],isdir)</onclick> -->
-				<!-- <onclick>PlayMedia($INFO[Container(5121).ListItem.Path],isdir)</onclick> -->
 				<!-- <onclick>RunScript(script.embuary.helper,action=playallid=5120)</onclick> -->
 				<onclick>RunScript(script.playalbum,albumid=$INFO[ListItem.DBID])</onclick>
 				
@@ -1207,7 +1257,6 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 					<control type="group">
 						<height>450</height>
 						<width>450</width>
-						<!-- <include>Item_Focus_Animation</include> -->
 						<control type="group">
 							<control type="image">
 								<texture background="true" diffuse="artworkdiffuse/newthumb.png" fallback="DefaultAudio.png">$INFO[ListItem.Art(thumb)]</texture>
@@ -1241,8 +1290,6 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 				<scrolltime tween="quadratic">400</scrolltime>
 				<autoscroll>true</autoscroll>
 				
-				<!-- unable to get correct album id even if label is correct <onclick>RunScript(script.playalbum,albumid=$INFO[Container(5120).ListItem.DBID]&amp;tracknr=$INFO[ListItem.TrackNumber])</onclick> -->
-				<!-- play always at 1st song of album <onclick>RunScript(script.playalbum,songid=$INFO[ListItem.DBID])</onclick> -->
 				<onclick>RunScript(script.embuary.helper,action=playall,id=5121,type=music,method=fromhere)</onclick>
 				<pagecontrol>7060</pagecontrol>
 				
@@ -1347,19 +1394,6 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 			<height>800</height>
 		</control>
 		
-		<control type="scrollbar" id="6060">
-			<description>current artist view,scroll albums</description>
-			<visible>String.IsEqual(Window(home).Property(HUB_Music),IsHUBartistcontent)</visible>
-			<left>310</left>
-			<top>400</top>
-			
-			<onup>6060</onup>
-			<ondown>6060</ondown>
-			<onright>5120</onright>
-			
-			<onleft></onleft>
-			<height>675</height>
-		</control>
 		<control type="scrollbar" id="7060">
 			<description>current artist view,scroll albumtitles</description>
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),IsHUBartistcontent)</visible>

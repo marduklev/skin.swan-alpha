@@ -11,6 +11,8 @@
 	<include file="Includes_Layouts.xml" />
 	
 	<include file="SkinName_View50.xml" />
+	<include file="SkinName_Views_SimplePanels.xml" />
+	<include file="SkinName_View58.xml" />
 	
 	<include file="_SkinName_MoveCode.xml" />
 	<include file="SkinName_Include_Skinsettings.xml" />
@@ -45,6 +47,28 @@
 	<constant name="list_y_offset">0</constant>
 	<constant name="list_item_height">80</constant>
 	
+	<variable name="EmbuaryHelper_GetInfo_dbid">
+		<value condition="ListItem.IsParentFolder + String.IsEqual(ListItemAbsolute(1).DBType,movie) + Integer.IsGreater(ListItemAbsolute(1).DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[ListItemAbsolute(1).DBID]&amp;type=movie&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
+		<value condition="ListItem.IsParentFolder + String.IsEqual(ListItemAbsolute(1).DBType,tvshow) + Integer.IsGreater(ListItemAbsolute(1).DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[ListItemAbsolute(1).DBID]&amp;type=tvshow&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
+		<value condition="ListItem.IsParentFolder + String.IsEqual(ListItemAbsolute(1).DBType,season) + Integer.IsGreater(ListItemAbsolute(1).DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[ListItemAbsolute(1).DBID]&amp;type=tvshow&amp;idtype=season&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
+		<value condition="ListItem.IsParentFolder + String.IsEqual(ListItemAbsolute(1).DBType,season) + Integer.IsGreater(ListItemAbsolute(1).DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[ListItemAbsolute(1).DBID]&amp;type=tvshow&amp;idtype=season&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
+		<value condition="!Container.HasParent + String.IsEqual(ListItem.Label,$LOCALIZE[20366]) + String.IsEqual(ListItemAbsolute(1).DBType,season) + Integer.IsGreater(ListItemAbsolute(1).DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[ListItemAbsolute(1).DBID]&amp;type=tvshow&amp;idtype=season&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
+		<value condition="Container.HasParent + String.IsEqual(ListItem.Label,$LOCALIZE[20366]) + String.IsEqual(ListItemAbsolute(2).DBType,season) + Integer.IsGreater(ListItemAbsolute(2).DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[ListItemAbsolute(2).DBID]&amp;type=tvshow&amp;idtype=season&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
+		<value condition="ListItem.IsParentFolder + String.IsEqual(ListItemAbsolute(1).DBType,episode) + Integer.IsGreater(ListItemAbsolute(1).DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[ListItem.DBID]&amp;type=tvshow&amp;idtype=episode&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
+		<value condition="String.IsEqual(ListItem.DBType,movie) + Integer.IsGreater(ListItem.DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[ListItem.DBID]&amp;type=movie&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
+		<value condition="String.IsEqual(ListItem.DBType,tvshow) + Integer.IsGreater(ListItem.DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[ListItem.DBID]&amp;type=tvshow&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
+		<value condition="String.IsEqual(ListItem.DBType,season) + Integer.IsGreater(ListItem.DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[ListItem.DBID]&amp;type=tvshow&amp;idtype=season&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
+		<value condition="String.IsEqual(ListItem.DBType,episode) + Integer.IsGreater(ListItem.DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[ListItem.DBID]&amp;type=tvshow&amp;idtype=episode&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
+		<value>-</value>
+	</variable>
+	
+	<variable name="View54_NextUp_Content">
+		<value condition="Container.Content(seasons) + String.StartsWith(ListItem.Path,plugin://plugin.video.embycon) + !String.IsEmpty(ListItemAbsolute(0).Property(series_id))">plugin://plugin.video.embycon/?mode=GET_CONTENT&amp;use_cache=false&amp;media_type=Episodes&amp;url=%7Bserver%7D%2Femby%2FShows%2FNextUp%3FSeriesId%3D$INFO[ListItemAbsolute(0).Property(series_id)]%26UserId%3D%7Buserid%7D%26IsVirtualUnAired%3Dfalse%26IsMissing%3Dfalse%26Fields%3D%7Bfield_filters%7D%26format%3Djson&amp;reload=$INFO[Window(home).Property(plugin.video.embycon-embycon_widget_reload)]$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
+		<value condition="Container.Content(seasons) + String.StartsWith(ListItem.Path,plugin://plugin.video.embycon) + !String.IsEmpty(ListItemAbsolute(1).Property(series_id))">plugin://plugin.video.embycon/?mode=GET_CONTENT&amp;use_cache=false&amp;media_type=Episodes&amp;url=%7Bserver%7D%2Femby%2FShows%2FNextUp%3FSeriesId%3D$INFO[ListItemAbsolute(1).Property(series_id)]%26UserId%3D%7Buserid%7D%26IsVirtualUnAired%3Dfalse%26IsMissing%3Dfalse%26Fields%3D%7Bfield_filters%7D%26format%3Djson&amp;reload=$INFO[Window(home).Property(plugin.video.embycon-embycon_widget_reload)]$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
+		<value condition="Container.Content(seasons) + String.StartsWith(ListItem.Path,plugin://plugin.video.embycon) + !String.IsEmpty(ListItemAbsolute(2).Property(series_id))">plugin://plugin.video.embycon/?mode=GET_CONTENT&amp;use_cache=false&amp;media_type=Episodes&amp;url=%7Bserver%7D%2Femby%2FShows%2FNextUp%3FSeriesId%3D$INFO[ListItemAbsolute(2).Property(series_id)]%26UserId%3D%7Buserid%7D%26IsVirtualUnAired%3Dfalse%26IsMissing%3Dfalse%26Fields%3D%7Bfield_filters%7D%26format%3Djson&amp;reload=$INFO[Window(home).Property(plugin.video.embycon-embycon_widget_reload)]$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
+		<value condition="Container.Content(seasons) + Integer.IsGreater(Container(2000).ListItem.Property(watchedepisodes),0) + Integer.IsGreater(Container(2000).ListItem.Property(unwatchedepisodes),0) + Integer.IsGreater(Container(2000).ListItem.DBID,0)">videodb://inprogresstvshows/$INFO[Container(2000).ListItem.DBID]/-2/?tvshowid=$INFO[Container(2000).ListItem.DBID]</value>
+		<value>-</value>
+	</variable>
 	
 	<!-- EXP -->
 	<expression name="Infodialog_IsActive">Window.IsActive(musicinformation) | Window.IsActive(songinformation) | Window.IsActive(movieinformation) | Window.IsActive(addoninformation) | Window.IsActive(pvrguideinfo) | Window.IsActive(pvrrecordinginfo) | Window.IsActive(pictureinfo) | Window.IsVisible(script-script.extendedinfo-DialogVideoInfo.xml) | Window.IsVisible(script-script.extendedinfo-DialogInfo.xml) | Window.IsVisible(script-script.extendedinfo-VideoList.xml)</expression>

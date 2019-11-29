@@ -1,123 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
-<!-- 1.12 DialogKeyboard.xml
-	
-ID 			Type 			Description
-8 			button 			Backspace button
-100 – 111 	button 			Digits 0 – 9
-120 – 171 	button 			Characters A – Z
-300 		button 			Done Button
-301 		button 			Cancel button
-302 		radiobutton 	Shift button
-303 		radiobutton 	Caps-Lock button
-304 		radiobutton 	Switch to symbols
-305 		button 			Navigate left button
-306 		button		 	Navigate right button
-307 		button 			Enter IP address button
-309 		button 			Layout button
-311 		label 			Heading label
-312 		edit 			Label displaying the text being entered
-313 		label 			Label displaying the text being entered (when keyboard layout is Chinese)
-314 		label 			Label displaying the available choices (when keyboard layout is Chinese)  -->
-<defaultcontrol always="true">300</defaultcontrol>
+	<defaultcontrol always="true">312</defaultcontrol>
 	<depth>DepthDialog+</depth>
 	<controls>
+	
+		<control type="label" id="311">
+            <include content="HiddenObject" />
+        </control>
 	
 		<control type="group">
 			<bottom>0</bottom>
 			<centerleft>50%</centerleft>
 			
 			<visible>!Window.IsVisible(numericinput)</visible>
-			<!-- <include>Animation_DialogPopupVisible</include> -->
+			
+			<include content="Animation_OpenClose_Slide">
+				<param name="slide_start" value="1920,0" />
+				<param name="slide_end" value="0,0" />
+			</include>
+			
+			<control type="image">
+				<description>bg top</description>
+				<animation effect="fade" start="100" end="30" time="450" condition="!Integer.IsGreater(Container(9010).NumItems,0)">Conditional</animation>
+				<bordertexture colordiffuse="$VAR[Button_Selected]">colors/white80.png</bordertexture>
+				<bordersize>0,0,0,1</bordersize>
+				<top>0</top>
+				<height>40%</height>
+				<aspectratio>stretch</aspectratio>
+				<texture colordiffuse="$VAR[BackgroundColor_Dialog]">colors/white.png</texture>
+			</control>
+			<control type="image">
+				<description>bg heading</description>
+				<bottom>50%</bottom>
+				<bordersize>0,0,0,1</bordersize>
+				<bordertexture colordiffuse="$VAR[Button_Selected]">colors/white80.png</bordertexture>
+				<height>10%</height>
+				<aspectratio>stretch</aspectratio>
+				<texture colordiffuse="$VAR[BackgroundColor_Dialog]">colors/white.png</texture>
+			</control>
 			<control type="image">
 				<description>bg bottom</description>
-				<align>center</align>
 				<bottom>0</bottom>
 				<height>50%</height>
 				<aspectratio>stretch</aspectratio>
-				<texture colordiffuse="ff101010">colors/white.png</texture>
-			</control>
-			<control type="image">
-				<description>bg top</description>
-				<align>top</align>
-				<top>0</top>
-				<height>40.5%</height>
-				<aspectratio>stretch</aspectratio>
-				<texture colordiffuse="ff101010">colors/white80.png</texture>
-			</control>
-			<control type="image">
-				<description>bg overlay</description>
-				<visible>Integer.IsGreater(Container(9010).NumItems,0)</visible>
-				<animation effect="fade" start="0" end="100" time="450" delay="0">VisibleChange</animation>
-				<align>center</align>
-				<bottom>0</bottom>
-				<height>100%</height>
-				<aspectratio>stretch</aspectratio>
-				<texture colordiffuse="ff101010">colors/white80.png</texture>
-			</control>
-			
-			<control type="image">
-				<description>bg sep</description>
-				<align>center</align>
-				<bottom>50%</bottom>
-				<height>1%</height>
-				<aspectratio>stretch</aspectratio>
-				<texture colordiffuse="$VAR[Button_Selected]">colors/grey.png</texture>
-			</control>
-			<control type="image">
-				<description>bg heading etc</description>
-				<align>center</align>
-				<bottom>50.1%</bottom>
-				<height>100</height>
-				<aspectratio>stretch</aspectratio>
-				<texture colordiffuse="ff101010">colors/white.png</texture>
-			</control>
-			
-			<control type="label" id="311">
-				<description>if label conditional header prop empty</description>
-				<bottom>51%</bottom>
-				<centerleft>50%</centerleft>
-				<width>60%</width>
-				<height>80</height>
-				<font>font12</font>
-				<align>left</align>
-				<aligny>bottom</aligny>
-				<textcolor>$VAR[Button_Selected]</textcolor>
-				<shadowcolor />
+				<texture colordiffuse="$VAR[BackgroundColor_Dialog]">colors/white.png</texture>
 			</control>
 			
 			<control type="label">
-				<description>in future conditional header prop</description>
-				<visible>String.IsEmpty(Control.GetLabel(311))</visible>
-				<bottom>51%</bottom>
+				<description>Headining</description>
+				<bottom>49.5%</bottom>
 				<centerleft>50%</centerleft>
 				<width>60%</width>
-				<height>80</height>
+				<height>10%</height>
+				<label>$VAR[DialogKeybord_Header]</label>
 				<font>font12</font>
 				<align>left</align>
-				<aligny>bottom</aligny>
+				<aligny>top</aligny>
 				<textcolor>$VAR[Button_Selected]</textcolor>
 				<shadowcolor />
-				<label>[B]E N T E R      S E A R C H S T R I N G  :[/B]</label>
 			</control>
-			
+						
 			<control type="edit" id="312">
+				<onup condition="!Integer.IsGreater(Container(9010).NumItems,0)">167</onup>
+				<onup condition="Integer.IsGreater(Container(9010).NumItems,0)">9010</onup>
+				<ondown condition="Control.IsVisible(111)">111</ondown>
+				<ondown condition="Control.IsVisible(100)">100</ondown>
 				<bottom>48.5%</bottom>
 				<centerleft>50%</centerleft>
 				<width>60%</width>
 				<textoffsetx>0</textoffsetx>
 				<textoffsety>0</textoffsety>
-				<height>100</height>
+				<height>10%</height>
 				<font>edit_common</font>
-				<align>left</align>
-				
 				<texturefocus  />
 				<texturenofocus />
-				<pulseonselect>yes</pulseonselect>
 			</control>
 			
 			<control type="group" id="78500">
-				
 				<bottom>0</bottom>
 				<height>45%</height>
 				<width>100%</width>
@@ -129,96 +88,82 @@ ID 			Type 			Description
 					<orientation>horizontal</orientation>
 					<onright>95200</onright>
 					<control type="button" id="111">
-						<onup condition="!Integer.IsGreater(Container(9010).NumItems,0)">167</onup>
-						<onup condition="Integer.IsGreater(Container(9010).NumItems,0)">9010</onup>
+						<onup>312</onup>
 						<ondown>120</ondown>
 						<include>KeyboardButton</include>
 					</control>
 					<control type="button" id="100">
-						<onup condition="!Integer.IsGreater(Container(9010).NumItems,0)">167</onup>
-						<onup condition="Integer.IsGreater(Container(9010).NumItems,0)">9010</onup>
+						<onup>312</onup>
 						<ondown>120</ondown>
 						<include>KeyboardButton</include>
 					</control>
 					<control type="button" id="101">
-						<onup condition="!Integer.IsGreater(Container(9010).NumItems,0)">168</onup>
-						<onup condition="Integer.IsGreater(Container(9010).NumItems,0)">9010</onup>
+						<onup>312</onup>
 						<ondown>121</ondown>
 						<include>KeyboardButton</include>
 					</control>
 					<control type="button" id="102">
-						<onup condition="!Integer.IsGreater(Container(9010).NumItems,0)">169</onup>
-						<onup condition="Integer.IsGreater(Container(9010).NumItems,0)">9010</onup>
+						<onup>312</onup>
 						<ondown>122</ondown>
 						<include>KeyboardButton</include>
 					</control>
 					<control type="button" id="103">
-						<onup condition="!Integer.IsGreater(Container(9010).NumItems,0)">32</onup>
-						<onup condition="Integer.IsGreater(Container(9010).NumItems,0)">9010</onup>
+						<onup>312</onup>
 						<ondown>123</ondown>
 						<include>KeyboardButton</include>
 					</control>
 					<control type="button" id="104">
-						<onup condition="!Integer.IsGreater(Container(9010).NumItems,0)">32</onup>
-						<onup condition="Integer.IsGreater(Container(9010).NumItems,0)">9010</onup>
+						<onup>312</onup>
 						<ondown>124</ondown>
 						<include>KeyboardButton</include>
 					</control>
 					<control type="button" id="105">
-						<onup condition="!Integer.IsGreater(Container(9010).NumItems,0)">32</onup>
-						<onup condition="Integer.IsGreater(Container(9010).NumItems,0)">9010</onup>
+						<onup>312</onup>
 						<ondown>125</ondown>
 						<include>KeyboardButton</include>
 					</control>
 					<control type="button" id="106">
-						<onup condition="!Integer.IsGreater(Container(9010).NumItems,0)">32</onup>
-						<onup condition="Integer.IsGreater(Container(9010).NumItems,0)">9010</onup>
+						<onup>312</onup>
 						<ondown>126</ondown>
 						<include>KeyboardButton</include>
 					</control>
 					<control type="button" id="107">
-						<onup condition="!Integer.IsGreater(Container(9010).NumItems,0)">170</onup>
-						<onup condition="Integer.IsGreater(Container(9010).NumItems,0)">9010</onup>
+						<onup>312</onup>
 						<ondown>127</ondown>
 						<include>KeyboardButton</include>
 					</control>
 					<control type="button" id="108">
-						<onup condition="!Integer.IsGreater(Container(9010).NumItems,0)">305</onup>
-						<onup condition="Integer.IsGreater(Container(9010).NumItems,0)">9010</onup>
+						<onup>312</onup>
 						<ondown>128</ondown>
 						<include>KeyboardButton</include>
 					</control>
 					<control type="button" id="109">
-						<onup condition="!Integer.IsGreater(Container(9010).NumItems,0)">306</onup>
-						<onup condition="Integer.IsGreater(Container(9010).NumItems,0)">9010</onup>
+						<onup>312</onup>
 						<ondown>129</ondown>
 						<include>KeyboardButton</include>
 					</control>
 					<control type="button" id="112">
-						<onup condition="!Integer.IsGreater(Container(9010).NumItems,0)">8</onup>
-						<onup condition="Integer.IsGreater(Container(9010).NumItems,0)">9010</onup>
+						<onup>312</onup>
 						<ondown>132</ondown>
 						<include>KeyboardButton</include>
 					</control>
 				</control>
 				<control type="image">
-					<description>sep 1 - nach vorschläge</description>
 					<centerleft>50%</centerleft>
-					<width>68%</width>
+					<width>70%</width>
 					<height>1</height>
 					<top>80</top>
 					<texture colordiffuse="dimgrey">diffuse/seperator_gradient_hor.png</texture>
 				</control>
 				<control type="image">
-					<description>sep 1 - nach vorschläge</description>
 					<height>110%</height>
 					<left>73%</left>
 					<width>1</width>
-					<bottom>20</bottom>
+					<bottom>10</bottom>
 					<aligny>bottom</aligny>
 					<texture colordiffuse="dimgrey">diffuse/seperator_gradient_vert.png</texture>
 				</control>
-				<!-- 2nd row -->
+				
 				<control type="grouplist">
 					<top>100</top>
 					<align>center</align>
@@ -276,7 +221,7 @@ ID 			Type 			Description
 						<include>KeyboardButton</include>
 					</control>
 					<control type="button" id="130">
-						<onup>110</onup>
+						<onup>109</onup>
 						<ondown>150</ondown>
 						<include>KeyboardButton</include>
 					</control>
@@ -291,7 +236,6 @@ ID 			Type 			Description
 						<include>KeyboardButton</include>
 					</control>
 				</control>
-				<!-- 3rd row -->
 				<control type="grouplist">
 					<top>190</top>
 					<align>center</align>
@@ -305,7 +249,7 @@ ID 			Type 			Description
 					</control>
 					<control type="button" id="141">
 						<onup>121</onup>
-						<ondown>161</ondown>
+						<ondown>160</ondown>
 						<include>KeyboardButton</include>
 					</control>
 					<control type="button" id="142">
@@ -315,32 +259,32 @@ ID 			Type 			Description
 					</control>
 					<control type="button" id="143">
 						<onup>123</onup>
-						<ondown>163</ondown>
+						<ondown>161</ondown>
 						<include>KeyboardButton</include>
 					</control>
 					<control type="button" id="144">
 						<onup>124</onup>
-						<ondown>164</ondown>
+						<ondown>162</ondown>
 						<include>KeyboardButton</include>
 					</control>
 					<control type="button" id="145">
 						<onup>125</onup>
-						<ondown>165</ondown>
+						<ondown>163</ondown>
 						<include>KeyboardButton</include>
 					</control>
 					<control type="button" id="146">
 						<onup>126</onup>
-						<ondown>166</ondown>
+						<ondown>164</ondown>
 						<include>KeyboardButton</include>
 					</control>
 					<control type="button" id="147">
 						<onup>127</onup>
-						<ondown>167</ondown>
+						<ondown>165</ondown>
 						<include>KeyboardButton</include>
 					</control>
 					<control type="button" id="148">
 						<onup>128</onup>
-						<ondown>168</ondown>
+						<ondown>166</ondown>
 						<include>KeyboardButton</include>
 					</control>
 					<control type="button" id="149">
@@ -364,7 +308,6 @@ ID 			Type 			Description
 						<include>KeyboardButton</include>
 					</control>
 				</control>
-				<!-- 4th row -->
 				<control type="grouplist">
 					<top>280</top>
 					<align>center</align>
@@ -372,43 +315,41 @@ ID 			Type 			Description
 					<orientation>horizontal</orientation>
 					<onright>95200</onright>
 					<control type="button" id="160">
-						<onup>140</onup>
+						<onup>142</onup>
 						<ondown>167</ondown>
 						<include>KeyboardButton</include>
 					</control>
 					<control type="button" id="161">
-						<onup>141</onup>
+						<onup>143</onup>
 						<ondown>168</ondown>
 						<include>KeyboardButton</include>
 					</control>
 					<control type="button" id="162">
-						<onup>142</onup>
+						<onup>144</onup>
 						<ondown>169</ondown>
 						<include>KeyboardButton</include>
 					</control>
 					<control type="button" id="163">
-						<onup>143</onup>
+						<onup>145</onup>
 						<ondown>32</ondown>
 						<include>KeyboardButton</include>
 					</control>
 					<control type="button" id="164">
-						<onup>144</onup>
+						<onup>146</onup>
 						<ondown>32</ondown>
 						<include>KeyboardButton</include>
 					</control>
 					<control type="button" id="165">
-						<onup>145</onup>
+						<onup>147</onup>
 						<ondown>170</ondown>
 						<include>KeyboardButton</include>
 					</control>
 					<control type="button" id="166">
-						<onup>146</onup>
+						<onup>148</onup>
 						<ondown>305</ondown>
 						<include>KeyboardButton</include>
 					</control>
-					
 				</control>
-				
 				<control type="grouplist">
 					<top>370</top>
 					<align>center</align>
@@ -435,7 +376,6 @@ ID 			Type 			Description
 						<ondown>100</ondown>
 						<include>KeyboardButton</include>
 					</control>
-					
 					<control type="button" id="168">
 						<onup>161</onup>
 						<ondown>100</ondown>
@@ -456,7 +396,6 @@ ID 			Type 			Description
 						<ondown>100</ondown>
 						<include>KeyboardButton</include>
 					</control>
-					
 					<control type="button" id="32">
 						<label>_________</label>
 						<onup>163</onup>
@@ -478,7 +417,6 @@ ID 			Type 			Description
 						<ondown>100</ondown>
 						<include>KeyboardButton</include>
 					</control>
-					
 					<control type="label" id="6777">
 						<height>50</height>
 						<width>20</width>
@@ -505,7 +443,6 @@ ID 			Type 			Description
 						<font>font27</font>
 						<label>[B]&gt;[/B]</label>
 					</control>
-					
 					<control type="label" id="6778">
 						<visible>Control.IsVisible(305)</visible>
 						<height>50</height>
@@ -513,8 +450,6 @@ ID 			Type 			Description
 						<font />
 						<label />
 					</control>
-					
-					
 				</control>
 			</control>
 			
@@ -523,10 +458,8 @@ ID 			Type 			Description
 				<height>45%</height>
 				<right>22%</right>
 				<width>60</width>
-				
 				<orientation>vertical</orientation>
 				<itemgap>10</itemgap>
-				
 				<onup condition="!Integer.IsGreater(Container(9010).NumItems,0)">95200</onup>
 				<onup condition="Integer.IsGreater(Container(9010).NumItems,0)">9010</onup>
 				<ondown>95200</ondown>
@@ -542,22 +475,12 @@ ID 			Type 			Description
 						<param name="onnf" value="Button_Text_NF" />
 					</include>
 				</control>
-				
 				<control type="label" id="6775">
 					<height>50</height>
 					<width>1</width>
 					<font />
 					<label />
 				</control>
-				
-				<!-- <control type="radiobutton" id="300">
-					<onleft>78500</onleft>
-					<onright>95203</onright>
-					<include content="KeyboardRadioButton">
-						<param name="symbol" value="enter" />
-					</include>
-				</control> -->
-				
 				<control type="radiobutton" id="304">
 					<onleft>78500</onleft>
 					<onright>95203</onright>
@@ -573,12 +496,10 @@ ID 			Type 			Description
 					<aligny>center</aligny>
 					<font />
 					<textureradioonfocus colordiffuse="$VAR[Button_Text_FO]">icons/keyboard/letters.png</textureradioonfocus>
-					<textureradioonnofocus colordiffuse="$VAR[Button_Text_NF]">icons/keyboard/letters.png</textureradioonnofocus>
+					<textureradioonnofocus colordiffuse="$VAR[Button_Text_NF]">icons/keyboard/lettersnf.png</textureradioonnofocus>
 					<textureradioofffocus colordiffuse="$VAR[Button_Selected]">icons/keyboard/letters.png</textureradioofffocus>
-					<textureradiooffnofocus colordiffuse="$VAR[Button_Selected]">icons/keyboard/letters.png</textureradiooffnofocus>
-					
+					<textureradiooffnofocus colordiffuse="$VAR[Button_Selected]">icons/keyboard/lettersnf.png</textureradiooffnofocus>
 				</control>
-				
 				<control type="radiobutton" id="303">
 					<onleft>78500</onleft>
 					<onright>95203</onright>
@@ -606,9 +527,7 @@ ID 			Type 			Description
 				<ondown>95203</ondown>
 				<onleft>95200</onleft>
 				<onright>95200</onright>
-				<width>200</width>
 				<orientation>vertical</orientation>
-				
 				
 				<include content="DefaultDialogButton">
 					<param name="font" value="font27_narrow" />
@@ -637,7 +556,6 @@ ID 			Type 			Description
 					<param name="width" value="280" />
 					<param name="height">40</param>
 				</include>
-				
 			</control>
 			
 			<control type="panel" id="9010">

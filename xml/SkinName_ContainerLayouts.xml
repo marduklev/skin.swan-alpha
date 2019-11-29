@@ -37,6 +37,8 @@
 		<value condition="!String.IsEmpty(ListItem.Duration) + !String.IsEmpty(ListItem.EndTime)">$VAR[ListItemDuration,, - ]$INFO[ListItem.EndTime,$LOCALIZE[31112]: ,]</value>
 		<value>$VAR[ListItemDuration]</value>
     </variable>
+	
+	<!-- String.IsEndsWith(ListItem.Overlay,OverlayWatched.png) , String.IsEndsWith(ListItem.Overlay,OverlayUnwatched.png) -->
 	<variable name="PercentPlayed">
 		<value condition="!Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable">watched 0%</value>
 		<value condition="Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable">watched 100%</value>
@@ -923,8 +925,8 @@
         </control>
 		
 		<control type="group">
-			<description>Taglines Bottom, $EXP[forceTags_visible]</description>
-			<visible>$PARAM[get_tags] | $EXP[forceTags_visible]</visible>
+			<description>Taglines Bottom</description>
+			<visible>$PARAM[get_tags]</visible>
 			
 			<control type="textbox">
 				<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
@@ -1246,6 +1248,8 @@ top-->
 	NEED add sec color for LABEL 2 Container_label2_itemtag
 	-->
 	<variable name="Tags_Bottom">
+		<value condition="String.Contains(Container.Folderpath,script.embuary.info) + String.Contains(Container.Folderpath,call=upcoming)">$INFO[ListItem.Premiered]</value>
+		<value condition="String.Contains(Container.Folderpath,script.embuary.info) + String.Contains(Container.Folderpath,call=now_playing)">$INFO[ListItem.Premiered]</value>
 		<value condition="!$EXP[IsSeason] + $EXP[IsEpisode]">$INFO[ListItem.Season,[B]s,[/B]]$INFO[ListItem.Episode,[B]e,[/B] -]$INFO[ListItem.Title,[B],[/B]]$INFO[ListItem.Duration(mm), (, min)][CR][COLOR=$VAR[Container_label2_itemtag]]$INFO[ListItem.Year][/COLOR]</value>
 		<value condition="$EXP[IsSong]">$INFO[ListItem.Label,[B],[/B]][CR][COLOR=$VAR[Container_label2_itemtag]]$INFO[ListItem.Album]$INFO[ListItem.Year, (,)][/COLOR]</value>
 		<value condition="!String.IsEmpty(ListItem.Year)">$INFO[ListItem.Label,[B],[/B]][CR][COLOR=$VAR[Container_label2_itemtag]]$INFO[ListItem.Year][/COLOR]</value>
