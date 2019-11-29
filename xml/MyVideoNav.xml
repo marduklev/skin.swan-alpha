@@ -23,12 +23,16 @@ ID 	Type 				Description
 -->
 	<defaultcontrol always="true">50</defaultcontrol>
 	<backgroundcolor>$VAR[background]</backgroundcolor>
-	<views>50,51,52,58</views>
+	<views>50,51,52,53,58</views>
 	<menucontrol>9000</menucontrol>
 	<controls>
+		<control type="list" id="2000">
+			<include>HiddenContainer</include>
+			<content limit="1">$VAR[EmbuaryHelper_GetInfo_dbid]</content>
+		</control>
+		
 		<control type="group">
 			<include>GlobalBackground</include>
-			
 		</control>
 		
 		<control type="group">
@@ -38,15 +42,17 @@ ID 	Type 				Description
 		<control type="group" id="70">
 			<descriptiopn>viewtypes</descriptiopn>
 			<animation effect="fade" start="100" end="0" time="200" tween="sine" condition="$EXP[Infodialog_IsActive]">Conditional</animation>
-			
+			<centerleft>50%</centerleft>
 			
 			<include>view50</include>
+			
 			<include>Simple_Panels</include>
+			
 			<include>view58</include>
 			
 			
 			<control type="group">
-			<descriptiopn>menucontrol test viewtype toggle</descriptiopn>
+				<descriptiopn>menucontrol test viewtype toggle</descriptiopn>
 				<visible>ControlGroup(9000).HasFocus()</visible>
 				
 				<control type="image">
@@ -73,7 +79,7 @@ ID 	Type 				Description
 						<visible>Integer.IsGreater(Container.ViewCount,1)</visible>
 						<onclick>Container.PreviousViewMode</onclick>
 					</control>
-					<control type="button" id="6053">
+					<!-- <control type="button" id="6053">
 						<label>set 50</label>
 						<onclick>Container.SetViewMode(50)</onclick>
 					</control>
@@ -89,9 +95,32 @@ ID 	Type 				Description
 						<label>set 58</label>
 						<visible>Container.Content(Seasons)</visible>
 						<onclick>Container.SetViewMode(58)</onclick>
+					</control> -->
+					
+					<control type="button" id="7056">
+						<label>toggle tags $INFO[Container.Viewmode]</label>
+						<visible>Control.IsVisible(51) | Control.IsVisible(53)</visible>
+						<onclick condition="Control.IsVisible(51)">Skin.ToggleSetting(View_51_DisableTags)</onclick>
+						<onclick condition="Control.IsVisible(53)">Skin.ToggleSetting(View_53_DisableTags)</onclick>
 					</control>
 					
-					<control type="button" id="2">
+					<control type="button" id="7057">
+						<label>toggle footer $INFO[Container.Viewmode]</label>
+						<visible>Control.IsVisible(51) | Control.IsVisible(52) | Control.IsVisible(53)</visible>
+						<onclick condition="Control.IsVisible(51)">Skin.ToggleSetting(View_51_DisableFooter)</onclick>
+						<onclick condition="Control.IsVisible(52)">Skin.ToggleSetting(View_52_DisableFooter)</onclick>
+						<onclick condition="Control.IsVisible(53)">Skin.ToggleSetting(View_53_DisableFooter)</onclick>
+					</control>
+					
+					<control type="button" id="7059">
+						<height>70</height>
+						<aligny>center</aligny>
+						<align>center</align>
+						<label>$INFO[Container.Viewmode]</label>
+						<onclick>noop</onclick>
+					</control>
+					
+					<!-- <control type="button" id="2">
 						<label></label>
 					</control>
 					<control type="button" id="3">
@@ -139,7 +168,7 @@ ID 	Type 				Description
 					</control>
 					<control type="button" id="20">
 						<label></label>
-					</control>
+					</control> -->
 					
 					
 				</control>
