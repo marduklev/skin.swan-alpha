@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+<!-- 	
+DialogSettings.xml
+
+osdvideosettings 		WINDOW_DIALOG_VIDEO_OSD_SETTINGS 	10123 	
+osdaudiosettings 		WINDOW_DIALOG_AUDIO_OSD_SETTINGS 	10124 	
+osdsubtitlesettings 	WINDOW_DIALOG_SUBTITLE_OSD_SETTINGS 10159
+
+networksetup 			WINDOW_DIALOG_NETWORK_SETUP 		10128 	
+profilesettings 		WINDOW_DIALOG_PROFILE_SETTINGS 		10130
+locksettings 			WINDOW_DIALOG_LOCK_SETTINGS 		10131
+contentsettings 		WINDOW_DIALOG_CONTENT_SETTINGS 		10132
+libexportsettings 		WINDOW_DIALOG_LIBEXPORT_SETTINGS 	10133
+peripheralsettings 		WINDOW_DIALOG_PERIPHERAL_SETTINGS 	10150
+mediafilter 			WINDOW_DIALOG_MEDIA_FILTER 			10152
+osdcmssettings 			WINDOW_DIALOG_CMS_OSD_SETTINGS 		10157
+infoprovidersettings 	WINDOW_DIALOG_INFOPROVIDER_SETTINGS	10158 
+
+pvrtimersetting 		WINDOW_DIALOG_PVR_TIMER_SETTING 	10602
+pvrrecordingsettings 	WINDOW_DIALOG_PVR_RECORDING_SETTING 10611
+	?					WINDOW_DIALOG_PVR_CLIENT_PRIORITIES 10612
+gamevideofilter 		WINDOW_DIALOG_GAME_VIDEO_FILTER 	10823
+ 
+ 
+ID 	Type 			Description
+2 	label 			Header label ok
+
+5 	grouplist 		Grouplist template - error
+
+7 	button 			button template
+8 	radiobutton 	radiobutton template
+9 	spincontrolex 	spincontrolex template
+11 	image 			image template
+12 	edit 			edit template
+13 	sliderex 		sliderex template
+14 	label 			label template
+
+28 	button 			ok button
+29 	button 			cancel button
+30 	button 			clear/settings button 
+-->
+
+	<defaultcontrol>5</defaultcontrol>
+	<menucontrol>9000</menucontrol>
+	<controls>
+		
+		<control type="button" id="28">
+            <include content="HiddenObject" />
+        </control>
+		<control type="button" id="29">
+            <include content="HiddenObject" />
+        </control>
+		<control type="button" id="30">
+			<include content="HiddenObject" />
+        </control>
+		
+		<control type="group">
+			<!-- 
+			  conditions needed later on , e.g. osdsettings layout will be different 
+			<visible>Window.Is(contentsettings)</visible>
+			-->
+			
+			<include content="Dialog_Percent_BGPanel">
+				<param name="bg_top_visible" value="true" />
+			</include>
+			
+			
+			<control type="label" id="2">
+				<bottom>50%</bottom>
+				<centerleft>55%</centerleft>
+				<width>60%</width>
+				<height>10%</height>
+				<font>Header_Dialog</font>
+				<textcolor>$VAR[Button_Selected]</textcolor>
+				<label />
+			</control>
+			
+			<include content="Dialog_Percent_ListBGPanel">
+				<param name="width" value="52%" />
+				<param name="height" value="48%" />
+			</include>
+						
+			<control type="grouplist" id="5">
+				<bottom>2%</bottom>
+				<height>45%</height>
+				<width>49%</width>
+				<centerleft>50%</centerleft>
+				<onleft>9000</onleft>
+				<onright>9000</onright>
+				<onup>5</onup>
+				<ondown>5</ondown>
+			</control>
+			
+			<control type="button" id="7">
+				<font>DialogListItem</font>
+				<texturenofocus />
+			</control>
+			<control type="radiobutton" id="8">
+				<font>DialogListItem</font>
+				<texturenofocus />
+			</control>
+			<control type="spincontrolex" id="9">
+				<font>DialogListItem</font>
+				<texturenofocus />
+			</control>
+			<control type="image" id="11">
+				<height>2</height>
+				<texture colordiffuse="$VAR[Button_Selected]">diffuse/seperator_gradient_hor.png</texture>
+			</control>
+			<control type="edit" id="12">
+				<textoffsetx>20</textoffsetx>
+				<font>DialogListItem</font>
+				<!-- <texturenofocus /> -->
+			</control>
+			<control type="sliderex" id="13">
+				<description>Default Slider</description>
+				<font>DialogListItem</font>
+				<!-- <textwidth>800</textwidth> -->
+			</control>
+			<control type="label" id="14">
+				<height>70</height>
+				<align>center</align>
+				<textcolor>$VAR[Button_Text_FO]</textcolor>
+				<font>DialogListItem</font>
+				<description>Default Label</description>
+			</control>
+			
+			<include content="Dialog_Percent_Buttongrouplist">
+				<param name="bgpanel_height" value="48%" />
+				<param name="grouplist_height" value="45%" />
+				<param name="pos_right" value="17%" />
+				
+				<onleft>5</onleft>
+				<onright>5</onright>
+				<onup>9000</onup>
+				<ondown>9000</ondown>
+				
+				<control type="radiobutton" id="928">
+					<include content="KeyboardRadioButton">
+						<param name="onfo" value="Button_Text_FO" />
+						<param name="onnf" value="Button_Text_NF" />
+						<param name="symbol" value="enter" />
+					</include>
+					<onclick>SendClick(28)</onclick>
+				</control>
+				<control type="radiobutton" id="929">
+					<include content="KeyboardRadioButton">
+						<param name="onfo" value="Button_Text_FO" />
+						<param name="onnf" value="Button_Text_NF" />
+						<param name="symbol" value="cancel" />
+					</include>
+					<onclick>SendClick(29)</onclick>
+				</control>
+				<control type="radiobutton" id="930">
+					<description>unsure - may need variable stringisequalcontrolgetlabel30 cleanup vs settings</description>
+					<include content="KeyboardRadioButton">
+						<param name="onfo" value="Button_Text_FO" />
+						<param name="onnf" value="Button_Text_NF" />
+						<param name="symbol" value="cleanup" />
+					</include>
+					<visible>Control.IsVisible(30)</visible>
+					<onclick>SendClick(30)</onclick>
+				</control>
+			</include>
+		</control>
+	</controls>
+</window>
