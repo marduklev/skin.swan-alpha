@@ -2,6 +2,8 @@
 <window>
 	<defaultcontrol always="true">312</defaultcontrol>
 	<depth>DepthDialog+</depth>
+	
+	<onunload condition="!String.IsEmpty(Window(home).Property(DialogHeader))">ClearProperty(DialogHeader,home)</onunload>
 	<controls>
 	
 		<control type="label" id="311">
@@ -12,14 +14,15 @@
 			<bottom>0</bottom>
 			<centerleft>50%</centerleft>
 			
-			<visible>!Window.IsVisible(numericinput)</visible>
-			
+			<include content="Animation_TransitionFadeOut">
+				<param name="condition" value="Window.IsVisible(numericinput)" />
+			</include>
 			<include content="Animation_OpenClose_Slide">
 				<param name="slide_start" value="1920,0" />
 				<param name="slide_end" value="0,0" />
 			</include>
 			
-			<include content="Dialog_BGPanel">
+			<include content="Dialog_Percent_BGPanel">
 				<param name="bg_top_visible" value="true" />
 			</include>
 			
@@ -29,7 +32,7 @@
 				<centerleft>50%</centerleft>
 				<width>60%</width>
 				<height>10%</height>
-				<label>$VAR[DialogKeybord_Header]</label>
+				<label>$VAR[DialogHeader]</label>
 				<font>font12</font>
 				<align>left</align>
 				<aligny>top</aligny>

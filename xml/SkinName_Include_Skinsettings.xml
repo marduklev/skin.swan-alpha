@@ -55,7 +55,7 @@
 	</include>
 	<include name="KeyboardRadioButton">
 		<param name="onup" default="162" />
-		<param name="onup" default="102" />
+		<param name="ondown" default="102" />
 		<param name="onfo" default="Button_Selected" />
 		<param name="onnf" default="Button_Selected" />
 		<definition>
@@ -222,7 +222,7 @@
 
 	<include name="Simple_container_IconLabel">
 		<param name="type" default="panel" />
-		<param name="height" default="68%" />
+		<param name="height" default="40%" />
 		<param name="width" default="50%" />
 		<definition>
 			<control type="$PARAM[type]" id="$PARAM[id]">
@@ -303,25 +303,28 @@
 				</focusedlayout>
 				
 			</control>
-			</definition>
-		</include>
+		</definition>
+	</include>
 		
-		<include name="Dialog_BGPanel">
-			<param name="height" default="50%" />
-			<param name="bg_top_visible" default="false" />
-			<definition>
-			<control type="button">
-				<left>-2000</left>
-				<top>-2000</top>
-				<width>6000</width>
-				<height>6000</height>
-				<texturefocus />
-				<texturenofocus />
-				<onclick>Action(close)</onclick>
-			</control>
+	<!-- DIALOGS -->
+	<include name="Dialog_Fullscreen_BGPanel">
+		<control type="image">
+			<bordersize>2</bordersize>
+			<bordertexture colordiffuse="$VAR[Button_Selected]" border="6">frames/dialog16to9.png</bordertexture>
+			<texture colordiffuse="$VAR[BackgroundColor_Dialog]">colors/white.png</texture>
+			<aspectratio>stretch</aspectratio>
+		</control>
+	</include>
+	
+	<include name="Dialog_Percent_BGPanel">
+		<param name="height" default="50%" />
+		<param name="bg_top_visible" default="false" />
+		<definition>
+		<control type="group">
+			<visible>$PARAM[bg_top_visible]</visible>
 			<control type="image">
 				<description>bg top</description>
-				<visible>$PARAM[bg_top_visible]</visible>
+				<visible>String.StartsWith(Skin.String(BackgroundColor_Dialog),f) | String.IsEmpty(Skin.String(BackgroundColor_Dialog))</visible>
 				<animation effect="fade" start="100" end="30" time="450" condition="!Integer.IsGreater(Container(9010).NumItems,0)">Conditional</animation>
 				<bordertexture colordiffuse="$VAR[Button_Selected]">colors/white80.png</bordertexture>
 				<bordersize>0,0,0,1</bordersize>
@@ -331,79 +334,71 @@
 				<texture colordiffuse="$VAR[BackgroundColor_Dialog]">colors/white.png</texture>
 			</control>
 			<control type="image">
-				<description>bg heading</description>
-				<bottom>$PARAM[height]</bottom>
+				<description>unsure if use optional or delete temp keep - needed if Skin.String(BackgroundColor_Dialog) not startwith f</description>
+				<visible>!String.StartsWith(Skin.String(BackgroundColor_Dialog),f)</visible>
+				<animation effect="fade" start="100" end="30" time="450" condition="!Integer.IsGreater(Container(9010).NumItems,0)">Conditional</animation>
+				<bordertexture colordiffuse="$VAR[Button_Selected]" border="2">frames/borderbottom.png</bordertexture>
 				<bordersize>0,0,0,1</bordersize>
-				<bordertexture colordiffuse="$VAR[Button_Selected]">colors/white80.png</bordertexture>
-				<height>10%</height>
+				<top>0</top>
+				<height>40%</height>
 				<aspectratio>stretch</aspectratio>
 				<texture colordiffuse="$VAR[BackgroundColor_Dialog]">colors/white.png</texture>
 			</control>
-			<control type="image">
-				<description>bg bottom</description>
-				<bottom>0</bottom>
-				<height>$PARAM[height]</height>
-				<aspectratio>stretch</aspectratio>
-				<texture colordiffuse="$VAR[BackgroundColor_Dialog]">colors/white.png</texture>
-			</control>
-			</definition>
-		</include>
-		<!-- <control type="panel" id="451">
-				<left>20</left>
-				<top>100</top>
-				<width>940</width>
-				<height>700</height>
-				<onleft>9000</onleft>
-				<onright>60</onright>
-				<onup>451</onup>
-				<ondown>451</ondown>
-				<pagecontrol>60</pagecontrol>
-				<scrolltime>200</scrolltime>
-				<itemlayout height="70" width="940">
-					<control type="image">
-						<left>10</left>
-						<top>10</top>
-						<width>50</width>
-						<height>50</height>
-						<texture>$INFO[ListItem.Icon]</texture>
-						<aspectratio>keep</aspectratio>
-					</control>
-					<control type="label">
-						<left>75</left>
-						<top>0</top>
-						<right>20</right>
-						<height>70</height>
-						<aligny>center</aligny>
-						<selectedcolor>green</selectedcolor>
-						<label>$INFO[ListItem.Label]</label>
-					</control>
-				</itemlayout>
-				<focusedlayout height="70" width="940">
-					<control type="image">
-						<left>0</left>
-						<top>0</top>
-						<right>0</right>
-						<height>71</height>
-						<visible>Control.HasFocus(451)</visible>
-						<texture colordiffuse="Button_Panel_FO">lists/focus.png</texture>
-					</control>
-					<control type="image">
-						<left>10</left>
-						<top>10</top>
-						<width>50</width>
-						<height>50</height>
-						<texture>$INFO[ListItem.Icon]</texture>
-						<aspectratio>keep</aspectratio>
-					</control>
-					<control type="label">
-						<left>75</left>
-						<top>0</top>
-						<right>20</right>
-						<height>70</height>
-						<aligny>center</aligny>
-						<selectedcolor>green</selectedcolor>
-						<label>$INFO[ListItem.Label]</label>
-					</control>
-				</focusedlayout>
-			</control> -->
+		</control>
+		<control type="image">
+			<description>bg heading</description>
+			<bottom>$PARAM[height]</bottom>
+			<bordersize>0,0,0,1</bordersize>
+			<bordertexture colordiffuse="$VAR[Button_Selected]">frames/borderbottom.png</bordertexture>
+			<height>10%</height>
+			<aspectratio>stretch</aspectratio>
+			<texture colordiffuse="$VAR[BackgroundColor_Dialog]">colors/white.png</texture>
+		</control>
+		<control type="image">
+			<description>bg bottom</description>
+			<bottom>0</bottom>
+			<height>$PARAM[height]</height>
+			<aspectratio>stretch</aspectratio>
+			<texture colordiffuse="$VAR[BackgroundColor_Dialog]">colors/white.png</texture>
+		</control>
+		</definition>
+	</include>
+	
+	<include name="Image_CondVis">
+		<control type="image" id="$PARAM[id]">
+			<visible>$PARAM[visible]</visible>
+			<height>135</height>
+			<width>135</width>
+			<bordersize>4</bordersize>
+			<texture background="true" diffuse="diffuse/roundmask.png">$PARAM[texturepath]</texture>
+			<aspectratio scalediffuse="false" aligny="bottom" align="center">keep</aspectratio>
+		</control>
+	</include>
+	
+	
+	<!-- filebrowser, mediasource, -->
+	<include name="Dialog_Percent_Buttongrouplist">
+		<control type="image">
+			<description>button bg</description>
+			<bottom>0</bottom>
+			<height>$PARAM[bgpanel_height]</height>
+			<right>$PARAM[pos_right]</right>
+			<width>110</width>
+			<texture colordiffuse="$VAR[Button_Panel_NF]">colors/white50.png</texture>
+		</control>
+		<control type="grouplist" id="9000">
+			<description>check use of include for 9000 grouplist shares - filebrowser,mediasource,dialogkeyboard...</description>
+			<bottom>1%</bottom>
+			<height>$PARAM[grouplist_height]</height>
+			<right>$PARAM[pos_right]</right>
+			<width>90</width>
+			<orientation>vertical</orientation>
+			<itemgap>10</itemgap>
+			 
+			<nested />
+			
+		</control>
+		
+	</include>
+	
 </includes>

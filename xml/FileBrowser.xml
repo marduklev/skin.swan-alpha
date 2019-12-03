@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
 	<defaultcontrol always="true">450</defaultcontrol>
-<!-- 	1.32 FileBrowser.xml
+	<onunload condition="!String.IsEmpty(Window(home).Property(DialogHeader))">ClearProperty(DialogHeader,home)</onunload>
+<!--
+filebrowser 	WINDOW_DIALOG_FILE_BROWSER 	10126 	FileBrowser.xml 
 ID 		Type 			Description
 450 	container 		Directory list
 451 	container 		List of available thumbnails
@@ -14,11 +16,25 @@ ID 		Type 			Description
 -->
 	<controls>
 	
+		<control type="label" id="411">
+            <include content="HiddenObject" />
+        </control>
+		
+		<control type="button" id="413">
+            <include content="HiddenObject" />
+        </control>
+		<control type="button" id="414">
+            <include content="HiddenObject" />
+        </control>
+		<control type="button" id="415">
+			<visible>Control.IsEnabled(415)</visible>
+            <include content="HiddenObject" />
+        </control>
+		
 		<control type="group">
-			<!-- <visible>!String.IsEqual(Control.GetLabel(411,??)</visible> -->
-			<include content="Dialog_BGPanel">
-				<param name="height" value="80%" />
-				<param name="bg_top_visible" value="false" />
+			<visible>String.IsEmpty(Window(home).Property(DialogHeader))</visible>
+			<include content="Dialog_Percent_BGPanel">
+				<param name="bg_top_visible" value="true" />
 			</include>
 		</control>
 		
@@ -27,34 +43,47 @@ ID 		Type 			Description
 			<centerleft>50%</centerleft>
 			
 			<control type="image">
-				<right>50</right>
-				<width>260</width>
-				<height>380</height>
-				<centertop>50%</centertop>
-				<aspectratio aligny="bottom">keep</aspectratio>
+				<centerleft>50%</centerleft>
+				<centertop>25%</centertop>
+				<height>23%</height>
+				<aspectratio align="center" aligny="bottom">keep</aspectratio>
 				<bordertexture>colors/black.png</bordertexture>
-				<bordersize>4</bordersize>
-				<texture border="4" background="true">$INFO[ListItem.Icon]</texture>
-			</control>
-			<control type="image">
-				<description>bg panel list</description>	
-				<left>0</left>
-				<top>80</top>
-				<width>980</width>
-				<height>740</height>
-				<texture colordiffuse="$VAR[Button_Panel_NF]">colors/white10.png</texture>
+				<bordersize>1</bordersize>
+				<texture background="true">$INFO[ListItem.Icon]</texture>
 			</control>
 			
-			<control type="label" id="411">
-				<bottom>75%</bottom>
+			<control type="image">
+				<description>bg panel list</description>
+				<bottom>0</bottom>
 				<centerleft>50%</centerleft>
+				<height>48%</height>
+				<width>51%</width>
+				<!-- <texture colordiffuse="$VAR[Button_Text_FO]">colors/white10.png</texture> -->
+				<texture colordiffuse="$VAR[Button_Panel_NF]">colors/white50.png</texture>
+			</control> 
+			
+			<control type="label" id="411">
+				<bottom>49%</bottom>
+				<centerleft>55%</centerleft>
 				<width>60%</width>
 				<height>10%</height>
 				<font>Header_Dialog</font>
 				<align>left</align>
 				<aligny>bottom</aligny>
 				<textcolor>$VAR[Button_Selected]</textcolor>
-				<label></label>
+				<label>$VAR[DialogHeader]</label>
+			</control>
+			
+			<control type="label" id="412">
+				<bottom>50%</bottom>
+				<centerleft>55%</centerleft>
+				<width>60%</width>
+				<height>5%</height>
+				<align>left</align>
+				<aligny>center</aligny>
+				<haspath>true</haspath>
+				<font>debug</font>
+				<textcolor>$VAR[Button_Text_NF]</textcolor>
 			</control>
 			
 			<include content="Simple_container_IconLabel">
@@ -69,8 +98,8 @@ ID 		Type 			Description
 			<control type="scrollbar" id="45060">
 				<visible>Control.IsVisible(450)</visible>
 				<bottom>4%</bottom>
-				<height>68%</height>
-				<centerleft>75%</centerleft>
+				<height>40%</height>
+				<centerleft>74%</centerleft>
 				<onleft>450</onleft>
 				<onright>9000</onright>
 				<orientation>vertical</orientation>
@@ -79,72 +108,58 @@ ID 		Type 			Description
 			<control type="scrollbar" id="45160">
 				<visible>Control.IsVisible(451)</visible>
 				<bottom>4%</bottom>
-				<height>68%</height>
-				<centerleft>75%</centerleft>
+				<height>40%</height>
+				<centerleft>74%</centerleft>
 				<onleft>450</onleft>
 				<onright>9000</onright>
 				<orientation>vertical</orientation>
 			</control>
 			
-			<control type="label" id="412">
-				<description>Path label</description>
-				<left>25</left>
-				<bottom>10</bottom>
-				<width>595</width>
-				<height>30</height>
-				<haspath>true</haspath>
-				<font>font12</font>
-				<aligny>bottom</aligny>
-				<textcolor>grey</textcolor>
-			</control>
 			
-			<control type="label">
-				<left>0</left>
-				<bottom>10</bottom>
-				<width>1270</width>
-				<height>30</height>
-				<align>right</align>
-				<aligny>bottom</aligny>
-				<textcolor>grey</textcolor>
-				<font>font12</font>
-				<label>$VAR[FileBrowserSelectLabel]</label>
-			</control>
-		</control>
-		
-		<control type="grouplist" id="9000">
-				<right>0</right>
-				<aligny>center</aligny>
-				<top>20%</top>
-				<width>400</width>
-				<height>100%</height>
-				<itemgap>20</itemgap>
-				<orientation>vertical</orientation>
+			<include content="Dialog_Percent_Buttongrouplist">
+				<param name="bgpanel_height" value="48%" />
+				<param name="grouplist_height" value="38%" />
+				<param name="pos_right" value="18%" />
+				
 				<onleft>450</onleft>
 				<onright>450</onright>
 				<onup>9000</onup>
 				<ondown>9000</ondown>
-				<include content="DefaultDialogButton">
-					<param name="height" value="50" />
-					<param name="id" value="413" />
-					<param name="label" value="$LOCALIZE[186]" />
-				</include>
-				<include content="DefaultDialogButton">
-					<param name="height" value="50" />
-					<param name="id" value="414" />
-					<param name="label" value="$LOCALIZE[222]" />
-				</include>
-				<include content="DefaultDialogButton">
-					<param name="height" value="50" />
-					<param name="id" value="415" />
-					<param name="label" value="$LOCALIZE[119]" />
-					<param name="visible" value="Control.IsEnabled(415)" />
-				</include>
-				<include content="DefaultDialogButton">
-					<param name="height" value="50" />
-					<param name="id" value="416" />
-					<param name="label" value="$LOCALIZE[749]" />
-					<param name="visible" value="Control.IsEnabled(416)" />
-				</include>
-			</control>
+				
+				<control type="radiobutton" id="13">
+					<include content="KeyboardRadioButton">
+						<param name="onfo" value="Button_Text_FO" />
+						<param name="onnf" value="Button_Text_NF" />
+						<param name="symbol" value="enter" />
+					</include>
+					<onclick>SendClick(413)</onclick>
+				</control>
+				<control type="radiobutton" id="14">
+					<include content="KeyboardRadioButton">
+						<param name="onfo" value="Button_Text_FO" />
+						<param name="onnf" value="Button_Text_NF" />
+						<param name="symbol" value="cancel" />
+					</include>
+					<onclick>SendClick(414)</onclick>
+				</control>
+				<control type="radiobutton" id="15">
+					<visible>Control.IsEnabled(415)</visible>
+					<include content="KeyboardRadioButton">
+						<param name="onfo" value="Button_Text_FO" />
+						<param name="onnf" value="Button_Text_NF" />
+						<param name="symbol" value="addfolder" />
+					</include>
+					<onclick>SendClick(415)</onclick>
+				</control>
+				<control type="radiobutton" id="416">
+					<visible>Control.IsEnabled(416)</visible>
+					<include content="KeyboardRadioButton">
+						<param name="onfo" value="Button_Text_FO" />
+						<param name="onnf" value="Button_Text_NF" />
+						<param name="symbol" value="flipx" />
+					</include>
+				</control>
+			</include>
+		</control>
 	</controls>
 </window>
