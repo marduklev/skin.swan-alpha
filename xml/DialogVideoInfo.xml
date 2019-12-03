@@ -1,0 +1,1023 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+	<defaultcontrol always="true">8000</defaultcontrol>
+	<!-- <onload>SetProperty(infobackground,$ESCINFO[ListItem.Art(fanart)],home)</onload>
+	<onunload>ClearProperty(infobackground,home)</onunload> -->
+	
+	
+	<!-- 1.30 DialogVideoInfo.xml
+ID 	Type 		Description
+3 	image 		Video thumb
+4 	textbox 	Text area for displaying the video plot
+5 	button 		Toggle between video review and cast members (Deprecated)
+6 	button 		Refresh video information
+7 	button 		User rating
+8 	button 		Play video
+9 	button 		Resume video
+10 	button 		Get video Fanart, Poster, Banner, or Thumb
+11 	button 		Play movie trailer
+13 	button 		Show all movies by the director of the selected movie
+50 	container 	List of cast members of the currently selected movie  
+-->
+	<onload condition="[ContainerContent(episodes) | String.IsEqual(ListItem.DBTYPE,episode)]">RunScript(script.embuary.helper,action=encode,string='"$INFO[ListItem.TVShowTitle]"',prop=EncodedTitle)</onload>
+	<onload condition="![ContainerContent(episodes) | String.IsEqual(ListItem.DBTYPE,episode)]">RunScript(script.embuary.helper,action=encode,string='"$INFO[ListItem.Label]"',prop=EncodedTitle)</onload>
+	<onload>ClearProperty(AdditionalInfo)</onload>
+	
+	<onunload>ClearProperty(DecodedTitle,home)</onunload>	
+	<onunload>ClearProperty(AdditionalInfo)</onunload>
+   
+    <controls>
+		<control type="group">
+			<include>GlobalBackground</include>
+           <!--  <include condition="!Skin.HasSetting(DisableNowPlayingBackground)">NowPlayingBackground</include> -->
+			<include>Animation_OpenClose_Zoom</include>
+			
+			<!-- fixed pos FANART OVERLAY -->
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>100%</width>
+				<height>100%</height>
+				<texture border="15">colors/white</texture>
+				<colordiffuse>802F2F2F</colordiffuse>
+			</control>
+			
+			<!-- fixed pos  studiologo (option b ) + fileinfo bottom right -->
+			<control type="group">
+				<visible>String.IsEqual(Window.Property(AdditionalInfo),infolist) | [Player.HasVideo + ![VideoPlayer.Content(movies) | VideoPlayer.Content(episodes) | VideoPlayer.Content(musicvideos) | VideoPlayer.Content(livetv)]]</visible>
+				<animation effect="fade" start="0" end="100" time="450">VisibleChange</animation>
+					
+				<control type="image">
+					<bottom>65</bottom>
+					<right>100</right>
+					<include>studiologo_image</include>
+					<width>430</width>
+					<height>150</height>
+					<aspectratio aligny="top" align="right">keep</aspectratio>
+				</control>
+				<control type="label">
+					<align>right</align>
+					<right>20</right>
+					<width>1920</width>
+					<height>40</height>
+					<bottom>10</bottom>
+					<font>Reg18</font>
+					<textcolor>dimgrey</textcolor>
+					<label>[B]$LOCALIZE[573]:[/B]    $INFO[ListItem.Folderpath]</label>
+					<visible>!String.IsEmpty(ListItem.Folderpath)</visible>
+				</control>
+			</control>
+			
+			<!-- trailer window -->
+			<control type="group">
+				<visible>Player.HasVideo + ![VideoPlayer.Content(movies) | VideoPlayer.Content(episodes) | VideoPlayer.Content(musicvideos) | VideoPlayer.Content(livetv)]</visible>
+				<animation effect="fade" start="0" end="100" time="750">VisibleChange</animation>
+				<left>100</left>
+				<top>260</top>
+				<width>960</width>
+				<height>540</height>
+				<control type="image">
+					<aligny>bottom</aligny>
+					<texture border="15">colors/white</texture>
+					<colordiffuse>ff000000</colordiffuse>
+				</control>
+				<control type="videowindow">
+				</control>
+			</control>
+			
+			<!-- Poster right BG -->
+			<control type="group">
+				<visible>!String.IsEqual(Window.Property(AdditionalInfo),infocontainer)</visible>
+				<!-- <animation effect="fade" start="100" end="0" time="650" reversible="false" condition="String.IsEqual(Window.Property(AdditionalInfo),bigpicture)">Conditional</animation> -->
+				<animation effect="fade" start="0" end="100" time="450">VisibleChange</animation>
+				<width>440</width>
+				<height>660</height>
+				<right>100</right>
+				<top>150</top>
+				<!-- discart show in big view? -->
+				<control type="image">
+					<top>170</top>
+					<left>10</left>
+					<width>420</width>
+					<height>420</height>
+					<texture background="true" diffuse="diffuse/cdmask_new.png" fallback="defaultcovers/cd_big.png">$VAR[DiscArtImage]</texture>
+					<aspectratio scalediffuse="false" align="center" aligny="center">scale</aspectratio>
+					<animation effect="slide" start="0" end="-410,0" tween="cubic" easing="inout" time="500" delay="100">VisibleChange</animation>
+					<visible>String.IsEqual(Window.Property(AdditionalInfo),infolist)</visible>
+				</control>
+				
+				<!-- fixed pos  Poster right -->
+				<control type="image">
+					<aspectratio align="right" aligny="top" scalediffuse="true">stretch</aspectratio>
+					<texture background="true" diffuse="diffuse/poster.png" fallback="DefaultVideo.png" border="5">$VAR[ImageLayout_poster]</texture>
+				</control>
+				<!-- fixed pos  Poster right OVERLAY, keep stretch, think about using square for music vid thumbs -->
+				<control type="image">
+					<visible>!String.IsEqual(ListItem.DBType,musicvideo)</visible>
+					<aspectratio align="right" aligny="top" scalediffuse="true">stretch</aspectratio>
+					<texture background="true" colordiffuse="grey" diffuse="diffuse/poster.png">overlay/poster/overlayposterfo.png</texture>
+				</control>
+				<!-- rating STARS option a -->
+				<control type="image">
+					<top>-40</top>
+					<height>55</height>
+					<aspectratio align="center" aligny="bottom">keep</aspectratio>
+					<colordiffuse>blue</colordiffuse>
+					<texture background="true">$VAR[rating_value_texture]</texture>
+				</control>
+			</control>
+			
+			<!-- Info if containers focused -->
+			<!-- seperate  div line 1 -->
+			<control type="group">
+				<visible>String.IsEqual(Window.Property(AdditionalInfo),infocontainer)</visible>
+				<animation effect="fade" start="0" end="100" time="450" reversible="false">VisibleChange</animation>
+				<control type="image">
+					<top>170</top>
+					<width>1880</width>
+					<height>1</height>
+					<texture>colors/color_white.png</texture>
+					<colordiffuse>grey</colordiffuse>
+				</control>
+				<!-- Dialog Header -->
+				<control type="label">
+					<height>25</height>
+					<right>50</right>
+					<top>110</top>
+					<width>400</width>
+					<font>Bold32</font>
+					<textcolor>white</textcolor>
+					<align>right</align>
+					<label>$VAR[DialogInfo_Header]</label>
+				</control>
+			</control>
+			
+			<!-- INFO TOP -->
+			
+			<control type="group">
+				<!-- <animation effect="fade" start="100" end="0" time="650" reversible="false" condition="String.IsEqual(Window.Property(AdditionalInfo),bigpicture)">Conditional</animation> -->
+				
+				<animation effect="slide" end="0,-120" time="600" reversible="false" condition="String.IsEqual(Window.Property(AdditionalInfo),infocontainer)">Conditional</animation>
+				<animation effect="slide" start="0,-120" end="0,-0" time="600" reversible="false" condition="!String.IsEqual(Window.Property(AdditionalInfo),infocontainer)">Conditional</animation>
+				
+				<left>150</left>
+				<top>140</top>
+				<!-- clearlogo at top left-->
+				<control type="image" id="887767">
+					<width>495</width>
+					<height>143</height>
+					<fadetime>600</fadetime>
+					<aspectratio align="left" aligny="bottom">keep</aspectratio>
+					<texture background="true">$VAR[ListItemClearLogo]</texture>
+				</control>
+				<!-- Header (if no logo)-->
+				<control type="label">
+					<visible>String.IsEmpty(Control.GetLabel(887767))</visible>
+					<top>50</top>
+					<height>80</height>
+					<wrapmultiline>true</wrapmultiline>
+					<font>Netflix_Title</font>
+					<align>left</align>
+					<aligny>bottom</aligny>
+					<textcolor>$INFO[Skin.String(ViewDetailsTextColor)]</textcolor>
+					<label>$VAR[value_header]</label>
+				</control>
+			</control>
+			
+			<!-- info group left slide/fade/ -->
+			<control type="grouplist">
+				<animation effect="slide" end="0,-850" time="550" tween="cubic" reversible="true" condition="String.IsEqual(Window.Property(AdditionalInfo),infocontainer)">Conditional</animation>
+				<animation effect="fade" start="100" end="0" time="650" reversible="false" condition="String.IsEqual(Window.Property(AdditionalInfo),infocontainer)">Conditional</animation>
+				
+				<animation effect="slide" end="0,950" time="550" tween="cubic" reversible="true" condition="String.IsEqual(Window.Property(AdditionalInfo),infolist)">Conditional</animation>
+				<animation effect="fade" start="100" end="0" time="650" reversible="false" condition="String.IsEqual(Window.Property(AdditionalInfo),infolist)">Conditional</animation>
+				
+				<!-- <animation effect="fade" start="100" end="0" time="650" reversible="false" condition="String.IsEqual(Window.Property(AdditionalInfo),bigpicture)">Conditional</animation> -->
+				<animation effect="fade" start="100" end="0" time="600" condition="Player.HasVideo + ![VideoPlayer.Content(movies) | VideoPlayer.Content(episodes) | VideoPlayer.Content(musicvideos) | VideoPlayer.Content(livetv)]">conditional</animation>
+				
+				<width>1250</width>
+				<height>1000</height>
+				<orientation>vertical</orientation>
+				<usecontrolcoords>true</usecontrolcoords>
+				<itemgap>5</itemgap>
+				<left>150</left>
+				<top>300</top>
+				<visible>!Window.IsActive(script-ExtendedInfo Script-DialogVideoInfo.xml) + !Window.IsActive(script-ExtendedInfo Script-DialogInfo.xml)</visible>
+				<include>Animation_OpenClose_Zoom</include>
+				
+				<!-- SubHeader, Motto -->
+				<control type="label">
+					<visible>
+						[!String.IsEmpty(ListItem.Season) + Container.Content(episodes)] |
+						[!String.IsEmpty(ListItem.Season) + !String.IsEqual(ListItem.Title,ListItem.Label)] |
+						!String.IsEmpty(ListItem.TagLine)
+					</visible>
+					<height>50</height>
+					<label>$VAR[value_subheader]</label>
+					<font>Netflix_Plot</font>
+					<textcolor>orange</textcolor>
+				</control>
+				
+				<!-- PLOT -->
+				<control type="textbox">
+					<width>800</width>
+					<height>188</height>
+					<label>$VAR[Plots]</label>
+					<textcolor>white</textcolor>
+					<align>left</align>
+					<font>Netflix_Plot</font>
+				</control>
+				<!-- spacer -->
+				<control type="label">
+					<width>1</width>
+					<height>20</height>
+					<textcolor></textcolor>
+					<align>left</align>
+					<label></label>
+				</control>
+				
+				<!-- horizontal groulist
+				stars, year, mpaa , genre ?			-->
+				<control type="grouplist">
+					<usecontrolcoords>true</usecontrolcoords>
+					<orientation>horizontal</orientation>
+					<left>0</left>
+					<itemgap>10</itemgap>
+					<height>90</height>
+					
+					<!-- rating STARS option B-->
+					<!-- <control type="image">
+						<height>50</height>
+						<width>200</width>
+						<left>-5</left>
+						<visible>
+							[!String.IsEmpty(ListItem.UserRating) | 
+							!String.IsEmpty(Window(Home).Property(ListItem.UserRating)) |
+							!String.IsEmpty(Window(Home).Property(SkinHelper.ListItem.UserRating)) | 
+							!String.IsEmpty(ListItem.Rating) |
+							!String.IsEmpty(Window(Home).Property(ListItem.Rating)) |
+							!String.IsEmpty(Window(Home).Property(SkinHelper.ListItem.Rating))]
+						</visible>
+						<aspectratio align="left" aligny="center">keep</aspectratio>
+						<colordiffuse>green</colordiffuse>
+						<texture background="true">$VAR[rating_value_texture]</texture>
+					</control> -->
+					
+					<control type="image" id="7999">
+						<visible>!String.IsEmpty(Control.GetLabel(7999)) + !String.IsEmpty(ListItem.Studio)</visible>
+						<width>130</width>
+						<height>90</height>
+						<aspectratio aligny="center" align="left">keep</aspectratio>
+						<fadetime>200</fadetime>
+						<texture background="true">$VAR[image_StudioLogo]</texture>
+						<colordiffuse>white</colordiffuse>
+					</control>
+					<control type="button" id="7998">
+						<visible>String.IsEmpty(Control.GetLabel(7999)) + !String.IsEmpty(ListItem.Studio)</visible>
+						<width max="200">auto</width>
+						<height>90</height>
+						<font>Reg20</font>
+						<label>$INFO[ListItem.Studio]</label>
+						<aligny>center</aligny>
+						<align>center</align>
+						<wrapmultiline>true</wrapmultiline>
+						<textcolor>grey</textcolor>
+						<disabledcolor>grey</disabledcolor>
+						<texturenofocus colordiffuse="grey">netflix/frame/slimframe_softedge.png</texturenofocus>
+						<textoffsetx>10</textoffsetx>
+						<textoffsety>7</textoffsety>
+						<enable>false</enable>
+					</control>
+					
+					<!-- YEAR -->
+					<control type="label">
+						<width min="50">auto</width>
+						<font>Netflix_Plot</font>
+						<top>15</top>
+						<label>$VAR[premiere_date,[B],[/B]]</label>
+						<textcolor>white</textcolor>
+					</control>
+					
+					<!-- mpaa -->
+					<control type="button">
+						<top>25</top>
+						<left>10</left>
+						<width min="50">auto</width>
+						<font>Netflix_Plot</font>
+						<label>$INFO[ListItem.mpaa]</label>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<disabledcolor>white</disabledcolor>
+						<texturenofocus colordiffuse="white">netflix/frame/slimframe_softedge.png</texturenofocus>
+						<height>40</height>
+						<textoffsetx>10</textoffsetx>
+						<textoffsety>-2</textoffsety>
+						<enable>false</enable>
+						<visible>!String.IsEmpty(ListItem.MPAA)</visible>
+					</control>
+					
+					<!-- end time ,total episodes -->
+					<control type="group">
+						<top>20</top>
+						<width>500</width>
+						<control type="image">
+							<width>50</width>
+							<height>50</height>
+							<colordiffuse>white</colordiffuse>
+							<texture>dialogs/videoinfo/time-icon.png</texture>
+						</control>
+						<control type="label">
+							<left>50</left>
+							<height>50</height>
+							<width>530</width>
+							<font>Reg26</font>
+							<align>left</align>
+							<label>$VAR[ListItemDurationWithEndTime]</label>
+							<textcolor>white</textcolor>
+							<visible>String.IsEmpty(ListItem.Property(TotalEpisodes))</visible>
+							<scroll>false</scroll>
+						</control>
+						<control type="label">
+							<left>50</left>
+							<height>50</height>
+							<width>580</width>
+							<font>Reg26</font>
+							<align>left</align>
+							<label>$INFO[ListItem.Property(TotalEpisodes),$LOCALIZE[20360]: ,  •  ]$INFO[ListItem.Property(unWatchedepisodes),$LOCALIZE[31092]: ,]</label>
+							<textcolor>white</textcolor>
+							<scroll>false</scroll>
+							<visible>!String.IsEmpty(ListItem.Property(TotalEpisodes))</visible>
+						</control>
+					</control>
+					
+				</control>
+					
+				<!-- progress -->
+				<control type="grouplist">
+					<usecontrolcoords>true</usecontrolcoords>
+					<orientation>horizontal</orientation>
+					<itemgap>40</itemgap>
+					<height>50</height>
+					<width>950</width>
+					<visible>![Container.content(tvshows) | String.IsEqual(ListItem.DBTYPE,tvshow)]</visible>
+					<control type="progress">
+						<top>35</top>
+						<width>600</width>
+						<height>4</height>
+						<align>left</align>
+						<texturebg colordiffuse="dimgrey" border="2">colors/color_white.png</texturebg>
+						<lefttexture></lefttexture>
+						<midtexture colordiffuse="red" border="2">colors/color_white.png</midtexture>
+						<righttexture></righttexture>
+						<visible>Integer.IsGreater(ListItem.PercentPlayed,0)</visible>
+						<info>ListItem.PercentPlayed</info>
+					</control>
+					<!-- fake full progressbar for watched & not resumable 
+					note use ViewNetfixHighlightTextColor or osd progress OSDProgressBarColor to get  better 'contrast' color, and dont leave it hardcoded -->
+					<control type="image">
+								<top>35</top>
+								<width>600</width>
+								<height>4</height>
+								<align>left</align>
+								<texture colordiffuse="red" border="2">colors/color_white.png</texture>
+								<visible>[Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable]</visible>
+							</control>
+							<!-- fake full progressbar for watched & not resumable -->
+							<control type="image">
+								<top>35</top>
+								<width>600</width>
+								<height>4</height>
+								<align>left</align>
+								<texture colordiffuse="dimgrey" border="2">colors/color_white.png</texture>
+								<visible>[!Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable]</visible>
+							</control>
+							
+							
+							<control type="label">
+								<top>0</top>
+								<width>300</width>
+								<font>Reg26</font>
+								<align>left</align>
+								<label>$VAR[PercentPlayed]</label>
+								<textcolor>white</textcolor>
+							</control>
+							
+						
+				</control>
+				<!-- special ratings -->
+				<control type="grouplist">
+					<visible>!String.IsEqual(Window.Property(AdditionalInfo))</visible>
+					<animation effect="fade" start="100" end="0" time="450" reversible="false">VisibleChange</animation>
+					<usecontrolcoords>true</usecontrolcoords>
+					<orientation>horizontal</orientation>								
+					<top>40</top>
+					<width>1200</width>
+					<itemgap>5</itemgap>
+					<include>AltRatingMovieInfo</include>
+				</control>
+				
+			</control>
+			<!-- Media Flags -->
+			<control type="group">
+				<visible>String.IsEqual(Window.Property(AdditionalInfo),infolist) | [Player.HasVideo + ![VideoPlayer.Content(movies) | VideoPlayer.Content(episodes) | VideoPlayer.Content(musicvideos) | VideoPlayer.Content(livetv)]]</visible>
+				<animation effect="fade" start="0" end="100" time="450">VisibleChange</animation>
+				<posx>160</posx>
+				<posy>850</posy>
+				<height>150</height>
+				<include>mediaflags</include>
+				<animation effect="zoom" alignx="true" end="75,75" time="0" condition="Skin.String(mediaflagsstyle,large) | Skin.String(mediaflagsstyle,large_color)">Conditional</animation>
+			</control>
+			
+			<control type="grouplist" id="8000">
+				<animation effect="fade" start="100" end="0" time="350" reversible="true" condition="String.IsEqual(Window.Property(AdditionalInfo),infocontainer)">Conditional</animation>
+				<animation effect="slide" end="0,100" time="350" reversible="true" condition="String.IsEqual(Window.Property(AdditionalInfo),infolist) | [Player.HasVideo + ![VideoPlayer.Content(movies) | VideoPlayer.Content(episodes) | VideoPlayer.Content(musicvideos) | VideoPlayer.Content(livetv)]]">Conditional</animation>
+				<top>850</top>
+				<left>150</left>
+				<width>1150</width>
+				<height>50</height>
+				<itemgap>10</itemgap>
+				
+				<onup condition="[String.Contains(Window.Property(AdditionalInfo),infocontainer) | String.IsEmpty(Window.Property(AdditionalInfo))]">SetFocus(8006)</onup>
+				
+				<ondown>SetFocus(8005)</ondown>
+				<onleft>8000</onleft>
+				<onright>8000</onright>
+				<pagecontrol>60</pagecontrol>
+				<orientation>horizontal</orientation>
+				<include condition="Skin.HasSetting(EnableTouchSupport)">back_button</include>
+				<include condition="Skin.HasSetting(EnableTouchSupport)">home_button</include>
+				
+				<control type="button" id="8">
+					<!--Play-->
+					<label>208</label>
+					<width>285</width>
+					<height>40</height>
+					<align>center</align>
+					<textoffsetx>0</textoffsetx>
+					<visible>Skin.HasSetting(videoinfo_button_play) + !String.IsEpmty(ListItem.Dbid)</visible>
+				</control>
+				
+				<control type="button" id="9">
+					<!--Resume-->
+					<label>13404</label>
+					<width>285</width>
+					<height>40</height>
+					<align>center</align>
+					<textoffsetx>0</textoffsetx>
+					<visible>Skin.HasSetting(videoinfo_button_play) + ListItem.IsResumable</visible>
+				</control>
+				
+				<control type="togglebutton" id="103">
+					<!-- Trailer -->
+					<width>285</width>
+					<height>40</height>
+					<align>center</align>
+					<textoffsetx>0</textoffsetx>
+					<label>20410</label>
+					<altlabel>244</altlabel>
+					<usealttexture>Player.HasVideo</usealttexture>
+					<onclick condition="!String.IsEmpty(Window(home).Property(trailer_avail))">PlayMedia($INFO[Window(Home).Property(filename_formatted)]$INFO[ListItem.Title,,-trailer.mp4],1)</onclick>
+					<onclick condition="String.IsEmpty(Window(home).Property(trailer_avail)) + !Player.HasVideo + String.IsEqual(ListItem.DBTYPE,movie)">PlayMedia($INFO[ListItem.Trailer],1)</onclick> <!--sometimes huge delay Playmedia($INFO[Window(Home).Property(SkinHelper.ListItem.Trailer)],1) ,faster but dont get all  PlayMedia($INFO[ListItem.Trailer],1) -->    
+					<onclick condition="String.IsEmpty(Window(home).Property(trailer_avail)) + !Player.HasVideo + !String.IsEqual(ListItem.DBTYPE,movie)">RunScript(script.skin.helper.service,action=playtraileryoutube,title=$INFO[ListItem.Title],local=true)</onclick> <!--sometimes huge delay Playmedia($INFO[Window(Home).Property(SkinHelper.ListItem.Trailer)],1) ,faster but dont get all  PlayMedia($INFO[ListItem.Trailer],1) -->    												
+					<onclick condition="Player.HasVideo">FullScreen</onclick>
+					<visible>Skin.HasSetting(videoinfo_button_trailer)</visible>
+					<visible>String.IsEqual(ListItem.DBTYPE,tvshow) | String.IsEqual(ListItem.DBTYPE,movie)</visible>
+				</control>
+				<control type="button" id="204">
+					<!-- stop trailer -->
+					<label>Stop</label>
+					<width>285</width>
+					<height>40</height>
+					<align>center</align>
+					<textoffsetx>0</textoffsetx>
+					<onclick>Stop</onclick>
+					<visible>Player.HasVideo</visible>
+				</control>
+				<control type="button" id="115">
+					<!--Extended Info Button-->
+					<label>31269</label>
+					<width>285</width>
+					<height>40</height>
+					<align>center</align>
+					<textoffsetx>0</textoffsetx>
+					<visible>Skin.HasSetting(videoinfo_button_extendedinfo)</visible>
+					<onclick condition="!System.HasAddon(script.extendedinfo)">RunPlugin(plugin://script.extendedinfo)</onclick>
+					<onclick condition="System.HasAddon(script.extendedinfo) + String.IsEqual(Window(Home).Property(contenttype),movies)">RunScript(script.extendedinfo,info=extendedinfo,dbid=$INFO[ListItem.DBID],name=$INFO[ListItem.Title])</onclick>
+					<onclick condition="System.HasAddon(script.extendedinfo) + String.IsEqual(Window(Home).Property(contenttype),tvshows)">RunScript(script.extendedinfo,info=extendedtvinfo,dbid=$INFO[ListItem.DBID],name=$INFO[ListItem.TvShowTitle])</onclick>
+					<onclick condition="System.HasAddon(script.extendedinfo) + String.IsEqual(Window(Home).Property(contenttype),seasons)">RunScript(script.extendedinfo,info=seasoninfo,tvshow=$INFO[ListItem.TvShowTitle],season=$INFO[ListItem.Season],silent=True)</onclick>
+					<onclick condition="System.HasAddon(script.extendedinfo) + String.IsEqual(Window(Home).Property(contenttype),episodes)">RunScript(script.extendedinfo,info=extendedepisodeinfo,dbid=$INFO[ListItem.DBID],tvshow=$INFO[ListItem.TvShowTitle],season=$INFO[ListItem.Season],episode=$INFO[ListItem.Episode],silent=True)</onclick>
+				</control>
+				
+				<control type="button" id="7">
+					<!--set personal rating-->
+					<width>290</width>
+					<height>40</height>
+					<label>$LOCALIZE[38018]: $INFO[ListItem.UserRating]</label>
+					<visible>!Skin.HasSetting(KioskMode.Enabled)</visible>
+					<visible>Skin.HasSetting(videoinfo_button_myrating)</visible>
+					<visible>String.IsEmpty(Window.Property(AdditionalInfo))</visible>
+					<visible>Control.IsEnabled(7)</visible>
+				</control>
+				
+				<control type="button" id="101">
+					<!--Get Thumb Artwork Downloader-->
+					<label>13511</label>
+					<width>285</width>
+					<height>40</height>
+					<align>center</align>
+					<textoffsetx>0</textoffsetx>
+					<visible>Skin.HasSetting(videoinfo_button_artwork)</visible>
+					<onclick condition="System.HasAddon(script.artwork.downloader)">ActivateWindow(3004)</onclick>
+					<onclick condition="!System.HasAddon(script.artwork.downloader)">RunPlugin(plugin://script.artwork.downloader)</onclick>
+					<visible>!Skin.HasSetting(KioskMode.Enabled)</visible>
+				</control>
+				<!-- Artwork Beef -->
+				<control type="button" id="104">
+					<!--Get Thumb Artwork Beef--> 
+					<label>Artwork Beef</label>
+					<width>285</width>
+					<height>40</height>
+					<align>center</align>
+					<textoffsetx>0</textoffsetx>
+					<onclick condition="String.IsEqual(ListItem.DBType,episode) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=episode, dbid=$INFO[ListItem.DBID])</onclick>
+					<onclick condition="String.IsEqual(ListItem.DBType,tvshow) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=tvshow, dbid=$INFO[ListItem.DBID])</onclick>
+					<onclick condition="String.IsEqual(ListItem.DBType,movie) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=movie, dbid=$INFO[ListItem.DBID])</onclick>
+					<description>Get Artwork</description>
+					<visible>[String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,musicvideo) | String.IsEqual(ListItem.DBType,episode)] + system.hasaddon(script.artwork.beef)</visible>
+					<visible>Skin.HasSetting(videoinfo_button_artworkbeef)</visible>
+				</control>
+				<control type="button" id="6">
+					<!--Refresh-->
+					<label>184</label>
+					<width>285</width>
+					<height>40</height>
+					<align>center</align>
+					<textoffsetx>0</textoffsetx>
+					<visible>Skin.HasSetting(videoinfo_button_refresh)</visible>
+				</control>
+			</control>
+			
+			<!-- arrow up	8006 -->
+			<control type="group">
+				<animation effect="fade" start="100" end="50" tween="sine" easing="inout" time="800" pulse="true" reversible="false" condition="true">Conditional</animation>
+				<top>15</top>
+				<left>830</left>
+				<height>80</height>
+					   
+				<visible>!String.IsEqual(Window.Property(AdditionalInfo),infolist)</visible>
+				<control type="button" id="8006">    
+					<width>130</width>
+					<height>40</height>
+					<align></align>
+					<aligny></aligny>
+					<font></font>
+					<label></label>
+					<textcolor></textcolor>
+					<focusedcolor></focusedcolor>
+					<disabledcolor></disabledcolor>
+					<pulseonselect></pulseonselect>
+					<texturefocus flipy="true">info/arrowdown.png</texturefocus>
+					<texturenofocus flipy="true">info/arrowdown.png</texturenofocus>
+					<textoffsetx></textoffsetx>
+					
+					<!-- Main Info goto Info List -->
+					<onfocus condition="!String.Contains(Window.Property(AdditionalInfo),infocontainer)">SetProperty(AdditionalInfo, infolist)</onfocus>
+					<onfocus condition="!String.Contains(Window.Property(AdditionalInfo),infocontainer)">SetFocus(8003)</onfocus>
+						<!-- - Info List Focus 8000 -->
+						<onfocus condition="!String.Contains(Window.Property(AdditionalInfo),infocontainer)">SetFocus(8000)</onfocus>
+					
+					<!-- Info Containers goto Main Info -->
+					<onfocus condition="String.Contains(Window.Property(AdditionalInfo),infocontainer)">ClearProperty(AdditionalInfo)</onfocus>
+					<onfocus condition="String.Contains(Window.Property(AdditionalInfo),infocontainer)">SetFocus(8000)</onfocus>
+					
+				</control>
+				
+			</control>
+			
+			<!-- arrow down	8005 -->
+			<control type="group">
+				<top>1015</top>
+				<left>830</left>
+				<height>80</height>
+				<animation effect="fade" start="100" end="50" tween="sine" easing="inout" time="800" pulse="true" reversible="false" condition="true">Conditional</animation>
+				<visible>!String.IsEqual(Window.Property(AdditionalInfo),infocontainer)</visible>
+				<control type="button" id="8005">    
+					<width>130</width>
+					<height>40</height>
+					<align></align>
+					<aligny></aligny>
+					<font></font>
+					<label></label>
+    			    <textcolor></textcolor>
+					<focusedcolor></focusedcolor>
+					<disabledcolor></disabledcolor>
+					<pulseonselect></pulseonselect>
+    			    <texturefocus>info/arrowdown.png</texturefocus>
+					<texturenofocus>info/arrowdown.png</texturenofocus>
+    			    <textoffsetx></textoffsetx>
+					
+					
+					<!-- main page goto Itemcontainers -->
+					<onfocus condition="!String.Contains(Window.Property(AdditionalInfo),infolist)">SetProperty(AdditionalInfo, infocontainer)</onfocus>
+					<onfocus condition="!String.Contains(Window.Property(AdditionalInfo),infolist)">SetFocus(8001)</onfocus>
+					
+					
+					<!-- Info List goto Main Info -->
+					<onfocus condition="String.Contains(Window.Property(AdditionalInfo),infolist)">ClearProperty(AdditionalInfo)</onfocus>
+					<onfocus condition="String.Contains(Window.Property(AdditionalInfo),infolist)">SetFocus(8000)</onfocus>
+					
+				</control>
+			</control>
+			
+			
+			
+			<!-- ITEM CONTAINERS -->
+			<control type="grouplist" id="8001">
+				<animation effect="slide" end="0,-910" time="1000" tween="cubic" reversible="false" condition="String.IsEqual(Window.Property(AdditionalInfo),infocontainer)">conditional</animation>
+				<animation effect="slide" start="0,-910" end="0,-0" time="800" tween="cubic" reversible="false" condition="!String.IsEqual(Window.Property(AdditionalInfo),infocontainer)">conditional</animation>
+				
+				<top>1085</top>
+				<left>120</left>
+				<height>890</height>
+				<width>1730</width>
+				<scrolltime tween="quadratic">400</scrolltime>
+				<onup>SetFocus(8006)</onup>
+				<ondown>8001</ondown>
+				<onleft>8001</onleft>
+				<orientation>vertical</orientation>
+				<itemgap>-40</itemgap>
+				<usecontrolcoords>true</usecontrolcoords>
+				
+				<control type="group" id="8400">
+					<height>-20</height>
+					<description>thanks to jurialmunkey,workaroung for positioning</description>
+				</control>
+				<!-- MovieSet -->
+				<include content="VideoInfo_ContainerHeader">
+					<param name="groupid" value="8500" />
+					<param name="id" value="8600" />
+					<param name="label" value="$INFO[ListItem.Set,&quot; , &quot;]" />
+					<visible>Control.IsVisible(8600) + !String.IsEmpty(ListItem.SetId)</visible>
+				</include>
+				<include content="VideoInfo_Container">
+					<param name="type" value="panel" />
+					<param name="id" value="8600" />
+					<param name="width" value="216" />
+					<param name="height" value="324" />
+					<param name="layout" value="PosterPanelLayout" />
+					<param name="visible" value="!String.IsEmpty(ListItem.SetId) + [Integer.IsGreater(Container(8600).NumItems,0) | Container(8600).IsUpdating]" />
+					<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(8600).NumItems,0) | Container(8600).IsUpdating">Conditional</animation>
+					<content sortby="year" target="videos">videodb://movies/sets/$INFO[ListItem.SetId]/?setid=$INFO[ListItem.SetId]</content>
+				</include>
+				<!-- next unwatched episode - System.GetBool(videolibrary.tvshowsselectfirstunwatcheditem,value=2)-->
+				<include content="VideoInfo_ContainerHeader">
+					<param name="groupid" value="8510" />
+					<param name="id" value="8610" />
+					<param name="label" value="$LOCALIZE[31212]" />
+					<visible>Control.IsVisible(8610)</visible>
+				</include>
+				<include content="VideoInfo_Container">
+					<param name="type" value="panel" />
+					<param name="id" value="8610" />
+					<param name="width" value="578" />
+					<param name="height" value="340" />
+					<param name="layout" value="ThumbsViewLayout" />
+					<param name="visible" value="[Integer.IsGreater(ListItem.Property(UnwatchedEpisodes),0) + !String.IsEmpty(ListItem.DBID)] + Integer.IsGreater(Container(8610).NumItems,0) | Container(8610).IsUpdating" />
+					<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(8610).NumItems,0) | Container(8610).IsUpdating">Conditional</animation>
+					<content limit="1" target="videos">videodb://inprogresstvshows/$INFO[ListItem.DBID]/-2/?tvshowid=$INFO[ListItem.DBID]</content>
+				</include>
+				<!-- CAST -->
+				<include content="VideoInfo_ContainerHeader">
+					<param name="groupid" value="8501" />
+					<param name="id" value="8601" />
+					<param name="label" value="$LOCALIZE[344] $INFO[ListItem.Title,  &quot; , &quot;]" />
+					<visible>Control.IsVisible(8601)</visible>
+				</include>
+				<include content="VideoInfo_Container">
+					<param name="type" value="panel" />
+					<param name="id" value="8601" />
+					<param name="width" value="216" />
+					<param name="height" value="324" />
+					<param name="layout" value="PosterCast" />
+					<param name="aspectratio" value="scale" />
+					<param name="visible" value="Integer.IsGreater(Container(8601).NumItems,0) | Container(8601).IsUpdating" />
+					<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(8601).NumItems,0) | Container(8601).IsUpdating">Conditional</animation>
+					<content>$VAR[EmbuaryCast]</content>
+				</include>
+				
+				<!-- ITEMS BY CAST ,including current video
+					<content target="videos">videodb://movies/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22actor%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Container(8601).ListItem.Label]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
+					<content target="videos">videodb://tvshows/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22actor%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Container(8601).ListItem.Label]%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D</content>
+				
+					-->
+				<include content="VideoInfo_ContainerHeader">
+					<param name="groupid" value="8502" />
+					<param name="id" value="8602" />
+					<param name="label" value="$LOCALIZE[342] &amp; $LOCALIZE[20343] $LOCALIZE[1441] [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$INFO[Container(8601).ListItem.Label, &quot; , &quot;][/COLOR]" />
+					<visible>Control.IsVisible(8602)</visible>
+				</include>
+				<include content="VideoInfo_Container">
+					<param name="type" value="panel" />
+					<param name="id" value="8602" />
+					<param name="width" value="216" />
+					<param name="height" value="324" />
+					<param name="layout" value="PosterPanelLayout" />
+					<param name="visible" value="Integer.IsGreater(Container(8601).NumItems,0) | Container(8601).IsUpdating" />
+					<content target="videos">videodb://movies/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22actor%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Container(8601).ListItem.Label]%22%5D%7D%2C%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
+					<content target="videos">videodb://tvshows/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22actor%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Container(8601).ListItem.Label]%22%5D%7D%2C%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D</content>
+				</include>
+				
+				<!-- MOVIE and TV SHOW By x1.04 Directors Named
+				<value condition="Control.IsVisible(8601)">$INFO[ListItem.label,[B],[/B]][CR]$INFO[ListItem.label2]</value>-->
+				
+				<!-- xsp for shows support director, but missing listitem as info label 
+				<content target="videos">videodb://tvshows/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22director%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[ListItem.Director]%22%5D%7D%2C%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D</content> -->
+				
+				<include content="VideoInfo_ContainerHeader">
+					<param name="groupid" value="8503" />
+					<param name="id" value="8603" />
+					<param name="label" value="$LOCALIZE[342] $LOCALIZE[19159] $LOCALIZE[20339] [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$INFO[ListItem.Director, &quot; , &quot;][/COLOR]" />
+					<visible>!String.IsEmpty(ListItem.Director) + Control.IsVisible(8603)</visible>
+				</include>
+				<include content="VideoInfo_Container">
+					<param name="type" value="panel" />
+					<param name="id" value="8603" />
+					<param name="width" value="216" />
+					<param name="height" value="324" />
+					<param name="layout" value="PosterPanelLayout" />
+					<param name="visible" value="!String.IsEmpty(ListItem.Director) + [Integer.IsGreater(Container(8603).NumItems,0) | Container(8603).IsUpdating]" />
+					<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(8603).NumItems,0) | Container(8603).IsUpdating">Conditional</animation>
+					<content target="videos">videodb://movies/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22director%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[ListItem.Director]%22%5D%7D%2C%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
+				</include>
+				
+				<!-- similiar -->
+				<include content="VideoInfo_ContainerHeader">
+					<param name="groupid" value="8504" />
+					<param name="id" value="8604" />
+					<param name="label" value="$LOCALIZE[31622] [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$INFO[ListItem.Title,  &quot; , &quot;][/COLOR]" />
+					<visible>Control.IsVisible(8604)</visible>
+				</include>
+				<include content="VideoInfo_Container">
+					<param name="type" value="panel" />
+					<param name="id" value="8604" />
+					<param name="width" value="216" />
+					<param name="height" value="324" />
+					<param name="layout" value="PosterPanelLayout" />
+					<param name="visible" value="Integer.IsGreater(Container(8604).NumItems,0) | Container(8604).IsUpdating" />
+					<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(8604).NumItems,0) | Container(8604).IsUpdating">Conditional</animation>
+					<content target="videos">$VAR[Similiar_Content]</content>
+				</include>
+				
+				<!-- YOU TUBE -->
+				<include content="VideoInfo_ContainerHeader">
+					<param name="groupid" value="8505" />
+					<param name="id" value="8605" />
+					<param name="label" value="$LOCALIZE[31797] [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$INFO[ListItem.Title,  &quot; , &quot;][/COLOR]" />
+					<visible>Control.IsVisible(8605)</visible>
+				</include>
+				<include content="VideoInfo_Container">
+					<param name="type" value="panel" />
+					<param name="id" value="8605" />
+					<param name="width" value="578" />
+					<param name="height" value="340" />
+					<param name="layout" value="ThumbsViewLayout" />
+					<param name="visible" value="[System.HasNetwork + System.HasAddon(plugin.video.youtube)] + [Integer.IsGreater(Container(8605).NumItems,0) | Container(8605).IsUpdating]" />
+					<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(8605).NumItems,0) | Container(8605).IsUpdating">Conditional</animation>
+					<content target="videos" sortby="file" limit="25">plugin://plugin.video.youtube/search/?q=$INFO[ListItem.Title]</content>
+				</include>
+				
+				<!-- stored extra fanart $LOCALIZE[20438]-->
+				<include content="VideoInfo_ContainerHeader">
+					<param name="groupid" value="8506" />
+					<param name="id" value="8606" />
+					<param name="label" value="[UPPERCASE]$LOCALIZE[20438][/UPPERCASE]" />
+					<visible>Control.IsVisible(8606)</visible>
+				</include>
+				<include content="VideoInfo_Container">
+					<param name="type" value="panel" />
+					<param name="id" value="8606" />
+					<param name="width" value="578" />
+					<param name="height" value="340" />
+					<param name="layout" value="ThumbsViewLayout" />
+					<param name="visible" value="Integer.IsGreater(Container(8606).NumItems,0) | Container(8606).IsUpdating" />
+					<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(8606).NumItems,0) | Container(8606).IsUpdating">Conditional</animation>
+					<content>$VAR[extraFanartLocation]</content>
+				</include>
+				<!-- stored extra thumbs -->
+				<include content="VideoInfo_ContainerHeader">
+					<param name="groupid" value="8509" />
+					<param name="id" value="8609" />
+					<param name="label" value="Bonusmaterial" />
+					<visible>Control.IsVisible(8609)</visible>
+				</include>
+				<include content="HUB_Container">
+					<param name="type" value="panel" />
+					<param name="id" value="8609" />
+					<param name="ButtonTexture" value="Genre_Red.png" />
+					<param name="tagoverlay" value="true" />
+					<param name="tagbottom" value="false" />
+					<param name="itemwidth" value="430" />
+					<param name="itemheight" value="150" />
+					<param name="width" value="450" />
+					<param name="height" value="150" />
+					<param name="layout" value="HUB_Layouts" />
+					<param name="visible" value="[container.content(movies) | String.IsEqual(ListItem.DBTYPE,movie)] + [Integer.IsGreater(Container(8609).NumItems,0) | Container(8609).IsUpdating]" />
+					<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(8609).NumItems,0) | Container(8609).IsUpdating">Conditional</animation>
+					<content>$INFO[listitem.path,,extras]</content>
+				</include>
+				<!-- stored extra thumbs -->
+				<include content="VideoInfo_ContainerHeader">
+					<param name="groupid" value="8507" />
+					<param name="id" value="8607" />
+					<param name="label" value="EXTRA THUMBS" />
+					<visible>Control.IsVisible(8607)</visible>
+				</include>
+				<include content="VideoInfo_Container">
+					<param name="type" value="panel" />
+					<param name="id" value="8607" />
+					<param name="width" value="578" />
+					<param name="height" value="340" />
+					<param name="layout" value="ThumbsViewLayout" />
+					<param name="visible" value="Integer.IsGreater(Container(8607).NumItems,0) | Container(8607).IsUpdating" />
+					<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(8607).NumItems,0) | Container(8607).IsUpdating">Conditional</animation>
+					<content>$VAR[extrasLocation]</content>
+				</include>
+			</control>
+			
+			<!-- INFO CONTAINERS 8003 -->
+			<control type="grouplist" id="8003">
+				<animation effect="slide" end="0,1200" time="1000" tween="cubic" reversible="false" condition="String.IsEqual(Window.Property(AdditionalInfo),infolist)">conditional</animation>
+				<animation effect="slide" start="0,1200" end="0,-0" time="800" tween="cubic" reversible="false" condition="!String.IsEqual(Window.Property(AdditionalInfo),infolist)">conditional</animation>
+				<animation effect="fade" start="0" end="100" time="600" reversible="false" condition="String.IsEqual(Window.Property(AdditionalInfo),infolist)">conditional</animation>
+				
+				<animation effect="fade" start="100" end="0" time="600" condition="Player.HasVideo + ![VideoPlayer.Content(movies) | VideoPlayer.Content(episodes) | VideoPlayer.Content(musicvideos) | VideoPlayer.Content(livetv)]">conditional</animation>
+				
+				<!-- <animation effect="fade" start="100" end="0" time="600" reversible="true" condition="String.IsEqual(Window.Property(AdditionalInfo),bigpicture)">conditional</animation>-->
+				<top>-890</top>
+				<centerleft>30%</centerleft>
+				<width>1000</width>
+				<height>550</height>
+				<orientation>vertical</orientation>
+				<itemgap>7</itemgap>
+				<usecontrolcoords>true</usecontrolcoords>
+				
+				<!-- premiere date -->				
+				<include content="VideoInfo_InfoList">
+					<param name="Info" value="$LOCALIZE[20416]" />
+                    <param name="InfoLabel" value="$INFO[ListItem.Premiered]" />
+					<param name="icon" value="dialogs/videoinfo/premiered-icon.png" />
+					<param name="visible" value="!String.IsEmpty(ListItem.premiered)" />
+				</include>
+				<!-- year -->
+				<include content="VideoInfo_InfoList">
+					<param name="Info" value="$LOCALIZE[345]" />
+                    <param name="InfoLabel" value="$INFO[ListItem.Year]" />
+					<param name="icon" value="dialogs/videoinfo/premiered-icon.png" />
+					<param name="visible" value="String.IsEmpty(ListItem.Premiered) + !String.IsEmpty(ListItem.Year)" />
+				</include>
+				<!-- TotalEpisodes / Unwatched Episodes -->
+				<include content="VideoInfo_InfoList">
+					<param name="Info" value="$LOCALIZE[20360]" />
+                    <param name="InfoLabel" value="$INFO[ListItem.Property(TotalEpisodes),$LOCALIZE[20360]: ,  •  ]$INFO[ListItem.Property(unWatchedepisodes),$LOCALIZE[31092]: ,]" />
+					<param name="icon" value="dialogs/videoinfo/time-icon.png" />
+					<param name="visible" value="!String.IsEmpty(ListItem.Property(TotalEpisodes))" />
+				</include>
+				<!-- genre -->
+				<include content="VideoInfo_InfoList">
+					<param name="Info" value="$LOCALIZE[515]" />
+                    <param name="InfoLabel" value="$INFO[ListItem.Genre]" />
+					<param name="icon" value="dialogs/videoinfo/genre-icon.png" />
+					<param name="visible" value="!String.IsEmpty(ListItem.Genre)" />
+				</include>
+				<!-- status -->
+				<include content="VideoInfo_InfoList">
+					<param name="Info" value="$LOCALIZE[515]" />
+                    <param name="InfoLabel" value="$INFO[ListItem.Status]" />
+					<param name="icon" value="dialogs/videoinfo/genre-icon.png" />
+					<param name="visible" value="!String.IsEmpty(ListItem.Status)" />
+				</include>
+				
+				<!-- sh next aired -->
+				<include content="VideoInfo_InfoList">
+					<param name="Info" value="$LOCALIZE[31212] $LOCALIZE[31213]" />
+                    <param name="InfoLabel" value="$INFO[Window(Home).Property(SkinHelper.ListItem.airdaytime.label)]" />
+					<param name="icon" value="dialogs/videoinfo/genre-icon.png" />
+					<param name="visible" value="!String.IsEmpty(Window(Home).Property(SkinHelper.ListItem.airdaytime.label))" />
+				</include>
+				 
+				<!-- rating and votes simple  -->
+				<!-- <include content="VideoInfo_InfoList">
+					<param name="Info" value="$LOCALIZE[563] &amp; $LOCALIZE[205]" />
+                    <param name="InfoLabel" value="$INFO[ListItem.RatingAndVotes]" />
+					<param name="icon" value="flags/rating.png" />
+					<param name="visible" value="!String.IsEmpty(ListItem.RatingAndVotes)" />
+				</include> -->
+				
+				<!-- Director -->
+				<include content="VideoInfo_InfoList">
+					<param name="Info" value="$LOCALIZE[20339]" />
+                    <param name="InfoLabel" value="$INFO[ListItem.Director]" />
+					<param name="icon" value="dialogs/videoinfo/director-icon.png" />
+					<param name="visible" value="!String.IsEmpty(ListItem.Director)" />
+				</include>
+				<!-- Writer -->
+				<include content="VideoInfo_InfoList">
+					<param name="Info" value="$LOCALIZE[20417]" />
+                    <param name="InfoLabel" value="$INFO[ListItem.Writer]" />
+					<param name="icon" value="dialogs/videoinfo/writer-icon.png" />
+					<param name="visible" value="!String.IsEmpty(ListItem.Writer)" />
+				</include>
+				<!-- Studio -->
+				<include content="VideoInfo_InfoList">
+					<param name="Info" value="$LOCALIZE[29909]" />
+                    <param name="InfoLabel" value="$INFO[ListItem.Studio]" />
+					<param name="icon" value="dialogs/videoinfo/tvstudio-icon.png" />
+					<param name="visible" value="!String.IsEmpty(ListItem.Studio)" />
+				</include>
+				<!-- mpaa -->
+				<include content="VideoInfo_InfoList">
+					<param name="Info" value="MPAA" />
+                    <param name="InfoLabel" value="$INFO[ListItem.MPAA]" />
+					<param name="icon" value="flags/mpaa.png" />
+					<param name="visible" value="!String.IsEmpty(ListItem.MPAA)" />
+				</include>
+				<!-- Country -->
+				<include content="VideoInfo_InfoList">
+					<param name="Info" value="$LOCALIZE[574]" />
+                    <param name="InfoLabel" value="$INFO[ListItem.Country]" />
+					<param name="icon" value="dialogs/videoinfo/location.png" />
+					<param name="visible" value="!String.IsEmpty(ListItem.Country)" />
+				</include>
+				
+				<!-- set -->
+				<include content="VideoInfo_InfoList">
+					<param name="Info" value="$LOCALIZE[36910]" />
+                    <param name="InfoLabel" value="$INFO[ListItem.Set]" />
+					<param name="icon" value="flags/discsets/diskmain_w.png" />
+					<param name="visible" value="!String.IsEmpty(ListItem.SetID)" />
+				</include>
+				
+				<!-- MOVIE budget , revenue -->
+                <!-- <include content="VideoInfo_InfoList">
+					<param name="Info" value="Einnahmen" />
+                    <param name="InfoLabel" value="$INFO[Window(Home).Property(SkinHelper.ListItem.Revenue.formatted),, $]" />
+					<param name="icon" value="dialogs/videoinfo/dollar.png" />
+					<param name="visible" value="!String.IsEmpty(Window(Home).Property(SkinHelper.ListItem.Revenue.formatted))" />
+				</include> 
+				<include content="VideoInfo_InfoList">
+					<param name="Info" value="Budget" />
+                    <param name="InfoLabel" value="$INFO[Window(Home).Property(SkinHelper.ListItem.Budget.formatted),, $]" />
+					<param name="icon" value="dialogs/videoinfo/dollar.png" />
+					<param name="visible" value="!String.IsEmpty(Window(Home).Property(SkinHelper.ListItem.Budget.formatted))" />
+				</include> 
+				<include content="VideoInfo_InfoList">
+					<param name="Info" value="BoxOffice" />
+                    <param name="InfoLabel" value="$INFO[Window(Home).Property(SkinHelper.ListItem.BoxOffice.formatted),, $]" />
+					<param name="icon" value="dialogs/videoinfo/dollar.png" />
+					<param name="visible" value="!String.IsEmpty(Window(Home).Property(SkinHelper.ListItem.BoxOffice.formatted))" />
+				</include>  	 -->	
+				
+				<!-- audio stream -->			
+				<include content="VideoInfo_InfoList_AV_Flags">
+					<param name="Info" value="$LOCALIZE[21447]" />
+					<param name="InfoLabelProperty" value="AudioLanguage" />
+					<param name="icon" value="flags/audio.png" />
+					<param name="visible" value="!String.IsEmpty(ListItem.AudioLanguage) | !String.IsEmpty(ListItem.Property(AudioLanguage.1))" />
+                </include>
+				<!-- sub flags -->
+				<include content="VideoInfo_InfoList_AV_Flags">
+					<param name="Info" value="$LOCALIZE[21448]" />
+					<param name="InfoLabelProperty" value="SubtitleLanguage" />
+					<param name="icon" value="flags/subtitles.png" />
+					<param name="visible" value="!String.IsEmpty(ListItem.SubtitleLanguage) | !String.IsEmpty(ListItem.Property(SubtitleLanguage.1))" />
+                </include>
+				
+				<!-- sh  awards -->
+				<include content="VideoInfo_InfoList">
+					<param name="Info" value="Awards" />
+                    <param name="InfoLabel" value="$INFO[Window(Home).Property(SkinHelper.ListItem.Awards)]" />
+					<param name="icon" value="flags/flags_color/addratings/oscarbw.png" />
+					<param name="visible" value="!String.IsEmpty(Window(Home).Property(SkinHelper.ListItem.Awards))" />
+                </include>
+				
+				
+			</control>
+			
+			<!-- workaroung, slideshow nav fanart-->
+			<include content="VideoInfo_SlideshowNav">
+				<param name="ButtonID" value="9001" />
+				<param name="ContainerID" value="8606" />
+			</include>
+			<!-- workaroung, slideshow nav thumbs-->
+			<include content="VideoInfo_SlideshowNav">
+				<param name="ButtonID" value="9002" />
+				<param name="ContainerID" value="8607" />
+			</include>
+			
+			
+			
+			<!-- Big Pic Artwork CONTAINER 8004 -->
+			
+		</control>
+	</controls>
+</window>
