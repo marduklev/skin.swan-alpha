@@ -540,14 +540,15 @@
 	
 	<!-- dimm focus listitem overlay -->
 	<include name="FocusOverlay">
-	<param name="diffusedimtext" default="colors/white.png" />
+		<param name="diffusedimtext" default="colors/white.png" />
+		<param name="bordersize" default="8" />
 		<definition>
 		<control type="group">
-		<visible>$PARAM[get_circle]</visible>
+			<visible>$PARAM[get_circle]</visible>
 			<animation reversible="false" effect="fade" start="0" end="100" time="350" tween="quadratic" easing="in">Focus</animation>
 			<animation reversible="false" effect="fade" start="100" end="0" time="0">UnFocus</animation>
 			<control type="image">
-				<bordersize>8</bordersize>
+				<bordersize>$PARAM[bordersize]</bordersize>
 				<colordiffuse>ff000000</colordiffuse>
 				<texture diffuse="$PARAM[diffusedimtext]">overlay/overlay_dimm.png</texture>
 			</control>
@@ -804,8 +805,8 @@
 			<description>ClearLogo Overlay - also nice on non circle</description>
 			<control type="image">
 				<visible>
-					[!String.IsEmpty(ListItem.Art(clearlogo)) + !$EXP[IsEpisode]] | 
-					[!String.IsEmpty(ListItem.Art(tvshow.clearlogo)) + $EXP[IsEpisode]] | 
+					!String.IsEmpty(ListItem.Art(tvshow.clearlogo)) | 
+					!String.IsEmpty(ListItem.Art(clearlogo)) | 
 					!String.IsEmpty(ListItem.Art(artist.clearlogo)) | 
 					!String.IsEmpty(ListItem.Art(albumartist.clearlogo))
 				</visible>
@@ -918,7 +919,6 @@
 		<control type="group">
 			<description>ProgressBar No Shadow</description>
 			<visible>!$PARAM[get_circle]</visible>
-			<visible>[$EXP[IsMovie] | $EXP[IsEpisode]]</visible>
 			<left>4%</left>
 			<right>4%</right>
             <include content="ProgressBarOverlay" />
@@ -944,37 +944,7 @@
 			</control>
 		</control>
 		
-		<!-- <control type="group">
-			<description>watched indicators top right - num items</description>
-			
-			<control type="image">
-				<top>15</top>
-				<right>20</right>
-				<width>70</width>
-				<height>35</height>
-				<texture>overlay/watchedfull.png</texture>
-				<colordiffuse>CC000000</colordiffuse>
-			</control>
-			<control type="image">
-				<top>15</top>
-				<right>20</right>
-				<width>70</width>
-				<height>35</height>
-				<bordersize>2</bordersize>
-				<texture>overlay/watchedfull.png</texture>
-				<colordiffuse>orange</colordiffuse>
-			</control>
-			<control type="label">
-				<top>18</top>
-				<right>25</right>
-				<width>60</width>
-				<align>center</align>
-				<font>NumItemsTop</font>
-				<label>11/25</label>
-				<textcolor>black</textcolor>
-			</control>
-        
-        </control> -->
+		
         </definition>
     </include>
 	
@@ -989,17 +959,10 @@
 		<right>0</right>
     </include>
 	<include name="ProgressBarOverlay">
-		<!-- <control type="image">
-			<bottom>-1%</bottom>
-			<height>20%</height>
-			<bordersize>8</bordersize>
-			<align>center</align>
-			<texture border="7">diffuse/gradient.png</texture>
-			<colordiffuse>ff000000</colordiffuse>
-		</control> -->
 		<control type="progress">
 			<bottom>-1%</bottom>
 			<height>4</height>
+			<visible>$EXP[IsMovie] | $EXP[IsEpisode]</visible>
 			<visible>Integer.IsGreater(ListItem.PercentPlayed,0)</visible>
 			<info>ListItem.PercentPlayed</info>
 		</control>
@@ -1007,12 +970,14 @@
 			<bottom>-1%</bottom>
 			<height>4</height>
 			<texture colordiffuse="$VAR[Widget_Progress_Watched]" border="2">colors/white.png</texture>
+			<visible>$EXP[IsMovie] | $EXP[IsEpisode]</visible>
 			<visible>Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable</visible>
 		</control>
 		<control type="image">
 			<bottom>-1%</bottom>
 			<height>4</height>
 			<texture colordiffuse="$VAR[Widget_Progress_Remain]" border="2">colors/white.png</texture>
+			<visible>$EXP[IsMovie] | $EXP[IsEpisode]</visible>
 			<visible>!Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable</visible>
 		</control>
 	</include>
@@ -1216,7 +1181,7 @@ top-->
 	<variable name="Tags_Bottom">
 		<value condition="String.Contains(Container.Folderpath,script.embuary.info) + String.Contains(Container.Folderpath,call=upcoming)">$INFO[ListItem.Premiered]</value>
 		<value condition="String.Contains(Container.Folderpath,script.embuary.info) + String.Contains(Container.Folderpath,call=now_playing)">$INFO[ListItem.Premiered]</value>
-		<value condition="!$EXP[IsSeason] + $EXP[IsEpisode]">$INFO[ListItem.Season,[B]s,[/B]]$INFO[ListItem.Episode,[B]e,[/B] -]$INFO[ListItem.Title,[B],[/B]]$INFO[ListItem.Duration(mm), (, min)][CR][COLOR=$VAR[Container_label2_itemtag]]$INFO[ListItem.Year][/COLOR]</value>
+		<value condition="$EXP[IsEpisode]">$INFO[ListItem.Season,[B]s,[/B]]$INFO[ListItem.Episode,[B]e,[/B] -]$INFO[ListItem.Title,[B],[/B]]$INFO[ListItem.Duration(mm), (, min)][CR][COLOR=$VAR[Container_label2_itemtag]]$INFO[ListItem.Year][/COLOR]</value>
 		<value condition="$EXP[IsSong]">$INFO[ListItem.Label,[B],[/B]][CR][COLOR=$VAR[Container_label2_itemtag]]$INFO[ListItem.Album]$INFO[ListItem.Year, (,)][/COLOR]</value>
 		<value condition="!String.IsEmpty(ListItem.Year)">$INFO[ListItem.Label,[B],[/B]][CR][COLOR=$VAR[Container_label2_itemtag]]$INFO[ListItem.Year][/COLOR]</value>
 		<value>$INFO[ListItem.Label,[B],[/B]][CR][COLOR=$VAR[Container_label2_itemtag]]$INFO[ListItem.Label2][/COLOR]</value>
@@ -1289,6 +1254,7 @@ top-->
 		<value condition="Container.Content(seasons) + String.StartsWith(ListItem.Label,*) + !String.IsEmpty(ListItem.Art(tvshow.poster))">$INFO[ListItem.Art(tvshow.poster)]</value>
 		
 		<value condition="!String.IsEmpty(ListItem.Art(season.poster))">$INFO[ListItem.Art(season.poster)]</value>
+		<value condition="Container.Content(seasons) + String.IsEqual(ListItem.DBType,season) + String.IsEmpty(ListItem.Art(season.poster))">$INFO[ListItem.Art(thumb)]</value>
 		
 		<value condition="!String.IsEmpty(ListItem.Art(tvshow.poster))">$INFO[ListItem.Art(tvshow.poster)]</value>
 		

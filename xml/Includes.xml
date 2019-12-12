@@ -62,9 +62,13 @@
 		<value>-</value>
 	</variable>
 	
-	<!-- EXP -->
-	<expression name="Infodialog_IsActive">Window.IsActive(musicinformation) | Window.IsActive(songinformation) | Window.IsActive(movieinformation) | Window.IsActive(addoninformation) | Window.IsActive(pvrguideinfo) | Window.IsActive(pvrrecordinginfo) | Window.IsActive(pictureinfo) | Window.IsVisible(script-embuary-video.xml) | Window.IsVisible(script-embuary-person.xml) | Window.IsVisible(script-embuary-image.xml)</expression>
-	<expression name="sidebar_visible">ControlGroup(9000).HasFocus | Control.HasFocus(6130) | Control.HasFocus(6131) | Window.IsActive(MyPlaylist.xml)</expression>
+	<variable name="EmbuaryHelper_NextUp">
+		<value condition="Container.Content(seasons) + String.StartsWith(ListItem.Path,plugin://plugin.video.embycon) + !String.IsEmpty(ListItemAbsolute(0).Property(series_id))">plugin://plugin.video.embycon/?mode=GET_CONTENT&amp;use_cache=false&amp;media_type=Episodes&amp;url=%7Bserver%7D%2Femby%2FShows%2FNextUp%3FSeriesId%3D$INFO[ListItemAbsolute(0).Property(series_id)]%26UserId%3D%7Buserid%7D%26IsVirtualUnAired%3Dfalse%26IsMissing%3Dfalse%26Fields%3D%7Bfield_filters%7D%26format%3Djson&amp;reload=$INFO[Window(home).Property(plugin.video.embycon-embycon_widget_reload)]$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
+		<value condition="Container.Content(seasons) + String.StartsWith(ListItem.Path,plugin://plugin.video.embycon) + !String.IsEmpty(ListItemAbsolute(1).Property(series_id))">plugin://plugin.video.embycon/?mode=GET_CONTENT&amp;use_cache=false&amp;media_type=Episodes&amp;url=%7Bserver%7D%2Femby%2FShows%2FNextUp%3FSeriesId%3D$INFO[ListItemAbsolute(1).Property(series_id)]%26UserId%3D%7Buserid%7D%26IsVirtualUnAired%3Dfalse%26IsMissing%3Dfalse%26Fields%3D%7Bfield_filters%7D%26format%3Djson&amp;reload=$INFO[Window(home).Property(plugin.video.embycon-embycon_widget_reload)]$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
+		<value condition="Container.Content(seasons) + String.StartsWith(ListItem.Path,plugin://plugin.video.embycon) + !String.IsEmpty(ListItemAbsolute(2).Property(series_id))">plugin://plugin.video.embycon/?mode=GET_CONTENT&amp;use_cache=false&amp;media_type=Episodes&amp;url=%7Bserver%7D%2Femby%2FShows%2FNextUp%3FSeriesId%3D$INFO[ListItemAbsolute(2).Property(series_id)]%26UserId%3D%7Buserid%7D%26IsVirtualUnAired%3Dfalse%26IsMissing%3Dfalse%26Fields%3D%7Bfield_filters%7D%26format%3Djson&amp;reload=$INFO[Window(home).Property(plugin.video.embycon-embycon_widget_reload)]$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
+		<value condition="Container.Content(seasons) + Integer.IsGreater(Container(2000).ListItem.Property(watchedepisodes),0) + Integer.IsGreater(Container(2000).ListItem.Property(unwatchedepisodes),0) + Integer.IsGreater(Container(2000).ListItem.DBID,0)">videodb://inprogresstvshows/$INFO[Container(2000).ListItem.DBID]/-2/?tvshowid=$INFO[Container(2000).ListItem.DBID]</value>
+		<value>-</value>
+	</variable>
 	
 	<!-- Layout Positioning -->
 	<include name="height">
