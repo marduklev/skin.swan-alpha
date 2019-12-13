@@ -17,15 +17,15 @@
 				<control type="image">
 					<description>Dimmed Fanart BG</description>
 					<visible>!Control.HasFocus(58001)</visible>
-					<visible>Skin.HasSetting(View58_EnebleBottomPanel)</visible>
+					<visible>Skin.HasSetting(View58_EnableBottomPanel)</visible>
 					<fadetime>350</fadetime>
-					<bordersize condition="Skin.HasSetting(View58_EnebleBottomPanel)">0,0,0,418</bordersize>
+					<bordersize condition="Skin.HasSetting(View58_EnableBottomPanel)">0,0,0,418</bordersize>
 					<texture background="true" diffuse="colors/white10.png">$VAR[ArtworkThumb]</texture>
 					<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
 					<animation effect="slide" start="0,1080" end="0,0" tween="quadratic" easing="in" time="400">VisibleChange</animation>
 				</control>
 				<control type="image">
-					<visible>!Skin.HasSetting(View58_EnebleBottomPanel)</visible>
+					<visible>!Skin.HasSetting(View58_EnableBottomPanel)</visible>
 					<description>Dimmed Fanart BG</description>
 					<visible>!Control.HasFocus(58001)</visible>
 					<fadetime>350</fadetime>
@@ -72,56 +72,30 @@
 					<height>970</height>
 					
 					<include content="DefArtwork">
+						<right>0</right>
 						<param name="diffuse" value="test/Spotlight_left_diffuse.png" />
-						<param name="visible" value="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
+						<param name="visible" value="!Skin.HasSetting(View58_FanartLeftAlignment)" />
 					</include>
 					<include content="DefArtwork">
-						<param name="width" value="" />
-						<param name="height" value="95%" />
-						<param name="diffuse" value="hub/diffuse_linear_hor_50_trans.png" />
-						<param name="visible" value="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
+						<left>0</left>
+						<param name="diffuse" value="test/Spotlight_right_diffuse.png" />
+						<param name="visible" value="Skin.HasSetting(View58_FanartLeftAlignment)" />
 					</include>
-				
-					<control type="grouplist">
-						<description>S P O T L I G H T  M E T A D A T A</description>
-						<width>39%</width>
-						<height>650</height>
-						<top>400</top>
-						<bottom>10</bottom>
-						
-						<orientation>vertical</orientation>
-						<itemgap>10</itemgap>
-						<usecontrolcoords>true</usecontrolcoords>
 					
-						<include content="pos_left" condition="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)">
-							<param name="left" value="60" />
-						</include>
-						<include content="pos_right" condition="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)">
-							<param name="right" value="60" />
-						</include>
-						<animation time="300" effect="slide" end="0,200" reversible="true" easing="inout" condition="ControlGroup(9000).HasFocus">Conditional</animation>
-			
-						<include content="spacer_h">
-							<param name="gap" value="60"/>
-						</include>
-			
-						<control type="textbox">
-							<top>0</top>
-							<height min="80" max="205">auto</height>
-							<width>100%</width>
-							<aligny>top</aligny>
-							<label>$VAR[Home_Var_Plot]</label>
-							<textcolor>white</textcolor>
-							<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
-							<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
-								<param name="align" value="center" />
-							</include>
-							<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
-								<param name="align" value="right" />
-							</include>
-							<font>Netflix_Plot</font>
-						</control>
+					<control type="textbox">
+						<right>60</right>
+						<align>right</align>
+						<visible>Skin.HasSetting(View58_FanartLeftAlignment)</visible>
+						<include content="Plot_Shift" />
 					</control>
+					
+					<control type="textbox">
+						<left>50</left>
+						<align>left</align>
+						<visible>!Skin.HasSetting(View58_FanartLeftAlignment)</visible>
+						<include content="Plot_Shift" />
+					</control>
+					
 				</control>
 				
 				<control type="group" id="58003">
@@ -130,56 +104,60 @@
 					<left>100</left>
 					
 					<include content="Special_Header">
-						<param name="visible" value="!Skin.HasSetting(View58_EnebleBottomPanel)" />
-						<param name="pos_top" value="180" />
-						<param name="align" value="left" />
-						<param name="widgetdesc" value="[B]Nächste Episode[/B]" />
-					</include>
-					<include content="Special_Header">
-						<param name="visible" value="Skin.HasSetting(View58_EnebleBottomPanel)" />
+						<param name="visible" value="true" />
 						<param name="pos_top" value="300" />
 						<param name="align" value="left" />
-						<param name="widgetdesc" value="[B]Nächste Episode[/B]" />
+						<param name="widgetdesc" value="[B]$VAR[ResumeOrNext][/B]" />
 					</include>
 									
-					<control type="textbox">
-						<visible>!Skin.HasSetting(View58_EnebleBottomPanel)</visible>
-						<top>235</top>
-						<left>70</left>
-						<width>70%</width>
-						<font>Netflix_Plot</font>
-						<height>115</height>
-						<align>left</align>
-						<aligny>bottom</aligny>
-						<autoscroll>false</autoscroll>
-						<textcolor>grey</textcolor>
-						<info>Container(58004).ListItem.Plot</info>
-					</control>
-					<control type="textbox">
-						<visible>Skin.HasSetting(View58_EnebleBottomPanel)</visible>
-						<top>510</top>
+					<control type="label">
+						<top>505</top>
 						<left>680</left>
-						<width>40%</width>
-						<font>Netflix_Plot</font>
-						<height>115</height>
+						<width>55%</width>
+						<font>font36_title</font>
+						<height>50</height>
 						<align>left</align>
 						<aligny>bottom</aligny>
-						<autoscroll>false</autoscroll>
+						<scroll delay="2000">true</scroll>
+						<scrollspeed>40</scrollspeed>
 						<textcolor>cyan</textcolor>
 						<info>Container(58004).ListItem.Title</info>
 					</control>
 					<control type="textbox">
-						<visible>Skin.HasSetting(View58_EnebleBottomPanel)</visible>
 						<top>570</top>
 						<left>680</left>
 						<width>40%</width>
 						<font>Netflix_Plot</font>
 						<height>165</height>
 						<align>left</align>
-						<aligny>bottom</aligny>
+						<aligny>top</aligny>
 						<autoscroll>false</autoscroll>
 						<textcolor>grey</textcolor>
 						<info>Container(58004).ListItem.Plot</info>
+					</control>
+					<control type="textbox">
+						<top>740</top>
+						<left>680</left>
+						<width>40%</width>
+						<font>font_flag</font>
+						<height>30</height>
+						<align>left</align>
+						<aligny>top</aligny>
+						<autoscroll>false</autoscroll>
+						<textcolor>cyan</textcolor>
+						<label>$INFO[Container(58004).ListItem().Duration(m),, $LOCALIZE[12391]]</label>
+					</control>
+					<control type="textbox">
+						<top>740</top>
+						<left>680</left>
+						<width>40%</width>
+						<font>font_flag</font>
+						<height>30</height>
+						<align>right</align>
+						<aligny>top</aligny>
+						<autoscroll>false</autoscroll>
+						<textcolor>cyan</textcolor>
+						<info>Container(58004).ListItem.Premiered</info>
 					</control>
 					
 					<control type="panel" id="58004">
@@ -203,12 +181,17 @@
 						
 						<itemlayout />
 							
-						<focusedlayout height="400" width="840">
+						<focusedlayout height="400" width="1040">
 							<control type="group">
 								<height>388</height>
 								<width>648</width>
 								<control type="group">
-									<include content="UniversalLayout">
+									<control type="image">
+										<texture background="true" diffuse="artworkdiffuse/landscape.png">$INFO[ListItem.Art(thumb)]</texture>
+										<bordertexture colordiffuse="$VAR[Container_item_fo]">colors/white.png</bordertexture>
+										<bordersize>4</bordersize>
+									</control>
+									<!-- <include content="UniversalLayout">
 										<param name="colordiffuse" value="$VAR[Container_item_fo]" />
 										<param name="artwork" value="landscape" />
 										<param name="get_tags" value="false" />
@@ -216,9 +199,20 @@
 										<param name="get_bannerlogo" value="false" />
 										<param name="autoscroll" value="false" />
 										<param name="bordersize_bg" value="2" />
+									</include> -->
+									<include content="FocusOverlay">
+										<param name="bordersize" value="4" />
 									</include>
-									<include>FocusOverlay</include>
+									<control type="progress">
+										<visible>ListItem.IsResumable</visible>
+										<bottom>-10</bottom>
+										<left>4</left>
+										<right>4</right>
+										<height>1</height>
+										<info>ListItem.PercentPlayed</info>
+									</control>
 								</control>
+								
 							</control>
 						</focusedlayout>
 						<content sortby="playcount" limit="1">videodb://tvshows/titles/-1/-1/-1/-1/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22tvshow%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[ListItem.TVShowTitle]%22%5D%7D%2C%5B%7B%22field%22%3A%22inprogress%22%2C%22operator%22%3A%22false%22%7D%5D%5D%7D%2C%22type%22%3A%22episodes%22%7D</content>
@@ -254,8 +248,8 @@
 						<!-- conditional slide based on num items ? -->
 						
 						<onup>58004</onup>
-						<ondown condition="Integer.IsGreater(Container(2505816).NumItems,0)">Control.SetFocus(2505816,0,absolute)</ondown>
-						<ondown condition="!Integer.IsGreater(Container(2505816).NumItems,0)">580061</ondown>
+						<ondown condition="Integer.IsGreater(Container(580052).NumItems,0)">Control.SetFocus(580052,0,absolute)</ondown>
+						<ondown condition="!Integer.IsGreater(Container(580052).NumItems,0)">580061</ondown>
 						
 						<preloaditems>2</preloaditems>
 						<orientation>horizontal</orientation>
@@ -309,7 +303,7 @@
 						<texture colordiffuse="dimgrey">colors/white50.png</texture>
 					</control>
 					
-					<control type="panel" id="2505816">
+					<control type="panel" id="580052">
 						<description>folder content - episode thumb</description>
 						<top>590</top>
 						<width>98%</width>
@@ -694,15 +688,16 @@
 					<height>1080</height>
 					
 					<include content="Special_Header">
-						<param name="pos_top" value="70" />
+						<param name="pos_top" value="80" />
 						<param name="widgetdesc" value="[B]B  E  S  E  T  Z  U  N  G[/B]" />
 					</include>
 					
 					<control type="panel" id="580061">
-						<onup>580051</onup>
+						<onup>580052</onup>
 						<ondown condition="Control.IsVisible(580062)">580062</ondown>
 						<ondown condition="!Control.IsVisible(580062)">580071</ondown>
-						<top>170</top>
+						<top>190</top>
+						<left>40</left>
 						<width>1620</width>
 						<height>350</height>
 						<onback>Control.SetFocus(50)</onback>
@@ -745,14 +740,14 @@
 				</control>
 				
 				<include content="Special_Header">
-					<param name="pos_top" value="555" />
+					<param name="pos_top" value="575" />
 					<param name="widgetdesc" value="[B]T  R  A  I  L  E  R  S[/B]" />
 				</include>
 				
 				<control type="panel" id="580062">
 					<description>trailers</description>
 					
-					<top>620</top>
+					<top>640</top>
 					<height>300</height>
 					<width>1920</width>
 					<onup>580061</onup>
@@ -828,7 +823,7 @@
 					
 					<include content="Special_Header">
 						<param name="pos_top" value="230" />
-						<param name="widgetdesc" value="[B]S  I  M  I  L  I  A  R     T  O     &quot;[UPPERCASE]$INFO[ListItem.TVShowTitle]&quot;[/UPPERCASE][/B]" />
+						<param name="widgetdesc" value="[B]S  I  M  I  L  I  A  R[/B]" />
 						<param name="align" value="left" />
 					</include>
 					
@@ -876,7 +871,7 @@
 						<content target="videos">plugin://script.embuary.helper/?info=getsimilar&amp;type=tvshow&amp;dbid=$INFO[Container(2000).ListItem.dbid]&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</content>
 					</control>
 				
-			</control>
+				</control>
 				
 				
 				
@@ -887,105 +882,53 @@
 			
 			<control type="group">
 				<description>ClearLogo Overlay</description>
-				<top>240</top>
-				<left>50</left>
-				<include>ClearLogo_or_Title</include>
-				<!-- 
-				common ,used header - less space
-				<animation effect="slide" start="0,0" end="0,-130" tween="quadratic" time="400" condition="!Control.HasFocus(58001)">Conditional</animation>
-				<animation effect="zoom" center="10%,30%" start="100,100" end="65,65" time="400" tween="quadratic" condition="!Control.HasFocus(58001)">Conditional</animation>
-				 -->
-				<animation effect="slide" start="0,0" end="50,-240" tween="quadratic" time="400" condition="!Control.HasFocus(58001)">Conditional</animation>
-				<animation effect="zoom" alignx="true" start="100,100" end="75,75" time="400" tween="quadratic" condition="!Control.HasFocus(58001)">Conditional</animation>
+				<visible>!Skin.HasSetting(View58_FanartLeftAlignment)</visible>
+				<left>40</left>
+				<include content="ClearLogo_or_Title">
+					<param name="align" value="left" />
+				</include>
+				<animation center="12%,-88%" effect="zoom" start="100,100" end="75,75" time="400" tween="quadratic" condition="!Control.HasFocus(58001)">Conditional</animation>
+			</control>
+			
+			<control type="group">
+				<description>ClearLogo Overlay, pretty ugly pos x for other than page 1</description>
+				<visible>Skin.HasSetting(View58_FanartLeftAlignment)</visible>
+				<right>45</right>
+				<include content="ClearLogo_or_Title">
+					<param name="align" value="right" />
+				</include>
+				<animation center="99%,-88%" effect="zoom" start="100,100" end="75,75" time="400" tween="quadratic" condition="!Control.HasFocus(58001)">Conditional</animation>
 			</control>
 			
 			<control type="group">
 				<control type="image">
 					<description>studio logo </description>
-					<top>240</top>
-					<left>50</left>
-					<width>300</width>
-					<height>265</height>
-					<bordersize>10</bordersize>
-				
-					<aspectratio align="left" aligny="top">keep</aspectratio>
+					<animation effect="fade" start="5" end="100" time="400" tween="quadratic" condition="Control.HasFocus(58001) | Control.HasFocus(58004)">conditional</animation>
+					<bottom>10</bottom>
+					<right>50</right>
+					<height>200</height>
+					<width>200</width>
+					<aspectratio align="left" aligny="bottom">keep</aspectratio>
 					<colordiffuse>white</colordiffuse>
-					<texture background="true">special://home/addons/resource.images.studios.white/resources/FX_hd.png</texture>
-					<!-- <texture background="true">$INFO[Container(2000).ListItem.Studio,special://home/addons/resource.images.studios.white/resources/,.png]</texture> -->
+					<texture background="true">resource://resource.images.studios.white/$INFO[ListItem.Studio].png</texture>
 				</control>
 			</control>
-			
-			
-			
-			
 			
 			<control type="grouplist">
-				<top>500</top>
+				<visible>!Skin.HasSetting(View58_FanartLeftAlignment)</visible>
+				<align>left</align>
 				<left>50</left>
+				<include>MetaUncommon_Season</include>
 				<animation effect="slide" start="0,0" end="50,-310" tween="quadratic" time="400" condition="!Control.HasFocus(58001)">Conditional</animation>
-				
-				<orientation>horizontal</orientation>
-				<usecontrolcoords>true</usecontrolcoords>
-				<height>50</height>
-				<itemgap>10</itemgap>
-				
-				<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
-				<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
-					<param name="align" value="center" />
-				</include>
-				<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
-					<param name="align" value="right" />
-				</include>
-
-				<!-- <include content="StarsRating_ImageVariable" /> -->
-				<control type="image">
-					<description>stars rating, does not really fit on all pages aesthetics and width wise</description>
-					<visible>Control.HasFocus(58001)</visible>
-					<width>150</width>
-					<height>45</height>
-					<aspectratio align="left" aligny="center">keep</aspectratio>
-					<colordiffuse>red</colordiffuse>
-					<texture background="true">$INFO[Container(2000).ListItem.Rating,rating/stars/,.png]</texture>
-				</control>
-				
-				<control type="label">
-					<visible>!String.IsEmpty(ListItem.Year)</visible>	
-					<top>5</top>
-					<left>10</left>
-					<height>35</height>
-					<width>auto</width>
-					<aligny>center</aligny>
-					<font>Netflix_DetailRow</font>
-					<label>$INFO[ListItem.Year,[B],[/B]]</label>
-					<textcolor>white</textcolor>
-				</control>
-				<control type="button">
-					<width min="50">auto</width>
-					<font>Netflix_DetailRow</font>
-					<label>$INFO[ListItem.MPAA,[B],[/B]]</label>
-					<aligny>top</aligny>
-					<align>center</align>
-					<textcolor>white</textcolor>
-					<disabledcolor>white</disabledcolor>
-					<posy>3</posy>
-					<height>40</height>
-					<textoffsetx>20</textoffsetx>
-					<textoffsety>4</textoffsety>
-					<texturenofocus border="-2" colordiffuse="white">flags/detailframe.png</texturenofocus>
-					<enable>false</enable>
-					<visible>!String.IsEmpty(ListItem.MPAA)</visible>
-				</control>
-				<control type="label">
-					<posy>5</posy>
-					<width>auto</width>
-					<label>$INFO[Container(2000).ListItem.Property(TotalSeasons),, Staffeln | ]$INFO[Container(2000).ListItem.Property(TotalEpisodes),, Episoden]$INFO[Container(2000).ListItem.Status,  | [B],[/B]  | ]</label>
-					<height>35</height>
-					<aligny>center</aligny>
-					<textcolor>white</textcolor>
-					<font>Netflix_DetailRow</font>
-				</control>
+			</control>	
+			<control type="grouplist">
+				<visible>Skin.HasSetting(View58_FanartLeftAlignment)</visible>
+				<align>right</align>
+				<right>60</right>
+				<include>MetaUncommon_Season</include>
+				<animation effect="slide" alignx="true" start="0,0" end="0,-310" tween="quadratic" time="400" condition="!Control.HasFocus(58001)">Conditional</animation>
 			</control>
-			
+				
 			<control type="list" id="58">
 				<description>
 	videodb://tvshows/titles/$INFO[Container(2000).ListItem.dbid]/ : native kodi path substitution (non xsp),f**k
@@ -1052,7 +995,7 @@
 			<control type="grouplist">
 				<visible>$PARAM[visible]</visible>
 				<top>$PARAM[pos_top]</top>
-				<height>200</height>
+				<height>50</height>
 				<width>90%</width>
 				<align>$PARAM[align]</align>
 				<orientation>horizontal</orientation>
@@ -1060,16 +1003,16 @@
 				<itemgap>10</itemgap>
 				
 				<control type="label">
-					<height>200</height>
+					<height>35</height>
 					<width>auto</width>
 					<label>|</label>
-					<aligny>bottom</aligny>
+					<aligny>center</aligny>
 					<textcolor>red</textcolor>
-					<font>Bold36</font>
+					<font>font29</font>
 				</control>
 				<control type="label">
 					<left>15</left>
-					<height>200</height>
+					<height>40</height>
 					<width>auto</width>
 					<label>$PARAM[widgetdesc]</label>
 					<aligny>top</aligny>
@@ -1077,12 +1020,20 @@
 					<font>font29</font>
 				</control>
 				<control type="label">
-					<visible>!Control.HasFocus(250585)</visible>
-					<height>200</height>
+					<height>35</height>
 					<width>auto</width>
 					<label> |</label>
-					<aligny>bottom</aligny>
+					<aligny>center</aligny>
 					<textcolor>red</textcolor>
+					<font>Bold36</font>
+				</control>
+				<control type="label">
+					<visible>Control.HasFocus(58004)</visible>
+					<height>40</height>
+					<width>auto</width>
+					<label>$INFO[Container(58004).ListItem.Season, $LOCALIZE[36904] ,]$INFO[Container(58004).ListItem.Episode, | $LOCALIZE[36906] ,]</label>
+					<aligny>center</aligny>
+					<textcolor>white</textcolor>
 					<font>Bold36</font>
 				</control>
 			</control>
@@ -1090,7 +1041,61 @@
         </definition>
     </include>
 	
-	
+	<include name="MetaUncommon_Season">
+		<nested />
+		
+		<top>500</top>
+		<orientation>horizontal</orientation>
+		<usecontrolcoords>true</usecontrolcoords>
+		<height>50</height>
+		<itemgap>10</itemgap>
+		<control type="image">
+			<description>stars rating, does not really fit on all pages aesthetics and width wise</description>
+			<visible>Control.HasFocus(58001)</visible>
+			<width>150</width>
+			<height>45</height>
+			<aspectratio align="left" aligny="center">keep</aspectratio>
+			<colordiffuse>red</colordiffuse>
+			<texture background="true">$INFO[Container(2000).ListItem.Rating,rating/stars/,.png]</texture>
+		</control>
+		<control type="label">
+			<visible>!String.IsEmpty(ListItem.Year)</visible>	
+			<top>5</top>
+			<left>10</left>
+			<height>35</height>
+			<width>auto</width>
+			<aligny>center</aligny>
+			<font>Netflix_DetailRow</font>
+			<label>$INFO[ListItem.Year,[B],[/B]]</label>
+			<textcolor>white</textcolor>
+		</control>
+		<control type="button">
+			<width min="50">auto</width>
+			<font>Netflix_DetailRow</font>
+			<label>$INFO[ListItem.MPAA,[B],[/B]]</label>
+			<aligny>top</aligny>
+			<align>center</align>
+			<textcolor>white</textcolor>
+			<disabledcolor>white</disabledcolor>
+			<posy>3</posy>
+			<height>40</height>
+			<textoffsetx>20</textoffsetx>
+			<textoffsety>4</textoffsety>
+			<texturenofocus border="-2" colordiffuse="white">flags/detailframe.png</texturenofocus>
+			<enable>false</enable>
+			<visible>!String.IsEmpty(ListItem.MPAA)</visible>
+		</control>
+		<control type="label">
+			<posy>5</posy>
+			<width>auto</width>
+			<label>$INFO[Container(2000).ListItem.Property(TotalSeasons),, Staffeln | ]$INFO[Container(2000).ListItem.Property(TotalEpisodes),, Episoden]$INFO[Container(2000).ListItem.Status,  | [B],[/B]  | ]</label>
+			<height>35</height>
+			<aligny>center</aligny>
+			<textcolor>white</textcolor>
+			<font>Netflix_DetailRow</font>
+		</control>
+	</include>
+			
 	<include name="Circle_CastWidget">
 		<control type="image">
 			<description>Fallback aspect keep</description>
@@ -1119,28 +1124,24 @@
 	</include>
 	
 	<include name="ClearLogo_or_Title">
-		<control type="image" id="1601">
-			<visible>!String.IsEmpty(Control.GetLabel(1601))</visible>
+		<top>240</top>
+				
+		<control type="image">
+			<visible>!String.IsEmpty(ListItem.Art(tvshow.clearlogo)) | !String.IsEmpty(ListItem.Art(clearlogo))</visible>
 			<height>265</height>
 			<bordersize>10</bordersize>
-			<aspectratio align="left" aligny="top">keep</aspectratio>
+			<aspectratio align="$PARAM[align]" aligny="top">keep</aspectratio>
 			<texture background="true">$VAR[ListItemClearLogo]</texture>
 		</control>
-		
 		<control type="textbox">
 			<description>Fallback Label</description>
-			<visible>String.IsEmpty(Control.GetLabel(1601))</visible>
+			<left>10</left>
+			<width>36%</width>
+			<visible>String.IsEmpty(ListItem.Art(tvshow.clearlogo)) + String.IsEmpty(ListItem.Art(clearlogo))</visible>
 			<height>255</height>
 			<wrapmultiline>true</wrapmultiline>
 			<font>Netflix_Title</font>
-			<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
-			<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
-				<param name="align" value="center" />
-			</include>
-			<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
-				<param name="align" value="right" />
-			</include>
-			<aligny>bottom</aligny>
+			<align>$PARAM[align]</align>
 			<textcolor>white</textcolor>
 			<label>$INFO[ListItem.TVShowTitle]</label>
 		</control>
@@ -1196,6 +1197,11 @@
 		<animation effect="slide" start="0" end="0,-60" time="0" condition="Integer.IsEqual(VideoPlayer.VideoAspect,2.4) | Integer.IsEqual(VideoPlayer.VideoAspect,1.85) | Integer.IsEqual(VideoPlayer.VideoAspect,2.35) | Integer.IsEqual(VideoPlayer.VideoAspect,2.55) | Integer.IsEqual(VideoPlayer.VideoAspect,2.76)" reversible="true">Conditional</animation>
 	</include>
 	
+	<variable name="ResumeOrNext">
+		<value condition="Container(58004).ListItem.IsResumable">Weiterschauen</value>
+		<value>Nächste Episode</value>
+	</variable>
+	
 	<!-- Embcon/Native DB vars -->
 	<variable name="View_Cast_Content">
 		<value condition="String.StartsWith(ListItem.Path,plugin://plugin.video.embycon) + Container.Content(seasons) + ListItem.IsParentFolder">plugin://plugin.video.embycon?mode=WIDGET_CONTENT_CAST&amp;id=$INFO[ListItem(1).Property(id)]</value>
@@ -1212,4 +1218,17 @@
 		<value condition="String.IsEqual(ListItem.DBType,season) + Integer.IsGreater(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[ListItem.DBID]&amp;idtype=season</value>
 		<value>-</value>
 	</variable>
+	
+	<include name="Plot_Shift">
+		<animation time="300" effect="slide" end="0,200" reversible="true" easing="inout" condition="ControlGroup(9000).HasFocus">Conditional</animation>
+
+		<width>39%</width>
+		<height>225</height>
+		<top>460</top>
+		<bottom>10</bottom>
+		<aligny>top</aligny>
+		<label>$VAR[Home_Var_Plot]</label>
+		<textcolor>white</textcolor>
+		<font>Netflix_Plot</font>
+	</include>	
 </includes>

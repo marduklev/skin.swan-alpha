@@ -544,7 +544,6 @@
 		<param name="bordersize" default="8" />
 		<definition>
 		<control type="group">
-			<visible>$PARAM[get_circle]</visible>
 			<animation reversible="false" effect="fade" start="0" end="100" time="350" tween="quadratic" easing="in">Focus</animation>
 			<animation reversible="false" effect="fade" start="100" end="0" time="0">UnFocus</animation>
 			<control type="image">
@@ -553,6 +552,8 @@
 				<texture diffuse="$PARAM[diffusedimtext]">overlay/overlay_dimm.png</texture>
 			</control>
 			<control type="group">
+				<visible>!String.IsEqual(ListItem.Label,$LOCALIZE[284])</visible>
+					<description>get listitem.dbtype at container content</description>
 				<control type="image">
 					<centerleft>50%</centerleft>
 					<centertop>50%</centertop>
@@ -561,7 +562,6 @@
 					<colordiffuse>$VAR[Widget_DimOverlay_Icon]</colordiffuse>
 					<aspectratio scalediffuse="false" align="center" aligny="center">keep</aspectratio>
 					<texture>overlay/overlay_button_play.png</texture>
-					<visible>!String.IsEqual(ListItem.Label,$LOCALIZE[284])</visible>
 					<visible>![String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,artist) | String.IsEqual(ListItem.DBType,album) | ListItem.IsFolder | String.IsEqual(ListItem.Property(IsFolder),true)]</visible>
 					</control>
 				<control type="image">
@@ -572,7 +572,6 @@
 					<colordiffuse>$VAR[Widget_DimOverlay_Icon]</colordiffuse>
 					<aspectratio scalediffuse="false" align="center" aligny="center">keep</aspectratio>
 					<texture>overlay/overlay_button_folder.png</texture>
-					<visible>!String.IsEqual(ListItem.Label,$LOCALIZE[284])</visible>
 					<visible>[String.IsEqual(ListItem.Label,..) | String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,artist) | String.IsEqual(ListItem.DBType,album)]</visible>
 				</control>
 			</control>
@@ -1200,8 +1199,8 @@ top-->
 		<control type="image">
 			<visible>$PARAM[visible]</visible>
 			<fadetime>350</fadetime>
-			<include content="pos_left" condition="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
-			<include content="pos_right" condition="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
+			
+			<nested />
 			<top>0</top>
 			<width>$PARAM[width]</width>
 			<height>$PARAM[height]</height>         
@@ -1249,6 +1248,7 @@ top-->
 		-->
 	</variable>
 	<variable name="ImageLayout_poster">
+		<value condition="String.IsEqual(ListItem.Label,..)">defaultfolderback.png</value>
 		<value condition="Skin.HasSetting(EnableAnimatedPosters) + !String.IsEmpty(ListItem.Art(animatedposter))">$INFO[ListItem.Art(animatedposter)]</value> <!-- make var !Skin.HasSetting(AnimatedPostersDisabledInLists) -->
 		
 		<value condition="Container.Content(seasons) + String.StartsWith(ListItem.Label,*) + !String.IsEmpty(ListItem.Art(tvshow.poster))">$INFO[ListItem.Art(tvshow.poster)]</value>
@@ -1295,6 +1295,8 @@ top-->
 	
     
 	<variable name="ImageLayout_fanart">
+		<value condition="String.IsEqual(ListItem.Label,..)">defaultfolderback.png</value>
+		
 		<value condition="!String.IsEqual(ListItem.label,..) + [Container.Content(albums) | Container.Content(songs)]">$INFO[ListItem.Thumb]</value>
 		
 		<value condition="[$EXP[IsEpisode] | String.Contains(ListItem.Path,youtube)] + !String.IsEmpty(ListItem.Art(Thumb))">$INFO[ListItem.Thumb]</value>
@@ -1337,6 +1339,9 @@ top-->
     </variable>
 	
 	<variable name="ImageLayout_landscape">
+		<value condition="String.IsEqual(ListItem.Label,..)">defaultfolderback.png</value>
+		<!-- <value condition="String.IsEqual(ListItem.Label,..)">dialogs/filebrowser/DefaultFolderBack2.png</value> -->
+        
 		<value condition="!String.IsEqual(ListItem.label,..) + [Container.Content(albums) | Container.Content(songs)]">$INFO[ListItem.Thumb]</value>
 		
 		<value condition="[$EXP[IsEpisode] | String.Contains(ListItem.Path,youtube)] + !String.IsEmpty(ListItem.Art(Thumb))">$INFO[ListItem.Thumb]</value>
@@ -1351,8 +1356,7 @@ top-->
 		
 		
         <value condition="!String.IsEmpty(ListItem.Art(tvshow.landscape)) + !Skin.HasSetting(DisableLandscapeThumbs)">$INFO[ListItem.Art(tvshow.landscape)]</value>
-		<value condition="String.IsEqual(ListItem.Label,..)">dialogs/filebrowser/DefaultFolderBack2.png</value>
-        
+		
 		<value condition="[Container.Content(genres) | String.IsEqual(ListItem.DBTYPE,genre)] + String.Contains(ListItem.Folderpath,video)">$VAR[MovieGenreIconVarList]</value>
         <value condition="[Container.Content(genres) | String.IsEqual(ListItem.DBTYPE,genre)] + [Window.IsActive(music) | String.Contains(ListItem.Folderpath,music)]">$VAR[MusicGenreIconVarList]</value>
         
@@ -1380,6 +1384,8 @@ top-->
 	
 	
 	<variable name="ImageLayout_banner">
+		<value condition="String.IsEqual(ListItem.Label,..)">defaultfolderback.png</value>
+		
 		<!-- defaults stretch -->
 		<value condition="!String.IsEmpty(ListItem.Art(artist.banner))">$INFO[ListItem.Art(artist.banner)]</value>
 		<value condition="!String.IsEmpty(ListItem.Art(albumartist.banner))">$INFO[ListItem.Art(albumartist.banner)]</value>
@@ -1395,7 +1401,9 @@ top-->
 	
 	<!-- square thumb vars -->
 	<variable name="ImageLayout_square">
-        <value condition="[Container.Content(genres) | String.IsEqual(ListItem.DBTYPE,genre)] + String.Contains(ListItem.FolderPath,music)">$VAR[MusicGenreIconVarList]</value>
+        <value condition="String.IsEqual(ListItem.Label,..)">defaultfolderback.png</value>
+		
+		<value condition="[Container.Content(genres) | String.IsEqual(ListItem.DBTYPE,genre)] + String.Contains(ListItem.FolderPath,music)">$VAR[MusicGenreIconVarList]</value>
         <value condition="[Container.Content(genres) | String.IsEqual(ListItem.DBTYPE,genre)]">$VAR[MovieGenreIconVarList]</value>
         <value condition="!String.IsEmpty(ListItem.Thumb)">$INFO[ListItem.Thumb]</value>  <!-- thumb is good, and didnt need var conditions, as it choose correct content, https://forum.kodi.tv/showthread.php?tid=298565&pid=2693890#pid2693890-->
         <value condition="!String.IsEmpty(ListItem.Art(fanart)) + [Container.Content(movies) | Container.Content(seasons) | Container.Content(tvshows)]">$INFO[ListItem.Art(fanart)]</value>
