@@ -62,6 +62,7 @@
 		<value>-</value>
 	</variable>
 	
+	<!-- may not needed -->
 	<variable name="EmbuaryHelper_NextUp">
 		<value condition="Container.Content(seasons) + String.StartsWith(ListItem.Path,plugin://plugin.video.embycon) + !String.IsEmpty(ListItemAbsolute(0).Property(series_id))">plugin://plugin.video.embycon/?mode=GET_CONTENT&amp;use_cache=false&amp;media_type=Episodes&amp;url=%7Bserver%7D%2Femby%2FShows%2FNextUp%3FSeriesId%3D$INFO[ListItemAbsolute(0).Property(series_id)]%26UserId%3D%7Buserid%7D%26IsVirtualUnAired%3Dfalse%26IsMissing%3Dfalse%26Fields%3D%7Bfield_filters%7D%26format%3Djson&amp;reload=$INFO[Window(home).Property(plugin.video.embycon-embycon_widget_reload)]$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
 		<value condition="Container.Content(seasons) + String.StartsWith(ListItem.Path,plugin://plugin.video.embycon) + !String.IsEmpty(ListItemAbsolute(1).Property(series_id))">plugin://plugin.video.embycon/?mode=GET_CONTENT&amp;use_cache=false&amp;media_type=Episodes&amp;url=%7Bserver%7D%2Femby%2FShows%2FNextUp%3FSeriesId%3D$INFO[ListItemAbsolute(1).Property(series_id)]%26UserId%3D%7Buserid%7D%26IsVirtualUnAired%3Dfalse%26IsMissing%3Dfalse%26Fields%3D%7Bfield_filters%7D%26format%3Djson&amp;reload=$INFO[Window(home).Property(plugin.video.embycon-embycon_widget_reload)]$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
@@ -69,6 +70,22 @@
 		<value condition="Container.Content(seasons) + Integer.IsGreater(Container(2000).ListItem.Property(watchedepisodes),0) + Integer.IsGreater(Container(2000).ListItem.Property(unwatchedepisodes),0) + Integer.IsGreater(Container(2000).ListItem.DBID,0)">videodb://inprogresstvshows/$INFO[Container(2000).ListItem.DBID]/-2/?tvshowid=$INFO[Container(2000).ListItem.DBID]</value>
 		<value>-</value>
 	</variable>
+	
+	<include name="SetPropOnFocus_HiddenButton">
+		<control type="button">
+			<visible allowhiddenfocus="true">false</visible>
+			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.dbid)">SetProperty(dbid,$INFO[listitem.dbid],home)</onfocus>
+			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.rating)">SetProperty(rating,$INFO[listitem.rating],home)</onfocus>
+			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + [string.IsEmpty(listitem.rating) + !string.IsEmpty(listitem.userrating)]">SetProperty(rating,$INFO[listitem.userrating],home)</onfocus>
+			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.Property(totalseasons))">SetProperty(totalseasons,$INFO[listitem.Property(totalseasons)],home)</onfocus>
+			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.Property(totalepisodes))">SetProperty(totalepisodes,$INFO[listitem.Property(totalepisodes)],home)</onfocus>
+			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.status)">SetProperty(status,$INFO[listitem.status],home)</onfocus>
+		
+			
+		</control>
+	</include>
+	
+		
 	
 	<!-- Layout Positioning -->
 	<include name="height">
