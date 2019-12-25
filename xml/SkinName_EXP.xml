@@ -25,5 +25,12 @@
 	<expression name="PlayerHasVideo">[Player.HasVideo | Player.HasGame]</expression>
 	
 	<!-- trailer playing -->
-	<expression name="TrailerPlaying">Player.HasVideo + !String.IsEmpty(Window(Home).Property(TrailerPlaying))</expression>
+	<expression name="TrailerPlaying">[Player.HasVideo + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))]</expression>
+	
+	<!-- avoid online lookups if offline , 
+	!String.IsEmpty(Network.IPAddress)
+	!String.EndsWith(Network.LinkState,$LOCALIZE[15208]] not connected
+	-->
+	<expression name="IsOfflineMode">[String.EndsWith(Network.LinkState,$LOCALIZE[15208]) + String.IsEmpty(Network.IPAddress)]</expression>
+	
 </includes>
