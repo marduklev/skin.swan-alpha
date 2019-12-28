@@ -63,12 +63,25 @@
 		<value condition="!String.IsEmpty(Window(home).property(SkinHelper.ListItem.ExtendedPlot))">$INFO[Window(home).property(SkinHelper.ListItem.ExtendedPlot)]</value>
 		<value condition="!String.IsEmpty(Window(home).property(SkinHelper.ListItem.Plot))">$INFO[Window(home).property(SkinHelper.ListItem.Plot)]</value>
 	</variable>
-	<variable name="VideoInfoHeader_Title">
+	<variable name="Universal_WidgetHeaderListItem">
+		<value condition="Window.IsActive(1120)">$VAR[SearchInfoHeader_Title]</value>
 		<value condition="Control.HasFocus(8601) | Control.HasFocus(8606) | Control.HasFocus(8607)"></value>
 		<value condition="Control.HasFocus(8610)">$INFO[Container.ListItem.Season,$LOCALIZE[20373] [B],[/B] • ]$INFO[Container.ListItem.Episode,$LOCALIZE[20452] [B],[/B]]$INFO[Container.ListItem.Title,[B] : ,[/B]]</value>
 		<value>$INFO[Container.ListItem.Label,[B],[/B]]</value>
 	</variable>
-	<variable name="Widget_HeadingSeperator">
+	<variable name="SearchInfoHeader_Title">
+		<value condition="Control.HasFocus(5009)">$INFO[ListItem.Label,[B],[/B]]</value>
+		<value condition="String.IsEqual(ListItem.DBType,musicvideo)">$INFO[ListItem.Artist,[B],[/B]]$INFO[ListItem.Title,  [B]•  ,[/B]]</value>
+		<value condition="String.IsEqual(ListItem.DBType,song)">$INFO[ListItem.Artist,[B],[/B]]$INFO[ListItem.Title,  [B]•  ,[/B]]</value>
+		<value condition="String.IsEqual(ListItem.DBType,episode)">$INFO[ListItem.TvShowTitle,[B],  |  [/B]]$INFO[ListItem.Season,[B]$LOCALIZE[20373]  , • [/B]]$INFO[ListItem.Episode, [B]$LOCALIZE[20359]  , • [/B]]$INFO[ListItem.Title,[B],[/B]]</value>
+		<value condition="Control.HasFocus(5007)">$INFO[ListItem.Genre, &quot; , &quot;   |  ]$INFO[ListItem.Label,[B],[/B]]</value>
+		<value condition="Control.HasFocus(5011)">$INFO[ListItem.Studio, &quot; , &quot;   |  ]$INFO[ListItem.Label,[B],[/B]]</value>
+		<value condition="Control.HasFocus(5012)">$INFO[ListItem.Country, &quot; , &quot;  |  ]$INFO[ListItem.Label,[B],[/B]]</value>
+		<value condition="Control.HasFocus(5013)">$INFO[ListItem.Director, &quot; , &quot;  |  ]$INFO[ListItem.Label,[B],[/B]]</value>
+		<value condition="Control.HasFocus(5014)">$INFO[ListItem.AddonName,[B],[/B]]</value>
+		<value>$INFO[ListItem.Label,[B],[/B]]</value>
+	</variable>
+	<variable name="Universal_WidgetHeader_Seperator">
 		<value condition="Control.HasFocus(8601) | Control.HasFocus(8606) | Control.HasFocus(8607)"></value>
 		<value> | </value>
 	</variable>
@@ -109,7 +122,7 @@
 					<control type="label">
                         <top>16</top>
                         <width>auto</width>
-                        <label>$VAR[Widget_HeadingSeperator]</label>
+                        <label>$VAR[Universal_WidgetHeader_Seperator]</label>
 						<aligny>center</aligny>
                         <textcolor>green</textcolor>
                         <font>Bold36</font>
@@ -121,7 +134,7 @@
 					<control type="label">
                         <top>20</top>
                         <width>auto</width>
-						<label>$VAR[VideoInfoHeader_Title]</label>
+						<label>$VAR[Universal_WidgetHeaderListItem]</label>
                         <aligny>center</aligny>
 						<textcolor>white</textcolor>
 						<font>Reg30</font>
@@ -609,7 +622,7 @@
 		<definition>
             <control type="group" id="$PARAM[groupid]">
                 <top>50</top>
-                <height>50</height>
+                <height>60</height>
                 <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) | Container($PARAM[id]).IsUpdating</visible>
                 <nested />
 				<control type="grouplist">
@@ -618,7 +631,7 @@
                     <usecontrolcoords>true</usecontrolcoords>
                     <itemgap>10</itemgap>
                     <control type="label">
-                        <top>18</top>
+                        <top>20</top>
                         <left>15</left>
                         <width>auto</width>
                         <label>[B]$PARAM[label][/B]</label>
@@ -631,25 +644,26 @@
 					<control type="label">
                         <top>16</top>
                         <width>auto</width>
-                        <label>$VAR[Widget_HeadingSeperator]</label>
+                        <label>$VAR[Universal_WidgetHeader_Seperator]</label>
 						<aligny>center</aligny>
                         <textcolor>cyan</textcolor>
                         <font>Bold36</font>
                         <height>24</height>
-                        <visible>Control.HasFocus($PARAM[id])</visible>
+						<visible>Control.HasFocus($PARAM[id])</visible>
+                        <visible>String.IsEmpty(Window(home).Property(CastMemberTumb))</visible>
                         <visible>!String.IsEmpty(Container($PARAM[id]).ListItem.Label)</visible>
                         <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) + !Container($PARAM[id]).IsUpdating</visible>
                     </control>
 					<control type="label">
                         <top>20</top>
                         <width>auto</width>
-						<label>$VAR[VideoInfoHeader_Title]</label>
+						<label>$VAR[Universal_WidgetHeaderListItem]</label>
                         <aligny>center</aligny>
 						<textcolor>$VAR[Headingline_Widget]</textcolor>
 						<font>Reg30</font>
                         <height>24</height>
-						<visible></visible>
-                        <visible>[!Window.IsActive(home) + Control.HasFocus($PARAM[id])] | [[Window.IsActive(home) + Skin.HasSetting(ShowFocusedLabelInHeader_Home)] + Control.HasFocus($PARAM[id])]</visible>
+						<visible>String.IsEmpty(Window(home).Property(CastMemberTumb))</visible>
+						<visible>[!Window.IsActive(home) + Control.HasFocus($PARAM[id])] | [[Window.IsActive(home) + Skin.HasSetting(ShowFocusedLabelInHeader_Home)] + Control.HasFocus($PARAM[id])]</visible>
                         <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) + !Container($PARAM[id]).IsUpdating</visible>
                     </control>
 					<control type="image">
@@ -682,8 +696,7 @@
 																 960w x 540h 
 																 480x270
 	
-	notes to updaTE CONTAINER LAYOUTS -
-	USE PARAM[CONTAINER_pos_TOP] <top>50</top>
+	
 	
 	call container using params
 		- visible, height, witdh, itemwidth, itemheight, 

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<includes>
+	<include name="Action_LibrarySearch">
+		<onclick>SetProperty(LibTargetSearch,$INFO[Window.Property(xmlfile)],home)</onclick>
+		<onclick condition="!String.IsEmpty(Skin.String(SearchTerm))">Skin.Reset(SearchTerm)</onclick>
+		<onclick>Skin.SetString(SearchTerm)</onclick>
+		<onclick>ActivateWindow(1120),return</onclick>
+	</include>
+	
+	<include name="Action_CastMemberSearch">
+		<onclick condition="!String.IsEmpty(Skin.String(SearchTerm))">Skin.Reset(SearchTerm)</onclick>
+		<onclick>SetProperty(CastMemberTumb,$INFO[ListItem.Thumb],home)</onclick>
+		<onclick>Skin.SetString(SearchTerm,$INFO[ListItem.Label])</onclick>
+		<onclick>ActivateWindow(1120),return</onclick>
+		<!-- <onclick>RunScript(script.embuary.info,call=person,query='"$INFO[ListItem.Label])'"</onclick> -->
+	</include>
+	<include name="Action_CastMemberTMDBSearch">
+		<onclick condition="!String.IsEmpty(Skin.String(SearchTerm))">Skin.Reset(SearchTerm)</onclick>
+		<onclick>SetProperty(CastMemberTumb,$INFO[ListItem.Thumb],home)</onclick>
+		<onclick>Skin.SetString(SearchTerm,$INFO[ListItem.Label])</onclick>
+		<onclick>RunScript(script.embuary.info,call=person,query='"$INFO[ListItem.Label])'"</onclick>
+	</include>
+
+	<include name="SearchInfoSpotlighPos">
+		<top>395</top>
+		<height>438</height>
+	</include>
+	
+	<variable name="PercentPlayed">
+		<value condition="!Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable">watched 0%</value>
+		<value condition="Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable">watched 100%</value>
+		<value>$INFO[ListItem.PercentPlayed,watched ,%]</value>
+	</variable>
+	
+	<!-- maybe -->
+	<variable name="SearchInfoWidget_Description">
+		<value condition="String.IsEqual(ListItem.DBTYPE,album) + !String.IsEmpty(ListItem.Property(Album_Description))">$INFO[ListItem.Property(Album_Description)][CR]$INFO[ListItem.ContributorAndRole]</value>
+		<value condition="[String.IsEqual(ListItem.DBTYPE,song) | String.IsEqual(ListItem.DBTYPE,artist)]">$INFO[ListItem.Property(Artist_Description)][CR]$INFO[ListItem.ContributorAndRole]</value>
+		<value condition="!String.IsEmpty(ListItem.AddonName)">$INFO[ListItem.AddonDescription]</value>
+		<value condition="!String.IsEmpty(ListItem.Plot)">$INFO[ListItem.Plot]</value>
+		<value>$LOCALIZE[19055]</value>
+	</variable>
+	<variable name="SearchInfoWidget_BottomInfo">
+		<value condition="[String.IsEqual(ListItem.DBTYPE,episode) | String.IsEqual(ListItem.DBTYPE,movie)]">$VAR[premiere_date,, • ]$VAR[ListItemDuration]$INFO[ListItem.Rating, • ,]</value>
+		<value condition="String.IsEqual(ListItem.DBTYPE,tvshow)">$INFO[ListItem.Premiered,, • ]$VAR[ListItemDuration]$INFO[ListItem.Rating, • ,]</value>
+		<value condition="[String.IsEqual(ListItem.DBTYPE,musicvideo) | String.IsEqual(ListItem.DBTYPE,album)]">$INFO[ListItem.Year,, • ]$INFO[ListItem.Artist]$INFO[ListItem.Genre, • ,]</value>
+		<value condition="String.IsEqual(ListItem.DBTYPE,artist)">$INFO[ListItem.Property(Artist_YearsActive),, •]$INFO[ListItem.Property(Artist_Formed),$LOCALIZE[21894] :, ]$INFO[ListItem.Property(Artist_Disbanded),$LOCALIZE[21896] :,]</value> 
+		<value condition="!String.IsEmpty(ListItem.AddonName)">$INFO[ListItem.AddonType]$INFO[ListItem.Property(Addon.Status),  •,•]</value>
+		<value condition="Control.HasFocus(5009)">$INFO[ListItem.Year,, • ]$INFO[ListItem.Duration(m),,m ]$INFO[ListItem.Duration(ss),,sec]</value>
+		<value condition="String.IsEqual(ListItem.DBTYPE,song)">$INFO[ListItem.Artist]$INFO[ListItem.Album, • ,]$INFO[ListItem.Year, • (,)]</value>
+		<value>$LOCALIZE[19055]</value>
+	</variable>
+	
+	<!-- moved me to info -->
+	<!--extra fanart sourcing -->
+    <variable name="extraFanartLocation">
+        <value condition="[container.content(movies) | String.IsEqual(ListItem.DBTYPE,movie)]">$INFO[listitem.path,,extrafanart]</value>
+        <value condition="[container.content(tvshows) | String.IsEqual(ListItem.DBTYPE,tvshow)]">$INFO[listitem.filenameandpath,,extrafanart]</value>
+        <value condition="[container.content(seasons) | String.IsEqual(ListItem.DBTYPE,season)]">$INFO[container.listitem.path,,extrafanart]</value>
+    </variable>
+	
+	<!--extra thumbs sourcing-->
+    <variable name="extraThumbsLocation">
+        <value condition="[container.content(movies) | String.IsEqual(ListItem.DBTYPE,movie)]">$INFO[listitem.path,,extrathumbs]</value>
+        <value condition="[container.content(tvshows) | String.IsEqual(ListItem.DBTYPE,tvshow)]">$INFO[listitem.filenameandpath,,extrathumbs]</value>
+        <value condition="[container.content(seasons) | String.IsEqual(ListItem.DBTYPE,season)]">$INFO[container.listitem.path,,extrathumbs]</value>
+    </variable>
+	
+</includes>
