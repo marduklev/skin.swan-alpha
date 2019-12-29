@@ -3,35 +3,48 @@
 
 <!-- MOVE ME START -->
 	
+	
+	<!-- <texture background="true">$VAR[image_StudioLogo]</texture> -->
 	<include name="studiologo_image">
 		<fadetime>200</fadetime>
+		<bordersize>5</bordersize>
 		<texture background="true">$VAR[image_StudioLogo]</texture>
 		<colordiffuse>white</colordiffuse>
 	</include>
+	
 	<variable name="image_StudioLogo">
 		<value>resource://resource.images.studios.white/$INFO[ListItem.Studio,,.png]</value>
     </variable>
+	
+	<variable name="ListItemArt_Discart">
+        <value condition="!String.IsEmpty(ListItem.Art(cartridge))">$INFO[ListItem.Art(cartridge)]</value>
+        <value condition="!String.IsEmpty(ListItem.Art(discart))">$INFO[ListItem.Art(discart)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(album.discart))">$INFO[ListItem.Art(album.discart)]</value>
+        <value condition="!String.IsEmpty(ListItem.Art(landscape)) + Skin.HasSetting(EnableFakeDiscArt)">$INFO[ListItem.Art(landscape)]</value>
+        <value condition="!String.IsEmpty(ListItem.Art(fanart)) + Skin.HasSetting(EnableFakeDiscArt)">$INFO[ListItem.Art(fanart)]</value>
+	</variable>
+	
+	
+	<variable name="rating_value_texture">
+        <value condition="!String.IsEmpty(ListItem.UserRating)">$INFO[ListItem.UserRating,rating/stars/,.png]</value>
+        <value condition="!String.IsEmpty(ListItem.Rating)">$INFO[ListItem.Rating,rating/stars/,.png]</value>
+		<value>rating/stars/0.0.png</value>
+    </variable>
+	
+	
 	<variable name="AdvancedRatings_TextColor">
 		<value condition="Window.IsVisible(movieinformation) + !Skin.HasSetting(UseNetflixInfoDialog)">$INFO[Skin.String(ViewDetailsTextColor)]</value>																																				 
         <value condition="[Control.IsVisible(523) | Control.IsVisible(525) | [Control.IsVisible(526) + Skin.HasSetting(View526_DisableFanArt) + Skin.HasSetting(View_526_nofooterbar)] | [Control.IsVisible(527) + Skin.HasSetting(View527_DisableFanArt)]] | [Window.IsActive(Home) + Skin.String(HomeLayout, netflix2)] | [Window.IsVisible(movieinformation) + Skin.HasSetting(UseNetflixInfoDialog)]">$INFO[Skin.String(RatingsLogoColor)]</value> <!-- default  $INFO[Skin.String(ViewDetailsTextColor)] -->       
 		<value condition="Skin.String(FooterTextColor) + !Skin.String(FooterPanelColor, None)">$INFO[Skin.String(FooterTextColor)]</value>
         <value>ffffffff</value>
     </variable>
-	<variable name="DiscArtImage">
-        <value condition="!String.IsEmpty(ListItem.Art(cartridge))">$INFO[ListItem.Art(cartridge)]</value>
-        <value condition="!String.IsEmpty(ListItem.Art(discart))">$INFO[ListItem.Art(discart)]</value>
-        <value condition="!String.IsEmpty(ListItem.Art(landscape)) + Skin.HasSetting(EnableFakeDiscArt)">$INFO[ListItem.Art(landscape)]</value>
-        <value condition="!String.IsEmpty(ListItem.Art(fanart)) + Skin.HasSetting(EnableFakeDiscArt)">$INFO[ListItem.Art(fanart)]</value>
-	</variable>
-	<variable name="rating_value_texture">
-        <value condition="!String.IsEmpty(ListItem.UserRating)">$INFO[ListItem.UserRating,rating/,.png]</value>
-        <value condition="!String.IsEmpty(ListItem.Rating)">$INFO[ListItem.Rating,rating/,.png]</value>
-		<value>rating/0.0.png</value>
-    </variable>
+	
+	
 	<variable name="premiere_date">
-        <value condition="!String.IsEmpty(ListItem.Premiered)">$INFO[ListItem.Premiered]</value>
+        <value condition="!$EXP[IsMovie] + !String.IsEmpty(ListItem.Premiered)">$INFO[ListItem.Premiered]</value>
         <value condition="!String.IsEmpty(ListItem.Year)">$INFO[ListItem.Year]</value>
     </variable>
+	
 	<variable name="ListItemDurationWithEndTime">
         <value condition="!String.IsEmpty(ListItem.Duration) + !String.IsEmpty(ListItem.EndTimeResume)">$VAR[ListItemDuration,, ]$INFO[ListItem.EndTimeResume, - $LOCALIZE[31112]: ,]</value>
 		<value condition="!String.IsEmpty(ListItem.Duration) + !String.IsEmpty(ListItem.EndTime)">$VAR[ListItemDuration,, - ]$INFO[ListItem.EndTime,$LOCALIZE[31112]: ,]</value>

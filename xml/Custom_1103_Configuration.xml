@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window id="1103" type="dialog">
+	<defaultcontrol always="true">110</defaultcontrol>
+	
+	<onunload>ClearProperty(custom_widget_nr,home)</onunload>
+	<onunload>ClearProperty(SettingSection,home)</onunload>
+	
+	<controls>
+	
+		<control type="group">
+			<include>GlobalBackground</include>
+		</control>
+		
+		<control type="grouplist">
+			<visible>!Window.IsVisible(selectdialog) + !Window.IsVisible(numericinput) + !Window.IsVisible(virtualkeyboard)</visible>
+			<include>Animation_OpenClose_Zoom</include>
+			<left>5%</left>
+			<top>10%</top>
+			<width>90%</width>
+			<height max="80%">auto</height>
+			<orientation>vertical</orientation>
+			<itemgap>20</itemgap>
+			<align>center</align>
+			
+			<control type="group">
+				<height>600</height>
+		
+				<control type="label">
+					<top>-80</top>
+					<width>100%</width>
+					<height>60</height>
+					<font>Reg27</font>
+					<aligny>center</aligny>
+					<textoffsetx>5</textoffsetx>
+					<textcolor>white</textcolor>
+					<label>$VAR[1103_header]</label>
+				</control>				
+		
+				<control type="image">
+					<height>600</height>
+					<texture colordiffuse="CC101010">colors/white.png</texture>
+					<aspectratio>stretch</aspectratio>
+				</control>
+				<control type="grouplist" id="110">
+					<description>using $PARAM[win(home)prop], or just $INFO[win(home)prop] failing in include so use as condition</description>
+					<centerleft>50%</centerleft>
+					<top>10</top>
+					<height>590</height>
+					<onup>200</onup>
+					<onleft>200</onleft>
+					<onright condition="Control.IsVisible(60)">60</onright>
+					<onright condition="!Control.IsVisible(60)">200</onright>
+					<ondown>200</ondown>
+					<pagecontrol>60</pagecontrol>
+					
+					<include condition="String.IsEqual(Window(home).Property(SettingSection),VideoInfoButtonVisibility)">1103_Content_VideoInfoButtonVisibility</include>
+					<include condition="String.IsEqual(Window(home).Property(SettingSection),WidgetAttributes)">1103_Content_WidgetAttributes</include>
+				
+				</control>
+
+				<control type="scrollbar" id="60">
+					<right>0</right>
+					<top>0</top>
+					<bottom>0</bottom>
+					<onleft>110</onleft>
+					<onright>200</onright>
+				</control>
+			
+			</control>
+			
+			<control type="grouplist" id="200">
+				<height>50</height>
+				<width>100%</width>
+				<orientation>horizontal</orientation>
+				<itemgap>5</itemgap>
+				<align>center</align>
+				<onright>60</onright>
+				<onleft>110</onleft>
+				<control type="button" id="201">
+					<width>auto</width>
+					<label>[B]$LOCALIZE[15067][/B]</label>
+					<onup>110</onup>
+					<onclick>close</onclick>
+				</control>
+			</control>
+		</control>
+		
+		<include content="swan_debug_overlay" />
+	</controls>
+</window>

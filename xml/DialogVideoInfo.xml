@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
 	<defaultcontrol always="true">8000</defaultcontrol>
-	<!-- <onload>SetProperty(infobackground,$ESCINFO[ListItem.Art(fanart)],home)</onload>
-	<onunload>ClearProperty(infobackground,home)</onunload> -->
-	
 	
 	<!-- 1.30 DialogVideoInfo.xml
 ID 	Type 		Description
@@ -28,19 +25,19 @@ ID 	Type 		Description
    
     <controls>
 		<control type="group">
-			<include>GlobalBackground</include>
-           <!--  <include condition="!Skin.HasSetting(DisableNowPlayingBackground)">NowPlayingBackground</include> -->
 			<include>Animation_OpenClose_Zoom</include>
 			
-			<!-- fixed pos FANART OVERLAY -->
+			<!-- fixed pos FANART OVERLAY 
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>100%</width>
 				<height>100%</height>
-				<texture border="15">colors/white</texture>
+				<texture border="15">colors/white.png</texture>
 				<colordiffuse>802F2F2F</colordiffuse>
 			</control>
+			-->
+			
 			
 			<!-- fixed pos  studiologo (option b ) + fileinfo bottom right -->
 			<control type="group">
@@ -70,7 +67,7 @@ ID 	Type 		Description
 			
 			<!-- trailer window -->
 			<control type="group">
-				<visible>Player.HasVideo + ![VideoPlayer.Content(movies) | VideoPlayer.Content(episodes) | VideoPlayer.Content(musicvideos) | VideoPlayer.Content(livetv)]</visible>
+				<visible>$EXP[TrailerPlaying]</visible>
 				<animation effect="fade" start="0" end="100" time="750">VisibleChange</animation>
 				<left>100</left>
 				<top>260</top>
@@ -78,7 +75,7 @@ ID 	Type 		Description
 				<height>540</height>
 				<control type="image">
 					<aligny>bottom</aligny>
-					<texture border="15">colors/white</texture>
+					<texture border="15">colors/white.png</texture>
 					<colordiffuse>ff000000</colordiffuse>
 				</control>
 				<control type="videowindow">
@@ -100,7 +97,7 @@ ID 	Type 		Description
 					<left>10</left>
 					<width>420</width>
 					<height>420</height>
-					<texture background="true" diffuse="diffuse/cdmask_new.png" fallback="defaultcovers/cd_big.png">$VAR[DiscArtImage]</texture>
+					<texture background="true" diffuse="diffuse/cdmask_new.png" fallback="defaultcovers/cd_big.png">$VAR[ListItemArt_Discart]</texture>
 					<aspectratio scalediffuse="false" align="center" aligny="center">scale</aspectratio>
 					<animation effect="slide" start="0" end="-410,0" tween="cubic" easing="inout" time="500" delay="100">VisibleChange</animation>
 					<visible>String.IsEqual(Window.Property(AdditionalInfo),infolist)</visible>
@@ -202,7 +199,6 @@ ID 	Type 		Description
 				<itemgap>5</itemgap>
 				<left>150</left>
 				<top>300</top>
-				<visible>!Window.IsActive(script-ExtendedInfo Script-DialogVideoInfo.xml) + !Window.IsActive(script-ExtendedInfo Script-DialogInfo.xml)</visible>
 				<include>Animation_OpenClose_Zoom</include>
 				
 				<!-- SubHeader, Motto -->
@@ -242,26 +238,8 @@ ID 	Type 		Description
 					<usecontrolcoords>true</usecontrolcoords>
 					<orientation>horizontal</orientation>
 					<left>0</left>
-					<itemgap>10</itemgap>
+					<itemgap>15</itemgap>
 					<height>90</height>
-					
-					<!-- rating STARS option B-->
-					<!-- <control type="image">
-						<height>50</height>
-						<width>200</width>
-						<left>-5</left>
-						<visible>
-							[!String.IsEmpty(ListItem.UserRating) | 
-							!String.IsEmpty(Window(Home).Property(ListItem.UserRating)) |
-							!String.IsEmpty(Window(Home).Property(SkinHelper.ListItem.UserRating)) | 
-							!String.IsEmpty(ListItem.Rating) |
-							!String.IsEmpty(Window(Home).Property(ListItem.Rating)) |
-							!String.IsEmpty(Window(Home).Property(SkinHelper.ListItem.Rating))]
-						</visible>
-						<aspectratio align="left" aligny="center">keep</aspectratio>
-						<colordiffuse>green</colordiffuse>
-						<texture background="true">$VAR[rating_value_texture]</texture>
-					</control> -->
 					
 					<control type="image" id="7999">
 						<visible>!String.IsEmpty(Control.GetLabel(7999)) + !String.IsEmpty(ListItem.Studio)</visible>
@@ -276,14 +254,14 @@ ID 	Type 		Description
 						<visible>String.IsEmpty(Control.GetLabel(7999)) + !String.IsEmpty(ListItem.Studio)</visible>
 						<width max="200">auto</width>
 						<height>90</height>
-						<font>Reg20</font>
+						<font>DialogListItem</font>
 						<label>$INFO[ListItem.Studio]</label>
 						<aligny>center</aligny>
 						<align>center</align>
 						<wrapmultiline>true</wrapmultiline>
 						<textcolor>grey</textcolor>
 						<disabledcolor>grey</disabledcolor>
-						<texturenofocus colordiffuse="grey">netflix/frame/slimframe_softedge.png</texturenofocus>
+						<texturenofocus colordiffuse="grey">frames/dialog16to9.png</texturenofocus>
 						<textoffsetx>10</textoffsetx>
 						<textoffsety>7</textoffsety>
 						<enable>false</enable>
@@ -292,8 +270,9 @@ ID 	Type 		Description
 					<!-- YEAR -->
 					<control type="label">
 						<width min="50">auto</width>
+						<height>90</height>
+						<left>10</left>
 						<font>Netflix_Plot</font>
-						<top>15</top>
 						<label>$VAR[premiere_date,[B],[/B]]</label>
 						<textcolor>white</textcolor>
 					</control>
@@ -308,7 +287,7 @@ ID 	Type 		Description
 						<align>center</align>
 						<textcolor>white</textcolor>
 						<disabledcolor>white</disabledcolor>
-						<texturenofocus colordiffuse="white">netflix/frame/slimframe_softedge.png</texturenofocus>
+						<texturenofocus colordiffuse="white">frames/dialog16to9.png</texturenofocus>
 						<height>40</height>
 						<textoffsetx>10</textoffsetx>
 						<textoffsety>-2</textoffsety>
@@ -360,35 +339,31 @@ ID 	Type 		Description
 					<height>50</height>
 					<width>950</width>
 					<visible>![Container.content(tvshows) | String.IsEqual(ListItem.DBTYPE,tvshow)]</visible>
-					<control type="progress">
-						<top>35</top>
-						<width>600</width>
-						<height>4</height>
-						<align>left</align>
-						<texturebg colordiffuse="dimgrey" border="2">colors/color_white.png</texturebg>
-						<lefttexture></lefttexture>
-						<midtexture colordiffuse="red" border="2">colors/color_white.png</midtexture>
-						<righttexture></righttexture>
-						<visible>Integer.IsGreater(ListItem.PercentPlayed,0)</visible>
-						<info>ListItem.PercentPlayed</info>
-					</control>
-					<!-- fake full progressbar for watched & not resumable 
-					note use ViewNetfixHighlightTextColor or osd progress OSDProgressBarColor to get  better 'contrast' color, and dont leave it hardcoded -->
-					<control type="image">
-								<top>35</top>
+						<control type="progress">
+							<top>30</top>
+							<width>600</width>
+							<height>1</height>
+							<align>left</align>
+							<visible>Integer.IsGreater(ListItem.PercentPlayed,0)</visible>
+							<info>ListItem.PercentPlayed</info>
+						</control>
+						<!-- fake full progressbar for watched & not resumable 
+						note use ViewNetfixHighlightTextColor or osd progress OSDProgressBarColor to get  better 'contrast' color, and dont leave it hardcoded -->
+						<control type="image">
+								<top>30</top>
 								<width>600</width>
 								<height>4</height>
 								<align>left</align>
-								<texture colordiffuse="red" border="2">colors/color_white.png</texture>
+								<texture colordiffuse="red">colors/white.png</texture>
 								<visible>[Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable]</visible>
 							</control>
 							<!-- fake full progressbar for watched & not resumable -->
 							<control type="image">
-								<top>35</top>
+								<top>30</top>
 								<width>600</width>
 								<height>4</height>
 								<align>left</align>
-								<texture colordiffuse="dimgrey" border="2">colors/color_white.png</texture>
+								<texture colordiffuse="dimgrey">colors/white.png</texture>
 								<visible>[!Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable]</visible>
 							</control>
 							
@@ -448,27 +423,27 @@ ID 	Type 		Description
 				<include condition="Skin.HasSetting(EnableTouchSupport)">home_button</include>
 				
 				<control type="button" id="8">
-					<!--Play-->
+					<description>play native</description>
 					<label>208</label>
 					<width>285</width>
 					<height>40</height>
 					<align>center</align>
 					<textoffsetx>0</textoffsetx>
-					<visible>Skin.HasSetting(videoinfo_button_play) + !String.IsEpmty(ListItem.Dbid)</visible>
+					<visible>!Skin.HasSetting(VideoInfo_Button_play)</visible>
 				</control>
 				
 				<control type="button" id="9">
-					<!--Resume-->
+					<description>resume native</description>
 					<label>13404</label>
 					<width>285</width>
 					<height>40</height>
 					<align>center</align>
 					<textoffsetx>0</textoffsetx>
-					<visible>Skin.HasSetting(videoinfo_button_play) + ListItem.IsResumable</visible>
+					<visible>!Skin.HasSetting(VideoInfo_Button_play) + ListItem.IsResumable</visible>
 				</control>
 				
 				<control type="togglebutton" id="103">
-					<!-- Trailer -->
+					<description>Play Trailer</description>
 					<width>285</width>
 					<height>40</height>
 					<align>center</align>
@@ -476,64 +451,60 @@ ID 	Type 		Description
 					<label>20410</label>
 					<altlabel>244</altlabel>
 					<usealttexture>Player.HasVideo</usealttexture>
-					<onclick condition="!String.IsEmpty(Window(home).Property(trailer_avail))">PlayMedia($INFO[Window(Home).Property(filename_formatted)]$INFO[ListItem.Title,,-trailer.mp4],1)</onclick>
-					<onclick condition="String.IsEmpty(Window(home).Property(trailer_avail)) + !Player.HasVideo + String.IsEqual(ListItem.DBTYPE,movie)">PlayMedia($INFO[ListItem.Trailer],1)</onclick> <!--sometimes huge delay Playmedia($INFO[Window(Home).Property(SkinHelper.ListItem.Trailer)],1) ,faster but dont get all  PlayMedia($INFO[ListItem.Trailer],1) -->    
-					<onclick condition="String.IsEmpty(Window(home).Property(trailer_avail)) + !Player.HasVideo + !String.IsEqual(ListItem.DBTYPE,movie)">RunScript(script.skin.helper.service,action=playtraileryoutube,title=$INFO[ListItem.Title],local=true)</onclick> <!--sometimes huge delay Playmedia($INFO[Window(Home).Property(SkinHelper.ListItem.Trailer)],1) ,faster but dont get all  PlayMedia($INFO[ListItem.Trailer],1) -->    												
-					<onclick condition="Player.HasVideo">FullScreen</onclick>
-					<visible>Skin.HasSetting(videoinfo_button_trailer)</visible>
-					<visible>String.IsEqual(ListItem.DBTYPE,tvshow) | String.IsEqual(ListItem.DBTYPE,movie)</visible>
+					<onclick>SetProperty(TrailerIsPlaying,true,home)</onclick>
+					
+					<onclick condition="!String.IsEmpty(Window(home).Property(trailer_avail)) + String.IsEqual(ListItem.dbtype,tvshow)">PlayMedia($INFO[ListItem.Filenameandpath]$INFO[ListItem.TvShowTitle,,-trailer.mp4],1)</onclick>
+					<onclick condition="!String.IsEmpty(Window(home).Property(trailer_avail)) + String.IsEqual(ListItem.dbtype,tvshow)">PlayMedia($INFO[listitem.path]$INFO[ListItem.FolderName,,-trailer.mp4],1)</onclick>
+					
+					<onclick condition="String.IsEmpty(ListItem.Trailer)">PlayMedia($INFO[ListItem.Trailer],1)</onclick>
+					
+					<onclick condition="$EXP[TrailerIsPlaying]">FullScreen</onclick>
+					
+					<visible>!Skin.HasSetting(VideoInfo_Button_Trailer) + [String.IsEqual(ListItem.DBTYPE,tvshow) | String.IsEqual(ListItem.DBTYPE,movie)]</visible>
 				</control>
 				<control type="button" id="204">
-					<!-- stop trailer -->
+					<description>Stop Trailer</description>
 					<label>Stop</label>
 					<width>285</width>
 					<height>40</height>
 					<align>center</align>
 					<textoffsetx>0</textoffsetx>
-					<onclick>Stop</onclick>
-					<visible>Player.HasVideo</visible>
+					<onclick>ClearProperty(TrailerIsPlaying,Home)</onclick>
+					<onclick>Player.Control(Stop)</onclick>
+					<visible>$EXP[TrailerIsPlaying]</visible>
 				</control>
+				
 				<control type="button" id="115">
-					<!--Extended Info Button-->
-					<label>31269</label>
+					<description>Embuary TMDB Info</description>
+					<label>Embuary TMDB Info</label>
 					<width>285</width>
 					<height>40</height>
 					<align>center</align>
 					<textoffsetx>0</textoffsetx>
-					<visible>Skin.HasSetting(videoinfo_button_extendedinfo)</visible>
-					<onclick condition="!System.HasAddon(script.extendedinfo)">RunPlugin(plugin://script.extendedinfo)</onclick>
-					<onclick condition="System.HasAddon(script.extendedinfo) + String.IsEqual(Window(Home).Property(contenttype),movies)">RunScript(script.extendedinfo,info=extendedinfo,dbid=$INFO[ListItem.DBID],name=$INFO[ListItem.Title])</onclick>
-					<onclick condition="System.HasAddon(script.extendedinfo) + String.IsEqual(Window(Home).Property(contenttype),tvshows)">RunScript(script.extendedinfo,info=extendedtvinfo,dbid=$INFO[ListItem.DBID],name=$INFO[ListItem.TvShowTitle])</onclick>
-					<onclick condition="System.HasAddon(script.extendedinfo) + String.IsEqual(Window(Home).Property(contenttype),seasons)">RunScript(script.extendedinfo,info=seasoninfo,tvshow=$INFO[ListItem.TvShowTitle],season=$INFO[ListItem.Season],silent=True)</onclick>
-					<onclick condition="System.HasAddon(script.extendedinfo) + String.IsEqual(Window(Home).Property(contenttype),episodes)">RunScript(script.extendedinfo,info=extendedepisodeinfo,dbid=$INFO[ListItem.DBID],tvshow=$INFO[ListItem.TvShowTitle],season=$INFO[ListItem.Season],episode=$INFO[ListItem.Episode],silent=True)</onclick>
+					<visible>!Skin.HasSetting(EmbuaryTMDBInfo) + System.HasAddon(script.embuary.info)</visible>
+					<onclick condition="xy content">run it thiis way</onclick>
 				</control>
 				
 				<control type="button" id="7">
-					<!--set personal rating-->
+					<description>native set user rating</description>
 					<width>290</width>
 					<height>40</height>
-					<label>$LOCALIZE[38018]: $INFO[ListItem.UserRating]</label>
-					<visible>!Skin.HasSetting(KioskMode.Enabled)</visible>
-					<visible>Skin.HasSetting(videoinfo_button_myrating)</visible>
-					<visible>String.IsEmpty(Window.Property(AdditionalInfo))</visible>
+					<label>Rate Title</label>
+					<visible>!Skin.HasSetting(VideoInfo_Button_Rate)</visible>
 					<visible>Control.IsEnabled(7)</visible>
 				</control>
 				
-				<control type="button" id="101">
-					<!--Get Thumb Artwork Downloader-->
+				<control type="button" id="10">
+					<description>native get Thumb</description>
 					<label>13511</label>
 					<width>285</width>
 					<height>40</height>
 					<align>center</align>
 					<textoffsetx>0</textoffsetx>
-					<visible>Skin.HasSetting(videoinfo_button_artwork)</visible>
-					<onclick condition="System.HasAddon(script.artwork.downloader)">ActivateWindow(3004)</onclick>
-					<onclick condition="!System.HasAddon(script.artwork.downloader)">RunPlugin(plugin://script.artwork.downloader)</onclick>
-					<visible>!Skin.HasSetting(KioskMode.Enabled)</visible>
+					<visible>!Skin.HasSetting(VideoInfo_Button_KodiGetThumb)</visible>
 				</control>
-				<!-- Artwork Beef -->
 				<control type="button" id="104">
-					<!--Get Thumb Artwork Beef--> 
+					<description>ArtworkBeef get Thumb</description>
 					<label>Artwork Beef</label>
 					<width>285</width>
 					<height>40</height>
@@ -544,16 +515,15 @@ ID 	Type 		Description
 					<onclick condition="String.IsEqual(ListItem.DBType,movie) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=movie, dbid=$INFO[ListItem.DBID])</onclick>
 					<description>Get Artwork</description>
 					<visible>[String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,musicvideo) | String.IsEqual(ListItem.DBType,episode)] + system.hasaddon(script.artwork.beef)</visible>
-					<visible>Skin.HasSetting(videoinfo_button_artworkbeef)</visible>
+					<visible>!Skin.HasSetting(VideoInfo_Button_BeefGetThumb)</visible>
 				</control>
 				<control type="button" id="6">
-					<!--Refresh-->
+					<description>native refresh</description>
 					<label>184</label>
 					<width>285</width>
 					<height>40</height>
 					<align>center</align>
 					<textoffsetx>0</textoffsetx>
-					<visible>Skin.HasSetting(videoinfo_button_refresh)</visible>
 				</control>
 			</control>
 			
