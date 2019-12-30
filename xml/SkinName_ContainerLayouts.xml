@@ -3,7 +3,62 @@
 
 <!-- MOVE ME START -->
 	
-	
+	<include name="VideoInfo_SlideshowNav">
+		<control type="group">
+			<visible>Control.HasFocus($PARAM[ButtonID])</visible>
+			<animation effect="fade" start="0" end="100" time="350" tween="cubic" easing="inout">Visible</animation>
+			<animation effect="fade" start="0" end="100" time="350" tween="cubic" easing="inout">WindowOpen</animation>
+			<animation effect="fade" end="0" start="100" time="150">Hidden</animation>
+			<animation effect="fade" end="0" start="100" time="150">WindowClose</animation>
+			<control type="button" id="$PARAM[ButtonID]">
+				<visible allowhiddenfocus="true">false</visible>
+				<width>1</width>
+				<height>1</height>
+				<texturefocus />
+				<texturenofocus />
+				<onleft>Control.Move($PARAM[ContainerID],-1)</onleft>
+				<onright>Control.Move($PARAM[ContainerID],1)</onright>
+				<onup>Control.Move($PARAM[ContainerID],1)</onup>
+				<ondown>Control.Move($PARAM[ContainerID],-1)</ondown>
+				<onback>$PARAM[ContainerID]</onback>
+				<oninfo>$PARAM[ContainerID]</oninfo>
+				<onclick>SetFocus($PARAM[ContainerID])</onclick>
+			</control>
+			<control type="image">
+				<texture colordiffuse="FF000000">colors/color_white.png</texture>
+			</control>
+			<control type="group">
+				<animation effect="slide" start="0" end="-1920" condition="!Container($PARAM[ContainerID]).OnNext" reversible="false" time="300" tween="quadratic">Conditional</animation>
+				<animation effect="slide" start="0" end="1920" condition="!Container($PARAM[ContainerID]).OnPrevious" reversible="false" time="300" tween="quadratic">Conditional</animation>
+				<control type="image">
+					<centerleft>50%</centerleft>
+					<centertop>50%</centertop>
+					<width>1920</width>
+					<height>1080</height>
+					<left>-1920</left>
+					<aspectratio>keep</aspectratio>
+					<texture background="true">$INFO[Container($PARAM[ContainerID]).ListItem(-1).FileNameAndPath]</texture>
+				</control>
+				<control type="image">
+					<centerleft>50%</centerleft>
+					<centertop>50%</centertop>
+					<width>1920</width>
+					<height>1080</height>
+					<aspectratio>keep</aspectratio>
+					<texture background="true">$INFO[Container($PARAM[ContainerID]).ListItem.FileNameAndPath]</texture>
+				</control>
+				<control type="image">
+					<centerleft>50%</centerleft>
+					<centertop>50%</centertop>
+					<width>1920</width>
+					<height>1080</height>
+					<left>1920</left>
+					<aspectratio>keep</aspectratio>
+					<texture background="true">$INFO[Container($PARAM[ContainerID]).ListItem(1).FileNameAndPath]</texture>
+				</control>
+			</control>
+		</control>
+	</include>
 	<!-- <texture background="true">$VAR[image_StudioLogo]</texture> -->
 	<include name="studiologo_image">
 		<fadetime>200</fadetime>
@@ -108,67 +163,7 @@
 		<value condition="Container.Content(seasons) + !String.IsEmpty(ListItem(2).DBID)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem(2).TVShowTitle]'</value>
 		<value>-</value>
 	</variable>
-	<!-- videoinfo -->
-	<include name="VideoInfo_ContainerHeader">
-		<definition>
-            <control type="group" id="$PARAM[groupid]">
-                <top>50</top>
-                <height>50</height>
-                <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) | Container($PARAM[id]).IsUpdating</visible>
-                <nested />
-				<control type="grouplist">
-                    <height>52</height>
-                    <orientation>horizontal</orientation>
-                    <usecontrolcoords>true</usecontrolcoords>
-                    <itemgap>10</itemgap>
-                    <control type="label">
-                        <top>18</top>
-                        <left>15</left>
-                        <width>auto</width>
-                        <label>$PARAM[label]</label>
-                        <aligny>center</aligny>
-                        <textcolor>white</textcolor>
-						<font>Bold30</font>
-                        <height>24</height>
-                        <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) | !Container($PARAM[id]).IsUpdating</visible>
-                    </control>
-					<control type="label">
-                        <top>16</top>
-                        <width>auto</width>
-                        <label>$VAR[Universal_WidgetHeader_Seperator]</label>
-						<aligny>center</aligny>
-                        <textcolor>green</textcolor>
-                        <font>Bold36</font>
-                        <height>24</height>
-                        <visible>Control.HasFocus($PARAM[id])</visible>
-                        <visible>!String.IsEmpty(Container($PARAM[id]).ListItem.Label)</visible>
-                        <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) + !Container($PARAM[id]).IsUpdating</visible>
-                    </control>
-					<control type="label">
-                        <top>20</top>
-                        <width>auto</width>
-						<label>$VAR[Universal_WidgetHeaderListItem]</label>
-                        <aligny>center</aligny>
-						<textcolor>white</textcolor>
-						<font>Reg30</font>
-                        <height>24</height>
-                        <visible>Control.HasFocus($PARAM[id])</visible>
-                        <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) + !Container($PARAM[id]).IsUpdating</visible>
-                    </control>
-					<control type="image">
-						<visible>Container($PARAM[id]).IsUpdating</visible>
-						<top>10</top>
-						<width>40</width>
-						<height>40</height>
-						<aspectratio scalediffuse="false" align="center" aligny="center">keep</aspectratio>
-						<texture colordiffuse="green">special://skin/extras/busy/skypishball.apng</texture>
-						<aspectratio align="center" aligny="center">keep</aspectratio>
-					</control>
-					
-				</control>
-            </control>
-        </definition>
-    </include>
+	
 	<include name="VideoInfo_Container">
 		<control type="$PARAM[type]" id="$PARAM[id]">
 			<nested />
@@ -579,8 +574,9 @@
 			</control>
 			<control type="group">
 				<visible>!String.IsEqual(ListItem.Label,$LOCALIZE[284])</visible>
+				<visible>![String.IsEqual(ListItem.FileExtension,jpg) | String.IsEqual(ListItem.FileExtension,png)]</visible>
 					<description>get listitem.dbtype at container content</description>
-				<control type="image">
+					<control type="image">
 					<centerleft>50%</centerleft>
 					<centertop>50%</centertop>
 					<width>35%</width>
@@ -745,7 +741,6 @@
 			
 			<height>$PARAM[type_height]</height>
 			<top>$PARAM[type_pos_top]</top>
-			
 			<visible>$PARAM[visible]</visible>
 			<itemlayout height="$PARAM[layout_height]" width="$PARAM[layout_width]">
 				<control type="group">

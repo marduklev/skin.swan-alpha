@@ -538,17 +538,12 @@ ID 	Type 		Description
 				<control type="button" id="8006">    
 					<width>130</width>
 					<height>40</height>
-					<align></align>
-					<aligny></aligny>
-					<font></font>
-					<label></label>
-					<textcolor></textcolor>
-					<focusedcolor></focusedcolor>
-					<disabledcolor></disabledcolor>
-					<pulseonselect></pulseonselect>
+					<focusedcolor />
+					<disabledcolor />
+					<pulseonselect />
 					<texturefocus flipy="true">info/arrowdown.png</texturefocus>
 					<texturenofocus flipy="true">info/arrowdown.png</texturenofocus>
-					<textoffsetx></textoffsetx>
+					<textoffsetx />
 					
 					<!-- Main Info goto Info List -->
 					<onfocus condition="!String.Contains(Window.Property(AdditionalInfo),infocontainer)">SetProperty(AdditionalInfo, infolist)</onfocus>
@@ -574,14 +569,9 @@ ID 	Type 		Description
 				<control type="button" id="8005">    
 					<width>130</width>
 					<height>40</height>
-					<align></align>
-					<aligny></aligny>
-					<font></font>
-					<label></label>
-    			    <textcolor></textcolor>
-					<focusedcolor></focusedcolor>
-					<disabledcolor></disabledcolor>
-					<pulseonselect></pulseonselect>
+					<focusedcolor />
+					<disabledcolor />
+					<pulseonselect />
     			    <texturefocus>info/arrowdown.png</texturefocus>
 					<texturenofocus>info/arrowdown.png</texturenofocus>
     			    <textoffsetx></textoffsetx>
@@ -599,14 +589,12 @@ ID 	Type 		Description
 				</control>
 			</control>
 			
-			
-			
-			<!-- ITEM CONTAINERS -->
+		<!-- ITEM CONTAINERS -->
 			<control type="grouplist" id="8001">
 				<animation effect="slide" end="0,-910" time="1000" tween="cubic" reversible="false" condition="String.IsEqual(Window.Property(AdditionalInfo),infocontainer)">conditional</animation>
 				<animation effect="slide" start="0,-910" end="0,-0" time="800" tween="cubic" reversible="false" condition="!String.IsEqual(Window.Property(AdditionalInfo),infocontainer)">conditional</animation>
 				
-				<top>1085</top>
+				<top>1080</top>
 				<left>120</left>
 				<height>890</height>
 				<width>1730</width>
@@ -620,79 +608,93 @@ ID 	Type 		Description
 				
 				<control type="group" id="8400">
 					<height>-20</height>
-					<description>thanks to jurialmunkey,workaroung for positioning</description>
 				</control>
 				<!-- MovieSet -->
-				<include content="VideoInfo_ContainerHeader">
+				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="8500" />
 					<param name="id" value="8600" />
 					<param name="label" value="$INFO[ListItem.Set,&quot; , &quot;]" />
 					<visible>Control.IsVisible(8600) + !String.IsEmpty(ListItem.SetId)</visible>
 				</include>
-				<include content="VideoInfo_Container">
-					<param name="type" value="panel" />
+				<include content="Universal_Container">
 					<param name="id" value="8600" />
-					<param name="width" value="216" />
-					<param name="height" value="324" />
-					<param name="layout" value="PosterPanelLayout" />
-					<param name="visible" value="!String.IsEmpty(ListItem.SetId) + [Integer.IsGreater(Container(8600).NumItems,0) | Container(8600).IsUpdating]" />
-					<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(8600).NumItems,0) | Container(8600).IsUpdating">Conditional</animation>
+					<param name="visible" value="Integer.IsGreater(Container(8600).NumItems,0) | Container(8600).IsUpdating" />
+					<param name="type_height" value="370" />
+					<param name="tags_visible" value="true" />
+					<param name="layout_height" value="345" />
+					<param name="layout_width" value="210" />
+					<param name="itemwidth" value="207" />
+					<param name="itemheight" value="310" />
+					<param name="layout" value="poster" />
 					<content sortby="year" target="videos">videodb://movies/sets/$INFO[ListItem.SetId]/?setid=$INFO[ListItem.SetId]</content>
 				</include>
 				<!-- next unwatched episode - System.GetBool(videolibrary.tvshowsselectfirstunwatcheditem,value=2)-->
-				<include content="VideoInfo_ContainerHeader">
+				<!-- test no tags use info right beside thumb -->
+				
+				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="8510" />
 					<param name="id" value="8610" />
-					<param name="label" value="$LOCALIZE[31212]" />
+					<param name="label" value="Nächste Episode" />
 					<visible>Control.IsVisible(8610)</visible>
 				</include>
-				<include content="VideoInfo_Container">
-					<param name="type" value="panel" />
+				<include content="Universal_Container">
 					<param name="id" value="8610" />
-					<param name="width" value="578" />
-					<param name="height" value="340" />
-					<param name="layout" value="ThumbsViewLayout" />
 					<param name="visible" value="[Integer.IsGreater(ListItem.Property(UnwatchedEpisodes),0) + !String.IsEmpty(ListItem.DBID)] + Integer.IsGreater(Container(8610).NumItems,0) | Container(8610).IsUpdating" />
-					<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(8610).NumItems,0) | Container(8610).IsUpdating">Conditional</animation>
+					<param name="type_height" value="370" />
+					<param name="tags_visible" value="false" />
+					<param name="layout_height" value="360" />
+					<param name="layout_width" value="612" />
+					<param name="itemheight" value="350" />
+					<param name="itemwidth" value="595" />
+					<param name="ls_overlay_visible" value="true" />
+					<param name="layout" value="landscape" />
 					<content limit="1" target="videos">videodb://inprogresstvshows/$INFO[ListItem.DBID]/-2/?tvshowid=$INFO[ListItem.DBID]</content>
 				</include>
 				<!-- CAST -->
-				<include content="VideoInfo_ContainerHeader">
+				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="8501" />
 					<param name="id" value="8601" />
 					<param name="label" value="$LOCALIZE[344] $INFO[ListItem.Title,  &quot; , &quot;]" />
 					<visible>Control.IsVisible(8601)</visible>
 				</include>
-				<include content="VideoInfo_Container">
-					<param name="type" value="panel" />
+				<include content="Universal_Container">
 					<param name="id" value="8601" />
-					<param name="width" value="216" />
-					<param name="height" value="324" />
-					<param name="layout" value="PosterCast" />
-					<param name="aspectratio" value="scale" />
 					<param name="visible" value="Integer.IsGreater(Container(8601).NumItems,0) | Container(8601).IsUpdating" />
-					<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(8601).NumItems,0) | Container(8601).IsUpdating">Conditional</animation>
+					<param name="type_height" value="370" />
+					<param name="tags_visible" value="true" />
+					<param name="layout_height" value="345" />
+					<param name="layout_width" value="210" />
+					<param name="itemwidth" value="207" />
+					<param name="itemheight" value="310" />
+					<param name="layout" value="poster" />
+					<include>Action_CastMemberSearch</include>
+					
+					<!-- FAIL <include>OnInfoAction_CastMemberTMDBSearch</include> -->
+					
 					<content>$VAR[EmbuaryCast]</content>
 				</include>
 				
-				<!-- ITEMS BY CAST ,including current video
+				<!-- 
+				ITEMS BY CAST ,including current video
 					<content target="videos">videodb://movies/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22actor%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Container(8601).ListItem.Label]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
 					<content target="videos">videodb://tvshows/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22actor%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Container(8601).ListItem.Label]%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D</content>
-				
-					-->
-				<include content="VideoInfo_ContainerHeader">
+				-->
+				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="8502" />
 					<param name="id" value="8602" />
 					<param name="label" value="$LOCALIZE[342] &amp; $LOCALIZE[20343] $LOCALIZE[1441] [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$INFO[Container(8601).ListItem.Label, &quot; , &quot;][/COLOR]" />
 					<visible>Control.IsVisible(8602)</visible>
 				</include>
-				<include content="VideoInfo_Container">
-					<param name="type" value="panel" />
+				<include content="Universal_Container">
 					<param name="id" value="8602" />
-					<param name="width" value="216" />
-					<param name="height" value="324" />
-					<param name="layout" value="PosterPanelLayout" />
 					<param name="visible" value="Integer.IsGreater(Container(8601).NumItems,0) | Container(8601).IsUpdating" />
+					<param name="type_height" value="370" />
+					<param name="tags_visible" value="true" />
+					<param name="layout_height" value="345" />
+					<param name="layout_width" value="210" />
+					<param name="itemwidth" value="207" />
+					<param name="itemheight" value="310" />
+					<param name="layout" value="poster" />
 					<content target="videos">videodb://movies/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22actor%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Container(8601).ListItem.Label]%22%5D%7D%2C%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
 					<content target="videos">videodb://tvshows/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22actor%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Container(8601).ListItem.Label]%22%5D%7D%2C%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D</content>
 				</include>
@@ -703,78 +705,90 @@ ID 	Type 		Description
 				<!-- xsp for shows support director, but missing listitem as info label 
 				<content target="videos">videodb://tvshows/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22director%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[ListItem.Director]%22%5D%7D%2C%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D</content> -->
 				
-				<include content="VideoInfo_ContainerHeader">
+				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="8503" />
 					<param name="id" value="8603" />
 					<param name="label" value="$LOCALIZE[342] $LOCALIZE[19159] $LOCALIZE[20339] [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$INFO[ListItem.Director, &quot; , &quot;][/COLOR]" />
 					<visible>!String.IsEmpty(ListItem.Director) + Control.IsVisible(8603)</visible>
 				</include>
-				<include content="VideoInfo_Container">
-					<param name="type" value="panel" />
+				<include content="Universal_Container">
 					<param name="id" value="8603" />
-					<param name="width" value="216" />
-					<param name="height" value="324" />
-					<param name="layout" value="PosterPanelLayout" />
 					<param name="visible" value="!String.IsEmpty(ListItem.Director) + [Integer.IsGreater(Container(8603).NumItems,0) | Container(8603).IsUpdating]" />
-					<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(8603).NumItems,0) | Container(8603).IsUpdating">Conditional</animation>
+					<param name="type_height" value="370" />
+					<param name="tags_visible" value="true" />
+					<param name="layout_height" value="345" />
+					<param name="layout_width" value="210" />
+					<param name="itemwidth" value="207" />
+					<param name="itemheight" value="310" />
+					<param name="layout" value="poster" />
 					<content target="videos">videodb://movies/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22director%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[ListItem.Director]%22%5D%7D%2C%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
 				</include>
 				
 				<!-- similiar -->
-				<include content="VideoInfo_ContainerHeader">
+				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="8504" />
 					<param name="id" value="8604" />
 					<param name="label" value="$LOCALIZE[31622] [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$INFO[ListItem.Title,  &quot; , &quot;][/COLOR]" />
 					<visible>Control.IsVisible(8604)</visible>
 				</include>
-				<include content="VideoInfo_Container">
-					<param name="type" value="panel" />
+				<include content="Universal_Container">
 					<param name="id" value="8604" />
-					<param name="width" value="216" />
-					<param name="height" value="324" />
-					<param name="layout" value="PosterPanelLayout" />
 					<param name="visible" value="Integer.IsGreater(Container(8604).NumItems,0) | Container(8604).IsUpdating" />
-					<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(8604).NumItems,0) | Container(8604).IsUpdating">Conditional</animation>
+					<param name="type_height" value="370" />
+					<param name="tags_visible" value="true" />
+					<param name="layout_height" value="345" />
+					<param name="layout_width" value="210" />
+					<param name="itemwidth" value="207" />
+					<param name="itemheight" value="310" />
+					<param name="layout" value="poster" />
 					<content target="videos">$VAR[Similiar_Content]</content>
 				</include>
 				
 				<!-- YOU TUBE -->
-				<include content="VideoInfo_ContainerHeader">
+				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="8505" />
 					<param name="id" value="8605" />
 					<param name="label" value="$LOCALIZE[31797] [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$INFO[ListItem.Title,  &quot; , &quot;][/COLOR]" />
 					<visible>Control.IsVisible(8605)</visible>
 				</include>
-				<include content="VideoInfo_Container">
-					<param name="type" value="panel" />
+				<include condition="!$EXP[IsOfflineMode]" content="Universal_Container">
 					<param name="id" value="8605" />
-					<param name="width" value="578" />
-					<param name="height" value="340" />
-					<param name="layout" value="ThumbsViewLayout" />
-					<param name="visible" value="[System.HasNetwork + System.HasAddon(plugin.video.youtube)] + [Integer.IsGreater(Container(8605).NumItems,0) | Container(8605).IsUpdating]" />
-					<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(8605).NumItems,0) | Container(8605).IsUpdating">Conditional</animation>
+					<param name="visible" value="[Integer.IsGreater(Container(8605).NumItems,0) | Container(8605).IsUpdating]" />
+					<param name="type_height" value="365" />
+					<param name="tags_visible" value="true" />
+					<param name="layout_height" value="355" />
+					<param name="layout_width" value="490" />
+					<param name="itemheight" value="280" />
+					<param name="itemwidth" value="476" />
+					<param name="ls_overlay_visible" value="true" />
+					<param name="layout" value="landscape" />
 					<content target="videos" sortby="file" limit="25">plugin://plugin.video.youtube/search/?q=$INFO[ListItem.Title]</content>
 				</include>
 				
 				<!-- stored extra fanart $LOCALIZE[20438]-->
-				<include content="VideoInfo_ContainerHeader">
+				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="8506" />
 					<param name="id" value="8606" />
 					<param name="label" value="[UPPERCASE]$LOCALIZE[20438][/UPPERCASE]" />
 					<visible>Control.IsVisible(8606)</visible>
 				</include>
-				<include content="VideoInfo_Container">
-					<param name="type" value="panel" />
+				<include content="Universal_Container">
 					<param name="id" value="8606" />
-					<param name="width" value="578" />
-					<param name="height" value="340" />
-					<param name="layout" value="ThumbsViewLayout" />
 					<param name="visible" value="Integer.IsGreater(Container(8606).NumItems,0) | Container(8606).IsUpdating" />
-					<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(8606).NumItems,0) | Container(8606).IsUpdating">Conditional</animation>
+					<param name="type_height" value="370" />
+					<param name="tags_visible" value="false" />
+					<param name="layout_height" value="370" />
+					<param name="layout_width" value="612" />
+					<param name="itemheight" value="365" />
+					<param name="itemwidth" value="620" />
+					<param name="ls_overlay_visible" value="false" />
+					<param name="layout" value="landscape" />
+					
+					<onclick>SetFocus(9001)</onclick>
 					<content>$VAR[extraFanartLocation]</content>
 				</include>
-				<!-- stored extra thumbs -->
-				<include content="VideoInfo_ContainerHeader">
+				<!-- stored extras -->
+				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="8509" />
 					<param name="id" value="8609" />
 					<param name="label" value="Bonusmaterial" />
@@ -796,20 +810,25 @@ ID 	Type 		Description
 					<content>$INFO[listitem.path,,extras]</content>
 				</include>
 				<!-- stored extra thumbs -->
-				<include content="VideoInfo_ContainerHeader">
+				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="8507" />
 					<param name="id" value="8607" />
 					<param name="label" value="EXTRA THUMBS" />
 					<visible>Control.IsVisible(8607)</visible>
 				</include>
-				<include content="VideoInfo_Container">
-					<param name="type" value="panel" />
+				<include content="Universal_Container">
 					<param name="id" value="8607" />
-					<param name="width" value="578" />
-					<param name="height" value="340" />
-					<param name="layout" value="ThumbsViewLayout" />
 					<param name="visible" value="Integer.IsGreater(Container(8607).NumItems,0) | Container(8607).IsUpdating" />
-					<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(8607).NumItems,0) | Container(8607).IsUpdating">Conditional</animation>
+					<param name="type_height" value="370" />
+					<param name="tags_visible" value="false" />
+					<param name="layout_height" value="370" />
+					<param name="layout_width" value="612" />
+					<param name="itemheight" value="365" />
+					<param name="itemwidth" value="620" />
+					<param name="ls_overlay_visible" value="false" />
+					<param name="layout" value="landscape" />
+					
+					<onclick>SetFocus(9002)</onclick>
 					<content>$VAR[extrasLocation]</content>
 				</include>
 			</control>
