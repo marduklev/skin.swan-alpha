@@ -101,16 +101,16 @@
     </variable>
 	
 	<variable name="ListItemDurationWithEndTime">
-        <value condition="!String.IsEmpty(ListItem.Duration) + !String.IsEmpty(ListItem.EndTimeResume)">$VAR[ListItemDuration,, ]$INFO[ListItem.EndTimeResume, - $LOCALIZE[31112]: ,]</value>
-		<value condition="!String.IsEmpty(ListItem.Duration) + !String.IsEmpty(ListItem.EndTime)">$VAR[ListItemDuration,, - ]$INFO[ListItem.EndTime,$LOCALIZE[31112]: ,]</value>
+        <value condition="!String.IsEmpty(ListItem.Duration) + !String.IsEmpty(ListItem.EndTimeResume)">$VAR[ListItemDuration,, ]$INFO[ListItem.EndTimeResume, - $LOCALIZE[31080]: ,]</value>
+		<value condition="!String.IsEmpty(ListItem.Duration) + !String.IsEmpty(ListItem.EndTime)">$VAR[ListItemDuration,, - ]$INFO[ListItem.EndTime,$LOCALIZE[31080]: ,]</value>
 		<value>$VAR[ListItemDuration]</value>
     </variable>
 	
 	<!-- String.IsEndsWith(ListItem.Overlay,OverlayWatched.png) , String.IsEndsWith(ListItem.Overlay,OverlayUnwatched.png) -->
 	<variable name="PercentPlayed">
-		<value condition="!Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable">watched 0%</value>
-		<value condition="Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable">watched 100%</value>
-		<value>$INFO[ListItem.PercentPlayed,watched ,%]</value>
+		<value condition="!Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable">$LOCALIZE[16102] 0%</value>
+		<value condition="Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable">$LOCALIZE[16102] 100%</value>
+		<value>$INFO[ListItem.PercentPlayed,$LOCALIZE[16102] ,%]</value>
 	</variable>
 	<variable name="Plots">
 		<value condition="Container.content(addons) + !String.IsEmpty(ListItem.AddonDescription)">$INFO[ListItem.AddonDescription]</value>
@@ -164,79 +164,6 @@
 		<value>-</value>
 	</variable>
 	
-	<include name="VideoInfo_Container">
-		<control type="$PARAM[type]" id="$PARAM[id]">
-			<nested />
-			<scrolltime tween="quadratic">400</scrolltime>
-			<top>50</top>
-			
-			<onclick condition="Control.HasFocus(8606)">SetFocus(9001)</onclick>
-			<onclick condition="Control.HasFocus(8607)">SetFocus(9002)</onclick>
-			
-			<onclick condition="Control.HasFocus(8601) + String.IsEqual(Skin.String(videoinfo_castaction),library_search) + !String.IsEmpty(Skin.String(SearchTerm))">Skin.Reset(SearchTerm)</onclick>
-			<onclick condition="Control.HasFocus(8601) + String.IsEqual(Skin.String(videoinfo_castaction),library_search)">Dialog.Close(movieinformation,true)</onclick>
-			<onclick condition="Control.HasFocus(8601) + String.IsEqual(Skin.String(videoinfo_castaction),library_search)">Skin.SetString(SearchTerm,$INFO[ListItem.Label])</onclick>
-			<onclick condition="Control.HasFocus(8601) + String.IsEqual(Skin.String(videoinfo_castaction),library_search)">ActivateWindow(1100),return</onclick>
-			<onclick condition="Control.HasFocus(8601) + String.IsEqual(Skin.String(videoinfo_castaction),extendedinfo)">RunScript(script.extendedinfo,info=extendedactorinfo,name=$INFO[ListItem.Label])</onclick>
-			<oninfo condition="Control.HasFocus(8601)">RunScript(script.extendedinfo,info=extendedactorinfo,name=$INFO[ListItem.Label])</oninfo>
-	
-			
-			<preloaditems>2</preloaditems>
-			<movement>$PARAM[movement]</movement>
-			<orientation>horizontal</orientation>
-			<height>385</height>
-			<visible>$PARAM[visible]</visible>
-			<itemlayout height="$PARAM[height]" width="$PARAM[width]">
-				<control type="group">
-					<width>$PARAM[width]</width>
-					<height>$PARAM[height]</height>
-					<include content="$PARAM[layout]">
-						<param name="WatchedIndicator" value="WatchedIndicatorNormal" />
-						<param name="colordiffuse" value="$VAR[ViewDetailsPanelColor]" />
-						<param name="border" value="thumbsborder_unfocused" />
-					</include>
-					<control type="group">
-						<top>-2</top>
-						<include content="Tag_NF">
-							<param name="tagwidth" value="$PARAM[width]"/>
-							<param name="tagtop" value="$PARAM[height]" />
-						</include>
-					</control>
-				</control>
-			</itemlayout>
-			<focusedlayout height="$PARAM[height]" width="$PARAM[width]">
-				<control type="group">
-					<width>$PARAM[width]</width>
-					<height>$PARAM[height]</height>
-					<include>Focus_Zoom_Animation</include>
-					<control type="group">
-						<visible>Control.HasFocus($PARAM[id])</visible>
-						<include content="$PARAM[layout]">
-							<param name="WatchedIndicator" value="WatchedIndicatorNormal" />
-							<param name="colordiffuse" value="$VAR[ViewDetailsBorderFocusColor]" />
-							<param name="border" value="thumbsborder_focused" />
-						</include>
-						<include condition="Skin.HasSetting(LibItems_FocusOverlay)">FocusOverlay</include>
-					</control>
-					<control type="group">
-						<visible>!Control.HasFocus($PARAM[id])</visible>
-						<include content="$PARAM[layout]">
-							<param name="WatchedIndicator" value="WatchedIndicatorNormal" />
-							<param name="colordiffuse" value="$VAR[ViewDetailsPanelColor]" />
-							<param name="border" value="thumbsborder_unfocused" />
-						</include>
-					</control>
-					<control type="group">
-						<top>-2</top>
-						<include content="Tag_FO">
-							<param name="tagwidth" value="$PARAM[width]"/>
-							<param name="tagtop" value="$PARAM[height]" />
-						</include>
-					</control>
-				</control>
-			</focusedlayout>
-		</control>
-	</include>
 	<!-- MOVE ME END -->
 	<include name="Dialog_Containers">
 		<param name="Container_Height" default="67%" />
@@ -390,7 +317,7 @@
 	
 	<include name="Dialog_CommonInfo">
 		<param name="Def_Icon" default="$INFO[ListItem.Icon]" />
-		<param name="Header_posy" default="170" />
+		<param name="Header_posy" default="140" />
 		<param name="Header_label" default="[UPPERCASE][B]$INFO[System.CurrentWindow][/B][/UPPERCASE]" />
 		<definition>
 			<control type="image">
@@ -405,13 +332,13 @@
 			<control type="label">
 				<posy>$PARAM[Header_posy]</posy>
 				<label>$PARAM[Header_label]</label>
-				<textcolor>$VAR[Button_Text_NF]</textcolor>
+				<textcolor>$VAR[Button_Text_FO]</textcolor>
 				<font>Header_Dialog</font>
 				<left>33.3%</left>
 				<width>33.3%</width>
-				<height>100</height>
+				<height>120</height>
 				<align>center</align>
-				<aligny>center</aligny>
+				<aligny>bottom</aligny>
 				<wrapmultiline>true</wrapmultiline>
 			</control>
 			<control type="textbox">
@@ -559,6 +486,12 @@
 		</animation>
 	</include>
 	
+	<!-- play button just if
+	new
+	<visible>[ListItem.IsPlaybable | String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,episode) | String.IsEqual(ListItem.DBType,song)] + ![ListItem.IsFolder | String.IsEqual(ListItem.Property(IsFolder),true)]</visible>
+	old
+	<visible>![String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,artist) | String.IsEqual(ListItem.DBType,album) | ListItem.IsFolder | String.IsEqual(ListItem.Property(IsFolder),true)]</visible>
+	 -->
 	<!-- dimm focus listitem overlay -->
 	<include name="FocusOverlay">
 		<param name="diffusedimtext" default="colors/white.png" />
@@ -575,8 +508,9 @@
 			<control type="group">
 				<visible>!String.IsEqual(ListItem.Label,$LOCALIZE[284])</visible>
 				<visible>![String.IsEqual(ListItem.FileExtension,jpg) | String.IsEqual(ListItem.FileExtension,png)]</visible>
-					<description>get listitem.dbtype at container content</description>
-					<control type="image">
+				<description>get listitem.dbtype at container content</description>
+				
+				<control type="image">
 					<centerleft>50%</centerleft>
 					<centertop>50%</centertop>
 					<width>35%</width>
@@ -584,8 +518,8 @@
 					<colordiffuse>$VAR[Widget_DimOverlay_Icon]</colordiffuse>
 					<aspectratio scalediffuse="false" align="center" aligny="center">keep</aspectratio>
 					<texture>overlay/overlay_button_play.png</texture>
-					<visible>![String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,artist) | String.IsEqual(ListItem.DBType,album) | ListItem.IsFolder | String.IsEqual(ListItem.Property(IsFolder),true)]</visible>
-					</control>
+					<visible>[ListItem.IsPlaybable | String.IsEqual(ListItem.DBType,video) | String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,episode) | String.IsEqual(ListItem.DBType,song)] + ![ListItem.IsFolder | String.IsEqual(ListItem.Property(IsFolder),true)]</visible>
+				</control>
 				<control type="image">
 					<centerleft>50%</centerleft>
 					<centertop>50%</centertop>
@@ -626,11 +560,12 @@
 	
 	<!-- Container Header : label- sep - focused item label - busy -->
 	<include name="Universal_ContainerHeader">
-		
+		<param name="align" default="left" />
 		
 		<definition>
             <control type="group" id="$PARAM[groupid]">
-                <top>50</top>
+                
+				<top>50</top>
                 <height>60</height>
                 <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) | Container($PARAM[id]).IsUpdating</visible>
                 <nested />
@@ -639,7 +574,10 @@
                     <orientation>horizontal</orientation>
                     <usecontrolcoords>true</usecontrolcoords>
                     <itemgap>10</itemgap>
-                    <control type="label">
+                    
+					<align>$PARAM[align]</align>
+					
+					<control type="label">
                         <top>20</top>
                         <left>15</left>
                         <width>auto</width>

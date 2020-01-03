@@ -27,6 +27,10 @@ ID 	Type 		Description
 		<control type="group">
 			<include>Animation_OpenClose_Zoom</include>
 			
+			<include content="Animation_TransitionFadeOut">
+				<param name="condition" value="[Window.IsVisible(script-embuary-video.xml) | Window.IsVisible(script-embuary-person.xml) | Window.IsVisible(script-embuary-image.xml)]" />
+			</include>
+			
 			<!-- fixed pos FANART OVERLAY 
 			<control type="image">
 				<posx>0</posx>
@@ -67,7 +71,7 @@ ID 	Type 		Description
 			
 			<!-- trailer window -->
 			<control type="group">
-				<visible>$EXP[TrailerPlaying]</visible>
+				<visible>$EXP[TrailerIsPlaying]</visible>
 				<animation effect="fade" start="0" end="100" time="750">VisibleChange</animation>
 				<left>100</left>
 				<top>260</top>
@@ -75,10 +79,11 @@ ID 	Type 		Description
 				<height>540</height>
 				<control type="image">
 					<aligny>bottom</aligny>
-					<texture border="15">colors/white.png</texture>
+					<texture border="15">diffuse/bgpanel.png</texture>
 					<colordiffuse>ff000000</colordiffuse>
 				</control>
 				<control type="videowindow">
+				
 				</control>
 			</control>
 			
@@ -133,7 +138,7 @@ ID 	Type 		Description
 					<top>170</top>
 					<width>1880</width>
 					<height>1</height>
-					<texture>colors/color_white.png</texture>
+					<texture>colors/white.png</texture>
 					<colordiffuse>grey</colordiffuse>
 				</control>
 				<!-- Dialog Header -->
@@ -424,106 +429,79 @@ ID 	Type 		Description
 				
 				<control type="button" id="8">
 					<description>play native</description>
-					<label>208</label>
-					<width>285</width>
-					<height>40</height>
-					<align>center</align>
-					<textoffsetx>0</textoffsetx>
 					<visible>!Skin.HasSetting(VideoInfo_Button_play)</visible>
+					<include>Button_VideoInfo</include>
+					<label>208</label>
 				</control>
 				
 				<control type="button" id="9">
 					<description>resume native</description>
-					<label>13404</label>
-					<width>285</width>
-					<height>40</height>
-					<align>center</align>
-					<textoffsetx>0</textoffsetx>
 					<visible>!Skin.HasSetting(VideoInfo_Button_play) + ListItem.IsResumable</visible>
+					<include>Button_VideoInfo</include>
+					<label>13404</label>
 				</control>
 				
 				<control type="togglebutton" id="103">
 					<description>Play Trailer</description>
-					<width>285</width>
-					<height>40</height>
-					<align>center</align>
-					<textoffsetx>0</textoffsetx>
+					<visible>!Skin.HasSetting(VideoInfo_Button_Trailer) + [[!String.IsEmpty(Window(home).Property(trailer_avail)) | !String.IsEmpty(ListItem.Trailer)] | [String.IsEmpty(Window(home).Property(trailer_avail)) + String.IsEmpty(ListItem.Trailer) + Integer.IsGreater(Container(8605).NumItems,0)]]</visible>
+					<include>Button_VideoInfo</include>
 					<label>20410</label>
-					<altlabel>244</altlabel>
-					<usealttexture>Player.HasVideo</usealttexture>
-					<onclick>SetProperty(TrailerIsPlaying,true,home)</onclick>
-					
+					<onclick condition="String.IsEmpty(Window(home).Property(trailer_avail)) + !String.IsEmpty(ListItem.Trailer)">PlayMedia($INFO[ListItem.Trailer],1)</onclick>
 					<onclick condition="!String.IsEmpty(Window(home).Property(trailer_avail)) + String.IsEqual(ListItem.dbtype,tvshow)">PlayMedia($INFO[ListItem.Filenameandpath]$INFO[ListItem.TvShowTitle,,-trailer.mp4],1)</onclick>
-					<onclick condition="!String.IsEmpty(Window(home).Property(trailer_avail)) + String.IsEqual(ListItem.dbtype,tvshow)">PlayMedia($INFO[listitem.path]$INFO[ListItem.FolderName,,-trailer.mp4],1)</onclick>
-					
-					<onclick condition="String.IsEmpty(ListItem.Trailer)">PlayMedia($INFO[ListItem.Trailer],1)</onclick>
-					
-					<onclick condition="$EXP[TrailerIsPlaying]">FullScreen</onclick>
-					
-					<visible>!Skin.HasSetting(VideoInfo_Button_Trailer) + [String.IsEqual(ListItem.DBTYPE,tvshow) | String.IsEqual(ListItem.DBTYPE,movie)]</visible>
+					<onclick condition="!String.IsEmpty(Window(home).Property(trailer_avail)) + !String.IsEqual(ListItem.dbtype,tvshow)">PlayMedia($INFO[listitem.path]$INFO[ListItem.FolderName,,-trailer.mp4],1)</onclick>
+					<onclick condition="Integer.IsGreater(Container(8605).NumItems,0) + String.IsEmpty(Window(home).Property(trailer_avail)) + String.IsEmpty(ListItem.Trailer)">PlayMedia($INFO[container(8605).ListItemAbsolute(0).Filenameandpath],1)</onclick>
+					<onclick>SetProperty(TrailerIsPlaying,true,home)</onclick>
+					<usealttexture>!String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</usealttexture>
+					<altlabel>244</altlabel>
+					<altclick>FullScreen</altclick>
 				</control>
-				<control type="button" id="204">
-					<description>Stop Trailer</description>
-					<label>Stop</label>
-					<width>285</width>
-					<height>40</height>
-					<align>center</align>
-					<textoffsetx>0</textoffsetx>
-					<onclick>ClearProperty(TrailerIsPlaying,Home)</onclick>
-					<onclick>Player.Control(Stop)</onclick>
-					<visible>$EXP[TrailerIsPlaying]</visible>
+				<control type="button" id="105">
+					<description>Stop Trailer,Prop Cleared via Custom Window</description>
+					<visible>!String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
+					<include>Button_VideoInfo</include>
+					<label>36044</label>
+					<onclick>Stop</onclick>
 				</control>
 				
 				<control type="button" id="115">
-					<description>Embuary TMDB Info</description>
-					<label>Embuary TMDB Info</label>
-					<width>285</width>
-					<height>40</height>
-					<align>center</align>
-					<textoffsetx>0</textoffsetx>
+					<description>Embuary TMDB Info, is Dialog, force close or hide VideoInfo?</description>
 					<visible>!Skin.HasSetting(EmbuaryTMDBInfo) + System.HasAddon(script.embuary.info)</visible>
-					<onclick condition="xy content">run it thiis way</onclick>
+					<include>Button_VideoInfo</include>
+					<label>Embuary TMDB Info</label>
+					<!-- <onclick></onclick> 
+					<onclick condition="Container.Content(tvshows) | Container.Content(movies)">RunScript(script.embuary.info,call=tv,query='"$INFO[ListItem.Title]"')</onclick>
+					<onclick condition="Container.Content(seasons) | Container.Content(episodes)">RunScript(script.embuary.info,call=tv,query='"$INFO[ListItem.TvShowTitle]"')</onclick>
+					-->
+					<onclick condition="String.IsEmpty(ListItem.TvShowTitle)">RunScript(script.embuary.info,call=movie,query='"$INFO[ListItem.Label]"')</onclick>
+					<onclick condition="!String.IsEmpty(ListItem.TvShowTitle)">RunScript(script.embuary.info,call=tv,query='"$INFO[ListItem.TvShowTitle]"')</onclick>
 				</control>
 				
 				<control type="button" id="7">
-					<description>native set user rating</description>
-					<width>290</width>
-					<height>40</height>
+					<description>native set user rating, use setprop to get cond layout for rating in dialogselect based or use cond based on header</description>
+					<visible>!Skin.HasSetting(VideoInfo_Button_Rate) + Control.IsEnabled(7)</visible>
+					<include>Button_VideoInfo</include>
 					<label>Rate Title</label>
-					<visible>!Skin.HasSetting(VideoInfo_Button_Rate)</visible>
-					<visible>Control.IsEnabled(7)</visible>
 				</control>
 				
 				<control type="button" id="10">
 					<description>native get Thumb</description>
-					<label>13511</label>
-					<width>285</width>
-					<height>40</height>
-					<align>center</align>
-					<textoffsetx>0</textoffsetx>
 					<visible>!Skin.HasSetting(VideoInfo_Button_KodiGetThumb)</visible>
+					<include>Button_VideoInfo</include>
+					<label>13511</label>
 				</control>
 				<control type="button" id="104">
 					<description>ArtworkBeef get Thumb</description>
+					<visible>[String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,musicvideo) | String.IsEqual(ListItem.DBType,episode)] + [system.hasaddon(script.artwork.beef) + !Skin.HasSetting(VideoInfo_Button_BeefGetThumb)]</visible>
+					<include>Button_VideoInfo</include>
 					<label>Artwork Beef</label>
-					<width>285</width>
-					<height>40</height>
-					<align>center</align>
-					<textoffsetx>0</textoffsetx>
 					<onclick condition="String.IsEqual(ListItem.DBType,episode) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=episode, dbid=$INFO[ListItem.DBID])</onclick>
 					<onclick condition="String.IsEqual(ListItem.DBType,tvshow) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=tvshow, dbid=$INFO[ListItem.DBID])</onclick>
 					<onclick condition="String.IsEqual(ListItem.DBType,movie) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=movie, dbid=$INFO[ListItem.DBID])</onclick>
-					<description>Get Artwork</description>
-					<visible>[String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,musicvideo) | String.IsEqual(ListItem.DBType,episode)] + system.hasaddon(script.artwork.beef)</visible>
-					<visible>!Skin.HasSetting(VideoInfo_Button_BeefGetThumb)</visible>
 				</control>
 				<control type="button" id="6">
 					<description>native refresh</description>
+					<include>Button_VideoInfo</include>
 					<label>184</label>
-					<width>285</width>
-					<height>40</height>
-					<align>center</align>
-					<textoffsetx>0</textoffsetx>
 				</control>
 			</control>
 			
@@ -594,9 +572,9 @@ ID 	Type 		Description
 				<animation effect="slide" end="0,-910" time="1000" tween="cubic" reversible="false" condition="String.IsEqual(Window.Property(AdditionalInfo),infocontainer)">conditional</animation>
 				<animation effect="slide" start="0,-910" end="0,-0" time="800" tween="cubic" reversible="false" condition="!String.IsEqual(Window.Property(AdditionalInfo),infocontainer)">conditional</animation>
 				
-				<top>1080</top>
+				<top>1085</top>
 				<left>120</left>
-				<height>890</height>
+				<height>895</height>
 				<width>1730</width>
 				<scrolltime tween="quadratic">400</scrolltime>
 				<onup>SetFocus(8006)</onup>
@@ -609,6 +587,7 @@ ID 	Type 		Description
 				<control type="group" id="8400">
 					<height>-20</height>
 				</control>
+				
 				<!-- MovieSet -->
 				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="8500" />
@@ -652,6 +631,7 @@ ID 	Type 		Description
 				</include>
 				<!-- CAST -->
 				<include content="Universal_ContainerHeader">
+					<param name="align" value="center" />
 					<param name="groupid" value="8501" />
 					<param name="id" value="8601" />
 					<param name="label" value="$LOCALIZE[344] $INFO[ListItem.Title,  &quot; , &quot;]" />
@@ -667,9 +647,9 @@ ID 	Type 		Description
 					<param name="itemwidth" value="207" />
 					<param name="itemheight" value="310" />
 					<param name="layout" value="poster" />
-					<include>Action_CastMemberSearch</include>
 					
-					<!-- FAIL <include>OnInfoAction_CastMemberTMDBSearch</include> -->
+					<!-- <include>Action_CastMemberSearch</include> -->
+					<include>Action_CastMemberSearchForceOption</include>
 					
 					<content>$VAR[EmbuaryCast]</content>
 				</include>
@@ -783,7 +763,6 @@ ID 	Type 		Description
 					<param name="itemwidth" value="620" />
 					<param name="ls_overlay_visible" value="false" />
 					<param name="layout" value="landscape" />
-					
 					<onclick>SetFocus(9001)</onclick>
 					<content>$VAR[extraFanartLocation]</content>
 				</include>
@@ -839,9 +818,8 @@ ID 	Type 		Description
 				<animation effect="slide" start="0,1200" end="0,-0" time="800" tween="cubic" reversible="false" condition="!String.IsEqual(Window.Property(AdditionalInfo),infolist)">conditional</animation>
 				<animation effect="fade" start="0" end="100" time="600" reversible="false" condition="String.IsEqual(Window.Property(AdditionalInfo),infolist)">conditional</animation>
 				
-				<animation effect="fade" start="100" end="0" time="600" condition="Player.HasVideo + ![VideoPlayer.Content(movies) | VideoPlayer.Content(episodes) | VideoPlayer.Content(musicvideos) | VideoPlayer.Content(livetv)]">conditional</animation>
+				<animation effect="fade" start="100" end="0" time="600" condition="$EXP[TrailerIsPlaying]">conditional</animation>
 				
-				<!-- <animation effect="fade" start="100" end="0" time="600" reversible="true" condition="String.IsEqual(Window.Property(AdditionalInfo),bigpicture)">conditional</animation>-->
 				<top>-890</top>
 				<centerleft>30%</centerleft>
 				<width>1000</width>
