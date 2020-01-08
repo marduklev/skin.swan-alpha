@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includes>
+	
+	
+<!--1 Videos
+Sub-section Name 	Path
+Root 	library://video/
+  	 
+Movies 	videodb://movies/
+MovieGenres 	videodb://movies/genres/
+MovieTitles 	videodb://movies/titles/
+MovieYears 	videodb://movies/years/
+MovieActors 	videodb://movies/actors/
+MovieDirectors 	videodb://movies/directors/
+MovieStudios 	videodb://movies/studios/
+MovieSets 	videodb://movies/sets/
+MovieCountries 	videodb://movies/countries/
+MovieTags 	videodb://movies/tags/
+RecentlyAddedMovies 	videodb://recentlyaddedmovies/
+  	 
+TvShows 	videodb://tvshows/
+TvShowGenres 	videodb://tvshows/genres/
+TvShowTitles 	videodb://tvshows/titles/
+TvShowYears 	videodb://tvshows/years/
+TvShowActors 	videodb://tvshows/actors/
+TvShowStudios 	videodb://tvshows/studios/
+RecentlyAddedEpisodes 	videodb://recentlyaddedepisodes/
+InProgressTvShows 	videodb://inprogresstvshows
+  	 
+MusicVideos 	videodb://musicvideos/
+MusicVideoGenres 	videodb://musicvideos/genres/
+MusicVideoTitles 	videodb://musicvideos/titles/
+MusicVideoYears 	videodb://musicvideos/years/
+MusicVideoArtists 	videodb://musicvideos/artists/
+MusicVideoAlbums 	videodb://musicvideos/albums/
+MusicVideoDirectors 	videodb://musicvideos/directors/
+MusicVideoStudios 	videodb://musicvideos/studios/
+RecentlyAddedMusicVideos 	videodb://recentlyaddedmusicvideos/
+  	 
+Playlists 	special://videoplaylists/
+Video Add-ons 	addons://sources/video/
+Files 	sources://video/
+2 Music
+Sub-section Name 	Path
+Root 	library://music/
+  	 
+Genres 	musicdb://genres/
+Artists 	musicdb://artists/
+Albums 	musicdb://albums/
+Song 	musicdb://songs/
+Top100 	musicdb://top100/
+Top100Songs 	musicdb://top100/songs/
+Top100Albums 	musicdb://top100/albums/
+RecentlyAddedAlbums 	musicdb://recentlyaddedalbums/
+RecentlyPlayedAlbums 	musicdb://recentlyplayedalbums/
+Compilations 	musicdb://compilations/
+Years 	musicdb://years/
+Singles 	musicdb://singles/
+  	 
+Files 	sources://music/
+Playlists 	special://musicplaylists/
+Music Add-ons 	addons://sources/audio/
+3 Programs
+Sub-section Name 	Path
+Addons 	addons://sources/executable/
+AndroidApps 	androidapp://sources/apps/
+4 AddonBrowser
+Sub-section Name 	Path
+My add-ons 	addons://user/<type>/ (see for available types https://github.com/xbmc/xbmc/blob/master/xbmc/addons/Addon.cpp#L73)
+Update available 	addons://outdated/
+Currently downloading add-ons 	addons://downloading/
+Recently updated 	addons://recently_updated/
+Install from repository 	addons://repos/
+Install from zip 	addons://install/
+Search 	addons://search/ 
+
+
+There are different PVR windows, one for every PVR content type (channels, recordings, timers, timer rules, search) not a single PVR window with sub sections denoting the different content types.
+
+Currently, most PVR windows cannot be activated using user supplied paths. Support for more windows may be added in the future.
+Example:
+
+ActivateWindow(TVRecordings,pvr://recordings/tv/active/FooDirectory/)
+
+
+PVR need own section 
+TVChannels 	pvr://channels/tv/<GROUPNAME> 	Replace <GROUPNAME> with the name of the specific tv channel group 	Kodi 19
+TVGuide 	pvr://channels/tv/<GROUPNAME> 	Replace <GROUPNAME> with the name of the specific tv channel group 	Kodi 19
+TVRecordings 	pvr://recordings/tv/active/<DIRECTORY>/ 	Replace <DIRECTORY> with the name of the recording directory to display
+TVTimers 			
+TVTimerRules 			
+TVSearch 			
+RadioChannels 	pvr://channels/radio/<GROUPNAME> 	Replace <GROUPNAME> with the name of the specific radio channel group 	Kodi 19
+RadioGuide 	pvr://channels/radio/<GROUPNAME> 	Replace <GROUPNAME> with the name of the specific radio channel group 	Kodi 19
+RadioRecordings 	pvr://recordings/radio/active/<DIRECTORY>/ 	Replace <DIRECTORY> with the name of the recording directory to display
+RadioTimers 			
+RadioTimerRules 			
+RadioSearch
+-->
+
+	<include name="1103_Content_SwanWidgetShortcuts">
+		
+		<!-- go to:  dialogselect.xml -->
+		<control type="button" id="11031">
+			<description>Set target Template, action window and action set string direct e.g. plailist?xsp path</description>
+			<onclick>Dialog.Close(1103)</onclick>
+			<onclick>SetProperty(ShortcutPlaylistContent,video,home)</onclick>
+			<onclick>ActivateWindow(selectdialog)</onclick>
+			<label>Video Playlists</label>
+		</control>
+		<control type="button" id="11032">
+			<description>Set target Template, action window and action set string direct e.g. plailist?xsp path</description>
+			<onclick>Dialog.Close(1103)</onclick>
+			<onclick>SetProperty(ShortcutPlaylistContent,music,home)</onclick>
+			<onclick>ActivateWindow(selectdialog)</onclick>
+			<label>Music Playlists</label>
+		</control>
+		<!-- go to:  myvideonav.xml -->
+		<include content="SwanShortcuts_SetTargetAndPath_CommonButton">
+			<param name="id" value="5" />
+			<param name="label" value="movies" />
+			<param name="target" value="videos" />
+			<param name="path" value="Videos,videodb://movies/" />
+		</include>
+		<include content="SwanShortcuts_SetTargetAndPath_CommonButton">
+			<param name="id" value="6" />
+			<param name="label" value="tv shows" />
+			<param name="target" value="videos" />
+			<param name="path" value="Videos,videodb://tvshows/" />
+		</include>
+		<include content="SwanShortcuts_SetTargetAndPath_CommonButton">
+			<param name="id" value="7" />
+			<param name="label" value="video addons" />
+			<param name="target" value="videos" />
+			<param name="path" value="Videos,addons://sources/video/" />
+		</include>
+		<include content="SwanShortcuts_SetTargetAndPath_CommonButton">
+			<param name="id" value="8" />
+			<param name="label" value="video sources" />
+			<param name="target" value="videos" />
+			<param name="path" value="Videos,sources://video/" />
+		</include>
+		<!-- go to:  mymusicnav.xml -->
+		<include content="SwanShortcuts_SetTargetAndPath_CommonButton">
+			<param name="id" value="10" />
+			<param name="label" value="music" />
+			<param name="target" value="music" />
+			<param name="path" value="Music,library://music/" />
+		</include>
+		<include content="SwanShortcuts_SetTargetAndPath_CommonButton">
+			<param name="id" value="11" />
+			<param name="label" value="music addons" />
+			<param name="target" value="music" />
+			<param name="path" value="Music,addons://sources/audio/" />
+		</include>
+		<include content="SwanShortcuts_SetTargetAndPath_CommonButton">
+			<param name="id" value="12" />
+			<param name="label" value="music sources" />
+			<param name="target" value="music" />
+			<param name="path" value="Music,sources://music/" />
+		</include>
+		
+		<!-- go to:  myprograms.xml , unneded
+		<include content="SwanShortcuts_SetTargetAndPath_CommonButton">
+			<param name="id" value="15" />
+			<param name="label" value="All Addons" />
+			<param name="target" value="" />
+			<param name="path" value="Programs,addons://sources/executable/" />
+		</include>
+		-->
+		<!-- go to:  addonbroswer.xml -->
+		<include content="SwanShortcuts_SetTargetAndPath_CommonButton">
+			<param name="id" value="16" />
+			<param name="label" value="Installed Addons" />
+			<param name="target" value="" />
+			<param name="path" value="AddonBrowser,addons://user/" />
+		</include>
+		
+		<!-- go to:  mypvrrecordings.xml -->
+		<include content="SwanShortcuts_SetTargetAndPath_CommonButton">
+			<param name="id" value="17" />
+			<param name="label" value="PVR TV Recordings" />
+			<param name="target" value="" />
+			<param name="path" value="TVRecordings,pvr://recordings/tv/" />
+		</include>
+		
+		<include content="SwanShortcuts_SetTargetAndPath_CommonButton">
+			<param name="id" value="18" />
+			<param name="label" value="PVR TV Channels" />
+			<param name="target" value="" />
+			<param name="path" value="TVChannels,pvr://channels/tv/" />
+		</include>
+		
+		<include content="SwanShortcuts_SetTargetAndPath_CommonButton">
+			<param name="id" value="19" />
+			<param name="label" value="PVR Radio Recordings" />
+			<param name="target" value="" />
+			<param name="path" value="TVRecordings,pvr://recordings/radio/" />
+		</include>
+		<include content="SwanShortcuts_SetTargetAndPath_CommonButton">
+			<param name="id" value="20" />
+			<param name="label" value="PVR Radio Channels" />
+			<param name="target" value="" />
+			<param name="path" value="RadioChannels,pvr://channels/radio/" />
+		</include>
+	</include>
+		
+	<include name="SwanShortcuts_SetTargetAndPath_CommonButton">
+		<control type="button" id="1103$PARAM[id]">
+			<description>Set target Template, action window and action set string direct e.g. plailist?xsp path</description>
+			<onclick>Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_target,$PARAM[target])</onclick>
+			<onclick>Dialog.Close(1103)</onclick>
+			<onclick>ActivateWindow($PARAM[path],return)</onclick>
+			<label>$PARAM[label]</label>
+		</control>
+	</include>
+	
+	<variable name="DialogSelect_DefaultControl">
+		<value condition="!String.IsEmpty(Window(home).Property(ShortcutPlaylistContent)) + String.IsEqual(Window(home).Property(ShortcutPlaylistContent),music)">39</value>
+		<value condition="!String.IsEmpty(Window(home).Property(ShortcutPlaylistContent)) + String.IsEqual(Window(home).Property(ShortcutPlaylistContent),video)">40</value>
+		<value>3</value>
+	</variable>
+	
+	<!-- 
+	<include name="SwanShortcuts_StoreViewID">
+		<onfocus>SetProperty(CurrentViewID,$INFO[System.CurrentControlID],home)</onfocus>
+	</include>
+	<include name="SwanShortcuts_ViewID">
+		<onunload>SetProperty(CurrentViewID,$INFO[System.CurrentControlID],home)</onunload>
+	</include>
+	-->
+	
+	<!-- NOTE CHECK THE VIEWTYPE LABELS -->
+	<include name="SwanShortcuts_Container">
+		<animation effect="slide" start="0,0" end="-700,0" time="250" tween="sine" condition="Window.IsActive(selectdialog)">Conditional</animation>
+			
+		<control type="group">
+			<description>BG</description>
+			<include content="DialogBackground_TriplePanel" />
+		</control>
+
+		<include content="Dialog_CommonInfo">
+			<param name="Header_posy" value="50" />
+			<param name="Header_label" value="[UPPERCASE][B]SWAN SHortcut Fake Window[/B][/UPPERCASE]" />
+			<param name="Item_Description" value="window $INFO[System.CurrentWindow] [CR]$INFO[Container.Viewmode] current viewtype has id $INFO[System.CurrentControlID]" />
+		</include>
+		
+		<control type="group">
+			<visible>Control.IsVisible(50)</visible>
+			<control type="panel" id="50">
+				<viewtype label="535">list</viewtype>
+				<include content="SwanShortcuts_PanelList" />
+			</control>
+		</control>
+		
+		<control type="group">
+			<visible>Control.IsVisible(51)</visible>
+			<control type="panel" id="51">
+				<viewtype label="555">poster panel</viewtype>
+				<include content="SwanShortcuts_PanelList" />
+			</control>
+		</control>
+		
+		<control type="group">
+			<visible>Control.IsVisible(52)</visible>
+			<control type="panel" id="52">
+				<viewtype label="556">circle</viewtype>
+				<include content="SwanShortcuts_PanelList" />
+			</control>
+		</control>
+		
+		<control type="group">
+			<visible>Control.IsVisible(53)</visible>
+			<control type="panel" id="53">
+				<viewtype label="557">circle</viewtype>
+				<include content="SwanShortcuts_PanelList" />
+			</control>
+		</control>
+		
+		<control type="group">
+			<visible>Control.IsVisible(54)</visible>
+			<control type="panel" id="54">
+				<viewtype label="558">landscapepanel</viewtype>
+				<include content="SwanShortcuts_PanelList" />
+			</control>
+		</control>
+		<control type="group">
+			<visible>Control.IsVisible(58)</visible>
+			<control type="panel" id="58">
+				<viewtype label="559">Netflix Info</viewtype>
+				<include content="SwanShortcuts_PanelList" />
+			</control>
+		</control>
+		
+		
+		<!-- <control type="grouplist">
+		- set layout
+		- set limit
+		- set... buttongrouplist ?
+		
+		</control> -->
+		
+		<control type="button" id="9000">
+			<texturefocus colordiffuse="red">colors/white.png</texturefocus>
+			<texturenofocus colordiffuse="red">colors/white50.png</texturenofocus>
+			<centerleft>50%</centerleft>
+			<top>140</top>
+			<right>100</right>
+			<height>110</height>
+			<width>33.3%</width>
+			<wrapmultiline>true</wrapmultiline>
+			<label>SAVE ME</label>
+			
+			<onup>50</onup>
+			<ondown>50</ondown>
+			<onleft>200</onleft>
+			<onright>200</onright>
+			<onclick>Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_path,$INFO[Container.Folderpath])</onclick>
+			<onclick>ClearProperty(SetShortcutInProgress,home)</onclick>
+			<onclick>ClearProperty(custom_widget_nr,home)</onclick>
+			<onclick>ReplaceWindow(skinsettings,dir)</onclick>
+		</control>
+		
+		<control type="grouplist" id="200">
+			<description>Widget Settings/Attributes</description>
+			<left>68%</left>
+			<top>40</top>
+			<height>80%</height>
+			
+			<onup>200</onup>
+			<ondown>200</ondown>
+			
+			<onright>50</onright>
+			<onleft>9000</onleft>		
+			
+			<control type="button" id="11031">
+				<top>100</top>
+				<right>40</right>
+				<widdth>500</widdth>
+				<height>100</height>
+				<onclick>SetProperty(DialogHeader,Set Name for Widget $INFO[Window(home).Property(custom_widget_nr)],home)</onclick>
+				<onclick>Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_name)</onclick>
+				<label>Widget Name</label>
+				<label2>$INFO[Skin.String(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_name)]</label2>
+			</control>
+			<control type="button" id="11033">
+			
+			<right>40</right>
+			<widdth>500</widdth>
+			<height>100</height>
+			<top>200</top>
+				<description>Set Layout</description>
+				<onclick>SetProperty(Dialog.1.Label,P O S T E R)</onclick>
+				<onclick>SetProperty(Dialog.1.BuiltIn,Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout,poster)||Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout.label,poster))</onclick>
+				
+				<onclick>SetProperty(Dialog.2.Label,L A N D S C A P E)</onclick>
+				<onclick>SetProperty(Dialog.2.BuiltIn,Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout,landscape)||Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout.label,landscape))</onclick>
+				
+				<onclick>SetProperty(Dialog.3.Label,S Q U A R E)</onclick>
+				<onclick>SetProperty(Dialog.3.BuiltIn,Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout,square)||Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout.label,Square))</onclick>
+				
+				<onclick>SetProperty(Dialog.4.Label,C I R C L E )</onclick>
+				<onclick>SetProperty(Dialog.4.BuiltIn,Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout,circle)||Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout.label,circle))</onclick>
+				
+				<onclick>SetProperty(Dialog.5.Label,B A N N E R)</onclick>
+				<onclick>SetProperty(Dialog.5.BuiltIn,Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout,banner)||Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout.label,banner))</onclick>
+				
+				<!-- <onclick>SetProperty(Dialog.6.Label,P O S T E R - info)</onclick>
+				<onclick>SetProperty(Dialog.6.BuiltIn,Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout,PosterInfo)||Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout.label,POSTERInfo))</onclick>
+				
+				<onclick>SetProperty(Dialog.7.Label,L A N D S C A P E -Info)</onclick>
+				<onclick>SetProperty(Dialog.7.BuiltIn,Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout,LandscapeInfo)||Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout.label,LandscapeInfo))</onclick>
+				
+				<onclick>SetProperty(Dialog.8.Label,S Q U A R E -Info)</onclick>
+				<onclick>SetProperty(Dialog.8.BuiltIn,Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout,SquareInfo)||Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout.label,SquareInfo))</onclick>
+				
+				<onclick>SetProperty(Dialog.9.Label,C I R C L E -Info)</onclick>
+				<onclick>SetProperty(Dialog.9.BuiltIn,Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout,CircleInfo)||Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout.label,CircleInfo))</onclick>
+				
+				<onclick>SetProperty(Dialog.10.Label,B A N N E R -Info)</onclick>
+				<onclick>SetProperty(Dialog.10.BuiltIn,Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout,banner)||Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout.label,banner))</onclick>
+				 -->
+				
+				<onclick>SetProperty(Dialog.6.Label,T E X T  P A N E L)</onclick>
+				<onclick>SetProperty(Dialog.6.BuiltIn,Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout,textpanel)||Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout.label,textpanel))</onclick>
+				
+				
+				<onclick>RunScript(script.embuary.helper,action=createselect,header=$LOCALIZE[21858])</onclick>
+				<label>Layout</label>
+				<label2>$INFO[Skin.String(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout.label)]</label2>
+			</control>
+		</control>
+		
+	</include>
+	
+	
+	
+		
+	
+	<include name="SwanShortcuts_PanelList">
+			<top>250</top>
+			<left>33.3%</left>
+			<width>33.3%</width>
+			<height>70%</height>
+			
+			<onup>9000</onup>
+			<onright>200</onright>
+			<onleft>9000</onleft>
+			
+			<scrolltime tween="cubic" easing="out">300</scrolltime>
+			
+			
+			<itemlayout height="110">
+				<control type="image">
+					<texture>misc/separator.png</texture>
+				</control>
+				<control type="image">
+					<width>110</width>
+					<height>110</height>
+					<bordersize>7</bordersize>
+					<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
+					<texture diffuse="diffuse/roundmask.png" fallback="defaultaddon.png">$INFO[ListItem.Icon]</texture>
+				</control>
+				<control type="label">
+					<left>150</left>
+					<label>$INFO[ListItem.Label]</label>
+					<textcolor>$VAR[Button_Text_NF]</textcolor>
+					<scroll>true</scroll>
+				</control>
+			</itemlayout>
+			<focusedlayout height="110">
+				<control type="image">
+					<texture>colors/white.png</texture>
+					<colordiffuse>$VAR[Button_Panel_FO]</colordiffuse>
+				</control>
+				<control type="image">
+					<width>110</width>
+					<height>110</height>
+					<bordersize>7</bordersize>
+					<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
+					<texture diffuse="diffuse/roundmask.png" fallback="defaultaddon.png">$INFO[ListItem.Icon]</texture>
+				</control>
+				<control type="label">
+					<left>150</left>
+					<label>$INFO[ListItem.Label,[B],[/B]]</label>
+					<textcolor>$VAR[Button_Text_FO]</textcolor>
+					<scroll>true</scroll>
+				</control>
+			</focusedlayout>
+			
+	</include>
+	
+	
+	
+</includes>

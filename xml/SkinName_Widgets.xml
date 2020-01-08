@@ -154,7 +154,6 @@
 		<include content="Widget_SetAttributes_ButtonTemplate" condition="String.IsEqual(Window(home).Property(custom_widget_nr),50)">
 			<param name="nr" value="50"/>
 		</include>
-		
 	</include>
 	
 	
@@ -162,13 +161,35 @@
 	<include name="Widget_SetPath_ButtonTemplate">
 		
 		<include content="SectionHeadline">
-				<param name="id" value="$PARAM[id]0"/>
-				<param name="height" value="60"/>
-				<param name="align" value="left" />
-				<param name="label" value="WIDGET $PARAM[nr]$INFO[Skin.String(UserWidget$PARAM[nr]_name), : [B],[/B]]"/>
+			<param name="id" value="$PARAM[id]0"/>
+			<param name="height" value="60"/>
+			<param name="align" value="left" />
+			<param name="label" value="WIDGET $PARAM[nr]$INFO[Skin.String(UserWidget$PARAM[nr]_name), : [B],[/B]]"/>
 		</include>
 		
 		<control type="radiobutton" id="$PARAM[id]1">
+			
+			<radioposx>200</radioposx>
+			<radioposxy>5</radioposxy>
+			<radiowidth>42</radiowidth>
+			<radioheight>20</radioheight>
+			<textureradioonfocus colordiffuse="$VAR[Button_Text_FO]">icons/settings1.png</textureradioonfocus>
+			<textureradioonnofocus colordiffuse="$VAR[Button_Text_NF]">icons/settings1.png</textureradioonnofocus>
+			<textureradioofffocus colordiffuse="$VAR[Button_Text_FO]">icons/settings1.png</textureradioofffocus>
+			<textureradiooffnofocus colordiffuse="$VAR[Button_Text_NF]">icons/settings1.png</textureradiooffnofocus>
+			<textureradioondisabled colordiffuse="disabled">icons/settings1.png</textureradioondisabled>
+			<textureradiooffdisabled colordiffuse="disabled">icons/settings1.png</textureradiooffdisabled>
+			
+			<onclick>SetProperty(custom_widget_nr,$PARAM[nr],home)</onclick>
+			<onclick>SetProperty(SettingSection,SwanWidgetShortcuts,home)</onclick>
+			<onclick>SetProperty(SetShortcutInProgress,true,home)</onclick>
+			
+			<onclick>ActivateWindow(1103,return)</onclick>
+			<label>                             Set Widget Path NON ADDON</label>
+			<label2>$INFO[Skin.String(UserWidget$PARAM[nr]_path)]</label2>
+		</control>
+		
+		<!-- <control type="radiobutton" id="$PARAM[id]1">
 			<description>
             type=shortcuts  - cant pre set a target
               custom=[True/False]              A boolean saying where the user can type their own shortcut
@@ -193,7 +214,7 @@
 			<label>                             Set Widget Path</label>
 			<label2>$INFO[Skin.String(UserWidget$PARAM[nr]_path)]</label2>
 			<onclick>RunScript(script.skinshortcuts,type=shortcuts&amp;custom=True&amp;showNone=True&amp;grouping=widget&amp;skinLabel=UserWidget$PARAM[nr]_name&amp;skinList=UserWidget$PARAM[nr]_path)</onclick>
-		</control>
+		</control> -->
 		
 		<control type="button" id="$PARAM[id]2">
 			<description>$INFO[Window(home).Property(custom_widget_nr)]</description>
@@ -205,6 +226,19 @@
 			<label>                        $INFO[Skin.String(UserWidget$PARAM[nr]_layout.label),[B]$LOCALIZE[21858][/B]: ]</label>
 			<label2>$INFO[Skin.String(UserWidget$PARAM[nr]_target),[B]$LOCALIZE[467][/B]: ,]$INFO[Skin.String(UserWidget$PARAM[nr]_sortby),   [B]$LOCALIZE[581][/B]: ',']$INFO[Skin.String(UserWidget$PARAM[nr]_sortorder),   [B]$LOCALIZE[21429][/B]: ',']$INFO[Skin.String(UserWidget$PARAM[nr]_limit),   $LOCALIZE[21427]: (,)]</label2>
 		</control>
+		<!-- <control type="button" id="$PARAM[id]4">
+			<description>RESET</description>
+			<height>25</height>
+			<onclick>Skin.Reset(UserWidget$PARAM[nr]_name)</onclick>
+			<onclick>Skin.Reset(UserWidget$PARAM[nr]_target)</onclick>
+			<onclick>Skin.Reset(UserWidget$PARAM[nr]_path)</onclick>
+			<onclick>Skin.Reset(UserWidget$PARAM[nr]_limit)</onclick>
+			<onclick>Skin.Reset(UserWidget$PARAM[nr]_sortby)</onclick>
+			<onclick>Skin.Reset(UserWidget$PARAM[nr]_sortorder)</onclick>
+			<onclick>Skin.Reset(UserWidget$PARAM[nr]_layout)</onclick>
+			<label>                        Remove/Reset</label>
+			<label2 />
+		</control> -->
 		<control type="group" id="$PARAM[id]3">
 			<description>DONT remove group control</description>
 			<control type="image">
