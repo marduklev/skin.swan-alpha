@@ -1,17 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
     <defaultcontrol always="true">3</defaultcontrol>
-   
-	<onload condition="String.IsEqual(Window(home).Property(ShortcutPlaylistContent),music)">SetFocus(39)</onload>
-	<onload condition="String.IsEqual(Window(home).Property(ShortcutPlaylistContent),video)">SetFocus(40)</onload>
-	
-	<!--temp -->
-	<onunload>ClearProperty(ShortcutPlaylistContent,home)</onunload>
-	
-	<include>Animation_OpenClose_Slide</include>
-    <menucontrol>8000</menucontrol>
-	
-	<controls>
+    <include>Animation_OpenClose_Slide</include>
+    <menucontrol>8000</menucontrol><controls>
         <control type="group">
             <include content="DialogBackground_TriplePanel" />
         </control>
@@ -28,8 +19,7 @@
 
         <control type="group">
             <visible>!Window.IsVisible(yesnodialog) + !Window.IsVisible(virtualkeyboard) + !Window.IsVisible(numericinput)</visible>
-            <visible>String.IsEmpty(Window(home).Property(ShortcutPlaylistContent))</visible>
-			<include content="Dialog_CommonInfo">
+            <include content="Dialog_CommonInfo">
                 <param name="Def_Icon" value="$VAR[image_dialogselect]" />
                 <param name="Header_label" value="$INFO[Control.GetLabel(1),[B],[/B]]" />
                 <param name="Item_Description" value="$INFO[ListItem.AddonName,[B]$LOCALIZE[551]:[/B] ,]$INFO[ListItem.AddonCreator,[CR][B]$LOCALIZE[21863]:[/B] ,]$INFO[ListItem.AddonDescription,[CR][CR][B]$LOCALIZE[31171][/B][CR],]" />
@@ -90,43 +80,8 @@
                     <width>300</width>
                     <height>60</height>
                     <visible>!String.IsEmpty(Control.GetLabel(7))</visible>
-				</control>
-				
+                </control>
             </control>
         </control>
-		
-		<!-- Swan DialogSelect Content -->
-		<control type="group">
-            <visible>!String.IsEmpty(Window(home).Property(ShortcutPlaylistContent))</visible>
-			<include content="Dialog_CommonInfo">
-                <param name="Def_Icon" value="$VAR[image_dialogselect]" />
-                <param name="Header_label" value="$INFO[Control.GetLabel(1),[B],[/B]]" />
-                <param name="Item_Description" value="$INFO[ListItem.FilenameandPath]" />
-            </include>
-			
-			<!-- Playlists -->
-			<control type="group">
-				<visible>String.IsEqual(Window(home).Property(ShortcutPlaylistContent),music)</visible>
-				<control type="panel" id="39">
-					<onclick>Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_target,music)</onclick>
-					<onclick>Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_path,$INFO[ListItem.FilenameandPath])</onclick>
-					<onclick>Dialog.Close(all,true)</onclick>
-					<include content="SwanShortcuts_PanelList" />
-					<content>special://$INFO[Window(home).Property(ShortcutPlaylistContent)]playlists/</content>
-					<content>special://skin/playlists/$INFO[Window(home).Property(ShortcutPlaylistContent)]/</content>
-				</control>
-			</control>
-			<control type="group">
-				<visible>String.IsEqual(Window(home).Property(ShortcutPlaylistContent),video)</visible>
-				<control type="panel" id="40">
-					<onclick>Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_target,videos)</onclick>
-					<onclick>Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_path,$INFO[ListItem.FilenameandPath])</onclick>
-					<onclick>Dialog.Close(all,true)</onclick>
-					<include content="SwanShortcuts_PanelList" />
-					<content>special://$INFO[Window(home).Property(ShortcutPlaylistContent)]playlists/</content>
-					<content>special://skin/playlists/$INFO[Window(home).Property(ShortcutPlaylistContent)]/</content>
-				</control>
-			</control>
-		</control>
     </controls>
 </window>
