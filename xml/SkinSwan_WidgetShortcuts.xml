@@ -177,12 +177,12 @@ RadioSearch
 		</include>
 		
 		<!-- go to:  mypvrrecordings.xml tv-->
-		<include content="SwanShortcuts_SetTargetAndPath_CommonButton">
+		<!-- <include content="SwanShortcuts_SetTargetAndPath_CommonButton">
 			<param name="id" value="17" />
 			<param name="label" value="PVR TV Recordings" />
 			<param name="target" value="" />
-			<param name="path" value="TVRecordings,pvr://recordings/tv/" />
-		</include>
+			<param name="path" value="TVRecordings,pvr://recordings/tv/active/$INFO[SkinString(NEEDSKINSTRINGSTOREDDIRECTORYBEFORE)]/" />
+		</include> -->
 		<!-- go to:  mypvrchannels.xml tv-->
 		<include content="SwanShortcuts_SetTargetAndPath_CommonButton">
 			<param name="id" value="18" />
@@ -191,12 +191,12 @@ RadioSearch
 			<param name="path" value="TVChannels,pvr://channels/tv/" />
 		</include>
 		<!-- go to:  mypvrrecordings.xml radio-->
-		<include content="SwanShortcuts_SetTargetAndPath_CommonButton">
+		<!-- <include content="SwanShortcuts_SetTargetAndPath_CommonButton">
 			<param name="id" value="19" />
 			<param name="label" value="PVR Radio Recordings" />
 			<param name="target" value="" />
-			<param name="path" value="TVRecordings,pvr://recordings/radio/" />
-		</include>
+			<param name="path" value="TVRecordings,pvr://recordings/radio/active/$INFO[SkinString(NEEDSKINSTRINGSTOREDDIRECTORYBEFORE)]" />
+		</include> -->
 		<!-- go to:  mypvrchannels.xml radio-->
 		<include content="SwanShortcuts_SetTargetAndPath_CommonButton">
 			<param name="id" value="20" />
@@ -210,6 +210,7 @@ RadioSearch
 		<control type="button" id="1103$PARAM[id]">
 			<description>Set target Template, action window and action set string direct e.g. plailist?xsp path</description>
 			<onclick>Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_target,$PARAM[target])</onclick>
+			<onclick>Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_target.label,$PARAM[label])</onclick>
 			<onclick>Dialog.Close(1103)</onclick>
 			<onclick>ActivateWindow($PARAM[path],return)</onclick>
 			<label>$PARAM[label]</label>
@@ -233,9 +234,21 @@ RadioSearch
 
 		<include content="Dialog_CommonInfo">
 			<param name="Header_posy" value="50" />
-			<param name="Header_label" value="[UPPERCASE][B]Select SWAN Shortcuts[/B][/UPPERCASE]" />
-			<param name="Item_Description" value="" />
+			<param name="Header_label" value="Browse and Set your[CR][B]W I D G E T[/B]" />
+			<param name="Item_Description" value="[CR]" />
 		</include>
+		
+		<control type="image">
+			<right>8%</right>
+			<centertop>51%</centertop>
+			<width>350</width>
+			<height>350</height>
+			<aspectratio>keep</aspectratio>
+			<fadetime>150</fadetime>
+			<texture>icons/swanwidgets_icon.png</texture>
+			<align>center</align>
+			<animation effect="fade" start="100" end="5" time="250" tween="sine" condition="ControlGroup(200).HasFocus()">Conditional</animation>
+		</control>
 		
 		<control type="group">
 			<visible>Control.IsVisible(50)</visible>
@@ -293,7 +306,7 @@ Container.SortOrder 	Returns the current sort order (Ascending/Descending)
 
 -->
 
-		<control type="button" id="8999">
+		<!-- <control type="button" id="8999">
 			<centerleft>50%</centerleft>
 			<top>140</top>
 			<right>100</right>
@@ -307,54 +320,100 @@ Container.SortOrder 	Returns the current sort order (Ascending/Descending)
 			<onleft>200</onleft>
 			<onright>200</onright>
 			<onclick>Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_path,$INFO[Container.Folderpath])</onclick>
-			<onclick>Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_name,$INFO[Container.ListItem.dbtype,, • ]$INFO[Container.FolderName])</onclick>
+			<onclick condition="String.IsEmpty(Skin.String(UserWidget(Window(home).Property(custom_widget_nr))_name))">Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_name,$INFO[Container.ListItem.dbtype,, • ]$INFO[Container.FolderName])</onclick>
 			<onclick>Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout,$VAR[ContainerViewmode])</onclick>
-			
-			
-			
-			
-			
-			<onclick>Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_sortby,$VAR[ContainerSortMethod])</onclick>
+			<onclick>Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_sortby,$VAR[ContainerSortMethods])</onclick>
 			<onclick>Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_sortby.label,$INFO[Container.SortMethod])</onclick>
-			
 			<onclick>Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_sortorder,$VAR[ContainerSortOrder])</onclick>
 			<onclick>Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_sortorder.label,$INFO[Container.SortOrder])</onclick>
-			
-			
 			<onclick>ClearProperty(SetShortcutInProgress,home)</onclick>
 			<onclick>ClearProperty(custom_widget_nr,home)</onclick>
 			<onclick>ReplaceWindow(skinsettings)</onclick>
-		</control>
+		</control> -->
 		
 		
 		
 		<control type="grouplist" id="200">
 			<description>Widget Settings/Attributes</description>
-			<left>70%</left>
-			<top>30%</top>
-			<width>26%</width>
+			<right>-450</right>
+			<top>25%</top>
+			<width>550</width>
 			<height>80%</height>
+			
 			<onup>200</onup>
 			<ondown>200</ondown>
 			
 			<onright>50</onright>
-			<onleft>8999</onleft>		
+			<onleft>50</onleft>		
 			
-			<control type="button" id="11031">
-				<top>100</top>
-				<right>40</right>
+			<!-- <include content="Animation_ButtonFocusSlide" /> temp decide slide just fo button -->
+			
+			
+			<control type="radiobutton" id="8998">
+				<include content="Animation_ButtonFocusSlide" />
+				<textoffsetx>140</textoffsetx>
+				<radiowidth>90</radiowidth>
+				<radioheight>70</radioheight>
+				<radioposx>10</radioposx>
+				<textureradioonfocus colordiffuse="white">icons/radiobuttons/enter.png</textureradioonfocus>
+				<textureradioonnofocus colordiffuse="dimgrey">icons/radiobuttons/enter.png</textureradioonnofocus>
+				<textureradioofffocus colordiffuse="white">icons/radiobuttons/enter.png</textureradioofffocus>
+				<textureradiooffnofocus colordiffuse="dimgrey">icons/radiobuttons/enter.png</textureradiooffnofocus>
 				<height>100</height>
+				<focusedcolor>white</focusedcolor>
+				<textcolor>dimgrey</textcolor>
+				<label>SAVE ME</label>
+				
+				<onclick>Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_path,$INFO[Container.Folderpath])</onclick>
+				
+				<!-- <onclick condition="false">Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_name,$INFO[Container.ListItem.dbtype,, • ]$INFO[Container.FolderName])</onclick> -->
+				
+				<onclick>Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout,$VAR[ContainerViewmode])</onclick>
+				<onclick>Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_sortby,$VAR[ContainerSortMethods])</onclick>
+				<onclick>Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_sortby.label,$INFO[Container.SortMethod])</onclick>
+				<onclick>Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_sortorder,$VAR[ContainerSortOrder])</onclick>
+				<onclick>Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_sortorder.label,$INFO[Container.SortOrder])</onclick>
+				<onclick>ClearProperty(SetShortcutInProgress,home)</onclick>
+				<onclick>ClearProperty(custom_widget_nr,home)</onclick>
+				<onclick>ReplaceWindow(skinsettings)</onclick>
+			</control>
+			
+			<include content="spacer_h">
+				<param name="id" value="11030" />
+				<param name="gap" value="20" />
+			</include>
+		
+			<control type="radiobutton" id="11031">
+				<include content="Animation_ButtonFocusSlide" />
+				<textoffsetx>140</textoffsetx>
+				<radiowidth>90</radiowidth>
+				<radioheight>70</radioheight>
+				<radioposx>10</radioposx>
+				<textureradioonfocus colordiffuse="white">icons/radiobuttons/setname.png</textureradioonfocus>
+				<textureradioonnofocus colordiffuse="dimgrey">icons/radiobuttons/setname.png</textureradioonnofocus>
+				<textureradioofffocus colordiffuse="white">icons/radiobuttons/setname.png</textureradioofffocus>
+				<textureradiooffnofocus colordiffuse="dimgrey">icons/radiobuttons/setname.png</textureradiooffnofocus>
+				<height>100</height>
+				<focusedcolor>white</focusedcolor>
+				<textcolor>dimgrey</textcolor>
 				<onclick>SetProperty(DialogHeader,Set Name for Widget $INFO[Window(home).Property(custom_widget_nr)],home)</onclick>
 				<onclick>Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_name)</onclick>
-				<label>Widget Name</label>
-				<label2>$INFO[Skin.String(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_name)]</label2>
+				<label>Set Widget Name</label>
 			</control>
-			<control type="button" id="11033">
-			
-				<right>40</right>
+			<control type="radiobutton" id="11033">
+				<include content="Animation_ButtonFocusSlide" />
+				<radioposx>10</radioposx>
+				<textoffsetx>140</textoffsetx>
+				<radiowidth>90</radiowidth>
+				<radioheight>90</radioheight>
+				<textureradioonfocus colordiffuse="white">defaultpicture.png</textureradioonfocus>
+				<textureradioonnofocus colordiffuse="dimgrey">defaultpicture.png</textureradioonnofocus>
+				<textureradioofffocus colordiffuse="white">defaultpicture.png</textureradioofffocus>
+				<textureradiooffnofocus colordiffuse="dimgrey">defaultpicture.png</textureradiooffnofocus>
 				<height>100</height>
-				<top>200</top>
 				<description>Set Layout</description>
+				<focusedcolor>white</focusedcolor>
+				<textcolor>dimgrey</textcolor>
 				<onclick>SetProperty(Dialog.1.Label,P O S T E R)</onclick>
 				<onclick>SetProperty(Dialog.1.BuiltIn,Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout,poster)||Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout.label,poster))</onclick>
 				
@@ -380,22 +439,89 @@ Container.SortOrder 	Returns the current sort order (Ascending/Descending)
 				<label2>$INFO[Skin.String(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout.label)]</label2>
 			</control>
 			
-			<control type="togglebutton" id="4">
-				<visible>Control.IsEnabled(4) + Window.IsActive(videos)</visible>
-				<description>Select sortmode (ascending or descending)</description>
-				<aligny>center</aligny>
-				<textoffsetx>10</textoffsetx>
-				<height>70</height>
-				<wrapmultiline>true</wrapmultiline>
-				<label>Change sortmode to $VAR[NextSortOrder]</label>
-			</control>
-			<control type="button" id="3">
-				<visible>Control.IsEnabled(3) + Window.IsActive(videos)</visible>
+			
+			
+			<!-- <label>$LOCALIZE[39010] ($LOCALIZE[21429] $INFO[Container.SortMethod])</label> -->
+			<control type="radiobutton" id="113">
+				<include content="Animation_ButtonFocusSlide" />
+				<radioposx>10</radioposx>
+				<visible>Control.IsEnabled(3)</visible>
 				<description>Select sort method (sort by: name, date size, etc...)</description>
+				<textoffsetx>140</textoffsetx>
+				<radiowidth>90</radiowidth>
+				<radioheight>90</radioheight>
+				<textureradioonfocus colordiffuse="white">defaultaddonservice.png</textureradioonfocus>
+				<textureradioonnofocus colordiffuse="dimgrey">defaultaddonservice.png</textureradioonnofocus>
+				<textureradioofffocus colordiffuse="white">defaultaddonservice.png</textureradioofffocus>
+				<textureradiooffnofocus colordiffuse="dimgrey">defaultaddonservice.png</textureradiooffnofocus>
+				<focusedcolor>white</focusedcolor>
+				<textcolor>dimgrey</textcolor>
+				<textureradioondisabled />
+				<textureradiooffdisabled  />
 				<aligny>center</aligny>
 				<textoffsetx>10</textoffsetx>
-				<height>70</height>
+				<height>100</height>
 				<wrapmultiline>true</wrapmultiline>
+				<label>$LOCALIZE[21429] ...</label>
+				<onclick>SendClick(3)</onclick>
+			</control>
+			
+			
+			<control type="radiobutton" id="114">
+				<include content="Animation_ButtonFocusSlide" />
+				<radioposx>10</radioposx>
+				<visible>Control.IsEnabled(4)</visible>
+				<description>Select sortmode (ascending or descending)</description>
+				<textoffsetx>140</textoffsetx>
+				<radiowidth>90</radiowidth>
+				<radioheight>90</radioheight>
+				<textureradioonfocus colordiffuse="white">icons/radiobuttons/ascending.png</textureradioonfocus>
+				<textureradioonnofocus colordiffuse="dimgrey">icons/radiobuttons/ascending.png</textureradioonnofocus>
+				<textureradioofffocus colordiffuse="white">icons/radiobuttons/descending.png</textureradioofffocus>
+				<textureradiooffnofocus colordiffuse="dimgrey">icons/radiobuttons/descending.png</textureradiooffnofocus>
+				<textureradioondisabled />
+				<textureradiooffdisabled  />
+				<focusedcolor>white</focusedcolor>
+				<textcolor>dimgrey</textcolor>
+				<aligny>center</aligny>
+				<textoffsetx>10</textoffsetx>
+				<height>100</height>
+				<wrapmultiline>true</wrapmultiline>
+				<label>Sort Method</label>
+				<onclick>SendClick(4)</onclick>
+			</control>
+			<include content="spacer_h">
+				<param name="id" value="11035" />
+				<param name="gap" value="20" />
+			</include>
+			
+			<control type="radiobutton" id="11036">
+			<include content="Animation_ButtonFocusSlide" />
+				<textoffsetx>140</textoffsetx>
+				<radiowidth>90</radiowidth>
+				<radioheight>70</radioheight>
+				<radioposx>10</radioposx>
+				<textureradioonfocus colordiffuse="white">icons/radiobuttons/cancel.png</textureradioonfocus>
+				<textureradioonnofocus colordiffuse="dimgrey">icons/radiobuttons/cancel.png</textureradioonnofocus>
+				<textureradioofffocus colordiffuse="white">icons/radiobuttons/cancel.png</textureradioofffocus>
+				<textureradiooffnofocus colordiffuse="dimgrey">icons/radiobuttons/cancel.png</textureradiooffnofocus>
+				<height>100</height>
+				<focusedcolor>white</focusedcolor>
+				<textcolor>dimgrey</textcolor>
+				<label>Clear Me</label>
+				
+				<onclick>Skin.Reset(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_path)</onclick>
+				<onclick>Skin.Reset(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_target)</onclick>
+				<onclick>Skin.Reset(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_target.label)</onclick>
+				<onclick>Skin.Reset(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_name)</onclick>
+				<onclick>Skin.Reset(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout)</onclick>
+				<onclick>Skin.Reset(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_sortby)</onclick>
+				<onclick>Skin.Reset(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_sortby.label)</onclick>
+				<onclick>Skin.Reset(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_sortorder)</onclick>
+				<onclick>Skin.Reset(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_sortorder.label)</onclick>
+				<onclick>ClearProperty(SetShortcutInProgress,home)</onclick>
+				<onclick>ClearProperty(custom_widget_nr,home)</onclick>
+				<onclick>ReplaceWindow(skinsettings)</onclick>
 			</control>
 		</control>
 	
@@ -414,187 +540,143 @@ Container.SortOrder 	Returns the current sort order (Ascending/Descending)
 	<variable name="NextSortOrder">
 		<value condition="String.IsEqual(Container.SortOrder,$LOCALIZE[584])">$LOCALIZE[585]</value>
 		<value condition="String.IsEqual(Container.SortOrder,$LOCALIZE[585])">$LOCALIZE[584]</value>
-		<value></value>
 	</variable>
 	<variable name="ContainerSortOrder">
 		<value condition="String.IsEqual(Container.SortOrder,$LOCALIZE[584])">ascending</value>
 		<value condition="String.IsEqual(Container.SortOrder,$LOCALIZE[585])">descending</value>
-		<value></value>
 	</variable>
+	
+	<include name="Animation_ButtonFocusSlide">
+		<animation type="focus" reversible="false">
+			<effect type="slide" start="0" end="-450" easing="in" tween="quadratic" time="300" />
+		</animation>
+		<animation type="unfocus" reversible="false">
+			<effect type="slide" start="-450" end="0" easing="in" tween="quadratic" time="300" />
+		</animation>
+	</include>
 	
 	<!--
-	msgctxt "#551"
-msgid "Name"
-msgstr "Name"
-
-msgctxt "#552"
-msgid "Date"
-msgstr "Datum"
-
-msgctxt "#553"
-msgid "Size"
-msgstr "Größe"
-
-msgctxt "#554"
-msgid "Track"
-msgstr "Track"
-
-msgctxt "#555"
-msgid "Time"
-msgstr "Zeit"
-
-msgctxt "#556"
-msgid "Title"
-msgstr "Titel"
-
-msgctxt "#557"
-msgid "Artist"
-msgstr "Interpret"
-
-msgctxt "#558"
-msgid "Album"
-msgstr "Album"
-
-msgctxt "#559"
-msgid "Playlist"
-msgstr "Wiedergabeliste"
-
-msgctxt "#560"
-msgid "ID"
-msgstr "Kennung"
-
-msgctxt "#561"
-msgid "File"
-msgstr "Datei"
-
-msgctxt "#562"
-msgid "Year"
-msgstr "Jahr"
-
-msgctxt "#563"
-msgid "Rating"
-msgstr "Bewertung"
-
-msgctxt "#564"
-msgid "Type"
-msgstr "Typ"
-
-msgctxt "#565"
-msgid "Usage"
-msgstr "Gebrauch"
-
-msgctxt "#566"
-msgid "Album artist"
-msgstr "Album-Interpret"
-
-msgctxt "#567"
-msgid "Play count"
-msgstr "Abspielzähler"
-
-msgctxt "#568"
-msgid "Last played"
-msgstr "Zuletzt abgespielt am"
-
-msgctxt "#569"
-msgid "Comment"
-msgstr "Kommentar"
-
-msgctxt "#570"
-msgid "Date added"
-msgstr "Hinzugefügt am"
-
-msgctxt "#571"
-msgid "Default"
-msgstr "Standard"
-
-msgctxt "#572"
-msgid "Studio"
-msgstr "Studio"
-
-msgctxt "#573"
-msgid "Path"
-msgstr "Pfad"
-
-msgctxt "#574"
-msgid "Country"
-msgstr "Land"
-
-msgctxt "#575"
-msgid "In progress"
-msgstr "Begonnen"
-
-msgctxt "#576"
-msgid "Times played"
-msgstr "Abgespielt"
-
-msgctxt "#577"
-msgid "Date taken"
-msgstr "Aufnahmedatum"
-
-msgctxt "#578"
-msgid "Artist / Year"
-msgstr "Interpret / Jahr"
-
-msgctxt "#580"
-msgid "Sort direction"
-msgstr "Sortierrichtung"
-
-msgctxt "#581"
-msgid "Sort method"
-msgstr "Sortiermethode"
-
-msgctxt "#582"
-msgid "View mode"
-msgstr "Ansichtsmodus"
-
-msgctxt "#583"
-msgid "Remember views for different folders"
-msgstr "Ansicht für verschiedene Ordner beibehalten"
-
-msgctxt "#584"
-msgid "Ascending"
-msgstr "Aufsteigend"
-
-msgctxt "#585"
-msgid "Descending"
-msgstr "Absteigend"
-
-msgctxt "#586"
-msgid "Edit playlist"
-msgstr "Wiedergabeliste bearbeiten"
-
-msgctxt "#587"
-msgid "Filter"
-msgstr "Filter"
-
-msgctxt "#588"
-msgid "Cancel party mode"
-msgstr "Partymodus abbrechen"
-
-msgctxt "#589"
-msgid "Party mode"
-msgstr "Partymodus"
-
-msgctxt "#590"
-msgid "Random"
-msgstr "Zufällig"
--->
-	<variable name="ContainerSortMethod">
+	sortby
+	
+	content : random ? , label ? , status ? , country ? , studio ? , inprogress ? , path ? , lastplayed(missed in movies) , rating(missed in tvshows)
+	
+	(video)files : name, size , date , file
+	(video)addons : name , lastused
+	movies: title , year , rating , userrating , mpaa , duration , dateadded , playcount
 		
+	actors/ directors: name , appearences
+	sets : name
+		
+	tvshow : title , episode , lastplayed , dateadded , year , userrating
+	episode: episode , rating , userrating , mpaa , production code=status?, date , playcount , name
+	
+	artist: artist , dateadded
+	album : album , artist , artistthenyear / , year , dateadded , playcount , lastplayed , rating , userrating
+	song : track , title , album , artist , artistthenyear , name , duration , rating , userrating , year , dateadded , playcount , lastplayed
+	
+	
+	Notification(header,message[,time,image])	Will display a notification dialog with the specified header and message, in addition you can set the length of time it displays in milliseconds and a icon image.
+	
+	https://kodi.wiki/view/List_of_built-in_functions#List_of_sort_methods
+	https://github.com/xbmc/xbmc/blob/master/xbmc/utils/SortUtils.cpp#L529-L577
+
+container.setsortmethod()
+1	Name
+2	Date
+3	Size
+4	File
+5	Path
+6	DriveType
+7	Title
+8	TrackNumber
+9	Time
+10	Artist
+11	ArtistThenYear
+12	Album
+13	AlbumType
+14	Genre
+15	Country
+16	Year
+17	Rating
+18	UserRating
+19	Votes
+20	Top250
+21	ProgramCount
+22	PlaylistOrder
+23	EpisodeNumber
+24	Season
+25	NumberOfEpisodes
+26	NumberOfWatchedEpisodes
+27	TvShowStatus
+28	TvShowTitle
+29	SortTitle
+30	ProductionCode
+31	MPAA
+32	VideoResolution
+33	VideoCodec
+34	VideoAspectRatio
+35	AudioChannels
+36	AudioCodec
+37	AudioLanguage
+38	SubtitleLanguage
+39	Studio
+40	DateAdded
+41	LastPlayed
+42	Playcount
+43	Listeners
+44	Bitrate
+45	Random
+46	Channel
+47	ChannelNumber
+48	DateTaken
+49	Relevance
+50	InstallDate
+51	LastUpdated
+52	LastUsed
+	-->
+	
+	<variable name="ContainerSortMethods">
+		
+		<value condition="String.IsEqual(Container.SortMethod,$LOCALIZE[551])">name</value>
+		<value condition="String.IsEqual(Container.SortMethod,$LOCALIZE[552])">date</value>
+		<value condition="String.IsEqual(Container.SortMethod,$LOCALIZE[553])">size</value>
+		<value condition="String.IsEqual(Container.SortMethod,$LOCALIZE[561])">file</value>
+		<value condition="String.IsEqual(Container.SortMethod,$LOCALIZE[573])">path</value>
+		<value condition="String.IsEqual(Container.SortMethod,$LOCALIZE[556])">title</value>
+		<value condition="String.IsEqual(Container.SortMethod,$LOCALIZE[554])">tracknumber</value>
+		<value condition="String.IsEqual(Container.SortMethod,$LOCALIZE[555])">time</value>
+		<value condition="String.IsEqual(Container.SortMethod,$LOCALIZE[557])">artist</value>
+		<value condition="String.IsEqual(Container.SortMethod,$LOCALIZE[578])">artistthenyear</value>
+		<value condition="String.IsEqual(Container.SortMethod,$LOCALIZE[558])">album</value>
+		<value condition="String.IsEqual(Container.SortMethod,$LOCALIZE[???])">albumtype</value>
+		<value condition="String.IsEqual(Container.SortMethod,$LOCALIZE[515])">genre</value>
+		<value condition="String.IsEqual(Container.SortMethod,$LOCALIZE[574])">country</value>
+		<value condition="String.IsEqual(Container.SortMethod,$LOCALIZE[562])">year</value>
+		<value condition="String.IsEqual(Container.SortMethod,$LOCALIZE[563])">rating</value>
+		<value condition="String.IsEqual(Container.SortMethod,$LOCALIZE[38018])">userrating</value>
+		<value condition="String.IsEqual(Container.SortMethod,$LOCALIZE[205])">votes</value>
+		<value condition="String.IsEqual(Container.SortMethod,$LOCALIZE[13409])">top250</value>
+		<value condition="String.IsEqual(Container.SortMethod,$LOCALIZE[568])">lastplayed</value>
 		<value condition="String.IsEqual(Container.SortMethod,$LOCALIZE[567])">playcount</value>
-		<value condition="String.IsEqual(Container.SortMethod,$LOCALIZE[cc])">gg</value>
+		<value condition="String.IsEqual(Container.SortMethod,$LOCALIZE[572])">studio</value>
+		<value condition="String.IsEqual(Container.SortMethod,$LOCALIZE[570])">dateadded</value>
+		<value condition="String.IsEqual(Container.SortMethod,$LOCALIZE[12012])">lastused</value>
+ 	   <value condition="String.IsEqual(Container.SortMethod,$LOCALIZE[590])">random</value>
 		<value></value>
 	</variable>
-	
+	<!-- value condition="String.IsEqual(Container.SortMethod,$LOCALIZE[566])" albumartist -->
+	<!-- value condition="String.IsEqual(Container.SortMethod,$LOCALIZE[575])" inprogress -->
+		
 	<include name="SwanShortcuts_PanelList">
 			<top>250</top>
 			<left>33.3%</left>
 			<width>33.3%</width>
 			<height>70%</height>
 			
-			<onup>8999</onup>
+			<ondown>200</ondown>
+			<onup>200</onup>
 			<onright>200</onright>
-			<onleft>8999</onleft>
+			<onleft>200</onleft>
 			
 			<scrolltime tween="cubic" easing="out">300</scrolltime>
 			

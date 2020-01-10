@@ -11,6 +11,7 @@
 	<onunload>ClearProperty(HUB_EncodedArtist,home)</onunload>
 	<onunload>ClearProperty(HUB_Music_artist,home)</onunload>
 	<onunload>ClearProperty(HUB_Music,home)</onunload>
+	
 	<controls>
 	
 	
@@ -182,7 +183,7 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 	</control>
 		
 	<control type="group">
-	<description>B G    F A N A R T    M U S I C V I D E O</description>
+		<description>B G    F A N A R T    M U S I C V I D E O</description>
 		<right>0</right>
 		<top>100</top>
 		<width>84%</width>
@@ -1145,7 +1146,63 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 			</include>
 			<content target="videos" sortby="file" limit="25">plugin://plugin.video.youtube/search/?q=$INFO[Control.GetLabel(100002).index(1)]</content>
 		</control>
-		
+		<include content="HUB_ContainerHeader">
+			<param name="id" value="40" />
+			<param name="label" value="$INFO[Container(42).ListItem.Label]" />
+		</include>
+		<control type="panel" id="5040">
+			<description>Test_its Slow Get Playlists by id 42</description>
+			<visible>String.IsEqual(Window(home).Property(HUB_Music),playlists)</visible>
+			
+			<left>5</left>
+			<top>50</top>
+			<width>1600</width>
+			<height>850</height>
+			
+			<preloaditems>2</preloaditems>
+			<orientation>vertical</orientation>
+			
+			<onleft>111060</onleft>
+			<onright>260</onright>
+			<pagecontrol>260</pagecontrol>
+			
+			<onup>5009</onup>
+			<ondown>5009</ondown>
+			
+			<scrolltime tween="quadratic">400</scrolltime>
+			<autoscroll>true</autoscroll>
+			
+			<itemlayout height="300" width="420">
+				<control type="group">
+					<height>243</height>
+					<width>405</width>
+					<include content="HUB_Landscape">
+						<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+						<param name="autoscroll" value="false" />
+						<param name="bordersize_bg" value="6" />
+					</include>
+				</control>
+			</itemlayout>
+			<focusedlayout height="300" width="420">
+				<control type="group">
+					<height>243</height>
+					<width>405</width>
+					<include>Item_Focus_Animation</include>
+					<control type="group">
+						<include content="HUB_Landscape">
+							<param name="colordiffuse" value="$VAR[Container_item_fo]" />
+							<param name="autoscroll" value="true" />
+							<param name="bordersize_bg" value="4" />
+						</include>
+						<include>FocusOverlay</include>
+					</control>
+				</control>
+			</focusedlayout>
+			<include content="emptywidget">
+				<param name="id" value="40" />
+			</include>
+			<content target="music" sortby="">$INFO[Container(42).ListItem.Folderpath]</content>
+		</control>
 		
 		
 		
