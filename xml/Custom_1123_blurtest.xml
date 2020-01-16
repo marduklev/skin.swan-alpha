@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window id="1123">
+	<defaultcontrol always="true">2323</defaultcontrol>
+	<menucontrol>9000</menucontrol>
+	<backgroundcolor>$VAR[BackgroundColor]</backgroundcolor>
+	<!-- start up -->
+	<onload condition="!Skin.HasSetting(BlurEnabled)">Skin.ToggleSetting(BlurEnabled)</onload>		
+	<onload condition="String.IsEmpty(Skin.String(BlurContainer))">Skin.SetString(BlurContainer,99005)</onload>
+	<onload condition="!Skin.HasSetting(BlurEnabled)">RunScript(script.embuary.helper,action=restartservice)</onload>
+	
+	<controls>
+		
+		
+		<!-- test
+keep away from def 'GlobalBackground'
+or use variable for multiimage diffuse="" depending how i want ot to use
+
+options/ use var diffuse? 
+1. just use blurred image bg via skinsetting toggle
+
+2. blurred diffuse = gradient from left , non blurred gradient from right to left" - viewtype usage
+3. using blur with doffuse trans alpha overlay can give a 'fake' bloom effect- viewtype usage
+
+4. just transitional fade when focus/unfocus controls -  dialog o/c usage
+-->
+		<control type="group">
+			<include content="GlobalBlurredBackground" />
+		</control>
+		
+		<control type="group">
+		
+		
+			<control type="list" id="2323">
+			
+				<orientation>vertical</orientation>
+				<preloaditems>2</preloaditems>
+				<scrolltime tween="quadratic">400</scrolltime>
+				
+				<height>500</height>
+				<top>700</top>
+				
+				
+				
+				
+				<itemlayout height="450" width="230">
+					<control type="group">
+						<width>225</width>
+						<height>350</height>
+						<include content="UniversalLayout">
+							<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+							<param name="artwork" value="poster" />
+							<param name="get_circle" value="false" />
+							<param name="get_tags" value="true" />
+							<param name="get_landscapelogo" value="false" />
+							<param name="get_bannerlogo" value="false" />
+							<param name="autoscroll" value="false" />
+							<param name="bordersize_bg" value="6" />
+						</include>
+					</control>
+				</itemlayout>
+				<focusedlayout height="450" width="230">
+					<control type="group">
+						<width>225</width>
+						<height>350</height>
+						<include>Item_Focus_Animation</include>
+						<control type="group">
+							<include content="UniversalLayout">
+								<param name="colordiffuse" value="$VAR[Container_item_fo]" />
+								<param name="artwork" value="poster" />
+								<param name="get_circle" value="false" />
+								<param name="get_tags" value="true" />
+								<param name="get_landscapelogo" value="false" />
+								<param name="get_bannerlogo" value="false" />
+								<param name="autoscroll" value="false" />
+								<param name="bordersize_bg" value="6" />
+							</include>
+							<control type="group">
+								<include>FocusOverlay</include>
+							</control>
+						</control>
+					</control>			
+				</focusedlayout>
+				<content>videodb://movies/titles/</content>
+		</control>
+	</control>
+	<control type="button" id="9000">
+		<height>500</height>
+		<top>200</top>
+		<width>1200</width>
+		<label>$INFO[Window(home).property(listitem_blurred),listitem_blurred : , ][CR]$INFO[Window(home).property(listitem_color),listitem_color : , ][CR]$INFO[Skin.String(BlurRadius),BlurRadius : , ]$INFO[Skin.String(BlurContainer),BlurContainer : , ]</label>
+		<textcolor>white</textcolor>
+		<onclick>Skin.SetString(BlurRadius,5)</onclick>
+		<onclick>RunScript(script.embuary.helper,action=restartservice)</onclick>
+				
+				
+	</control>
+	<!--
+Default image control
+
+By default the script is looking for a image control with the ID "100000". This value can be changed by skinners.
+
+Example
+
+Skin.String(BlurContainer,1234)
+-->
+		
+		</controls>
+</window>
