@@ -1,118 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
+	
 	<include name="HeaderBar">
-		<control type="image">
-			<width>100%</width>
-			<height>110</height>
-			<texture colordiffuse="$VAR[Header_BG]">$VAR[HeaderBarTexture]</texture>
-			<aspectratio>stretch</aspectratio>
-		</control>
-		<control type="grouplist">
-			<posx>50</posx>
-			<posy>10</posy>
-			<height>120</height>
-			<orientation>vertical</orientation>
-			<usecontrolcoords>true</usecontrolcoords>
-			<itemgap>5</itemgap>
-			
-			<control type="group">
-			<height>40</height>
-			<width>99%</width>
-				<control type="label">
-					<description>Main Section Name left,  temp System.CurrentWindow later VAR</description>
-					<with>auto</with>
-					<height>50</height>
-					<aligny>bottom</aligny>
-					<label>[UPPERCASE][B]$INFO[System.CurrentWindow][/B][/UPPERCASE]</label>
-					<font>HeaderBar_Main</font>
-					<textcolor>$VAR[Header_TextMain]</textcolor>
-				</control>
-				
-				
-					<!-- 
-					<control type="group">
-			 Weather.Conditions 	Current weather conditions – this is looked up in a background process. 	
-						Weather.Temperature 	Current weather temperature 	
-						Weather.Location 	City/town which the above two items are for 	
-						Weather.fanartcode 	Current weather fanartcode. 	
-						Weather.plugin 
-
-				
-				<top>5</top>
-				
-					<control type="multiimage">
-						<right>0</right>
-						<imagepath>$INFO[Weather.Fanartcode,special://resource.images.weathericons.outline-hd/,.jpg]$INFO[Skin.String(WeatherIconPack.ext)]</imagepath>
-						<width>100</width>
-						<height>100</height>
-						<aspectratio>keep</aspectratio>
-						<visible>!String.IsEmpty(Window(Weather).Property(Current.FanartCode)) + Skin.String(WeatherIconPack.path)</visible> 
-					</control>
-				
-					
-					<control type="label">
-						<right>0</right>
-						<align>right</align>
-						<width>250</width>
-						<label>[B]$INFO[Weather.Temperature][/B] - $INFO[Weather.Conditions]</label>
-						<font>Reg16</font>
-						<textcolor>blue</textcolor>
-					</control>
-					
-				</control>
-				-->
-				
-				
-				
-				<control type="label">
-					<description>SytemTime right</description>
-					<with>auto</with>
-					<top>-20</top>
-					<right>5</right>
-					<height>50</height>
-					<aligny>bottom</aligny>
-					<align>right</align>
-					<label>$INFO[System.Time]</label>
-					<font>font60</font>
-					<textcolor>$VAR[Header_TextSecondary]</textcolor>
-				</control>
-			</control>
-			<control type="group">
-			<height>30</height>
-			<width>99%</width>
-				<control type="label">
-					<description>Sub-Section Name - left</description>
-					<with>auto</with>
-					<height>30</height>
-					<aligny>top</aligny>
-					<label>Subheader VAR[Label_SubHeaderBar] - Movies [COLOR=$VAR[Header_TextSecondary]](99)[/COLOR] - watched [COLOR=$VAR[Header_TextSecondary]](65)[/COLOR]</label>
-					<font>HeaderBar_Sub</font>
-					<textcolor>$VAR[Header_TextMain]</textcolor>
-				</control>
-				<control type="label">
-					<description>day - right</description>
-					<with>auto</with>
-					<height>30</height>
-					<aligny>top</aligny>
-					<align>right</align>
-					<label>$INFO[System.Date]</label>
-					<font>HeaderBar_Sub</font>
-					<textcolor>$VAR[Header_TextMain]</textcolor>
-				</control>
-			</control>
+		<param name="HasSearchBar" default="false" />
+		<param name="HasBGPanel" default="true" />
+		<param name="HeadingAlignment" default="left" />
 		
-		</control>
-	
-	</include>
-	
-	
-	<include name="HeaderBarMedia">
-		<!-- <control type="image">
+		<definition>
+		<control type="image">
+			<description>BG PANEL</description>
+			<visible>$PARAM[HasBGPanel]</visible>
 			<width>100%</width>
 			<height>110</height>
 			<texture colordiffuse="$VAR[Header_BG]">$VAR[HeaderBarTexture]</texture>
 			<aspectratio>stretch</aspectratio>
-		</control> -->
+		</control>
 		<control type="grouplist">
 			<posx>50</posx>
 			<posy>10</posy>
@@ -122,9 +24,11 @@
 			<itemgap>5</itemgap>
 			
 			<control type="group">
+				<description>TOP</description>
 				<height>50</height>
 				<width>99%</width>
 				<control type="edit" id="100002">
+					<visible>$PARAM[HasSearchBar]</visible>
 					<description>default menucontrol as option ?, add container based on vis ?</description>
 					<onup>50</onup>
 					<ondown>50</ondown>
@@ -149,18 +53,18 @@
 				
 				<control type="label">
 					<description>Main Section Name left,  temp System.CurrentWindow later VAR</description>
-					<with>auto</with>
 					<top>10</top>
 					<height>50</height>
-					<align>center</align>
-					<label>[UPPERCASE][B]$VAR[CurrentContent][/B][/UPPERCASE]</label>
+					<align>$PARAM[HeadingAlignment]</align>
+					<label>$VAR[CurrentContent]</label>
 					<font>HeaderBar_Media</font>
 					<textcolor>$VAR[Header_TextMain]</textcolor>
 				</control>
 				<control type="label">
-					<description>SytemTime right</description>
-					<with>auto</with>
-					<right>5</right>
+					<description>SytemTime right,slide when weather disabled</description>
+					<!-- <animation effect="fade" end="50" time="0" condition="true">conditional</animation> -->
+					<right>130</right>
+					<width>450</width>
 					<height>50</height>
 					<align>right</align>
 					<label>$INFO[System.Time]</label>
@@ -170,37 +74,80 @@
 			</control>
 			
 			<control type="group">
+				<description>SUB</description>
 				<height>30</height>
 				<width>99%</width>
 				<control type="label">
 					<description>Sub-Section Name - left</description>
-					<with>auto</with>
 					<top>10</top>
 					<height>30</height>
-					<align>center</align>
+					<align>$PARAM[HeadingAlignment]</align>
 					<aligny>bottom</aligny>
 					<label>$VAR[CurrentContent_Info]</label>
 					<font>DialogListItem</font>
 					<textcolor>$VAR[Header_TextMain]</textcolor>
 					<visible>!Skin.HasSetting(HideSubHeaderInfo)</visible>
-					<visible>!String.IsEmpty(Container.Content)</visible>
+					<!-- <visible>!String.IsEmpty(Container.Content)</visible> -->
 					<visible>!Control.IsVisible(58)</visible>
 				</control>
 				<control type="label">
-					<description>day - right</description>
-					<with>auto</with>
+					<description>day - right, slide when weather disabled</description>
+					<right>130</right>
+					<width>450</width>
 					<height>20</height>
-					<aligny>top</aligny>
 					<align>right</align>
+					<aligny>bottom</aligny>
 					<label>$INFO[System.Date]</label>
 					<font>HeaderBar_Sub</font>
 					<!-- <font>font12</font> -->
 					<textcolor>$VAR[Header_TextMain]</textcolor>
 				</control>
+				
 			</control>
-		
+			
 		</control>
-	
+		<control type="group">
+			<right>10</right>
+			<width>110</width>
+			<description>weather</description>
+			<control type="image">
+				<description>seperator</description>
+				<top>9</top>
+				<height>90</height>
+				<width>1</width>
+				<texture colordiffuse="white">colors/white30.png</texture>
+				<aspectratio align="left">stretch</aspectratio>
+			</control>
+			<control type="label">
+				<description>day - right</description>
+				<top>65</top>
+				
+				<width>110</width>
+				<height>20</height>
+				<align>center</align>
+				<aligny>bottom</aligny>
+				<label>$INFO[Weather.Temperature]</label>
+				<font>font23_title</font>
+				<textcolor>$VAR[Header_TextMain]</textcolor>
+			</control>
+			<control type="image">
+				<!-- <visible>!Skin.HasSetting(HideHeaderWeather) + !String.IsEmpty(Weather.Temperature) + !String.Contains(Weather.Temperature,$LOCALIZE[503]) + !String.IsEqual(Weather.fanartcode,na) + Weather.IsFetched</visible> -->
+				<description>png</description>
+				<top>5</top>
+				<height>65</height>
+				<width>110</width>
+				
+				<texture colordiffuse="$VAR[Header_TextMain]">$INFO[Weather.FanartCode,resource://resource.images.weathericons.outline-hd/,.png]</texture>
+				<!-- <texture>$INFO[Weather.FanartCode,resource://resource.images.weathericons.outline/,.png]</texture>
+				 -->
+				<!-- <bordertexture>$INFO[Weather.FanartCode,resource://resource.images.weathericons.outline/,.jpg]</bordertexture> -->
+				<!-- , skinstring equal addon path -->
+				<aspectratio align="center">keep</aspectratio>
+			</control>
+			
+		</control>
+		
+		</definition>
 	</include>
 	
 					
@@ -217,17 +164,17 @@
 		<value condition="Container.Content(musicvideos)">$LOCALIZE[20389]</value>
 		<value condition="Container.Content(songs)">$LOCALIZE[134]</value>
 		<value>$INFO[System.CurrentWindow]</value> -->
-		<value condition="Container.Content(movies)">$LOCALIZE[342]</value>
-		<value condition="Container.Content(tvshows)">$LOCALIZE[20343]</value>
-		<value condition="Container.Content(seasons)">$LOCALIZE[33054]</value>
+		<value condition="Container.Content(movies)">[UPPERCASE][B]$LOCALIZE[342][/B][/UPPERCASE]</value>
+		<value condition="Container.Content(tvshows)">[UPPERCASE][B]$LOCALIZE[20343][/B][/UPPERCASE]</value>
+		<value condition="Container.Content(seasons)">[UPPERCASE][B]$LOCALIZE[33054][/B][/UPPERCASE]</value>
 		
-		<value condition="Container.Content(sets)">$LOCALIZE[20434]</value>
-		<value condition="Container.Content(images)">$LOCALIZE[10002]</value>
-		<value condition="Container.Content(artists)">$LOCALIZE[133]</value>
+		<value condition="Container.Content(sets)">[UPPERCASE][B]$LOCALIZE[20434][/B][/UPPERCASE]</value>
+		<value condition="Container.Content(images)">[UPPERCASE][B]$LOCALIZE[10002][/B][/UPPERCASE]</value>
+		<value condition="Container.Content(artists)">[UPPERCASE][B]$LOCALIZE[133][/B][/UPPERCASE]</value>
 		
-		<value condition="Container.Content(albums)">$LOCALIZE[132]</value>
-		<value condition="Container.Content(musicvideos)">$LOCALIZE[20389]</value>
-		<value condition="Container.Content(songs)">$LOCALIZE[134]</value>
+		<value condition="Container.Content(albums)">[UPPERCASE][B]$LOCALIZE[132][/B][/UPPERCASE]</value>
+		<value condition="Container.Content(musicvideos)">[UPPERCASE][B]$LOCALIZE[20389][/B][/UPPERCASE]</value>
+		<value condition="Container.Content(songs)">[UPPERCASE][B]$LOCALIZE[134][/B][/UPPERCASE]</value>
 		<value>$INFO[System.CurrentWindow]</value>
 	</variable>
 	<!-- 
@@ -265,7 +212,8 @@ LatestAlbum.[1-10].Title, LatestAlbum.[1-10].Artist, LatestAlbum.[1-10].Year, La
 	<variable name="CurrentContent_Info">
 		<value condition="Container.Content(movies)">$LOCALIZE[20161] : [COLOR=$VAR[Header_TextSecondary]]$INFO[Window(Home).Property(Movies.Count)][/COLOR] [B]|[/B] $LOCALIZE[16101] : [COLOR=$VAR[Header_TextSecondary]]$INFO[Window(Home).Property(Movies.UnWatched)][/COLOR]</value>
 		<value condition="Container.Content(tvshows)">$LOCALIZE[20161] : [COLOR=$VAR[Header_TextSecondary]]$INFO[Window(Home).Property(TVShows.Count)][/COLOR] [B]|[/B] $LOCALIZE[16101] : [COLOR=$VAR[Header_TextSecondary]]$INFO[Window(Home).Property(TVShows.UnWatched)][/COLOR]</value>
-		<value>$LOCALIZE[20161] : [COLOR=$VAR[Header_TextSecondary]]$INFO[Container(id).NumItems][/COLOR] [B]|[/B] $LOCALIZE[16101] : [COLOR=$VAR[Header_TextSecondary]]$INFO[Container.TotalUnWatched][/COLOR]</value>
+		<value condition="Window.IsMedia">$LOCALIZE[20161] : [COLOR=$VAR[Header_TextSecondary]]$INFO[Container(id).NumItems][/COLOR] [B]|[/B] $LOCALIZE[16101] : [COLOR=$VAR[Header_TextSecondary]]$INFO[Container.TotalUnWatched][/COLOR]</value>
+		<value>[COLOR=$VAR[Header_TextSecondary]]$INFO[System.CurrentControl][/COLOR]</value>
 	</variable>
 	
 	<include name="FooterBar">
@@ -290,7 +238,7 @@ LatestAlbum.[1-10].Title, LatestAlbum.[1-10].Artist, LatestAlbum.[1-10].Year, La
 			<width>99%</width>
 				<control type="label">
 					<description>Main Section Name</description>
-					<with>auto</with>
+					<width>auto</width>
 					<height>60</height>
 					<aligny>center</aligny>
 					<label>[B]HEADING SECTION[/B]   label 1 left $VAR[Label_HeaderBar]</label>
@@ -299,7 +247,7 @@ LatestAlbum.[1-10].Title, LatestAlbum.[1-10].Artist, LatestAlbum.[1-10].Year, La
 				</control>
 				<control type="label">
 					<description>Main Section Name</description>
-					<with>auto</with>
+					<width>auto</width>
 					<height>60</height>
 					<aligny>center</aligny>
 					<align>right</align>
@@ -313,7 +261,7 @@ LatestAlbum.[1-10].Title, LatestAlbum.[1-10].Artist, LatestAlbum.[1-10].Year, La
 			<width>99%</width>
 				<control type="label">
 					<description>Sub-Section Name</description>
-					<with>auto</with>
+					<width>auto</width>
 					<height>60</height>
 					<aligny>center</aligny>
 					<label>SUBHEADING labl2 $VAR[Label_SubHeaderBar] MAking own custom Icons is damn time stealing</label>
@@ -322,7 +270,7 @@ LatestAlbum.[1-10].Title, LatestAlbum.[1-10].Artist, LatestAlbum.[1-10].Year, La
 				</control>
 				<control type="label">
 					<description>Sub-Section Name</description>
-					<with>auto</with>
+					<width>auto</width>
 					<height>60</height>
 					<aligny>center</aligny>
 					<align>right</align>
