@@ -15,6 +15,21 @@ ID 	Type 		Description
 11 	button 		Play movie trailer
 13 	button 		Show all movies by the director of the selected movie
 50 	container 	List of cast members of the currently selected movie  
+
+
+get vis conditions - listitem.dbtype,set
+embuary helper
+Reset container positions
+
+Resets all container positions to 0. Multiple ID's have to be splitted by ||.
+
+if open for set - last item labels are uncleared - leia
+
+Optional argument
+
+    only=inactive (only reset position for not focused items)
+
+RunScript(script.embuary.helper,action=resetposition,container=101||102||103||104||105||106,only=inactive)
 -->
 	<onload condition="[ContainerContent(episodes) | String.IsEqual(ListItem.DBTYPE,episode)]">RunScript(script.embuary.helper,action=encode,string='"$INFO[ListItem.TVShowTitle]"',prop=EncodedTitle)</onload>
 	<onload condition="![ContainerContent(episodes) | String.IsEqual(ListItem.DBTYPE,episode)]">RunScript(script.embuary.helper,action=encode,string='"$INFO[ListItem.Label]"',prop=EncodedTitle)</onload>
@@ -26,7 +41,7 @@ ID 	Type 		Description
     <controls>
 		<control type="group">
 			<include>Animation_OpenClose_Zoom</include>
-			
+			<visible>String.IsEmpty(Window(home).Property(movieinformation))</visible>
 			<include content="Animation_TransitionFadeOut">
 				<param name="condition" value="[Window.IsVisible(script-embuary-video.xml) | Window.IsVisible(script-embuary-person.xml) | Window.IsVisible(script-embuary-image.xml)]" />
 			</include>

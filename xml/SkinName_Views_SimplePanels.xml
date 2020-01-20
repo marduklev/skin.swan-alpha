@@ -12,7 +12,19 @@
 			<align>center</align>
 		</control>
 	</include>
+	
+	<include name="Oninfo_MovieSetInfo">
+		<oninfo condition="String.IsEqual(ListItem.dbtype,set)">ActivateWindow(movieinformation),return</oninfo>
+		<oninfo condition="String.IsEqual(ListItem.dbtype,set)">SetProperty(movieinformation,set,home)</oninfo>
+	</include>
 
+	<include name="NavControl_Media">
+		<pagecontrol>60</pagecontrol>
+		<onleft>19</onleft>
+		<onright condition="Control.IsVisible(60)">60</onright>
+		<onright condition="!Control.IsVisible(60)">9000</onright>
+	</include>
+		
 	<include name="Simple_Panels">
 		
 		<control type="group">
@@ -39,8 +51,9 @@
 					<viewtype label="poster">poster panel</viewtype>
 					
 					<left>4%</left>
+					<include>Oninfo_MovieSetInfo</include>
+					<include>NavControl_Media</include>
 					
-				
 				</include>
 			</control>
 			
@@ -75,6 +88,8 @@
 				<viewtype label="circle">circle panel</viewtype>
 				
 				<left>5%</left>
+				<include>Oninfo_MovieSetInfo</include>
+				<include>NavControl_Media</include>
 				
 			</include>
 			<include content="footer_test">
@@ -106,12 +121,49 @@
 				<viewtype label="landscape">landscape panel</viewtype>
 				
 				<left>9%</left>
+				<include>Oninfo_MovieSetInfo</include>
+				<include>NavControl_Media</include>
 			
 			</include>
 			
 			<include content="footer_test">
 				<param name="label" value="f o o t e r" />
 				<param name="view_id" value="53" />
+			</include>
+		</control>
+		
+		<!-- diffuse image still wrong one, get glow/shadow, bordertexture,dont cut main texture sqaurethunb-->
+		<control type="group">
+			<visible>Control.IsVisible(54)</visible>
+			
+			<include content="Universal_Container">
+				<param name="id" value="54" />
+				<param name="type_height" value="860" />
+				<param name="type_pos_top" value="120" />
+				<param name="orientation" value="vertical" />
+				
+				<param name="tags_visible" value="!Skin.HasSetting(View_54_DisableTags)" />
+				
+				<param name="visible" value="true" />
+				
+				<param name="layout_height" value="410" />
+				<param name="layout_width" value="400" />
+				
+				<param name="itemheight" value="383" />
+				<param name="itemwidth" value="383" />
+			
+				<param name="layout" value="square" />
+				<viewtype label="square">square panel</viewtype>
+				
+				<left>9%</left>
+				<include>Oninfo_MovieSetInfo</include>
+				<include>NavControl_Media</include>
+			
+			</include>
+			
+			<include content="footer_test">
+				<param name="label" value="f o o t e r" />
+				<param name="view_id" value="54" />
 			</include>
 		</control>
 	</include>

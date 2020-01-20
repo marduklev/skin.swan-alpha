@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
 <!-- 	1.48 MyVideoNav.xml
-ID 	Type 				Description
-2 	button 				Select viewtype (list, thumbnail, media info, etc...)
-3 	button 				Select sort method (sort by: name, date size, etc...)
-4 	togglebutton 		Select sortmode (ascending or descending)
-5 	button 				Switch to file mode
-6 	button 				Play DVD (used the play physical DVD discs)
-8 	button 				Search for a string anywhere in the Kodi video database
-10 	button 				Show only watched, unwatched or all videos
-12 	label 				Number of items in the list
-14 	button 				Show only unwatched or all videos
-11 	button 				Unlock shares
-15 	label 				Filter label
-16 	button 				Start party mode (randomly play musicvideos from your collection)
-18 	label 				Warning to the user to turn off library mode when no scanned media is found
-19 	radiobutton / edit 	Filter the media files to only show items that include the specified string in the name
-20 	button 				Update library  
+Universal 	ID 	Type 				Description
+in NAV 
+			2 	button 				Select viewtype (list, thumbnail, media info, etc...)
+			3 	button 				Select sort method (sort by: name, date size, etc...)
+			4 	togglebutton 		Select sortmode (ascending or descending)
+			5 	button 				Switch to file mode
+			6 	button 				Play DVD (used the play physical DVD discs)
+			8 	button 				Search for a string anywhere in the Kodi video database
+			10 	button 				Show only watched, unwatched or all videos
+			12 	label 				Number of items in the list
+			14 	button 				Show only unwatched or all videos
+			11 	button 				Unlock shares
+			15 	label 				Filter label
+			16 	button 				Start party mode (randomly play musicvideos from your collection)
+			18 	label 				Warning to the user to turn off library mode when no scanned media is found
+			19 	radiobutton / edit 	Filter the media files to only show items that include the specified string in the name
+			20 	button 				Update library  
 
 <animation effect="fade" start="100" end="0" time="200" tween="sine" condition="$EXP[Infodialog_IsActive]">Conditional</animation>
 
 -->
 	<defaultcontrol always="true">50</defaultcontrol>
 	<backgroundcolor>$VAR[BackgroundColor]</backgroundcolor>
-	<views>50,51,52,53,58</views>
+	<views>50,51,52,53,54,58</views>
 	<menucontrol>9000</menucontrol>
 	<controls>
 		<control type="list" id="2000">
@@ -53,7 +54,12 @@ ID 	Type 				Description
 		</control>
 		
 		<control type="group">
+			<visible>!Skin.HasSetting(BlurEnabled)</visible>
 			<include>GlobalBackground</include>
+		</control>
+		<control type="group">
+			<visible>Skin.HasSetting(BlurEnabled)</visible>
+			<include>GlobalBlurredBackground</include>
 		</control>
 		
 		<control type="group" id="70">
@@ -90,8 +96,19 @@ ID 	Type 				Description
 			
 				<include content="Content_Menucontrol_SkinsettingButtons_MyVideoNav" condition="String.IsEmpty(Window(home).Property(custom_widget_nr)" />
 			</control>
+			
+			<control type="scrollbar" id="60">
+				<right>2%</right>
+				<top>160</top>
+				<height>74%</height>
+				<onup>60</onup>
+				<ondown>60</ondown>
+				<onleft>SetFocus(50)</onleft>
+				<onright>19</onright>
+			</control>
+			
+			
 		</control>
-		
 		<control type="group">
 			<!-- may rework ,or move to include itself -->
 			<visible type="fade">!$EXP[Infodialog_IsActive]</visible>
@@ -99,11 +116,17 @@ ID 	Type 				Description
 			<animation reversible="true" effect="slide" start="0,0" end="0,-110" tween="quadratic" time="400" condition="Control.IsVisible(58) + !Control.HasFocus(58001)">conditional</animation>
 			<include content="HeaderBar">
 				<param name="HasSearchBar" value="true" />
-				<param name="HasBGPanel" value="false" />
+				<param name="HasBGPanel" value="Skin.HasSetting(MediaWindow_UseHeaderBG)" />
 				<param name="HeadingAlignment" value="center" />
 				
 			</include>
 		</control>
+		
+		<!-- <include content="FooterBar" /> -->
+		
+		<!-- menucontrol need move here -->
+		
+		<include content="NativeString_Filter" />
 		
 		<include content="swan_debug_overlay">
 			<param name="textleft" value="1  istitem.filenameandpath :  $INFO[listitem.filenameandpath]
@@ -120,6 +143,18 @@ ID 	Type 				Description
 7 window Prop SetShortcutInProgress $INFO[Window(home).Property(SetShortcutInProgress)]
 
 8
+
+ListItem.Art(fanart) : $INFO[ListItem.Art(fanart)]
+ListItem.Art(tvshow.fanart) : $INFO[ListItem.Art(tvshow.fanart)]
+ListItem.Art(artist.fanart) : $INFO[ListItem.Art(artist.fanart)]
+ListItem.Art(albumartist.fanart) : $INFO[ListItem.Art(albumartist.fanart)]
+
+Container.ListItem.Art(fanart) : $INFO[Container.ListItem.Art(fanart)]
+Container.ListItem.Art(tvshow.fanart) : $INFO[Container.ListItem.Art(tvshow.fanart)]
+Container.ListItem.Art(artist.fanart) : $INFO[Container.ListItem.Art(artist.fanart)]
+Container.ListItem.Art(albumartist.fanart) : $INFO[Container.ListItem.Art(albumartist.fanart)]
+
+Container.Art(fanart) : $INFO[Container.Art(fanart)]
 9
 10
 
