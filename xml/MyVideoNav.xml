@@ -1,49 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
-<!-- 	1.48 MyVideoNav.xml
-Universal 	ID 	Type 				Description
-in NAV 
-			2 	button 				Select viewtype (list, thumbnail, media info, etc...)
-			3 	button 				Select sort method (sort by: name, date size, etc...)
-			4 	togglebutton 		Select sortmode (ascending or descending)
-			5 	button 				Switch to file mode
-			6 	button 				Play DVD (used the play physical DVD discs)
-			8 	button 				Search for a string anywhere in the Kodi video database
-			10 	button 				Show only watched, unwatched or all videos
-			12 	label 				Number of items in the list
-			14 	button 				Show only unwatched or all videos
-			11 	button 				Unlock shares
-			15 	label 				Filter label
-			16 	button 				Start party mode (randomly play musicvideos from your collection)
-			18 	label 				Warning to the user to turn off library mode when no scanned media is found
-			19 	radiobutton / edit 	Filter the media files to only show items that include the specified string in the name
-			20 	button 				Update library  
-
-<animation effect="fade" start="100" end="0" time="200" tween="sine" condition="$EXP[Infodialog_IsActive]">Conditional</animation>
-
--->
 	<defaultcontrol always="true">50</defaultcontrol>
 	<backgroundcolor>$VAR[BackgroundColor]</backgroundcolor>
 	<views>50,51,52,53,54,58</views>
 	<menucontrol>9000</menucontrol>
+	<include content="Animation_OpenClose_MediaWindow" condition="String.IsEmpty(Window(home).Property(custom_widget_nr))" />
 	<controls>
+		<!-- skin helping stuff -->
 		<control type="list" id="2000">
 			<include>HiddenContainer</include>
+			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
 			<content limit="1">$VAR[EmbuaryHelper_GetInfo_dbid]</content>
 		</control>
 		<control type="list" id="2001">
 			<include>HiddenContainer</include>
 			<content sortby="year">$INFO[ListItem.FolderPath]</content>
+			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
 			<visible>String.IsEqual(ListItem.DBtype,set)</visible>
 		</control>
 		<control type="list" id="2002">
 			<visible>Container.Content(seasons)</visible>
+			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
 			<include>HiddenContainer</include>
 			<content limit="1">$VAR[EmbuaryHelper_NextUp]</content>
 		</control>
 		
 		<!-- native GUI Buttons -->
-		
 		<control type="button" id="3">
 			<visible>Control.IsEnabled(3)</visible>
 			<include content="HiddenObject" />
@@ -55,49 +37,43 @@ in NAV
 		
 		<control type="group">
 			<visible>!Skin.HasSetting(BlurEnabled)</visible>
+			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
 			<include>GlobalBackground</include>
 		</control>
 		<control type="group">
 			<visible>Skin.HasSetting(BlurEnabled)</visible>
+			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
 			<include>GlobalBlurredBackground</include>
 		</control>
 		
 		<control type="group" id="70">
 			<descriptiopn>viewtypes</descriptiopn>
-			
-			<include content="Animation_TransitionFadeOut">
-				<param name="condition" value="$EXP[Infodialog_IsActive] | Window.IsActive(mediasource)" />
-			</include>
-			
+			<include content="Animation_Close_MediaContainer" condition="String.IsEmpty(Window(home).Property(custom_widget_nr))" />
 			<centerleft>50%</centerleft>
 			
+			<!-- 
+			<include content="Animation_TransitionFadeOut">
+				<param name="condition" value="$EXP[Infodialog_IsActive] | Window.IsActive(mediasource)" />
+			</include> 
+			-->
+			<animation type="Conditional" condition="$EXP[Infodialog_IsActive] | Window.IsActive(mediasource)">
+				<effect type="fade" start="100" end="0" time="250" tween="sine" easing="out" />
+				<effect type="zoom" center="50%,50%" start="100" end="0" time="300" tween="cubic" easing="out" />
+			</animation>
+			
+			
 			<!-- Shortcut -->
-			<include content="SwanShortcuts_Container" condition="!String.IsEmpty(Window(home).Property(custom_widget_nr)" />
+			<include content="SwanShortcuts_Container" condition="!string.isempty(window(home).property(custom_widget_nr))" />
 				
-			
 			<!-- Regular -->
-			<include condition="String.IsEmpty(Window(home).Property(custom_widget_nr)">view50</include>
-			<include condition="String.IsEmpty(Window(home).Property(custom_widget_nr)">Simple_Panels</include>
-			<include condition="String.IsEmpty(Window(home).Property(custom_widget_nr)">view58</include>
-			
-			
-			<control type="group">
-				<descriptiopn>menucontrol test viewtype toggle</descriptiopn>
-				<visible>ControlGroup(9000).HasFocus()</visible>
-				
-				<control type="image">
-					<top>500</top>
-					<height>300</height>
-					<left>400</left>
-					<texture>colors/white.png</texture>
-					<colordiffuse>white</colordiffuse>
-					<aspectratio>stretch</aspectratio>
-				</control>
-			
-				<include content="Content_Menucontrol_SkinsettingButtons_MyVideoNav" condition="String.IsEmpty(Window(home).Property(custom_widget_nr)" />
-			</control>
+			<include condition="String.IsEmpty(Window(home).Property(custom_widget_nr))">view50</include>
+			<include condition="String.IsEmpty(Window(home).Property(custom_widget_nr))">Simple_Panels</include>
+			<include condition="String.IsEmpty(Window(home).Property(custom_widget_nr))">view58</include>
 			
 			<control type="scrollbar" id="60">
+				<description>vertical</description>
+				<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
+				<visible>!Control.IsVisible(58)</visible>
 				<right>2%</right>
 				<top>160</top>
 				<height>74%</height>
@@ -106,25 +82,115 @@ in NAV
 				<onleft>SetFocus(50)</onleft>
 				<onright>19</onright>
 			</control>
-			
-			
 		</control>
+		
 		<control type="group">
-			<!-- may rework ,or move to include itself -->
-			<visible type="fade">!$EXP[Infodialog_IsActive]</visible>
-			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress)</visible>
-			<animation reversible="true" effect="slide" start="0,0" end="0,-110" tween="quadratic" time="400" condition="Control.IsVisible(58) + !Control.HasFocus(58001)">conditional</animation>
+				<!-- may rework ,or move to include itself -->
+				<visible type="fade">!$EXP[Infodialog_IsActive]</visible>
+				<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
+				<animation reversible="true" effect="slide" start="0,0" end="0,-110" tween="quadratic" time="400" condition="Control.IsVisible(58) + !Control.HasFocus(58001)">conditional</animation>
+			
 			<include content="HeaderBar">
 				<param name="HasSearchBar" value="true" />
 				<param name="HasBGPanel" value="Skin.HasSetting(MediaWindow_UseHeaderBG)" />
 				<param name="HeadingAlignment" value="center" />
-				
 			</include>
 		</control>
 		
 		<!-- <include content="FooterBar" /> -->
 		
-		<!-- menucontrol need move here -->
+		<!-- Pre-MenuControl -->
+		<control type="grouplist">
+			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
+			<visible>!$EXP[Infodialog_IsActive]</visible>
+			<visible>!Control.IsVisible(58)</visible>
+			<centertop>50%</centertop>
+			<left>5</left>
+			<width>100</width>
+			<height>340</height>
+			<orientation>vertical</orientation>
+			<itemgap>10</itemgap>
+			<usecontrolcoords>true</usecontrolcoords>
+			<control type="radiobutton" id="102501">
+				<textureradioonfocus colordiffuse="white">icons/radiobuttons/search.png</textureradioonfocus>
+				<textureradioonnofocus colordiffuse="5cC6C6C8">icons/radiobuttons/search.png</textureradioonnofocus>
+				<textureradioofffocus colordiffuse="white">icons/radiobuttons/search.png</textureradioofffocus>
+				<textureradiooffnofocus colordiffuse="5cC6C6C8">icons/radiobuttons/search.png</textureradiooffnofocus>
+				<description>radionutton group search,menucontrol,toggle fs, seperate natvir vs skin gui controls?</description>
+				<onclick condition="!String.IsEmpty(Skin.String(SearchTerm))">Skin.Reset(SearchTerm)</onclick>
+				<onclick>Skin.SetString(SearchTerm)</onclick>
+				<onclick>ActivateWindow(1120),return</onclick>
+				<textoffsetx />
+				<radiowidth>60</radiowidth>
+				<radioheight>60</radioheight>
+				<radioposx>5</radioposx>
+				<textureradioondisabled />
+				<textureradiooffdisabled />
+				<texturefocus colordiffuse="">buttons/focusglowbg_round.png</texturefocus>
+				<texturenofocus />
+				<height>80</height>
+				<focusedcolor />
+				<textcolor />
+				<label />
+			</control>
+			<control type="radiobutton" id="102502">
+				<textureradioonfocus colordiffuse="white">icons/radiobuttons/menucontrol.png</textureradioonfocus>
+				<textureradioonnofocus colordiffuse="5cC6C6C8">icons/radiobuttons/menucontrol.png</textureradioonnofocus>
+				<textureradioofffocus colordiffuse="white">icons/radiobuttons/menucontrol.png</textureradioofffocus>
+				<textureradiooffnofocus colordiffuse="5cC6C6C8">icons/radiobuttons/menucontrol.png</textureradiooffnofocus>
+				<description>radionutton group search,menucontrol,toggle fs, seperate natvir vs skin gui controls?</description>
+				<onclick>SetFocus(9000)</onclick>
+				<textoffsetx />
+				<radiowidth>60</radiowidth>
+				<radioheight>60</radioheight>
+				<radioposx>5</radioposx>
+				<textureradioondisabled />
+				<textureradiooffdisabled />
+				<texturefocus colordiffuse="">buttons/focusglowbg_round.png</texturefocus>
+				<texturenofocus />
+				<height>80</height>
+				<focusedcolor />
+				<textcolor />
+				<label />
+			</control>
+			<control type="radiobutton" id="102503">
+				<!-- <visible>Player.HasVideo</visible> -->
+				<description>radionutton group search,menucontrol,toggle fs, seperate natvir vs skin gui controls?</description>
+				<onclick>Fullscreen</onclick>
+				<textureradioonfocus colordiffuse="white">icons/radiobuttons/togglefs_2.png</textureradioonfocus>
+				<textureradioonnofocus colordiffuse="5cC6C6C8">icons/radiobuttons/togglefs_2.png</textureradioonnofocus>
+				<textureradioofffocus colordiffuse="white">icons/radiobuttons/togglefs_2.png</textureradioofffocus>
+				<textureradiooffnofocus colordiffuse="5cC6C6C8">icons/radiobuttons/togglefs_2.png</textureradiooffnofocus>
+				<textoffsetx />
+				<radiowidth>60</radiowidth>
+				<radioheight>60</radioheight>
+				<radioposx>5</radioposx>
+				<textureradioondisabled />
+				<textureradiooffdisabled  />
+				<texturefocus colordiffuse="">buttons/focusglowbg_round.png</texturefocus>
+				<texturenofocus />
+				<height>80</height>
+				<focusedcolor />
+				<textcolor />
+				<label />
+			</control>
+		</control>
+		<control type="group">
+			<descriptiopn>menucontrol test viewtype toggle</descriptiopn>
+			<visible>ControlGroup(9000).HasFocus()</visible>
+			
+			<control type="image">
+				<top>500</top>
+				<height>300</height>
+				<left>400</left>
+				<texture>colors/white.png</texture>
+				<colordiffuse>white</colordiffuse>
+				<aspectratio>stretch</aspectratio>
+			</control>
+		
+			<include content="Content_Menucontrol_SkinsettingButtons_MyVideoNav" condition="String.IsEmpty(Window(home).Property(custom_widget_nr))" />
+		</control>
+			
 		
 		<include content="NativeString_Filter" />
 		
@@ -137,7 +203,7 @@ in NAV
 
 4  Container.FolderPath :  $INFO[Container.FolderPath]
 
-5  Container(58).ListItemAbsolute(0).label  
+5  Container.Content  :  $INFO[Container.Content]  ; Container.ListItem.dbtype  :  $INFO[ Container.ListItem.dbtype]
 
 6 window Prop Shortcuts $INFO[Window(home).Property(custom_widget_nr)]
 7 window Prop SetShortcutInProgress $INFO[Window(home).Property(SetShortcutInProgress)]

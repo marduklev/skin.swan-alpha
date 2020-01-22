@@ -272,6 +272,8 @@ LatestAlbum.[1-10].Title, LatestAlbum.[1-10].Artist, LatestAlbum.[1-10].Year, La
 			
 			<!-- Ground Layer - use 'backgroundcolor' -->
 			
+			<include>FullscreenBG</include>
+			
 			<!-- MIDDLE - ARTWORK LAYER (Artowrk) -->
 			<control type="multiimage" id="99004">
 				<depth>DepthBackground</depth>
@@ -314,7 +316,7 @@ use this include pr add variable fpr diffuse textures
 			<control type="image" id="99005">
 				<include>HiddenObject</include>
 				<description>blurr container</description>
-				<texture background="true" fallback="special://skin/extras/backgroundimages/pattern1.jpg">$VAR[FanartBackground]</texture>
+				<texture background="true" fallback="special://skin/extras/backgroundimages/pattern1.jpg">$VAR[BlurFanartBackground]</texture>
 			</control>
 		
 			<control type="image">
@@ -350,6 +352,8 @@ use this include pr add variable fpr diffuse textures
 		<param name="colordiffuse" default="$VAR[BackgroundOverlay_CDiffuse]" />
 		<definition>
 			<control type="image">
+				<description>temp disabled for 58, maybe optional</description>
+				<visible>!Control.IsVisible(58)</visible>
 				<description>in dialog use colors based on condition - home - generell, decide if overlay should be visible - exp'infodialogactive'</description>
 				<depth>DepthBackground2</depth>
 				<texture>$PARAM[texture]</texture>
@@ -483,20 +487,32 @@ use this include pr add variable fpr diffuse textures
 		<!--  common -->
 		<value condition="!String.IsEmpty(Container.ListItem.Art(fanart))">$INFO[Container.ListItem.Art(fanart)]</value>
 		<value condition="!String.IsEmpty(ListItem.Art(fanart))">$INFO[ListItem.Art(fanart)]</value>
-        <!--  blur if fanart disabled -->
-		<value condition="Skin.HasSetting(BlurEnabled) + Window.IsMedia + !Skin.HasSetting(ShowFanartBackground) + !String.IsEmpty(Skin.String(BackgroundTexture))">$INFO[Skin.String(BackgroundTexture)]</value>
+        
 	</variable>
-
-		<!-- blur fallback ="Skin.HasSetting(BlurEnabled) + Window.IsMedia">special://skin/extras/backgroundimages/pattern1.jpg -->
+	<!--  blur if fanart disabled
+		<value condition="Skin.HasSetting(BlurEnabled) + Window.IsMedia + !Skin.HasSetting(ShowFanartBackground) + !String.IsEmpty(Skin.String(BackgroundTexture))">$INFO[Skin.String(BackgroundTexture)]</value>
+	-->
 		
-		
+	<!-- 99005 -->
+	<variable name="BlurFanartBackground">
+		<value condition="Skin.HasSetting(ShowFanartBackground)">$VAR[FanartBackground]</value>
+		<value condition="!Skin.HasSetting(ShowFanartBackground) + !String.IsEmpty(Skin.String(BackgroundTexture))">$INFO[Skin.String(BackgroundTexture)]</value>
+	</variable>
+	
+	<include name="FullscreenBG">
+		<control type="videowindow">
+			<width>100%</width>
+			<height>100%</height>
+			<visible>$EXP[IsCurrentyPlayingCommon]</visible>
+		</control>
+	</include>
+	
 	<variable name="backgroundVar">
+		<value condition="$EXP[IsCurrentyPlayingCommon]">colors/white80.png</value>
 		<value condition="!String.IsEmpty(ListItem.Art(Animatedfanart)) + Skin.HasSetting(AnimatedFanart)">$INFO[ListItem.Art(AnimatedFanart)]</value>
 		<value condition="Control.IsVisible(99007) + !String.IsEmpty(Control.GetLabel(99007))">$INFO[Control.GetLabel(99007)]</value>
 		<value condition="Control.IsVisible(99006) + !String.IsEmpty(Control.GetLabel(99006)) + !Skin.HasSetting(BlurEnabled)">$INFO[Control.GetLabel(99006)]</value>
-		<value condition="Control.IsVisible(99006) + !String.IsEmpty(Control.GetLabel(99006)) + Skin.HasSetting(BlurEnabled)">$INFO[Window(home).Property(listitem_blurred)]</value>
-		
-		
+		<!-- <value condition="Control.IsVisible(99006) + !String.IsEmpty(Control.GetLabel(99006)) + Skin.HasSetting(BlurEnabled)">$INFO[Window(home).Property(listitem_blurred)]</value> -->
 		<value condition="Window.IsActive(MyWeather.xml)">$INFO[Skin.String(WeatherFanArtPack.path)]$INFO[Window(Weather).Property(Current.fanartCode)]$INFO[Skin.String(WeatherFanArtPack.ext)]</value>
 		<value condition="Skin.String(BackgroundTexture)">$INFO[Skin.String(BackgroundTexture)]</value>
 		<value>special://skin/extras/backgroundimages/pattern1.jpg</value>
