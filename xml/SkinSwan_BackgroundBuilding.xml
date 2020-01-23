@@ -270,14 +270,15 @@ LatestAlbum.[1-10].Title, LatestAlbum.[1-10].Artist, LatestAlbum.[1-10].Year, La
 		
 		<control type="group">
 			
-			<!-- Ground Layer - use 'backgroundcolor' -->
+			<!-- Ground Layer1 - use 'backgroundcolor' -->
 			
-			<include>FullscreenBG</include>
+			<include>VideoFullscreenBG</include>
 			
 			<!-- MIDDLE - ARTWORK LAYER (Artowrk) -->
 			<control type="multiimage" id="99004">
+				<description>Layer2 Artwork</description>
 				<depth>DepthBackground</depth>
-				<imagepath background="true">$VAR[backgroundVar]</imagepath>
+				<imagepath diffuse="" background="true">$VAR[backgroundVar]</imagepath>
 				<aspectratio>scale</aspectratio>
 				<fadetime>300</fadetime>
 				<colordiffuse>$VAR[BackgroundImage_CDiffuse]</colordiffuse>
@@ -289,12 +290,7 @@ LatestAlbum.[1-10].Title, LatestAlbum.[1-10].Artist, LatestAlbum.[1-10].Year, La
 				<animation effect="slide" start="-10,-10" end="10,10" time="8000" tween="cubic" easing="inout" pulse="true" condition="Skin.HasSetting(BackgroundAnimation) | Window.Is(settings)">Conditional</animation>
 			</control>
 			
-			<include content="BG_Overlay" condition="!Window.IsActive(home) + !String.IsEmpty(Skin.String(BackgroundOverlayTexture))" />
-			
-			<include content="BG_Overlay" condition="Window.IsActive(home) + !String.IsEmpty(Skin.String(BackgroundOverlayTextureHome))">
-				<param name="texture" value="$INFO[Skin.String(BackgroundOverlayTextureHome)]" />
-				<param name="colordiffuse" value="$VAR[BackgroundOverlay_CDiffuse_Home]" />
-			</include>
+			<include content="BG_Overlay" />
 		
 		</control>
        
@@ -315,7 +311,7 @@ use this include pr add variable fpr diffuse textures
 			
 			<control type="image" id="99005">
 				<include>HiddenObject</include>
-				<description>blurr container</description>
+				<description>blur container</description>
 				<texture background="true" fallback="special://skin/extras/backgroundimages/pattern1.jpg">$VAR[BlurFanartBackground]</texture>
 			</control>
 		
@@ -330,7 +326,7 @@ use this include pr add variable fpr diffuse textures
 			add img based on vis cond or use gb instead ?
 			diffuse="$VAR(GradientNonBlurDiffusor)"
 			-->
-			<include content="BG_Overlay" condition="Window.IsMedia + !String.IsEmpty(Skin.String(BackgroundOverlayTexture))" />
+			<include content="BG_Overlay" condition="true" />
 			
     </include>
 	
@@ -344,17 +340,13 @@ use this include pr add variable fpr diffuse textures
 		<value></value>
 	</variable>
 	
-	<!-- TOP - 3rd LAYER -->
-	<!-- <animation effect="fade" start="100" end="40" delay="200" time="1500" pulse="false" condition="Player.HasVideo + !$EXP[IsNetflixLayout]">Conditional</animation> -->
-			
 	<include name="BG_Overlay">
-		<param name="texture" default="$INFO[Skin.String(BackgroundOverlayTexture)]" />
-		<param name="colordiffuse" default="$VAR[BackgroundOverlay_CDiffuse]" />
+		<param name="texture" default="$VAR[Global_Layer3_OverlayImage]" />
+		<param name="colordiffuse" default="$VAR[Global_Layer3_OverlayImageColor]" />
 		<definition>
 			<control type="image">
 				<description>temp disabled for 58, maybe optional</description>
-				<visible>!Control.IsVisible(58)</visible>
-				<description>in dialog use colors based on condition - home - generell, decide if overlay should be visible - exp'infodialogactive'</description>
+				<visible>[!Window.IsActive(home) + !String.IsEmpty(Skin.String(BackgroundOverlayTexture))] | [Window.IsActive(home) + !String.IsEmpty(Skin.String(BackgroundOverlayTextureHome))]</visible>
 				<depth>DepthBackground2</depth>
 				<texture>$PARAM[texture]</texture>
 				<colordiffuse>$PARAM[colordiffuse]</colordiffuse>
@@ -362,17 +354,20 @@ use this include pr add variable fpr diffuse textures
 		</definition>
 	</include>
 	
-	<!-- <variable name=""> -->
-	<!-- comon $INFO[Skin.String(BackgroundOverlayTexture)] -->
-	<!-- home $INFO[Skin.String(BackgroundOverlayTextureHome)] -->
-	<!-- </variable> -->
+	<variable name="Global_Layer3_OverlayImage">
+		<value condition="$EXP[IsHome] + !String.IsEmpty(Skin.String(BackgroundOverlayTextureHome))">$INFO[Skin.String(BackgroundOverlayTextureHome)]</value>
+		<value>$INFO[Skin.String(BackgroundOverlayTexture)]</value>
+	</variable>
+	<variable name="Global_Layer3_OverlayImageColor">
+		<value condition="$EXP[IsHome] + !String.IsEmpty(Skin.String(BackgroundOverlayTextureHome))">$VAR[BackgroundOverlay_CDiffuse_Home]</value>
+		<value>$VAR[BackgroundOverlay_CDiffuse]</value>
+	</variable>
 	
 	<include name="Rotating_ExtraFanartBackground">
 		<control type="fadelabel" id="99007">
 			<visible>Window.IsMedia</visible>
 			<!-- additional visibility conditions -->
 			
-			<!-- common movie,show,artists -->
 			<info>Container.ListItem.Art(fanart)</info>
 			<info>Container.ListItem.Art(fanart1)</info>
 			<info>Container.ListItem.Art(fanart2)</info>
@@ -394,7 +389,7 @@ use this include pr add variable fpr diffuse textures
 			<info>Container.ListItem.Art(fanart18)</info>
 			<info>Container.ListItem.Art(fanart19)</info>
 			<info>Container.ListItem.Art(fanart20)</info>
-			<!-- tvshow for seasons,episodes -->
+			
 			<info>Container.ListItem.Art(tvshow.fanart)</info>
 			<info>Container.ListItem.Art(tvshow.fanart1)</info>
 			<info>Container.ListItem.Art(tvshow.fanart2)</info>
@@ -417,7 +412,8 @@ use this include pr add variable fpr diffuse textures
 			<info>Container.ListItem.Art(tvshow.fanart19)</info>
 			<info>Container.ListItem.Art(tvshow.fanart20)</info>
 			<!-- set -->
-			<!-- <info>Container.ListItem.Art(set.fanart)</info>
+			<!-- 
+			<info>Container.ListItem.Art(set.fanart)</info>
 			<info>Container.ListItem.Art(set.fanart1)</info>
 			<info>Container.ListItem.Art(set.fanart2)</info>
 			<info>Container.ListItem.Art(set.fanart3)</info>
@@ -437,8 +433,9 @@ use this include pr add variable fpr diffuse textures
 			<info>Container.ListItem.Art(set.fanart17)</info>
 			<info>Container.ListItem.Art(set.fanart18)</info>
 			<info>Container.ListItem.Art(set.fanart19)</info>
-			<info>Container.ListItem.Art(set.fanart20)</info> -->
-			<!-- artistfanart for album , song, musicvideos -->
+			<info>Container.ListItem.Art(set.fanart20)</info>
+			-->
+			
 			<info>Container.ListItem.Art(artist.fanart)</info>
 			<info>Container.ListItem.Art(artist.fanart1)</info>
 			<info>Container.ListItem.Art(artist.fanart2)</info>
@@ -467,9 +464,6 @@ use this include pr add variable fpr diffuse textures
 		</control>
 	</include>
 
-
-        
-
 	<!-- 99006 -->
 	<variable name="FanartBackground">
 		<!-- actors,years,studio,genre...
@@ -489,26 +483,21 @@ use this include pr add variable fpr diffuse textures
 		<value condition="!String.IsEmpty(ListItem.Art(fanart))">$INFO[ListItem.Art(fanart)]</value>
         
 	</variable>
-	<!--  blur if fanart disabled
-		<value condition="Skin.HasSetting(BlurEnabled) + Window.IsMedia + !Skin.HasSetting(ShowFanartBackground) + !String.IsEmpty(Skin.String(BackgroundTexture))">$INFO[Skin.String(BackgroundTexture)]</value>
-	-->
-		
+	
 	<!-- 99005 -->
 	<variable name="BlurFanartBackground">
 		<value condition="Skin.HasSetting(ShowFanartBackground)">$VAR[FanartBackground]</value>
 		<value condition="!Skin.HasSetting(ShowFanartBackground) + !String.IsEmpty(Skin.String(BackgroundTexture))">$INFO[Skin.String(BackgroundTexture)]</value>
 	</variable>
 	
-	<include name="FullscreenBG">
+	<include name="VideoFullscreenBG">
 		<control type="videowindow">
-			<width>100%</width>
-			<height>100%</height>
 			<visible>$EXP[IsCurrentyPlayingCommon]</visible>
 		</control>
 	</include>
 	
 	<variable name="backgroundVar">
-		<value condition="$EXP[IsCurrentyPlayingCommon]">colors/white80.png</value>
+		<value condition="$EXP[IsCurrentyPlayingCommon]">colors/white70.png</value>
 		<value condition="!String.IsEmpty(ListItem.Art(Animatedfanart)) + Skin.HasSetting(AnimatedFanart)">$INFO[ListItem.Art(AnimatedFanart)]</value>
 		<value condition="Control.IsVisible(99007) + !String.IsEmpty(Control.GetLabel(99007))">$INFO[Control.GetLabel(99007)]</value>
 		<value condition="Control.IsVisible(99006) + !String.IsEmpty(Control.GetLabel(99006)) + !Skin.HasSetting(BlurEnabled)">$INFO[Control.GetLabel(99006)]</value>

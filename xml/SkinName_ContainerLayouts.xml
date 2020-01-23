@@ -2,7 +2,10 @@
 <includes>
 
 <!-- MOVE ME START -->
-	
+	<variable name="Similiar_Content">
+		<value condition="String.IsEqual(ListItem.DBType,movie) + !String.IsEmpty(ListItem.DBID)">plugin://script.embuary.helper/?info=getsimilar&amp;dbid=$INFO[ListItem.DBID]&amp;type=movie</value>
+		<value condition="String.IsEqual(ListItem.DBType,tvshow) + !String.IsEmpty(ListItem.DBID)">plugin://script.embuary.helper/?info=getsimilar&amp;dbid=$INFO[ListItem.DBID]&amp;type=tvshow</value>
+	</variable>
 	<include name="VideoInfo_SlideshowNav">
 		<control type="group">
 			<visible>Control.HasFocus($PARAM[ButtonID])</visible>
@@ -411,7 +414,7 @@
 				<control type="group">
 					<width>$PARAM[itemwidth]</width>
 					<height>$PARAM[itemheight]</height>
-					<include>Item_Focus_Animation</include>
+					<include>Animation_Item_Focus</include>
 					<control type="group">
 						<include content="$PARAM[layout]">
 							<param name="colordiffuse" value="$VAR[Container_item_fo]" />
@@ -473,21 +476,7 @@
 	-->
 	
 	
-	<!-- Zoom-InOut On focused Item ,includesanimations.xml -->
-	<include name="Item_Focus_Animation">
-		<animation type="Focus" reversible="false">
-			<effect type="zoom" end="115,115" time="200" tween="sine" easing="out" center="auto" />
-			<effect type="zoom" end="93,93" time="150" tween="sine" delay="200" easing="out" center="auto" />
-		</animation>
-	</include>
-	<include name="Item_Focus_Animation_rightalign">
-		<animation type="Focus" reversible="false">
-			<effect alignx="true" type="zoom" end="115,115" time="200" tween="sine" easing="out" center="auto" />
-			<effect type="slide" end="-10,0" time="200" tween="sine" easing="out" center="auto" />
-			<effect alignx="true" type="zoom" end="93,93" time="150" tween="sine" delay="200" easing="out" center="auto" />
-			
-		</animation>
-	</include>
+	
 	
 	<!-- play button just if
 	new
@@ -705,7 +694,7 @@
 				<control type="group">
 					<width>$PARAM[itemwidth]</width>
 					<height>$PARAM[itemheight]</height>
-					<include>Item_Focus_Animation</include>
+					<include>Animation_Item_Focus</include>
 					<control type="group">
 						<include content="UniversalLayout">
 							<param name="colordiffuse" value="$VAR[Container_item_fo]" />
@@ -1079,7 +1068,7 @@ top-->
 			</itemlayout>
 			<focusedlayout height="$PARAM[height]" width="$PARAM[width]">
 				<control type="group">
-				<include>Item_Focus_Animation</include>
+				<include>Animation_Item_Focus</include>
 				<control type="image">
 					<visible>!Control.HasFocus($PARAM[id])</visible>
 					<centerleft>50%</centerleft>

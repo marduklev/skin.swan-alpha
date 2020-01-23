@@ -29,7 +29,7 @@
 				<control type="image">
 					<visible>!Skin.HasSetting(View58_EnableBottomPanel) + !Control.HasFocus(58001)</visible>
 					<fadetime>350</fadetime>
-					<texture background="true" diffuse="colors/white30.png">$VAR[ArtworkThumb]</texture>
+					<texture background="true" diffuse="colors/white10.png">$VAR[ArtworkThumb]</texture>
 					<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
 					<animation effect="slide" start="0,1080" end="0,0" tween="quadratic" easing="in" time="400">VisibleChange</animation>
 				</control>
@@ -37,7 +37,7 @@
 			
 			<control type="grouplist" id="58000">
 				
-				<animation reversible="true" time="300" effect="fade" start="100" end="0,0" condition="$EXP[TrailerIsPlaying]">Conditional</animation>
+				<animation reversible="true" time="300" effect="fade" start="100" end="0" condition="$EXP[TrailerIsPlaying]">Conditional</animation>
 				
 				<width>100%</width>
 				<height>100%</height>
@@ -64,6 +64,7 @@
 					<onup condition="!Control.IsVisible(58)">SetFocus(50)</onup>
 					<ondown condition="!Control.IsVisible(58)">SetFocus(50)</ondown>
 					<height>1</height>
+					<include content="58_OnBackAction" />
 				</control>
 			
 				<control type="group" id="58002">
@@ -276,7 +277,7 @@
 								<height>310</height>
 								<width>207</width>
 								<control type="group">
-								<include>Item_Focus_Animation</include>
+								<include>Animation_Item_Focus</include>
 									<include content="UniversalLayout">
 										<param name="colordiffuse" value="$VAR[Container_item_fo]" />
 										<param name="artwork" value="poster" />
@@ -722,7 +723,7 @@
 							<control type="group">
 								<height>250</height>
 								<width>250</width>
-								<include>Item_Focus_Animation</include>
+								<include>Animation_Item_Focus</include>
 								<control type="group">
 									<include content="Circle_CastWidget">
 										<param name="colordiffuse" value="$VAR[Container_item_fo]" />
@@ -778,7 +779,7 @@
 							<control type="group">
 								<width>432</width>
 								<height>243</height>
-								<include>Item_Focus_Animation</include>
+								<include>Animation_Item_Focus</include>
 								<control type="group">
 									<include content="HUB_Landscape">
 										<param name="colordiffuse" value="$VAR[Container_item_fo]" />
@@ -861,7 +862,7 @@
 								<width>432</width>
 								<height>243</height>
 								<control type="group">
-									<include>Item_Focus_Animation</include>
+									<include>Animation_Item_Focus</include>
 									<include content="LS_SuggestionWidget">
 										<param name="colordiffuse" value="$VAR[Container_item_fo]" />
 										<param name="autoscroll" value="true" />
@@ -924,29 +925,6 @@
 				<animation effect="slide" alignx="true" start="0,0" end="0,-310" tween="quadratic" time="400" condition="!Control.HasFocus(58001)">Conditional</animation>
 			</control>
 			
-<!-- 
-
-
- decide between better but slower onoad container2000 labels vs  faster but complicated to set up props
-
-
-	videodb://tvshows/titles/$INFO[Container(2000).ListItem.dbid]/ : native kodi path substitution (non xsp),f**k
-	videodb://tvshows/titles/$INFO[Container(2000).ListItem.dbid]/?xsp=%7b%22order%22%3a%7b%22direction%22%3a%22ascending%22%2c%22ignorefolders%22%3a0%2c%22method%22%3a%22sorttitle%22%7d%2c%22type%22%3a%22tvshows%22%7d
-
-	?xsp=%7b%22order%22%3a%7b%22direction%22%3a%22ascending%22%2c%22ignorefolders%22%3a0%2c%22method%22%3a%22sorttitle%22%7d%2c%22type%22%3a%22tvshows%22%7d
-	?xsp={"order":{"direction":"ascending","ignorefolders":0,"method":"sorttitle"},"type":"tvshows"}
-
-	?xsp={"order":{"direction":"ascending","ignorefolders":0,"method":"sorttitle"},"type":"tvshows"}
-
-	things to consider :(/?
-
-	3 	button 				method Select sort method (sort by: name, date size, etc...)
-	4 	togglebutton 		direction Select sortmode (ascending or descending)
-	10 	button 				Show only watched, unwatched or all videos
-	14 	button 				Show only unwatched or all videos
-	15 	label 				Filter label
-	19 	radiobutton / edit 	Filter the media files to only show items that include the specified string in the name
--->
 			<control type="list" id="58">
 				<include>HiddenContainer</include>
 				<onfocus>RunScript(script.embuary.helper,action=encode,string='"$INFO[ListItem.TVShowTitle]"',prop=EncodedTitle)</onfocus>
@@ -966,20 +944,7 @@
 		
 		
 	</include>
-	<!-- <control type="image">
-				<centerleft>50%</centerleft>
-				<width>70%</width>
-				<height>50</height>
-				<texture colordiffuse="midgrey">diffuse/seperator_gradient_hor.png</texture>
-			</control>
-			<control type="image">
-				<top>70</top>
-				<left>5%</left>
-				<width>70%</width>
-				<height>50</height>
-				<top>80</top>
-				<texture colordiffuse="blue">diffuse/gradient_left.png</texture>
-			</control> -->
+	
 	<include name="Special_Header">
 		<param name="pos_top" default="200" />
 		<param name="align" default="center" />
