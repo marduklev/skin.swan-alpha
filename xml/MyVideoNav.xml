@@ -25,13 +25,16 @@
 			<content limit="1">$VAR[EmbuaryHelper_NextUp]</content>
 		</control>
 		
-		<!-- native GUI Buttons -->
+		<!-- native GUI Ctrls -->
 		<control type="button" id="3">
 			<visible>Control.IsEnabled(3)</visible>
 			<include content="HiddenObject" />
 		</control>
 		<control type="togglebutton" id="4">
 			<visible>Control.IsEnabled(4)</visible>
+			<include content="HiddenObject" />
+		</control>
+		<control type="label" id="15">
 			<include content="HiddenObject" />
 		</control>
 		
@@ -60,7 +63,6 @@
 				<effect type="fade" start="100" end="0" time="250" tween="sine" easing="out" />
 				<effect type="zoom" center="50%,50%" start="100" end="0" time="300" tween="cubic" easing="out" />
 			</animation>
-			
 			
 			<!-- Shortcut -->
 			<include content="SwanShortcuts_Container" condition="!string.isempty(window(home).property(custom_widget_nr))" />
@@ -100,101 +102,78 @@
 		<!-- <include content="FooterBar" /> -->
 		
 		<!-- Pre-MenuControl -->
+		<control type="image">
+			<animation effect="slide" start="0,0" end="450,0" time="300" tween="cubic" easing="inout" condition="ControlGroup(9000).HasFocus()">conditional</animation>
+			<animation effect="fade" start="100" end="0" time="150" condition="!ControlGroup(9000).HasFocus()">conditional</animation>
+			
+			<top>0</top>
+			<bottom>0</bottom>
+			<width>530</width>
+			<left>-450</left>
+			<colordiffuse>$VAR[BackgroundColor_Dialog]</colordiffuse>
+			<texture>colors/white.png</texture>
+			<colordiffuse>white</colordiffuse>
+			<aspectratio>stretch</aspectratio>
+		</control>
+		
 		<control type="grouplist" id="8999">
+			<animation effect="slide" start="0,0" end="450,0" time="300" tween="cubic" easing="inout" condition="ControlGroup(9000).HasFocus()">conditional</animation>
+			
 			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
 			<visible>!$EXP[Infodialog_IsActive]</visible>
 			<visible>!Control.IsVisible(58)</visible>
 			<centertop>50%</centertop>
 			<left>5</left>
-			<width>100</width>
-			<height>340</height>
+			<width>110</width>
+			<height>360</height>
 			<orientation>vertical</orientation>
 			<itemgap>10</itemgap>
 			<usecontrolcoords>true</usecontrolcoords>
 			
-			<onup condition="Control.IsVisible(19)">19</onup>
-			<onup condition="!Control.IsVisible(19)">50></onup>
 			
+			<onright>SetFocus(50)</onright>
+			<onleft>SetFocus(9000)</onleft>
+			<onup condition="Control.IsVisible(19)">19</onup>
+			<onup condition="!Control.IsVisible(19)">50</onup>
 			<control type="radiobutton" id="102501">
-				<textureradioonfocus colordiffuse="white">icons/radiobuttons/search.png</textureradioonfocus>
-				<textureradioonnofocus colordiffuse="5cC6C6C8">icons/radiobuttons/search.png</textureradioonnofocus>
-				<textureradioofffocus colordiffuse="white">icons/radiobuttons/search.png</textureradioofffocus>
-				<textureradiooffnofocus colordiffuse="5cC6C6C8">icons/radiobuttons/search.png</textureradiooffnofocus>
-				<description>radionutton group search,menucontrol,toggle fs, seperate natvir vs skin gui controls?</description>
+				<include content="Animation_Item_Focus" />
+				<include content="Menucontrol_RadioButton">
+					<param name="radiotexture" value="search" />
+				</include>
 				<onclick condition="!String.IsEmpty(Skin.String(SearchTerm))">Skin.Reset(SearchTerm)</onclick>
 				<onclick>Skin.SetString(SearchTerm)</onclick>
 				<onclick>ActivateWindow(1120),return</onclick>
-				<textoffsetx />
-				<radiowidth>60</radiowidth>
-				<radioheight>60</radioheight>
-				<radioposx>5</radioposx>
-				<textureradioondisabled />
-				<textureradiooffdisabled />
-				<texturefocus colordiffuse="">buttons/focusglowbg_round.png</texturefocus>
-				<texturenofocus />
-				<height>80</height>
-				<focusedcolor />
-				<textcolor />
-				<label />
 			</control>
 			<control type="radiobutton" id="102502">
-				<textureradioonfocus colordiffuse="white">icons/radiobuttons/menucontrol.png</textureradioonfocus>
-				<textureradioonnofocus colordiffuse="5cC6C6C8">icons/radiobuttons/menucontrol.png</textureradioonnofocus>
-				<textureradioofffocus colordiffuse="white">icons/radiobuttons/menucontrol.png</textureradioofffocus>
-				<textureradiooffnofocus colordiffuse="5cC6C6C8">icons/radiobuttons/menucontrol.png</textureradiooffnofocus>
-				<description>radionutton group search,menucontrol,toggle fs, seperate natvir vs skin gui controls?</description>
+				<include content="Animation_Item_Focus" />
+				<include content="Menucontrol_RadioButton">
+					<param name="radiotexture" value="menucontrol" />
+				</include>
 				<onclick>SetFocus(9000)</onclick>
-				<textoffsetx />
-				<radiowidth>60</radiowidth>
-				<radioheight>60</radioheight>
-				<radioposx>5</radioposx>
-				<textureradioondisabled />
-				<textureradiooffdisabled />
-				<texturefocus colordiffuse="">buttons/focusglowbg_round.png</texturefocus>
-				<texturenofocus />
-				<height>80</height>
-				<focusedcolor />
-				<textcolor />
-				<label />
 			</control>
 			<control type="radiobutton" id="102503">
-				<!-- <visible>Player.HasVideo</visible> -->
-				<description>radionutton group search,menucontrol,toggle fs, seperate natvir vs skin gui controls?</description>
+			<include content="Animation_Item_Focus" />
+				<visible>Player.HasVideo</visible>
+				<description>need to make better img, radionutton group search,menucontrol,toggle fs, seperate natvir vs skin gui controls?</description>
+				<include content="Menucontrol_RadioButton">
+					<param name="radiotexture" value="togglefs_2" />
+				</include>
 				<onclick>Fullscreen</onclick>
-				<textureradioonfocus colordiffuse="white">icons/radiobuttons/togglefs_2.png</textureradioonfocus>
-				<textureradioonnofocus colordiffuse="5cC6C6C8">icons/radiobuttons/togglefs_2.png</textureradioonnofocus>
-				<textureradioofffocus colordiffuse="white">icons/radiobuttons/togglefs_2.png</textureradioofffocus>
-				<textureradiooffnofocus colordiffuse="5cC6C6C8">icons/radiobuttons/togglefs_2.png</textureradiooffnofocus>
-				<textoffsetx />
-				<radiowidth>60</radiowidth>
-				<radioheight>60</radioheight>
-				<radioposx>5</radioposx>
-				<textureradioondisabled />
-				<textureradiooffdisabled  />
-				<texturefocus colordiffuse="">buttons/focusglowbg_round.png</texturefocus>
-				<texturenofocus />
-				<height>80</height>
-				<focusedcolor />
-				<textcolor />
-				<label />
 			</control>
-		</control>
-		<control type="group">
-			<descriptiopn>menucontrol</descriptiopn>
-			<visible>ControlGroup(9000).HasFocus()</visible>
 			
-			<control type="image">
-				<top>500</top>
-				<height>300</height>
-				<left>400</left>
-				<texture>colors/white.png</texture>
-				<colordiffuse>white</colordiffuse>
-				<aspectratio>stretch</aspectratio>
-			</control>
+			<!-- 
+			pause/play
+			stop
+			prev
+			next -->
+			
+		</control>
 		
-			<include content="Content_Menucontrol_SkinsettingButtons_MyVideoNav" condition="String.IsEmpty(Window(home).Property(custom_widget_nr))" />
+		<control type="group">
+			<animation effect="slide" start="-450,0" end="0,0" time="300" tween="cubic" easing="inout">VisibleHidden</animation>
+			<visible>ControlGroup(9000).HasFocus()</visible>
+			<include content="Menucontrol_Media" condition="String.IsEmpty(Window(home).Property(custom_widget_nr))" />
 		</control>
-			
 		
 		<include content="NativeString_Filter" />
 		

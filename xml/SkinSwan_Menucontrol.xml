@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
-			<!-- <include content="Animation_OpenClose_Slide">
+			<!-- 
+			<include content="Animation_OpenClose_Slide">
 				<param name="slide_start" value="$PARAM[slideprefix]1920,0" />
 				<param name="slide_end" default="0,0" />
 			</include> 
@@ -24,118 +25,236 @@
 		</definition>
 	</include>
 	
-	<include name="Content_Menucontrol_SkinsettingButtons_MyVideoNav">
+	<include name="Menucontrol_RadioButton">
+		<textureradioonfocus bolordiffuse="white">icons/radiobuttons/$PARAM[radiotexture].png</textureradioonfocus>
+		<textureradioonnofocus colordiffuse="5cC6C6C8">icons/radiobuttons/$PARAM[radiotexture].png</textureradioonnofocus>
+		<textureradioofffocus colordiffuse="white">icons/radiobuttons/$PARAM[radiotexture].png</textureradioofffocus>
+		<textureradiooffnofocus colordiffuse="5cC6C6C8">icons/radiobuttons/$PARAM[radiotexture].png</textureradiooffnofocus>
+		<textoffsetx />
+		<radiowidth>65</radiowidth>
+		<radioheight>60</radioheight>
+		<radioposx>3</radioposx>
+		<textureradioondisabled />
+		<textureradiooffdisabled  />
+		<texturefocus />
+		<texturenofocus />
+		<height>80</height>
+		<focusedcolor />
+		<textcolor />
+		<label />
+		<selected />
+	</include>
+	<include name="Menucontrol_Media">
 		<control type="grouplist" id="9000">
-			<top>500</top>
-			<height>300</height>
-			<left>400</left>
+			<description>need get cond vis content</description>
+			<top>14%</top>
+			<bottom>1%</bottom>
+			<width>445</width>
+			<left>0</left>
+			<itemgap>0</itemgap>
+			<!-- 
+				<onright>SetProperty(keepmenucontrol,true,home)</onright>
+				<onright>SetFocus(8999)</onright>
+			-->
+			<onup>19</onup>
+			<onright>SetFocus(50)</onright>
+			<onleft>SetFocus(50)</onleft>
+			
+			<!-- <control type="group" id="6048">
+				<description>PlaybackCtrl</description>
+				<width>99%</width>
+				<height>420</height>
+				<visible>$EXP[IsCurrentyPlayingCommon]</visible>
+				
+				<control type="label">
+					<left>10</left>
+					<height>25</height>
+					<width>445</width>
+					<font>debug</font>
+					<label>$INFO[Player.Title] [COLOR=midgrey](Ends at: 66:67)[/COLOR]</label>
+					<textcolor>red</textcolor>
+				</control>
+				<control type="videowindow">
+					<width>445</width>
+					<height>262</height>
+					<top>10</top>
+					<left>10</left>
+				</control>
+				<control type="button" description="prev" id="60491">
+					<top>280</top>
+					<left>20</left>
+					<width>50</width>
+					<height>50</height>
+					<onup>19</onup>
+					<ondown>6050</ondown>
+					<onright>60492</onright>
+					<onleft>60495</onleft>
+				</control>
+				<control type="button" description="plapause" id="60492">
+					<top>280</top>
+					<left>90</left>
+					<width>50</width>
+					<height>50</height>
+					<onup>19</onup>
+					<ondown>6050</ondown>
+					<onright>60493</onright>
+					<onleft>60491</onleft>
+				</control>
+				<control type="button" description="stop" id="60493">
+					<top>280</top>
+					<left>150</left>
+					<width>50</width>
+					<height>50</height>
+					<onup>19</onup>
+					<ondown>6050</ondown>
+					<onright>60494</onright>
+					<onleft>60492</onleft>
+				</control>
+				<control type="button" description="next" id="60494">
+					<top>280</top>
+					<left>210</left>
+					<width>50</width>
+					<height>50</height>
+					<onup>19</onup>
+					<ondown>6050</ondown>
+					<onright>60495</onright>
+					<onleft>60493</onleft>
+				</control>
+				<control type="button" description="fullscreen" id="60495">
+					<top>280</top>
+					<right>10</right>
+					<width>50</width>
+					<height>50</height>
+					<onup>19</onup>
+					<ondown>6050</ondown>
+					<onright>60491</onright>
+					<onleft>60494</onleft>
+				</control>
+			</control> -->
+			
+			<control type="radiobutton" id="6050">
+				<include content="SkinSettings_SettingsRadioButton">
+					<param name="label" value="Change Layout" />
+					<param name="label2" value="$INFO[Container.Viewmode]" />
+				</include>
+				<height>70</height>
+				<visible>Integer.IsGreater(Container.ViewCount,1)</visible>
+				<onclick>SetFocus(50)</onclick>
+				<onclick>ActivateWindow(1105)</onclick>
+			</control>
 			
 			<control type="button" id="6051">
-				<label>Container.NextViewMode</label>
+				<label>   Previous ViewMode</label>
 				<visible>Integer.IsGreater(Container.ViewCount,1)</visible>
 				<onclick>Container.NextViewMode</onclick>
 			</control>
 			<control type="button" id="6052">
-				<label>Container.PreviousViewMode</label>
+				<label>   Next PreviousViewMode</label>
 				<visible>Integer.IsGreater(Container.ViewCount,1)</visible>
 				<onclick>Container.PreviousViewMode</onclick>
 			</control>
-			
-			<control type="button" id="6053">
-				<label>Change View Type</label>
-				<label2>[B]$INFO[Container.Viewmode][/B]</label2>
-				<visible>Integer.IsGreater(Container.ViewCount,1)</visible>
-				<onclick>SetFocus(50)</onclick>
-				<onclick>ActivateWindow(1105)</onclick>
-				<visible>Container.Content(movies) | Container.Content(sets) | Container.Content(tvshows) | Container.Content(seasons) | Container.Content(episodes) | Container.Content(musicvideos) | Container.Content(artists) | Container.Content(albums) | Container.Content(images)</visible>
-			</control>
-			<!-- <control type="button" id="6053">
-				<label>set 50</label>
-				<onclick>Container.SetViewMode(50)</onclick>
-			</control>
+			<include content="spacer_h">
+				<param name="id" value="6053" />
+				<param name="gap" value="10" />
+			</include>
 			<control type="button" id="6054">
-				<label>set 51</label>
-				<onclick>Container.SetViewMode(51)</onclick>
+				<visible>Control.IsEnabled(3)</visible>
+				<label>$LOCALIZE[21429]... :</label>
+				<label2>$INFO[Control.GetLabel(15),[B],[/B]]</label2>
+				<onclick>SendClick(3)</onclick>
+				<label2 />
 			</control>
 			<control type="button" id="6055">
-				<label>set 52</label>
-				<onclick>Container.SetViewMode(52)</onclick>
+				<visible>Control.IsEnabled(4)</visible>
+				<label>Change Order to </label>
+				<label2>$VAR[NextSortOrder,[B],[/B]]</label2>
+				<onclick>SendClick(4)</onclick>
+				<label2 />
 			</control>
-			<control type="button" id="6056">
-				<label>set 58</label>
-				<visible>Container.Content(Seasons)</visible>
-				<onclick>Container.SetViewMode(58)</onclick>
+			
+			<!-- <control type="button" id="5" description="Switch to file mode">
+				<label>$LOCALIZE[1214]</label>
 			</control> -->
 			
-			<control type="button" id="7056">
-				<label>toggle tags $INFO[Container.Viewmode]</label>
+			<control type="button" id="6" description="Play DVD (used the play physical DVD discs)">
+				<label>$LOCALIZE[341]</label>
+			</control>
+			
+			<control type="button" id="8" description="Search for a string anywhere in the Kodi video database - use own? id">
+				<label>$LOCALIZE[137]</label>
+			</control>
+			
+			<control type="button" id="10" description="Show only watched, unwatched or all videos">
+				<visible>Window.IsActive(videos)</visible>
+			</control>
+			
+			<!-- 
+			<control type="button" id="11" description="Unlock shares ??">
+				<label>$LOCALIZE[20336]</label>
+			</control>
+			 -->
+			<control type="button" id="16" description="Start party mode (randomly play musicvideos from your collection)">
+				<label>$LOCALIZE[589]</label>
+			</control>
+			<control type="button" id="20" description="Update library">
+				<label>$LOCALIZE[653]</label>
+			</control>
+			
+			<include content="spacer_h">
+				<param name="id" value="21" />
+				<param name="gap" value="40" />
+			</include>
+			
+			<control type="radiobutton" id="7056">
+				<label>Disable tags</label>
 				<visible>Control.IsVisible(51) | Control.IsVisible(53)</visible>
 				<onclick condition="Control.IsVisible(51)">Skin.ToggleSetting(View_51_DisableTags)</onclick>
 				<onclick condition="Control.IsVisible(53)">Skin.ToggleSetting(View_53_DisableTags)</onclick>
+				<selected>
+				[Control.IsVisible(51) + Skin.HasSetting(View_51_DisableTags) | 
+				Control.IsVisible(53) + Skin.HasSetting(View_53_DisableTags)]
+				</selected>
 			</control>
 			
-			<control type="button" id="7057">
-				<label>toggle footer $INFO[Container.Viewmode]</label>
-				<visible>Control.IsVisible(51) | Control.IsVisible(52) | Control.IsVisible(53)</visible>
+			<control type="radiobutton" id="7057">
+				<label>Show footer</label>
+				<visible>Control.IsVisible(51) | Control.IsVisible(52) | Control.IsVisible(53) | Control.IsVisible(54)</visible>
 				<onclick condition="Control.IsVisible(51)">Skin.ToggleSetting(View_51_DisableFooter)</onclick>
 				<onclick condition="Control.IsVisible(52)">Skin.ToggleSetting(View_52_DisableFooter)</onclick>
 				<onclick condition="Control.IsVisible(53)">Skin.ToggleSetting(View_53_DisableFooter)</onclick>
+				<onclick condition="Control.IsVisible(54)">Skin.ToggleSetting(View_54_DisableFooter)</onclick>
+				<selected>
+				[Control.IsVisible(51) + Skin.HasSetting(View_51_DisableFooter) | 
+				Control.IsVisible(52) + Skin.HasSetting(View_52_DisableFooter)] | 
+				Control.IsVisible(53) + Skin.HasSetting(View_53_DisableFooter) | 
+				Control.IsVisible(54) + Skin.HasSetting(View_54_DisableTags)]
+				</selected>
 			</control>
 			
-			<!-- view 58 options -->
-			<control type="button" id="70580">
-				<label>- View58  Episode Widget - Show Plot right</label>
+			<control type="radiobutton" id="70580">
+				<label>Show Plot right</label>
 				<visible>Control.IsVisible(58)</visible>
 				<onclick>Skin.ToggleSetting(View58_EpisodeInfoRight)</onclick>
+				<selected>Skin.HasSetting(View58_EpisodeInfoRight)</selected>
 			</control>
-			<control type="button" id="70581">
-				<label>- View58  EnebleFanart Background</label>
+			<control type="radiobutton" id="70581">
+				<label>EnebleFanart Background</label>
 				<visible>Control.IsVisible(58)</visible>
 				<onclick>Skin.ToggleSetting(View58_EnebleFanartBG)</onclick>
+				<selected>Skin.HasSetting(View58_EnebleFanartBG)</selected>
 			</control>
-			<control type="button" id="70582">
-				<label>- View58  Use Bottom Panel</label>
+			<control type="radiobutton" id="70582">
+				<label>Show Bottom Panel</label>
 				<visible>Control.IsVisible(58)</visible>
 				<onclick>Skin.ToggleSetting(View58_EnableBottomPanel)</onclick>
+				<selected>Skin.HasSetting(View58_EnableBottomPanel)</selected>
 			</control>
-			<control type="button" id="70583">
-				<label>- View58  Show Fanart right</label>
+			<control type="radiobutton" id="70583">
+				<label>Show Fanart right</label>
 				<visible>Control.IsVisible(58)</visible>
 				<onclick>Skin.ToggleSetting(View58_FanartLeftAlignment)</onclick>
+				<selected>Skin.HasSetting(View58_FanartLeftAlignment)</selected>
 			</control>
-			
-			<control type="button" id="7059">
-				<height>70</height>
-				<aligny>center</aligny>
-				<align>center</align>
-				<label>$INFO[Container.Viewmode]</label>
-				<onclick>noop</onclick>
-			</control>
-			
-			
 		</control>
 	</include>
-	<include name="Content_Menucontrol_NativeButtons_MyVideoNav">
-		<!-- Menucontrol_NativeButtons_MyVideoNav here, may use send click to nav xml if radiobuttons will break def control
-			menucontrol 9000 hidden button with onfocus action setfocus-grouplistid 
-			or other method
-			
-			2 	button 				Select viewtype (list, thumbnail, media info, etc...)
-			3 	button 				Select sort method (sort by: name, date size, etc...)
-			4 	togglebutton 		Select sortmode (ascending or descending)
-			5 	button 				Switch to file mode
-			6 	button 				Play DVD (used the play physical DVD discs)
-			8 	button 				Search for a string anywhere in the Kodi video database - use own? id 
-			10 	button 				Show only watched, unwatched or all videos
-			12 	label 				Number of items in the list, check need
-			14 	button 				Show only unwatched or all videos
-			11 	button 				Unlock shares ??
-			15 	label 				Filter label
-			16 	button 				Start party mode (randomly play musicvideos from your collection)
-			18 	label 				Warning to the user to turn off library mode when no scanned media is found
-			19 	radiobutton / edit 	Filter the media files to only show items that include the specified string in the name
-			20 	button 				Update library  
-		-->
-	</include>
-
 </includes>
