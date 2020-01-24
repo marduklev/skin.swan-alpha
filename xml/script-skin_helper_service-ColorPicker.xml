@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+	<defaultcontrol always="true">3110</defaultcontrol>
+	<controls>
+    
+	<control type="group">
+		<width>100%</width>
+		<height>100%</height>
+	
+		<control type="image">
+			<texture>colors/white.png</texture>
+			<colordiffuse>$VAR[BackgroundColor_Dialog]</colordiffuse>
+		</control>
+	
+        <control type="label" id="1">
+			<top>20</top>
+			<width>99%</width>
+            <height>50</height>
+            <font>Header_SettingsSections</font>
+			<label>$ADDON[script.skin.helper.colorpicker 32011]</label>
+            <align>center</align>
+            <textcolor>$VAR[Button_Selected]</textcolor>
+		</control>
+		
+		<control type="button" id="3030">
+			<animation type="Focus" reversible="false">
+				<effect type="zoom" start="100" end="120" center="auto" time="200"  />
+			</animation>
+			<animation type="Unfocus" reversible="false">
+				<effect type="zoom" start="120" end="100" center="auto" time="100" />
+			</animation>
+			<align>center</align>
+            <width>1000</width>
+			<centerleft>50%</centerleft>
+			<height>70</height>
+            <top>90</top>
+			<ondown>3110</ondown>
+            <label>$ADDON[script.skin.helper.colorpicker 32141]: $INFO[Window.Property(palettename)]</label>
+            <visible>!String.IsEmpty(Window.Property(palettename))</visible>
+        </control>
+        
+       <control type="panel" id="3110">
+			<viewtype label="31438">icons</viewtype>
+			<animation effect="zoom" time="200" tween="quadratic" easing="out" start="100" end="95" center="auto" condition="Control.HasFocus(3030)">conditional</animation>
+        	<centerleft>50%</centerleft>
+			<top>200</top>
+			<width>1800</width>
+			<height>765</height>
+			<orientation>vertical</orientation>
+			<onleft>3110</onleft>
+			<onright>3110</onright>
+			<onup>3030</onup>
+			<ondown>3010</ondown>
+			<preloaditems>2</preloaditems>
+			<!-- NOTE changing width or height causing strange bahaviuor -->
+			<itemlayout height="45" width="58">
+				<control type="image">
+					<width>92%</width>
+					<height>92%</height>
+					<texture>$INFO[ListItem.Icon]</texture>
+				</control>
+			</itemlayout>
+			<focusedlayout height="45" width="58">
+                <control type="group">
+                    <animation effect="zoom" time="200" tween="sine" easing="inout" start="100" end="380" center="auto">Focus</animation>
+                    <control type="image">
+                        <width>92%</width>
+                        <height>92%</height>
+						<bordersize>1</bordersize>
+                        <texture>$INFO[ListItem.Icon]</texture>
+						<bordertexture colordiffuse="CC131313">colors/white.png</bordertexture>
+                    </control>
+                </control>
+			</focusedlayout>
+            
+        </control>
+				
+		<control type="grouplist">
+			<orientation>horizontal</orientation>
+			<itemgap>20</itemgap>
+			<left>60</left>
+			<top>1000</top>
+			<width>1800</width>
+			
+			<control type="button" id="3010">
+				<width>450</width>
+				<onup>3110</onup>
+				<align>left</align>
+				<ondown>SetFocus(3110,1)</ondown>
+				<onright>3011</onright>
+				<label>$ADDON[script.skin.helper.colorpicker 32012]</label>
+				<label2>$INFO[Window.Property(colorstring)]</label2>
+			</control>
+			
+			<control type="image" id="95">
+				<width>140</width>
+				<height>50</height>
+				<aspectratio>stretch</aspectratio>
+				<texture>artworkdiffuse/landscape.png</texture>
+				<colordiffuse>$INFO[Window.Property(colorstring)]</colordiffuse>
+			</control>
+			
+			<include content="spacer_w">
+				<param name="id" value="96" />
+				<param name="gap" value="50" />
+			</include>
+			
+			<control type="button" id="3012">
+				<width>250</width>
+				<textoffsetx>10</textoffsetx>
+				<align>center</align>
+				<onup>3110</onup>
+				<onleft>3010</onleft>
+				<label>190</label>
+			</control>
+			
+			<control type="button" id="3011">
+				<width>250</width>
+				<textoffsetx>10</textoffsetx>
+				<align>center</align>
+				<onleft>3010</onleft>
+				<label>$ADDON[script.skin.helper.colorpicker 32013]</label>
+			</control>
+			<include content="spacer_w">
+				<param name="id" value="97" />
+				<param name="gap" value="10" />
+			</include>
+			
+			<!-- <control type="button" id="98">
+				<visible>!String.IsEmpty(Window(home).Property(ColorString))</visible>
+				<description>get stored prop before</description>
+				<width>300</width>
+				<height>60</height>
+				<font>Reg32</font>
+				<onup>3110</onup>
+				<onleft>3010</onleft>
+				<label>Reset And Close</label>
+				<onclick>Close</onclick>
+				<onclick>Skin.Reset($INFO[Window(home).Property(ColorString)])</onclick>
+				<onclick>Skin.Reset($INFO[Window(home).Property(ColorString)].name)</onclick>
+				<onclick condition="!String.IsEmpty(Window(home).Property(ColorString))">ClearProperty(ColorString,home)</onclick>
+				<textcolor>red</textcolor>
+			</control>
+			 -->
+			<include content="spacer_w">
+				<param name="id" value="99" />
+				<param name="gap" value="45" />
+			</include>
+			<control type="group" id="3020">
+				<width>450</width>
+				<height>50</height>
+				<control type="label" id="3016">
+					<width>180</width>
+					<left>0</left>
+					<align>left</align>
+					<onup>3110</onup>
+					<label>$ADDON[script.skin.helper.colorpicker 32049]:</label>
+					<textcolor>$VAR[Button_Text_FO]</textcolor>
+				</control>
+				<control type="slider" id="3015">
+					<top>13</top>
+					<left>160</left>
+					<onup>3011</onup>
+					<ondown>3011</ondown>
+					<height>30</height>
+					<width>170</width>
+				</control>
+				
+				<control type="label" id="3017">
+					<width>100</width>
+					<height>50</height>
+					<right>0</right>
+					<align>right</align>
+					<onup>3110</onup>
+					<onleft>3010</onleft>
+					<label>$INFO[Control.Getlabel(3015)]</label>
+					<textcolor>$VAR[Button_Text_FO]</textcolor>
+					<font>font13</font>
+				</control>
+			</control>
+		</control>		
+		
+		</control>
+	</controls>
+</window>
