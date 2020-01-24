@@ -9,12 +9,120 @@ ID 	Type 	Description
 	<defaultcontrol />
 	<onload condition="Skin.HasSetting(DisableSubtitles) + VideoPlayer.SubtitlesEnabled">ShowSubtitles</onload>
     
-	<!-- return to infodialog if previous window -->
-		<!-- 
-		<onunload condition="String.IsEqual(Window(Home).Property(BaseWindow),InfoDialog)">AlarmClock(loadinfo,Action(Info),00:00,silent)</onunload>
-		<onunload condition="String.IsEqual(Window(Home).Property(BaseWindow),InfoDialog)">AlarmClock(loadinfo,PlayerControl(Stop),00:00,silent)</onunload>   																																				
-		-->
-	<controls>
 	
-    </controls>
+	<!-- embuary
+	<onload>ClearProperty(DoNotUnpause,home)</onload>
+	
+	
+	
+	<onunload condition="String.IsEqual(Window(Home).Property(BaseWindow),InfoDialog)">AlarmClock(loadinfo,Action(Info),00:00,silent)</onunload>
+	<onunload condition="String.IsEqual(Window(Home).Property(BaseWindow),InfoDialog)">AlarmClock(loadinfo,PlayerControl(Stop),00:00,silent)</onunload>   																																				
+		
+	-->
+	
+	<onload condition="Skin.HasSetting(ShowOSD_OnStart)">SetProperty(ShowOSD,true,home)</onload>
+	<onload condition="Skin.HasSetting(ShowOSD_OnStart)">AlarmClock(ShowOSD,ClearProperty(ShowOSD,home),00:04,silent)</onload>
+	
+	<controls>
+		
+	<!-- skin helping stuff -->
+	<control type="list" id="2000">
+		<include>HiddenObject</include>
+		<content limit="1">$VAR[PlayerFullInfo]</content>
+	</control>
+	
+	<!-- cond dim screen -->
+	<control type="image" id="99">
+		<visible>Player.Caching | !String.IsEmpty(PVR.ChannelNumberInput) | !String.IsEmpty(Player.SeekNumeric)</visible>
+		<animation effect="fade" end="100" time="200">WindowOpen</animation>
+		<animation effect="fade" start="100" end="0" time="200">WindowClose</animation>
+		<animation effect="fade" end="100" time="200">Visible</animation>
+		<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
+		<texture colordiffuse="OSD_DimmColor">colors/white70.png</texture>
+	</control>
+	
+	<!-- busy spinner -->
+	<control type="group" id="99">
+		<description>Hide Optional</description>
+		<visible>!Skin.HasSetting(HideBusyOSD) + Player.Caching + !Window.IsVisible(busydialog)</visible>
+		<control type="image" id="99">
+			<centerleft>50%</centerleft>
+			<centertop>50%</centertop>
+			<width>200</width>
+			<height>200</height>
+			<texture colordiffuse="OSD_BusySpinner">special://skin/extras/busy/netflixorigin.apng</texture>
+			<aspectratio align="center" aligny="center">keep</aspectratio>
+		</control>
+		<control type="label" id="99">
+			<description>maybe buggy</description>
+			<top>0</top>
+			<bottom>0</bottom>
+			<left>0</left>
+			<right>0</right>
+			<font>Arial_Bold50</font>
+			<label>$INFO[Player.CacheLevel,, %]</label>
+			<align>center</align>
+			<aligny>center</aligny>
+		</control>
+		
+	</control>
+	
+	<!-- numeric Input -->
+	<control type="label" id="99">
+		<top>0</top>
+		<bottom>0</bottom>
+		<left>0</left>
+		<right>0</right>
+		<font>Arial_Bold50</font>
+		<label>$VAR[Fullscreen_Numeric_Input]</label>
+		<align>center</align>
+		<aligny>center</aligny>
+	</control>
+		
+	<!-- native gui infos -->
+	<control type="group" id="99">
+		<description>what a shit</description>
+		<left>0</left>
+		<visible>Control.IsVisible(10) | Control.IsVisible(11) | Control.IsVisible(12)</visible>
+		<control type="image">
+			<width>1920</width>
+			<height>800</height>
+			<texture colordiffuse="black">colors/white90.png</texture>
+		</control>
+		<control type="grouplist">
+			<left>60</left>
+			<top>60</top>
+			<orientation>vertical</orientation>
+			<control type="label" id="10">
+				<description>row 1 label</description>
+				<width>auto</width>
+				<height>40</height>
+				<align>left</align>
+				<aligny>top</aligny>
+				<textcolor>white</textcolor>
+			</control>
+			<control type="label" id="11">
+				<description>row 2 label</description>
+				<height>40</height>
+				<width>auto</width>
+				<align>left</align>
+				<aligny>top</aligny>
+				<textcolor>white</textcolor>
+			</control>
+			<control type="label" id="12">
+				<description>row 3 label</description>
+				<width>auto</width>
+				<height>40</height>
+				<align>left</align>
+				<aligny>top</aligny>
+				<textcolor>white</textcolor>
+			</control>
+		</control>
+	</control>
+	
+	
+	<!-- <include>OSD_InProgress</include> -->
+	<include content="OSD_VideoSimple" />
+			
+	</controls>
 </window>

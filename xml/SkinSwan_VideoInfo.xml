@@ -4,19 +4,16 @@
 		<value condition="String.IsEqual(ListItem.dbtype,episode) | String.IsEqual(ListItem.dbtype,season)">$INFO[ListItem.TVShowTitle] $INFO[ListItem.Title]</value>
 		<value>$INFO[ListItem.Title]</value>
 	</variable>
-	
 	<include name="Button_VideoInfo">
 		<width>285</width>
 		<height>40</height>
 		<align>center</align>
 		<textoffsetx>10</textoffsetx>
 	</include>
-	
 	<variable name="Similiar_Content">
 		<value condition="String.IsEqual(ListItem.DBType,movie) + !String.IsEmpty(ListItem.DBID)">plugin://script.embuary.helper/?info=getsimilar&amp;dbid=$INFO[ListItem.DBID]&amp;type=movie</value>
 		<value condition="String.IsEqual(ListItem.DBType,tvshow) + !String.IsEmpty(ListItem.DBID)">plugin://script.embuary.helper/?info=getsimilar&amp;dbid=$INFO[ListItem.DBID]&amp;type=tvshow</value>
 	</variable>
-	
 	<include name="VideoInfo_SlideshowNav">
 		<control type="group">
 			<visible>Control.HasFocus($PARAM[ButtonID])</visible>
@@ -73,5 +70,17 @@
 			</control>
 		</control>
 	</include>
+	
+	<variable name="extraFanartLocation">
+        <value condition="[container.content(movies) | String.IsEqual(ListItem.DBTYPE,movie)]">$INFO[listitem.path,,extrafanart]</value>
+        <value condition="[container.content(tvshows) | String.IsEqual(ListItem.DBTYPE,tvshow)]">$INFO[listitem.filenameandpath,,extrafanart]</value>
+        <value condition="[container.content(seasons) | String.IsEqual(ListItem.DBTYPE,season)]">$INFO[container.listitem.path,,extrafanart]</value>
+    </variable>
+	
+	<variable name="extraThumbsLocation">
+        <value condition="[container.content(movies) | String.IsEqual(ListItem.DBTYPE,movie)]">$INFO[listitem.path,,extrathumbs]</value>
+        <value condition="[container.content(tvshows) | String.IsEqual(ListItem.DBTYPE,tvshow)]">$INFO[listitem.filenameandpath,,extrathumbs]</value>
+        <value condition="[container.content(seasons) | String.IsEqual(ListItem.DBTYPE,season)]">$INFO[container.listitem.path,,extrathumbs]</value>
+    </variable>
 
 </includes>

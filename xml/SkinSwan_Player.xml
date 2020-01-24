@@ -1,12 +1,165 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- SWAN -->
 <includes>
-	video 
-	music
-	pvr	  
+
+	<!-- OSD Controls -->
+	<include name="OSD_Slider_Seek">
+		<bottom>222</bottom>
+			<left>290</left>
+			<right>0</right>
+			<height>15</height>
+			<texturesliderbar colordiffuse="none">buttons/slider-back.png</texturesliderbar>
+			<!-- <textureslidernib colordiffuse="$VAR[Button_Text_NF]">buttons/slider-nib.png</textureslidernib> -->
+			<!-- <textureslidernibfocus colordiffuse="$VAR[Button_Selected]">buttons/slider-nib.png</textureslidernibfocus>
+			<textureslidernibfocus colordiffuse="$VAR[Button_Selected]">buttons/slider-nib.png</textureslidernibfocus> -->
+			<bottom>222</bottom>
+			<left>290</left>
+			<right>0</right>
+			<height>15</height>
+	</include>
+					
+
+	<variable name="EmbuaryHelper_GetPlayerInfo_dbid">
+		<value condition="VideoPlayer.Content(movies) + Integer.IsGreater(VideoPlayer.DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[VideoPlayer.DBID]&amp;type=movie</value>
+		<value condition="VideoPlayer.Content(tvshows) + Integer.IsGreater(VideoPlayer.DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[VideoPlayer.DBID]&amp;type=movie</value>
+		<value condition="VideoPlayer.Content(episodes) + Integer.IsGreater(VideoPlayer.DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[VideoPlayer.DBID]&amp;type=tvshow&amp;idtype=episode</value>
+		<value>-</value>
+	</variable>
+	<variable name="Fullscreen_Numeric_Input">
+		<value condition="Window.Is(fullscreenlivetvinput) | !String.IsEmpty(PVR.ChannelNumberInput)">$INFO[PVR.ChannelNumberInput,$LOCALIZE[19029]]</value>
+		<value condition="Window.Is(videotimeseek) | !String.IsEmpty(Player.SeekNumeric)">Jump to a specific time[CR](hh:mm:ss)[CR][CR]$INFO[Player.SeekNumeric(hh:mm:ss),,]</value>
+	</variable>
+	
+	<!-- ARt -->
+	<variable name="PlayerThumb">
+		<value condition="!String.IsEmpty(Player.Art(season.poster))">$INFO[Player.Art(season.poster)]</value>
+		<value condition="!String.IsEmpty(Player.Art(tvshow.poster))">$INFO[Player.Art(tvshow.poster)]</value>
+		<value condition="!String.IsEmpty(Player.Art(poster))">$INFO[Player.Art(poster)]</value>
+		<value>$INFO[Player.Icon]</value>
+	</variable>
+	<variable name="PlayerDisc">
+		<value condition="!String.IsEmpty(Player.Art(season.discart))">$INFO[Player.Art(season.discart)]</value>
+		<value condition="!String.IsEmpty(Player.Art(tvshow.discart))">$INFO[Player.Art(tvshow.discart)]</value>
+		<value>$INFO[Player.Art(discart)]</value>
+	</variable>
+	
+	Skin.HasSetting(PlayerPreferClearLogo)
+	Skin.HasSetting(PlayerPreferLandscape)
+	Skin.HasSetting(PlayerHideDiscArt)
+	Skin.HasSetting(PlayerHideOSD)
 	
 	
+	<variable name="PlayerClearlogo">
+		<value condition="!String.IsEmpty(Player.Art(tvshow.clearlogo))">$INFO[Player.Art(tvshow.clearlogo)]</value>
+		<value condition="!String.IsEmpty(Player.Art(clearlogo))">$INFO[Player.Art(clearlogo)]</value>
+	</variable>
 	
+	 
+	
+	<!-- Info -->
+	<variable name="PlayerTitle">
+		 <value condition="Player.HasVideo + VideoPlayer.Content(episodes)">[B]$INFO[VideoPlayer.TVShowTitle,,  •  ]$LOCALIZE[20373]$INFO[VideoPlayer.Season, ,]  Episode $INFO[VideoPlayer.Episode, ,][/B]$INFO[Player.Title,[B]  |  ,[/B]]</value>
+		<value condition="">$INFO[Player.Title,[B],[/B]]</value>
+	</variable>
+	<variable name="PlayerPlot">
+		<value>$INFO[VideoPlayer.Plot]</value>
+	</variable>
+	
+	<!-- get includes -->
+		<!-- OSD -->
+		
+	<include name="OSD_VideoSimple">
+		<control type="group" id="99">
+			<visible>!Player.HasGame + [Window.IsVisible(videoosd) | Window.IsVisible(seekbar) | Player.Paused | Player.ShowTime | $EXP[IsSeek] | !String.IsEmpty(Window(home).Property(ShowOSD))]</visible>
+			
+			<animation effect="fade" start="0" end="100" time="0">Visible</animation>
+			<animation effect="fade" start="100" end="0" time="200" delay="1500">Hidden</animation>
+			<animation effect="fade" start="100" end="0" time="0" condition="Window.IsVisible(playerprocessinfo) | Window.IsVisible(pvrosdchannels) | Window.IsVisible(Teletext) | Window.IsVisible(sliderdialog) | Window.IsVisible(shutdownmenu) | Window.IsVisible(videobookmarks) | !String.IsEmpty(Window(home).Property(service.upnext.dialog)) | [$EXP[HideVideoOSD] + !$EXP[PlayerSeek] + !Window.IsVisible(videoosd)]">Conditional</animation>
+			
+			<control type="group" id="99">
+				<bottom>0</bottom>
+				<width>100%</width>
+				<height>400</height>
+				<animation effect="slide" start="0,0" end="0,150" time="340" condition="!VideoPlayer.HasInfo | Player.ShowInfo">conditional</animation>
+				<control type="image" id="99">
+					<bottom>0</bottom>
+					<width>102%</width>
+					<height>250</height>
+					<aspectratio scalediffuse="true" align="center" aligny="bottom">stretch</aspectratio>
+					<bordersize>0,100,0,0</bordersize>
+					<texture colordiffuse="$VAR[OSD_PanelColor_Gr]">colors/white.png</texture>
+					<bordertexture colordiffuse="$VAR[OSD_PanelColor_Gr]">colors/white70.png</bordertexture>
+				</control>
+			
+				<control type="label" id="99">
+					<bottom>160</bottom>
+					<left>350</left>
+					<height>60</height>
+					<font>font13</font>
+					<align>left</align>
+					<textcolor>$VAR[OSD_TextMain]</textcolor>
+					<label>$VAR[PlayerTitle] $INFO[VideoPlayer.Year, (,)]</label>
+				</control>
+				<control type="label" id="99">
+					<bottom>170</bottom>
+					<right>20</right>
+					<height>60</height>
+					<width>200</width>
+					<font>font_clock</font>
+					<align>right</align>
+					<textcolor>$VAR[OSD_TextSec]</textcolor>
+					<label>$INFO[System.Time]</label>
+				</control>
+				<control type="image" id="99">
+					<bottom>70</bottom>
+					<right>25</right>
+					<height>60</height>
+					<width>100</width>
+					<texture colordiffuse="$VAR[OSD_TextMain]">$INFO[Weather.FanartCode,resource://resource.images.weathericons.outline-hd/,.png]</texture>
+					<aspectratio align="left">keep</aspectratio>
+				</control>
+				<control type="label" id="99">
+					<bottom>70</bottom>
+					<right>2</right>
+					<font>font23_title</font>
+					<width>60</width>
+					<height>20</height>
+					<align>left</align>
+					<label>$INFO[Weather.Temperature]</label>
+					<font>font12</font>
+					<textcolor>$VAR[OSD_TextMain]</textcolor>
+				</control>
+				
+				<control type="textbox" id="99">
+					<bottom>10</bottom>
+					<left>350</left>
+					<right>350</right>
+					<height>120</height>
+					<aligny>top</aligny>
+					<align>justify</align>
+					<textcolor>$VAR[OSD_TextSec]</textcolor>
+					<font>DialogListItem</font>
+					<label>$VAR[PlayerPlot]</label>
+				</control>
+				
+			</control>
+			<control type="group" id="99">
+				<bottom>0</bottom>
+				<width>100%</width>
+				<height>300</height>
+				<control type="image" id="99">
+					<left>0</left>
+					<bottom>0</bottom>
+					<height>440</height>
+					<width>340</width>
+					<texture>$VAR[PlayerThumb]</texture>
+					<!-- <texture>$INFO[Player.Art(fanart)]</texture> -->
+					<aspectratio scalediffuse="false" align="left" aligny="bottom">keep</aspectratio>
+				</control>
+			</control>
+			
+		</control>
+	</include>
 	
 
 

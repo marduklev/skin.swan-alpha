@@ -12,15 +12,27 @@
 		
 		<!-- id s -->
 		
-		<!-- Background ?SearchBackground-->
-        <include>GlobalBackground</include>
+		<control type="group">
+			<visible>!Skin.HasSetting(BlurEnabled)</visible>
+			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
+			<include>GlobalBackground</include>
+		</control>
+		<control type="group">
+			<visible>Skin.HasSetting(BlurEnabled)</visible>
+			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
+			<include>GlobalBlurredBackground</include>
+		</control>
 		
 		<!-- Header -->
-		<include>HeaderBar</include>
+		<include content="HeaderBar">
+			<param name="HasSearchBar" value="false" />
+			<param name="HasBGPanel" value="Skin.HasSetting(MediaWindow_UseHeaderBG)" />
+			<param name="HeadingAlignment" value="center" />
+		</include>
 		
 		<!--Footer -->
         <control type="button">
-			<animation effect="slide" start="0,90" end="0,0" time="350" tween="back" easing="inout" delay="100">VisibleChange</animation>
+			<animation effect="fade" start="100" end="0" time="300" condition="$EXP[Infodialog_IsActive]">Conditional</animation>
 			<description>just test height for footer groulist</description>
 			<bottom>0</bottom>
 			<height>90</height>
@@ -105,6 +117,10 @@
 		</control>
 		
 		<control type="group">
+			<include content="Animation_TransitionFadeOut">
+				<param name="condition" value="$EXP[Infodialog_IsActive] | Window.IsActive(mediasource)" />
+			</include>
+			
             <top>130</top>
             <bottom>100</bottom>
 			<include content="pos_left" condition="String.IsEmpty(Window(home).Property(CastMemberTumb))">

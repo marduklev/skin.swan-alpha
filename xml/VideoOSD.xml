@@ -1,7 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <window>
+	<defaultcontrol always="true">6000</defaultcontrol>
 	<controls>
 	
-	
+		<control type="group">
+			<bottom>0</bottom>
+			<height>300</height>
+			<visible>![Window.IsVisible(SliderDialog) | Window.IsVisible(osdaudiosettings) | Window.IsVisible(osdvideosettings) | Window.IsVisible(VideoBookmarks) | Window.IsVisible(playerprocessinfo) | Window.IsVisible(osdcmssettings) | Window.IsVisible(PVROSDChannels) | Window.IsVisible(pvrchannelguide)]</visible>
+			<!-- <animation effect="fade" time="200">VisibleChange</animation> -->
+			
+			<control type="group" id="6000">
+				<animation effect="slide" start="0,0" end="0,150" time="340" condition="!VideoPlayer.HasInfo | Player.ShowInfo">conditional</animation>
+				
+				<bottom>20</bottom>
+				<width>100%</width>
+				<height>400</height>
+				<visible>Player.SeekEnabled</visible>
+				<control type="button" id="87">
+					<include>HiddenObject</include>
+					<onup>200</onup>
+					<onunfocus condition="Player.Forwarding | Player.Rewinding">PlayerControl(Play)</onunfocus>
+					<ondown>200</ondown>
+					<onright>StepForward</onright>
+					<onleft>StepBack</onleft>
+					<onclick condition="Player.Forwarding | Player.Rewinding">PlayerControl(Play)</onclick>
+				</control>
+				
+				<control type="slider">
+					<include content="OSD_Slider_Seek" />
+					<info>Player.Progress</info>
+					<action>seek</action>
+					<visible>!Control.HasFocus(87) + !VideoPlayer.Content(LiveTV)</visible>
+				</control>
+				<control type="slider">
+					<include content="OSD_Slider_Seek" />
+					<info>Player.Progress</info>
+					<action>seek</action>
+					<visible>Control.HasFocus(87) + !VideoPlayer.Content(LiveTV)</visible>
+				</control>
+				<control type="slider">
+					<include content="OSD_Slider_Seek" />
+					<info>PVR.TimeshiftProgressPlayPos</info>
+					<action>pvr.seek</action>
+					<visible>!Control.HasFocus(87) + VideoPlayer.Content(LiveTV)</visible>
+				</control>
+				<control type="slider">
+					<include content="OSD_Slider_Seek" />
+					<info>PVR.TimeshiftProgressPlayPos</info>
+					<action>pvr.seek</action>
+					<visible>Control.HasFocus(87) + VideoPlayer.Content(LiveTV)</visible>
+				</control>
+			</control>
+		</control>
 	</controls>
 </window>
