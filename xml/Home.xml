@@ -50,9 +50,18 @@ submenu - restricted depending on custom skinstring mainmenu item - use/show sub
 		
 		
 		<!-- menucontrol -->
-		<include content="Home_menucontrol" />
 		
 		<control type="group">
+			<animation effect="slide" start="-450,0" end="0,0" time="300" tween="cubic" easing="inout">VisibleHidden</animation>
+			<visible>ControlGroup(9000).HasFocus()</visible>
+			<include content="Menucontrol_Home" condition="String.IsEmpty(Window(home).Property(custom_widget_nr))" />
+		</control>
+		
+		<control type="group">
+			<!-- TEMP SLIDE -->
+			<!-- <animation effect="slide" start="450,0" end="0,0" time="300" tween="cubic" easing="inout" condition="!ControlGroup(9000).HasFocus()">Conditional</animation> -->
+			<animation effect="zoom" start="70" end="100" time="250" center="85%,25%" condition="!ControlGroup(9000).HasFocus()">Conditional</animation>
+		
 			<include content="Animation_TransitionFadeOut">
 				<param name="condition" value="$EXP[Infodialog_IsActive] | Window.IsActive(mediasource)" />
 			</include>
