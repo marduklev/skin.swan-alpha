@@ -45,7 +45,7 @@
 						</include>
 						<height>50</height>
 						<align>$PARAM[HeadingAlignment]</align>
-						<label>$VAR[CurrentContent]</label>
+						<label>$VAR[Header_InfoTop]</label>
 						<font>HeaderBar_Media</font>
 						<textcolor>$VAR[Header_TextMain]</textcolor>
 					</control>
@@ -138,32 +138,33 @@
 		</definition>
 	</include>
 	
-					
-	<variable name="CurrentContent">
-		<!-- <value condition="Container.Content(movies)">F I L M E</value>
-		<value condition="Container.Content(tvshows)">S E R I E N</value>
-		<value condition="Container.Content(seasons)">$LOCALIZE[33054]</value>
-		
-		<value condition="Container.Content(sets)">$LOCALIZE[20434]</value>
-		<value condition="Container.Content(images)">$LOCALIZE[10002]</value>
-		<value condition="Container.Content(artists)">$LOCALIZE[133]</value>
-		
-		<value condition="Container.Content(albums)">$LOCALIZE[132]</value>
-		<value condition="Container.Content(musicvideos)">$LOCALIZE[20389]</value>
-		<value condition="Container.Content(songs)">$LOCALIZE[134]</value>
-		<value>$INFO[System.CurrentWindow]</value> -->
-		<value condition="Container.Content(movies)">[UPPERCASE][B]$LOCALIZE[342][/B][/UPPERCASE]</value>
-		<value condition="Container.Content(tvshows)">[UPPERCASE][B]$LOCALIZE[20343][/B][/UPPERCASE]</value>
-		<value condition="Container.Content(seasons)">[UPPERCASE][B]$LOCALIZE[33054][/B][/UPPERCASE]</value>
-		
-		<value condition="Container.Content(sets)">[UPPERCASE][B]$LOCALIZE[20434][/B][/UPPERCASE]</value>
-		<value condition="Container.Content(images)">[UPPERCASE][B]$LOCALIZE[10002][/B][/UPPERCASE]</value>
-		<value condition="Container.Content(artists)">[UPPERCASE][B]$LOCALIZE[133][/B][/UPPERCASE]</value>
-		
-		<value condition="Container.Content(albums)">[UPPERCASE][B]$LOCALIZE[132][/B][/UPPERCASE]</value>
-		<value condition="Container.Content(musicvideos)">[UPPERCASE][B]$LOCALIZE[20389][/B][/UPPERCASE]</value>
-		<value condition="Container.Content(songs)">[UPPERCASE][B]$LOCALIZE[134][/B][/UPPERCASE]</value>
-		<value>$INFO[System.CurrentWindow]</value>
+	<!-- or conditional Heading result 
+		- localized string content - folderpath
+		eg actors (movies)
+		eg
+		<value condition="
+            [String.IsEqual(Container.FolderName,$LOCALIZE[20386])] | 
+            [String.Contains(Container.FolderPath,/tags)]">[UPPERCASE][B]$INFO[Container.FolderName][/B][/UPPERCASE]
+        </value>
+	
+		<value condition="String.Contains(Container.FolderPath,movies/) + String.IsEqual(Container.FolderName,$LOCALIZE[515]) + Container.Content(genres)">[UPPERCASE][B]$INFO[Container.FolderName,, ($LOCALIZE[342])][/B][/UPPERCASE]</value>
+		<value condition="String.IsEqual(Container.FolderName,$LOCALIZE[515]) + Container.Content(genres)">[UPPERCASE][B]$INFO[Container.FolderName][/B][/UPPERCASE]</value>
+		<value condition="String.Contains(Container.FolderPath,movies/genre)">[UPPERCASE][B]$INFO[Container.FolderName] $LOCALIZE[342][/B][/UPPERCASE]</value>
+	-->	
+	<variable name="Header_InfoTop">
+		<value condition="Window.Is(1120)">[UPPERCASE][B]$LOCALIZE[283][/B][/UPPERCASE]</value>
+		<value condition="String.IsEqual(Container.FolderName,$LOCALIZE[10024]) + Container.Content(movies)">[UPPERCASE][B]$LOCALIZE[342][/B][/UPPERCASE]</value>
+		<value condition="String.IsEqual(Container.FolderName,$LOCALIZE[10024]) + Container.Content(tvshows)">[UPPERCASE][B]$LOCALIZE[20343][/B][/UPPERCASE]</value>
+		<value condition="String.IsEqual(Container.FolderName,$LOCALIZE[10024]) + Container.Content(seasons)">[UPPERCASE][B]$LOCALIZE[33054][/B][/UPPERCASE]</value>
+		<value condition="String.IsEqual(Container.FolderName,$LOCALIZE[10024]) + Container.Content(sets)">[UPPERCASE][B]$LOCALIZE[20434][/B][/UPPERCASE]</value>
+		<value condition="String.IsEqual(Container.FolderName,$LOCALIZE[10024]) + Container.Content(images)">[UPPERCASE][B]$LOCALIZE[10002][/B][/UPPERCASE]</value>
+		<value condition="String.IsEqual(Container.FolderName,$LOCALIZE[10024]) + Container.Content(artists)">[UPPERCASE][B]$LOCALIZE[133][/B][/UPPERCASE]</value>
+		<value condition="String.IsEqual(Container.FolderName,$LOCALIZE[10024]) + Container.Content(albums)">[UPPERCASE][B]$LOCALIZE[132][/B][/UPPERCASE]</value>
+		<value condition="String.IsEqual(Container.FolderName,$LOCALIZE[10024]) + Container.Content(musicvideos)">[UPPERCASE][B]$LOCALIZE[20389][/B][/UPPERCASE]</value>
+		<value condition="String.IsEqual(Container.FolderName,$LOCALIZE[10024]) + Container.Content(songs)">[UPPERCASE][B]$LOCALIZE[134][/B][/UPPERCASE]</value>
+		<value condition="!String.IsEmpty(Container.FolderName)">[UPPERCASE][B]$INFO[Container.FolderName][/B][/UPPERCASE]</value>
+		<value condition="Window.IsMedia">[UPPERCASE][B]$INFO[System.CurrentWindow][/B][/UPPERCASE]</value>
+		<value>[UPPERCASE]$INFO[System.CurrentWindow][/UPPERCASE]</value>
 	</variable>
 	<!-- 
 	Window(Home).Property(key) 	The home window has the following info labels.
@@ -198,7 +199,7 @@ LatestSong.[1-10].Title, LatestSong.[1-10].Artist, LatestSong.[1-10].Album, Late
 
 LatestAlbum.[1-10].Title, LatestAlbum.[1-10].Artist, LatestAlbum.[1-10].Year, LatestAlbum.[1-10].Rating, LatestAlbum.[1-10].Thumb, LatestAlbum.[1-10].Fanart, LatestAlbum.[1-10].Path  -->
 	<variable name="CurrentContent_Info">
-		<value condition="Window.Is(1120)">[B]Search Term Is :[/B] [COLOR=$VAR[Header_TextSecondary]]$INFO[Skin.string(searchterm)][/COLOR]</value>
+		<value condition="Window.Is(1120)">Search Term Is : [B][COLOR=$VAR[Header_TextSecondary]]$INFO[Skin.string(searchterm)][/COLOR][/B]</value>
 		<value condition="Container.Content(movies)">$LOCALIZE[20161] : [COLOR=$VAR[Header_TextSecondary]]$INFO[Window(Home).Property(Movies.Count)][/COLOR] [B]|[/B] $LOCALIZE[16101] : [COLOR=$VAR[Header_TextSecondary]]$INFO[Window(Home).Property(Movies.UnWatched)][/COLOR]</value>
 		<value condition="Container.Content(tvshows)">$LOCALIZE[20161] : [COLOR=$VAR[Header_TextSecondary]]$INFO[Window(Home).Property(TVShows.Count)][/COLOR] [B]|[/B] $LOCALIZE[16101] : [COLOR=$VAR[Header_TextSecondary]]$INFO[Window(Home).Property(TVShows.UnWatched)][/COLOR]</value>
 		<value condition="Window.IsMedia">$LOCALIZE[20161] : [COLOR=$VAR[Header_TextSecondary]]$INFO[Container(id).NumItems][/COLOR] [B]|[/B] $LOCALIZE[16101] : [COLOR=$VAR[Header_TextSecondary]]$INFO[Container.TotalUnWatched][/COLOR]</value>
@@ -321,7 +322,9 @@ use this include pr add variable fpr diffuse textures
 				<description>blur container</description>
 				<texture background="true" fallback="special://skin/extras/backgroundimages/pattern1.jpg">$VAR[BlurFanartBackground]</texture>
 			</control>
-		
+			
+			<include>VideoFullscreenBG</include>
+			
 			<control type="image">
 				<description>conditional diffuse - blurred bg overlay img</description>
 				<visible>true</visible>
@@ -353,7 +356,7 @@ use this include pr add variable fpr diffuse textures
 		<definition>
 			<control type="image">
 				<description>temp disabled for 58, maybe optional</description>
-				<visible>[!Window.IsActive(home) + !String.IsEmpty(Skin.String(BackgroundOverlayTexture))] | [Window.IsActive(home) + !String.IsEmpty(Skin.String(BackgroundOverlayTextureHome))]</visible>
+				<visible>[!Window.IsActive(home) + !String.IsEmpty(Skin.String(BackgroundOverlayTexture)) + !Control.IsVisible(58)] | [Window.IsActive(home) + !String.IsEmpty(Skin.String(BackgroundOverlayTextureHome))]</visible>
 				<depth>DepthBackground2</depth>
 				<texture>$PARAM[texture]</texture>
 				<colordiffuse>$PARAM[colordiffuse]</colordiffuse>

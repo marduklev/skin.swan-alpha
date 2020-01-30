@@ -478,7 +478,16 @@
         </control>
     </include>
 	
-	<!-- Container Header : label- sep - focused item label - busy -->
+	<!-- Container Header : label- sep - focused item label - busy 
+	
+	fonts
+	Header_SettingsSections
+	HUB_WidgetHeader
+	BannerTag
+	MenucontrolSectionHeading
+	MenucontrolItemHelv
+	font666 / font37 - fits best
+	-->
 	<include name="Universal_ContainerHeader">
 		<param name="align" default="left" />
 		
@@ -504,7 +513,8 @@
                         <label>[B]$PARAM[label][/B]</label>
                         <aligny>center</aligny>
                         <textcolor>$VAR[Headingline_Widget]</textcolor>
-						<font>Bold30</font>
+						<font>font666</font>
+						
                         <height>24</height>
                         <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) | !Container($PARAM[id]).IsUpdating</visible>
                     </control>
@@ -519,6 +529,7 @@
 						<visible>Control.HasFocus($PARAM[id])</visible>
                         <visible>String.IsEmpty(Window(home).Property(CastMemberTumb))</visible>
                         <visible>!String.IsEmpty(Container($PARAM[id]).ListItem.Label)</visible>
+						<visible>[!Window.IsActive(home) + Control.HasFocus($PARAM[id])] | [[Window.IsActive(home) + Skin.HasSetting(ShowFocusedLabelInHeader_Home)] + Control.HasFocus($PARAM[id])]</visible>
                         <visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) + !Container($PARAM[id]).IsUpdating</visible>
                     </control>
 					<control type="label">
@@ -684,6 +695,7 @@
 			
 			<description>ClearLogo Overlay - also nice on non circle</description>
 			<control type="image">
+				<visible>![[Container.Content(Seasons) | String.IsEqual(ListItem.dbtype,season)] | [Container.Content(Episodes) | String.IsEqual(ListItem.dbtype,episode)]]</visible>
 				<visible>
 					!String.IsEmpty(ListItem.Art(tvshow.clearlogo)) | 
 					!String.IsEmpty(ListItem.Art(clearlogo)) | 
@@ -699,7 +711,7 @@
 			</control>
 			<control type="textbox">
 				<description>43.3 1 row</description>
-				<visible>
+				<visible>[[Container.Content(Seasons) | String.IsEqual(ListItem.dbtype,season)] | [Container.Content(Episodes) | String.IsEqual(ListItem.dbtype,episode)]] | 
 					String.IsEmpty(ListItem.Art(tvshow.clearlogo)) +
 					String.IsEmpty(ListItem.Art(artist.clearlogo)) +
 					String.IsEmpty(ListItem.Art(albumartist.clearlogo)) +

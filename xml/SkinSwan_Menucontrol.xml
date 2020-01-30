@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
-			<!-- 
-			<include content="Animation_OpenClose_Slide">
-				<param name="slide_start" value="$PARAM[slideprefix]1920,0" />
-				<param name="slide_end" default="0,0" />
-			</include> 
-			
-			was belonging to menucontrol grouplist include - excluded for dialogcontextmenu
-			-->
-			
+	
 	<include name="Menucontrol_Grouplist">
 		<param name="width" default="60%" />
 		<definition>
@@ -25,7 +17,81 @@
 		</definition>
 	</include>
 	
+	<include name="PreMenucontrol">
+		<control type="image">
+			<animation effect="slide" start="0,0" end="450,0" time="300" tween="cubic" easing="inout">visible</animation>
+			<animation effect="fade" start="100" end="0" time="150" condition="!ControlGroup(9000).HasFocus()">conditional</animation>
+			
+			<visible>ControlGroup(9000).HasFocus()</visible>
+			<top>0</top>
+			<bottom>0</bottom>
+			<width>530</width>
+			<left>-450</left>
+			<colordiffuse>$VAR[BackgroundColor_Dialog]</colordiffuse>
+			<texture>colors/white.png</texture>
+			<colordiffuse>white</colordiffuse>
+			<aspectratio>stretch</aspectratio>
+		</control>
+		
+		<control type="grouplist" id="8999">
+			<animation effect="slide" start="0,0" end="450,0" time="300" tween="cubic" easing="inout" condition="ControlGroup(9000).HasFocus()">conditional</animation>
+			
+			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
+			<visible>!$EXP[Infodialog_IsActive]</visible>
+			<visible>!Control.IsVisible(58)</visible>
+			<centertop>50%</centertop>
+			<left>5</left>
+			<width>110</width>
+			<height>360</height>
+			<orientation>vertical</orientation>
+			<itemgap>10</itemgap>
+			<usecontrolcoords>true</usecontrolcoords>
+			
+			
+			<onright>SetFocus(50)</onright>
+			<onleft>SetFocus(9000)</onleft>
+			<onup condition="Control.IsVisible(19)">19</onup>
+			<onup condition="!Control.IsVisible(19)">50</onup>
+			<control type="radiobutton" id="102501">
+				<include content="Menucontrol_RadioButton">
+					<param name="radiotexture" value="search" />
+				</include>
+				<onclick condition="!String.IsEmpty(Skin.String(SearchTerm))">Skin.Reset(SearchTerm)</onclick>
+				<onclick>Skin.SetString(SearchTerm)</onclick>
+				<onclick>ActivateWindow(1120),return</onclick>
+			</control>
+			<control type="radiobutton" id="102502">
+				<include content="Menucontrol_RadioButton">
+					<param name="radiotexture" value="menucontrol" />
+				</include>
+				<onclick>SetFocus(9000)</onclick>
+			</control>
+			<control type="radiobutton" id="102503">
+				<visible>Player.HasMedia</visible>
+				<description>need to make better img, radionutton group search,menucontrol,toggle fs, seperate natvir vs skin gui controls?</description>
+				<include content="Menucontrol_RadioButton">
+					<param name="radiotexture" value="togglefs_2" />
+				</include>
+				<onclick>Fullscreen</onclick>
+				
+			</control>
+<!--
+ <onclick condition="Player.HasAudio">ActivateWindow(visualisation)</onclick> 
+FullscreenLiveTV	WINDOW_FULLSCREEN_LIVETV	10800	None (shortcut to fullscreenvideo)
+fullscreenradio	WINDOW_FULLSCREEN_RADIO	10801	None (shortcut to visualisation)
+fullscreenlivetvpreview
+-->
+			<!-- 
+			pause/play
+			stop
+			prev
+			next -->
+			
+		</control>
+	</include>
+	
 	<include name="Menucontrol_RadioButton">
+		<include content="Animation_Item_Focus" />
 		<textureradioonfocus bolordiffuse="white">icons/radiobuttons/$PARAM[radiotexture].png</textureradioonfocus>
 		<textureradioonnofocus colordiffuse="5cC6C6C8">icons/radiobuttons/$PARAM[radiotexture].png</textureradioonnofocus>
 		<textureradioofffocus colordiffuse="white">icons/radiobuttons/$PARAM[radiotexture].png</textureradioofffocus>
@@ -45,6 +111,69 @@
 		<selected />
 	</include>
 	
+	<!-- 	1.40 MyPics.xml
+ID 	Type 	Description
+2 	button 	Select viewtype (list, thumbnail, media info, etc...)
+3 	button 	Select sort method (sort by: name, date size, etc...)
+4 	togglebutton 	Select sortmode (ascending or descending)
+6 	button 	Start a picture slideshow
+7 	button 	Start a recursive picture slideshow
+9 	radiobutton 	Randomize the picture slideshow
+12 	label 	Number of items in the list  -->
+	
+	<!-- 	1.41 MyPlaylist.xml
+ID 	Type 			Description
+2 	button 			Select viewtype (list, thumbnail, media info, etc...)
+3 	button 			Select sort method (sort by: name, date size, etc...)
+4 	togglebutton 	Select sortmode (ascending or descending)
+12 	label 			Number of items in the playlist
+20 	radiobutton 	Shuffle the playlist
+21 	button 			Save the playlist
+22 	button 			Clear the playlist
+23 	button 			Play the playlist
+24 	button 			Play the next item in the playlist
+25 	button 			Play the previous item in the playlist
+26 	button 			Put the playlist on repeat  -->
+
+	
+	<!-- 	1.43 MyPVRChannels.xml
+ID 	Type 			Description
+2 	button 			Select viewtype (list, thumbnail, media info, etc...)
+3 	button 			Select sort method (sort by: name, date size, etc...)
+4 	togglebutton 	Select sortmode (ascending or descending)
+6 	radiobutton 	Show hidden channels
+28 	button 			Channel groups button
+29 	label 			Channel groups name
+31 	radiobutton 	Filter  -->
+	
+<!-- 	1.45 MyPVRRecordings.xml
+ID 	Type 			Description
+2 	button 			Select viewtype (list, thumbnail, media info, etc...)
+3 	button 			Select sort method (sort by: name, date size, etc...)
+4 	togglebutton 	Select sortmode (ascending or descending)
+5 	radiobutton 	Group items by folder structure
+7 	radiobutton 	Show deleted recordings
+10 	button 			Show only watched, unwatched or all recordings
+28 	button 			Channelgroups button
+29 	label 			'Deleted' (When show deleted recordings is enabled, otherwise empty)  -->
+	
+<!-- 	1.38 MyMusicNav.xml
+ID 	Type 					Description
+2	button	Select viewtype (list, thumbnail, media info, etc...)
+3	button	Select sort method (sort by: name, date size, etc...)
+4	togglebutton	Select sortmode (ascending or descending)
+5	radiobutton	Switch to file mode
+8	edit	Search for a string anywhere in the Kodi music database
+12	label	Number of items in the list
+15	label	Filter label
+16	radiobutton	Start party mode (randomly play songs from your entire music collection)
+17	button	Manually enter artist and album name to lookup the artist and album information on the internet
+18	label	Warning to the user to turn off library mode when no scanned media is found
+19	radiobutton / edit	Filter the media files to only show items that include the specified string in the name
+20	button	Update library
+-->
+
+
 	<include name="Menucontrol_Media">
 		<control type="grouplist" id="9000">
 			<description>need get cond vis content</description>
@@ -186,7 +315,7 @@
 				<font>font10</font>
 			</control>
 			
-			<control type="button" id="8" description="Search for a string anywhere in the Kodi video database - use own? id">
+			<control type="button" id="8" description="Search for a string anywhere in the Kodi video database - use own? id otherwise 3 times various  search">
 				<label>$LOCALIZE[137]</label>
 				<font>font10</font>
 			</control>
@@ -201,7 +330,7 @@
 				<label>$LOCALIZE[20336]</label>
 			</control>
 			 -->
-			<control type="button" id="16" description="Start party mode (randomly play musicvideos from your collection)">
+			<control type="button" id="16">
 				<label>$LOCALIZE[589]</label>
 				<font>font10</font>
 			</control>
@@ -277,7 +406,6 @@
 	
 	<!-- temp, just to have easy navigation -->
 	<include name="Menucontrol_Home">
-		<!-- Pre-MenuControl -->
 		<control type="image">
 			<animation effect="slide" start="0,0" end="450,0" time="300" tween="cubic" easing="inout" condition="ControlGroup(9000).HasFocus()">conditional</animation>
 			<animation effect="fade" start="100" end="0" time="150" condition="!ControlGroup(9000).HasFocus()">conditional</animation>
@@ -304,7 +432,7 @@
 			<onright>SetFocus(5555)</onright>
 			<onleft>SetFocus(5555)</onleft>
 			
-				<control type="textbox" id="900" description="Start party mode (randomly play musicvideos from your collection)">
+				<control type="textbox" id="900">
 					<textoffset>20</textoffset>
 					<label>This is Just a Placeholder and not a final layout nor solution [CR],just  for easy Navigation by work on the skin</label>
 					<font>font10</font>
@@ -315,7 +443,7 @@
 					<top></top>
 					<height>50</height>
 					
-					<label>   goto: do search</label>
+					<label>   goto: search</label>
 					
 					<include>Action_LibrarySearch</include>
 				</control>
@@ -329,10 +457,29 @@
 				</control>
 				<control type="button" id="904">
 					<label>   goto: settings</label>
-					<onclick>ActivateWindow(1110)</onclick>
+					<onclick>ActivateWindow(settings)</onclick>
 				</control>
+				<control type="button" id="905">
+					<label>   goto: pvr</label>
+					<onclick>ActivateWindow(TVChannels,pvr://channels/tv/)</onclick>
+				</control>
+<!-- 
+TVChannels 	pvr://channels/tv/<GROUPNAME> 	Replace <GROUPNAME> with the name of the specific tv channel group 	Kodi 19
+TVGuide 	pvr://channels/tv/<GROUPNAME> 	Replace <GROUPNAME> with the name of the specific tv channel group 	Kodi 19
+TVRecordings 	pvr://recordings/tv/active/<DIRECTORY>/ 	Replace <DIRECTORY> with the name of the recording directory to display
+TVTimers 			
+TVTimerRules 			
+TVSearch 			
+RadioChannels 	pvr://channels/radio/<GROUPNAME> 	Replace <GROUPNAME> with the name of the specific radio channel group 	Kodi 19
+RadioGuide 	pvr://channels/radio/<GROUPNAME> 	Replace <GROUPNAME> with the name of the specific radio channel group 	Kodi 19
+RadioRecordings 	pvr://recordings/radio/active/<DIRECTORY>/ 	Replace <DIRECTORY> with the name of the recording directory to display
+RadioTimers 			
+RadioTimerRules 			
+RadioSearch
+ 
+-->	
 				
-				<control type="textbox" id="910" description="Start party mode (randomly play musicvideos from your collection)">
+				<control type="textbox" id="910">
 					<textoffset>20</textoffset>
 					<label>video lib</label>
 					<font>font10</font>
@@ -355,7 +502,7 @@
 					<content target="videos">library://video</content>
 				</include>
 				
-				<control type="textbox" id="912" description="Start party mode (randomly play musicvideos from your collection)">
+				<control type="textbox" id="912">
 					<textoffset>20</textoffset>
 					<label>music lib</label>
 					<font>font10</font>
@@ -378,7 +525,7 @@
 					<content target="music">library://music/</content>
 				</include>
 				
-				<control type="textbox" id="914" description="Start party mode (randomly play musicvideos from your collection)">
+				<control type="textbox" id="914">
 					<textoffset>20</textoffset>
 					<label>musicvideos lib</label>
 					<font>font10</font>
@@ -398,9 +545,9 @@
 					<param name="layout" value="HUB_Layouts" />
 					<param name="visible" value="Integer.IsGreater(Container(915).NumItems,0) | Container(915).IsUpdating" />
 					<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(915).NumItems,0) | Container(915).IsUpdating">Conditional</animation>
-					<content target="video">videodb://musicvideos/</content>
+					<content target="videos">videodb://musicvideos/</content>
 				</include>
-				<control type="textbox" id="916" description="Start party mode (randomly play musicvideos from your collection)">
+				<control type="textbox" id="916">
 					<textoffset>20</textoffset>
 					<label>playlists ,video first</label>
 					<font>font10</font>
@@ -420,12 +567,12 @@
 					<param name="layout" value="HUB_Layouts" />
 					<param name="visible" value="Integer.IsGreater(Container(917).NumItems,0) | Container(917).IsUpdating" />
 					<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(917).NumItems,0) | Container(917).IsUpdating">Conditional</animation>
-					<content target="video">special://videoplaylists/</content>
+					<content target="videos">special://videoplaylists/</content>
 					<content target="music">special://musicplaylists/ </content>
 				</include>
-				<control type="textbox" id="918" description="Start party mode (randomly play musicvideos from your collection)">
+				<control type="textbox" id="918">
 					<textoffset>20</textoffset>
-					<label>playlists ,video first</label>
+					<label>video addons</label>
 					<font>font10</font>
 					<wrapmultiline>true</wrapmultiline>
 					<height>100</height>
@@ -443,7 +590,7 @@
 					<param name="layout" value="HUB_Layouts" />
 					<param name="visible" value="Integer.IsGreater(Container(919).NumItems,0) | Container(919).IsUpdating" />
 					<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(919).NumItems,0) | Container(919).IsUpdating">Conditional</animation>
-					<content target="video">addons://sources/video/</content>
+					<content target="videos">addons://sources/video/</content>
 				</include>
 				
 		</control>
