@@ -2,6 +2,262 @@
 <includes>
 	
 	<include name="HeaderBar">
+		<param name="HasBGPanel" default="true" />
+		
+		<definition>
+		<control type="group">
+			<visible type="fade">!$EXP[Infodialog_IsActive]</visible>
+			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
+			<animation reversible="true" effect="slide" start="0,0" end="0,-110" tween="quadratic" time="400" condition="Control.IsVisible(58) + !Control.HasFocus(58001)">conditional</animation>
+			<width>100%</width>
+			<height>110</height>	
+				
+			<control type="image">
+				<description>BG PANEL</description>
+				<visible>$PARAM[HasBGPanel]</visible>
+				<width>100%</width>
+				<height>100%</height>
+				<texture colordiffuse="$VAR[Header_BG]">$VAR[HeaderBarTexture]</texture>
+				<aspectratio>stretch</aspectratio>
+			</control>
+			
+			<!-- left grouplist w25% profile ? + curent -->
+			
+			<control type="grouplist">
+				<width>45%</width>
+				<height>110</height>	
+				<left>20</left>
+				<orientation>horizontal</orientation>
+				<itemgap>10</itemgap>
+				<usecontrolcoords>true</usecontrolcoords>
+				<align>left</align>
+				
+				<control type="group">
+					<description>unlucky layout position...act custom and LoadProfile(), logoff()</description>
+					<visible>!Skin.HasSetting(HideProfile_Header)</visible>
+					<width>100</width>
+					<height>110</height>	
+					
+					<control type="button" id="97">
+						<width>110</width>
+						<height>110</height>
+						<texturenofocus />
+						<onclick>System.LogOff</onclick>
+					</control>
+					
+					<control type="image">
+						<left>5</left>
+						<top>3</top>
+						<width>80</width>
+						<height>80</height>	
+						<bordersize>4</bordersize>
+						<bordertexture colordiffuse="ff181818">artworkdiffuse/circle.png</bordertexture>
+						<texture diffuse="artworkdiffuse/circle.png">$INFO[System.ProfileThumb]</texture>
+						<aspectratio scalediffuse="true">scale</aspectratio>
+					</control>
+					<control type="label">
+						<top>87</top>
+						<width>85</width>
+						<height>15</height>
+						<align>center</align>
+						<info>System.ProfileName</info>
+						<font>debugtiny</font>
+						<textcolor>$VAR[Header_TextSecondary]</textcolor>
+					</control>
+					
+				</control>
+				<control type="image">
+					<visible>!Skin.HasSetting(HideProfile_Header)</visible>
+					<top>10</top>
+					<height>90</height>
+					<width>2</width>
+					<texture colordiffuse="white">colors/white30.png</texture>
+					<aspectratio align="right">stretch</aspectratio>
+				</control>
+				<control type="group">
+					<description>Non media Cur Window</description>
+					<visible>!Window.IsMedia</visible>
+					<width>400</width>
+					<height>100%</height>	
+					<control type="label">
+						<include content="pos_top" condition="!Skin.HasSetting(HideSubHeaderInfo)">
+							<param name="top" value="10" />
+						</include>
+						<include content="pos_top" condition="Skin.HasSetting(HideSubHeaderInfo)">
+							<param name="top" value="25" />
+						</include>
+						<height>50</height>
+						<align>left</align>
+						<label>$VAR[Header_InfoTop]</label>
+						<!-- <label>$VAR[Header_InfoTop] [I]$VAR[CurrentContent_Info][/I]</label> -->
+						<font>HeaderBar_Media</font>
+						<textcolor>$VAR[Header_TextMain]</textcolor>
+					</control>
+					<control type="label">
+						<top>60</top>
+						<height>30</height>
+						<align>left</align>
+						<label>$VAR[CurrentContent_Info]</label>
+						<font>DialogListItem</font>
+						<textcolor>$VAR[Header_TextMain]</textcolor>
+						<visible>!Skin.HasSetting(HideSubHeaderInfo)</visible>
+					</control>
+				</control>
+			</control>
+			<!-- right max 480 on 1080p, due to group cond incl based on system res_h -->
+			<control type="grouplist">
+				<width>25%</width>
+				<height>110</height>	
+				<right>10</right>
+				<orientation>horizontal</orientation>
+				<itemgap>10</itemgap>
+				<usecontrolcoords>true</usecontrolcoords>
+				<align>right</align>
+				<visible>![Skin.HasSetting(HideTimeDate_Header) + Skin.HasSetting(HideWeather_Header)]</visible>
+				<control type="group">
+					<description>time and date</description>
+					<visible>!Skin.HasSetting(HideTimeDate_Header)</visible>
+					<top>10</top>
+					<width>370</width>
+					<height>110</height>
+					<control type="label">
+						<width>100%</width>
+						<height>50</height>
+						<align>right</align>
+						<info>System.Time</info>
+						<font>font_clock</font>
+						<textcolor>$VAR[Header_TextSecondary]</textcolor>
+					</control>
+					<control type="label">
+						<right>2</right>
+						<top>60</top>
+						<width>100%</width>
+						<height>20</height>
+						<align>right</align>
+						<info>System.Date</info>
+						<font>HeaderBar_Sub</font>
+						<textcolor>$VAR[Header_TextMain]</textcolor>
+					</control>
+				</control>
+				
+				<control type="group">
+					<description>weather</description>
+					<visible>!Skin.HasSetting(HideWeather_Header) + [!String.Contains(Weather.Temperature,$LOCALIZE[503]) | [!String.IsEqual(Weather.fanartcode,na) + Weather.IsFetched]]</visible>
+					<width>110</width>
+					<height>110</height>
+					<control type="image">
+						<left>8</left>
+						<description>seperator</description>
+						<visible>!Skin.HasSetting(HideTimeDate_Header)</visible>
+						<top>9</top>
+						<height>90</height>
+						<width>1</width>
+						<texture colordiffuse="white">colors/white30.png</texture>
+						<aspectratio align="left">stretch</aspectratio>
+					</control>
+					<control type="label">
+						<top>65</top>
+						<width>110</width>
+						<height>20</height>
+						<align>center</align>
+						<aligny>bottom</aligny>
+						<label>$INFO[Weather.Temperature]</label>
+						<font>font23_title</font>
+						<textcolor>$VAR[Header_TextMain]</textcolor>
+					</control>
+					<control type="image">
+						<top>5</top>
+						<height>65</height>
+						<width>110</width>
+						<texture colordiffuse="$VAR[Header_TextMain]">$INFO[Weather.FanartCode,resource://resource.images.weathericons.outline-hd/,.png]</texture>
+						<!-- <texture>$INFO[Weather.FanartCode,resource://resource.images.weathericons.outline/,.png]</texture>
+						 -->
+						<!-- <bordertexture>$INFO[Weather.FanartCode,resource://resource.images.weathericons.outline/,.jpg]</bordertexture> -->
+						<!-- , skinstring equal addon path -->
+						<aspectratio align="center">keep</aspectratio>
+					</control>
+				</control>
+			</control>
+			
+			<!-- center main header media -->
+			<control type="group">
+				<visible>Window.IsMedia</visible>
+				<width>50%</width>
+				<height>110</height>	
+				<left>25%</left>
+				<right>25%</right>
+				
+				<control type="label">
+					<include content="pos_top" condition="!Skin.HasSetting(HideSubHeaderInfo)">
+						<param name="top" value="10" />
+					</include>
+					<include content="pos_top" condition="Skin.HasSetting(HideSubHeaderInfo)">
+						<param name="top" value="35" />
+					</include>
+					<height>50</height>
+					<align>center</align>
+					<label>$VAR[Header_InfoTop]</label>
+					<font>HeaderBar_Media</font>
+					<textcolor>$VAR[Header_TextMain]</textcolor>
+				</control>
+				
+				<control type="label">
+					<top>60</top>
+					<height>30</height>
+					<align>center</align>
+					<label>$VAR[CurrentContent_Info]</label>
+					<font>DialogListItem</font>
+					<textcolor>$VAR[Header_TextMain]</textcolor>
+					<visible>!Skin.HasSetting(HideSubHeaderInfo)</visible>
+					<visible>!Control.IsVisible(58)</visible>
+				</control>
+				
+			</control>
+			
+		</control>
+				
+		</definition>
+	</include>
+			<!-- , looks shitty if using seperator
+				<control type="group">
+					<width>50%</width>
+					<height>110</height>	
+					<left>25%</left>
+					<right>25%</right>
+					<top>60</top>
+					
+					<control type="label">
+						<width>48%</width>
+						<height>40</height>
+						<align>right</align>
+						<textcolor>$VAR[Header_TextMain]</textcolor>
+						<label>$VAR[CurrentContent_Info_left]</label>
+						<font>DialogListItem</font>
+					</control>
+					<control type="label">
+						<width>100%</width>
+						<height>40</height>
+						<align>center</align>
+						<textcolor>$VAR[Header_TextMain]</textcolor>
+						<label>$VAR[CurrentContent_Info_center]</label>
+						<font>DialogListItem</font>
+					</control>
+					
+					<control type="label">
+						<left>52%</left>
+						<width>48%</width>
+						<height>40</height>
+						<font>DialogListItem</font>
+						<aligny>center</aligny>
+						<align>left</align>
+						<textcolor>$VAR[Header_TextMain]</textcolor>
+						<label>$VAR[CurrentContent_Info_right]</label>
+					</control>
+				</control>
+				-->
+				
+	
+	<include name="HeaderBar_old">
 		<param name="HasSearchBar" default="false" />
 		<param name="HasBGPanel" default="true" />
 		<param name="HeadingAlignment" default="left" />
@@ -93,6 +349,7 @@
 					</control>
 				</control>
 			</control>
+			
 			<control type="group">
 				<right>10</right>
 				<width>110</width>
@@ -164,7 +421,7 @@
 		<value condition="String.IsEqual(Container.FolderName,$LOCALIZE[10024]) + Container.Content(songs)">[UPPERCASE][B]$LOCALIZE[134][/B][/UPPERCASE]</value>
 		<value condition="!String.IsEmpty(Container.FolderName)">[UPPERCASE][B]$INFO[Container.FolderName][/B][/UPPERCASE]</value>
 		<value condition="Window.IsMedia">[UPPERCASE][B]$INFO[System.CurrentWindow][/B][/UPPERCASE]</value>
-		<value>[UPPERCASE]$INFO[System.CurrentWindow][/UPPERCASE]</value>
+		<value>$INFO[System.CurrentWindow]</value>
 	</variable>
 	<!-- 
 	Window(Home).Property(key) 	The home window has the following info labels.
@@ -198,6 +455,7 @@ LatestMusicVideo.[1-10].Title, LatestMusicVideo.[1-10].Thumb, LatestMusicVideo.[
 LatestSong.[1-10].Title, LatestSong.[1-10].Artist, LatestSong.[1-10].Album, LatestSong.[1-10].Year, LatestSong.[1-10].Rating, LatestSong.[1-10].Thumb, LatestSong.[1-10].Fanart, LatestSong.[1-10].Path
 
 LatestAlbum.[1-10].Title, LatestAlbum.[1-10].Artist, LatestAlbum.[1-10].Year, LatestAlbum.[1-10].Rating, LatestAlbum.[1-10].Thumb, LatestAlbum.[1-10].Fanart, LatestAlbum.[1-10].Path  -->
+	
 	<variable name="CurrentContent_Info">
 		<value condition="Window.Is(1120)">Search Term Is : [B][COLOR=$VAR[Header_TextSecondary]]$INFO[Skin.string(searchterm)][/COLOR][/B]</value>
 		<value condition="Container.Content(movies)">$LOCALIZE[20161] : [COLOR=$VAR[Header_TextSecondary]]$INFO[Window(Home).Property(Movies.Count)][/COLOR] [B]|[/B] $LOCALIZE[16101] : [COLOR=$VAR[Header_TextSecondary]]$INFO[Window(Home).Property(Movies.UnWatched)][/COLOR]</value>
@@ -205,6 +463,25 @@ LatestAlbum.[1-10].Title, LatestAlbum.[1-10].Artist, LatestAlbum.[1-10].Year, La
 		<value condition="Window.IsMedia">$LOCALIZE[20161] : [COLOR=$VAR[Header_TextSecondary]]$INFO[Container(id).NumItems][/COLOR] [B]|[/B] $LOCALIZE[16101] : [COLOR=$VAR[Header_TextSecondary]]$INFO[Container.TotalUnWatched][/COLOR]</value>
 		<value>[COLOR=$VAR[Header_TextSecondary]]$INFO[System.CurrentControl][/COLOR]</value>
 	</variable>
+	
+	<variable name="CurrentContent_Info_left">
+		<value condition="Window.Is(1120)">Search Term Is</value>
+		<value condition="Container.Content(movies)">$LOCALIZE[20161] : [COLOR=$VAR[Header_TextSecondary]]$INFO[Window(Home).Property(Movies.Count)][/COLOR]</value>
+		<value condition="Container.Content(tvshows)">$LOCALIZE[20161] : [COLOR=$VAR[Header_TextSecondary]]$INFO[Window(Home).Property(TVShows.Count)][/COLOR]</value>
+		<value>$LOCALIZE[20161] : [COLOR=$VAR[Header_TextSecondary]]$INFO[Container(id).NumItems][/COLOR]</value>
+	</variable>
+	<variable name="CurrentContent_Info_center">
+		<value condition="Window.Is(1120)"> [B]:[/B] </value>
+		<value> [B]|[/B] </value>
+	</variable>
+	<variable name="CurrentContent_Info_right">
+		<value condition="Window.Is(1120)">[B][COLOR=$VAR[Header_TextSecondary]]$INFO[Skin.string(searchterm)][/COLOR][/B]</value>
+		<value condition="Container.Content(movies)">$LOCALIZE[16101] : [COLOR=$VAR[Header_TextSecondary]]$INFO[Window(Home).Property(Movies.UnWatched)][/COLOR]</value>
+		<value condition="Container.Content(tvshows)">$LOCALIZE[16101] : [COLOR=$VAR[Header_TextSecondary]]$INFO[Window(Home).Property(TVShows.UnWatched)][/COLOR]</value>
+		<value>$LOCALIZE[16101] : [COLOR=$VAR[Header_TextSecondary]]$INFO[Container.TotalUnWatched][/COLOR]</value>
+	</variable>
+	
+	
 	
 	<include name="FooterBar">
 		<control type="image">
@@ -491,7 +768,8 @@ use this include pr add variable fpr diffuse textures
 		<!--  common -->
 		<value condition="!String.IsEmpty(Container.ListItem.Art(fanart))">$INFO[Container.ListItem.Art(fanart)]</value>
 		<value condition="!String.IsEmpty(ListItem.Art(fanart))">$INFO[ListItem.Art(fanart)]</value>
-        
+        <value condition="Window.Is(home)">swan_watersign.png</value>
+		
 	</variable>
 	
 	<!-- 99005 -->
@@ -511,6 +789,7 @@ use this include pr add variable fpr diffuse textures
 		<value condition="!String.IsEmpty(ListItem.Art(Animatedfanart)) + Skin.HasSetting(AnimatedFanart)">$INFO[ListItem.Art(AnimatedFanart)]</value>
 		<value condition="Control.IsVisible(99007) + !String.IsEmpty(Control.GetLabel(99007))">$INFO[Control.GetLabel(99007)]</value>
 		<value condition="Control.IsVisible(99006) + !String.IsEmpty(Control.GetLabel(99006)) + !Skin.HasSetting(BlurEnabled)">$INFO[Control.GetLabel(99006)]</value>
+		
 		<!-- <value condition="Control.IsVisible(99006) + !String.IsEmpty(Control.GetLabel(99006)) + Skin.HasSetting(BlurEnabled)">$INFO[Window(home).Property(listitem_blurred)]</value> -->
 		<value condition="Window.IsActive(MyWeather.xml)">$INFO[Skin.String(WeatherFanArtPack.path)]$INFO[Window(Weather).Property(Current.fanartCode)]$INFO[Skin.String(WeatherFanArtPack.ext)]</value>
 		<value condition="Skin.String(BackgroundTexture)">$INFO[Skin.String(BackgroundTexture)]</value>
