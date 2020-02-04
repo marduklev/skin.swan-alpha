@@ -3,61 +3,367 @@
 
 	<include name="view50">
 		<control type="group">
-			<left>10</left>
 			<visible>Control.IsVisible(50)</visible>
 			
+			
+			<control type="textbox">
+				<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
+				<wrapmultiline>true</wrapmultiline>
+				<visible>false</visible>
+				<font>Reg20</font>
+				<height>200</height>
+				<bottom>100</bottom>
+				<width>25%</width>
+				<left>5%</left>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<selectedcolor>white</selectedcolor>
+				<label>$INFO[ListItem.Label] test [CR][B]$INFO[ListItem.Studio][/B]</label>
+			</control>
+			
+			
+			
+			<control type="group">
+				<visible>Skin.HasSetting(View_50_ShowBGPanel)</visible>
+				
+				<include content="View_BGPanel">
+					<param name="width2" value="33%" />
+					<param name="width3" value="5%" />
+				</include>
+			
+			</control>
+			<control type="image">
+				<left>5%</left>
+				<fadetime>500</fadetime>
+				<centertop>51%</centertop>
+				<width>26%</width>
+				<aspectratio>keep</aspectratio>
+				<bordersize>2</bordersize>
+				<bordertexture border="5" colordiffuse="white">$VAR[View_List_ThumbBorder]</bordertexture>
+				<texture>$VAR[PreferedThumb_Sourcing]</texture>
+				<aspectratio aligny="center" align="center">keep</aspectratio>
+			</control>
 			<control type="panel" id="50">
 				<orientation>vertical</orientation>
 				<preloaditems>2</preloaditems>
 				<scrolltime tween="quadratic">400</scrolltime>
-				
-				<height>500</height>
-				<top>200</top>
+				<left>35%</left>
+				<right>5%</right>
+				<width>57%</width>
+				<bottom>100</bottom>
+				<top>150</top>
 				<include>Oninfo_MovieSetInfo</include>
 				<include>NavControl_Media</include>
 				
 				<viewtype label="535">list</viewtype>
 				
-				<itemlayout height="450" width="230">
+				<itemlayout height="105">
+				<control type="group">
+					<height>90</height>
+					
+					<include content="list_panel">
+						<param name="colordiffuse" value="none" />
+						<param name="autoscroll" value="false" />
+						<param name="bordersize_bg" value="6" />
+						<param name="highlightcolor" value="grey" />
+					</include>
+				</control>
+			</itemlayout>
+			<focusedlayout height="105">
+				<control type="group">
+					<height>90</height>
+					
+					<include>Animation_Item_Focus</include>
 					<control type="group">
-						<width>225</width>
-						<height>350</height>
-						<include content="UniversalLayout">
-							<param name="colordiffuse" value="$VAR[Container_item_nf]" />
-							<param name="artwork" value="poster" />
-							<param name="get_circle" value="false" />
-							<param name="get_tags" value="true" />
-							<param name="get_landscapelogo" value="false" />
-							<param name="get_bannerlogo" value="false" />
-							<param name="autoscroll" value="false" />
-							<param name="bordersize_bg" value="6" />
+						<control type="image">
+								<left>50</left>
+								<bordertexture border="6" colordiffuse="white">frames/dialog16to9.png</bordertexture>
+								<texture colordiffuse="cc202020" background="true" diffuse="artworkdiffuse/banner.png">colors/white50.png</texture>
+							
+								<bordersize>3</bordersize>
+						</control>
+							<include content="list_panel">
+							<param name="colordiffuse" value="$VAR[Container_item_fo]" />
+							<param name="autoscroll" value="true" />
+							<param name="bordersize_bg" value="4" />
+							<param name="highlightcolor" value="red" />
+							
 						</include>
 					</control>
-				</itemlayout>
-				<focusedlayout height="450" width="230">
-					<control type="group">
-						<width>225</width>
-						<height>350</height>
-						<include>Animation_Item_Focus</include>
-						<control type="group">
-							<include content="UniversalLayout">
-								<param name="colordiffuse" value="$VAR[Container_item_fo]" />
-								<param name="artwork" value="poster" />
-								<param name="get_circle" value="false" />
-								<param name="get_tags" value="true" />
-								<param name="get_landscapelogo" value="false" />
-								<param name="get_bannerlogo" value="false" />
-								<param name="autoscroll" value="false" />
-								<param name="bordersize_bg" value="6" />
-							</include>
-							<control type="group">
-								<include>FocusOverlay</include>
-							</control>
-						</control>
-					</control>			
-				</focusedlayout>
+					<control type="image">
+						<centertop>50%</centertop>
+						<visible>false</visible>
+						<left>14</left>
+						<visible>true</visible>
+						<width>60</width>
+						<height>60</height>
+						<texture diffuse="artworkdiffuse/circle.png" background="true">overlay/overlay_button_play.png</texture>
+						<colordiffuse>white</colordiffuse>
+						<bordersize>2</bordersize>
+						<bordertexture colordiffuse="55000000">artworkdiffuse/circle.png</bordertexture>
+					</control>
+				</control>
+			</focusedlayout>
 			</control>
+			<include content="footer_test">
+				<param name="label" value="f o o t e r" />
+				<param name="view_id" value="50" />
+			</include>
+			
 		</control>
 	</include>
+	
+	<include name="list_panel">
+		<!--
+		<control type="image">
+			<left>50</left>
+			<bordertexture colordiffuse="$PARAM[colordiffuse]" diffuse="artworkdiffuse/banner.png">colors/white50.png</bordertexture>
+			<texture colordiffuse="none" background="true" diffuse="artworkdiffuse/banner.png">colors/white50.png</texture>
+			
+			<texture colordiffuse="cc202020" background="true" diffuse="artworkdiffuse/banner.png">colors/white50.png</texture>
+			
+			<bordersize>3</bordersize>
+		</control>
+		-->
+		<control type="image">
+			<description>het half cutted circle for icon border studio or thumb midgrey just as workaround</description>
+			<visible>true</visible>
+			<width>90</width>
+			<height>90</height>
+			<texture background="true" diffuse="artworkdiffuse/circle.png">$INFO[ListItem.Icon]</texture>
+			<bordertexture colordiffuse="white">artworkdiffuse/circle.png</bordertexture>
+			<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
+			<bordersize>2</bordersize>
+		</control>
+		<control type="image">
+			<description>use ? playing equalizer</description>
+			<centertop>50%</centertop>
+			<left>14</left>
+			<width>60</width>
+			<height>60</height>
+			<texture background="true">misc/playingsong.gif</texture>
+			<colordiffuse>white</colordiffuse>
+			<bordersize>4</bordersize>
+			<visible>false</visible>
+			<bordertexture colordiffuse="55000000">artworkdiffuse/circle.png</bordertexture>
+		</control>
+		<control type="textbox">
+			<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
+			<wrapmultiline>true</wrapmultiline>
+			<font>CommonTag</font>
+			<width>580</width>
+			<left>105</left>
+			<align>left</align>
+			<aligny>center</aligny>
+			<textcolor>white</textcolor>
+			<selectedcolor>white</selectedcolor>
+			<label>$INFO[ListItem.Label,[B],[/B]][CR][COLOR=grey]$INFO[ListItem.Year]     $INFO[ListItem.Label2,[B],[/B]][/COLOR]</label>
+		</control>
+		<control type="textbox">
+			<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
+			<wrapmultiline>true</wrapmultiline>
+			<font>CommonTag</font>
+			<width>100</width>
+			<right>90</right>
+			<align>right</align>
+			<aligny>center</aligny>
+			<textcolor>white</textcolor>
+			<selectedcolor>white</selectedcolor>
+			<label>[CR]$INFO[ListItem.Duration(h),, h]$INFO[ListItem.Duration(m), , m]  </label>
+		</control>
+		<control type="image">
+			<description>stars rating</description>
+			<top>8</top>
+			<right>90</right>
+			<visible>true</visible>
+			<width>100</width>
+			<height>40</height>
+			
+			<bordersize>4</bordersize>
+			<aspectratio align="center">keep</aspectratio>
+			<texture colordiffuse="$PARAM[highlightcolor]">rating/stars/$INFO[ListItem.Rating].png</texture>
+		</control>
+		<control type="image">
+			<description>use ? playing equalizer</description>
+			<centertop>50%</centertop>
+			<right>70</right>
+			<width>1</width>
+			<height>50%</height>
+			<texture colordiffuse="white">colors/white50.png</texture>
+			<colordiffuse>white</colordiffuse>
+			<visible>false</visible>
+			
+			<bordertexture />
+		</control>
+		
+		<include>ListItem_Indicators</include>
+		
+	</include>
+	
+	<!--
+	indicator
+	<control type="image">
+			<description>progress ,or  indicator set </description>
+			<centertop>50%</centertop>
+			<right>20</right>
+			<width>20</width>
+			<height>20</height>
+			<texture colordiffuse="orange" diffuse="artworkdiffuse/circle.png">colors/white.png</texture>
+			<colordiffuse>white</colordiffuse>
+			<bordersize>2</bordersize>
+			<visible>true</visible>
+			<bordertexture colordiffuse="white" diffuse="artworkdiffuse/circle.png">colors/white80.png</bordertexture>
+		</control> -->
+	
+	<include name="View_BGPanel">
+				<control type="image">
+					<description>optional panel</description>
+					<left>0</left>
+					<right>0</right>
+					<width>100%</width>
+					<!-- 
+					<bottom>90</bottom> if header panel off
+					<top>110</top> if header panel off 
+                    -->
+					<top>0</top>
+					<bottom>0</bottom>
+				
+					<texture colordiffuse="$VAR[Nav_BGPanelColor]">colors/white50.png</texture>
+				
+				</control>
+				<control type="image">
+					<description>optional panel left</description>
+					<left>0</left>
+					
+					<width>$PARAM[width2]</width>
+					<!-- 
+					<bottom>90</bottom> if header panel off
+					<top>110</top> if header panel off 
+                    -->
+					<top>0</top>
+					<bottom>0</bottom>
+	
+					<texture colordiffuse="$VAR[Nav_BGPanelColor]">colors/white50.png</texture>
+				
+				</control>
+				<control type="image">
+					<description>optional panel right</description>
+					<right>0</right>
+					
+					<width>$PARAM[width3]</width>
+					
+					<!-- 
+					<bottom>90</bottom> if header panel off
+					<top>110</top> if header panel off 
+                    -->
+					<top>0</top>
+					<bottom>0</bottom>
+	
+					<texture colordiffuse="$VAR[Nav_BGPanelColor]">colors/white50.png</texture>
+				
+				</control>
+			</include>
+	
+	<variable name="View_List_ThumbBorder">
+		<value condition="Skin.HasSetting(View_50_PreferThumb)"></value>
+		<value>frames/dialog16to9.png</value>
+	</variable>
+	
+	
+	
+	<!-- lead thumb sourcing to var to get clean conditions ?, currently ignorging folders
+
+	list 50 just 'poster - keyart - landscape - icon ' ?
+	
+	-->
+	
+	<variable name="PreferedThumb_Sourcing">
+		
+		<value condition="Control.IsVisible(50) + [String.IsEqual(ListItem.dbtype,song) + Skin.HasSetting(View_50_Prefer_Discart_Song) + !String.IsEmpty(ListItem.Art(album.discart))]">$INFO[ListItem.Art(album.discart)]</value>
+		<value condition="Control.IsVisible(50) + [String.IsEqual(ListItem.dbtype,album) + Skin.HasSetting(View_50_Prefer_Discart_Album) + !String.IsEmpty(ListItem.Art(discart))] | [Window.Is(videos) + Skin.HasSetting(View_50_Prefer_Discart_Video) + !String.IsEmpty(ListItem.Art(discart))]">$INFO[ListItem.Art(discart)]</value>
+		
+		
+		<value condition="Skin.HasSetting(View_50_Prefer_keyart) + !String.IsEmpty(ListItem.Art(keyart))">$INFO[ListItem.Art(keyart)]</value>
+		<value condition="Skin.HasSetting(View_50_Prefer_keyart) + String.IsEmpty(ListItem.Art(keyart)) + !String.IsEmpty(ListItem.Art(poster))">$INFO[ListItem.Art(poster)]</value>
+		
+		
+		<value condition="Skin.HasSetting(View_50_Prefer_clearart) + !String.IsEmpty(ListItem.Art(clearart))">$INFO[ListItem.Art(clearart)]</value>
+		<value condition="Skin.HasSetting(View_50_Prefer_clearart) + String.IsEmpty(ListItem.Art(clearart)) + !String.IsEmpty(ListItem.Art(characterart))">$INFO[ListItem.Art(characterart)]</value>
+		<value condition="[Skin.HasSetting(View_50_Prefer_clearlogo) | [Skin.HasSetting(View_50_Prefer_clearart) + String.IsEmpty(ListItem.Art(clearart)) + String.IsEmpty(ListItem.Art(characterart))]] + !String.IsEmpty(ListItem.Art(clearlogo))">$INFO[ListItem.Art(clearlogo)]</value>
+		
+		
+		<value condition="Skin.HasSetting(View_50_Prefer_landscape) + !String.IsEmpty(ListItem.Art(landscape))">$INFO[ListItem.Art(landscape)]</value>
+		<value condition="Skin.HasSetting(View_50_Prefer_landscape) + String.IsEmpty(ListItem.Art(landscape)) + !String.IsEmpty(ListItem.Art(fanart))">$INFO[ListItem.Art(fanart)]</value>
+		
+		
+		<value condition="Skin.HasSetting(View_50_Prefer_banner) + !String.IsEmpty(ListItem.Art(banner))">$INFO[ListItem.Art(banner)]</value>
+		
+		<value condition="!String.IsEmpty(ListItem.Art(poster))">$INFO[ListItem.Art(poster)]</value>
+		
+		<value>$INFO[ListItem.Icon]</value>
+	</variable>	
+	
+	<!-- !ListItem.IsPlaying ,  !ListItem.IsRecording 
+	
+	set, watched, unwatched, tagged/marked as favourite ..?..
+	
+	
+	shitty textures via paint,300x300
+	-->
+	<include name="ListItem_Indicators">
+        <control type="group">
+            <visible>!String.IsEqual(ListItem.Label,..)</visible>
+            
+			<control description="watched" type="image">
+				<description>watched, unwatched all episodes equal 0</description>
+				<visible>!String.IsEqual(ListItem.dbtype,Set) + Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable</visible>
+				<centertop>50%</centertop>
+				<right>20</right>
+				<width>20</width>
+				<height>20</height>
+				<texture colordiffuse="orange" diffuse="watched.png">colors/white50.png</texture>
+				<colordiffuse>white</colordiffuse>
+				<bordersize>2</bordersize>
+				<bordertexture colordiffuse="white" diffuse="frame_circle.png">colors/white50.png</bordertexture>
+			</control>
+            <control description="unwatched" type="image">
+				<description>unwatched, watched episodes equal 0</description>
+				<visible>!String.IsEqual(ListItem.dbtype,Set) + String.IsEqual(ListItem.Overlay,OverlayUnWatched.png) + !ListItem.IsResumable</visible>
+				<centertop>50%</centertop>
+				<right>20</right>
+				<width>20</width>
+				<height>20</height>
+				<texture colordiffuse="white" diffuse="frame_circle.png">colors/white70.png</texture>
+				<colordiffuse>white</colordiffuse>
+			</control>
+			
+			<control description="in progress" type="image">
+				<visible>!String.IsEqual(ListItem.dbtype,Set) + ListItem.IsResumable</visible>
+				<description>progress</description>
+				<centertop>50%</centertop>
+				<right>20</right>
+				<width>20</width>
+				<height>20</height>
+				<texture colordiffuse="cyan" diffuse="progress.png">colors/white50.png</texture>
+				<colordiffuse>white</colordiffuse>
+				<bordersize>2</bordersize>
+				<bordertexture colordiffuse="white" diffuse="frame_circle.png">colors/white50.png</bordertexture>
+			</control>
+
+			<control description="set" type="image">
+				<visible>String.IsEqual(ListItem.dbtype,Set)</visible>
+				<centertop>50%</centertop>
+				<right>7</right>
+				<width>50</width>
+				<height>50</height>
+				<texture colordiffuse="white" diffuse="defaultsets.png">colors/white30.png</texture>
+				<colordiffuse>white</colordiffuse>
+			</control>
+            
+        </control>
+    </include>
+    
+    
 		
 </includes>
