@@ -37,7 +37,8 @@ Work on Music HUB
 - https://streamable.com/pecfb
 
 
-Credits for (some defaults) used Textures belongs to
+Credits for (some defaults) currently used Textures belongs to
 - @'Phil65' (skin.estuary) (default[foo].pngs's, some backgroundpatterns)
 - @'Marcelveldt' , @'mgonzales71' (resource.images.backgroundoverlays.basic)
+- @'SualFred' (playback icons, dimoverlay playbutton)
 
