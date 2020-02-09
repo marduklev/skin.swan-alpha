@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includes>
+	<!-- temp test pos in footer -->
+	
+	<!-- RATINGS -->
+	<include name="Ratings_Footer">
+        <control type="grouplist">
+			<orientation>horizontal</orientation>
+			<usecontrolcoords>true</usecontrolcoords>
+			<align>center</align>
+			<width>100%</width>
+			<itemgap>10</itemgap>
+			
+			
+			<include content="MediaFlags_Footer">
+				<param name="id" value="70501"/>
+				<param name="flagtype" value="audio" />
+				<param name="flag" value="AudioCodec" />
+			</include>
+			<include content="MediaFlags_Footer">
+				<param name="id" value="70500"/>
+				<param name="flagtype" value="channels" />
+				<param name="flag" value="AudioChannels" />
+			</include>
+			
+			<include content="MediaFlags_Footer">
+				<param name="id" value="70502"/>
+				<param name="flagtype" value="aspectratio" />
+				<param name="flag" value="VideoAspect" />
+			</include>
+			<include content="MediaFlags_Footer">
+				<param name="id" value="70503"/>
+				<param name="flagtype" value="resolution" />
+				<param name="flag" value="VideoResolution" />
+			</include>
+			<include content="MediaFlags_Footer">
+				<param name="id" value="70504"/>
+				<param name="flagtype" value="mpaa" />
+				<param name="flag" value="" />
+			</include>
+			
+			<control type="image" id="6767">
+				<width>250</width>
+				<height>90</height>
+				<aspectratio aligny="center" align="right">keep</aspectratio>
+				<visible>Skin.HasSetting(show_studio_flag) + !String.IsEmpty(ListItem.Studio)</visible>
+				<include>studiologo_image</include>
+			</control>
+			
+			<control type="label">
+				<width>50</width>
+				<visible>false</visible>
+				<height>90</height>
+				<label />
+			</control>
+			
+			<include content="Rating_Footer">
+				<param name="id" value="50505"/>
+				<param name="rating" value="metacritic"/>
+			</include>
+			<include content="Rating_Footer">
+				<param name="id" value="50503"/>
+				<param name="rating" value="tomatometerallaudience"/>
+			</include>
+			<include content="Rating_Footer">
+				<param name="id" value="50504"/>
+				<param name="rating" value="tomatometerallcritics"/>
+			</include>
+			<include content="Rating_Footer">
+				<param name="id" value="50501"/>
+				<param name="rating" value="themoviedb"/>
+			</include>
+			<include content="Rating_Footer">
+				<param name="id" value="50500"/>
+				<param name="rating" value="tvdb"/>
+				<visible>[[Container.Content(tvshows) | String.IsEqual(ListItem.DBTYPE,tvshow)] | [Container.Content(episodes) | String.IsEqual(ListItem.DBTYPE,episode)] | [Container.Content(seasons) | String.IsEqual(ListItem.DBTYPE,season)]]</visible>
+			</include>
+			<include content="Rating_Footer">
+				<param name="id" value="50502"/>
+				<param name="rating" value="imdb"/>
+			</include>
+			<include content="Rating_Footer">
+				<param name="id" value="50506"/>
+				<param name="rating" value="imdbtop250"/>
+			</include>
+		</control>            
+    </include>
+	
+	<include name="StudioLogo_Footer">
+		<control type="grouplist">
+			<orientation>horizontal</orientation>
+			<usecontrolcoords>true</usecontrolcoords>
+			<align>left</align>
+			<left>50</left>
+			<width>25%</width>
+			<itemgap>10</itemgap>
+			<control type="image" id="6767">
+				<width>250</width>
+				<bottom>3</bottom>
+				<height>85</height>
+				<aspectratio aligny="center" align="left">keep</aspectratio>
+				<visible>Skin.HasSetting(show_studio_flag) + !String.IsEmpty(ListItem.Studio)</visible>
+				<include>studiologo_image</include>
+			</control>
+		</control>	
+	</include>		
+	
+	<include name="MediaFlags_Footer">
+		<definition>
+		<control type="image" id="$PARAM[id]">
+<visible>false</visible>
+			<width>90</width>
+			<height>90</height>
+			<bordersize>1</bordersize>
+			<aspectratio align="center" aligny="center">keep</aspectratio>
+			<texture colordiffuse="$VAR[Footer_ItemColor]">$INFO[ListItem.$PARAM[flag],flags/flagsmedia/$PARAM[flagtype]/,.png]</texture>
+		</control>
+	</definition>
+	</include>
+	
+	<include name="Rating_Footer">
+		<definition>
+		<control type="grouplist">
+			<visible>Skin.HasSetting(Show_$PARAM[rating]_Rating) + !String.IsEmpty(Control.GetLabel($PARAM[id]))</visible>
+			<bottom>5</bottom>
+			<width>80</width>
+			<height>75</height>
+			<nested />
+            <control type="image">
+				<width>70</width>
+				<height>46</height>
+                <bordersize>1</bordersize>
+				<aspectratio align="center" aligny="bottom">keep</aspectratio>
+                <texture colordiffuse="$VAR[Footer_ItemColor]">$VAR[image_$PARAM[rating]]</texture>
+            </control>
+            <control type="label" id="$PARAM[id]">
+                <height>20</height>
+                <width>70</width>
+				<align>center</align>
+                <font>debug</font>
+                <textcolor>$VAR[Footer_ItemColor]</textcolor>
+                <label>$VAR[label_listitemrating_$PARAM[rating]]</label>
+            </control>
+        </control>
+	</definition>
+	</include>
+	
+	<include name="studiologo_image">
+		<fadetime>300</fadetime>
+		<texture background="true">$VAR[image_StudioLogo]</texture>
+		<colordiffuse condition="Skin.HasSetting(use_monochrome_studioflags)">$VAR[Footer_ItemColor]</colordiffuse>
+		<bordersize>5</bordersize>
+	</include>
+	
+	<variable name="image_imdb">
+		<value condition="Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/imdb_monochrome.png</value>   
+		<value>flags/ratings/imdb_color.png</value> 
+	</variable>	
+	<variable name="image_imdbtop250">
+		<value condition="Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/imdbtop250_monochrome.png</value>   
+		<value>flags/ratings/imdbtop250_color.png</value>	  
+	</variable>
+	<variable name="image_tvdb">
+		<value condition="Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/tvdb_monochrome.png</value>   
+		<value>flags/ratings/tvdb_color.png</value>
+	</variable>	
+	<variable name="image_themoviedb">
+		<value condition="Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/themoviedb_monochrome.png</value>   
+		<value>flags/ratings/themoviedb_color.png</value>
+	</variable>
+    <variable name="image_tomatometerallaudience">
+		<value condition="[Integer.IsGreater(Container(2000).ListItem.Rating(tomatometerallaudience),5.9) | Integer.IsGreater(ListItem.Rating(tomatometerallaudience),5.9)] + Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/audience_fresh_monochrome.png</value>     
+		<value condition="![Integer.IsGreater(Container(2000).ListItem.Rating(tomatometerallaudience),5.9) | Integer.IsGreater(ListItem.Rating(tomatometerallaudience),5.9)] + Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/audience_rotten_monochrome.png</value>     
+		<value condition="[Integer.IsGreater(Container(2000).ListItem.Rating(tomatometerallaudience),5.9) | Integer.IsGreater(ListItem.Rating(tomatometerallaudience),5.9)] + !Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/audience_fresh_color.png</value>     
+		<value condition="![Integer.IsGreater(Container(2000).ListItem.Rating(tomatometerallaudience),5.9) | Integer.IsGreater(ListItem.Rating(tomatometerallaudience),5.9)] + !Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/audience_rotten_color.png</value>     
+	</variable>
+	<variable name="image_tomatometerallcritics">
+		<value condition="[Integer.IsGreater(Container(2000).ListItem.Rating(tomatometerallcritics),5.9) | Integer.IsGreater(ListItem.Rating(tomatometerallcritics),5.9)] + Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/critics_rotten_fresh_monochrome.png</value>     
+		<value condition="![Integer.IsGreater(Container(2000).ListItem.Rating(tomatometerallcritics),5.9) | Integer.IsGreater(ListItem.Rating(tomatometerallcritics),5.9)] + Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/critics_rotten_rotten_monochrome.png</value>     
+		<value condition="[Integer.IsGreater(Container(2000).ListItem.Rating(tomatometerallcritics),5.9) | Integer.IsGreater(ListItem.Rating(tomatometerallcritics),5.9)] + !Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/critics_fresh_color.png</value> 
+		<value condition="![Integer.IsGreater(Container(2000).ListItem.Rating(tomatometerallcritics),5.9) | Integer.IsGreater(ListItem.Rating(tomatometerallcritics),5.9)] + !Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/critics_rotten_color.png</value> 		
+	</variable>
+	<variable name="image_metacritic">
+		<value condition="Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/metacritic_monochrome.png</value>   
+		<value>flags/ratings/metacritic_color.png</value>     
+    </variable>  
+	<variable name="image_StudioLogo">
+		<value condition="!Skin.HasSetting(use_monochrome_studioflags)">$INFO[ListItem.Studio,resource://resource.images.studios.coloured/,.png]</value>
+		<value>$INFO[ListItem.Studio,resource://resource.images.studios.white/,.png]</value>
+    </variable>
+	
+	
+	<variable name="label_listitemrating_imdbtop250">
+		<value condition="!String.IsEmpty(ListItem.Top250)">$INFO[ListItem.Top250]</value>
+		<value condition="Skin.HasSetting(SH_Rating_Fallback) + String.IsEmpty(ListItem.Top250)">$INFO[Window(Home).Property(SkinHelper.ListItem.IMDB.Top250)]</value> 
+	</variable>
+	<variable name="label_listitemrating_imdb">
+		<value condition="!String.IsEmpty(ListItem.Rating(imdb))">$INFO[ListItem.Rating(imdb)]</value>  
+		<value condition="String.IsEmpty(ListItem.Rating(imdb)) + !String.IsEmpty(Container(2000).ListItem.Rating(imdb))">$INFO[Container(2000).ListItem.Rating(imdb)]</value>
+		<value condition="Skin.HasSetting(SH_Rating_Fallback) + String.IsEmpty(ListItem.Rating(imdb)) + String.IsEmpty(Container(2000).ListItem.Rating(imdb))">$INFO[Window(Home).Property(SkinHelper.ListItem.Rating.IMDB)]</value> 
+	</variable>
+	<variable name="label_listitemrating_themoviedb">
+		<value condition="!String.IsEmpty(ListItem.Rating(themoviedb))">$INFO[ListItem.Rating(themoviedb)]</value>  
+		<value condition="String.IsEmpty(ListItem.Rating(themoviedb)) + !String.IsEmpty(Container(2000).ListItem.Rating(themoviedb))">$INFO[Container(2000).ListItem.Rating(themoviedb)]</value>
+		<value condition="Skin.HasSetting(SH_Rating_Fallback) + String.IsEmpty(ListItem.Rating(themoviedb)) + String.IsEmpty(Container(2000).ListItem.Rating(themoviedb))">$INFO[Window(Home).Property(SkinHelper.ListItem.Rating.TMDB)]</value> 
+	</variable>
+	<variable name="label_listitemrating_metacritic">
+		<value condition="!String.IsEmpty(ListItem.Rating(metacritic)) | [!String.IsEmpty(Container(2000).ListItem.Rating(metacritic)) + String.IsEmpty(ListItem.Rating(metacritic))]">$VAR[formatted_rating_metacritic,,%]</value>  
+		<value condition="Skin.HasSetting(SH_Rating_Fallback) + String.IsEmpty(ListItem.Rating(metacritic)) + String.IsEmpty(Container(2000).ListItem.Rating(metacritic))">$INFO[Window(Home).Property(SkinHelper.ListItem.MetaCritic.Rating)]</value> 
+	</variable>
+	<variable name="label_listitemrating_tomatometerallaudience">
+		<value condition="!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) | [!String.IsEmpty(Container(2000).ListItem.Rating(tomatometerallaudience)) + String.IsEmpty(ListItem.Rating(tomatometerallaudience))]">$VAR[formatted_rating_tomatometerallaudience,,%]</value>  
+		<value condition="Skin.HasSetting(SH_Rating_Fallback) + String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.IsEmpty(Container(2000).ListItem.Rating(tomatometerallaudience))">$INFO[Window(Home).Property(SkinHelper.ListItem.RottenTomatoes.Meter),,%]</value> 
+	</variable>
+	<!-- <variable name="label_listitemrating_tomatometeravgaudience">
+		<value condition="!String.IsEmpty(ListItem.Rating(tomatometeravgaudience))">$INFO[ListItem.Rating(tomatometeravgaudience),,%]</value>  
+		<value condition="String.IsEmpty(ListItem.Rating(tomatometeravgaudience)) + !String.IsEmpty(Container(2000).ListItem.Rating(tomatometeravgaudience))">$INFO[Container(2000).ListItem.Rating(tomatometeravgaudience),,%]</value>
+		<value condition="Skin.HasSetting(SH_Rating_Fallback) + String.IsEmpty(ListItem.Rating(tomatometeravgaudience)) + String.IsEmpty(Container(2000).ListItem.Rating(tomatometerallaudience))">$INFO[Window(Home).Property(SkinHelper.ListItem.RottenTomatoes.Meter),,%]</value> 
+	</variable> -->
+	<variable name="label_listitemrating_tomatometerallcritics">
+		<value condition="!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) | [!String.IsEmpty(Container(2000).ListItem.Rating(tomatometerallcritics)) + String.IsEmpty(ListItem.Rating(tomatometerallcritics))]">$VAR[formatted_rating_tomatometerallcritics,,%]</value>
+		<value condition="Skin.HasSetting(SH_Rating_Fallback) + String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.IsEmpty(Container(2000).ListItem.Rating(tomatometerallcritics))">$INFO[Window(Home).Property(SkinHelper.ListItem.RottenTomatoes.Meter),,%]</value> 
+	</variable>
+	<!-- <variable name="label_listitemrating_tomatometeravgcritics">
+		<value condition="!String.IsEmpty(ListItem.Rating(tomatometeravgcritics))">$INFO[ListItem.Rating(tomatometeravgcritics),,%]</value>  
+		<value condition="String.IsEmpty(ListItem.Rating(tomatometeravgcritics)) + !String.IsEmpty(Container(2000).ListItem.Rating(tomatometeravgcritics))">$INFO[Container(2000).ListItem.Rating(tomatometerallcritics),,%]</value>
+		<value condition="Skin.HasSetting(SH_Rating_Fallback) + String.IsEmpty(ListItem.Rating(tomatometeravgcritics)) + String.IsEmpty(Container(2000).ListItem.Rating(tomatometeravgcritics))">$INFO[Window(Home).Property(SkinHelper.ListItem.RottenTomatoes.Meter),,%]</value> 
+	</variable> -->
+	<variable name="label_listitemrating_tvdb">
+		<value condition="!String.IsEmpty(ListItem.Rating(tvdb))">$INFO[ListItem.Rating(tvdb)]</value>  
+		<value condition="String.IsEmpty(ListItem.Rating(tvdb)) + !String.IsEmpty(Container(2000).ListItem.Rating(tvdb))">$INFO[Container(2000).ListItem.Rating(tvdb)]</value>
+		<value condition="Skin.HasSetting(SH_Rating_Fallback) + String.IsEmpty(ListItem.Rating(tvdb)) + String.IsEmpty(Container(2000).ListItem.Rating(tvdb))">$INFO[Window(Home).Property(SkinHelper.ListItem.Rating.TVDB)]</value> 
+	</variable>
+	
+	
+	<!-- integer is failing - reason are dots ? -->
+	<variable name="formatted_rating_metacritic">
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),0.1)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),0.1)]">1</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),0.2)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),0.2)]">2</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),0.3)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),0.3)]">3</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),0.4)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),0.4)]">4</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),0.5)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),0.5)]">5</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),0.6)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),0.6)]">6</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),0.7)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),0.7)]">7</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),0.8)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),0.8)]">8</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),0.9)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),0.9)]">9</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),1.0)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),1.0)]">10</value>
+		
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),1.1)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),1.1)]">11</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),1.2)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),1.2)]">12</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),1.3)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),1.3)]">13</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),1.4)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),1.4)]">14</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),1.5)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),1.5)]">15</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),1.6)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),1.6)]">16</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),1.7)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),1.7)]">17</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),1.8)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),1.8)]">18</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),1.9)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),1.9)]">19</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),2.0)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),2.0)]">20</value>
+		
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),2.1)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),2.1)]">21</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),2.2)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),2.2)]">22</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),2.3)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),2.3)]">23</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),2.4)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),2.4)]">24</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),2.5)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),2.5)]">25</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),2.6)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),2.6)]">26</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),2.7)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),2.7)]">27</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),2.8)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),2.8)]">28</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),2.9)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),2.9)]">29</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),3.0)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),3.0)]">30</value>
+		
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),3.1)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),3.1)]">31</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),3.2)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),3.2)]">32</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),3.3)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),3.3)]">33</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),3.4)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),3.4)]">34</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),3.5)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),3.5)]">35</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),3.6)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),3.6)]">36</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),3.7)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),3.7)]">37</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),3.8)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),3.8)]">38</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),3.9)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),3.9)]">39</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),4.0)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),4.0)]">40</value>
+		
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),4.1)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),4.1)]">41</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),4.2)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),4.2)]">42</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),4.3)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),4.3)]">43</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),4.4)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),4.4)]">44</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),4.5)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),4.5)]">45</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),4.6)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),4.6)]">46</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),4.7)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),4.7)]">47</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),4.8)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),4.8)]">48</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),4.9)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),4.9)]">49</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),5.0)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),5.0)]">50</value>
+		
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),5.1)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),5.1)]">51</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),5.2)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),5.2)]">52</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),5.3)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),5.3)]">53</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),5.4)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),5.4)]">54</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),5.5)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),5.5)]">55</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),5.6)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),5.6)]">56</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),5.7)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),5.7)]">57</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),5.8)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),5.8)]">58</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),5.9)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),5.9)]">59</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),6.0)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),6.0)]">60</value>
+		
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),6.1)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),6.1)]">61</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),6.2)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),6.2)]">62</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),6.3)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),6.3)]">63</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),6.4)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),6.4)]">64</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),6.5)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),6.5)]">65</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),6.6)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),6.6)]">66</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),6.7)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),6.7)]">67</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),6.8)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),6.8)]">68</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),6.9)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),6.9)]">69</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),7.0)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),7.0)]">70</value>
+		
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),7.1)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),7.1)]">71</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),7.2)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),7.2)]">72</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),7.3)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),7.3)]">73</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),7.4)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),7.4)]">74</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),7.5)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),7.5)]">75</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),7.6)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),7.6)]">76</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),7.7)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),7.7)]">77</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),7.8)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),7.8)]">78</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),7.9)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),7.9)]">79</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),8.0)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),8.0)]">80</value>
+		
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),8.1)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),8.1)]">81</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),8.2)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),8.2)]">82</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),8.3)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),8.3)]">83</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),8.4)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),8.4)]">84</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),8.5)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),8.5)]">85</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),8.6)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),8.6)]">86</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),8.7)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),8.7)]">87</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),8.8)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),8.8)]">88</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),8.9)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),8.9)]">89</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),9.0)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),9.0)]">90</value>
+	
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),9.1)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),9.1)]">91</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),9.2)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),9.2)]">92</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),9.3)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),9.3)]">93</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),9.4)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),9.4)]">94</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),9.5)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),9.5)]">95</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),9.6)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),9.6)]">96</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),9.7)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),9.7)]">97</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),9.8)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),9.8)]">98</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),9.9)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),9.9)]">99</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(Container(2000).ListItem.Rating(metacritic),10.0)] | [!String.IsEmpty(ListItem.Rating(metacritic)) + String.EndsWith(ListItem.Rating(metacritic),10.0)]">100</value>
+	</variable>
+	
+	
+	<variable name="formatted_rating_tomatometerallcritics">
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),0.1)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),0.1)]">1</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),0.2)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),0.2)]">2</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),0.3)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),0.3)]">3</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),0.4)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),0.4)]">4</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),0.5)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),0.5)]">5</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),0.6)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),0.6)]">6</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),0.7)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),0.7)]">7</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),0.8)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),0.8)]">8</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),0.9)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),0.9)]">9</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),1.0)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),1.0)]">10</value>
+		
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),1.1)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),1.1)]">11</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),1.2)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),1.2)]">12</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),1.3)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),1.3)]">13</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),1.4)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),1.4)]">14</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),1.5)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),1.5)]">15</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),1.6)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),1.6)]">16</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),1.7)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),1.7)]">17</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),1.8)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),1.8)]">18</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),1.9)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),1.9)]">19</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),2.0)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),2.0)]">20</value>
+		
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),2.1)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),2.1)]">21</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),2.2)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),2.2)]">22</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),2.3)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),2.3)]">23</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),2.4)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),2.4)]">24</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),2.5)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),2.5)]">25</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),2.6)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),2.6)]">26</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),2.7)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),2.7)]">27</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),2.8)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),2.8)]">28</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),2.9)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),2.9)]">29</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),3.0)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),3.0)]">30</value>
+		
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),3.1)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),3.1)]">31</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),3.2)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),3.2)]">32</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),3.3)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),3.3)]">33</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),3.4)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),3.4)]">34</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),3.5)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),3.5)]">35</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),3.6)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),3.6)]">36</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),3.7)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),3.7)]">37</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),3.8)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),3.8)]">38</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),3.9)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),3.9)]">39</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),4.0)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),4.0)]">40</value>
+		
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),4.1)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),4.1)]">41</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),4.2)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),4.2)]">42</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),4.3)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),4.3)]">43</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),4.4)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),4.4)]">44</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),4.5)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),4.5)]">45</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),4.6)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),4.6)]">46</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),4.7)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),4.7)]">47</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),4.8)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),4.8)]">48</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),4.9)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),4.9)]">49</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),5.0)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),5.0)]">50</value>
+		
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),5.1)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),5.1)]">51</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),5.2)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),5.2)]">52</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),5.3)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),5.3)]">53</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),5.4)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),5.4)]">54</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),5.5)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),5.5)]">55</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),5.6)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),5.6)]">56</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),5.7)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),5.7)]">57</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),5.8)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),5.8)]">58</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),5.9)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),5.9)]">59</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),6.0)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),6.0)]">60</value>
+		
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),6.1)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),6.1)]">61</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),6.2)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),6.2)]">62</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),6.3)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),6.3)]">63</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),6.4)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),6.4)]">64</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),6.5)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),6.5)]">65</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),6.6)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),6.6)]">66</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),6.7)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),6.7)]">67</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),6.8)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),6.8)]">68</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),6.9)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),6.9)]">69</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),7.0)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),7.0)]">70</value>
+		
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),7.1)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),7.1)]">71</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),7.2)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),7.2)]">72</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),7.3)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),7.3)]">73</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),7.4)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),7.4)]">74</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),7.5)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),7.5)]">75</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),7.6)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),7.6)]">76</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),7.7)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),7.7)]">77</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),7.8)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),7.8)]">78</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),7.9)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),7.9)]">79</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),8.0)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),8.0)]">80</value>
+		
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),8.1)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),8.1)]">81</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),8.2)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),8.2)]">82</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),8.3)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),8.3)]">83</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),8.4)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),8.4)]">84</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),8.5)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),8.5)]">85</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),8.6)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),8.6)]">86</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),8.7)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),8.7)]">87</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),8.8)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),8.8)]">88</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),8.9)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),8.9)]">89</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),9.0)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),9.0)]">90</value>
+	
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),9.1)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),9.1)]">91</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),9.2)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),9.2)]">92</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),9.3)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),9.3)]">93</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),9.4)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),9.4)]">94</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),9.5)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),9.5)]">95</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),9.6)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),9.6)]">96</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),9.7)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),9.7)]">97</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),9.8)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),9.8)]">98</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),9.9)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),9.9)]">99</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallcritics),10.0)] | [!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.EndsWith(ListItem.Rating(tomatometerallcritics),10.0)]">100</value>
+	</variable>
+	<variable name="formatted_rating_tomatometerallaudience">
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),0.1)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),0.1)]">1</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),0.2)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),0.2)]">2</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),0.3)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),0.3)]">3</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),0.4)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),0.4)]">4</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),0.5)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),0.5)]">5</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),0.6)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),0.6)]">6</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),0.7)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),0.7)]">7</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),0.8)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),0.8)]">8</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),0.9)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),0.9)]">9</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),1.0)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),1.0)]">10</value>
+		
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),1.1)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),1.1)]">11</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),1.2)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),1.2)]">12</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),1.3)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),1.3)]">13</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),1.4)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),1.4)]">14</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),1.5)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),1.5)]">15</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),1.6)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),1.6)]">16</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),1.7)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),1.7)]">17</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),1.8)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),1.8)]">18</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),1.9)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),1.9)]">19</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),2.0)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),2.0)]">20</value>
+		
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),2.1)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),2.1)]">21</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),2.2)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),2.2)]">22</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),2.3)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),2.3)]">23</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),2.4)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),2.4)]">24</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),2.5)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),2.5)]">25</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),2.6)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),2.6)]">26</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),2.7)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),2.7)]">27</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),2.8)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),2.8)]">28</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),2.9)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),2.9)]">29</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),3.0)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),3.0)]">30</value>
+		
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),3.1)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),3.1)]">31</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),3.2)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),3.2)]">32</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),3.3)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),3.3)]">33</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),3.4)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),3.4)]">34</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),3.5)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),3.5)]">35</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),3.6)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),3.6)]">36</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),3.7)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),3.7)]">37</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),3.8)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),3.8)]">38</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),3.9)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),3.9)]">39</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),4.0)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),4.0)]">40</value>
+		
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),4.1)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),4.1)]">41</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),4.2)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),4.2)]">42</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),4.3)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),4.3)]">43</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),4.4)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),4.4)]">44</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),4.5)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),4.5)]">45</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),4.6)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),4.6)]">46</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),4.7)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),4.7)]">47</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),4.8)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),4.8)]">48</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),4.9)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),4.9)]">49</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),5.0)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),5.0)]">50</value>
+		
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),5.1)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),5.1)]">51</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),5.2)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),5.2)]">52</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),5.3)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),5.3)]">53</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),5.4)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),5.4)]">54</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),5.5)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),5.5)]">55</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),5.6)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),5.6)]">56</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),5.7)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),5.7)]">57</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),5.8)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),5.8)]">58</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),5.9)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),5.9)]">59</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),6.0)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),6.0)]">60</value>
+		
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),6.1)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),6.1)]">61</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),6.2)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),6.2)]">62</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),6.3)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),6.3)]">63</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),6.4)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),6.4)]">64</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),6.5)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),6.5)]">65</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),6.6)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),6.6)]">66</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),6.7)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),6.7)]">67</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),6.8)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),6.8)]">68</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),6.9)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),6.9)]">69</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),7.0)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),7.0)]">70</value>
+		
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),7.1)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),7.1)]">71</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),7.2)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),7.2)]">72</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),7.3)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),7.3)]">73</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),7.4)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),7.4)]">74</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),7.5)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),7.5)]">75</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),7.6)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),7.6)]">76</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),7.7)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),7.7)]">77</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),7.8)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),7.8)]">78</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),7.9)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),7.9)]">79</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),8.0)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),8.0)]">80</value>
+		
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),8.1)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),8.1)]">81</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),8.2)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),8.2)]">82</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),8.3)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),8.3)]">83</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),8.4)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),8.4)]">84</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),8.5)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),8.5)]">85</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),8.6)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),8.6)]">86</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),8.7)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),8.7)]">87</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),8.8)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),8.8)]">88</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),8.9)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),8.9)]">89</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),9.0)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),9.0)]">90</value>
+	
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),9.1)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),9.1)]">91</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),9.2)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),9.2)]">92</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),9.3)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),9.3)]">93</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),9.4)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),9.4)]">94</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),9.5)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),9.5)]">95</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),9.6)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),9.6)]">96</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),9.7)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),9.7)]">97</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),9.8)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),9.8)]">98</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),9.9)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),9.9)]">99</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(Container(2000).ListItem.Rating(tomatometerallaudience),10.0)] | [!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.EndsWith(ListItem.Rating(tomatometerallaudience),10.0)]">100</value>
+	</variable>
+	
+	
+	
+	<!-- MEDIA FLAGS -->
+	
+</includes>
