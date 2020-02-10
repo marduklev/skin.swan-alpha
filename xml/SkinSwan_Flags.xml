@@ -4,86 +4,65 @@
 	
 	<!-- RATINGS -->
 	<include name="Ratings_Footer">
-        <control type="grouplist">
-			<orientation>horizontal</orientation>
-			<usecontrolcoords>true</usecontrolcoords>
-			<align>center</align>
-			<width>100%</width>
-			<itemgap>10</itemgap>
-			
-			
-			<include content="MediaFlags_Footer">
-				<param name="id" value="70501"/>
-				<param name="flagtype" value="audio" />
-				<param name="flag" value="AudioCodec" />
-			</include>
-			<include content="MediaFlags_Footer">
-				<param name="id" value="70500"/>
-				<param name="flagtype" value="channels" />
-				<param name="flag" value="AudioChannels" />
-			</include>
-			
-			<include content="MediaFlags_Footer">
-				<param name="id" value="70502"/>
-				<param name="flagtype" value="aspectratio" />
-				<param name="flag" value="VideoAspect" />
-			</include>
-			<include content="MediaFlags_Footer">
-				<param name="id" value="70503"/>
-				<param name="flagtype" value="resolution" />
-				<param name="flag" value="VideoResolution" />
-			</include>
-			<include content="MediaFlags_Footer">
-				<param name="id" value="70504"/>
-				<param name="flagtype" value="mpaa" />
-				<param name="flag" value="" />
-			</include>
-			
-			<control type="image" id="6767">
-				<width>250</width>
-				<height>90</height>
-				<aspectratio aligny="center" align="right">keep</aspectratio>
-				<visible>Skin.HasSetting(show_studio_flag) + !String.IsEmpty(ListItem.Studio)</visible>
-				<include>studiologo_image</include>
+		<param name="align" default="right" />
+		<param name="offset_left" default="0" />
+		<param name="right" default="constant_offsetviewverticalscrollbar" />
+		<definition>
+			<control type="grouplist">
+				<orientation>horizontal</orientation>
+				<usecontrolcoords>true</usecontrolcoords>
+				<align>$PARAM[align]</align>
+				<right>60</right>
+				<left>$PARAM[offset_left]</left>
+				
+				<itemgap>5</itemgap>
+				
+				<control type="image" id="6767">
+					<width>250</width>
+					<height>90</height>
+					<aspectratio aligny="center" align="right">keep</aspectratio>
+					<visible>Skin.HasSetting(show_studio_flag) + !String.IsEmpty(ListItem.Studio)</visible>
+					<include>studiologo_image</include>
+				</control>
+				
+				<control type="label">
+					<width>50</width>
+					<visible>!String.IsEmpty(Control.GetLabel(6767))</visible>
+					<height>90</height>
+					<label />
+				</control>
+				
+				<include content="Rating_Footer">
+					<param name="id" value="50505"/>
+					<param name="rating" value="metacritic"/>
+				</include>
+				<include content="Rating_Footer">
+					<param name="id" value="50503"/>
+					<param name="rating" value="tomatometerallaudience"/>
+				</include>
+				<include content="Rating_Footer">
+					<param name="id" value="50504"/>
+					<param name="rating" value="tomatometerallcritics"/>
+				</include>
+				<include content="Rating_Footer">
+					<param name="id" value="50501"/>
+					<param name="rating" value="themoviedb"/>
+				</include>
+				<include content="Rating_Footer">
+					<param name="id" value="50500"/>
+					<param name="rating" value="tvdb"/>
+					<visible>[[Container.Content(tvshows) | String.IsEqual(ListItem.DBTYPE,tvshow)] | [Container.Content(episodes) | String.IsEqual(ListItem.DBTYPE,episode)] | [Container.Content(seasons) | String.IsEqual(ListItem.DBTYPE,season)]]</visible>
+				</include>
+				<include content="Rating_Footer">
+					<param name="id" value="50502"/>
+					<param name="rating" value="imdb"/>
+				</include>
+				<include content="Rating_Footer">
+					<param name="id" value="50506"/>
+					<param name="rating" value="imdbtop250"/>
+				</include>
 			</control>
-			
-			<control type="label">
-				<width>50</width>
-				<visible>false</visible>
-				<height>90</height>
-				<label />
-			</control>
-			
-			<include content="Rating_Footer">
-				<param name="id" value="50505"/>
-				<param name="rating" value="metacritic"/>
-			</include>
-			<include content="Rating_Footer">
-				<param name="id" value="50503"/>
-				<param name="rating" value="tomatometerallaudience"/>
-			</include>
-			<include content="Rating_Footer">
-				<param name="id" value="50504"/>
-				<param name="rating" value="tomatometerallcritics"/>
-			</include>
-			<include content="Rating_Footer">
-				<param name="id" value="50501"/>
-				<param name="rating" value="themoviedb"/>
-			</include>
-			<include content="Rating_Footer">
-				<param name="id" value="50500"/>
-				<param name="rating" value="tvdb"/>
-				<visible>[[Container.Content(tvshows) | String.IsEqual(ListItem.DBTYPE,tvshow)] | [Container.Content(episodes) | String.IsEqual(ListItem.DBTYPE,episode)] | [Container.Content(seasons) | String.IsEqual(ListItem.DBTYPE,season)]]</visible>
-			</include>
-			<include content="Rating_Footer">
-				<param name="id" value="50502"/>
-				<param name="rating" value="imdb"/>
-			</include>
-			<include content="Rating_Footer">
-				<param name="id" value="50506"/>
-				<param name="rating" value="imdbtop250"/>
-			</include>
-		</control>            
+		</definition>		
     </include>
 	
 	<include name="StudioLogo_Footer">
@@ -105,37 +84,26 @@
 		</control>	
 	</include>		
 	
-	<include name="MediaFlags_Footer">
-		<definition>
-		<control type="image" id="$PARAM[id]">
-<visible>false</visible>
-			<width>90</width>
-			<height>90</height>
-			<bordersize>1</bordersize>
-			<aspectratio align="center" aligny="center">keep</aspectratio>
-			<texture colordiffuse="$VAR[Footer_ItemColor]">$INFO[ListItem.$PARAM[flag],flags/flagsmedia/$PARAM[flagtype]/,.png]</texture>
-		</control>
-	</definition>
-	</include>
-	
 	<include name="Rating_Footer">
 		<definition>
 		<control type="grouplist">
 			<visible>Skin.HasSetting(Show_$PARAM[rating]_Rating) + !String.IsEmpty(Control.GetLabel($PARAM[id]))</visible>
+			<top>15</top>
 			<bottom>5</bottom>
 			<width>80</width>
-			<height>75</height>
+			<height>70</height>
+			<orientation>vertical</orientation>
 			<nested />
             <control type="image">
-				<width>70</width>
-				<height>46</height>
-                <bordersize>1</bordersize>
+				<width>50</width>
+				<height>40</height>
+                <bordersize>2</bordersize>
 				<aspectratio align="center" aligny="bottom">keep</aspectratio>
                 <texture colordiffuse="$VAR[Footer_ItemColor]">$VAR[image_$PARAM[rating]]</texture>
             </control>
             <control type="label" id="$PARAM[id]">
                 <height>20</height>
-                <width>70</width>
+                <width>50</width>
 				<align>center</align>
                 <font>debug</font>
                 <textcolor>$VAR[Footer_ItemColor]</textcolor>
@@ -572,6 +540,76 @@
 	
 	
 	
-	<!-- MEDIA FLAGS -->
+	<!-- MEDIA FLAGS
+- use template image filled with listitemlabel - aspectratio,resolution,mpaa?,
+	-->
+	
+	<include name="MediaFlagGroup_Footer">
+		<param name="align" default="left" />
+		<param name="width" default="70%" />
+		<definition>
+		<control type="grouplist">
+			<orientation>horizontal</orientation>
+			<usecontrolcoords>true</usecontrolcoords>
+			<align>$PARAM[align]</align>
+			<top>5</top>
+			<left>50</left>
+			<width>$PARAM[width]</width>
+			<itemgap>10</itemgap>
+			
+			<include content="MediaFlags_Footer">
+				<param name="id" value="70501"/>
+				<param name="flagtype" value="audio" />
+				<param name="flag" value="AudioCodec" />
+			</include>
+			<include content="MediaFlags_Footer">
+				<param name="id" value="70500"/>
+				<param name="flagtype" value="channels" />
+				<param name="flag" value="AudioChannels" />
+			</include>
+			
+			<include content="MediaFlags_Footer">
+				<param name="id" value="70502"/>
+				<param name="flagtype" value="aspectratio" />
+				<param name="flag" value="VideoAspect" />
+			</include>
+			<include content="MediaFlags_Footer">
+				<param name="id" value="70503"/>
+				<param name="flagtype" value="resolution" />
+				<param name="flag" value="VideoResolution" />
+			</include>
+			<include content="MediaFlags_Footer">
+				<param name="id" value="70504"/>
+				<param name="flagtype" value="mpaa" />
+				<param name="flag" value="" />
+			</include>
+			
+		</control>
+		</definition>
+	</include>		
+	
+	<include name="MediaFlags_Footer">
+		<definition>
+			<control type="image" id="$PARAM[id]">
+				<width>75</width>
+				<height>75</height>
+				<bordersize>1</bordersize>
+				<aspectratio align="center" aligny="center">keep</aspectratio>
+				<texture colordiffuse="$VAR[Footer_ItemColor]">$INFO[ListItem.$PARAM[flag],flags/flagsmedia/$PARAM[flagtype]/,.png]</texture>
+			</control>
+			<!-- 
+			<control type="label" id="$PARAM[id]">
+				<width>175</width>
+				<height>75</height>
+				<textcolor>$VAR[Footer_ItemColor]</textcolor>
+				<font>debug</font>
+				<align>center</align>
+				<wrapmultiline>true</wrapmultiline>
+				<label>$INFO[ListItem.$PARAM[flag],$PARAM[flag] ,]</label>
+				<visible>!String.IsEmpty(ListItem.$PARAM[flag])</visible>
+			</control>
+			-->
+		</definition>
+	</include>
 	
 </includes>

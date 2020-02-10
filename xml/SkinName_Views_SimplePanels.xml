@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 
-	<!-- <include name="footer_test">
-		<control type="button">
-			<animation effect="slide" start="0,90" end="0,0" time="350" tween="back" easing="inout" delay="100">VisibleChange</animation>
-			<description>just test height for footer groulist</description>
-			<visible>Control.IsVisible($PARAM[view_id]) + !Skin.HasSetting(View_$PARAM[view_id]_DisableFooter)</visible>
-			<bottom>0</bottom>
-			<height>90</height>
-			<label>$PARAM[label]</label>
-			<align>center</align>
-		</control>
-	</include> -->
-	<!-- rating , non-fixed 
-	<visible>String.IsEqual(ListItem.DBTYPE,movie) | String.IsEqual(ListItem.DBTYPE,episode) | String.IsEqual(ListItem.DBTYPE,tvshow) | String.IsEqual(ListItem.DBTYPE,season)</visible>
-	-->
 	
-	<!-- studio left , media flags center , ratings right ? -->
+	<!-- media flags centered below current art left group  , studio and ratings centered right group ?
+	
+		<include content="MediaFlagGroup_Footer">
+				<param name="width is equal left panel width" value="e.g. 30%" />
+			</include>
+			<include content="Ratings_Footer">
+				<param name="width is equal offset left panel width" value="e.g. 30%" />
+			</include>
+
+		- need cond width h or constant panel width params for each view to let flags fit without exceeding width
+
+	-->
 	
 	<include name="footer_test">
 		<control description="ratings right" type="group">
@@ -29,10 +26,19 @@
 				<texture colordiffuse="$VAR[Footer_PanelColor]">colors/white.png</texture>
 			</control>
 			
-			<!-- <include>StudioLogo_Footer</include> -->
-			<include>Ratings_Footer</include>
+			
+			<include content="MediaFlagGroup_Footer">
+				<param name="offset_left" value="$PARAM[offset_leftpanel]" />
+				<param name="align" value="$PARAM[media_flagalign]" />
+				<param name="width" value="$PARAM[media_flagwidth]" />
+			</include>
+			<include content="Ratings_Footer">
+				<param name="offset_left" value="$PARAM[offset_leftpanel]" />
+				<param name="align" value="$PARAM[rating_flagalign]" />
+			</include>
 			
 		</control>
+		
 	</include>
 	
 	
