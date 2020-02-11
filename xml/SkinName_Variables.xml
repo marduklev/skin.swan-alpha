@@ -1,5 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
+
+	
+<!-- MOVE ME START -->
+	
+	<variable name="ListItemArt_Discart">
+        <value condition="!String.IsEmpty(ListItem.Art(cartridge))">$INFO[ListItem.Art(cartridge)]</value>
+        <value condition="!String.IsEmpty(ListItem.Art(discart))">$INFO[ListItem.Art(discart)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(album.discart))">$INFO[ListItem.Art(album.discart)]</value>
+        <value condition="!String.IsEmpty(ListItem.Art(landscape)) + Skin.HasSetting(EnableFakeDiscArt)">$INFO[ListItem.Art(landscape)]</value>
+        <value condition="!String.IsEmpty(ListItem.Art(fanart)) + Skin.HasSetting(EnableFakeDiscArt)">$INFO[ListItem.Art(fanart)]</value>
+	</variable>
+	
+	
+	<variable name="rating_value_texture">
+        <value condition="!String.IsEmpty(ListItem.UserRating)">$INFO[ListItem.UserRating,rating/stars/,.png]</value>
+        <value condition="!String.IsEmpty(ListItem.Rating)">$INFO[ListItem.Rating,rating/stars/,.png]</value>
+		<value>rating/stars/0.0.png</value>
+    </variable>
+	
+	<variable name="premiere_date">
+        <value condition="!$EXP[IsMovie] + !String.IsEmpty(ListItem.Premiered)">$INFO[ListItem.Premiered]</value>
+        <value condition="!String.IsEmpty(ListItem.Year)">$INFO[ListItem.Year]</value>
+    </variable>
+	
+	<variable name="ListItemDurationWithEndTime">
+        <value condition="!String.IsEmpty(ListItem.Duration) + !String.IsEmpty(ListItem.EndTimeResume)">$VAR[ListItemDuration,, ]$INFO[ListItem.EndTimeResume, - $LOCALIZE[31080]: ,]</value>
+		<value condition="!String.IsEmpty(ListItem.Duration) + !String.IsEmpty(ListItem.EndTime)">$VAR[ListItemDuration,, - ]$INFO[ListItem.EndTime,$LOCALIZE[31080]: ,]</value>
+		<value>$VAR[ListItemDuration]</value>
+    </variable>
+	
+	<!-- String.IsEndsWith(ListItem.Overlay,OverlayWatched.png) , String.IsEndsWith(ListItem.Overlay,OverlayUnwatched.png) -->
+	<variable name="PercentPlayed">
+		<value condition="!Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable">$LOCALIZE[16102] 0%</value>
+		<value condition="Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable">$LOCALIZE[16102] 100%</value>
+		<value>$INFO[ListItem.PercentPlayed,$LOCALIZE[16102] ,%]</value>
+	</variable>
+	<variable name="Plots">
+		<value condition="Container.content(addons) + !String.IsEmpty(ListItem.AddonDescription)">$INFO[ListItem.AddonDescription]</value>
+		<value condition="Container.Content(Seasons) + !String.IsEmpty(ListItem.Plot) + !String.IsEmpty(ListItem.Title)">$INFO[ListItem.Plot]</value>
+		<value condition="Container.Content(Seasons) + !String.IsEmpty(Container.ShowPlot) + !String.IsEmpty(ListItem.Title)">$INFO[Container.ShowPlot]</value>
+		<value condition="Container.Content(albums) + !String.IsEmpty(ListItem.Property(Album_Description))">$INFO[ListItem.Property(Album_Description)]</value>
+		<value condition="Container.Content(artists) + !String.IsEmpty(ListItem.Property(Artist_Description))">$INFO[ListItem.Property(Artist_Description)]</value>
+		<value condition="Container.Content(songs) + !String.IsEmpty(ListItem.Comment)">$INFO[ListItem.Comment]</value>
+		<value condition="Container.Content(songs) + !String.IsEmpty(ListItem.Property(Album_Description))">$INFO[ListItem.Property(Album_Description)]</value>
+		<value condition="Container.Content(songs) + !String.IsEmpty(ListItem.Property(Artist_Description))">$INFO[ListItem.Property(Artist_Description)]</value>
+		<value condition="Window.IsActive(tvchannels) + !String.IsEmpty(ListItem.Plot)">$INFO[ListItem.Season,S,]$INFO[ListItem.Episode,E, - ]$INFO[ListItem.EpisodeName,,[CR]]$INFO[ListItem.Plot]$INFO[Container.ListItem.NextTitle,[CR][CR][B]$LOCALIZE[19031]: [/B]]</value>
+		<value condition="Window.IsActive(pictures ) + !String.IsEmpty(ListItem.PictureDesc)">$INFO[ListItem.PictureDesc]</value>
+		<value condition="Window.IsActive(pictures ) + !String.IsEmpty(ListItem.PictureComment)">$INFO[ListItem.PictureComment]</value>
+		<value condition="Window.IsActive(pictures ) + !String.IsEmpty(ListItem.PictureKeywords)">$INFO[ListItem.PictureKeywords]</value>
+		<value condition="!String.IsEmpty(ListItem.Plot)">$INFO[ListItem.Plot]</value>
+		<value condition="!String.IsEmpty(ListItem.Property(Plot))">$INFO[ListItem.Property(Plot)]</value>
+		<value condition="!String.IsEmpty(ListItem.Comment)">$INFO[ListItem.Comment]</value>
+		<value condition="!String.IsEmpty(Window(home).property(SkinHelper.ListItem.ExtendedPlot))">$INFO[Window(home).property(SkinHelper.ListItem.ExtendedPlot)]</value>
+		<value condition="!String.IsEmpty(Window(home).property(SkinHelper.ListItem.Plot))">$INFO[Window(home).property(SkinHelper.ListItem.Plot)]</value>
+	</variable>
+	<variable name="Universal_WidgetHeaderListItem">
+		<value condition="Window.IsActive(1120)">$VAR[SearchInfoHeader_Title]</value>
+		<value condition="Control.HasFocus(8601) | Control.HasFocus(8606) | Control.HasFocus(8607)"></value>
+		<value condition="Control.HasFocus(8610)">$INFO[Container.ListItem.Season,$LOCALIZE[20373] [B],[/B] • ]$INFO[Container.ListItem.Episode,$LOCALIZE[20452] [B],[/B]]$INFO[Container.ListItem.Title,[B] : ,[/B]]</value>
+		<value>$INFO[Container.ListItem.Label,[B],[/B]]</value>
+	</variable>
+	<variable name="SearchInfoHeader_Title">
+		<value condition="Control.HasFocus(5009)">$INFO[ListItem.Label,[B],[/B]]</value>
+		<value condition="String.IsEqual(ListItem.DBType,musicvideo)">$INFO[ListItem.Artist,[B],[/B]]$INFO[ListItem.Title,  [B]•  ,[/B]]</value>
+		<value condition="String.IsEqual(ListItem.DBType,song)">$INFO[ListItem.Artist,[B],[/B]]$INFO[ListItem.Title,  [B]•  ,[/B]]</value>
+		<value condition="String.IsEqual(ListItem.DBType,episode)">$INFO[ListItem.TvShowTitle,[B],  |  [/B]]$INFO[ListItem.Season,[B]$LOCALIZE[20373]  , • [/B]]$INFO[ListItem.Episode, [B]$LOCALIZE[20359]  , • [/B]]$INFO[ListItem.Title,[B],[/B]]</value>
+		<value condition="Control.HasFocus(5007)">$INFO[ListItem.Genre, &quot; , &quot;   |  ]$INFO[ListItem.Label,[B],[/B]]</value>
+		<value condition="Control.HasFocus(5011)">$INFO[ListItem.Studio, &quot; , &quot;   |  ]$INFO[ListItem.Label,[B],[/B]]</value>
+		<value condition="Control.HasFocus(5012)">$INFO[ListItem.Country, &quot; , &quot;  |  ]$INFO[ListItem.Label,[B],[/B]]</value>
+		<value condition="Control.HasFocus(5013)">$INFO[ListItem.Director, &quot; , &quot;  |  ]$INFO[ListItem.Label,[B],[/B]]</value>
+		<value condition="Control.HasFocus(5014)">$INFO[ListItem.AddonName,[B],[/B]]</value>
+		<value>$INFO[ListItem.Label,[B],[/B]]</value>
+	</variable>
+	<variable name="Universal_WidgetHeader_Seperator">
+		<value condition="Control.HasFocus(8601) | Control.HasFocus(8606) | Control.HasFocus(8607)"></value>
+		<value> | </value>
+	</variable>
+	<variable name="EmbuaryCast">
+		<value condition="String.IsEqual(ListItem.DBType,movie) + !String.IsEmpty(ListItem.DBID) + !String.IsEqual(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=movie&amp;dbid=$INFO[ListItem.DBID]</value>
+		<value condition="String.IsEqual(ListItem.DBType,movie) + String.IsEqual(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=movie&amp;title='$ESCINFO[ListItem.Title]'</value>
+		<value condition="String.IsEqual(ListItem.DBType,tvshow) + !String.IsEmpty(ListItem.DBID) + !String.IsEqual(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[ListItem.DBID]</value>
+		<value condition="String.IsEqual(ListItem.DBType,tvshow) + String.IsEqual(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem.TVShowTitle]'</value>
+		<value condition="[String.IsEqual(ListItem.DBType,episode) | String.IsEqual(ListItem.DBType,season)] + !String.IsEmpty(ListItem.DBID)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem.TVShowTitle]'</value>
+		<value condition="Container.Content(seasons) + !String.IsEmpty(ListItem(1).DBID)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem(1).TVShowTitle]'</value>
+		<value condition="Container.Content(seasons) + !String.IsEmpty(ListItem(2).DBID)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem(2).TVShowTitle]'</value>
+		<value>-</value>
+	</variable>
+	
+	<!-- MOVE ME END -->
+	
 	<variable name="DialogInfo_Header">
 		<value condition="Container.Content(Movies) | String.IsEqual(ListItem.DBType,movie)">$LOCALIZE[24007]</value>
 		<value condition="Container.Content(Musicvideos) | String.IsEqual(ListItem.DBType,musicvideo)">$LOCALIZE[24015]</value>

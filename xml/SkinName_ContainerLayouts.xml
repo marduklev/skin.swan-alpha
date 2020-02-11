@@ -1,102 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
+	
+	
+	
+	<!-- untested - Genre,Studio bg ,move me-->
+	<include name="Genre_BG">
+		<control type="image">
+            <bordersize>5</bordersize>
+            <bordertexture flipy="true" border="5" colordiffuse="blue">buttons/menu_bg.png</bordertexture>
+			<texture colordiffuse="CCffffff">buttons/menu_bg.png</texture>
+            <aspectratio scalediffuse="false" align="center" aligny="center">scale</aspectratio>
+        </control>
+    </include>
 
-<!-- MOVE ME START -->
-	
-	<variable name="ListItemArt_Discart">
-        <value condition="!String.IsEmpty(ListItem.Art(cartridge))">$INFO[ListItem.Art(cartridge)]</value>
-        <value condition="!String.IsEmpty(ListItem.Art(discart))">$INFO[ListItem.Art(discart)]</value>
-		<value condition="!String.IsEmpty(ListItem.Art(album.discart))">$INFO[ListItem.Art(album.discart)]</value>
-        <value condition="!String.IsEmpty(ListItem.Art(landscape)) + Skin.HasSetting(EnableFakeDiscArt)">$INFO[ListItem.Art(landscape)]</value>
-        <value condition="!String.IsEmpty(ListItem.Art(fanart)) + Skin.HasSetting(EnableFakeDiscArt)">$INFO[ListItem.Art(fanart)]</value>
-	</variable>
-	
-	
-	<variable name="rating_value_texture">
-        <value condition="!String.IsEmpty(ListItem.UserRating)">$INFO[ListItem.UserRating,rating/stars/,.png]</value>
-        <value condition="!String.IsEmpty(ListItem.Rating)">$INFO[ListItem.Rating,rating/stars/,.png]</value>
-		<value>rating/stars/0.0.png</value>
-    </variable>
-	
-	
-	<variable name="AdvancedRatings_TextColor">
-		<value condition="Window.IsVisible(movieinformation) + !Skin.HasSetting(UseNetflixInfoDialog)">$INFO[Skin.String(ViewDetailsTextColor)]</value>																																				 
-        <value condition="[Control.IsVisible(523) | Control.IsVisible(525) | [Control.IsVisible(526) + Skin.HasSetting(View526_DisableFanArt) + Skin.HasSetting(View_526_nofooterbar)] | [Control.IsVisible(527) + Skin.HasSetting(View527_DisableFanArt)]] | [Window.IsActive(Home) + Skin.String(HomeLayout, netflix2)] | [Window.IsVisible(movieinformation) + Skin.HasSetting(UseNetflixInfoDialog)]">$INFO[Skin.String(RatingsLogoColor)]</value> <!-- default  $INFO[Skin.String(ViewDetailsTextColor)] -->       
-		<value condition="Skin.String(FooterTextColor) + !Skin.String(FooterPanelColor, None)">$INFO[Skin.String(FooterTextColor)]</value>
-        <value>ffffffff</value>
-    </variable>
-	
-	
-	<variable name="premiere_date">
-        <value condition="!$EXP[IsMovie] + !String.IsEmpty(ListItem.Premiered)">$INFO[ListItem.Premiered]</value>
-        <value condition="!String.IsEmpty(ListItem.Year)">$INFO[ListItem.Year]</value>
-    </variable>
-	
-	<variable name="ListItemDurationWithEndTime">
-        <value condition="!String.IsEmpty(ListItem.Duration) + !String.IsEmpty(ListItem.EndTimeResume)">$VAR[ListItemDuration,, ]$INFO[ListItem.EndTimeResume, - $LOCALIZE[31080]: ,]</value>
-		<value condition="!String.IsEmpty(ListItem.Duration) + !String.IsEmpty(ListItem.EndTime)">$VAR[ListItemDuration,, - ]$INFO[ListItem.EndTime,$LOCALIZE[31080]: ,]</value>
-		<value>$VAR[ListItemDuration]</value>
-    </variable>
-	
-	<!-- String.IsEndsWith(ListItem.Overlay,OverlayWatched.png) , String.IsEndsWith(ListItem.Overlay,OverlayUnwatched.png) -->
-	<variable name="PercentPlayed">
-		<value condition="!Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable">$LOCALIZE[16102] 0%</value>
-		<value condition="Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable">$LOCALIZE[16102] 100%</value>
-		<value>$INFO[ListItem.PercentPlayed,$LOCALIZE[16102] ,%]</value>
-	</variable>
-	<variable name="Plots">
-		<value condition="Container.content(addons) + !String.IsEmpty(ListItem.AddonDescription)">$INFO[ListItem.AddonDescription]</value>
-		<value condition="Container.Content(Seasons) + !String.IsEmpty(ListItem.Plot) + !String.IsEmpty(ListItem.Title)">$INFO[ListItem.Plot]</value>
-		<value condition="Container.Content(Seasons) + !String.IsEmpty(Container.ShowPlot) + !String.IsEmpty(ListItem.Title)">$INFO[Container.ShowPlot]</value>
-		<value condition="Container.Content(albums) + !String.IsEmpty(ListItem.Property(Album_Description))">$INFO[ListItem.Property(Album_Description)]</value>
-		<value condition="Container.Content(artists) + !String.IsEmpty(ListItem.Property(Artist_Description))">$INFO[ListItem.Property(Artist_Description)]</value>
-		<value condition="Container.Content(songs) + !String.IsEmpty(ListItem.Comment)">$INFO[ListItem.Comment]</value>
-		<value condition="Container.Content(songs) + !String.IsEmpty(ListItem.Property(Album_Description))">$INFO[ListItem.Property(Album_Description)]</value>
-		<value condition="Container.Content(songs) + !String.IsEmpty(ListItem.Property(Artist_Description))">$INFO[ListItem.Property(Artist_Description)]</value>
-		<value condition="Window.IsActive(tvchannels) + !String.IsEmpty(ListItem.Plot)">$INFO[ListItem.Season,S,]$INFO[ListItem.Episode,E, - ]$INFO[ListItem.EpisodeName,,[CR]]$INFO[ListItem.Plot]$INFO[Container.ListItem.NextTitle,[CR][CR][B]$LOCALIZE[19031]: [/B]]</value>
-		<value condition="Window.IsActive(pictures ) + !String.IsEmpty(ListItem.PictureDesc)">$INFO[ListItem.PictureDesc]</value>
-		<value condition="Window.IsActive(pictures ) + !String.IsEmpty(ListItem.PictureComment)">$INFO[ListItem.PictureComment]</value>
-		<value condition="Window.IsActive(pictures ) + !String.IsEmpty(ListItem.PictureKeywords)">$INFO[ListItem.PictureKeywords]</value>
-		<value condition="!String.IsEmpty(ListItem.Plot)">$INFO[ListItem.Plot]</value>
-		<value condition="!String.IsEmpty(ListItem.Property(Plot))">$INFO[ListItem.Property(Plot)]</value>
-		<value condition="!String.IsEmpty(ListItem.Comment)">$INFO[ListItem.Comment]</value>
-		<value condition="!String.IsEmpty(Window(home).property(SkinHelper.ListItem.ExtendedPlot))">$INFO[Window(home).property(SkinHelper.ListItem.ExtendedPlot)]</value>
-		<value condition="!String.IsEmpty(Window(home).property(SkinHelper.ListItem.Plot))">$INFO[Window(home).property(SkinHelper.ListItem.Plot)]</value>
-	</variable>
-	<variable name="Universal_WidgetHeaderListItem">
-		<value condition="Window.IsActive(1120)">$VAR[SearchInfoHeader_Title]</value>
-		<value condition="Control.HasFocus(8601) | Control.HasFocus(8606) | Control.HasFocus(8607)"></value>
-		<value condition="Control.HasFocus(8610)">$INFO[Container.ListItem.Season,$LOCALIZE[20373] [B],[/B] • ]$INFO[Container.ListItem.Episode,$LOCALIZE[20452] [B],[/B]]$INFO[Container.ListItem.Title,[B] : ,[/B]]</value>
-		<value>$INFO[Container.ListItem.Label,[B],[/B]]</value>
-	</variable>
-	<variable name="SearchInfoHeader_Title">
-		<value condition="Control.HasFocus(5009)">$INFO[ListItem.Label,[B],[/B]]</value>
-		<value condition="String.IsEqual(ListItem.DBType,musicvideo)">$INFO[ListItem.Artist,[B],[/B]]$INFO[ListItem.Title,  [B]•  ,[/B]]</value>
-		<value condition="String.IsEqual(ListItem.DBType,song)">$INFO[ListItem.Artist,[B],[/B]]$INFO[ListItem.Title,  [B]•  ,[/B]]</value>
-		<value condition="String.IsEqual(ListItem.DBType,episode)">$INFO[ListItem.TvShowTitle,[B],  |  [/B]]$INFO[ListItem.Season,[B]$LOCALIZE[20373]  , • [/B]]$INFO[ListItem.Episode, [B]$LOCALIZE[20359]  , • [/B]]$INFO[ListItem.Title,[B],[/B]]</value>
-		<value condition="Control.HasFocus(5007)">$INFO[ListItem.Genre, &quot; , &quot;   |  ]$INFO[ListItem.Label,[B],[/B]]</value>
-		<value condition="Control.HasFocus(5011)">$INFO[ListItem.Studio, &quot; , &quot;   |  ]$INFO[ListItem.Label,[B],[/B]]</value>
-		<value condition="Control.HasFocus(5012)">$INFO[ListItem.Country, &quot; , &quot;  |  ]$INFO[ListItem.Label,[B],[/B]]</value>
-		<value condition="Control.HasFocus(5013)">$INFO[ListItem.Director, &quot; , &quot;  |  ]$INFO[ListItem.Label,[B],[/B]]</value>
-		<value condition="Control.HasFocus(5014)">$INFO[ListItem.AddonName,[B],[/B]]</value>
-		<value>$INFO[ListItem.Label,[B],[/B]]</value>
-	</variable>
-	<variable name="Universal_WidgetHeader_Seperator">
-		<value condition="Control.HasFocus(8601) | Control.HasFocus(8606) | Control.HasFocus(8607)"></value>
-		<value> | </value>
-	</variable>
-	<variable name="EmbuaryCast">
-		<value condition="String.IsEqual(ListItem.DBType,movie) + !String.IsEmpty(ListItem.DBID) + !String.IsEqual(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=movie&amp;dbid=$INFO[ListItem.DBID]</value>
-		<value condition="String.IsEqual(ListItem.DBType,movie) + String.IsEqual(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=movie&amp;title='$ESCINFO[ListItem.Title]'</value>
-		<value condition="String.IsEqual(ListItem.DBType,tvshow) + !String.IsEmpty(ListItem.DBID) + !String.IsEqual(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[ListItem.DBID]</value>
-		<value condition="String.IsEqual(ListItem.DBType,tvshow) + String.IsEqual(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem.TVShowTitle]'</value>
-		<value condition="[String.IsEqual(ListItem.DBType,episode) | String.IsEqual(ListItem.DBType,season)] + !String.IsEmpty(ListItem.DBID)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem.TVShowTitle]'</value>
-		<value condition="Container.Content(seasons) + !String.IsEmpty(ListItem(1).DBID)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem(1).TVShowTitle]'</value>
-		<value condition="Container.Content(seasons) + !String.IsEmpty(ListItem(2).DBID)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem(2).TVShowTitle]'</value>
-		<value>-</value>
-	</variable>
-	
-	<!-- MOVE ME END -->
+	<!-- AddonBrowser.xml , DialogSelect.xml -->
 	<include name="Dialog_Containers">
 		<param name="Container_Height" default="67%" />
 		<definition>
@@ -249,7 +166,7 @@
 		</control>
 		</definition>
 	</include>
-	
+	<!-- AddonBrowser.xml , DialogSelect.xml -->
 	<include name="Dialog_CommonInfo">
 		<param name="Def_Icon" default="$INFO[ListItem.Icon]" />
 		<param name="Header_posy" default="140" />
@@ -298,88 +215,6 @@
 	</include>
 	
 	
-	<include name="HUB_Container">
-		<control type="$PARAM[type]" id="$PARAM[id]">
-			<nested />
-			<scrolltime tween="quadratic">400</scrolltime>
-			<top>50</top>
-			<preloaditems>2</preloaditems>
-			<orientation>horizontal</orientation>
-			
-			<visible>$PARAM[visible]</visible>
-			<itemlayout height="$PARAM[height]" width="$PARAM[width]">
-				<control type="group">
-					<width>$PARAM[itemwidth]</width>
-					<height>$PARAM[itemheight]</height>
-					<include content="$PARAM[layout]">
-						<param name="colordiffuse" value="$VAR[Container_item_nf]" />
-						<param name="autoscroll" value="false" />
-						<param name="bordersize" value="6" />
-					</include>
-					<control type="textbox">
-						<visible>$PARAM[tagoverlay]</visible>
-						<align>center</align>
-						<aligny>center</aligny>
-						<wrapmultiline>true</wrapmultiline>
-						<left>20</left>
-						<right>20</right>
-						<font>Bold34</font>
-						<textcolor>black</textcolor>
-						<label>$INFO[ListItem.Label]</label>
-					</control>
-				</control>
-				<control type="textbox">
-					<visible>$PARAM[tagbottom]</visible>
-					<wrapmultiline>true</wrapmultiline>
-					<top>$PARAM[itemheight]</top>
-					<left>20</left>
-					<right>20</right>
-					<font>Bold34</font>
-					<textcolor>black</textcolor>
-					<label>$INFO[ListItem.Label]</label>
-				</control>
-			</itemlayout>
-			<focusedlayout height="$PARAM[height]" width="$PARAM[width]">
-				<control type="group">
-					<width>$PARAM[itemwidth]</width>
-					<height>$PARAM[itemheight]</height>
-					<include>Animation_Item_Focus</include>
-					<control type="group">
-						<include content="$PARAM[layout]">
-							<param name="colordiffuse" value="$VAR[Container_item_fo]" />
-							<param name="autoscroll" value="true" />
-							<param name="bordersize" value="8" />
-						</include>
-						<control type="textbox">
-							<visible>$PARAM[tagoverlay]</visible>
-							<align>center</align>
-							<aligny>center</aligny>
-							<wrapmultiline>true</wrapmultiline>
-							<left>20</left>
-							<right>20</right>
-							<font>Bold34</font>
-							<textcolor>black</textcolor>
-							<label>$INFO[ListItem.Label]</label>
-						</control>
-						<include condition="Skin.HasSetting(LibItems_FocusOverlay)">FocusOverlay</include>
-					</control>
-					<control type="textbox">
-						<visible>$PARAM[tagbottom]</visible>
-						<wrapmultiline>true</wrapmultiline>
-						<top>$PARAM[itemheight]</top>
-						<left>20</left>
-						<right>20</right>
-						<font>Bold34</font>
-						<textcolor>black</textcolor>
-						<label>$INFO[ListItem.Label]</label>
-					</control>
-				</control>
-			</focusedlayout>
-		</control>
-	</include>
-	
-	
-	
 	<!-- 
 	
 	compare the layouts and get universal using only fanart vars
@@ -389,31 +224,17 @@
 	- BANNER 				Resolution 	1000w x 185h				 	Aspect Ratio 	200:37 
  	- ClearLogo 			Resolution 	800w x 310h						Aspect Ratio 	80:31 
 	- fanart,landscape		Resolution 	1920w x 1080h, 1000w x 562h		Aspect Ratio 	16:9 
-										960w x 540h 
-	480x270
-	
-	notes to updaTE CONTAINER LAYOUTS -
-	USE PARAM[CONTAINER_pos_TOP] <top>50</top>
-	
-	call container using params
-		- visible, height, witdh, itemwidth, itemheight, 
-				include -> layout(*merge and compare using params - stretched,keep,clearlogo overlay, tags, bordersize,autoscroll,tag overlay-e.g. genre,fanartvariable)
-				include -> watched indicator
-				
-				include -> progress bar overlay, or use in layout include
+										960w x 540h 480x270
 	
 	-->
 	
-	
-	
-	
-	<!-- play button just if
-	new
-	<visible>[ListItem.IsPlaybable | String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,episode) | String.IsEqual(ListItem.DBType,song)] + ![ListItem.IsFolder | String.IsEqual(ListItem.Property(IsFolder),true)]</visible>
-	old
-	<visible>![String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,artist) | String.IsEqual(ListItem.DBType,album) | ListItem.IsFolder | String.IsEqual(ListItem.Property(IsFolder),true)]</visible>
-	 -->
-	<!-- dimm focus listitem overlay -->
+	<!-- 
+	<control type="image">
+				<bordersize>$PARAM[bordersize]</bordersize>
+				<texture colordiffuse="red">$PARAM[diffusedimtext]</texture>
+				<visible>String.Contains(ListItem.Icon,default)</visible>
+	</control>
+	-->
 	<include name="FocusOverlay">
 		<param name="diffusedimtext" default="colors/white.png" />
 		<param name="bordersize" default="8" />
@@ -421,11 +242,13 @@
 		<control type="group">
 			<animation reversible="false" effect="fade" start="0" end="100" time="350" tween="quadratic" easing="in">Focus</animation>
 			<animation reversible="false" effect="fade" start="100" end="0" time="0">UnFocus</animation>
+			
 			<control type="image">
 				<bordersize>$PARAM[bordersize]</bordersize>
 				<colordiffuse>ff000000</colordiffuse>
 				<texture diffuse="$PARAM[diffusedimtext]">overlay/overlay_dimm.png</texture>
 			</control>
+			
 			<control type="group">
 				<visible>!String.IsEqual(ListItem.Label,$LOCALIZE[284])</visible>
 				<visible>![String.IsEqual(ListItem.FileExtension,jpg) | String.IsEqual(ListItem.FileExtension,png)]</visible>
@@ -456,15 +279,7 @@
 		</definition>
 	</include>
 	
-	<!-- HUB LAYOUT - Genre,Studio-->
-	<include name="HUB_Layouts">
-		<control type="image">
-            <bordersize>5</bordersize>
-            <bordertexture flipy="true" border="5" colordiffuse="blue">buttons/menu_bg.png</bordertexture>
-			<texture colordiffuse="CCffffff">buttons/menu_bg.png</texture>
-            <aspectratio scalediffuse="false" align="center" aligny="center">scale</aspectratio>
-        </control>
-    </include>
+	
 	
 	<!-- Container Header : label- sep - focused item label - busy 
 	
@@ -546,32 +361,7 @@
             </control>
         </definition>
     </include>
-	<!-- Experimental - universal layout, will get issue, restricted in focuslayout,itemlayout - stuff need to be playced also here -->
 	
-	
-	
-	
-	
-	<!-- 
-	
-- square,circle,disc		 Resolution 	1000w x 1000h								Aspect Ratio 	1:1 
-- PosterVar				  	 Resolution 	1000w x 1500h								Aspect Ratio 	2:3 , 1:1.5
-- BANNER 					 Resolution 	1000w x 185h				 			 	Aspect Ratio 	200:37 , 1:0.185
-- ClearLogo 				 Resolution 	800w x 310h									 Aspect Ratio 	80:31 , 1:0.3875
-- fanart,landscape	  		 Resolution 	1920w x 1080h, 1000w x 562h	  Aspect Ratio 	16:9 ,  1:0.5625
-																 960w x 540h 
-																 480x270
-	
-	
-	
-	call container using params
-		- visible, height, witdh, itemwidth, itemheight, 
-				include -> layout(*merge and compare using params - stretched,keep,clearlogo overlay, tags, bordersize,autoscroll,tag overlay-e.g. genre,fanartvariable)
-				include -> watched indicator
-				
-				include -> progress bar overlay, or use in layout include
-	
-	-->
 	
 	<!-- ##################### -->
 	<!--  Container TYPE UNI   -->
@@ -635,7 +425,9 @@
 						</include>
 						<control type="group">
 							<visible>!$PARAM[circle_visible]</visible>
-							<include>FocusOverlay</include>
+							<include content="FocusOverlay">
+								<param name="diffusedimtext" value="artworkdiffuse/$PARAM[layout].png" />
+							</include>
 						</control>
 					</control>
 				</control>
@@ -643,9 +435,6 @@
 		</control>
 		</definition>
 	</include>
-	
-	<!-- slpit layouts -->
-	<!-- reason need cond height ,bottom etx for progress bar, tags, etc -->
 	
 	<include name="UniversalLayout">
 		<param name="has_progressbar" default="false" />
@@ -657,22 +446,27 @@
 		<definition>
 		
 		<control type="image">
-			<texture>artworkdiffuse/$PARAM[artwork].png</texture>
+			<description>testing framed border instead fullbg texture, </description>
+			<texture>artworkdiffuse/$PARAM[artwork]border.png</texture>
 			<colordiffuse>$PARAM[colordiffuse]</colordiffuse>
 			<bordersize>$PARAM[bordersize_bg]</bordersize>
-			
-        </control>
-		
+		</control>
 		<control type="image">
-			<description>kodi default, aspectratio scalediffuse="true" aligny="center" align="center">stretch</description>
-			<texture background="true" diffuse="artworkdiffuse/$PARAM[artwork].png" fallback="DefaultVideo.png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
+			<description>temp workaround for def white or very bright border, may an if not cond needed def icons</description>
+			<texture colordiffuse="66131313">artworkdiffuse/$PARAM[artwork].png</texture>
+			<bordersize>8</bordersize>
+			<visible>String.Contains(ListItem.Icon,default)</visible>
+        </control>
+		<control type="image">
+			<description>kodi default, aspectratio scalediffuse="true" aligny="center" align="center" stretch</description>
+			<texture background="true" diffuse="artworkdiffuse/$PARAM[artwork].png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
 			<bordersize>8</bordersize>
 			<visible>!String.IsEmpty(ListItem.Art($PARAM[artwork]))</visible>
 		</control>
 		
 		<control type="image">
 			<description>Fallback aspect keep</description>
-			<texture background="true" diffuse="artworkdiffuse/$PARAM[artwork].png" fallback="DefaultVideo.png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
+			<texture background="true" diffuse="artworkdiffuse/$PARAM[artwork].png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
 			<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
 			<bordersize>8</bordersize>
 			<visible>String.IsEmpty(ListItem.Art($PARAM[artwork]))</visible>
@@ -772,8 +566,7 @@
 				<texture background="true">$VAR[ListItemClearLogo]</texture>
 			</control>
 			<control type="label">
-				<visible>[String.IsEqual(ListItem.DBTYPE,album) | String.IsEqual(ListItem.DBTYPE,song) | String.IsEqual(ListItem.DBTYPE,episode)]</visible>
-				<visible>
+				<visible>[String.IsEqual(ListItem.DBTYPE,album) | String.IsEqual(ListItem.DBTYPE,song) | String.IsEqual(ListItem.DBTYPE,episode)] | 
 					[!String.IsEqual(ListItem.DBTYPE,album) | !String.IsEqual(ListItem.DBTYPE,song) | !String.IsEqual(ListItem.DBTYPE,episode)] +
 					String.IsEmpty(ListItem.Art(tvshow.banner)) +
 					String.IsEmpty(ListItem.Art(artist.banner)) +
@@ -1499,7 +1292,7 @@ top-->
         </control>
         <control type="image">
             <bordersize>$PARAM[bordersize_artwork]</bordersize>
-			<texture background="true" diffuse="diffuse/music_cover.png" fallback="DefaultMusicRecentlyPlayed.png" border="0">$VAR[squarePosterThumb]</texture>
+			<texture background="true" diffuse="diffuse/music_cover.png" border="0">$VAR[squarePosterThumb]</texture>
 			<aspectratio scalediffuse="false" aligny="center">scale</aspectratio>
         </control>
 		<control type="group">
