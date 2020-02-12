@@ -746,7 +746,7 @@
 				
 				<control type="panel" id="580062">
 					<description>trailers</description>
-					<!-- <visible>Control.IsVisible(58)</visible> -->
+					
 					<top>640</top>
 					<height>300</height>
 					<width>1920</width>
@@ -799,6 +799,7 @@
 								<thumb>$VAR[TVShowArt]</thumb>
 							</item>
 						</content>
+						
 						<content target="videos" sortby="file" limit="3">$VAR[58_OnlineTrailerLookup]</content>
 						<!-- <content target="videos" sortby="file" limit="3">plugin://plugin.video.youtube/search/?q=$INFO[ListItem.TVShowTitle]$INFO[System.Language, $LOCALIZE[20410] ,]</content> -->
 					</control>
@@ -927,6 +928,7 @@
 			
 			<control type="list" id="58">
 				<include>HiddenContainer</include>
+				<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
 				<onfocus>RunScript(script.embuary.helper,action=encode,string='"$INFO[ListItem.TVShowTitle]"',prop=EncodedTitle)</onfocus>
 				<onfocus>SetFocus(58001)</onfocus>
 				<viewtype label="NetflixSeason1">Netflix Info</viewtype>
@@ -1214,7 +1216,7 @@
 	</variable>
 	
 	<variable name="58_OnlineTrailerLookup">
-		<value condition="!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.youtube)">plugin://plugin.video.youtube/search/?q=$INFO[ListItem.TVShowTitle]$INFO[System.Language, $LOCALIZE[20410] ,]</value>
+		<value condition="!$EXP[IsOfflineMode] + Control.IsVisible(58) + System.HasAddon(plugin.video.youtube)">plugin://plugin.video.youtube/search/?q=$INFO[ListItem.TVShowTitle]$INFO[System.Language, $LOCALIZE[20410] ,]</value>
 	</variable>
 	<variable name="Season_PluSing">
 		<value condition="!String.IsEmpty(Container(5055).ListItem.Property(TotalSeasons)) + Integer.IsEqual(Container(5055).ListItem.Property(TotalSeasons),1)">$LOCALIZE[20373]</value>
