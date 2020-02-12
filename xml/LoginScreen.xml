@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
 	
-	<defaultcontrol always="true">52</defaultcontrol>
+	<defaultcontrol>99</defaultcontrol>
+	<onload>RunScript(script.embuary.helper,action=blurimg,file='"$VAR[LoginBackgroundImage]"',prop=loginblurred,radius=2)</onload>
+	
+	<!-- <onload>Set alarm clock + sendclick99/togglesetting</onload> -->
+	<onload condition="Skin.HasSetting(52visible)">Skin.ToggleSetting(52visible)</onload>
 	<backgroundcolor>$VAR[BackgroundColor]</backgroundcolor>
- 	
- <!-- 
+ 	<onunload condition="Skin.HasSetting(52visible)">Skin.ToggleSetting(52visible)</onunload>
+<!-- 
 	 <onload>Skin.SetBool(ClearPlaylist)</onload>
 	 <onload>Skin.SetBool(ReloadOnLogin)</onload>
 -->
@@ -23,10 +27,21 @@ ID	Type	Description
   <controls>
 		<control type="group">
 			
+			
 			<control type="image">
-				<texture colordiffuse="FF3E3E3E">blurred6.png</texture>
+				<animation effect="fade" start="0" end="100" time="250" condition="Skin.HasSetting(52visible)">conditional</animation>
+				<texture>$INFO[Window(home).Property(loginblurred_blurred)]</texture>
 			</control>
-		
+			
+			<control type="image">
+				<animation effect="fade" start="100" end="0" time="250" condition="Skin.HasSetting(52visible)">conditional</animation>
+				<texture>$VAR[LoginBackgroundImage]</texture>
+			</control>
+			
+			<!-- get a clock , fetching weather could be bad ? -->
+			 
+			
+			
 			<control type="label" id="2">
 				<top>20%</top>
 				<width>90%</width>
@@ -36,6 +51,30 @@ ID	Type	Description
 				<textcolor>5cC6C6C8</textcolor>
 				<font>HeaderBar_Media</font>
 				<label />
+				<visible>Skin.HasSetting(52visible)</visible>
+			</control>
+			
+			<control type="button" id="99">
+				
+				<include content="Animation_Item_Focus" />
+				<textoffsetx>20</textoffsetx>
+				<texturefocus colordiffuse="ff181818">colors/white50.png</texturefocus>
+				<texturenofocus />
+				<font>font60</font>
+				<focusedcolor>white</focusedcolor>
+				<textcolor>grey</textcolor>
+				<label>Welcome Back Choose Your Hit Enter</label>
+				<selected />
+				<top>45%</top>
+				<width>600</width>
+				<centerleft>50%</centerleft>
+				<height>200</height>
+				<ondown>101</ondown>
+				<onup>101</onup>
+				<onclick>Skin.ToggleSetting(52visible)</onclick>
+				<onclick>SetFocus(52)</onclick>
+				<animation effect="fade" start="100" end="2" time="250" condition="Skin.HasSetting(52visible)">conditional</animation>
+				
 			</control>
 			
 			<include content="Universal_Container">
@@ -44,22 +83,23 @@ ID	Type	Description
 				<param name="type_pos_top" value="35%" />
 				<param name="orientation" value="vertical" />
 				
-				<param name="tags_visible" value="false" />
+				<param name="tags_visible" value="true" />
 				
 				<param name="visible" value="true" />
 				
 				<param name="layout_height" value="270" />
 				<param name="layout_width" value="270" />
 				
-				<param name="itemwidth" value="230" />
-				<param name="itemheight" value="230" />
+				<param name="itemwidth" value="200" />
+				<param name="itemheight" value="200" />
 				<param name="layout" value="circle" />
-				<param name="circle_visible" value="true" />
+				<param name="circle_visible" value="false" />
 				<onup>101</onup>
 				<ondown>101</ondown>
 				<left>20%</left>
 				<right>20%</right>
-					
+				<animation effect="fade" start="100" end="0" time="0" condition="!Skin.HasSetting(52visible)">conditional</animation>
+				<animation effect="fade" start="0" end="100" time="325" condition="Skin.HasSetting(52visible)">conditional</animation>
 			</include>
 			
 			<control type="radiobutton" id="101">
@@ -77,7 +117,6 @@ ID	Type	Description
 				<textureradiooffdisabled  />
 				<texturefocus />
 				<texturenofocus />
-				
 				<focusedcolor />
 				<textcolor />
 				<label />
@@ -86,9 +125,10 @@ ID	Type	Description
 				<width>200</width>
 				<centerleft>50%</centerleft>
 				<height>100</height>
-				
-				<onup>52</onup>
-				<ondown>52</ondown>
+				<onup condition="!Skin.HasSetting(52visible)">99</onup>
+				<ondown condition="!Skin.HasSetting(52visible)">99</ondown>
+				<onup condition="Skin.HasSetting(52visible)">52</onup>
+				<ondown condition="Skin.HasSetting(52visible)">52</ondown>
 				<onclick>ActivateWindow(shutdownmenu)</onclick>
 			</control>
 				
