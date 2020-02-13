@@ -1,73 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
-	
-	<defaultcontrol>99</defaultcontrol>
-	<onload>RunScript(script.embuary.helper,action=blurimg,file='"$VAR[LoginBackgroundImage]"',prop=loginblurred,radius=2)</onload>
-	
-	<!-- <onload>Set alarm clock + sendclick99/togglesetting</onload> -->
-	<onload condition="Skin.HasSetting(52visible)">Skin.ToggleSetting(52visible)</onload>
 	<backgroundcolor>$VAR[BackgroundColor]</backgroundcolor>
- 	<onunload condition="Skin.HasSetting(52visible)">Skin.ToggleSetting(52visible)</onunload>
-	
-<!-- 
-	 <onload>Skin.SetBool(ClearPlaylist)</onload>
-	 <onload>Skin.SetBool(ReloadOnLogin)</onload>
--->
-	
+ 	<defaultcontrol always="true">99</defaultcontrol>
+	<onload>99</onload>
+	<onload>SetProperty(HideProfiles,true)</onload>
+	<onload>RunScript(script.embuary.helper,action=blurimg,file='"$VAR[LoginBackgroundImage]"',prop=loginblurred,radius=2)</onload>
+	<onload>RunScript(script.embuary.helper,action=settimer,do='"ClearProperty(HideProfiles)||SetFocus(52)"',time=4000,busydialog=false)</onload>
+	<onunload condition="!String.IsEmpty(Window.Property(HideProfiles))">ClearProperty(HideProfiles)</onunload>
 
-<!--
-
-loginscreen	WINDOW_LOGIN_SCREEN	10029	LoginScreen.xml
-	
-ID	Type	Description
-2	label	Heading label
-3	label	Number of the currently selected profile
-52	container	List of the available profiles
-
-need primary and secondary color
-
--->
-	
-  <controls>
+	<controls>
 		<control type="group">
-			
-			
 			<control type="image">
-				<animation effect="fade" start="0" end="100" time="250" condition="Skin.HasSetting(52visible)">conditional</animation>
+				<animation effect="fade" start="0" end="100" time="250" condition="String.IsEmpty(Window.Property(HideProfiles))">conditional</animation>
 				<texture>$INFO[Window(home).Property(loginblurred_blurred)]</texture>
 			</control>
 			
 			<control type="image">
-				<animation effect="fade" start="100" end="0" time="250" condition="Skin.HasSetting(52visible)">conditional</animation>
+				<animation effect="fade" start="100" end="0" time="250" condition="String.IsEmpty(Window.Property(HideProfiles))">conditional</animation>
 				<texture>$VAR[LoginBackgroundImage]</texture>
 			</control>
 			
 			<control type="label" id="2">
-				<top>20%</top>
+				<animation effect="fade" start="100" end="0" time="300" condition="!String.IsEmpty(Window.Property(HideProfiles))">conditional</animation>
+				<top>25%</top>
 				<width>90%</width>
 				<centerleft>50%</centerleft>
 				<height>100</height>
 				<align>center</align>
-				<textcolor>5cC6C6C8</textcolor>
+				<textcolor>$VAR[ProfileLogin_MainTextColor]</textcolor>
 				<font>HeaderBar_Media</font>
 				<label />
-				<!-- <visible>Skin.HasSetting(52visible)</visible> -->
 			</control>
 			
 			<control type="group">
-				<description>time and date</description>
-				<visible>!Skin.HasSetting(HideTimeDate_Header)</visible>
+				<animation effect="slide" start="0,0" end="0,-200" time="150" condition="String.IsEmpty(Window.Property(HideProfiles))">conditional</animation>
+				<description>time and date weather</description>
 				<centerleft>50%</centerleft>
-				<top>50</top>
+				<top>250</top>
 				<width>60%</width>
 				<height>300</height>
+				
 				<control type="label">
 					<width>100%</width>
 					<height>50</height>
 					<align>center</align>
 					<info>System.Time</info>
 					<font>font_clockbig</font>
-					<textcolor>$VAR[Header_TextSecondary]</textcolor>
+					<textcolor>$VAR[ProfileLogin_HighlightColor]</textcolor>
 				</control>
 				<control type="label">
 					<top>80</top>
@@ -76,68 +55,82 @@ need primary and secondary color
 					<align>center</align>
 					<info>System.Date</info>
 					<font>Header_Dialog</font>
-					<textcolor>$VAR[Header_TextMain]</textcolor>
+					<textcolor>$VAR[ProfileLogin_MainTextColor]</textcolor>
 				</control>
-				
-				
 				<control type="image">
+					<animation effect="fade" start="0" end="100" time="350">VisibleChange</animation>
+					<visible>String.IsEmpty(Window.Property(HideProfiles))</visible>
 					<top>120</top>
-					<left>8</left>
-					<description>seperator</description>
-					<visible>!Skin.HasSetting(HideTimeDate_Header)</visible>
 					<height>2</height>
 					<width>100%</width>
-					<texture colordiffuse="white">colors/white20.png</texture>
+					<texture colordiffuse="$VAR[ProfileLogin_MainTextColor]">colors/white20.png</texture>
 					<aspectratio align="center">stretch</aspectratio>
 				</control>
 				
 				<control type="group">
-					<description>weather</description>
-					<!-- <visible>!Skin.HasSetting(HideWeather_Header) + [!String.Contains(Weather.Temperature,$LOCALIZE[503]) | [!String.IsEqual(Weather.fanartcode,na) + Weather.IsFetched]]</visible> -->
-					<visible>false</visible>		
+					<visible>[!String.Contains(Weather.Temperature,$LOCALIZE[503]) | [!String.IsEqual(Weather.fanartcode,na) + Weather.IsFetched]]</visible>
 					<control type="image">
-						<top>145</top>
-						<height>100</height>
+						<top>-200</top>
+						<height>150</height>
 						<width>100%</width>
-						<texture colordiffuse="grey">$INFO[Weather.FanartCode,resource://resource.images.weathericons.outline-hd/,.png]</texture>
+						<texture colordiffuse="$VAR[ProfileLogin_MainTextColor]">$INFO[Weather.FanartCode,resource://resource.images.weathericons.outline-hd/,.png]</texture>
 						<aspectratio align="center">keep</aspectratio>
 					</control>
 					<control type="label">
-						<top>225</top>
-						<left>20</left>
+						<top>-75</top>
 						<width>100%</width>
 						<height>20</height>
 						<align>center</align>
-						<aligny>bottom</aligny>
 						<label>$INFO[Weather.Temperature]</label>
 						<font>font25_title</font>
-						<textcolor>grey</textcolor>
+						<textcolor>$VAR[ProfileLogin_MainTextColor]</textcolor>
 					</control>
 				</control>
 			</control>
 			
-			<control type="button" id="99">
-				
+			<control type="radiobutton" id="99">
+				<!-- <animation effect="zoom" start="100,100" center="auto" end="110,110" delay="0" time="600" pulse="true" condition="Control.HasFocus(99)">conditional</animation> -->
+				<animation effect="fade" start="100" end="2" time="350" condition="String.IsEmpty(Window.Property(HideProfiles))">conditional</animation>
+				<!-- <animation effect="slide" start="0,0" end="1000,0" time="350" condition="Skin.HasSetting(52visible)">conditional</animation> -->
 				<include content="Animation_Item_Focus" />
-				<textoffsetx>20</textoffsetx>
-				<texturefocus colordiffuse="ff181818">colors/white50.png</texturefocus>
-				<texturenofocus />
-				<font>font60</font>
-				<focusedcolor>white</focusedcolor>
-				<textcolor>grey</textcolor>
-				<label>[B]Welcome Back[/B][CR][I]click me soft to choose Your Profile[/I]</label>
-				<align>center</align>
-				<selected />
-				<top>45%</top>
-				<width>80%</width>
+				<description>bad positioning when labeled</description>
+				<top>40%</top>
+				<!-- <centerleft>55%</centerleft> -->
 				<centerleft>50%</centerleft>
-				<height>200</height>
+				<!-- 
+				<height>260</height>
+				<width>80%</width>
+				<radioposx>320</radioposx>
+				-->
+				<height>250</height>
+				<width>250</width>
+				<textureradioonfocus bolordiffuse="$VAR[ProfileLogin_MainTextColor]">icons/kodi_watersign2.png</textureradioonfocus>
+				<textureradioonnofocus colordiffuse="$VAR[ProfileLogin_SecondaryTextColor]">icons/kodi_watersign2.png</textureradioonnofocus>
+				<textureradioofffocus colordiffuse="$VAR[ProfileLogin_MainTextColor]">icons/kodi_watersign2.png</textureradioofffocus>
+				<textureradiooffnofocus colordiffuse="$VAR[ProfileLogin_SecondaryTextColor]">icons/kodi_watersign2.png</textureradiooffnofocus>
+				<!-- 
+				<radiowidth>200</radiowidth>
+				<radioheight>200</radioheight>
+				-->
+				<radiowidth>250</radiowidth>
+				<radioheight>250</radioheight>
+				<textureradioondisabled />
+				<textureradiooffdisabled  />
+				<texturefocus />
+				<texturenofocus />
+				<!-- 
+				<align>center</align>
+				<textoffsetx>100</textoffsetx>
+				<font>font60</font>
+				<focusedcolor>$VAR[ProfileLogin_MainTextColor]</focusedcolor>
+				<textcolor>$VAR[ProfileLogin_SecondaryTextColor]</textcolor>
+				<label>[B]Welcome Back[/B][CR][I]$LOCALIZE[20092] ?[/I]</label>
+				-->
+				<selected />
 				<ondown>101</ondown>
 				<onup>101</onup>
-				<onclick>Skin.ToggleSetting(52visible)</onclick>
+				<onclick>ClearProperty(HideProfiles)</onclick>
 				<onclick>SetFocus(52)</onclick>
-				<animation effect="fade" start="100" end="2" time="250" condition="Skin.HasSetting(52visible)">conditional</animation>
-				
 			</control>
 			
 			<include content="Universal_Container">
@@ -145,14 +138,10 @@ need primary and secondary color
 				<param name="type_height" value="460" />
 				<param name="type_pos_top" value="35%" />
 				<param name="orientation" value="vertical" />
-				
 				<param name="tags_visible" value="true" />
-				
 				<param name="visible" value="true" />
-				
 				<param name="layout_height" value="270" />
 				<param name="layout_width" value="270" />
-				
 				<param name="itemwidth" value="200" />
 				<param name="itemheight" value="200" />
 				<param name="layout" value="circle" />
@@ -161,22 +150,26 @@ need primary and secondary color
 				<ondown>101</ondown>
 				<left>20%</left>
 				<right>20%</right>
-				<onback>Skin.ToggleSetting(52visible)</onback>
-				<animation effect="fade" start="100" end="0" time="0" condition="!Skin.HasSetting(52visible)">conditional</animation>
-				<animation effect="fade" start="0" end="100" time="325" condition="Skin.HasSetting(52visible)">conditional</animation>
+				<onback>SetProperty(HideProfiles,true)</onback>
+				<onback>99</onback>
+				<!-- <animation effect="slide" start="-1000,0" end="0,0" time="350" condition="Skin.HasSetting(52visible)">conditional</animation> -->
+				<animation effect="fade" start="100" end="0" time="0" reversible="false" condition="!String.IsEmpty(Window.Property(HideProfiles))">conditional</animation>
+				<animation effect="fade" start="0" end="100" time="450" reversible="false" condition="String.IsEmpty(Window.Property(HideProfiles))">conditional</animation>
 			</include>
 			
 			<control type="radiobutton" id="101">
-				
 				<include content="Animation_Item_Focus" />
-				<textureradioonfocus bolordiffuse="white">icons/shutdown_out.png</textureradioonfocus>
-				<textureradioonnofocus colordiffuse="5cC6C6C8">icons/shutdown_out.png</textureradioonnofocus>
-				<textureradioofffocus colordiffuse="white">icons/shutdown_out.png</textureradioofffocus>
-				<textureradiooffnofocus colordiffuse="5cC6C6C8">icons/shutdown_out.png</textureradiooffnofocus>
+				<top>75%</top>
+				<width>120</width>
+				<height>120</height>
+				<centerleft>50%</centerleft>
+				<textureradioonfocus bolordiffuse="$VAR[ProfileLogin_MainTextColor]">icons/shutdown_out.png</textureradioonfocus>
+				<textureradioonnofocus colordiffuse="$VAR[ProfileLogin_SecondaryTextColor]">icons/shutdown_out.png</textureradioonnofocus>
+				<textureradioofffocus colordiffuse="$VAR[ProfileLogin_MainTextColor]">icons/shutdown_out.png</textureradioofffocus>
+				<textureradiooffnofocus colordiffuse="$VAR[ProfileLogin_SecondaryTextColor]">icons/shutdown_out.png</textureradiooffnofocus>
 				<textoffsetx />
 				<radiowidth>120</radiowidth>
 				<radioheight>120</radioheight>
-				<radioposx>3</radioposx>
 				<textureradioondisabled />
 				<textureradiooffdisabled  />
 				<texturefocus />
@@ -185,21 +178,12 @@ need primary and secondary color
 				<textcolor />
 				<label />
 				<selected />
-				<top>75%</top>
-				<width>200</width>
-				<centerleft>50%</centerleft>
-				<height>100</height>
-				<onup condition="!Skin.HasSetting(52visible)">99</onup>
-				<ondown condition="!Skin.HasSetting(52visible)">99</ondown>
-				<onup condition="Skin.HasSetting(52visible)">52</onup>
-				<ondown condition="Skin.HasSetting(52visible)">52</ondown>
+				<onup condition="!String.IsEmpty(Window.Property(HideProfiles))">99</onup>
+				<ondown condition="!String.IsEmpty(Window.Property(HideProfiles))">99</ondown>
+				<onup condition="String.IsEmpty(Window.Property(HideProfiles))">52</onup>
+				<ondown condition="String.IsEmpty(Window.Property(HideProfiles))">52</ondown>
 				<onclick>ActivateWindow(shutdownmenu)</onclick>
 			</control>
-				
 		</control>
-		
-		
-
-
 	</controls>
 </window>
