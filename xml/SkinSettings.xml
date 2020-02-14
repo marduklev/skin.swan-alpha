@@ -14,7 +14,7 @@
 		<control type="group">
 			<depth>DepthContentPanel</depth>
 			
-			<animation effect="slide" start="0,0" end="-100,0" time="250" condition="String.StartsWith(Window(home).Property(DialogHeader),Background)">Conditional</animation>
+			<animation effect="slide" start="0,0" end="-100,0" time="250" condition="String.Contains(Window(home).Property(DialogHeader),Background)">Conditional</animation>
 			
 			<control type="list" id="9000">
 				<description>Sections</description>
@@ -79,8 +79,8 @@
 					<item id="8">
 						<label>C U S T O M    C O L O R S</label>
 					</item>
-					<item id="9">
-						<label>$NUMBER[9]</label>
+					<item id="10">
+						<label>S H U T D O W N    M E N U</label>
 					</item>
 				</content>
 			</control>
@@ -1570,6 +1570,197 @@
 				<height>3</height>
 				<texture colordiffuse="red" border="2">dialogs/separator-grey.png</texture>
 			</control>
+			
+			
+			<include content="ButtonList">
+				<param name="id" value="10" />
+				<param name="itemgap" value="0" />
+				<description>S H U T D O W N    M E N U</description>
+				<visible>Container(9000).HasFocus($PARAM[id])</visible>
+				<visible>System.HasAddon(script.skin.helper.colorpicker)</visible>
+				
+				<!-- give info about reset using def / themed setting -->
+				
+				<!-- install script if wished -->
+				<!-- 
+				<onclick condition="!System.HasAddon(script.skin.helper.colorpicker)">RunPlugin(plugin://script.skin.helper.colorpicker)</onclick>
+				<visible>!System.HasAddon(script.skin.helper.colorpicker)</visible> -->
+				<include content="SectionHeadline">
+					<param name="id" value="$PARAM[id]000"/>
+					<param name="label" value="S H U T D O W N M E N U    C O L O R S"/>
+				</include>
+				<control type="radiobutton" id="$PARAM[id]001">
+					<label>Prefer Blurred BG Panel</label>
+					<onclick>Skin.ToggleSetting(Shutdown_BlurBG)</onclick>
+					<selected>Skin.HasSetting(Shutdown_BlurBG)</selected>
+				</control>
+				<include content="SkinSettings_ColorButton">
+					<param name="id" value="002" />
+					<param name="label" value="Dimm Color" />
+					<param name="skinsetting" value="Shutdown_DimmedBG" />
+				</include>
+				<include content="SkinSettings_ColorButton">
+					<param name="id" value="003" />
+					<param name="label" value="Main Color" />
+					<param name="skinsetting" value="Shutdown_FO" />
+				</include>
+				<include content="SkinSettings_ColorButton">
+					<param name="id" value="004" />
+					<param name="label" value="Secondary Color" />
+					<param name="skinsetting" value="Shutdown_NF" />
+				</include>
+				
+				<include content="SectionHeadline">
+					<param name="id" value="$PARAM[id]010"/>
+					<param name="label" value="C H O O S E    Y O U R    S H U T D O W N M E N U    I T E M S"/>
+				</include>
+				<control type="radiobutton" id="$PARAM[id]011">
+					<label>Hide Shutdown Device Button</label>
+					<onclick>Skin.ToggleSetting(DialogButton_HidePowerOff)</onclick>
+					<selected>Skin.HasSetting(DialogButton_HidePowerOff)</selected>
+				</control>
+				<control type="radiobutton" id="$PARAM[id]012">
+					<label>Hide Quit Kodi Button</label>
+					<onclick>Skin.ToggleSetting(DialogButton_HidePowerExit)</onclick>
+					<selected>Skin.HasSetting(DialogButton_HidePowerExit)</selected>
+				</control>
+				<control type="radiobutton" id="$PARAM[id]013">
+					<label>Hide Settings Button</label>
+					<onclick>Skin.ToggleSetting(DialogButton_HidePowerSettings)</onclick>
+					<selected>Skin.HasSetting(DialogButton_HidePowerSettings)</selected>
+				</control>
+				<control type="radiobutton" id="$PARAM[id]014">
+					<label>Hide Power Timer Button</label>
+					<onclick>Skin.ToggleSetting(DialogButton_HidePowerTimer)</onclick>
+					<selected>Skin.HasSetting(DialogButton_HidePowerTimer)</selected>
+				</control>
+				<control type="radiobutton" id="$PARAM[id]015">
+					<label>Hide System Suspend Button</label>
+					<onclick>Skin.ToggleSetting(DialogButton_HidePowerSuspend)</onclick>
+					<selected>Skin.HasSetting(DialogButton_HidePowerSuspend)</selected>
+				</control>
+				<control type="radiobutton" id="$PARAM[id]016">
+					<label>Hide System Hibernate Button</label>
+					<onclick>Skin.ToggleSetting(DialogButton_HidePowerHibernate)</onclick>
+					<selected>Skin.HasSetting(DialogButton_HidePowerHibernate)</selected>
+				</control>
+				<control type="radiobutton" id="$PARAM[id]017">
+					<label>Hide System Inhibit Idle Shutdown Button</label>
+					<onclick>Skin.ToggleSetting(DialogButton_HidePowerIdleShutdown)</onclick>
+					<selected>Skin.HasSetting(DialogButton_HidePowerIdleShutdown)</selected>
+				</control>
+				
+				<!-- 
+				<control type="group">
+				just idea use sqaure panel to toggle settings, maybe later on 
+					<include content="Universal_Container">
+							<param name="id" value="54" />
+							<param name="type_height" value="500" />
+							<param name="type_pos_top" value="10" />
+							<param name="orientation" value="vertical" />
+							
+							<param name="tags_visible" value="false" />
+							
+							<param name="visible" value="true" />
+							
+							<param name="layout_height" value="200" />
+							<param name="layout_width" value="200" />
+							
+							<param name="itemheight" value="200" />
+							<param name="itemwidth" value="200" />
+						
+							<param name="layout" value="circle" />
+							
+							
+						
+						
+					<content>
+						<item>
+							<label>$LOCALIZE[10000]</label>
+							<icon>icons/home.png</icon>
+							
+							<onclick>Skin.ToggleSetting(DialogButton_HideHome)</onclick>
+							<visible>!Window.IsVisible(loginscreen) + !Window.IsVisible(home)</visible>
+						</item>
+						<item>
+							<label>$LOCALIZE[5]</label>
+							<icon>icons/FINISHED_800on1000_settings1.png</icon>
+							<onclick>Dialog.Close(all,true)</onclick>
+							<onclick>ActivateWindow(settings)</onclick>
+							<visible>!Window.IsVisible(loginscreen) + !Window.IsVisible(settings) + !Skin.HasSetting(HidePowerSettings)</visible>
+						</item>
+						<item>
+							<label>$LOCALIZE[13012]</label>
+							<icon>icons/left.png</icon>
+							<onclick>Quit()</onclick>
+							<visible>System.Platform.Android | [System.ShowExitButton + [!Skin.HasSetting(HidePowerExit) | Window.IsVisible(loginscreen)]]</visible>
+						</item>
+						<item>
+							<label>$LOCALIZE[13016]</label>
+							<icon>icons/shutdown_out.png</icon>
+							<onclick>Powerdown()</onclick>
+							<visible>System.CanPowerDown + [!Skin.HasSetting(HidePowerOff) | Window.IsVisible(loginscreen)]</visible>
+						</item>
+						<item>
+							<label>$LOCALIZE[20150]</label>
+							<onclick>AlarmClock(shutdowntimer,Shutdown())</onclick>
+							<visible>!System.HasAlarm(shutdowntimer) + !Skin.HasSetting(HidePowerTimer)</visible>
+							<visible>System.CanPowerDown | System.CanSuspend | System.CanHibernate</visible>
+						</item>
+						<item>
+							<label>$LOCALIZE[20151] $INFO[System.AlarmPos,(,)]</label>
+							<onclick>CancelAlarm(shutdowntimer)</onclick>
+							<visible>System.HasAlarm(shutdowntimer) + !Skin.HasSetting(HidePowerTimer)</visible>
+						</item>
+						<item>
+							<label>$LOCALIZE[13011]</label>
+							<onclick>Suspend()</onclick>
+							<visible>System.CanSuspend + [!Skin.HasSetting(HidePowerSuspend) | Window.IsVisible(loginscreen)]</visible>
+						</item>
+						<item>
+							<label>$LOCALIZE[13010]</label>
+							<label2></label2>
+							<onclick>Hibernate()</onclick>
+							<visible>System.CanHibernate + [!Skin.HasSetting(HidePowerHibernate) | Window.IsVisible(loginscreen)]</visible>
+						</item>
+						<item>
+							<label>$LOCALIZE[13017]</label>
+							<label2></label2>
+							<onclick>InhibitIdleShutdown(true)</onclick>
+							<visible>System.HasShutdown + !System.IsInhibit + !Skin.HasSetting(HidePowerIdleShutdown)</visible>
+						</item>
+						<item>
+							<label>$LOCALIZE[13018]</label>
+							<label2></label2>
+							<onclick>InhibitIdleShutdown(false)</onclick>
+							<visible>System.HasShutdown + System.IsInhibit + !Skin.HasSetting(HidePowerIdleShutdown)</visible>
+						</item>
+						<item>
+							<label>$LOCALIZE[20126] $INFO[system.profilename]</label>
+							<label2></label2>
+							<onclick>Dialog.Close(all,true)</onclick>
+							<onclick>System.LogOff</onclick>
+							<visible>System.HasLoginScreen | Integer.IsGreater(System.ProfileCount,1)</visible>
+							<visible>System.Loggedon</visible>
+						</item>
+						<item>
+							<label>$LOCALIZE[20046]</label>
+							<label2></label2>
+							<onclick>mastermode</onclick>
+							<visible>System.HasLocks + System.IsMaster + !Window.IsVisible(loginscreen)</visible>
+						</item>
+						<item>
+							<label>$LOCALIZE[20045]</label>
+							<label2></label2>
+							<onclick>mastermode</onclick>
+							<visible>System.HasLocks + !System.IsMaster + !Window.IsVisible(loginscreen)</visible>
+						</item>
+						</content>
+					</include>
+					
+				</control> -->
+				
+			</include>
 		</control>
 		
 		<!-- ScrollBar -->
@@ -1583,9 +1774,11 @@
 			<onleft condition="Control.IsVisible(2)">2</onleft>
 			<onright condition="Control.IsVisible(2)">2</onright>
 			<onleft condition="Control.IsVisible(4)">4</onleft>
-			<onright condition="Control.IsVisible(6)">4</onright>
-				<onleft condition="Control.IsVisible(6)">6</onleft>
 			<onright condition="Control.IsVisible(4)">4</onright>
+			<onleft condition="Control.IsVisible(5)">5</onleft>
+			<onright condition="Control.IsVisible(5)">5</onright>
+			<onleft condition="Control.IsVisible(6)">6</onleft>
+			<onright condition="Control.IsVisible(6)">6</onright>
 			<onleft condition="Control.IsVisible(8)">8</onleft>
 			<onright condition="Control.IsVisible(8)">8</onright>
 			

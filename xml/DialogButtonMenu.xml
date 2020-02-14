@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 	
-ID 		Type 	Description
-3100 	label 	Label of the focused button  
-
-decide if wanna of skinshortcuts 
--->
 <window>
+	<onload condition="Skin.HasSetting(Shutdown_BlurBG)">RunScript(script.embuary.helper,action=blurimg,file='"$VAR[FanartBackground]"',prop=dialogbuttonbg,radius=3)</onload>
 	<defaultcontrol always="true">6000</defaultcontrol>
 	<controls>
 		<control type="group">
@@ -13,55 +8,85 @@ decide if wanna of skinshortcuts
 				<param name="slide_start" value="0,0" />
 				<param name="slide_end" value="0,0" />
 			</include>
-			<control type="image">
-				<width>100%</width>
-				<height>100%</height>
-				<texture colordiffuse="CC000000">colors/white.png</texture>
-				<aspectratio>stretch</aspectratio>
+			
+			<control type="group">
+				<visible>!Window.IsMedia | !Skin.HasSetting(Shutdown_BlurBG)</visible>
+				<control type="image">
+					<width>100%</width>
+					<height>100%</height>
+					<texture colordiffuse="$VAR[Shutdown_DimmedBG]">colors/white70.png</texture>
+					<aspectratio>stretch</aspectratio>
+				</control>
+				<control type="image">
+					<description>no blur</description>
+					<centertop>50%</centertop>
+					<width>100%</width>
+					<height>320</height>
+					<bordersize></bordersize>
+					<texture colordiffuse="$VAR[Shutdown_DimmedBG]">colors/white90.png</texture>
+				</control>
 			</control>
 			
-			<control type="image">
-				<centertop>50%</centertop>
-				<width>100%</width>
-				<height>300</height>
-				<texture colordiffuse="ffCCCCCC">colors/white.png</texture>
-				<aspectratio>stretch</aspectratio>
+			<control type="group">
+				<visible>Window.IsMedia + Skin.HasSetting(Shutdown_BlurBG)</visible>
+				<control type="image">
+					<texture>$VAR[FanartBackground]</texture>
+				</control>
+				<control type="image">
+					<texture diffuse="diffuse/white_ls_blur320center.png">$INFO[Window(home).Property(dialogbuttonbg_blurred)]</texture>
+				</control>
+				<control type="image">
+					<texture colordiffuse="$VAR[Shutdown_DimmedBG]">colors/white70.png</texture>
+				</control> 
 			</control>
-
-			<!-- Time -->
-			<control type="grouplist">
-				<right>0</right>
-				<left>0</left>
-				<height>110</height>
-				<width>100%</width>
-				<align>center</align>
-				<centertop>25%</centertop>
-				<itemgap>10</itemgap>
-				<orientation>horizontal</orientation>
-				<usecontrolcoords>true</usecontrolcoords>
+			
+			<control type="group">
+				<description>time and date weather</description>
+				<centerleft>50%</centerleft>
+				<top>250</top>
+				<width>60%</width>
+				<height>100%</height>
+				
 				<control type="label">
-					<width>auto</width>
-					<height>148</height>
-					<font>font52_title</font>
-					<label>$INFO[System.Time(HH)]</label>
+					<width>100%</width>
+					<height>50</height>
+					<align>center</align>
+					<info>System.Time</info>
+					<font>font_clockbig</font>
+					<textcolor>$VAR[Shutdown_NF]</textcolor>
 				</control>
 				<control type="label">
-					<animation effect="fade" start="100" end="30" tween="sine" easing="inout" time="800" pulse="true" reversible="false" condition="true">Conditional</animation>
-					<width>auto</width>
-					<height>148</height>
-					<font>font52_title</font>
-					<label>:</label>
+					<top>80</top>
+					<width>100%</width>
+					<height>20</height>
+					<align>center</align>
+					<info>System.Date</info>
+					<font>Header_Dialog</font>
+					<textcolor>$VAR[Shutdown_FO]</textcolor>
 				</control>
-				<control type="label">
-					<width>auto</width>
-					<height>148</height>
-					<font>font52_title</font>
-					<label>$INFO[System.Time(mm)]</label>
-					
+				
+				<control type="group">
+					<visible>[!String.Contains(Weather.Temperature,$LOCALIZE[503]) + [!String.IsEqual(Weather.fanartcode,na) + Weather.IsFetched]]</visible>
+					<control type="image">
+						<top>-200</top>
+						<height>150</height>
+						<width>100%</width>
+						<texture colordiffuse="$VAR[Shutdown_FO]">$INFO[Weather.FanartCode,resource://resource.images.weathericons.outline-hd/,.png]</texture>
+						<aspectratio align="center">keep</aspectratio>
+					</control>
+					<control type="label">
+						<top>-75</top>
+						<width>100%</width>
+						<height>20</height>
+						<align>center</align>
+						<label>$INFO[Weather.Temperature]</label>
+						<font>font25_title</font>
+						<textcolor>$VAR[Shutdown_FO]</textcolor>
+					</control>
 				</control>
+			
 			</control>
-
-			<!-- Items -->
+			
 			<control type="group">
 				<centerleft>51%</centerleft>
 				<centertop>50%</centertop>
@@ -72,9 +97,6 @@ decide if wanna of skinshortcuts
 					<param name="movement" />
 					<param name="focusposition" />
 					<param name="id" value="6000" />
-					<param name="tagnf" value="grey" />
-					<param name="tagfo" value="green" />
-					<param name="layout" value="ThumbLayout_Settingssquare" />
 					<param name="visible" value="Integer.IsGreater(Container(6000).NumItems,0) | Container(6000).IsUpdating]" />
 					<content>
 					<item>
@@ -89,79 +111,79 @@ decide if wanna of skinshortcuts
 						<icon>icons/FINISHED_800on1000_settings1.png</icon>
 						<onclick>Dialog.Close(all,true)</onclick>
 						<onclick>ActivateWindow(settings)</onclick>
-						<visible>!Window.IsVisible(loginscreen) + !Window.IsVisible(settings) + !Skin.HasSetting(HidePowerSettings)</visible>
+						<visible>!Window.IsVisible(loginscreen) + !Window.IsVisible(settings) + !Skin.HasSetting(DialogButton_HidePowerSettings)</visible>
 					</item>
 					<item>
 						<label>$LOCALIZE[13012]</label>
 						<icon>icons/left.png</icon>
 						<onclick>Quit()</onclick>
-						<visible>System.Platform.Android | [System.ShowExitButton + [!Skin.HasSetting(HidePowerExit) | Window.IsVisible(loginscreen)]]</visible>
+						<visible>System.Platform.Android | [System.ShowExitButton + [!Skin.HasSetting(DialogButton_HidePowerExit) | Window.IsVisible(loginscreen)]]</visible>
 					</item>
 					<item>
 						<label>$LOCALIZE[13016]</label>
 						<icon>icons/shutdown_out.png</icon>
 						<onclick>Powerdown()</onclick>
-						<visible>System.CanPowerDown + [!Skin.HasSetting(HidePowerOff) | Window.IsVisible(loginscreen)]</visible>
+						<visible>System.CanPowerDown + [!Skin.HasSetting(DialogButton_HidePowerOff) | Window.IsVisible(loginscreen)]</visible>
 					</item>
 					<item>
 						<label>$LOCALIZE[20150]</label>
+						<icon>icons/material/set_alarm.png</icon>
 						<onclick>AlarmClock(shutdowntimer,Shutdown())</onclick>
-						<visible>!System.HasAlarm(shutdowntimer) + !Skin.HasSetting(HidePowerTimer)</visible>
-						<visible>System.CanPowerDown | System.CanSuspend | System.CanHibernate</visible>
+						<visible>!System.HasAlarm(shutdowntimer) + !Skin.HasSetting(DialogButton_HidePowerTimer) + [System.CanPowerDown | System.CanSuspend | System.CanHibernate]</visible>
 					</item>
 					<item>
 						<label>$LOCALIZE[20151] $INFO[System.AlarmPos,(,)]</label>
+						<icon>icons/material/cancel_alarm.png</icon>
 						<onclick>CancelAlarm(shutdowntimer)</onclick>
-						<visible>System.HasAlarm(shutdowntimer) + !Skin.HasSetting(HidePowerTimer)</visible>
+						<visible>System.HasAlarm(shutdowntimer) + !Skin.HasSetting(DialogButton_HidePowerTimer)</visible>
 					</item>
 					<item>
 						<label>$LOCALIZE[13011]</label>
 						<onclick>Suspend()</onclick>
-						<visible>System.CanSuspend + [!Skin.HasSetting(HidePowerSuspend) | Window.IsVisible(loginscreen)]</visible>
+						<visible>System.CanSuspend + [!Skin.HasSetting(DialogButton_HidePowerSuspend) | Window.IsVisible(loginscreen)]</visible>
 					</item>
 					<item>
 						<label>$LOCALIZE[13010]</label>
+						<icon>icons/hib_unframed1.png</icon>
 						<label2></label2>
 						<onclick>Hibernate()</onclick>
-						<visible>System.CanHibernate + [!Skin.HasSetting(HidePowerHibernate) | Window.IsVisible(loginscreen)]</visible>
+						<visible>System.CanHibernate + [!Skin.HasSetting(DialogButton_HidePowerHibernate) | Window.IsVisible(loginscreen)]</visible>
 					</item>
 					<item>
 						<label>$LOCALIZE[13017]</label>
 						<label2></label2>
 						<onclick>InhibitIdleShutdown(true)</onclick>
-						<visible>System.HasShutdown + !System.IsInhibit + !Skin.HasSetting(HidePowerIdleShutdown)</visible>
+						<visible>System.HasShutdown + !System.IsInhibit + !Skin.HasSetting(DialogButton_HidePowerIdleShutdown)</visible>
 					</item>
 					<item>
 						<label>$LOCALIZE[13018]</label>
 						<label2></label2>
 						<onclick>InhibitIdleShutdown(false)</onclick>
-						<visible>System.HasShutdown + System.IsInhibit + !Skin.HasSetting(HidePowerIdleShutdown)</visible>
+						<visible>System.HasShutdown + System.IsInhibit + !Skin.HasSetting(DialogButton_HidePowerIdleShutdown)</visible>
 					</item>
 					<item>
-						<label>$LOCALIZE[20126] $INFO[system.profilename]</label>
+						<label>$LOCALIZE[20126][CR]$INFO[system.profilename]</label>
 						<label2></label2>
+						<icon>icons/profile_logoff_2.png</icon>
 						<onclick>Dialog.Close(all,true)</onclick>
 						<onclick>System.LogOff</onclick>
-						<visible>System.HasLoginScreen | Integer.IsGreater(System.ProfileCount,1)</visible>
-						<visible>System.Loggedon</visible>
+						<visible>[System.HasLoginScreen | Integer.IsGreater(System.ProfileCount,1)] + System.Loggedon</visible>
 					</item>
 					<item>
 						<label>$LOCALIZE[20046]</label>
 						<label2></label2>
 						<onclick>mastermode</onclick>
-						<visible>System.HasLocks + System.IsMaster + !Window.IsVisible(loginscreen)</visible>
+						<visible>!Window.IsVisible(loginscreen) + System.HasLocks + System.IsMaster + !Window.IsVisible(loginscreen)</visible>
 					</item>
 					<item>
 						<label>$LOCALIZE[20045]</label>
 						<label2></label2>
 						<onclick>mastermode</onclick>
-						<visible>System.HasLocks + !System.IsMaster + !Window.IsVisible(loginscreen)</visible>
+						<visible>!Window.IsVisible(loginscreen) + System.HasLocks + !System.IsMaster</visible>
 					</item>
 					</content>
-				</include>
-			
+				</include>	
 			</control>
 		</control>
-		<include content="swan_debug_overlay" />
 	</controls>
 </window>

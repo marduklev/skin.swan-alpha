@@ -3,12 +3,22 @@
 	<defaultcontrol always="true">2323</defaultcontrol>
 	<menucontrol>9000</menucontrol>
 	<backgroundcolor>$VAR[BackgroundColor]</backgroundcolor>
-	<!-- start up -->
-	<onload condition="!Skin.HasSetting(BlurEnabled)">Skin.ToggleSetting(BlurEnabled)</onload>		
-	<onload condition="String.IsEmpty(Skin.String(BlurContainer))">Skin.SetString(BlurContainer,99005)</onload>
-	<onload condition="!Skin.HasSetting(BlurEnabled)">RunScript(script.embuary.helper,action=restartservice)</onload>
-	
+	<onload>RunScript(script.embuary.helper,action=blurimg,file='"$VAR[LoginBackgroundImage]"',prop=profileloginbg,radius=2)</onload>
+	<onunload>ClearProperty(profileloginbg_blurred,home)</onunload>
+	<onunload>ClearProperty(profileloginbg_color,home)</onunload>
+
 	<controls>
+		<control type="group">
+			<control type="image">
+				<animation effect="fade" start="0" end="100" time="250" condition="String.IsEmpty(Window.Property(HideProfiles))">conditional</animation>
+				<texture diffuse="icons/kodi_diffusor_ls_inverted.png">$INFO[Window(home).Property(profileloginbg_blurred)]</texture>
+			</control>
+			
+			<control type="image">
+				<texture diffuse="icons/kodi_diffusor_ls.png">$VAR[LoginBackgroundImage]</texture>
+			</control>
+		</control>
+	
 		
 		
 		<!-- test
@@ -23,10 +33,11 @@ options/ use var diffuse?
 
 4. just transitional fade when focus/unfocus controls -  dialog o/c usage
 -->
+		<!-- 
 		<control type="group">
 			<include content="GlobalBlurredBackground" />
 		</control>
-		
+		 -->
 		<control type="group">
 		
 		
@@ -83,17 +94,7 @@ options/ use var diffuse?
 				<content>videodb://movies/titles/</content>
 		</control>
 	</control>
-	<control type="button" id="9000">
-		<height>500</height>
-		<top>200</top>
-		<width>1200</width>
-		<label>$INFO[Window(home).property(listitem_blurred),listitem_blurred : , ][CR]$INFO[Window(home).property(listitem_color),listitem_color : , ][CR]$INFO[Skin.String(BlurRadius),BlurRadius : , ]$INFO[Skin.String(BlurContainer),BlurContainer : , ]</label>
-		<textcolor>white</textcolor>
-		<onclick>Skin.SetString(BlurRadius,5)</onclick>
-		<onclick>RunScript(script.embuary.helper,action=restartservice)</onclick>
-				
-				
-	</control>
+	
 	<!--
 Default image control
 
