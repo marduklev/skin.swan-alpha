@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
-	
-	
-	
 	<!-- untested - Genre,Studio bg ,move me-->
 	<include name="Genre_BG">
 		<control type="image">
@@ -446,7 +443,7 @@
 		<definition>
 		
 		<control type="image">
-			<description>testing framed border instead fullbg texture, </description>
+			<description>testing framed border instead fullbg texture</description>
 			<texture>artworkdiffuse/$PARAM[artwork]border.png</texture>
 			<colordiffuse>$PARAM[colordiffuse]</colordiffuse>
 			<bordersize>$PARAM[bordersize_bg]</bordersize>
@@ -461,7 +458,7 @@
 			<description>kodi default, aspectratio scalediffuse="true" aligny="center" align="center" stretch</description>
 			<texture background="true" diffuse="artworkdiffuse/$PARAM[artwork].png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
 			<bordersize>8</bordersize>
-			<visible>!String.IsEmpty(ListItem.Art($PARAM[artwork]))</visible>
+			<visible>!String.IsEmpty(ListItem.Art($PARAM[artwork])) + ![Container.Content(studios) | String.IsEqual(ListItem.dbtype,studio)]</visible>
 		</control>
 		
 		<control type="image">
@@ -469,8 +466,28 @@
 			<texture background="true" diffuse="artworkdiffuse/$PARAM[artwork].png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
 			<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
 			<bordersize>8</bordersize>
-			<visible>String.IsEmpty(ListItem.Art($PARAM[artwork]))</visible>
+			<visible>String.IsEmpty(ListItem.Art($PARAM[artwork])) + ![Container.Content(studios) | String.IsEqual(ListItem.dbtype,studio)]</visible>
 		</control>
+		
+		<control description="aspect keep" type="group">
+			<visible>[Container.Content(studios) | String.IsEqual(ListItem.dbtype,studio)]</visible>
+			<control type="image">
+				<texture fallback="defaultstudios.png" background="true" diffuse="artworkdiffuse/$PARAM[artwork].png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
+				<aspectratio scalediffuse="false" aligny="center" align="center">keep</aspectratio>
+				<bordersize>8</bordersize>
+			</control>
+			<control type="textbox">
+				<visible>false</visible>
+				<info>listitem.label</info>
+				<centertop>50%</centertop>
+				<align>center</align>
+				<wrapmultiline>true</wrapmultiline>
+				<left>15</left>
+				<right>15</right>
+				<font>debug</font>
+			</control>
+		</control>
+		
 
 		<control type="group">
 			<visible>$PARAM[get_circle]</visible>
@@ -895,7 +912,7 @@ top-->
 		<!-- normal fanart background -->
         <value condition="Control.IsVisible(99006) + !String.IsEmpty(Control.GetLabel(99006))">$INFO[Control.GetLabel(99006)]</value>
 		<!-- fallback home sections -->
-		<value condition="xy">$INFO[Container(9000).ListItem.Property(FanartThumb)]</value>
+		<value condition="xystaticitemsegweather">$INFO[ListItem.Property(FanartThumb)]</value>
 	</variable>
 	
 	
@@ -921,53 +938,48 @@ top-->
 		<value condition="!String.IsEmpty(Container.ListItem.Property(ListItem.Art(clearlogo)))">$INFO[Container.ListItem.Property(ListItem.Art(clearlogo))]</value>
 		-->
 	</variable>
-	<variable name="ImageLayout_poster">
-		<value condition="String.IsEqual(ListItem.Label,..)">defaultfolderback.png</value>
-		<value condition="Skin.HasSetting(EnableAnimatedPosters) + !String.IsEmpty(ListItem.Art(animatedposter))">$INFO[ListItem.Art(animatedposter)]</value> <!-- make var !Skin.HasSetting(AnimatedPostersDisabledInLists) -->
-		
-		<value condition="Container.Content(seasons) + String.StartsWith(ListItem.Label,*) + !String.IsEmpty(ListItem.Art(tvshow.poster))">$INFO[ListItem.Art(tvshow.poster)]</value>
-		
-		<value condition="!String.IsEmpty(ListItem.Art(season.poster))">$INFO[ListItem.Art(season.poster)]</value>
-		<value condition="Container.Content(seasons) + String.IsEqual(ListItem.DBType,season) + String.IsEmpty(ListItem.Art(season.poster))">$INFO[ListItem.Art(thumb)]</value>
-		
-		<value condition="!String.IsEmpty(ListItem.Art(tvshow.poster))">$INFO[ListItem.Art(tvshow.poster)]</value>
-		
-		<value condition="!String.IsEmpty(ListItem.Art(poster))">$INFO[ListItem.Art(poster)]</value>
-		
-		<value condition="!String.IsEmpty(ListItem.Property(poster))">$INFO[ListItem.Property(poster)]</value>
-		
-		<value condition="Container.Content(seasons) + !String.IsEmpty(ListItem.Icon)">$INFO[ListItem.Icon]</value>
-		
-		<value condition="!String.IsEmpty(ListItem.Thumb)">$INFO[ListItem.Thumb]</value>
-		
-		<value condition="String.IsEqual(ListItem.Label,..)">dialogs/filebrowser/DefaultFolderBack.png</value>
-		
-		<value condition="String.IsEqual(ListItem.Label,$LOCALIZE[21452])">dialogs/filebrowser/DefaultAddSource.png</value>
-		
+	
+		<!-- check resource addon countries content -->
+		<!-- 
 		<value condition="[Container.Content(genres) | String.IsEqual(ListItem.DBTYPE,genre)] + String.Contains(ListItem.FolderPath,music)">$VAR[MusicGenreIconVarList]</value>
 		<value condition="[Container.Content(genres) | String.IsEqual(ListItem.DBTYPE,genre)]">$VAR[MovieGenreIconVarList]</value>
 		
-		<value condition="Container.Content(studios)">$INFO[Skin.String(studiologos.path)]$INFO[ListItem.Label].png</value>
 		
-		<value condition="Container.Content(actors) + String.IsEmpty(ListItem.Thumb)">DefaultActorPoster.png</value>
+		defaulticon working
+		<value condition="[Container.Content(countries) | String.IsEqual(ListItem.dbtype,country)]">defaultcountry.png</value>
+		<value condition="[Container.Content(tags) | String.IsEqual(ListItem.dbtype,tag)]">defaulttags.png</value>
+		<value condition="[Container.Content(genres) | String.IsEqual(ListItem.dbtype,genre)]">defaultgenre.png</value>
+		<value condition="[Container.Content(actors) | String.IsEqual(ListItem.dbtype,actor)] + String.IsEmpty(ListItem.icon)">defaultactor.png</value>
 		
-		<value condition="Container.Content(directors) + String.IsEmpty(ListItem.Thumb)">DefaultActorPoster.png</value>
 		
-		<value condition="!String.IsEmpty(ListItem.Property(character)) + String.IsEmpty(ListItem.Thumb)">DefaultActorPoster.png</value>
-		<value condition="!String.IsEmpty(ListItem.Property(job)) + String.IsEmpty(ListItem.Thumb)">DefaultActorPoster.png</value>
+		defaulticon doesnt working  , fall back to defaultfolder
+		<value condition="Window.IsActive(videos) + [Container.Content(genres) | String.IsEqual(ListItem.DBTYPE,genre)]">defaultgenre.png</value>
+		<value condition="Window.IsActive(music) + [Container.Content(genres) | String.IsEqual(ListItem.DBTYPE,genre)]">defaultmusicgenres.png</value>
+		<value condition="[Container.Content(directors) | String.IsEqual(ListItem.dbtype,director)]">defaultdirector.png</value>
+		<value condition="Container.Content(years)">defaultyear.png</value>
+			
+		-->
+		<!-- use extra img control in layout to have unique id, if fail use textlabel -->
 		
-		<value condition="Container.Content(years)">DefaultYear.png</value>
 		
-		<value condition="Container.Content(countries)">DefaultCountry.png</value>
-		
-		<value condition="Container.Content(tags)">DefaultTags.png</value>
-		
+	<variable name="ImageLayout_poster">
+		<value condition="[Container.Content(studios) | String.IsEqual(ListItem.dbtype,studio)]">$INFO[ListItem.Label,resource://resource.images.studios.white/,.png]</value>
+		<value condition="String.IsEqual(ListItem.Label,..)">defaultfolderback.png</value>
+		<value condition="String.IsEqual(ListItem.Label,$LOCALIZE[21452])">defaultaddoninputstream.png</value>
+		<value condition="String.IsEqual(ListItem.Label,$LOCALIZE[20462])">defaultaddsource.png</value>
+		<value condition="Skin.HasSetting(EnableAnimatedPosters) + !String.IsEmpty(ListItem.Art(animatedposter))">$INFO[ListItem.Art(animatedposter)]</value>
+		<value condition="String.Contains(ListItem.Label,*) + !String.IsEmpty(Container.Art(thumb))">$INFO[Container.Art(thumb)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(poster))">$INFO[ListItem.Art(poster)]</value>
+		<value condition="!String.IsEmpty(ListItem.Property(poster))">$INFO[ListItem.Property(poster)]</value>
+		<!-- kodi bug defaulticons workaraound as they fail by default-->
+			<value condition="Window.IsActive(videos) + [Container.Content(genres) | String.IsEqual(ListItem.DBTYPE,genre)]">defaultgenre.png</value>
+			<value condition="Window.IsActive(music) + [Container.Content(genres) | String.IsEqual(ListItem.DBTYPE,genre)]">defaultmusicgenres.png</value>
+			<value condition="[Container.Content(directors) | String.IsEqual(ListItem.dbtype,director)]">defaultdirector.png</value>
+			<value condition="Container.Content(years)">defaultyear.png</value>
 		<value condition="!String.IsEmpty(ListItem.Icon)">$INFO[ListItem.Icon]</value>
 		
 	</variable>
 	
-	
-    
 	<variable name="ImageLayout_fanart">
 		<value condition="String.IsEqual(ListItem.Label,..)">defaultfolderback.png</value>
 		
