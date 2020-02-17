@@ -236,18 +236,11 @@
 					<control type="panel" id="580051">
 						<description>i want wo be the native control id58,personal prefered pos linked movies + seasons, no back(circumstance with get bool posible?),no flatten/all seasons,sortby season or year</description>
 						
-						<!-- note : wished poster 1st item season content other
-						- contra - scroll vertical trough all seasons is not nice behaviour
-						- use vertical break the wished look
-						
-						- acceptable solution can be a (icon)buttongrouplis group on left side indicate container contetns (nextup/seasons/cast/similiar) as scrollbar replacement 
-						-->
 						
 						<include>58_OnBackAction</include>
 						<top>160</top>
 						<width>96%</width>
 						<height>370</height>
-						<!-- conditional slide based on num items ? -->
 						
 						<onup>58004</onup>
 						<ondown condition="Integer.IsGreater(Container(580052).NumItems,0)">Control.SetFocus(580052,0,absolute)</ondown>
@@ -684,7 +677,7 @@
 					<description>PAGE 4, cast and trailer</description>
 					<left>130</left>
 					<height>1080</height>
-					<visible>Integer.IsGreater(Container(580061).NumItems,0) | Container(580061).IsUpdating | Integer.IsGreater(Container(580062).NumItems,0) | Container(580062).IsUpdating</visible>
+					<visible>[Integer.IsGreater(Container(580061).NumItems,0) | Container(580061).IsUpdating] | [Integer.IsGreater(Container(580062).NumItems,0) | Container(580062).IsUpdating]</visible>
 					<include content="Special_Header">
 						<param name="visible" value="Integer.IsGreater(Container(580061).NumItems,0) | Container(580061).IsUpdating" />
 						<param name="pos_top" value="80" />
@@ -696,7 +689,6 @@
 						<ondown condition="Control.IsVisible(580062)">580062</ondown>
 						<ondown condition="!Control.IsVisible(580062)">580071</ondown>
 						
-						<!-- <include>Action_CastMemberSearch</include> -->
 						<include>Action_CastMemberSearchForceOption</include>
 						<top>190</top>
 						<left>40</left>
@@ -719,7 +711,6 @@
 							</control>
 						</itemlayout>
 						<focusedlayout height="400" width="270">
-							<include>SetPropOnFocus_HiddenButton</include>
 							<control type="group">
 								<height>250</height>
 								<width>250</width>
@@ -734,8 +725,6 @@
 							</control>
 						</focusedlayout>
 					<content>plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[Window(home).Property(dbid)]</content>
-					<!-- <content>plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem.TVShowTitle]'</content> -->
-					<!-- <content>$VAR[View_Cast_Content]</content> -->
 				</control>
 				
 				<include content="Special_Header">
@@ -753,7 +742,6 @@
 					
 					<onup>580061</onup>
 					<ondown>580071</ondown>
-					
 					<onclick condition="!String.IsEmpty(Container(580062).ListItem.Property(LocalTrailer))">PlayMedia($INFO[Container(580062).ListItem.Property(LocalTrailer)],1)</onclick>
 					<onclick condition="String.IsEmpty(Container(580062).ListItem.Property(LocalTrailer))">PlayMedia($INFO[Container(580062).ListItem.FilenameAndPath],1)</onclick>
 					<onclick>SetProperty(TrailerIsPlaying,true,home)</onclick>
@@ -790,7 +778,7 @@
 							</control>
 						</focusedlayout>
 						<content>
-							<item>
+							<item id="989832">
 								<visible>!String.IsEmpty(Window(home).Property(trailer_avail))</visible>
 								<label>Local Trailer</label>
 								<label2 />
@@ -799,9 +787,7 @@
 								<thumb>$VAR[TVShowArt]</thumb>
 							</item>
 						</content>
-						
 						<content target="videos" sortby="file" limit="3">$VAR[58_OnlineTrailerLookup]</content>
-						<!-- <content target="videos" sortby="file" limit="3">plugin://plugin.video.youtube/search/?q=$INFO[ListItem.TVShowTitle]$INFO[System.Language, $LOCALIZE[20410] ,]</content> -->
 					</control>
 					
 					
@@ -932,10 +918,10 @@
 				<onfocus>RunScript(script.embuary.helper,action=encode,string='"$INFO[ListItem.TVShowTitle]"',prop=EncodedTitle)</onfocus>
 				<onfocus>SetFocus(58001)</onfocus>
 				<viewtype label="NetflixSeason1">Netflix Info</viewtype>
-				<visible>Container.Content(seasons)</visible>
 			</control>
 			
 			<control type="videowindow">
+				<visible>Player.HasMedia + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
 				<height>70%</height>
 				<centerleft>50%</centerleft>
 				<centertop>60%</centertop>
@@ -1178,46 +1164,15 @@
 		<textcolor>white</textcolor>
 		<font>Netflix_Plot</font>
 	</include>	
-	
-	<!-- https://github.com/xbmc/xbmc/blob/master/xbmc/video/windows/GUIWindowVideoNav.cpp -->
-						
-	<!-- 
-	
-	use xsp and exclude title, may dont support special chars in title? 
-	videodb://inprogresstvshows/-1/-1/-1/-1/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22tvshow%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[ListItem.TVShowTitle]%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</content>
-	videodb://inprogresstvshows/-1/-1/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22tvshow%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[ListItem.TVShowTitle]%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</content>
-	
-	makes most sense 
-	videodb://tvshows/titles/tvshowdbid/-1/
-	videodb://tvshows/titles/tvshowdbid/-1/?tvshowid=tvshowdbid
-	videodb://tvshows/titles/$INFO[Container(2000).ListItem.dbid]/-1/?tvshowid=$INFO[Container(2000).ListItem.dbid]
-	videodb://tvshows/titles/$INFO[Window(home).Property(dbid)]/-1/?tvshowid=$INFO[Window(home).Property(dbid)]
-		
-		less content to lookup ?
-		videodb://inprogresstvshows/[tvshowdbid]/-1/
-		videodb://inprogresstvshows/[tvshowdbid]/-1/?tvshowid=[tvshowdbid]
-		videodb://inprogresstvshows/-1/-1/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22tvshow%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[ListItem.TVShowTitle]%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D
-	
-	videodb://inprogresstvshows/$INFO[Container(2000).ListItem.dbid]/-1/?tvshowid=$INFO[Container(2000).ListItem.dbid]
-	videodb://inprogresstvshows/$INFO[Window(home).Property(dbid)]/-1/?tvshowid=$INFO[Window(home).Property(dbid)]
-	
-	best if listitem.containerfolderpath equal videodb://tvshows/titles/tvshowdbid/ , but its not consistent, reason ?  using dont show all folders
-	<content sortby="playcount" limit="1">$INFO[Container.Folderpath]-1/</content>
-	-->
-		
-		
-	<!-- <value condition="!String.IsEmpty(Window(home).Property(dbid))">videodb://inprogresstvshows/$INFO[Window(home).Property(dbid)]/-1/?tvshowid=$INFO[Window(home).Property(dbid)]</value> -->
-	<!-- <value condition="String.EndsWith(Container.Folderpath,/)">$INFO[Container.Folderpath]-1/</value> -->
-		 
-																						   
+																			   
 	<variable name="NextUp_SeasonLevel">
-		 <value condition="Container.Content(Seasons) + String.EndsWith(Container.Folderpath,/)">$INFO[Container.Folderpath]-1/</value>
-		 <value condition="Container.Content(Seasons) + !String.IsEmpty(Window(home).Property(dbid))">videodb://inprogresstvshows/$INFO[Window(home).Property(dbid)]/-1/?tvshowid=$INFO[Window(home).Property(dbid)]</value>
-		 <value condition="Container.Content(Seasons)">videodb://inprogresstvshows/-1/-1/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22tvshow%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</value>
+		 <value condition="[Control.IsVisible(58) + Container.Content(Seasons)] + String.EndsWith(Container.Folderpath,/)">$INFO[Container.Folderpath]-1/</value>
+		 <value condition="[Control.IsVisible(58) + Container.Content(Seasons)] + !String.IsEmpty(Window(home).Property(dbid))">videodb://inprogresstvshows/$INFO[Window(home).Property(dbid)]/-1/?tvshowid=$INFO[Window(home).Property(dbid)]</value>
+		 <value condition="[Control.IsVisible(58) + Container.Content(Seasons)]">videodb://inprogresstvshows/-1/-1/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22tvshow%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</value>
 	</variable>
 	
 	<variable name="58_OnlineTrailerLookup">
-		<value condition="!$EXP[IsOfflineMode] + Control.IsVisible(58) + System.HasAddon(plugin.video.youtube)">plugin://plugin.video.youtube/search/?q=$INFO[ListItem.TVShowTitle]$INFO[System.Language, $LOCALIZE[20410] ,]</value>
+		<value condition="[Control.IsVisible(58) + Container.Content(Seasons)] + [!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.youtube)]">plugin://plugin.video.youtube/search/?q=$INFO[ListItem.TVShowTitle]$INFO[System.Language, $LOCALIZE[20410],]</value>
 	</variable>
 	<variable name="Season_PluSing">
 		<value condition="!String.IsEmpty(Container(5055).ListItem.Property(TotalSeasons)) + Integer.IsEqual(Container(5055).ListItem.Property(TotalSeasons),1)">$LOCALIZE[20373]</value>

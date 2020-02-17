@@ -21,7 +21,6 @@
 				<label>top[CR]middle[CR]bottom</label>
 			</control>
 			
-			
 			<!-- cond hight/top offeset - depending on header bar settings -->
 			<control type="group">
 				<visible>Skin.HasSetting(View_50_ShowBGPanel)</visible>
@@ -116,7 +115,7 @@
 			<description>het half cutted circle for icon border studio or thumb midgrey just as workaround</description>
 			<width>90</width>
 			<height>90</height>
-			<texture background="true" diffuse="artworkdiffuse/circle.png">$INFO[ListItem.Icon]</texture>
+			<texture background="true" diffuse="artworkdiffuse/circle.png">$VAR[ImageLayout_poster]</texture>
 			<bordertexture colordiffuse="$VAR[Nav_LabelPrimaryColor]">artworkdiffuse/circleborder.png</bordertexture>
 			<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
 			<bordersize>2</bordersize>
@@ -233,8 +232,29 @@
 	list 50 just 'poster - keyart - landscape - icon ' ?
 	
 	-->
+	<variable name="ListItem_Icon">
+		<value condition="[Container.Content(studios) | String.IsEqual(ListItem.dbtype,studio)]">$INFO[ListItem.Label,resource://resource.images.studios.white/,.png]</value>
+		<value condition="String.Contains(ListItem.Label,*) + !String.IsEmpty(Container.Art(thumb))">$INFO[Container.Art(thumb)]</value>
+		<value>$INFO[ListItem.Icon]</value>	
+	</variable>
+	
 	
 	<variable name="PreferedThumb_Sourcing">
+		<value condition="String.IsEqual(ListItem.Label,..)">defaultfolderback.png</value>
+		<value condition="String.IsEqual(ListItem.Label,$LOCALIZE[21452])">defaultaddoninputstream.png</value>
+		<value condition="String.IsEqual(ListItem.Label,$LOCALIZE[20462])">defaultaddsource.png</value>
+		
+		<value condition="[Container.Content(studios) | String.IsEqual(ListItem.dbtype,studio)]">$INFO[ListItem.Label,resource://resource.images.studios.white/,.png]</value>
+		
+			<value condition="Window.IsActive(videos) + [Container.Content(genres) | String.IsEqual(ListItem.DBTYPE,genre)]">defaultgenre.png</value>
+			<value condition="Window.IsActive(music) + [Container.Content(genres) | String.IsEqual(ListItem.DBTYPE,genre)]">defaultmusicgenres.png</value>
+			<value condition="[Container.Content(directors) | String.IsEqual(ListItem.dbtype,director)]">defaultdirector.png</value>
+			<value condition="[Container.Content(tags) | String.IsEqual(ListItem.dbtype,tag)]">defaulttags.png</value>
+		
+			<value condition="Container.Content(years)">defaultyear.png</value>
+		
+		<value condition="String.Contains(ListItem.Label,*) + !String.IsEmpty(Container.Art(thumb))">$INFO[Container.Art(thumb)]</value>
+		
 		
 		<value condition="Skin.HasSetting(View_50_Prefer_Discart_Song) + !String.IsEmpty(ListItem.Art(album.discart)) + String.IsEqual(ListItem.dbtype,song)">$INFO[ListItem.Art(album.discart)]</value>
 		<value condition="!String.IsEmpty(ListItem.Art(discart)) + [String.IsEqual(ListItem.dbtype,album) + Skin.HasSetting(View_50_Prefer_Discart_Album)] | [Window.IsActive(videos) + Skin.HasSetting(View_50_Prefer_Disc_Video)]">$INFO[ListItem.Art(discart)]</value>
@@ -322,15 +342,15 @@
     <include name="PreferedThumb">
 			<control type="image">
 				<left>5%</left>
-				<description>why isnt variable bordertexture not workin</description>
 				<centertop>51%</centertop>
 				<width>26%</width>
 				<visible>[
             Skin.HasSetting(View_$PARAM[id]_Prefer_Disc_Video) |
-			Skin.HasSetting(View_$PARAM[id]_Prefer_Discart_Album) |
-			Skin.HasSetting(View_$PARAM[id]_Prefer_Discart_Song) |
-			Skin.HasSetting(View_$PARAM[id]_Prefer_clearlogo) |
-			Skin.HasSetting(View_$PARAM[id]_Prefer_clearart)]</visible>
+            Skin.HasSetting(View_$PARAM[id]_Prefer_Discart_Album) |
+            Skin.HasSetting(View_$PARAM[id]_Prefer_Discart_Song) |
+            Skin.HasSetting(View_$PARAM[id]_Prefer_clearlogo) |
+            Skin.HasSetting(View_$PARAM[id]_Prefer_clearart)]
+            </visible>
 				<bordersize>2</bordersize>
 				<bordertexture />
 				<texture>$VAR[PreferedThumb_Sourcing]</texture>
@@ -339,7 +359,6 @@
 			
 			<control type="image">
 				<left>5%</left>
-				<description>why isnt variable bordertexture not workin</description>
 				<centertop>51%</centertop>
 				<width>26%</width>
 				<visible>![
