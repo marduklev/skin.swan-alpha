@@ -88,19 +88,6 @@
 				</include>
 				<onclick>Fullscreen</onclick>
 			</control>
-			
-<!--
- <onclick condition="Player.HasAudio">ActivateWindow(visualisation)</onclick> 
-FullscreenLiveTV	WINDOW_FULLSCREEN_LIVETV	10800	None (shortcut to fullscreenvideo)
-fullscreenradio	WINDOW_FULLSCREEN_RADIO	10801	None (shortcut to visualisation)
-fullscreenlivetvpreview
--->
-			<!-- 
-			pause/play
-			stop
-			prev
-			next -->
-			
 		</control>
 	</include>
 	
@@ -198,8 +185,6 @@ ID 	Type 					Description
 			<left>0</left>
 			<itemgap>0</itemgap>
 			
-			
-				
 			<onup>ClearProperty(MenucontrolActive,Home)</onup>
 			<onup>19</onup>
 			
@@ -211,14 +196,12 @@ ID 	Type 					Description
 			<onleft>SetFocus(50)</onleft>
 			<onleft>ClearProperty(MenucontrolActive,Home)</onleft>
 			
-			
 			<control type="group" id="6048">
 				<description>PlaybackCtrl</description>
 				<width>98%</width>
 				<height>500</height>
 				<visible>$EXP[IsCurrentyPlayingCommon] | Player.HasAudio</visible>
 				
-				<!-- idea for long text vis cind if controlid contais" ..." to have cond font/heigt -->
 				<control type="label">
 					<left>10</left>
 					<right>10</right>
@@ -226,17 +209,34 @@ ID 	Type 					Description
 					<width>425</width>
 					<font>font17</font>
 					<align>center</align>
-					<label>CURRENTLY PLAYING</label>
+					<label>CURRENTLY  PLAYING</label>
 					<textcolor>cyan</textcolor>
 				</control>
+				
+				<control type="label">
+					<top>30</top>
+                    <visible>$EXP[PlayerClearLogo_IsEmpty]</visible>
+					<left>10</left>
+					<right>10</right>
+					<height>100</height>
+					<width>425</width>
+					<wrapmultiline>true</wrapmultiline>
+					<font>font22</font>
+					<align>center</align>
+					<label>$VAR[Menucontrol_LogoFallback,&quot;[B],[/B]&quot;]</label>
+					<textcolor>grey</textcolor>
+				</control>
+				
 				<control type="label">
 					<visible>player.hasaudio</visible>
+					<description>bad bcause overlay temp just use if logo empty</description>
+					 <visible>$EXP[PlayerClearLogo_IsEmpty]</visible>
 					<top>30</top>
 					<left>10</left>
 					<right>10</right>
 					<height>15</height>
 					<width>425</width>
-					<font>debugtiny</font>
+					<font>debug</font>
 					<align>center</align>
 					<label>$INFO[MusicPlayer.Album]</label>
 					<textcolor>white</textcolor>
@@ -248,11 +248,11 @@ ID 	Type 					Description
 					<aspectratio aligny="center" align="center">keep</aspectratio>
 					<height>90</height>
 					<top>30</top>
-					<left>10</left>
-					<right>10</right>
+					<left>15</left>
+					<right>0</right>
 				</control>
 				<control type="label">
-					<top>125</top>
+					<top>130</top>
 					<left>10</left>
 					<right>10</right>
 					<height>20</height>
@@ -260,7 +260,7 @@ ID 	Type 					Description
 					<font>MenucontrolItem</font>
 					<align>center</align>
 					<label>$VAR[MenucontrolPlayerDuration]</label>
-					<textcolor>midgrey</textcolor>
+					<textcolor>cyan</textcolor>
 				</control>
 				
 				<control type="image">
@@ -269,7 +269,7 @@ ID 	Type 					Description
 					<aspectratio aligny="bottom" align="right">keep</aspectratio>
 					<width>252</width>
 					<height>252</height>
-					<top>150</top>
+					<top>155</top>
 					<left>190</left>
 					<right>10</right>
 					<animation effect="rotate" end="-360" center="auto" time="4800" loop="true" reversible="false" condition="!Player.Paused">Conditional</animation>
@@ -280,9 +280,10 @@ ID 	Type 					Description
 					<aspectratio aligny="bottom" align="left">keep</aspectratio>
 					<width>425</width>
 					<height>252</height>
-					<top>150</top>
+					<top>155</top>
 					<left>10</left>
 					<right>10</right>
+					<animation effect="slide" start="0,0" end="90,0" center="auto" time="0" condition="String.IsEmpty(Player.Art(album.discart)) + String.IsEmpty(Player.Art(discart))">Conditional</animation>
 				</control>
 				
 				
@@ -293,46 +294,52 @@ ID 	Type 					Description
 					<left>20</left>
 				</control>
 				
-				params
-		id
-		actionid = visible = imagename
-		left - just if not in grouplist
-		onright
-		onleft
-		
 				<include content="Menucontrol_PlaybackCtrlButton">
 					<param name="id" value="1" />
 					<param name="actionid" value="previous" />
-					<param name="left" value="110" />
-					<param name="onleft" value="4" />
-					<param name="onright" value="2" />
+					<param name="left" value="120" />
+					<param name="onleft" value="60494" />
+					<param name="onright" value="60492" />
+					<param name="visible" value="MusicPlayer.HasPrevious" />
+					<param name="action2" value="PlayerControl(previous)" />
 				</include>
-				<include content="Menucontrol_PlaybackCtrlButton">
-					<param name="id" value="2" />
-					<param name="actionid" value="play" />
-					<param name="left" value="165" />
-					<param name="onleft" value="1" />
-					<param name="onright" value="3" />
-				</include>
+				<control type="togglebutton" id="60492">
+					<left>175</left>
+					<top>425</top>
+					<width>45</width>
+					<height>45</height>
+					<label />
+					<altlabel />
+					<texturefocus colordiffuse="$VAR[Button_Selected]">buttons/osd/play_fo.png</texturefocus>
+					<texturenofocus>buttons/osd/play.png</texturenofocus>
+					<alttexturefocus colordiffuse="$VAR[Button_Selected]">buttons/osd/pause_fo.png</alttexturefocus>
+					<alttexturenofocus>buttons/osd/pause.png</alttexturenofocus>
+					<usealttexture>!Player.Paused</usealttexture>
+					<onup>19</onup>
+					<ondown>4001</ondown>
+					<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
+					<onright>60493</onright>
+					<onleft>60491</onleft>
+					<onclick>PlayerControl(play)</onclick>
+				</control>
+				
 				<include content="Menucontrol_PlaybackCtrlButton">
 					<param name="id" value="3" />
 					<param name="actionid" value="stop" />
-					<param name="left" value="220" />
-					<param name="onleft" value="2" />
-					<param name="onright" value="4" />
+					<param name="left" value="230" />
+					<param name="onleft" value="60492" />
+					<param name="onright" value="60494" />
 				</include>
 				<include content="Menucontrol_PlaybackCtrlButton">
 					<param name="id" value="4" />
 					<param name="actionid" value="next" />
-					<param name="left" value="275" />
-					<param name="onleft" value="3" />
-					<param name="onright" value="1" />
+					<param name="left" value="285" />
+					<param name="onleft" value="60493" />
+					<param name="onright" value="102505" />
+					<param name="visible" value="MusicPlayer.HasNext" />
 				</include>
-				
 			</control>
 			
-			<!-- seperator -->
-				
 			<control type="button" id="4001">
 				<font>font10</font>
 				<label>   Previous ViewMode</label>
@@ -886,20 +893,24 @@ RadioSearch
 			<ondown>4001</ondown>
 			<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
 			<left>$PARAM[left]</left>
-			<onright>6049$PARAM[onright]</onright>
-			<onleft>6049$PARAM[onleft]</onleft>
+			<onright>$PARAM[onright]</onright>
+			<onleft>$PARAM[onleft]</onleft>
 			<texturefocus colordiffuse="$VAR[Button_Selected]">buttons/osd/$PARAM[actionid]_fo.png</texturefocus>
 			<texturenofocus>buttons/osd/$PARAM[actionid].png</texturenofocus>
 			<onclick>PlayerControl($PARAM[actionid])</onclick>
+			<onclick>PlayerControl($PARAM[action2])</onclick>
+			<visible>$PARAM[visible]</visible>
 		</control>
 	</include>
 	<variable name="MenucontrolPlayerDuration">
 		<value condition="Player.HasVideo">$INFO[Player.FinishTime,[B]Ends at : ,[/B]]</value>
-		<value>$INFO[MusicPlayer.TrackNumber,, - ] - $INFO[Player.Title,[B],[/B]  ]$INFO[Player.TimeRemaining(mm), ( , :]$INFO[Player.TimeRemaining(ss),, )]</value>
+		<value>$INFO[Player.Title,[B],[/B]]$INFO[Player.TimeRemaining(mm), ( , :]$INFO[Player.TimeRemaining(ss),, )]</value>
 	</variable>	
-<!-- MusicPlayer.Artist if logo missed	
-	$INFO[MusicPlayer.Album] - $INFO[MusicPlayer.TrackNumber] -->
-	
+	<!-- $INFO[MusicPlayer.TrackNumber, - ,  ] -->
+	<variable name="Menucontrol_LogoFallback">
+		<value condition="Player.HasAudio">$INFO[MusicPlayer.Artist]</value>
+		<value>$INFO[Player.Title]</value>
+	</variable>
 	
 	<include name="PreferArt_Button">
 		<control type="radiobutton" id="$PARAM[button_id]">
