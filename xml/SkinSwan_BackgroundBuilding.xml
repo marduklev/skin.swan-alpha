@@ -226,182 +226,7 @@
 				
 		</definition>
 	</include>
-			<!-- , looks shitty if using seperator
-				<control type="group">
-					<width>50%</width>
-					<height>110</height>	
-					<left>25%</left>
-					<right>25%</right>
-					<top>60</top>
-					
-					<control type="label">
-						<width>48%</width>
-						<height>40</height>
-						<align>right</align>
-						<textcolor>$VAR[Header_TextMain]</textcolor>
-						<label>$VAR[CurrentContent_Info_left]</label>
-						<font>DialogListItem</font>
-					</control>
-					<control type="label">
-						<width>100%</width>
-						<height>40</height>
-						<align>center</align>
-						<textcolor>$VAR[Header_TextMain]</textcolor>
-						<label>$VAR[CurrentContent_Info_center]</label>
-						<font>DialogListItem</font>
-					</control>
-					
-					<control type="label">
-						<left>52%</left>
-						<width>48%</width>
-						<height>40</height>
-						<font>DialogListItem</font>
-						<aligny>center</aligny>
-						<align>left</align>
-						<textcolor>$VAR[Header_TextMain]</textcolor>
-						<label>$VAR[CurrentContent_Info_right]</label>
-					</control>
-				</control>
-				-->
-				
 	
-	<include name="HeaderBar_old">
-		<param name="HasSearchBar" default="false" />
-		<param name="HasBGPanel" default="true" />
-		<param name="HeadingAlignment" default="left" />
-		
-		<definition>
-		<control type="group">
-			<visible type="fade">!$EXP[Infodialog_IsActive]</visible>
-			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
-			<animation reversible="true" effect="slide" start="0,0" end="0,-110" tween="quadratic" time="400" condition="Control.IsVisible(58) + !Control.HasFocus(58001)">conditional</animation>
-				
-				
-			<control type="image">
-				<description>BG PANEL</description>
-				<visible>$PARAM[HasBGPanel]</visible>
-				<width>100%</width>
-				<height>110</height>
-				<texture colordiffuse="$VAR[Header_BG]">$VAR[HeaderBarTexture]</texture>
-				<aspectratio>stretch</aspectratio>
-			</control>
-			<control type="grouplist">
-				<posx>50</posx>
-				<posy>10</posy>
-				<height>110</height>
-				<orientation>vertical</orientation>
-				<usecontrolcoords>true</usecontrolcoords>
-				<itemgap>5</itemgap>
-				
-				<control type="group">
-					<description>TOP</description>
-					<height>50</height>
-					<width>99%</width>
-					
-					
-					<control type="label">
-						<description>Main Section Name left,  temp System.CurrentWindow later VAR</description>
-						<include content="pos_top" condition="!Skin.HasSetting(HideSubHeaderInfo)">
-								<param name="top" value="10" />
-						</include>
-						<include content="pos_top" condition="Skin.HasSetting(HideSubHeaderInfo)">
-								<param name="top" value="35" />
-						</include>
-						<height>50</height>
-						<align>$PARAM[HeadingAlignment]</align>
-						<label>$VAR[Header_InfoTop]</label>
-						<font>HeaderBar_Media</font>
-						<textcolor>$VAR[Header_TextMain]</textcolor>
-					</control>
-					<control type="label">
-						<description>SytemTime right,slide when weather disabled</description>
-						<!-- <animation effect="fade" end="50" time="0" condition="true">conditional</animation> -->
-						<right>130</right>
-						<width>450</width>
-						<height>50</height>
-						<align>right</align>
-						<label>$INFO[System.Time]</label>
-						<font>font_clock</font>
-						<textcolor>$VAR[Header_TextSecondary]</textcolor>
-					</control>
-				</control>
-				
-				<control type="group">
-					<description>SUB</description>
-					<height>30</height>
-					<width>99%</width>
-					<control type="label">
-						<description>Sub-Section Name - left</description>
-						<top>10</top>
-						<height>30</height>
-						<align>$PARAM[HeadingAlignment]</align>
-						<aligny>bottom</aligny>
-						<label>$VAR[CurrentContent_Info]</label>
-						<font>DialogListItem</font>
-						<textcolor>$VAR[Header_TextMain]</textcolor>
-						<visible>!Skin.HasSetting(HideSubHeaderInfo)</visible>
-						<!-- <visible>!String.IsEmpty(Container.Content)</visible> -->
-						<visible>!Control.IsVisible(58)</visible>
-					</control>
-					<control type="label">
-						<description>day - right, slide when weather disabled</description>
-						<right>130</right>
-						<width>450</width>
-						<height>20</height>
-						<align>right</align>
-						<aligny>bottom</aligny>
-						<label>$INFO[System.Date]</label>
-						<font>HeaderBar_Sub</font>
-						<!-- <font>font12</font> -->
-						<textcolor>$VAR[Header_TextMain]</textcolor>
-					</control>
-				</control>
-			</control>
-			
-			<control type="group">
-				<right>10</right>
-				<width>110</width>
-				<description>weather</description>
-				<control type="image">
-					<description>seperator</description>
-					<top>9</top>
-					<height>90</height>
-					<width>1</width>
-					<texture colordiffuse="white">colors/white30.png</texture>
-					<aspectratio align="left">stretch</aspectratio>
-				</control>
-				<control type="label">
-					<description>day - right</description>
-					<top>65</top>
-					
-					<width>110</width>
-					<height>20</height>
-					<align>center</align>
-					<aligny>bottom</aligny>
-					<label>$INFO[Weather.Temperature]</label>
-					<font>font23_title</font>
-					<textcolor>$VAR[Header_TextMain]</textcolor>
-				</control>
-				<control type="image">
-					<!-- <visible>!Skin.HasSetting(HideHeaderWeather) + !String.IsEmpty(Weather.Temperature) + !String.Contains(Weather.Temperature,$LOCALIZE[503]) + !String.IsEqual(Weather.fanartcode,na) + Weather.IsFetched</visible> -->
-					<description>png</description>
-					<top>5</top>
-					<height>65</height>
-					<width>110</width>
-					
-					<texture colordiffuse="$VAR[Header_TextMain]">$INFO[Weather.FanartCode,resource://resource.images.weathericons.outline-hd/,.png]</texture>
-					<!-- <texture>$INFO[Weather.FanartCode,resource://resource.images.weathericons.outline/,.png]</texture>
-					 -->
-					<!-- <bordertexture>$INFO[Weather.FanartCode,resource://resource.images.weathericons.outline/,.jpg]</bordertexture> -->
-					<!-- , skinstring equal addon path -->
-					<aspectratio align="center">keep</aspectratio>
-				</control>
-				
-			</control>
-		</control>
-				
-		</definition>
-	</include>
 	
 	<!-- or conditional Heading result 
 		- localized string content - folderpath
@@ -561,24 +386,28 @@ LatestAlbum.[1-10].Title, LatestAlbum.[1-10].Artist, LatestAlbum.[1-10].Year, La
 		
 		<control type="group">
 			
-			<!-- Ground Layer1 - use 'backgroundcolor' -->
+			<include content="VideoFullscreenBG" />
 			
-			<include>VideoFullscreenBG</include>
-			
-			<!-- MIDDLE - ARTWORK LAYER (Artowrk) -->
-			<control type="multiimage" id="99004">
-				<description>Layer2 Artwork</description>
+			<!-- use include to circumstance reload needs ? - also optional diffuse masking for bg image is also interesting -->
+			<control type="image">
+				<description>Layer2 Artwork - optional tint</description>
 				<depth>DepthBackground</depth>
-				<imagepath diffuse="" background="true">$VAR[backgroundVar]</imagepath>
-				<aspectratio>scale</aspectratio>
-				<fadetime>300</fadetime>
-				<colordiffuse>$VAR[BackgroundImage_CDiffuse]</colordiffuse>
-				<randomize>true</randomize>
-				<timeperimage>6000</timeperimage>
-				<loop>yes</loop>
+				<texture diffuse="colors/white.png" background="true">$VAR[backgroundVar]</texture>
+				<aspectratio align="center" aligny="center">scale</aspectratio>
+				<fadetime>600</fadetime>
+				<include condition="!Skin.HasSetting(BG_PreferOverlay2ndLayer)" content="BG_PreferTintetArt" />
 				<visible>!$EXP[IsNetflixLayout]</visible>
 				<animation effect="zoom" start="110" end="130" center="auto" time="10000" tween="cubic" easing="inout" pulse="true" condition="Skin.HasSetting(BackgroundAnimation) | Window.Is(settings)">Conditional</animation>
 				<animation effect="slide" start="-10,-10" end="10,10" time="8000" tween="cubic" easing="inout" pulse="true" condition="Skin.HasSetting(BackgroundAnimation) | Window.Is(settings)">Conditional</animation>
+			</control>
+			
+			<control type="image">
+				<description>Layer2 Artwork Overlay - if artwork tint is unwished</description>
+				<depth>DepthBackground</depth>
+				<visible>Skin.HasSetting(BG_PreferOverlay2ndLayer)</visible>
+				<visible>!$EXP[IsNetflixLayout]</visible>
+				<colordiffuse>$VAR[BackgroundImage_CDiffuse]</colordiffuse>
+				<texture>$VAR[backgroundOverlayVar]</texture>
 			</control>
 			
 			<include content="BG_Overlay" />
@@ -589,7 +418,10 @@ LatestAlbum.[1-10].Title, LatestAlbum.[1-10].Artist, LatestAlbum.[1-10].Year, La
     </include>
 	
 	
-    
+    <include name="BG_PreferTintetArt">
+		<colordiffuse>$VAR[BackgroundImage_CDiffuse]</colordiffuse>
+	</include>
+	
     <!-- 
 check variables
 <colordiffuse>$VAR[BackgroundImage_CDiffuse]</colordiffuse>
@@ -608,21 +440,25 @@ use this include pr add variable fpr diffuse textures
 				<texture background="true" fallback="special://skin/extras/backgroundimages/pattern1.jpg">$VAR[BlurFanartBackground]</texture>
 			</control>
 			
-			<include>VideoFullscreenBG</include>
-			
-			<control type="image">
-				<description>conditional diffuse - blurred bg overlay img</description>
-				<visible>true</visible>
-				<colordiffuse>$VAR[BackgroundImage_CDiffuse]</colordiffuse>
-				<texture diffuse="$VAR[GradientBlurDiffusor]">$INFO[Window(home).Property(listitem_blurred)]</texture>
+			<control type="group">
+				<include>VideoFullscreenBG</include>
+				
+				<control type="image">
+					<description>conditional diffuse - blurred bg overlay img</description>
+					<include condition="!Skin.HasSetting(BG_PreferOverlay2ndLayer)" content="BG_PreferTintetArt" />
+					<texture>$INFO[Window(home).Property(listitem_blurred)]</texture>
+				</control>
+				
+				<control type="image">
+					<description>Layer2 Artwork Overlay - if artwork tint is unwished</description>
+					<depth>DepthBackground</depth>
+					<visible>Skin.HasSetting(BG_PreferOverlay2ndLayer)</visible>
+					<visible>!$EXP[IsNetflixLayout]</visible>
+					<colordiffuse>$VAR[BackgroundImage_CDiffuse]</colordiffuse>
+					<texture>colors/white70.png</texture>
+				</control>
+				<include content="BG_Overlay" condition="true" />
 			</control>
-			
-			<!--
-			add img based on vis cond or use gb instead ?
-			diffuse="$VAR(GradientNonBlurDiffusor)"
-			-->
-			<include content="BG_Overlay" condition="true" />
-			
     </include>
 	
 	<!-- [e.g. GradientFromRight].png -->
@@ -796,8 +632,9 @@ use this include pr add variable fpr diffuse textures
 	</include>
 	
 	<variable name="backgroundVar">
-		<value condition="$EXP[IsCurrentyPlayingCommon]">colors/white70.png</value>
-		<value condition="!String.IsEmpty(ListItem.Art(Animatedfanart)) + Skin.HasSetting(AnimatedFanart)">$INFO[ListItem.Art(AnimatedFanart)]</value>
+		<value condition="[$EXP[IsCurrentyPlayingCommon]] + Skin.HasSetting(BG_PreferTintetArt)">colors/white70.png</value>
+		<value condition="[$EXP[IsCurrentyPlayingCommon]] + !Skin.HasSetting(BG_PreferTintetArt)"></value>
+		<value condition="!String.IsEmpty(ListItem.Art(animatedfanart)) + Skin.HasSetting(animatedfanart)">$INFO[ListItem.Art(animatedfanart)]</value>
 		<value condition="Control.IsVisible(99007) + !String.IsEmpty(Control.GetLabel(99007))">$INFO[Control.GetLabel(99007)]</value>
 		<value condition="Control.IsVisible(99006) + !String.IsEmpty(Control.GetLabel(99006)) + !Skin.HasSetting(BlurEnabled)">$INFO[Control.GetLabel(99006)]</value>
 		
@@ -805,6 +642,11 @@ use this include pr add variable fpr diffuse textures
 		<value condition="Window.IsActive(MyWeather.xml)">$INFO[Skin.String(WeatherFanArtPack.path)]$INFO[Window(Weather).Property(Current.fanartCode)]$INFO[Skin.String(WeatherFanArtPack.ext)]</value>
 		<value condition="Skin.String(BackgroundTexture)">$INFO[Skin.String(BackgroundTexture)]</value>
 		<value>special://skin/extras/backgroundimages/pattern1.jpg</value>
+	</variable>
+	
+	<variable name="backgroundOverlayVar">
+		 <value condition="$EXP[IsCurrentyPlayingCommon]">colors/white70.png</value>
+		<value>colors/white80.png</value>
 	</variable>
 	
 	<variable name="HeaderBarTexture">

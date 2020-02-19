@@ -59,7 +59,7 @@
 						<label>S T A R T U P</label>
 					</item>
 					<item id="2">
-						<label>A R T W O R K</label>
+						<label>B A C K G R O U N D</label>
 					</item>
 					<item id="3">
 						<label>H O M E    L A Y A O U T</label>
@@ -160,12 +160,12 @@
 			<include content="ButtonList">
 				<param name="id" value="2" />
 				
-				<description>A R T W O R K</description>
+				<description>B A C K G R O U N D</description>
 				<visible>Container(9000).HasFocus($PARAM[id])</visible>
 				
 				<include content="SectionHeadline">
 					<param name="id" value="$PARAM[id]000"/>
-					<param name="label" value="A R T O W R K     S T U F F"/>
+					<param name="label" value="A R T W O R K"/>
 				</include>
 				
 				<control type="radiobutton" id="$PARAM[id]001">
@@ -184,7 +184,14 @@
 					<onclick>Skin.Reset(BackgroundTexture)</onclick>
 					<onclick>Skin.SetImage(BackgroundTexture,special://skin/extras/backgroundimages)</onclick>
 				</control>
-				<!-- <control type="radiobutton" id="$PARAM[id]02">
+				<control type="radiobutton" id="$PARAM[id]003">
+					<height>90</height>
+					<label>Use Tinted Overlay instead Tint the Image itself</label>
+					<label2>80% transp cannot be exceeded    [CR](recommended if using &apos;Show Fanart Background &apos;)    </label2>
+					<onclick>Skin.ToggleSetting(BG_PreferOverlay2ndLayer)</onclick>
+					<selected>Skin.HasSetting(BG_PreferOverlay2ndLayer)</selected>
+				</control>
+				<!-- <control type="radiobutton" id="$PARAM[id]003">
 					<include content="SkinSettings_SettingsRadioButton">
 						<param name="label" value="Experimental Choose a diffuse Image for middle Layer" />
 						<param name="label2" value="" />
@@ -237,7 +244,8 @@
 				</control>
 				<control type="radiobutton" id="$PARAM[id]009">
 					<label>Prefer Animated Poster (if available)</label>
-					
+					<description>tend to toggle via view type settings not global</description>
+					<visible>false</visible>
 					<onclick>Skin.ToggleSetting(AnimatedPoster)</onclick>
 					<selected>Skin.HasSetting(AnimatedPoster)</selected>
 					
@@ -253,6 +261,7 @@
 					<label>Enable Blur BG in Media Windows</label>
 					<onclick>Skin.ToggleSetting(BlurEnabled)</onclick>
 					<onclick condition="String.IsEmpty(Skin.String(BlurContainer))">Skin.SetString(BlurContainer,99005)</onclick>
+					<onclick condition="Skin.HasSetting(EnableRotatingExtraFanart)">Skin.ToggleSetting(EnableRotatingExtraFanart)</onclick>
 					<onclick>RunScript(script.embuary.helper,action=restartservice)</onclick>
 					<selected>Skin.HasSetting(BlurEnabled)</selected>
 				</control>
