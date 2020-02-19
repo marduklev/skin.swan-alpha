@@ -16,7 +16,7 @@
 			
 			
 			<control type="panel" id="56">
-				<!-- <visible>Container.Content(episodes)</visible> -->
+				<!-- <visible>Container.Content(movies) | Container.Content(sets) | Container.Content(tvshows) | Container.Content(seasons) | Container.Content(episodes) | Container.Content(artists) | Container.Content(albums) | Container.Content(songs)</visible> -->
 				<orientation>vertical</orientation>
 				<preloaditems>2</preloaditems>
 				<scrolltime tween="quadratic">400</scrolltime>
@@ -52,7 +52,6 @@
 							<description>revisit alpha stuff cdiffuse and img bg texture</description>
 							<left>40</left>
 							<bordertexture border="2" colordiffuse="$VAR[Nav_LabelPrimaryColor]">frames/frametest.png</bordertexture>
-							
 							<texture colordiffuse="cc202020" background="true" diffuse="artworkdiffuse/banner.png">colors/white50.png</texture>
 							<bordersize>3</bordersize>
 						</control>
@@ -65,7 +64,7 @@
 						<centertop>50%</centertop>
 						<visible>!String.Contains(ListItem.Icon,default)</visible>
 						<visible>!ListItem.IsPlaying</visible>
-						<left>15</left>
+						<left>10</left>
 						<width>60</width>
 						<height>60</height>
 						<bordertexture colordiffuse="ff131313">artworkdiffuse/circle.png</bordertexture>
@@ -76,10 +75,10 @@
 			</control>
 			<include content="footer">
 				<param name="view_id" value="56" />
-				<param name="offset_leftpanel" value="25%" />
+				<param name="offset_leftpanel" value="34%" />
 				<param name="media_flagalign" value="center" />
 				<param name="media_flagwidth" value="30%" />
-				<param name="rating_flagalign" value="center" />
+				<param name="rating_flagalign" value="left" />
 			</include>
 		</control>
 	</include>
@@ -98,14 +97,25 @@
 			<bordersize>2</bordersize>
 		</control>
 		<control type="image">
-			<visible>!String.Contains(ListItem.Icon,default)</visible>
+			<visible>!String.Contains(ListItem.Icon,default) + ![Skin.HasSetting(View_56_Prefer_Disc_Video) | Skin.HasSetting(View_56_Prefer_clearart) | Skin.HasSetting(View_56_Prefer_clearlogo)]</visible>
 			<left>50</left>
 			<centertop>50%</centertop>
 			<width>400</width>
 			<height>236</height>
-			<texture  colordiffuse="$VAR[Nav_LabelPrimaryColor]" background="true" diffuse="artworkdiffuse/landscape.png">$VAR[ImageLayout_landscape]</texture>
+			<!-- <bordertexture border="2" colordiffuse="$VAR[Nav_LabelPrimaryColor]">frames/frametest.png</bordertexture> -->
 			<bordertexture colordiffuse="$VAR[Nav_LabelPrimaryColor]">artworkdiffuse/landscapeborder.png</bordertexture>
-			<aspectratio>scale</aspectratio>
+			<texture colordiffuse="$VAR[Nav_LabelPrimaryColor]" background="true" diffuse="artworkdiffuse/landscape.png">$VAR[PreferedThumb_Sourcing56]</texture>
+			<aspectratio>keep</aspectratio>
+			<bordersize>2</bordersize>
+		</control>
+		<control type="image">
+			<visible>!String.Contains(ListItem.Icon,default) + [Skin.HasSetting(View_56_Prefer_Disc_Video) | Skin.HasSetting(View_56_Prefer_clearart) | Skin.HasSetting(View_56_Prefer_clearlogo)]</visible>
+			<left>50</left>
+			<centertop>50%</centertop>
+			<width>400</width>
+			<height>236</height>
+			<texture colordiffuse="$VAR[Nav_LabelPrimaryColor]" background="true" diffuse="artworkdiffuse/landscape.png">$VAR[PreferedThumb_Sourcing56]</texture>
+			<aspectratio>keep</aspectratio>
 			<bordersize>2</bordersize>
 		</control>
 		<control type="image">
@@ -173,4 +183,22 @@
 	</include>
 	
 	
+	<variable name="PreferedThumb_Sourcing56">
+		<value condition="String.IsEqual(ListItem.Label,$LOCALIZE[21452])">defaultaddoninputstream.png</value>
+		<value condition="String.IsEqual(ListItem.Label,$LOCALIZE[20462])">defaultaddsource.png</value>
+		
+		<value condition="[Container.Content(studios) | String.IsEqual(ListItem.dbtype,studio)]">$INFO[ListItem.Label,resource://resource.images.studios.white/,.png]</value>
+		
+		<value condition="String.Contains(ListItem.Label,*) + !String.IsEmpty(Container.Art(thumb))">$INFO[Container.Art(thumb)]</value>
+		
+		<value condition="Skin.HasSetting(View_56_Prefer_Discart_Song) + !String.IsEmpty(ListItem.Art(album.discart)) + String.IsEqual(ListItem.dbtype,song)">$INFO[ListItem.Art(album.discart)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(discart)) + [[String.IsEqual(ListItem.dbtype,album) + Skin.HasSetting(View_56_Prefer_Discart_Album)] | [Window.IsActive(videos) + Skin.HasSetting(View_56_Prefer_Disc_Video)]]">$INFO[ListItem.Art(discart)]</value>
+		
+		<value condition="Skin.HasSetting(View_56_Prefer_clearart) + !String.IsEmpty(ListItem.Art(clearart))">$INFO[ListItem.Art(clearart)]</value>
+		<value condition="Skin.HasSetting(View_56_Prefer_clearart) + String.IsEmpty(ListItem.Art(clearart)) + !String.IsEmpty(ListItem.Art(characterart))">$INFO[ListItem.Art(characterart)]</value>
+		<value condition="[Skin.HasSetting(View_56_Prefer_clearlogo) | [Skin.HasSetting(View_56_Prefer_clearart) + String.IsEmpty(ListItem.Art(clearart)) + String.IsEmpty(ListItem.Art(characterart))]] + !String.IsEmpty(ListItem.Art(clearlogo))">$INFO[ListItem.Art(clearlogo)]</value>
+		
+		<value condition="Skin.HasSetting(View_56_Prefer_animatedfanart) + !String.IsEmpty(ListItem.Art(animatedfanart))">$INFO[ListItem.Art(animatedfanart)]</value>
+		<value>$VAR[ImageLayout_landscape]</value>
+	</variable>	
 </includes>
