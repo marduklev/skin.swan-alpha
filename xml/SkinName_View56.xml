@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includes>
+
+	<include name="view56">
+		<control type="group">
+			<visible>Control.IsVisible(56)</visible>
+			
+			
+			<control type="group">
+				<visible>Skin.HasSetting(View_56_ShowBGPanel)</visible>
+				<include content="View_BGPanel">
+					<param name="width2" value="580" />
+					<param name="width3" value="100" />
+				</include>
+			</control>
+			
+			
+			<control type="panel" id="56">
+				<!-- <visible>Container.Content(episodes)</visible> -->
+				<orientation>vertical</orientation>
+				<preloaditems>2</preloaditems>
+				<scrolltime tween="quadratic">400</scrolltime>
+				<left>100</left>
+				<right>110</right>
+				<bottom>100</bottom>
+				<top>150</top>
+				
+				<include>NavControl_Media</include>
+				
+				<viewtype label="episodes">episodes panel</viewtype>
+				
+				<itemlayout height="280">
+					<control type="group">
+					<height>270</height>
+					
+					<include content="list_panel56">
+						<param name="autoscroll" value="false" />
+						<param name="highlightcolor" value="$VAR[Nav_LabelSecondaryColor]" />
+					</include>
+				</control>
+			</itemlayout>
+			<focusedlayout height="280">
+				<include>SetPropOnFocus_HiddenButton</include>
+					
+				<control type="group">
+					<height>270</height>
+					<!-- <include>Animation_Item_Focus</include> -->
+				
+					<control type="group">
+					
+						<control type="image">
+							<description>revisit alpha stuff cdiffuse and img bg texture</description>
+							<left>40</left>
+							<bordertexture border="2" colordiffuse="$VAR[Nav_LabelPrimaryColor]">frames/frametest.png</bordertexture>
+							
+							<texture colordiffuse="cc202020" background="true" diffuse="artworkdiffuse/banner.png">colors/white50.png</texture>
+							<bordersize>3</bordersize>
+						</control>
+						<include content="list_panel56">
+							<param name="autoscroll" value="true" />
+							<param name="highlightcolor" value="$VAR[Nav_HighlightColor]" />
+						</include>
+					</control>
+					<control type="image">
+						<centertop>50%</centertop>
+						<visible>!String.Contains(ListItem.Icon,default)</visible>
+						<visible>!ListItem.IsPlaying</visible>
+						<left>15</left>
+						<width>60</width>
+						<height>60</height>
+						<bordertexture colordiffuse="ff131313">artworkdiffuse/circle.png</bordertexture>
+						<texture colordiffuse="$VAR[Nav_DimOverlay_Icon]" diffuse="artworkdiffuse/circle.png" background="true">overlay/overlay_button_play.png</texture>
+					</control>
+				</control>
+			</focusedlayout>
+			</control>
+			<include content="footer">
+				<param name="view_id" value="56" />
+				<param name="offset_leftpanel" value="25%" />
+				<param name="media_flagalign" value="center" />
+				<param name="media_flagwidth" value="30%" />
+				<param name="rating_flagalign" value="center" />
+			</include>
+		</control>
+	</include>
+	
+	<include name="list_panel56">
+		
+		<control type="image">
+			<visible>String.Contains(ListItem.Icon,default)</visible>
+			<centerleft>50%</centerleft>
+			<centertop>50%</centertop>
+			<width>90</width>
+			<height>90</height>
+			<texture  colordiffuse="$VAR[Nav_LabelPrimaryColor]" background="true" diffuse="artworkdiffuse/circle.png">$VAR[ListItem_Icon]</texture>
+			<bordertexture colordiffuse="$VAR[Nav_LabelPrimaryColor]">artworkdiffuse/circleborder.png</bordertexture>
+			<aspectratio scalediffuse="false" aligny="center" align="left">scale</aspectratio>
+			<bordersize>2</bordersize>
+		</control>
+		<control type="image">
+			<visible>!String.Contains(ListItem.Icon,default)</visible>
+			<left>50</left>
+			<centertop>50%</centertop>
+			<width>400</width>
+			<height>236</height>
+			<texture  colordiffuse="$VAR[Nav_LabelPrimaryColor]" background="true" diffuse="artworkdiffuse/landscape.png">$VAR[ImageLayout_landscape]</texture>
+			<bordertexture colordiffuse="$VAR[Nav_LabelPrimaryColor]">artworkdiffuse/landscapeborder.png</bordertexture>
+			<aspectratio>scale</aspectratio>
+			<bordersize>2</bordersize>
+		</control>
+		<control type="image">
+			<description>dont put gif n apng to xbt compression</description>
+			<centertop>50%</centertop>
+			<left>15</left>
+			<width>60</width>
+			<height>60</height>
+			<texture background="true">special://skin/extras/song_gifs/playingsong.gif</texture>
+			<colordiffuse>$VAR[Nav_LabelPrimaryColor]</colordiffuse>
+			<bordersize>4</bordersize>
+			<visible>ListItem.IsPlaying</visible>
+			<bordertexture colordiffuse="55000000">artworkdiffuse/circle.png</bordertexture>
+		</control>
+		<control type="label">
+			<visible>!String.IsEqual(ListItem.Label,..)</visible>
+			<description>autoscroll and selectedcolor just not  textboxes, may use var and chenge to textb again</description>
+			<wrapmultiline>true</wrapmultiline>
+			<font>PlotCommon</font>
+			<width>580</width>
+			<left>500</left>
+			<top>20</top>
+			<align>left</align>
+			<aligny>top</aligny>
+			<textcolor>$VAR[Nav_LabelPrimaryColor]</textcolor>
+			<selectedcolor>$VAR[Nav_SelectedColor]</selectedcolor>
+			<label>$INFO[ListItem.Label,[B],[/B]][CR][COLOR=$VAR[Nav_LabelSecondaryColor]]$INFO[ListItem.Year]     $INFO[ListItem.Label2,[B],[/B]][/COLOR]</label>
+		</control>
+		<control type="textbox">
+			<autoscroll delay="2000" time="2000" repeat="1500">$PARAM[autoscroll]</autoscroll>
+			<description>plot</description>
+			<font>PlotCommon</font>
+			<right>300</right>
+			<left>500</left>
+			<top>100</top>
+			<bottom>20</bottom>
+			<align>left</align>
+			<aligny>top</aligny>
+			<textcolor>$VAR[Nav_LabelPrimaryColor]</textcolor>
+			<selectedcolor>$VAR[Nav_SelectedColor]</selectedcolor>
+			<label>$VAR[Home_Var_Plot]</label>
+		</control>
+		<control type="textbox">
+			<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
+			<wrapmultiline>true</wrapmultiline>
+			<font>CommonTag</font>
+			<width>100</width>
+			<right>90</right>
+			<align>right</align>
+			<aligny>center</aligny>
+			<textcolor>$VAR[Nav_LabelPrimaryColor]</textcolor>
+			<label>[CR]$INFO[ListItem.Duration(h),, h]$INFO[ListItem.Duration(m), , m] </label>
+		</control>
+		<control type="image">
+			<description>stars rating, need switch to var</description>
+			<top>8</top>
+			<right>90</right>
+			<visible>true</visible>
+			<width>100</width>
+			<height>40</height>
+			<aspectratio align="center">keep</aspectratio>
+			<texture colordiffuse="$PARAM[highlightcolor]">rating/stars/$INFO[ListItem.Rating].png</texture>
+		</control>
+		<include>ListItem_Indicators</include>
+	</include>
+	
+	
+</includes>
