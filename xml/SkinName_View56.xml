@@ -15,11 +15,12 @@
 			</control>
 			
 			
-			<control type="panel" id="56">
+			<control type="fixedlist" id="56">
 				<!-- <visible>Container.Content(movies) | Container.Content(sets) | Container.Content(tvshows) | Container.Content(seasons) | Container.Content(episodes) | Container.Content(artists) | Container.Content(albums) | Container.Content(songs)</visible> -->
 				<orientation>vertical</orientation>
 				<preloaditems>2</preloaditems>
-				<scrolltime tween="quadratic">400</scrolltime>
+				<focusposition>1</focusposition>
+				<scrolltime tween="quadratic">600</scrolltime>
 				<left>100</left>
 				<right>110</right>
 				<bottom>100</bottom>
@@ -97,6 +98,7 @@
 			<bordersize>2</bordersize>
 		</control>
 		<control type="image">
+			<visible>!Skin.HasSetting(View_56_Prefer_CircleArt)</visible>
 			<visible>!String.Contains(ListItem.Icon,default) + ![Skin.HasSetting(View_56_Prefer_Disc_Video) | Skin.HasSetting(View_56_Prefer_clearart) | Skin.HasSetting(View_56_Prefer_clearlogo)]</visible>
 			<left>50</left>
 			<centertop>50%</centertop>
@@ -109,6 +111,7 @@
 			<bordersize>2</bordersize>
 		</control>
 		<control type="image">
+			<visible>!Skin.HasSetting(View_56_Prefer_CircleArt)</visible>
 			<visible>!String.Contains(ListItem.Icon,default) + [Skin.HasSetting(View_56_Prefer_Disc_Video) | Skin.HasSetting(View_56_Prefer_clearart) | Skin.HasSetting(View_56_Prefer_clearlogo)]</visible>
 			<left>50</left>
 			<centertop>50%</centertop>
@@ -130,6 +133,66 @@
 			<visible>ListItem.IsPlaying</visible>
 			<bordertexture colordiffuse="55000000">artworkdiffuse/circle.png</bordertexture>
 		</control>
+		<control type="group">
+			<visible>Skin.HasSetting(View_56_Prefer_CircleArt)</visible>
+			<left>10</left>
+			<width>430</width>
+			<height>280</height>
+			<visible>true</visible>
+				
+			<control type="image">
+				<width>200</width>
+				<height>200</height>
+				<top>10</top>
+				<left>150</left>
+				<texture background="true" diffuse="artworkdiffuse/circle.png">$VAR[ImageLayout_circle]</texture>
+				<bordertexture>artworkdiffuse/circleborder.png</bordertexture>
+				<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
+				<bordersize>2</bordersize>
+				<visible>![Container.Content(studios) | String.IsEqual(ListItem.dbtype,studio)]</visible>
+			</control>
+			<control type="image">
+				<visible>![[Container.Content(Seasons) | String.IsEqual(ListItem.dbtype,season)] | [Container.Content(Episodes) | String.IsEqual(ListItem.dbtype,episode)]]</visible>
+				<visible>
+					!String.IsEmpty(ListItem.Art(tvshow.clearlogo)) | 
+					!String.IsEmpty(ListItem.Art(clearlogo)) | 
+					!String.IsEmpty(ListItem.Art(artist.clearlogo)) | 
+					!String.IsEmpty(ListItem.Art(albumartist.clearlogo))
+				</visible>
+				<width>400</width>
+				<height>100</height>
+				<top>170</top>
+				<left>50</left>
+				<right>10</right>
+				<texture background="true">$VAR[ListItemClearLogo]</texture>
+				<aspectratio align="center" aligny="center">keep</aspectratio>
+			</control>
+			<control type="textbox">
+				<description>43.3 1 row</description>
+				<visible>[[Container.Content(Seasons) | String.IsEqual(ListItem.dbtype,season)] | [Container.Content(Episodes) | String.IsEqual(ListItem.dbtype,episode)]] | 
+					String.IsEmpty(ListItem.Art(tvshow.clearlogo)) +
+					String.IsEmpty(ListItem.Art(artist.clearlogo)) +
+					String.IsEmpty(ListItem.Art(albumartist.clearlogo)) +
+					String.IsEmpty(ListItem.Art(clearlogo))
+				</visible>
+				<visible>!String.IsEqual(ListItem.label,..)</visible>
+				<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
+				<top>170</top>
+				<left>40</left>
+				<right>40</right>
+				<width>400</width>
+				<wrapmultiline>true</wrapmultiline>
+				<height max="80">auto</height>
+				<font>CircleTag_Small</font>
+				<align>center</align>
+				<aligny>top</aligny>
+				<textcolor>$VAR[Container_label_itemtag]</textcolor>
+				<selectedcolor>white</selectedcolor>
+				<label>$INFO[ListItem.Label,[B],[/B]]</label>
+			</control>
+		</control>
+		
+		
 		<control type="label">
 			<visible>!String.IsEqual(ListItem.Label,..)</visible>
 			<description>autoscroll and selectedcolor just not  textboxes, may use var and chenge to textb again</description>

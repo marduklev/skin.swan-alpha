@@ -5,11 +5,11 @@
 >
 >      4 Home Layouts ( Widgets Only , Netflix Style, * , * ) + unique settings depending on layout
 >      Custom Widget Configuration 
->            - set Path ( 'script.skinshortcuts' )
->            - limit, Sortortder, Sortby, Layouts[8 + ? ] ( 'script.EmbuaryHelper' to have Select Dialog )
->            Use Custom Background Images + use Custom Color Tint
->            Use Custom Background Overlay Image + use Custom Color Tint
->            Use Custom Colors
+			 - set path (native)
+>            - limit, Sortortder, Sortby, Layouts[8 + ? ] ( native + 'script.EmbuaryHelper' for post-define have Select Dialog )
+>            Use Custom Background Images (+ tint image or use tinted overlay, as layer2)
+>            Use Custom Background Overlay Image + use Custom Color Tint ( as layer3 )
+>            Use Custom Colors ( 'script.skinhelper.colorpicker' )
 >            - choose predefinded themes
 >            - change the whole colors to fit it your likings
 >      2 VideoInfo Layouts
@@ -40,5 +40,4 @@ Work on Music HUB
 Credits for (some defaults) currently used Textures belongs to
 - @'Phil65' (skin.estuary) (default[foo].pngs's, some backgroundpatterns)
 - @'Marcelveldt' , @'mgonzales71' (resource.images.backgroundoverlays.basic)
-- @'SualFred' (playback icons, dimoverlay playbutton)
 
