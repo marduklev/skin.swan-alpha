@@ -14,15 +14,9 @@
 	</variable>
 
 	<include name="MusicPlayerOSDButtons">
-				<control type="grouplist" id="78">
-				<!-- 
-				osd buttons
-				player control
-				info
-				more from... artist/genre -->
-
+				<control type="grouplist" id="600">
 					<top>78%</top>
-					<left>100</left>
+					<left>60</left>
 					<right>50</right>
 					<height>100</height>
 					<aligny>center</aligny>
@@ -30,70 +24,65 @@
 					<orientation>horizontal</orientation>
 					<itemgap>20</itemgap>
 					<usecontrolcoords>true</usecontrolcoords>
-				<!-- 	
-				<onclick>PlayerControl(Repeat)</onclick>
-					<visible>!Playlist.IsRepeatOne + !Playlist.IsRepeat</visible>
-					<visible>!VideoPlayer.Content(livetv)</visible>
-
-				<visible>Playlist.IsRepeatOne</visible>
-					  <visible>!VideoPlayer.Content(livetv)</visible>
-					  <onclick>PlayerControl(Repeat)</onclick>
-
-				<visible>Playlist.IsRepeat</visible>
-					  <visible>!VideoPlayer.Content(livetv)</visible>
-					  <onclick>PlayerControl(Repeat)</onclick>
-				
-				<onclick>PlayerControl(Random)</onclick>
-
-					<usealttexture>PVR.IsRecordingPlayingChannel</usealttexture>
-					<onclick>PVR.ToggleRecordPlayingChannel</onclick>
-					<visible>PVR.CanRecordPlayingChannel</visible>
-				
 					
-					
-					
-					500	button	Select visualization
+					<onup>699</onup>
+				<!-- 500	button	Select visualization
 						<label>$LOCALIZE[250]</label>
 						<selected>Visualisation.Enabled</selected>
-					501	button	Lock visualization to the current preset
+					 501	button	Lock visualization to the current preset
 					
-						<onclick>ActivateWindow(visualisationpresetlist)</onclick>
-						<visible>Visualisation.Enabled + Visualisation.HasPresets</visible>
-					
-						<onclick>Addon.Default.OpenSettings(xbmc.player.musicviz)</onclick>
-						<visible>Visualisation.Enabled</visible>
+					optional
+					<onclick>ActivateWindow(visualisationpresetlist)</onclick>
+					<visible>Visualisation.Enabled + Visualisation.HasPresets</visible>
+				
+					<onclick>Addon.Default.OpenSettings(xbmc.player.musicviz)</onclick>
+					<visible>Visualisation.Enabled</visible>
 				
 				-->
 				
-				<control type="button" id="67676">
-					<visible>MusicPlayer.HasPrevious</visible>
-					<top>12</top>
-					<width>45</width>
-					<height>45</height>
-					<label />
-					<texturefocus colordiffuse="$VAR[Button_Selected]">buttons/osd/cru.png</texturefocus>
-					<texturenofocus>buttons/osd/cru.png</texturenofocus>
-					<onclick>RunScript(script.cu.lrclyrics)</onclick>
+				<control type="group" id="601">
+					<width>55</width>
+					<height>100</height>
+			
+						<control type="button" id="6011">
+							<top>0</top>
+							<width>45</width>
+							<height>45</height>
+							<label />
+							<texturefocus colordiffuse="$VAR[Button_Selected]">buttons/osd/cru.png</texturefocus>
+							<texturenofocus>buttons/osd/cru.png</texturenofocus>
+							<onclick>RunScript(script.cu.lrclyrics)</onclick>
+							<onleft>6095</onleft>
+							<onright condition="Control.IsVisible(603)">603</onright>
+							<onright condition="!Control.IsVisible(603)">604</onright>
+							<onup>500</onup>
+							<ondown>500</ondown>
+						</control>
+						
+						<control type="button" id="500">
+							<top>50</top>
+							<width>45</width>
+							<height>45</height>
+							<label />
+							<texturefocus colordiffuse="$VAR[Button_Selected]">buttons/osd/visualisation.png</texturefocus>
+							<texturenofocus>buttons/osd/visualisation.png</texturenofocus>
+							<selected>Visualisation.Enabled</selected>
+							<onleft>6096</onleft>
+							<onright condition="Control.IsVisible(603)">603</onright>
+							<onright condition="!Control.IsVisible(603)">604</onright>
+							<onup>6011</onup>
+							<ondown>6011</ondown>
+						</control>
+					</control>
 					
-				</control>
-				
-				<control type="button" id="500">
-					<top>12</top>
-					<width>45</width>
-					<height>45</height>
-					<label />
-					<texturefocus colordiffuse="$VAR[Button_Selected]">buttons/osd/visualisation.png</texturefocus>
-					<texturenofocus>buttons/osd/visualisation.png</texturenofocus>
-					<selected>Visualisation.Enabled</selected>
-				</control>
-				
-				<control type="label" id="89">
-					<width>20</width>
+				<control type="label" id="602">
+					<width>10</width>
 					<height>50</height>
+					<!-- <label> - </label> let return ... to check against-->
 					<label />
 				</control>
 				
-				<control type="button" id="60491">
+				<control type="button" id="603">
 					<visible>MusicPlayer.HasPrevious</visible>
 					<top>11</top>
 					<width>50</width>
@@ -106,7 +95,7 @@
 				</control>
 				
 				
-				<control type="togglebutton" id="60492">
+				<control type="togglebutton" id="604">
 					
 					<width>50</width>
 					<height>50</height>
@@ -120,7 +109,7 @@
 					<onclick>PlayerControl(play)</onclick>
 				</control>
 				
-				<control type="button" id="60493">
+				<control type="button" id="605">
 					
 					<width>50</width>
 					<height>50</height>
@@ -130,7 +119,21 @@
 					<onclick>PlayerControl(stop)</onclick>
 				</control>
 				
-				<control type="button" id="60495">
+				<control type="togglebutton" id="606">
+					<animation effect="fade" start="100" end="40" time="1000" loop="true" condition="PVR.IsRecordingPlayingChannel">conditional</animation>
+					<width>50</width>
+					<height>50</height>
+					<label />
+					<texturefocus colordiffuse="$VAR[Button_Selected]">buttons/osd/rec2.png</texturefocus>
+					<texturenofocus colordiffuse="white">buttons/osd/rec2.png</texturenofocus>
+					<alttexturefocus colordiffuse="red">buttons/osd/rec2.png</alttexturefocus>
+					<alttexturenofocus colordiffuse="red">buttons/osd/rec2.png</alttexturenofocus>
+					<usealttexture>PVR.IsRecordingPlayingChannel</usealttexture>
+					<onclick>PVR.ToggleRecordPlayingChannel</onclick>
+					<!-- <visible>PVR.CanRecordPlayingChannel</visible> -->
+				</control>
+				
+				<control type="button" id="607">
 					<visible>MusicPlayer.HasNext</visible>
 					<top>11</top>
 					<width>50</width>
@@ -140,6 +143,71 @@
 					<texturenofocus>buttons/osd/next_fo.png</texturenofocus>
 					<onclick>PlayerControl(next)</onclick>
 				</control>
+				
+				<control type="label" id="608">
+					<width>10</width>
+					<height>50</height>
+					<!-- <label> - </label> let return ... to check against-->
+					<label />
+				</control>
+				
+				<control type="group" id="609">
+					<width>55</width>
+					<height>100</height>
+							
+							<!-- 
+							6091 - 6094
+							
+							<onclick>PlayerControl(Repeat)</onclick>
+							<visible>!Playlist.IsRepeatOne + !Playlist.IsRepeat</visible>
+							<visible>!VideoPlayer.Content(livetv)</visible>
+
+							<visible>Playlist.IsRepeatOne</visible>
+							  <visible>!VideoPlayer.Content(livetv)</visible>
+							  <onclick>PlayerControl(Repeat)</onclick>
+
+							<visible>Playlist.IsRepeat</visible>
+							  <visible>!VideoPlayer.Content(livetv)</visible>
+							  <onclick>PlayerControl(Repeat)</onclick>
+						
+							
+							 -->
+						<control type="button" id="6095">
+							<top>0</top>
+							<width>45</width>
+							<height>45</height>
+							<label />
+							<texturefocus colordiffuse="$VAR[Button_Selected]">buttons/osd/repeat_fo.png</texturefocus>
+							<texturenofocus>buttons/osd/repeat_fo.png</texturenofocus>
+							<onright>6011</onright>
+							<onleft condition="Control.IsVisible(607)">607</onleft>
+							<onleft condition="!Control.IsVisible(607)">605</onleft>
+							<onup>6096</onup><ondown>6096</ondown>
+							<onclick>PlayerControl(Repeat)</onclick>
+							<selected>Playlist.IsRepeat</selected>
+						</control>
+						
+						<control type="togglebutton" id="6096">
+							<top>50</top>
+							<width>45</width>
+							<height>45</height>
+							<label />
+							<onright>500</onright>
+							<onup>6095</onup><ondown>6095</ondown>
+							<onleft condition="Control.IsVisible(607)">607</onleft>
+							<onleft condition="!Control.IsVisible(607)">605</onleft>
+							
+							<usealttexture>Playlist.IsRandom</usealttexture>
+							<texturefocus colordiffuse="$VAR[Button_Selected]">buttons/osd/randomoff_fo.png</texturefocus>
+							<texturenofocus>buttons/osd/randomoff_fo.png</texturenofocus>
+							
+							<alttexturefocus colordiffuse="orange">buttons/osd/randomoff_fo.png</alttexturefocus>
+							<alttexturenofocus colordiffuse="orange">buttons/osd/randomoff_fo.png</alttexturenofocus>
+							<onclick>PlayerControl(Random)</onclick>
+							<visible>Player.HasAudio</visible>
+						</control>
+					</control>
+					
 				
 				
 			</control>

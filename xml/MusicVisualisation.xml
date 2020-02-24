@@ -87,8 +87,29 @@ Visualisation.Locked	Returns true if the current visualisation preset is locked 
 				<bordertexture border="2" colordiffuse="cyan">frames/frametest.png</bordertexture> 
 				<texture colordiffuse="$VAR[MusicPlayerBorder_CDiffuse]">colors/white70.png</texture>
 			</control>
-					
+				
 			<control type="image">
+				<!-- <left>300</left>
+				<centertop>26%</centertop>
+				<width>360</width>
+				<height>360</height>
+				 -->
+				<visible>Skin.HasSetting(MusicPlayer_PreferDisc)</visible>
+				<left>60</left>
+				<centertop>25%</centertop>
+				<height>400</height>
+				<width>400</width>
+				<bordersize>2</bordersize>
+				<bordertexture /> 
+				<aspectratio scalediffuse="true" align="center" aligny="bottom">keep</aspectratio>
+				<texture diffuse="diffuse/cdmask_new.png">$VAR[PlayerDisc]</texture>
+				<animation effect="rotate" end="-360" center="auto" time="4800" loop="true" reversible="false" condition="!Player.Paused">Conditional</animation>
+				<animation effect="slide" start="-320,0" end="0,0" time="300" reversible="false">WindowOpen</animation>
+			</control>
+			
+			<control type="image">
+				<visible>[Skin.HasSetting(MusicPlayer_PreferDisc) + String.IsEmpty(Player.Art(discart) + String.IsEmpty(Player.Art(album.discart)] | !Skin.HasSetting(MusicPlayer_PreferDisc)</visible>
+				
 				<description>optional diffuse texture as some art will not fit</description>
 				<left>60</left>
 				<centertop>25%</centertop>
@@ -99,6 +120,7 @@ Visualisation.Locked	Returns true if the current visualisation preset is locked 
 				<texture>$VAR[PlayerThumb]</texture>
 				<aspectratio scalediffuse="false" align="left" aligny="bottom">keep</aspectratio>
 			</control>
+			
 			
 			<control type="grouplist">
 				<top>45%</top>
@@ -243,15 +265,18 @@ Visualisation.Locked	Returns true if the current visualisation preset is locked 
 			<onclick>ReloadSkin()</onclick>
 		</control>
 		
-		<control type="image">
-			<description>fake progress</description>
+		<control type="progress">
+			<description>slider bg</description>
 			<left>60</left>
 			<bottom>25%</bottom>
-			<bordersize>1,1,230,1</bordersize>
 			<height>2</height>
 			<width>28%</width>
-			<texture colordiffuse="cyan">colors/white.png</texture>
-			<bordertexture>colors/black.png</bordertexture>
+			<texturebg colordiffuse="black">colors/white.png</texturebg>
+			<midtexture colordiffuse="cyan">colors/white.png</midtexture>
+			<lefttexture />
+			<righttexture />
+			<overlaytexture colordiffuse="22ffffff" border="2">colors/white.png</overlaytexture>
+			<info>Player.Progress</info>
 		</control>
 				
 		<control type="group">
@@ -263,8 +288,7 @@ Visualisation.Locked	Returns true if the current visualisation preset is locked 
 			<width>35%</width>
 			
 			
-			<include>MusicPlayerOSDButtons</include>
-		
+			
 		
 		</control>
 			
