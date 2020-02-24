@@ -32,6 +32,7 @@
 			<aspectratio>stretch</aspectratio>
 		</control>
 		
+		
 		<control type="grouplist" id="8999">
 			<animation effect="slide" start="0,0" end="450,0" time="300" tween="cubic" easing="inout" condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">conditional</animation>
 			
@@ -39,9 +40,12 @@
 			<visible>!$EXP[Infodialog_IsActive]</visible>
 			<visible>!Window.IsActive(shutdownmenu)</visible>
 			<centertop>50%</centertop>
-			<left>5</left>
+			
+			<align>center</align>
+			<aligny>center</aligny>
+			<left>12</left>
 			<width>110</width>
-			<height>360</height>
+			<height>620</height>
 			<orientation>vertical</orientation>
 			<itemgap>10</itemgap>
 			<usecontrolcoords>true</usecontrolcoords>
@@ -56,7 +60,15 @@
 			<onup condition="!Control.IsVisible(19)">50</onup>
 			<onup>ClearProperty(MenucontrolActive,Home)</onup>
 			
-			<control type="radiobutton" id="102501">
+			<control type="radiobutton" id="8001">
+				<include content="Menucontrol_RadioButton">
+					<param name="radiotexture" value="back3" />
+				</include>
+				<visible>!String.IsEqual(Window(Home).Property(MenucontrolActive),true)</visible>
+				<onclick>Dialog.Close(all,true)</onclick>
+				<onclick>Action(back)</onclick>
+			</control>
+			<control type="radiobutton" id="8002">
 				<include content="Menucontrol_RadioButton">
 					<param name="radiotexture" value="search" />
 				</include>
@@ -64,7 +76,7 @@
 				<onclick>Skin.SetString(SearchTerm)</onclick>
 				<onclick>ActivateWindow(1120),return</onclick>
 			</control>
-			<control type="radiobutton" id="102502">
+			<control type="radiobutton" id="8003">
 				<include content="Menucontrol_RadioButton">
 					<param name="radiotexture" value="menucontrol" />
 				</include>
@@ -72,33 +84,77 @@
 				<onclick condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onclick>
 				<onclick condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetFocus(9000)</onclick>
 			</control>
-			<control type="radiobutton" id="102504">
-				<visible>!Skin.HasSetting(premenu_hideshutdown)</visible>
+			<control type="radiobutton" id="8004">
+				<visible>!Skin.HasSetting(premenu_hide_hideshutdown)</visible>
 				<include content="Menucontrol_RadioButton">
 					<param name="radiotexture" value="shutdownbold" />
 				</include>
 				<onclick>ClearProperty(MenucontrolActive,Home)</onclick>
 				<onclick>ActivateWindow(shutdownmenu)</onclick>
 			</control>
-			<control type="radiobutton" id="102505">
+			
+			<control type="radiobutton" id="8006">
+				<visible>String.IsEmpty(Window(home).Property(TrailerIsPlaying))</visible>
+				<visible>!String.IsEmpty(Window(home).Property(trailer_avail)) | !String.IsEmpty(ListItem.Trailer)</visible>
+				<visible>!Skin.HasSetting(premenu_hide_trailer)</visible>
+				<include content="Menucontrol_RadioButton">
+					<param name="radiotexture" value="defaultmovies" />
+				</include>
+				<onclick condition="String.IsEmpty(Window(home).Property(trailer_avail)) + !String.IsEmpty(ListItem.Trailer)">PlayMedia($INFO[ListItem.Trailer],1)</onclick>
+				<onclick condition="!String.IsEmpty(Window(home).Property(trailer_avail))">PlayMedia($INFO[container.listitem.path]$INFO[container.ListItem.FolderName,,-trailer.mp4],1)</onclick>
+				<onclick>SetProperty(TrailerIsPlaying,true,home)</onclick>
+				<onclick>SetFocus(50)</onclick>
+			</control>
+			<control type="radiobutton" id="8007">
+				<visible>!String.IsEmpty(Window(home).Property(TrailerIsPlaying))</visible>
+				<visible>!Skin.HasSetting(premenu_hide_trailer)</visible>
+				<include content="Menucontrol_RadioButton">
+					<param name="radiotexture" value="stop" />
+				</include>
+				<onclick>ClearProperty(TrailerIsPlaying,home)</onclick>
+				<onclick>Action(stop)</onclick>
+				<onclick>SetFocus(50)</onclick>
+			</control>
+			<control type="radiobutton" id="8005">
 				<visible>Player.HasMedia</visible>
-				<description>need to make better img, radionutton group search,menucontrol,toggle fs, seperate natvir vs skin gui controls?</description>
 				<include content="Menucontrol_RadioButton">
 					<param name="radiotexture" value="togglefs_2" />
 				</include>
 				<onclick>Fullscreen</onclick>
 			</control>
+			<control type="radiobutton" id="8008">
+				<visible>!Skin.HasSetting(premenu_hide_info)</visible>
+				<visible>
+                    String.IsEqual(Container.ListItem.dbtype,movie) | String.IsEqual(Container.ListItem.dbtype,tvshow) | String.IsEqual(Container.ListItem.dbtype,season) | String.IsEqual(Container.ListItem.dbtype,episode) | 
+                    String.IsEqual(Container.ListItem.dbtype,artist) | String.IsEqual(Container.ListItem.dbtype,album) | String.IsEqual(Container.ListItem.dbtype,song)
+                </visible>
+				<include content="Menucontrol_RadioButton">
+					<param name="radiotexture" value="defaultaddoninfoprovider" />
+				</include>
+				<onclick>SetFocus(50)</onclick>
+				<onclick>Action(info)</onclick>
+			</control>
+			<control type="radiobutton" id="8009">
+				<visible>!Skin.HasSetting(premenu_hide_embuarytmdbinfo)</visible>
+				<visible>String.IsEqual(Container.ListItem.dbtype,movie) | String.IsEqual(Container.ListItem.dbtype,actor) | String.IsEqual(Container.ListItem.dbtype,tvshow) | String.IsEqual(Container.ListItem.dbtype,season) | String.IsEqual(Container.ListItem.dbtype,episode)</visible>
+				<include content="Menucontrol_RadioButton">
+					<param name="radiotexture" value="tmdb_3" />
+				</include>
+				<onclick>RunScript(script.embuary.info,call=$VAR[embtmdbinfocall],query='"$VAR[embtmdbinfoquery]'")</onclick>
+			</control>
+			
+			
 		</control>
 	</include>
 	
 	<include name="Menucontrol_RadioButton">
 		<include content="Animation_Item_Focus" />
-		<textureradioonfocus bolordiffuse="$VAR[Nav_LabelPrimaryColor]">icons/radiobuttons/$PARAM[radiotexture].png</textureradioonfocus>
+		<textureradioonfocus colordiffuse="$VAR[Nav_LabelPrimaryColor]">icons/radiobuttons/$PARAM[radiotexture].png</textureradioonfocus>
 		<textureradioonnofocus colordiffuse="grey">icons/radiobuttons/$PARAM[radiotexture].png</textureradioonnofocus>
 		<textureradioofffocus colordiffuse="$VAR[Nav_LabelPrimaryColor]">icons/radiobuttons/$PARAM[radiotexture].png</textureradioofffocus>
 		<textureradiooffnofocus colordiffuse="grey">icons/radiobuttons/$PARAM[radiotexture].png</textureradiooffnofocus>
 		<textoffsetx />
-		<radiowidth>65</radiowidth>
+		<radiowidth>60</radiowidth>
 		<radioheight>60</radioheight>
 		<radioposx>3</radioposx>
 		<textureradioondisabled />

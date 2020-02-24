@@ -128,6 +128,7 @@
 	<include name="SetPropOnFocus_HiddenButton">
 		<control type="button">
 			<visible allowhiddenfocus="true">false</visible>
+			<onfocus condition="!String.IsEmpty(Window(home).Property(trailer_avail))">ClearProperty(trailer_avail,home)</onfocus>
 			<onfocus condition="[String.IsEqual(ListItem.DBtype,tvshow) | String.IsEqual(ListItem.DBtype,movie)]">RunScript(script.embuary.helper,action=lookforfile,file='"$INFO[listitem.path]$INFO[listitem.FolderName,,-trailer.mp4]"',prop=trailer_avail)</onfocus>
 			
 			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.dbid)">SetProperty(dbid,$INFO[listitem.dbid],home)</onfocus>
@@ -136,9 +137,7 @@
 			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.Property(totalseasons))">SetProperty(totalseasons,$INFO[listitem.Property(totalseasons)],home)</onfocus>
 			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.Property(totalepisodes))">SetProperty(totalepisodes,$INFO[listitem.Property(totalepisodes)],home)</onfocus>
 			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.status)">SetProperty(status,$INFO[listitem.status],home)</onfocus>
-		
-			<onunfocus condition="!String.IsEmpty(Window(home).Property(trailer_avail))">ClearProperty(trailer_avail,home)</onunfocus>
-			
+
 		</control>
 	</include>
 	

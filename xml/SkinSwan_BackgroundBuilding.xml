@@ -658,30 +658,37 @@ use this include pr add variable fpr diffuse textures
 		
 		<control type="group">
 			<include>HiddenObject</include>
-			<control type="image" id="99906">
-				<texture background="true">$VAR[MusicPlayerBackground]</texture>
+			<control type="image" id="77706">
+				<texture background="true">$VAR[MusicPlayerBackgroundVar]</texture>
 				<visible>Window.IsActive(visualisation)</visible>
+				<visible>!Skin.HasSetting(Rotating_MusicPlayerFanart)</visible>
 			</control>
-			<!-- <include condition="true">Rotating_MusicPlayerFanartBackground</include> -->
+			<include condition="Skin.HasSetting(Rotating_MusicPlayerFanart)">Rotating_MusicPlayerFanartBackground</include>
 		</control>
 		
 		<control type="group">
 			
 			<!-- <include>FullscreenVisualisaion_id2</include> -->
-			
-			<control type="multiimage" id="99904">
-				<description>Layer2 Artwork</description>
-				<depth>DepthBackground</depth>
-				<imagepath diffuse="" background="true">$VAR[MusicPlayerBackgroundVar]</imagepath>
-				<aspectratio>scale</aspectratio>
-				<fadetime>300</fadetime>
-				<colordiffuse />
-				<randomize>true</randomize>
-				<timeperimage>6000</timeperimage>
-				<loop>yes</loop>
+			<control type="image" id="77704">
+				
+				
+				<texture diffuse="colors/white.png" background="true">$VAR[MusicPlayerBackground]</texture>
+				<aspectratio align="center" aligny="center">scale</aspectratio>
+				<fadetime>600</fadetime>
+				
+				
 				<animation effect="zoom" start="110" end="130" center="auto" time="9000" tween="cubic" easing="inout" pulse="true" condition="Skin.HasSetting(MusicPlayer_BackgroundAnimation)">Conditional</animation>
 				<animation effect="slide" start="-10,-10" end="50,65" time="8000" tween="cubic" easing="inout" pulse="true" condition="Skin.HasSetting(MusicPlayer_BackgroundAnimation)">Conditional</animation>
 			</control>
+			<control type="image">
+					
+					<depth>DepthBackground</depth>
+					<visible>true</visible>
+					<colordiffuse>$VAR[MusicPlayerOverlay_CDiffuse]</colordiffuse>
+					<texture>colors/white50.png</texture>
+				</control>
+			
+			
 			
 			<!-- <include content="MusicPlayer_FanartOverlay" /> -->
 		
@@ -691,7 +698,7 @@ use this include pr add variable fpr diffuse textures
     </include>
 	
 	<include name="Rotating_MusicPlayerFanartBackground">
-		<control type="fadelabel" id="99907">
+		<control type="fadelabel" id="77707">
 			<visible>Window.Is(visualisation)</visible>
 			<info>Player.Art(fanart)</info>
 			<info>Player.Art(fanart1)</info>
@@ -766,15 +773,23 @@ use this include pr add variable fpr diffuse textures
 		</control>
 	</include>
 	
+	<variable name="MusicPlayerOverlay_CDiffuse">
+		<value condition="!String.IsEmpty(Skin.String(MusicPlayerOverlay_CDiffuse))">$INFO[Skin.String(MusicPlayerOverlay_CDiffuse)]</value>
+		<value>blue</value>
+	</variable>
+	<variable name="MusicPlayerBorder_CDiffuse">
+		<value condition="!String.IsEmpty(Skin.String(MusicPlayerBorder_CDiffuse))">$INFO[Skin.String(MusicPlayerBorder_CDiffuse)]</value>
+		<value>black</value>
+	</variable>
 	<variable name="MusicPlayerBackground">
-		<value condition="Control.IsVisible(99907) + !String.IsEmpty(Control.GetLabel(99007))">$INFO[Control.GetLabel(99907)]</value>
-		<value condition="Control.IsVisible(99906) + !String.IsEmpty(Control.GetLabel(99006))">$INFO[Control.GetLabel(99906)]</value>
+		<value condition="Control.IsVisible(77707) + !String.IsEmpty(Control.GetLabel(77707))">$INFO[Control.GetLabel(77707)]</value>
+		<value condition="Control.IsVisible(77706) + !String.IsEmpty(Control.GetLabel(77706))">$INFO[Control.GetLabel(77706)]</value>
 		<value>special://skin/extras/backgroundimages/pattern1.jpg</value>
 	</variable>
 	<variable name="MusicPlayerBackgroundVar">
 		<value condition="!String.IsEmpty(Player.Art(artist.fanart))">$INFO[Player.Art(artist.fanart)]</value>
 		<value condition="!String.IsEmpty(Player.Art(albumartistartist.fanart))">$INFO[Player.Art(albumartistartist.fanart)]</value>
-		<value condition="!String.IsEmpty(Player.Art(artist.fanart))">$INFO[Player.Art(artist.fanart)]</value>
+		<value condition="!String.IsEmpty(Player.Art(artist.fanart))">$INFO[Player.Art(fanart)]</value>
 		<value>special://skin/extras/backgroundimages/pattern1.jpg</value>
 	</variable>
 	

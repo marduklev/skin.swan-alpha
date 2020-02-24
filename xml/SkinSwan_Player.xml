@@ -2,6 +2,157 @@
 <!-- SWAN -->
 <includes>
 
+	<variable name="MusicPlayerOffset">
+		<value condition="Player.HasAudio + MusicPlayer.Offset(3).Exists">[COLOR=cyan]$LOCALIZE[19031] : [/COLOR][CR]$INFO[MusicPlayer.Offset(1).Artist] - $INFO[MusicPlayer.Offset(1).Title] • [COLOR=cyan]$LOCALIZE[554]:[/COLOR] $INFO[MusicPlayer.Offset(1).PlaylistPosition][COLOR=cyan]/[/COLOR]$INFO[MusicPlayer.PlaylistLength][CR]$INFO[MusicPlayer.Offset(2).Artist] - $INFO[MusicPlayer.Offset(2).Title] • [COLOR=cyan]$LOCALIZE[554]:[/COLOR] $INFO[MusicPlayer.Offset(2).PlaylistPosition][COLOR=cyan]/[/COLOR]$INFO[MusicPlayer.PlaylistLength][CR]$INFO[MusicPlayer.Offset(3).Artist] - $INFO[MusicPlayer.Offset(3).Title] • [COLOR=cyan]$LOCALIZE[554]:[/COLOR] $INFO[MusicPlayer.Offset(3).PlaylistPosition][COLOR=cyan]/[/COLOR]$INFO[MusicPlayer.PlaylistLength]</value>
+		<value condition="Player.HasAudio + MusicPlayer.Offset(2).Exists">[COLOR=cyan]$LOCALIZE[19031] : [/COLOR][CR]$INFO[MusicPlayer.Offset(1).Artist] - $INFO[MusicPlayer.Offset(1).Title] • [COLOR=cyan]$LOCALIZE[554]:[/COLOR] $INFO[MusicPlayer.Offset(1).PlaylistPosition][COLOR=cyan]/[/COLOR]$INFO[MusicPlayer.PlaylistLength][CR]$INFO[MusicPlayer.Offset(2).Artist] - $INFO[MusicPlayer.Offset(2).Title] • [COLOR=cyan]$LOCALIZE[554]:[/COLOR] $INFO[MusicPlayer.Offset(2).PlaylistPosition][COLOR=cyan]/[/COLOR]$INFO[MusicPlayer.PlaylistLength]</value>
+		<value condition="Player.HasAudio + MusicPlayer.Offset(1).Exists">[COLOR=cyan]$LOCALIZE[19031] : [/COLOR][CR]$INFO[MusicPlayer.Offset(1).Artist] - $INFO[MusicPlayer.Offset(1).Title] • [COLOR=cyan]$LOCALIZE[554]:[/COLOR] $INFO[MusicPlayer.Offset(1).PlaylistPosition][COLOR=cyan]/[/COLOR]$INFO[MusicPlayer.PlaylistLength]</value>
+    </variable>
+	
+	<variable name="MusicPlayerArtistSubInfo">
+		<value condition="!String.IsEmpty(MusicPlayer.Property(Artist_YearsActive))">$INFO[MusicPlayer.Property(Artist_YearsActive)]</value>
+		<value condition="!String.IsEmpty(MusicPlayer.Property(Artist_Formed)) | !String.IsEmpty(MusicPlayer.Property(Artist_Disbanded))">$INFO[MusicPlayer.Property(Artist_Formed),formed: ,]$INFO[MusicPlayer.Property(Artist_Disbanded), - disbanded: ,]</value>
+	</variable>
+
+	<include name="MusicPlayerOSDButtons">
+				<control type="grouplist" id="78">
+				<!-- 
+				osd buttons
+				player control
+				info
+				more from... artist/genre -->
+
+					<top>78%</top>
+					<left>100</left>
+					<right>50</right>
+					<height>100</height>
+					<aligny>center</aligny>
+					<align>center</align>
+					<orientation>horizontal</orientation>
+					<itemgap>20</itemgap>
+					<usecontrolcoords>true</usecontrolcoords>
+				<!-- 	
+				<onclick>PlayerControl(Repeat)</onclick>
+					<visible>!Playlist.IsRepeatOne + !Playlist.IsRepeat</visible>
+					<visible>!VideoPlayer.Content(livetv)</visible>
+
+				<visible>Playlist.IsRepeatOne</visible>
+					  <visible>!VideoPlayer.Content(livetv)</visible>
+					  <onclick>PlayerControl(Repeat)</onclick>
+
+				<visible>Playlist.IsRepeat</visible>
+					  <visible>!VideoPlayer.Content(livetv)</visible>
+					  <onclick>PlayerControl(Repeat)</onclick>
+				
+				<onclick>PlayerControl(Random)</onclick>
+
+					<usealttexture>PVR.IsRecordingPlayingChannel</usealttexture>
+					<onclick>PVR.ToggleRecordPlayingChannel</onclick>
+					<visible>PVR.CanRecordPlayingChannel</visible>
+				
+					
+					
+					
+					500	button	Select visualization
+						<label>$LOCALIZE[250]</label>
+						<selected>Visualisation.Enabled</selected>
+					501	button	Lock visualization to the current preset
+					
+						<onclick>ActivateWindow(visualisationpresetlist)</onclick>
+						<visible>Visualisation.Enabled + Visualisation.HasPresets</visible>
+					
+						<onclick>Addon.Default.OpenSettings(xbmc.player.musicviz)</onclick>
+						<visible>Visualisation.Enabled</visible>
+				
+				-->
+				
+				<control type="button" id="67676">
+					<visible>MusicPlayer.HasPrevious</visible>
+					<top>12</top>
+					<width>45</width>
+					<height>45</height>
+					<label />
+					<texturefocus colordiffuse="$VAR[Button_Selected]">buttons/osd/cru.png</texturefocus>
+					<texturenofocus>buttons/osd/cru.png</texturenofocus>
+					<onclick>RunScript(script.cu.lrclyrics)</onclick>
+					
+				</control>
+				
+				<control type="button" id="500">
+					<top>12</top>
+					<width>45</width>
+					<height>45</height>
+					<label />
+					<texturefocus colordiffuse="$VAR[Button_Selected]">buttons/osd/visualisation.png</texturefocus>
+					<texturenofocus>buttons/osd/visualisation.png</texturenofocus>
+					<selected>Visualisation.Enabled</selected>
+				</control>
+				
+				<control type="label" id="89">
+					<width>20</width>
+					<height>50</height>
+					<label />
+				</control>
+				
+				<control type="button" id="60491">
+					<visible>MusicPlayer.HasPrevious</visible>
+					<top>11</top>
+					<width>50</width>
+					<height>50</height>
+					<label />
+					<texturefocus colordiffuse="$VAR[Button_Selected]">buttons/osd/previous_fo.png</texturefocus>
+					<texturenofocus>buttons/osd/previous_fo.png</texturenofocus>
+					<onclick condition="!Integer.IsLessOrEqual(MusicPlayer.Time(ss),03)">PlayerControl(previous)</onclick>
+					<onclick>PlayerControl(previous)</onclick>
+				</control>
+				
+				
+				<control type="togglebutton" id="60492">
+					
+					<width>50</width>
+					<height>50</height>
+					<label />
+					<altlabel />
+					<texturefocus colordiffuse="$VAR[Button_Selected]">buttons/osd/play_fo.png</texturefocus>
+					<texturenofocus>buttons/osd/play_fo.png</texturenofocus>
+					<alttexturefocus colordiffuse="$VAR[Button_Selected]">buttons/osd/pause_fo.png</alttexturefocus>
+					<alttexturenofocus>buttons/osd/pause_fo.png</alttexturenofocus>
+					<usealttexture>!Player.Paused</usealttexture>
+					<onclick>PlayerControl(play)</onclick>
+				</control>
+				
+				<control type="button" id="60493">
+					
+					<width>50</width>
+					<height>50</height>
+					<label />
+					<texturefocus colordiffuse="$VAR[Button_Selected]">buttons/osd/stop_fo.png</texturefocus>
+					<texturenofocus>buttons/osd/stop_fo.png</texturenofocus>
+					<onclick>PlayerControl(stop)</onclick>
+				</control>
+				
+				<control type="button" id="60495">
+					<visible>MusicPlayer.HasNext</visible>
+					<top>11</top>
+					<width>50</width>
+					<height>50</height>
+					<label />
+					<texturefocus colordiffuse="$VAR[Button_Selected]">buttons/osd/next_fo.png</texturefocus>
+					<texturenofocus>buttons/osd/next_fo.png</texturenofocus>
+					<onclick>PlayerControl(next)</onclick>
+				</control>
+				
+				
+			</control>
+		</include>
+<!-- 
+MusicPlayer.Property(Artist_Born) 	Date of Birth of the currently playing Artist 	
+MusicPlayer.Property(Artist_Died) 	Date of Death of the currently playing Artist
+ 	Formation date of the currently playing Artist/Band 	
+ 	Disbanding date of the currently playing Artist/Band 	
+ --> 	
+
+
+
 	<!-- OSD Controls -->
 	<include name="OSD_Slider_Seek">
 		<bottom>222</bottom>
@@ -73,7 +224,18 @@
 	</variable>
 	
 	
+	<variable name="MusicPlayer_Plot">
+		
+		
+		<value condition="!String.IsEmpty(MusicPlayer.Property(Album_Description))">$INFO[MusicPlayer.Property(Album_Description)]</value>
+		<value condition="!String.IsEmpty(MusicPlayer.Property(Artist_Description))">$INFO[MusicPlayer.Property(Artist_Description)]</value>
+		<value condition="!String.IsEmpty(VideoPlayer.Plot)">$INFO[VideoPlayer.Plot]</value>
 	
+		
+		
+	
+		<value>$LOCALIZE[19055]</value>
+	</variable>
 	
 	
 	
