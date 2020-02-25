@@ -87,7 +87,21 @@ Visualisation.Locked	Returns true if the current visualisation preset is locked 
 				<bordertexture border="2" colordiffuse="$VAR[MusicPlayerTextAccent]">frames/frametest.png</bordertexture> 
 				<texture colordiffuse="$VAR[MusicPlayerBorder_CDiffuse]">colors/white70.png</texture>
 			</control>
-				
+			
+			<control type="label">
+				<wrapmultiline>true</wrapmultiline>
+				<!-- <visible>!Skin.HasSetting(musicplayer_hideclock)</visible> -->
+				<visible>false</visible>
+				<left>60</left>
+				<height>100</height>
+				<width>100%</width>
+				<aligny>bottom</aligny>
+				<align>left</align>
+				<textcolor>$VAR[MusicPlayerTextAccent]</textcolor>
+				<font>font_robotobold</font>
+				<label>$INFO[System.Time]</label>
+			</control>
+			
 			<control type="image">
 				<!-- <left>300</left>
 				<centertop>26%</centertop>
@@ -108,7 +122,7 @@ Visualisation.Locked	Returns true if the current visualisation preset is locked 
 			</control>
 			
 			<control type="image">
-				<visible>[Skin.HasSetting(MusicPlayer_PreferDisc) + String.IsEmpty(Player.Art(discart) + String.IsEmpty(Player.Art(album.discart)] | !Skin.HasSetting(MusicPlayer_PreferDisc)</visible>
+				<visible>[Skin.HasSetting(MusicPlayer_PreferDisc) + String.IsEmpty(Player.Art(discart)) + String.IsEmpty(Player.Art(album.discart))] | !Skin.HasSetting(MusicPlayer_PreferDisc)</visible>
 				
 				<description>optional diffuse texture as some art will not fit</description>
 				<left>60</left>
@@ -190,7 +204,7 @@ Visualisation.Locked	Returns true if the current visualisation preset is locked 
 				
 		<control type="group">
 			<description>group cond slide use alarm set prop or on nav actions</description>
-			<visible>true</visible>
+				<visible>true</visible>
 				<right>0</right>
 				<height>100%</height>
 				<width>20%</width>
@@ -203,6 +217,8 @@ Visualisation.Locked	Returns true if the current visualisation preset is locked 
 				</control>
 				
 				<control type="grouplist">
+				
+				
 					<top>100</top>
 					<right>50</right>
 					<left>50</left>
@@ -212,13 +228,13 @@ Visualisation.Locked	Returns true if the current visualisation preset is locked 
 					<orientation>vertical</orientation>
 					<itemgap>20</itemgap>
 					<usecontrolcoords>true</usecontrolcoords>
-				
+					
 					<control type="image">
 						<centerright>50%</centerright>
 						<width>150</width>
 						<height>150</height>
 						<texture background="true" diffuse="artworkdiffuse/circle.png">$INFO[Player.Art(artist.thumb)]</texture>
-						<bordertexture colordiffuse="$VAR[Nav_LabelPrimaryColor]">artworkdiffuse/circleborder.png</bordertexture>
+						<bordertexture colordiffuse="$VAR[MusicPlayerTextAccent]">artworkdiffuse/circleborder.png</bordertexture>
 						<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
 						<bordersize>2</bordersize>
 					</control>
@@ -261,6 +277,7 @@ Visualisation.Locked	Returns true if the current visualisation preset is locked 
 			<width>400</width>
 			<label>$INFO[System.CurrentWindow]</label>
 			<onclick>ReloadSkin()</onclick>
+			<onclick>ClearProperty(CurrentPlaylistVisible)</onclick>
 		</control>
 		
 		<control type="progress">
@@ -278,8 +295,7 @@ Visualisation.Locked	Returns true if the current visualisation preset is locked 
 		</control>
 				
 		<control type="group">
-			<visible>!window.isactive(musicosd.xml)</visible>
-			<!-- <visible>false</visible> -->
+			<visible>false</visible>
 			<left>0</left>
 
 			<height>100%</height>
