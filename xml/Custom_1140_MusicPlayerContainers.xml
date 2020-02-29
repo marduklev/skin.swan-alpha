@@ -2,7 +2,7 @@
 <window type="dialog" id="1140">
 	<animation effect="fade" start="0" end="100" time="250">WindowOpen</animation>
 	<animation effect="fade" start="100" end="0" time="250">WindowClose</animation>
-			
+	<!-- <onload condition="Window.IsActive(script-cu-lrclyrics-main.xml)">Dialog.Close(script-cu-lrclyrics-main.xml)</onload> -->
 	<defaultcontrol>499</defaultcontrol>
 	<controls>
 	
@@ -35,7 +35,7 @@ can be wider if info is toggled off	 -->
 					<top>50</top>
 					<height>25</height>
 					<aligny>center</aligny>
-					<label>Current Playlist$INFO[Container(499).NumItems,  ( , Items)]</label>
+					<label>Current Playlist$INFO[Container(499).NumItems,  ( , Items )]</label>
 				</control>
 				<control type="panel" id="499">
 					<top>100</top>
@@ -44,15 +44,18 @@ can be wider if info is toggled off	 -->
 					<align>center</align>
 					<preloaditems>2</preloaditems>
 					<orientation>vertical</orientation>
+					<!-- 
+					<focusposition>4</focusposition>
+					<movement>0</movement>
+					-->
 					
 					<onup>699</onup>
-					<onleft>ClearProperty(CurrentPlaylistVisible,home)</onleft>
-					<onright>ClearProperty(CurrentPlaylistVisible,home)</onright>
-			
-					
+					<ondown>699</ondown>
+					<onleft>Dialog.Close(1140)</onleft>
 					<onclick>RunScript(script.embuary.helper,action=playall,id=499,type=music,method=fromhere)</onclick>
-					
-					<onleft>6093</onleft>
+					<!-- <onclick>RunScript(script.embuary.helper,action=resetposition,container=499)</onclick> -->
+					<onright condition="Control.IsVisible(49960)">49960</onright>
+					<onright condition="!Control.IsVisible(49960)">Dialog.Close(1140)</onright>
 					
 					<pagecontrol>49960</pagecontrol>
 					
@@ -137,6 +140,15 @@ can be wider if info is toggled off	 -->
 					</focusedlayout>
 					<content target="music">playlistmusic://</content>
 				</control>
+				<control type="scrollbar" id="49960">
+					<right>-20</right>
+					<top>100</top>
+					<bottom>100</bottom>
+					<width>3</width>
+					<onleft>499</onleft>
+					<onright>499</onright>
+				</control>
+				
 			</control>
 		</control>
 		
@@ -177,14 +189,12 @@ can be wider if info is toggled off	 -->
 				<focusposition>0</focusposition>
 				
 				<onup>699</onup>
-				<onleft>ClearProperty(CurrentPlaylistVisible,home)</onleft>
-				<onright>ClearProperty(CurrentPlaylistVisible,home)</onright>
-		
+				
 				
 				<onclick>RunScript(script.embuary.helper,action=playall,id=499,type=music,method=fromhere)</onclick>
 				
-				<onleft>6093</onleft>
-				
+				<onleft>Dialog.Close(1140)</onleft>
+				<onright>49960</onright>
 				<pagecontrol>49960</pagecontrol>
 				
 				<scrolltime tween="quadratic">400</scrolltime>

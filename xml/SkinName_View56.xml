@@ -16,7 +16,7 @@
 			
 			
 			<control type="fixedlist" id="56">
-				<visible>Container.Content(movies) | Container.Content(sets) | Container.Content(tvshows) | Container.Content(episodes) | Container.Content(artists) | Container.Content(albums) | Container.Content(songs)</visible>
+				<visible>Container.Content(movies) | Container.Content(sets) | Container.Content(tvshows) | Container.Content(episodes) | Container.Content(artists) | Container.Content(albums)</visible>
 				<orientation>vertical</orientation>
 				<preloaditems>2</preloaditems>
 				<focusposition>1</focusposition>
@@ -53,15 +53,11 @@
 				<control type="group">
 					<height>270</height>
 					
-					<!-- <animation type="Focus" reversible="false">
-						<effect type="zoom" end="105,105" time="200" tween="sine" easing="out" center="auto" />
-						<effect type="zoom" end="95.2,95.2" time="150" tween="sine" delay="200" easing="out" center="auto" />
-					</animation> -->
-				
 					<animation type="Focus" reversible="false">
 						<effect type="zoom" end="102,102" time="200" tween="sine" easing="out" center="auto" />
 						<effect type="zoom" end="98,98" time="150" tween="sine" delay="200" easing="out" center="auto" />
 					</animation>
+					
 					<control type="group">
 					
 						<control type="image">
@@ -177,7 +173,7 @@
 	<include name="list_panel56">
 		
 		<control type="image">
-			<visible>String.Contains(ListItem.Icon,default)</visible>
+			<visible>String.Contains(ListItem.Icon,default) + !String.StartsWith(ListItem.Label,*)</visible>
 			<centerleft>50%</centerleft>
 			<centertop>50%</centertop>
 			<width>90</width>
@@ -310,7 +306,7 @@
 			<aligny>top</aligny>
 			<textcolor>$VAR[Nav_LabelPrimaryColor]</textcolor>
 			<selectedcolor>$VAR[Nav_SelectedColor]</selectedcolor>
-			<label>$VAR[Home_Var_Plot]</label>
+			<label>$VAR[plot]</label>
 		</control>
 		<control type="textbox">
 			<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
@@ -360,7 +356,7 @@
 		
 		<value condition="[Container.Content(studios) | String.IsEqual(ListItem.dbtype,studio)]">$INFO[ListItem.Label,resource://resource.images.studios.white/,.png]</value>
 		
-		<value condition="String.Contains(ListItem.Label,*) + !String.IsEmpty(Container.Art(thumb))">$INFO[Container.Art(thumb)]</value>
+		<value condition="String.StartsWith(ListItem.Label,*) + !String.IsEmpty(Container.Art(thumb))">$INFO[Container.Art(thumb)]</value>
 		
 		<value condition="Skin.HasSetting(View_56_Prefer_Discart_Song) + !String.IsEmpty(ListItem.Art(album.discart)) + String.IsEqual(ListItem.dbtype,song)">$INFO[ListItem.Art(album.discart)]</value>
 		<value condition="!String.IsEmpty(ListItem.Art(discart)) + [[String.IsEqual(ListItem.dbtype,album) + Skin.HasSetting(View_56_Prefer_Discart_Album)] | [Window.IsActive(videos) + Skin.HasSetting(View_56_Prefer_Disc_Video)]]">$INFO[ListItem.Art(discart)]</value>

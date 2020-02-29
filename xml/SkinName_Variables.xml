@@ -13,6 +13,7 @@
 	
 <!-- MOVE ME START -->
 	
+	
 	<variable name="ListItemArt_Discart">
         <value condition="!String.IsEmpty(ListItem.Art(cartridge))">$INFO[ListItem.Art(cartridge)]</value>
         <value condition="!String.IsEmpty(ListItem.Art(discart))">$INFO[ListItem.Art(discart)]</value>
@@ -44,6 +45,21 @@
 		<value condition="Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable">$LOCALIZE[16102] 100%</value>
 		<value>$INFO[ListItem.PercentPlayed,$LOCALIZE[16102] ,%]</value>
 	</variable>
+	
+	<variable name="plot">
+		<value condition="String.IsEqual(ListItem.Label,..) | [String.StartsWith(ListItem.Label,*) + String.IsEmpty(Container.ShowPlot)] | Control.HasFocus(7600) | ControlGroup(9000).HasFocus() | String.IsEqual(ListItem.DBTYPE,genre) | String.IsEqual(ListItem.DBTYPE,studio) | String.IsEqual(ListItem.DBTYPE,actor) | String.IsEqual(ListItem.DBTYPE,year) | String.IsEqual(ListItem.DBTYPE,director) | String.IsEqual(ListItem.DBTYPE,country) | String.IsEqual(ListItem.DBTYPE,tag)"></value>
+		<value condition="String.StartsWith(ListItem.Label,*) + !String.IsEmpty(Container.ShowPlot)">$INFO[Container.ShowPlot]</value>
+		<value condition="!String.IsEmpty(ListItem.Plot)">$INFO[ListItem.Plot]</value>
+		<value condition="!String.IsEmpty(ListItem.Property(Album_Description))">$INFO[ListItem.Property(Album_Description)]$INFO[ListItem.ContributorAndRole,[CR],]</value>
+		<value condition="!String.IsEmpty(ListItem.Property(Artist_Description))">$INFO[ListItem.Property(Artist_Description)]$INFO[ListItem.ContributorAndRole,[CR],]</value>
+		<value condition="String.IsEqual(ListItem.DBTYPE,musicvideo)">$INFO[ListItem.Artist]$INFO[ListItem.Title,[CR],]</value>
+		<value condition="!String.IsEmpty(ListItem.AddonDescription)">$INFO[ListItem.AddonDescription]</value>
+		<value condition="!String.IsEmpty(ListItem.AddonSummary)">$INFO[ListItem.AddonSummary]</value>
+		<value condition="$EXP[IsSong]">$INFO[ListItem.AlbumArtist,$LOCALIZE[557] : [B],[/B]][CR]$INFO[ListItem.Album,$LOCALIZE[558] : ,]</value>
+		<value>$LOCALIZE[19055]</value>
+	</variable>
+	
+	<!-- pre var -->
 	<variable name="Plots">
 		<value condition="Container.content(addons) + !String.IsEmpty(ListItem.AddonDescription)">$INFO[ListItem.AddonDescription]</value>
 		<value condition="Container.Content(Seasons) + !String.IsEmpty(ListItem.Plot) + !String.IsEmpty(ListItem.Title)">$INFO[ListItem.Plot]</value>
@@ -60,9 +76,8 @@
 		<value condition="!String.IsEmpty(ListItem.Plot)">$INFO[ListItem.Plot]</value>
 		<value condition="!String.IsEmpty(ListItem.Property(Plot))">$INFO[ListItem.Property(Plot)]</value>
 		<value condition="!String.IsEmpty(ListItem.Comment)">$INFO[ListItem.Comment]</value>
-		<value condition="!String.IsEmpty(Window(home).property(SkinHelper.ListItem.ExtendedPlot))">$INFO[Window(home).property(SkinHelper.ListItem.ExtendedPlot)]</value>
-		<value condition="!String.IsEmpty(Window(home).property(SkinHelper.ListItem.Plot))">$INFO[Window(home).property(SkinHelper.ListItem.Plot)]</value>
 	</variable>
+	
 	<variable name="Universal_WidgetHeaderListItem">
 		<value condition="Window.IsActive(1120)">$VAR[SearchInfoHeader_Title]</value>
 		<value condition="Control.HasFocus(8601) | Control.HasFocus(8606) | Control.HasFocus(8607)"></value>

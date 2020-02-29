@@ -9,7 +9,7 @@
 >            - limit, Sortortder, Sortby, Layouts[8 + ? ] ( native + 'script.EmbuaryHelper' for post-define have Select Dialog )
 >            Use Custom Background Images (+ tint image or use tinted overlay, as layer2)
 >            Use Custom Background Overlay Image + use Custom Color Tint ( as layer3 )
->            Use Custom Colors ( 'script.skinhelper.colorpicker' )
+>            Use Custom Colors ( 'script.skinhelper.colorpicker' or native colorthemes)
 >            - choose predefinded themes
 >            - change the whole colors to fit it your likings
 >      2 VideoInfo Layouts
