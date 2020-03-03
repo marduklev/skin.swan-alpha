@@ -2,8 +2,8 @@
 <window>
 	<include>Animation_OpenClose_MediaWindow</include>
 	<depth>0.50</depth>
+	<onload condition="!String.IsEqual(Window(home).Property(PlayerShowInfo),true) + !Integer.IsGreater(Player.Time(ss),01)">SetProperty(PlayerShowInfo,true,home)</onload>
 	<onload condition="Window.IsActive(1140)">Dialog.Close(1140,true)</onload>
-	<onunload condition="Player.HasAudio">ActivateWindow(musicosd)</onunload>
 	<zorder>999</zorder>
 	<controls>
 		
@@ -14,11 +14,12 @@
 		</control>
 		
 		<control type="image">
-			<texture colordiffuse="$VAR[MusicPlayerBorder_CDiffuse]">colors/white30.png</texture>
+			<texture colordiffuse="$VAR[MusicPlayerBorder_CDiffuse]">colors/white40.png</texture>
 		</control>
 		
 		<!--test layout1 include -->
 		<control type="group">
+			<animation effect="slide" start="0,0" end="-100,0" time="250" tween="cubic" easing="out" condition="!Player.ShowInfo">conditional</animation>
 			<left>35%</left>
 			<right>20%</right>
 			<top>500</top>
@@ -65,7 +66,7 @@
 						<align>center</align>
 						<shadowcolor>black</shadowcolor>
 						<textcolor>$VAR[MusicPlayerTextAccent]</textcolor>
-						<label fallback="••">$INFO[ListItem.Label]</label>
+						<label fallback="••">$INFO[ListItem.Label,[B],[/B]]</label>
 					</control>
 				</focusedlayout>
 			</control>

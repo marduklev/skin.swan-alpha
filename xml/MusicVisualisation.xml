@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <window>
 	<defaultcontrol />
-	<animation effect="fade" start="60" end="100" time="250">WindowOpen</animation>
-	<animation effect="fade" start="100" end="60" time="250">WindowClose</animation>
+	<animation effect="fade" start="60" end="100" time="150">WindowOpen</animation>
+	<animation effect="fade" start="100" end="60" time="150">WindowClose</animation>
+	<!-- still need additional click if not prop isnt cleared, but chance is low 
+	that info is clicked before timeout as can be user defined
+	kodi.wiki/view/Advancedsettings.xml#songinfoduration-->
+	
+	<!-- make it optional behaviour -->
+	<onload>SetProperty(PlayerShowInfo,true,home)</onload>
 	<onload>ActivateWindow(musicosd)</onload>
+	
+	
+	<onunload condition="!String.IsEmpty(Window(home).Property(PlayerShowInfo))">ClearProperty(PlayerShowInfo,home)</onunload>
 	<onunload condition="!String.IsEmpty(Window(home).Property(MusicPlayer_EncodedArtist))">ClearProperty(MusicPlayer_EncodedArtist,home)</onunload>
-<!-- 	
-
-16.1.36 MusicOSD.xml
-ID	Type	Description
-500	button	Select visualization
-501	button	Lock visualization to the current preset
-
-16.1.37 MusicVisualisation.xml
-ID	Type	Description
-2	visualisation	Background Visualization
-
-
-bool s
+<!--
+bools
 
 MusicPlayer.HasNext	Returns true if the music player has a next song queued in the Playlist.	
 MusicPlayer.HasPrevious	Returns true if the music player has a a Previous Song in the Playlist .	
@@ -42,131 +40,126 @@ Visualisation.Locked	Returns true if the current visualisation preset is locked 
 		</control>
 		
 		<control type="group">
-			<animation effect="slide" start="-700,0" end="0,0" time="350">VisibleChange</animation>
+			<description>left - show on osd or lyrics info enabled</description>
+			<animation effect="slide" start="-900,0" end="0,0" time="250">VisibleChange</animation>
+			<animation effect="slide" start="-900,0" end="0,0" time="250">WindowOpen</animation>
+			<animation effect="slide" start="0,0" end="-900,0" time="250">WindowClose</animation>
 			
-			<visible>Window.IsActive(MusicOSD) | [Window.IsActive(script-cu-lrclyrics-main.xml) + Player.ShowInfo]</visible>
-			
+			<visible>Window.IsActive(MusicOSD) | Player.ShowInfo | String.IsEqual(Window(home).Property(PlayerShowInfo),true) | [Window.IsActive(script-cu-lrclyrics-main.xml) + Player.ShowInfo]</visible>
 			
 			<control type="group">
-			<left>0</left>
-			<height>100%</height>
-			<width>35%</width>
-			
-			<control type="image">
-				<left>-2</left> delete if have right border img
-				<!--make 70% black image or optianal border colors?-->
-				<bordersize>0,0,2,0</bordersize>
-				<bordertexture border="2" colordiffuse="$VAR[MusicPlayerTextAccent]">frames/frametest.png</bordertexture> 
-				<texture colordiffuse="$VAR[MusicPlayerBorder_CDiffuse]">colors/white70.png</texture>
-			</control>
-			
-			<control type="label">
-				<wrapmultiline>true</wrapmultiline>
-				<!-- <visible>!Skin.HasSetting(musicplayer_hideclock)</visible> -->
-				<visible>false</visible>
-				<left>60</left>
-				<height>100</height>
-				<width>100%</width>
-				<aligny>bottom</aligny>
-				<align>left</align>
-				<textcolor>$VAR[MusicPlayerTextAccent]</textcolor>
-				<font>font_robotobold</font>
-				<label>$INFO[System.Time]</label>
-			</control>
-			
-			<control type="image">
-				<!-- <left>300</left>
-				<centertop>26%</centertop>
-				<width>360</width>
-				<height>360</height>
-				 -->
-				<visible>Skin.HasSetting(MusicPlayer_PreferDisc)</visible>
-				<left>60</left>
-				<centertop>25%</centertop>
-				<height>400</height>
-				<width>400</width>
-				<bordersize>2</bordersize>
-				<bordertexture /> 
-				<aspectratio scalediffuse="true" align="center" aligny="bottom">keep</aspectratio>
-				<texture diffuse="diffuse/cdmask_new.png">$VAR[PlayerDisc]</texture>
-				<animation effect="rotate" end="-360" center="auto" time="4800" loop="true" reversible="false" condition="!Player.Paused">Conditional</animation>
-				<animation effect="slide" start="-320,0" end="0,0" time="300" reversible="false">WindowOpen</animation>
-			</control>
-			
-			<control type="image">
-				<visible>[Skin.HasSetting(MusicPlayer_PreferDisc) + String.IsEmpty(Player.Art(discart)) + String.IsEmpty(Player.Art(album.discart))] | !Skin.HasSetting(MusicPlayer_PreferDisc)</visible>
+				<left>0</left>
+				<height>100%</height>
+				<width>35%</width>
 				
-				<description>optional diffuse texture as some art will not fit</description>
-				<left>60</left>
-				<centertop>25%</centertop>
-				<height>400</height>
-				<width>400</width>
-				<bordersize>3</bordersize>
-				<bordertexture border="2" colordiffuse="$VAR[MusicPlayerTextMainFO]">frames/frametest.png</bordertexture> 
-				<texture>$VAR[PlayerThumb]</texture>
-				<aspectratio scalediffuse="false" align="left" aligny="bottom">keep</aspectratio>
-			</control>
-			
-			
-			<control type="grouplist">
-				<top>45%</top>
-				<left>60</left>
-				<right>50</right>
-				<height>50%</height>
+				<control type="image">
+					<bordersize>0,0,1,0</bordersize>
+					<bordertexture border="2" colordiffuse="$VAR[MusicPlayerTextAccent]">frames/lefttrans.png</bordertexture> 
+					<texture colordiffuse="$VAR[MusicPlayerBorder_CDiffuse]">colors/white70.png</texture>
+				</control>
 				
-				<orientation>vertical</orientation>
-				<itemgap>10</itemgap>
-				<usecontrolcoords>true</usecontrolcoords>
-		
 				<control type="label">
 					<wrapmultiline>true</wrapmultiline>
-					<height>200</height>
+					<!-- <visible>!Skin.HasSetting(musicplayer_hideclock)</visible> -->
+					<visible>false</visible>
+					<left>60</left>
+					<height>100</height>
 					<width>100%</width>
 					<aligny>bottom</aligny>
 					<align>left</align>
-					<textcolor>$VAR[MusicPlayerTextMainFO]</textcolor>
+					<textcolor>$VAR[MusicPlayerTextAccent]</textcolor>
 					<font>font_robotobold</font>
-					<label>$INFO[MusicPlayer.Album,[B],[/B]][CR][COLOR=$VAR[MusicPlayerTextMainNF]]$LOCALIZE[19156][/COLOR][CR]$INFO[MusicPlayer.Artist,[B],[/B]]</label>
+					<label>$INFO[System.Time]</label>
 				</control>
-				<control type="label">
-					<height>20</height>
-					<label />
-				</control>
-				<control type="label">
-					<wrapmultiline>true</wrapmultiline>
-					<height>25</height>
-					<align>left</align>
-					<aligny>bottom</aligny>
-					<textcolor>$VAR[MusicPlayerTextMainFO]</textcolor>
-					<font>font_notification</font>
-					<label>$INFO[MusicPlayer.PlaylistPosition,[B],[/B]  -  ]$INFO[Player.Title,[B],[/B]]</label>
-					
-				</control>
-			
-				<!-- ( $INFO[MusicPlayer.PlaylistPosition]/$INFO[MusicPlayer.PlaylistLength] )-->
-				<control type="label">
-					<wrapmultiline>true</wrapmultiline>
-					<visible>false</visible>
-					<height>50</height>
-					<width>auto</width>
-					<align>left</align>
-					<textcolor>$VAR[MusicPlayerTextMainFO]</textcolor>
-					<font>font_notification</font>
-					<label>$INFO[MusicPlayer.Album,[B],[/B]]$INFO[MusicPlayer.Year,[CR](,)]</label>
-				</control>
-			</control>
 				
-			<control type="label">
-				<animation effect="fade" start="100" end="0" time="250" condition="Window.IsActive(1140) + Skin.HasSetting(MusicOSD_SmallPlaylist)">Conditional</animation>
-				<bottom>20</bottom>
-				<left>60</left>
-				<height>100</height>
-				<align>left</align>
-				<textcolor>$VAR[MusicPlayerTextMainFO]</textcolor>
-				<font>debugtiny2</font>
-				<label>$VAR[MusicPlayerOffset]</label>
-			</control>
+				<control type="image">
+					<visible>Skin.HasSetting(MusicPlayer_PreferDisc)</visible>
+					<left>60</left>
+					<centertop>25%</centertop>
+					<height>400</height>
+					<width>400</width>
+					<bordersize>2</bordersize>
+					<bordertexture /> 
+					<aspectratio scalediffuse="true" align="center" aligny="bottom">keep</aspectratio>
+					<texture diffuse="diffuse/cdmask_new.png">$VAR[PlayerDisc]</texture>
+					<animation effect="rotate" end="-360" center="auto" time="4800" loop="true" reversible="false" condition="!Player.Paused">Conditional</animation>
+					<animation effect="slide" start="-320,0" end="0,0" time="300" reversible="false">WindowOpen</animation>
+				</control>
+				
+				<control type="image">
+					<visible>[Skin.HasSetting(MusicPlayer_PreferDisc) + String.IsEmpty(Player.Art(discart)) + String.IsEmpty(Player.Art(album.discart))] | !Skin.HasSetting(MusicPlayer_PreferDisc)</visible>
+					<description>optional diffuse texture as some art will not fit</description>
+					<left>60</left>
+					<centertop>25%</centertop>
+					<height>400</height>
+					<width>400</width>
+					<bordersize>3</bordersize>
+					<bordertexture border="2" colordiffuse="$VAR[MusicPlayerTextMainFO]">frames/frametest.png</bordertexture> 
+					<texture>$VAR[PlayerThumb]</texture>
+					<aspectratio scalediffuse="false" align="left" aligny="bottom">keep</aspectratio>
+				</control>
+				
+				
+				<control type="grouplist">
+					<top>45%</top>
+					<left>60</left>
+					<right>50</right>
+					<height>50%</height>
+					
+					<orientation>vertical</orientation>
+					<itemgap>10</itemgap>
+					<usecontrolcoords>true</usecontrolcoords>
+			
+					<control type="label">
+						<wrapmultiline>true</wrapmultiline>
+						<height>200</height>
+						<width>100%</width>
+						<aligny>bottom</aligny>
+						<align>left</align>
+						<textcolor>$VAR[MusicPlayerTextMainFO]</textcolor>
+						<font>font_robotobold</font>
+						<label>$INFO[MusicPlayer.Album,[B],[/B]][CR][COLOR=$VAR[MusicPlayerTextMainNF]]$LOCALIZE[19156][/COLOR][CR]$INFO[MusicPlayer.Artist,[B],[/B]]</label>
+					</control>
+					<control type="label">
+						<height>20</height>
+						<label />
+					</control>
+					<control type="label">
+						<wrapmultiline>true</wrapmultiline>
+						<height>25</height>
+						<align>left</align>
+						<aligny>bottom</aligny>
+						<textcolor>$VAR[MusicPlayerTextMainFO]</textcolor>
+						<font>font_notification</font>
+						<label>$INFO[MusicPlayer.PlaylistPosition,[B],[/B]  -  ]$INFO[Player.Title,[B],[/B]]</label>
+						
+					</control>
+				
+					<!-- ( $INFO[MusicPlayer.PlaylistPosition]/$INFO[MusicPlayer.PlaylistLength] )-->
+					<control type="label">
+						<wrapmultiline>true</wrapmultiline>
+						<visible>false</visible>
+						<height>50</height>
+						<width>auto</width>
+						<align>left</align>
+						<textcolor>$VAR[MusicPlayerTextMainFO]</textcolor>
+						<font>font_notification</font>
+						<label>$INFO[MusicPlayer.Album,[B],[/B]]$INFO[MusicPlayer.Year,[CR](,)]</label>
+					</control>
+				</control>
+					
+				<control type="label">
+					<animation effect="fade" start="100" end="0" time="250" condition="Window.IsActive(1140) + Skin.HasSetting(MusicOSD_SmallPlaylist)">Conditional</animation>
+					<bottom>20</bottom>
+					<left>60</left>
+					<height>100</height>
+					<align>left</align>
+					<textcolor>$VAR[MusicPlayerTextMainFO]</textcolor>
+					<font>debugtiny2</font>
+					<label>$VAR[MusicPlayerOffset]</label>
+				</control>
 			</control>	
+			
 			<control type="progress">
 				<left>60</left>
 				<bottom>25%</bottom>
@@ -181,50 +174,21 @@ Visualisation.Locked	Returns true if the current visualisation preset is locked 
 			</control>
 		</control>
 		
-		<!-- Layout 2 placeholder -->
 		<control type="group">
-			<visible>false</visible>
-			<!-- <visible>!Window.IsActive(musicosd)</visible> -->
-			<!-- <animation effect="fade" start="100" end="40" time="250" condition="true">conditional</animation> -->
-			<bottom>0</bottom>
-			<width>100%</width>
-			<height>600</height>
-			<control type="image">
-				<left>310</left>
-				<bottom>5</bottom>
-				<height>320</height>
-				<width>320</width>
-				<aspectratio scalediffuse="true" align="center" aligny="bottom">keep</aspectratio>
-				<texture diffuse="diffuse/cdmask_new.png">$VAR[PlayerDisc]</texture>
-				<animation effect="rotate" end="-360" center="auto" time="4800" loop="true" reversible="false" condition="!Player.Paused">Conditional</animation>
-				<animation effect="slide" start="-320,0" end="0,0" time="300" reversible="false">WindowOpen</animation>
-			</control>
-			<control type="image">
-				<description>optional diffuse texture as some art will not fit</description>
-				<left>0</left>
-				<bottom>0</bottom>
-				<height>450</height>
-				<width>340</width>
-				<texture>$VAR[PlayerThumb]</texture>
-				<aspectratio scalediffuse="true" align="left" aligny="bottom">keep</aspectratio>
-			</control>
+			<description>right</description>
+			<visible>Player.ShowInfo | String.IsEqual(Window(home).Property(PlayerShowInfo),true) | [Window.IsActive(script-cu-lrclyrics-main.xml) + Player.ShowInfo]</visible>
 			
-		</control>
-		
-		<control type="group">
-			<visible>Player.ShowInfo</visible>
-			<animation effect="slide" start="400,0" end="0,0" time="350">VisibleChange</animation>
-			<animation effect="slide" start="400,0" end="0,0" time="350">WindowOpen</animation>
-			<animation effect="slide" start="0,0" end="400,0" time="350">WindowClose</animation>
-	
+			<animation effect="slide" start="500,0" end="0,0" time="250" reversible="false">VisibleChange</animation>
+			<animation effect="slide" start="500,0" end="0,0" time="250" reversible="false">WindowOpen</animation>
+			<animation effect="slide" start="0,0" end="500,0" time="250">WindowClose</animation>
+			
 			<right>0</right>
 			<height>100%</height>
 			<width>20%</width>
 			
 			<control type="image">
-				<right>-2</right>
 				<bordersize>1,0,0,0</bordersize>
-				<bordertexture border="2" colordiffuse="$VAR[MusicPlayerTextAccent]">frames/frametest.png</bordertexture> 
+				<bordertexture flipx="true" border="2" colordiffuse="$VAR[MusicPlayerTextAccent]">frames/lefttrans.png</bordertexture> 
 				<texture colordiffuse="$VAR[MusicPlayerBorder_CDiffuse]">colors/white70.png</texture>
 			</control>
 			
@@ -277,10 +241,39 @@ Visualisation.Locked	Returns true if the current visualisation preset is locked 
 			</control>
 		</control>
 		
+		<!-- Layout 2 placeholder -->
+		<control type="group">
+			<visible>false</visible>
+			<!-- <visible>!Window.IsActive(musicosd)</visible> -->
+			<!-- <animation effect="fade" start="100" end="40" time="250" condition="true">conditional</animation> -->
+			<bottom>0</bottom>
+			<width>100%</width>
+			<height>600</height>
+			<control type="image">
+				<left>310</left>
+				<bottom>5</bottom>
+				<height>320</height>
+				<width>320</width>
+				<aspectratio scalediffuse="true" align="center" aligny="bottom">keep</aspectratio>
+				<texture diffuse="diffuse/cdmask_new.png">$VAR[PlayerDisc]</texture>
+				<animation effect="rotate" end="-360" center="auto" time="4800" loop="true" reversible="false" condition="!Player.Paused">Conditional</animation>
+				<animation effect="slide" start="-320,0" end="0,0" time="300" reversible="false">WindowOpen</animation>
+			</control>
+			<control type="image">
+				<description>optional diffuse texture as some art will not fit</description>
+				<left>0</left>
+				<bottom>0</bottom>
+				<height>450</height>
+				<width>340</width>
+				<texture>$VAR[PlayerThumb]</texture>
+				<aspectratio scalediffuse="true" align="left" aligny="bottom">keep</aspectratio>
+			</control>
+			
+		</control>
 		
 		<include content="swan_debug_overlay">
-			<param name="textleft" value="1  label 77707 $INFO[control.getlabel(77707)]
-$INFO[control.getlabel(77704)]
+			<param name="textleft" value="$VAR[debugPlayerShowInfo] $INFO[Player.Time(ss)]
+$INFO[Window(home).Property(PlayerShowInfo),Property PlayerShowInfo  :,]
 
 "/>
 </include>

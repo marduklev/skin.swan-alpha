@@ -2,198 +2,37 @@
 <window>
 	<defaultcontrol>600</defaultcontrol>
 	<include>Animation_OpenClose_MediaWindow</include>
-	
-	<!-- temp avoid going back to visualisation osd is main player window -->
-	<!-- <onunload>Fullscreen</onunload> -->
-			
-<!-- 	1.36 MusicOSD.xml
-ID 		Type 	Description
-500 	button 	Select visualization
-501 	button 	Lock visualization to the current preset
-
-Progress Control Type 
-Tag 	Description
-
-reveal 	If set to true the midtexture will reveal itself instead of stretching to fill the gap (works best when its the same size as texturebg)
-texturebg 	
-
-Specifies the image file which should be displayed in the background of the progress control. See here for additional information about textures.
-lefttexture 	Specifies the image file which should be displayed for the left side of the progress bar. This is rendered on the left side of the bar.
-midtexture 	Specifies the image file which should be displayed for the middle portion of the progress bar. This is the fill texture used to fill up the bar. It's positioned on the right of the <lefttexture> texture, and fills the gap between the <lefttexture> and <righttexture> textures, depending on how far progressed the item is.
-righttexture 	Specifies the image file which should be displayed for the right side of the progress bar. This is rendered on the right side of the bar.
-overlaytexture 	Specifies the image file which should be displayed over the top of all other images in the progress bar. It is centered vertically and horizontally within the space taken up by the background image.
-info 	
-
-Specifies the information that the progress bar is reporting on. See here for more information.
-	
-info2 	
-
-Specifies the second piece of information that the progress bar is reporting on (PVR only). See here for more information. 
-
-  
--->
 	<controls>
 	
-	<control type="group">
-		<!-- <control type="group">
-			<animation effect="slide" start="-700,0" end="0,0" time="350">WindowOpen</animation>
-			<animation effect="slide" start="0,0" end="-700,0" time="350">WindowClose</animation>
-		
-			<left>0</left>
-			<height>100%</height>
-			<width>35%</width>
-			
-			<control type="image">
-				<left>-2</left> delete if have right border img
-				<bordersize>0,0,2,0</bordersize>
-				<bordertexture border="2" colordiffuse="$VAR[MusicPlayerTextAccent]">frames/frametest.png</bordertexture> 
-				<texture colordiffuse="$VAR[MusicPlayerBorder_CDiffuse]">colors/white70.png</texture>
-			</control>
-			
-			<control type="label">
-				<wrapmultiline>true</wrapmultiline>
-				<visible>false</visible>
-				<left>60</left>
-				<height>100</height>
-				<width>100%</width>
-				<aligny>bottom</aligny>
-				<align>left</align>
-				<textcolor>$VAR[MusicPlayerTextAccent]</textcolor>
-				<font>font_robotobold</font>
-				<label>$INFO[System.Time]</label>
-			</control>
-			
-			<control type="image">
-				<visible>Skin.HasSetting(MusicPlayer_PreferDisc)</visible>
-				<left>60</left>
-				<centertop>25%</centertop>
-				<height>400</height>
-				<width>400</width>
-				<bordersize>2</bordersize>
-				<bordertexture /> 
-				<aspectratio scalediffuse="true" align="center" aligny="bottom">keep</aspectratio>
-				<texture diffuse="diffuse/cdmask_new.png">$VAR[PlayerDisc]</texture>
-				<animation effect="rotate" end="-360" center="auto" time="4800" loop="true" reversible="false" condition="!Player.Paused">Conditional</animation>
-				<animation effect="slide" start="-320,0" end="0,0" time="300" reversible="false">WindowOpen</animation>
-			</control>
-			
-			<control type="image">
-				<visible>[Skin.HasSetting(MusicPlayer_PreferDisc) + String.IsEmpty(Player.Art(discart)) + String.IsEmpty(Player.Art(album.discart))] | !Skin.HasSetting(MusicPlayer_PreferDisc)</visible>
-				
-				<description>optional diffuse texture as some art will not fit</description>
-				<left>60</left>
-				<centertop>25%</centertop>
-				<height>400</height>
-				<width>400</width>
-				<bordersize>3</bordersize>
-				<bordertexture border="2" colordiffuse="$VAR[MusicPlayerTextMainFO]">frames/frametest.png</bordertexture> 
-				<texture>$VAR[PlayerThumb]</texture>
-				<aspectratio scalediffuse="false" align="left" aligny="bottom">keep</aspectratio>
-			</control>
-			
-			
-			<control type="grouplist">
-				<top>45%</top>
-				<left>60</left>
-				<right>50</right>
-				<height>50%</height>
-				
-				<orientation>vertical</orientation>
-				<itemgap>10</itemgap>
-				<usecontrolcoords>true</usecontrolcoords>
-		
-				<control type="label">
-					<wrapmultiline>true</wrapmultiline>
-					<height>200</height>
-					<width>100%</width>
-					<aligny>bottom</aligny>
-					<align>left</align>
-					<textcolor>$VAR[MusicPlayerTextMainFO]</textcolor>
-					<font>font_robotobold</font>
-					<label>$INFO[MusicPlayer.Album,[B],[/B]][CR][COLOR=$VAR[MusicPlayerTextMainNF]]$LOCALIZE[19156][/COLOR][CR]$INFO[MusicPlayer.Artist,[B],[/B]]</label>
-				</control>
-				<control type="label">
-					<height>20</height>
-					<label />
-				</control>
-				<control type="label">
-					<wrapmultiline>true</wrapmultiline>
-					<height>25</height>
-					<align>left</align>
-					<aligny>bottom</aligny>
-					<textcolor>$VAR[MusicPlayerTextMainFO]</textcolor>
-					<font>font_notification</font>
-					<label>$INFO[MusicPlayer.PlaylistPosition,[B],[/B]  -  ]$INFO[Player.Title,[B],[/B]]</label>
-					
-				</control>
-			
-				<control type="label">
-					<wrapmultiline>true</wrapmultiline>
-					<visible>false</visible>
-					<height>50</height>
-					<width>auto</width>
-					<align>left</align>
-					<textcolor>$VAR[MusicPlayerTextMainFO]</textcolor>
-					<font>font_notification</font>
-					<label>$INFO[MusicPlayer.Album,[B],[/B]]$INFO[MusicPlayer.Year,[CR](,)]</label>
-				</control>
-			</control>
-				
-			<control type="label">
-				<animation effect="fade" start="100" end="0" time="250" condition="Window.IsActive(1140) + Skin.HasSetting(MusicOSD_SmallPlaylist)">Conditional</animation>
-				<bottom>20</bottom>
-				<left>60</left>
-				<height>100</height>
-				<align>left</align>
-				<textcolor>$VAR[MusicPlayerTextMainFO]</textcolor>
-				<font>debugtiny2</font>
-				<label>$VAR[MusicPlayerOffset]</label>
-			</control>
-		</control>
-		<control type="progress">
-			<animation effect="slide" start="-700,0" end="0,0" time="350">WindowOpen</animation>
-			<animation effect="slide" start="0,0" end="-700,0" time="350">WindowClose</animation>
-			<left>60</left>
-			<bottom>25%</bottom>
-			<height>2</height>
-			<width>28%</width>
-			<texturebg colordiffuse="black">colors/white.png</texturebg>
-			<midtexture colordiffuse="$VAR[MusicPlayerTextAccent]">colors/white.png</midtexture>
-			<lefttexture />
-			<righttexture />
-			<overlaytexture />
-			<info>Player.Progress</info>
-		</control> -->
-		
-		<control type="slider" id="699">
-			<animation effect="slide" start="-700,0" end="0,0" time="350">WindowOpen</animation>
-			<animation effect="slide" start="0,0" end="-700,0" time="350">WindowClose</animation>
-			<left>60</left>
-			<bottom>24.2%</bottom>
-			<width>28%</width>
-			<height>20</height>
-			<texturesliderbar colordiffuse="none">buttons/slider-nib.png</texturesliderbar>
-			<textureslidernib colordiffuse="$VAR[MusicPlayerTextAccent]">buttons/slider-nib.png</textureslidernib>
-			<textureslidernibfocus colordiffuse="$VAR[MusicPlayerTextMainFO]">buttons/slider-nib.png</textureslidernibfocus>
-			<orientation>horizontal</orientation>
-			<onup>600</onup>
-			<ondown>600</ondown>
-			<info>Player.Progress</info>
-			<action>seek</action>
-		</control>
-				
 		<control type="group">
-			<animation effect="slide" start="-700,0" end="0,0" time="350">WindowOpen</animation>
-			<animation effect="slide" start="0,0" end="-700,0" time="350">WindowClose</animation>
-			<animation effect="fade" start="100" end="0" time="250" condition="Window.IsActive(1140) + Skin.HasSetting(MusicOSD_SmallPlaylist)">Conditional</animation>
-			<left>0</left>
-			<height>100%</height>
-			<width>35%</width>
-			<include>MusicPlayerOSDButtons</include>
-		</control>
+			<animation condition="!Player.ShowInfo" type="WindowOpen">
+				<effect type="slide" start="-900,0" end="0,0" time="250"/>
+			</animation>
+			<animation condition="!Player.ShowInfo" type="WindowClose">
+				<effect type="slide" start="0,0" end="-900,0" time="250"/>
+			</animation>
 			
-	</control>
-	
-		
+			<control type="slider" id="699">
+				<left>60</left>
+				<bottom>24.2%</bottom>
+				<width>28%</width>
+				<height>20</height>
+				<texturesliderbar colordiffuse="none">buttons/slider-nib.png</texturesliderbar>
+				<textureslidernib colordiffuse="$VAR[MusicPlayerTextAccent]">buttons/slider-nib.png</textureslidernib>
+				<textureslidernibfocus colordiffuse="$VAR[MusicPlayerTextMainFO]">buttons/slider-nib.png</textureslidernibfocus>
+				<orientation>horizontal</orientation>
+				<onup>600</onup>
+				<ondown>600</ondown>
+				<info>Player.Progress</info>
+				<action>seek</action>
+			</control>
+			<control type="group">
+				<animation effect="fade" start="100" end="0" time="250" condition="Window.IsActive(1140) + Skin.HasSetting(MusicOSD_SmallPlaylist)">Conditional</animation>
+				<left>0</left>
+				<height>100%</height>
+				<width>35%</width>
+				<include>MusicPlayerOSDButtons</include>
+			</control>
+		</control>
 	</controls>
 </window>
