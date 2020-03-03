@@ -638,7 +638,7 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 					<param name="itemwidth" value="595" />
 					<param name="ls_overlay_visible" value="true" />
 					<param name="layout" value="landscape" />
-					<content limit="1" target="videos">videodb://inprogresstvshows/$INFO[ListItem.DBID]/-2/?tvshowid=$INFO[ListItem.DBID]</content>
+					<content limit="1" sortby="playcount" target="videos">videodb://inprogresstvshows/$INFO[ListItem.DBID]/-1/?tvshowid=$INFO[ListItem.DBID]</content>
 				</include>
 				<!-- CAST -->
 				<include content="Universal_ContainerHeader">
@@ -774,8 +774,15 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 					<param name="itemwidth" value="620" />
 					<param name="ls_overlay_visible" value="false" />
 					<param name="layout" value="landscape" />
-					<onclick>SetFocus(9001)</onclick>
-					<content>$VAR[extraFanartLocation]</content>
+					<onclick condition="Skin.HasSetting(UseExtraFanartFolder)">SetFocus(9001)</onclick>
+					<onclick condition="!Skin.HasSetting(UseExtraFanartFolder)">SetFocus(9003)</onclick>
+					
+					<include condition="!Skin.HasSetting(UseExtraFanartFolder) + [Container.Content(seasons) | Container.Content(episodes)]" content="ExtrafanartSource">
+						<param name="prefix" value="tvshow." />
+					</include>
+					<include condition="!Skin.HasSetting(UseExtraFanartFolder) + ![Container.Content(seasons) | Container.Content(episodes)]" content="ExtrafanartSource" />
+					
+					<include condition="Skin.HasSetting(UseExtraFanartFolder)">ExtrafanartFolderPath</include>
 				</include>
 				<!-- stored extras -->
 				<include content="Universal_ContainerHeader">
@@ -809,7 +816,7 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 				</include>
 				<include content="Universal_Container">
 					<param name="id" value="8607" />
-					<param name="visible" value="Integer.IsGreater(Container(8607).NumItems,0) | Container(8607).IsUpdating" />
+					<param name="visible" value="Skin.HasSetting(UseExtraFanartFolder) + Integer.IsGreater(Container(8607).NumItems,0) | Container(8607).IsUpdating" />
 					<param name="type_height" value="370" />
 					<param name="tags_visible" value="false" />
 					<param name="layout_height" value="370" />
@@ -818,7 +825,6 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 					<param name="itemwidth" value="620" />
 					<param name="ls_overlay_visible" value="false" />
 					<param name="layout" value="landscape" />
-					
 					<onclick>SetFocus(9002)</onclick>
 					<content>$VAR[extrasLocation]</content>
 				</include>
@@ -990,6 +996,11 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 			<include content="VideoInfo_SlideshowNav">
 				<param name="ButtonID" value="9002" />
 				<param name="ContainerID" value="8607" />
+			</include>
+			<include content="VideoInfo_SlideshowNav">
+				<param name="ButtonID" value="9003" />
+				<param name="ContainerID" value="8606" />
+				<param name="origin" value="Art(thumb)" />
 			</include>
 			
 			

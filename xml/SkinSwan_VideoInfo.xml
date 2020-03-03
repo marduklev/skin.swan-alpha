@@ -14,7 +14,10 @@
 		<value condition="String.IsEqual(ListItem.DBType,movie) + !String.IsEmpty(ListItem.DBID)">plugin://script.embuary.helper/?info=getsimilar&amp;dbid=$INFO[ListItem.DBID]&amp;type=movie</value>
 		<value condition="String.IsEqual(ListItem.DBType,tvshow) + !String.IsEmpty(ListItem.DBID)">plugin://script.embuary.helper/?info=getsimilar&amp;dbid=$INFO[ListItem.DBID]&amp;type=tvshow</value>
 	</variable>
+	
 	<include name="VideoInfo_SlideshowNav">
+		<param name="origin" default="FileNameAndPath" />
+		<definition>
 		<control type="group">
 			<visible>Control.HasFocus($PARAM[ButtonID])</visible>
 			<animation effect="fade" start="0" end="100" time="350" tween="cubic" easing="inout">Visible</animation>
@@ -48,7 +51,7 @@
 					<height>1080</height>
 					<left>-1920</left>
 					<aspectratio>keep</aspectratio>
-					<texture background="true">$INFO[Container($PARAM[ContainerID]).ListItem(-1).FileNameAndPath]</texture>
+					<texture background="true">$INFO[Container($PARAM[ContainerID]).ListItem(-1).$PARAM[origin]]</texture>
 				</control>
 				<control type="image">
 					<centerleft>50%</centerleft>
@@ -56,7 +59,7 @@
 					<width>1920</width>
 					<height>1080</height>
 					<aspectratio>keep</aspectratio>
-					<texture background="true">$INFO[Container($PARAM[ContainerID]).ListItem.FileNameAndPath]</texture>
+					<texture background="true">$INFO[Container($PARAM[ContainerID]).ListItem.$PARAM[origin]]</texture>
 				</control>
 				<control type="image">
 					<centerleft>50%</centerleft>
@@ -65,22 +68,235 @@
 					<height>1080</height>
 					<left>1920</left>
 					<aspectratio>keep</aspectratio>
-					<texture background="true">$INFO[Container($PARAM[ContainerID]).ListItem(1).FileNameAndPath]</texture>
+					<texture background="true">$INFO[Container($PARAM[ContainerID]).ListItem(1).$PARAM[origin]]</texture>
 				</control>
 			</control>
 		</control>
+		</definition>
 	</include>
 	
+	<include name="ExtrafanartFolderPath">
+		<content>$VAR[extraFanartLocation]</content>
+	</include>
 	<variable name="extraFanartLocation">
         <value condition="[container.content(movies) | String.IsEqual(ListItem.DBTYPE,movie)]">$INFO[listitem.path,,extrafanart]</value>
         <value condition="[container.content(tvshows) | String.IsEqual(ListItem.DBTYPE,tvshow)]">$INFO[listitem.filenameandpath,,extrafanart]</value>
         <value condition="[container.content(seasons) | String.IsEqual(ListItem.DBTYPE,season)]">$INFO[container.listitem.path,,extrafanart]</value>
     </variable>
-	
 	<variable name="extraThumbsLocation">
         <value condition="[container.content(movies) | String.IsEqual(ListItem.DBTYPE,movie)]">$INFO[listitem.path,,extrathumbs]</value>
         <value condition="[container.content(tvshows) | String.IsEqual(ListItem.DBTYPE,tvshow)]">$INFO[listitem.filenameandpath,,extrathumbs]</value>
         <value condition="[container.content(seasons) | String.IsEqual(ListItem.DBTYPE,season)]">$INFO[container.listitem.path,,extrathumbs]</value>
     </variable>
-
+	
+		<!-- $PARAM[prefix] = folder. tvshow. artist. -->
+	<include name="ExtrafanartSource">
+		<param name="prefix" />
+		<definition>
+		<content>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="1" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="2" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="3" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="4" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="5" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="6" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="7" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="8" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="9" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="10" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="11" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="12" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="13" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="14" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="15" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="16" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="17" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="18" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="19" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="20" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="landscape" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="1" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="landscape" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="2" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="landscape" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="3" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="landscape" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="4" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="landscape" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="5" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="landscape" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="6" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="landscape" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="7" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="landscape" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="8" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="landscape" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="9" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="landscape" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="10" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="landscape" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="11" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="landscape" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="12" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="landscape" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="13" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="landscape" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="14" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="landscape" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="15" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="landscape" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="16" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="landscape" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="17" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="landscape" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="18" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="landscape" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="19" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="landscape" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="20" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="landscape" />
+			</include>
+		</content>
+		</definition>
+	</include>
+	<include name="ItemArtTemplate">
+		<param name="type" default="fanart" />
+		<definition>
+		<item>
+			<label>$INFO[ListItem.Art($PARAM[parentfolder]$PARAM[type]$PARAM[postfix])]</label>
+			<label2>$NUMBER[$PARAM[postfix]]</label2>
+			<visible>!String.IsEmpty(ListItem.Art($PARAM[parentfolder]$PARAM[type]$PARAM[postfix]))</visible>
+			<icon>$INFO[ListItem.Art($PARAM[parentfolder]$PARAM[type]$PARAM[postfix])]</icon>
+			<thumb>$INFO[ListItem.Art($PARAM[parentfolder]$PARAM[type]$PARAM[postfix])]</thumb>
+		</item>
+		</definition>
+	</include>	
+	
 </includes>
