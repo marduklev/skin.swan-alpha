@@ -4,17 +4,26 @@
 		<value condition="String.IsEqual(ListItem.dbtype,episode) | String.IsEqual(ListItem.dbtype,season)">$INFO[ListItem.TVShowTitle] $INFO[ListItem.Title]</value>
 		<value>$INFO[ListItem.Title]</value>
 	</variable>
+	
+	<variable name="EncodeTitle">
+		<value condition="[ContainerContent(episodes) | String.IsEqual(ListItem.DBTYPE,episode)]">$INFO[ListItem.TVShowTitle]</value>
+		<value>$INFO[ListItem.Label]</value>
+	</variable>
+		<!-- keep for later check , but not in use anymore -->
+		<variable name="Similiar_Content">
+			<value condition="String.IsEqual(ListItem.DBType,movie) + !String.IsEmpty(ListItem.DBID)">plugin://script.embuary.helper/?info=getsimilar&amp;dbid=$INFO[ListItem.DBID]&amp;type=movie</value>
+			<value condition="String.IsEqual(ListItem.DBType,tvshow) + !String.IsEmpty(ListItem.DBID)">plugin://script.embuary.helper/?info=getsimilar&amp;dbid=$INFO[ListItem.DBID]&amp;type=tvshow</value>
+		</variable>
 	<include name="Button_VideoInfo">
 		<width>285</width>
 		<height>40</height>
 		<align>center</align>
 		<textoffsetx>10</textoffsetx>
 	</include>
-	<variable name="Similiar_Content">
-		<value condition="String.IsEqual(ListItem.DBType,movie) + !String.IsEmpty(ListItem.DBID)">plugin://script.embuary.helper/?info=getsimilar&amp;dbid=$INFO[ListItem.DBID]&amp;type=movie</value>
-		<value condition="String.IsEqual(ListItem.DBType,tvshow) + !String.IsEmpty(ListItem.DBID)">plugin://script.embuary.helper/?info=getsimilar&amp;dbid=$INFO[ListItem.DBID]&amp;type=tvshow</value>
-	</variable>
 	
+	
+	<!-- consider 95% 1824 x 1026 -->
+				
 	<include name="VideoInfo_SlideshowNav">
 		<param name="origin" default="FileNameAndPath" />
 		<definition>
@@ -39,16 +48,16 @@
 				<onclick>SetFocus($PARAM[ContainerID])</onclick>
 			</control>
 			<control type="image">
-				<texture colordiffuse="FF000000">colors/color_white.png</texture>
+				<texture colordiffuse="ff181818">colors/white50.png</texture>
 			</control>
 			<control type="group">
-				<animation effect="slide" start="0" end="-1920" condition="!Container($PARAM[ContainerID]).OnNext" reversible="false" time="300" tween="quadratic">Conditional</animation>
-				<animation effect="slide" start="0" end="1920" condition="!Container($PARAM[ContainerID]).OnPrevious" reversible="false" time="300" tween="quadratic">Conditional</animation>
+				<animation effect="slide" start="0" end="-1920" condition="!Container($PARAM[ContainerID]).OnNext" reversible="false" time="350" tween="quadratic">Conditional</animation>
+				<animation effect="slide" start="0" end="1920" condition="!Container($PARAM[ContainerID]).OnPrevious" reversible="false" time="350" tween="quadratic">Conditional</animation>
 				<control type="image">
 					<centerleft>50%</centerleft>
 					<centertop>50%</centertop>
-					<width>1920</width>
-					<height>1080</height>
+					<width>1891</width>
+					<height>1064</height>
 					<left>-1920</left>
 					<aspectratio>keep</aspectratio>
 					<texture background="true">$INFO[Container($PARAM[ContainerID]).ListItem(-1).$PARAM[origin]]</texture>
@@ -56,16 +65,16 @@
 				<control type="image">
 					<centerleft>50%</centerleft>
 					<centertop>50%</centertop>
-					<width>1920</width>
-					<height>1080</height>
+					<width>1891</width>
+					<height>1064</height>
 					<aspectratio>keep</aspectratio>
 					<texture background="true">$INFO[Container($PARAM[ContainerID]).ListItem.$PARAM[origin]]</texture>
 				</control>
 				<control type="image">
 					<centerleft>50%</centerleft>
 					<centertop>50%</centertop>
-					<width>1920</width>
-					<height>1080</height>
+					<width>1891</width>
+					<height>1064</height>
 					<left>1920</left>
 					<aspectratio>keep</aspectratio>
 					<texture background="true">$INFO[Container($PARAM[ContainerID]).ListItem(1).$PARAM[origin]]</texture>
@@ -89,11 +98,30 @@
         <value condition="[container.content(seasons) | String.IsEqual(ListItem.DBTYPE,season)]">$INFO[container.listitem.path,,extrathumbs]</value>
     </variable>
 	
-		<!-- $PARAM[prefix] = folder. tvshow. artist. -->
 	<include name="ExtrafanartSource">
 		<param name="prefix" />
 		<definition>
 		<content>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="clearlogo" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="poster" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="landscape" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="discart" />
+			</include>
 			<include content="ItemArtTemplate">
 				<param name="postfix" value="" />
 				<param name="parentfolder" value="$PARAM[prefix]" />
@@ -181,7 +209,62 @@
 			<include content="ItemArtTemplate">
 				<param name="postfix" value="" />
 				<param name="parentfolder" value="$PARAM[prefix]" />
-				<param name="type" value="landscape" />
+				<param name="type" value="banner" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="clearart" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="1" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="clearart" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="2" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="clearart" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="3" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="clearart" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="4" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="clearart" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="5" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="clearart" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="1" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="characterart" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="2" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="characterart" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="3" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="characterart" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="4" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="characterart" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="5" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="characterart" />
 			</include>
 			<include content="ItemArtTemplate">
 				<param name="postfix" value="1" />
@@ -290,8 +373,8 @@
 		<param name="type" default="fanart" />
 		<definition>
 		<item>
-			<label>$INFO[ListItem.Art($PARAM[parentfolder]$PARAM[type]$PARAM[postfix])]</label>
-			<label2>$NUMBER[$PARAM[postfix]]</label2>
+			<label />
+			<label2 />
 			<visible>!String.IsEmpty(ListItem.Art($PARAM[parentfolder]$PARAM[type]$PARAM[postfix]))</visible>
 			<icon>$INFO[ListItem.Art($PARAM[parentfolder]$PARAM[type]$PARAM[postfix])]</icon>
 			<thumb>$INFO[ListItem.Art($PARAM[parentfolder]$PARAM[type]$PARAM[postfix])]</thumb>

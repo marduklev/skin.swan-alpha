@@ -31,10 +31,8 @@ Optional argument
 
 RunScript(script.embuary.helper,action=resetposition,container=101||102||103||104||105||106,only=inactive)
 -->
-	<onload condition="[ContainerContent(episodes) | String.IsEqual(ListItem.DBTYPE,episode)]">RunScript(script.embuary.helper,action=encode,string='"$INFO[ListItem.TVShowTitle]"',prop=EncodedTitle)</onload>
-	<onload condition="![ContainerContent(episodes) | String.IsEqual(ListItem.DBTYPE,episode)]">RunScript(script.embuary.helper,action=encode,string='"$INFO[ListItem.Label]"',prop=EncodedTitle)</onload>
+	<onload>RunScript(script.embuary.helper,action=encode,string='"$VAR[EncodeTitle]"',prop=EncodedTitle)</onload>
 	<onload>ClearProperty(AdditionalInfo)</onload>
-	
 	<onunload>ClearProperty(DecodedTitle,home)</onunload>	
 	<onunload>ClearProperty(AdditionalInfo)</onunload>
    
@@ -44,7 +42,6 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 	</animation>
    
     <controls>
-		
 		
 		<control type="group">
 			<visible>!Window.IsActive(filebrowser)</visible>
@@ -582,6 +579,7 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 			<control type="grouplist" id="8001">
 				<animation effect="slide" end="0,-910" time="1000" tween="cubic" reversible="false" condition="String.IsEqual(Window.Property(AdditionalInfo),infocontainer)">conditional</animation>
 				<animation effect="slide" start="0,-910" end="0,-0" time="800" tween="cubic" reversible="false" condition="!String.IsEqual(Window.Property(AdditionalInfo),infocontainer)">conditional</animation>
+				<animation effect="fade" start="100" end="0" time="250" condition="Control.HasFocus(9003)">conditional</animation>
 				
 				<top>1085</top>
 				<left>120</left>
@@ -724,7 +722,7 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 				</include>
 				<include content="Universal_Container">
 					<param name="id" value="8604" />
-					<param name="visible" value="Integer.IsGreater(Container(8604).NumItems,0) | Container(8604).IsUpdating" />
+					<param name="visible" value="[!String.IsEmpty(ListItem.DBType) + !String.IsEmpty(ListItem.DBID)] + Integer.IsGreater(Container(8604).NumItems,0) | Container(8604).IsUpdating" />
 					<param name="type_height" value="370" />
 					<param name="tags_visible" value="true" />
 					<param name="layout_height" value="345" />
@@ -732,10 +730,11 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 					<param name="itemwidth" value="207" />
 					<param name="itemheight" value="310" />
 					<param name="layout" value="poster" />
-					<content target="videos">$VAR[Similiar_Content]</content>
+					<content target="videos">plugin://script.embuary.helper/?info=getsimilar&amp;dbid=$INFO[ListItem.DBID]&amp;type=$INFO[ListItem.DBType]</content>
 				</include>
 				
 				<!-- YOU TUBE -->
+				<!-- <param name="visible" value="[Integer.IsGreater(Container(8605).NumItems,0) | Container(8605).IsUpdating]" /> -->
 				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="8505" />
 					<param name="id" value="8605" />
@@ -744,7 +743,7 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 				</include>
 				<include condition="!$EXP[IsOfflineMode]" content="Universal_Container">
 					<param name="id" value="8605" />
-					<param name="visible" value="[Integer.IsGreater(Container(8605).NumItems,0) | Container(8605).IsUpdating]" />
+					<param name="visible" value="false" />
 					<param name="type_height" value="365" />
 					<param name="tags_visible" value="true" />
 					<param name="layout_height" value="355" />
@@ -760,7 +759,7 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="8506" />
 					<param name="id" value="8606" />
-					<param name="label" value="[UPPERCASE]$LOCALIZE[20438][/UPPERCASE]" />
+					<param name="label" value="$LOCALIZE[20445]" />
 					<visible>Control.IsVisible(8606)</visible>
 				</include>
 				<include content="Universal_Container">
@@ -773,13 +772,14 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 					<param name="itemheight" value="365" />
 					<param name="itemwidth" value="620" />
 					<param name="ls_overlay_visible" value="false" />
-					<param name="layout" value="landscape" />
+					<param name="layout" value="fanart" />
 					<onclick condition="Skin.HasSetting(UseExtraFanartFolder)">SetFocus(9001)</onclick>
 					<onclick condition="!Skin.HasSetting(UseExtraFanartFolder)">SetFocus(9003)</onclick>
-					
+					<pagecontrol>900360</pagecontrol>
 					<include condition="!Skin.HasSetting(UseExtraFanartFolder) + [Container.Content(seasons) | Container.Content(episodes)]" content="ExtrafanartSource">
 						<param name="prefix" value="tvshow." />
 					</include>
+					
 					<include condition="!Skin.HasSetting(UseExtraFanartFolder) + ![Container.Content(seasons) | Container.Content(episodes)]" content="ExtrafanartSource" />
 					
 					<include condition="Skin.HasSetting(UseExtraFanartFolder)">ExtrafanartFolderPath</include>
@@ -933,7 +933,6 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 					<param name="icon" value="dialogs/videoinfo/location.png" />
 					<param name="visible" value="!String.IsEmpty(ListItem.Country)" />
 				</include>
-				
 				<!-- set -->
 				<include content="VideoInfo_InfoList">
 					<param name="Info" value="$LOCALIZE[36910]" />
@@ -960,7 +959,6 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 					<param name="icon" value="dialogs/videoinfo/dollar.png" />
 					<param name="visible" value="!String.IsEmpty(Window(Home).Property(SkinHelper.ListItem.BoxOffice.formatted))" />
 				</include>
-				
 				<!-- audio stream -->			
 				<include content="VideoInfo_InfoList_AV_Flags">
 					<param name="Info" value="$LOCALIZE[21447]" />
@@ -975,7 +973,6 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 					<param name="icon" value="flags/subtitles.png" />
 					<param name="visible" value="!String.IsEmpty(ListItem.SubtitleLanguage) | !String.IsEmpty(ListItem.Property(SubtitleLanguage.1))" />
                 </include>
-				
 				<!-- sh  awards -->
 				<include content="VideoInfo_InfoList">
 					<param name="Info" value="Awards" />
@@ -983,8 +980,6 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 					<param name="icon" value="flags/flags_color/addratings/oscarbw.png" />
 					<param name="visible" value="!String.IsEmpty(Window(Home).Property(SkinHelper.ListItem.Awards))" />
                 </include>
-				
-				
 			</control>
 			
 			<!-- workaroung, slideshow nav fanart-->
@@ -1002,11 +997,17 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 				<param name="ContainerID" value="8606" />
 				<param name="origin" value="Art(thumb)" />
 			</include>
-			
-			
-			
-			<!-- Big Pic Artwork CONTAINER 8004 -->
-			
+			<control type="scrollbar" id="900360">
+				<width>99%</width>
+				<centerleft>50%</centerleft>
+				<height>8</height>
+				<orientation>horizontal</orientation>
+				<bottom>0</bottom>
+				<visible>Control.HasFocus(9003)</visible>
+				<texturesliderbackground colordiffuse="$VAR[scrollbar_panel]">colors/white.png</texturesliderbackground>
+				<texturesliderbar colordiffuse="$VAR[scrollbar_slider_fo]">colors/white.png</texturesliderbar>
+				<textureslidernib />
+			</control>
 		</control>
 	</controls>
 </window>
