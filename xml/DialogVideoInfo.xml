@@ -32,10 +32,13 @@ Optional argument
 RunScript(script.embuary.helper,action=resetposition,container=101||102||103||104||105||106,only=inactive)
 -->
 	<onload>RunScript(script.embuary.helper,action=encode,string='"$VAR[EncodeTitle]"',prop=EncodedTitle)</onload>
+	<!-- dont call with included backslash, causing CUtil::SplitParams - ...  - end of string while searching for ) or  -->
+	<onload condition="container.content(movies) | String.IsEqual(ListItem.DBTYPE,movie)">RunScript(script.embuary.helper,action=lookforfile,file='"$VAR[extrasLocation]"',prop=bonuscontentavail)</onload>
 	<onload>ClearProperty(AdditionalInfo)</onload>
-	<onunload>ClearProperty(DecodedTitle,home)</onunload>	
+	<onunload>ClearProperty(EncodedTitle,home)</onunload>
 	<onunload>ClearProperty(AdditionalInfo)</onunload>
-   
+	<onunload condition="!String.IsEmpty(Window(home).Property(bonuscontentavail))">ClearProperty(bonuscontentavail,home)</onunload>	
+	
     <animation type="WindowOpen">
 		<effect type="fade" start="0" end="100" time="300" tween="sine" easing="out" />
 		<effect type="zoom" center="50%,50%" start="0" end="100" time="300" tween="cubic" easing="out" />
@@ -45,13 +48,11 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 		
 		<control type="group">
 			<visible>!Window.IsActive(filebrowser)</visible>
-			<!-- <include>Animation_OpenClose_Zoom</include> -->
 			<visible>String.IsEmpty(Window(home).Property(movieinformation))</visible>
 			<include content="Animation_TransitionFadeOut">
 				<param name="condition" value="[Window.IsVisible(script-embuary-video.xml) | Window.IsVisible(script-embuary-person.xml) | Window.IsVisible(script-embuary-image.xml)]" />
 			</include>
 			
-			<!-- fixed pos  studiologo (option b ) + fileinfo bottom right -->
 			<control type="group">
 				<visible>String.IsEqual(Window.Property(AdditionalInfo),infolist) | [Player.HasVideo + ![VideoPlayer.Content(movies) | VideoPlayer.Content(episodes) | VideoPlayer.Content(musicvideos) | VideoPlayer.Content(livetv)]]</visible>
 				<animation effect="fade" start="0" end="100" time="450">VisibleChange</animation>
@@ -59,10 +60,10 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 				<control type="image">
 					<bottom>65</bottom>
 					<right>100</right>
-					<include>studiologo_image</include>
 					<width>430</width>
 					<height>150</height>
 					<aspectratio aligny="top" align="right">keep</aspectratio>
+					<include>studiologo_image</include>
 				</control>
 				<control type="label">
 					<align>right</align>
@@ -86,13 +87,10 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 				<width>960</width>
 				<height>540</height>
 				<control type="image">
-					<aligny>bottom</aligny>
-					<texture border="15">diffuse/bgpanel.png</texture>
+					<texture>colors/white.png</texture>
 					<colordiffuse>ff000000</colordiffuse>
 				</control>
-				<control type="videowindow">
-				
-				</control>
+				<control type="videowindow" />
 			</control>
 			
 			<!-- Poster right BG -->
@@ -741,9 +739,10 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 					<param name="label" value="$LOCALIZE[31797] [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$VAR[Title,  &quot; , &quot;][/COLOR]" />
 					<visible>Control.IsVisible(8605)</visible>
 				</include>
-				<include condition="!$EXP[IsOfflineMode]" content="Universal_Container">
+				<!-- <include condition="!$EXP[IsOfflineMode]" content="Universal_Container"> -->
+				<include condition="false" content="Universal_Container">
 					<param name="id" value="8605" />
-					<param name="visible" value="false" />
+					<param name="visible" value="[Integer.IsGreater(Container(8605).NumItems,0) | Container(8605).IsUpdating]" />
 					<param name="type_height" value="365" />
 					<param name="tags_visible" value="true" />
 					<param name="layout_height" value="355" />
@@ -773,9 +772,9 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 					<param name="itemwidth" value="620" />
 					<param name="ls_overlay_visible" value="false" />
 					<param name="layout" value="fanart" />
+					<pagecontrol>90060</pagecontrol>
 					<onclick condition="Skin.HasSetting(UseExtraFanartFolder)">SetFocus(9001)</onclick>
 					<onclick condition="!Skin.HasSetting(UseExtraFanartFolder)">SetFocus(9003)</onclick>
-					<pagecontrol>900360</pagecontrol>
 					<include condition="!Skin.HasSetting(UseExtraFanartFolder) + [Container.Content(seasons) | Container.Content(episodes)]" content="ExtrafanartSource">
 						<param name="prefix" value="tvshow." />
 					</include>
@@ -783,6 +782,30 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 					<include condition="!Skin.HasSetting(UseExtraFanartFolder) + ![Container.Content(seasons) | Container.Content(episodes)]" content="ExtrafanartSource" />
 					
 					<include condition="Skin.HasSetting(UseExtraFanartFolder)">ExtrafanartFolderPath</include>
+				</include>
+				
+				<!-- stored extra thumbs -->
+				<include content="Universal_ContainerHeader">
+					<param name="groupid" value="8507" />
+					<param name="id" value="8607" />
+					<param name="label" value="EXTRA THUMBS" />
+					<visible>Control.IsVisible(8607)</visible>
+				</include>
+				<include content="Universal_Container">
+					<param name="id" value="8607" />
+					<param name="visible" value="Skin.HasSetting(UseExtraFanartFolder) + Integer.IsGreater(Container(8607).NumItems,0) | Container(8607).IsUpdating" />
+					<param name="type_height" value="370" />
+					<param name="tags_visible" value="false" />
+					<param name="layout_height" value="370" />
+					<param name="layout_width" value="612" />
+					<param name="itemheight" value="365" />
+					<param name="itemwidth" value="620" />
+					<param name="ls_overlay_visible" value="false" />
+					<param name="layout" value="landscape" />
+					<pagecontrol>90060</pagecontrol>
+					<onclick>SetFocus(9002)</onclick>
+					<content>$VAR[extraThumbsLocation]</content>
+					
 				</include>
 				<!-- stored extras -->
 				<include content="Universal_ContainerHeader">
@@ -803,34 +826,12 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 					<param name="itemwidth" value="440" />
 					<param name="banner_overlay_visible" value="true" />
 					<param name="layout" value="banner" />
-					<param name="visible" value="[container.content(movies) | String.IsEqual(ListItem.DBTYPE,movie)] + [Integer.IsGreater(Container(8609).NumItems,0) | Container(8609).IsUpdating]" />
-					<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(8609).NumItems,0) | Container(8609).IsUpdating">Conditional</animation>
-					<content>$INFO[listitem.path,,extras]</content>
-				</include>
-				<!-- stored extra thumbs -->
-				<include content="Universal_ContainerHeader">
-					<param name="groupid" value="8507" />
-					<param name="id" value="8607" />
-					<param name="label" value="EXTRA THUMBS" />
-					<visible>Control.IsVisible(8607)</visible>
-				</include>
-				<include content="Universal_Container">
-					<param name="id" value="8607" />
-					<param name="visible" value="Skin.HasSetting(UseExtraFanartFolder) + Integer.IsGreater(Container(8607).NumItems,0) | Container(8607).IsUpdating" />
-					<param name="type_height" value="370" />
-					<param name="tags_visible" value="false" />
-					<param name="layout_height" value="370" />
-					<param name="layout_width" value="612" />
-					<param name="itemheight" value="365" />
-					<param name="itemwidth" value="620" />
-					<param name="ls_overlay_visible" value="false" />
-					<param name="layout" value="landscape" />
-					<onclick>SetFocus(9002)</onclick>
+					<param name="visible" value="!String.IsEmpty(Window(home).Property(bonuscontentavail))" />
 					<content>$VAR[extrasLocation]</content>
 				</include>
 			</control>
 			
-			<!-- INFO CONTAINERS 8003 -->
+			<!-- 8003 INFOS TOP -->
 			<control type="grouplist" id="8003">
 				<animation effect="slide" end="0,1200" time="1000" tween="cubic" reversible="false" condition="String.IsEqual(Window.Property(AdditionalInfo),infolist)">conditional</animation>
 				<animation effect="slide" start="0,1200" end="0,-0" time="800" tween="cubic" reversible="false" condition="!String.IsEqual(Window.Property(AdditionalInfo),infolist)">conditional</animation>
@@ -890,13 +891,13 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 					<param name="visible" value="!String.IsEmpty(Window(Home).Property(SkinHelper.ListItem.airdaytime.label))" />
 				</include>
 				 
-				<!-- rating and votes simple  -->
-				<!-- <include content="VideoInfo_InfoList">
-					<param name="Info" value="$LOCALIZE[563] &amp; $LOCALIZE[205]" />
+				<!-- rating and votes simple  &amp; $LOCALIZE[205] -->
+				<include content="VideoInfo_InfoList">
+					<param name="Info" value="$LOCALIZE[563]" />
                     <param name="InfoLabel" value="$INFO[ListItem.RatingAndVotes]" />
 					<param name="icon" value="flags/rating.png" />
 					<param name="visible" value="!String.IsEmpty(ListItem.RatingAndVotes)" />
-				</include> -->
+				</include>
 				
 				<!-- Director -->
 				<include content="VideoInfo_InfoList">
@@ -940,19 +941,21 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 					<param name="icon" value="flags/discsets/diskmain_w.png" />
 					<param name="visible" value="!String.IsEmpty(ListItem.SetID)" />
 				</include>
-				
+				<!-- sh -->
 				<include content="VideoInfo_InfoList">
 					<param name="Info" value="Einnahmen" />
                     <param name="InfoLabel" value="$INFO[Window(Home).Property(SkinHelper.ListItem.Revenue.formatted),, $]" />
 					<param name="icon" value="dialogs/videoinfo/dollar.png" />
 					<param name="visible" value="!String.IsEmpty(Window(Home).Property(SkinHelper.ListItem.Revenue.formatted))" />
 				</include> 
+				<!-- sh -->
 				<include content="VideoInfo_InfoList">
 					<param name="Info" value="Budget" />
                     <param name="InfoLabel" value="$INFO[Window(Home).Property(SkinHelper.ListItem.Budget.formatted),, $]" />
 					<param name="icon" value="dialogs/videoinfo/dollar.png" />
 					<param name="visible" value="!String.IsEmpty(Window(Home).Property(SkinHelper.ListItem.Budget.formatted))" />
-				</include> 
+				</include>
+				<!-- sh -->				
 				<include content="VideoInfo_InfoList">
 					<param name="Info" value="BoxOffice" />
                     <param name="InfoLabel" value="$INFO[Window(Home).Property(SkinHelper.ListItem.BoxOffice.formatted),, $]" />
@@ -987,7 +990,6 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 				<param name="ButtonID" value="9001" />
 				<param name="ContainerID" value="8606" />
 			</include>
-			<!-- workaroung, slideshow nav thumbs-->
 			<include content="VideoInfo_SlideshowNav">
 				<param name="ButtonID" value="9002" />
 				<param name="ContainerID" value="8607" />
@@ -997,13 +999,15 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 				<param name="ContainerID" value="8606" />
 				<param name="origin" value="Art(thumb)" />
 			</include>
-			<control type="scrollbar" id="900360">
-				<width>99%</width>
+			
+			<!-- slideshow scrollbar -->
+			<control type="scrollbar" id="90060">
+				<width>1920</width>
 				<centerleft>50%</centerleft>
 				<height>8</height>
 				<orientation>horizontal</orientation>
 				<bottom>0</bottom>
-				<visible>Control.HasFocus(9003)</visible>
+				<visible>Control.HasFocus(9001) | Control.HasFocus(9002) | Control.HasFocus(9003)</visible>
 				<texturesliderbackground colordiffuse="$VAR[scrollbar_panel]">colors/white.png</texturesliderbackground>
 				<texturesliderbar colordiffuse="$VAR[scrollbar_slider_fo]">colors/white.png</texturesliderbar>
 				<textureslidernib />
