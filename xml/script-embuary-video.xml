@@ -15,9 +15,14 @@
 		
 		<!-- infos -->
 		<control type="grouplist">
+		
+			<include content="Animation_TransitionFadeOut">
+				<param name="condition" value="Window.IsActive(textviewer)" />
+			</include>
+		
 			<left>10</left>
 			<right>10</right>
-			<top>10</top>
+			<top>20</top>
 			<bottom>10</bottom>
 			<orientation>vertical</orientation>
 			<usecontrolcoords>true</usecontrolcoords>
@@ -26,68 +31,67 @@
 			
 			<control type="group">
 				
-				<!-- 	
-				<animation type="conditional" condition="!Control.HasFocus(100)" reversible="false">
-					<effect type="zoom" end="102,102" time="200" tween="sine" easing="out" center="center="50,-100" />
-					<effect type="zoom" end="98,98" time="150" tween="sine" delay="200" easing="out" center="center="50,-100" />
-				</animation>
-				<effect type="zoom" end="90,90" time="150" tween="sine" delay="0" easing="in" center="50,-100" />
-				-->
-				
 				<height>460</height>
 				<top>60</top>
 				
-				<!-- poster -->
 				<control type="group">
 					<left>70</left>
-					
 					<control type="textbox">
 						<top>10</top>
-						<left>10</left>
-						<width>256</width>
+						<left>20</left>
+						<width>280</width>
 						<height>394</height>
 						<font>font12</font>
-						<textcolor>white</textcolor>
+						<textcolor>$VAR[Nav_LabelPrimaryColor]</textcolor>
 						<align>center</align>
 						<aligny>center</aligny>
 						<label>$INFO[Container(10051).ListItem.Label]</label>
 						<visible>String.IsEmpty(Container(10051).ListItem.Art(thumb))</visible>
 					</control>
 					<control type="image">
-						<width>300</width>
-						<height>450</height>
-						<bordersize>2</bordersize>
-						<bordertexture border="2" colordiffuse="white">frames/frametest.png</bordertexture>
-						<texture background="true">$INFO[Container(10051).ListItem.Art(thumb)]</texture>
+						<top>-8</top>
+						<width>307</width>
+						<height>460</height>
+						<bordersize>1</bordersize>
+						<bordertexture border="2" colordiffuse="$VAR[Nav_LabelPrimaryColor]">frames/frametest.png</bordertexture>
+						<texture background="true" fallback="artworkdiffuse/posterborder.png">$INFO[Container(10051).ListItem.Art(thumb)]</texture>
 						<aspectratio scalediffuse="false">scale</aspectratio>
 					</control>
 					<control type="image">
-						<width>300</width>
+						<width>295</width>
 						<top>5</top>
-						<height>40</height>
+						<height>35</height>
 						<bordersize>6</bordersize>
-						<bordertexture colordiffuse="ffffffff">watched.png</bordertexture>
-						<texture colordiffuse="ff181818">overlaywatched.png</texture>
-						<colordiffuse>ff45d374</colordiffuse>
+						<bordertexture colordiffuse="$VAR[Nav_LabelPrimaryColor]">frame_circle.png</bordertexture>
+						<texture colordiffuse="$VAR[Nav_LabelPrimaryColor]">overlaywatched.png</texture>
 						<aspectratio scalediffuse="false" aligny="top" align="right">keep</aspectratio>
 						<visible>!String.IsEmpty(Container(10051).ListItem.DBID)</visible>
 					</control>
 				</control>
 				<!-- meta -->
 				<control type="group">
-					<top>-5</top>
+					<top>-15</top>
 					<left>400</left>
 					<right>70</right>
 					<control type="label">
 						<right>440</right>
 						<height>60</height>
 						<label>$INFO[Container(10051).ListItem.Label]</label>
-						<font>font45</font>
+						<font>font45_title</font>
 						<textcolor>$VAR[Nav_LabelPrimaryColor]</textcolor>
 						<aligny>top</aligny>
 					</control>
+					<control type="label">
+						<top>55</top>
+						<right>440</right>
+						<height>20</height>
+						<label>$INFO[Container(10051).ListItem.Tagline]</label>
+						<font>debug</font>
+						<textcolor>$VAR[Nav_LabelSecondaryColor]</textcolor>
+						<aligny>top</aligny>
+					</control>
 					<control type="group">
-						<top>70</top>
+						<top>100</top>
 						<right>440</right>
 						<height>40</height>
 						<control type="grouplist">
@@ -116,7 +120,7 @@
 								<textoffsetx>10</textoffsetx>
 								<align>center</align>
 								<textcolor>$VAR[Nav_LabelPrimaryColor]</textcolor>
-								<disabledcolor>ffffffff</disabledcolor>
+								<disabledcolor>$VAR[Nav_LabelPrimaryColor]</disabledcolor>
 								<texturefocus border="2" colordiffuse="$VAR[Nav_LabelPrimaryColor]">frames/frametest.png</texturefocus>
 								<texturenofocus border="2" colordiffuse="$VAR[Nav_LabelPrimaryColor]">frames/frametest.png</texturenofocus>
 								<enable>false</enable>
@@ -167,96 +171,60 @@
 								<textoffsetx>10</textoffsetx>
 								<align>center</align>
 								<textcolor>$VAR[Nav_LabelPrimaryColor]</textcolor>
-								<disabledcolor>ffffffff</disabledcolor>
+								<disabledcolor>$VAR[Nav_LabelPrimaryColor]</disabledcolor>
 								<texturefocus border="2" colordiffuse="$VAR[Nav_LabelPrimaryColor]">frames/frametest.png</texturefocus>
 								<texturenofocus border="2" colordiffuse="$VAR[Nav_LabelPrimaryColor]">frames/frametest.png</texturenofocus>
 								<enable>false</enable>
 								<visible>!String.IsEmpty(Container(10051).ListItem.Mpaa)</visible>
 							</control>
-							
-							<include content="spacer_h">
-								<param name="gap" value="10" />
+							<include content="Ratings_Hor" />
+							<include content="Ratings_Hor">
+								<param name="texture" value="$VAR[Img_Rotten]" />
+								<param name="rating" value="Property(rating.rotten)" />
+								<param name="ratingpostfix" value=" %" />
 							</include>
-							<!-- cry for include -->
-							<control type="image">
-								<width>40</width>
-								<texture>flags/ratings/themoviedb_monochrome.png</texture>
-								<aspectratio>keep</aspectratio>
-								<visible>!String.IsEmpty(Container(10051).ListItem.Rating)</visible>
-							</control>
-							<control type="label">
-								<label>$INFO[Container(10051).ListItem.Rating]</label>
-								<width>auto</width>
-								<font>debug</font>
-								<textcolor>ffffffff</textcolor>
-								<shadowcolor>50000000</shadowcolor>
-								<visible>!String.IsEmpty(Container(10051).ListItem.Rating)</visible>
-							</control>
-							<include content="spacer_h">
-								<param name="gap" value="10" />
+							<include content="Ratings_Hor">
+								<param name="texture" value="metacritic" />
+								<param name="rating" value="Property(rating.metacritic)" />
+								<param name="ratingpostfix" value=" %" />
 							</include>
-							<control type="image">
-								<width>40</width>
-								<texture>flags/ratings/critics_rotten_fresh_monochrome.png</texture>
-								<aspectratio>keep</aspectratio>
-								<visible>Integer.IsGreaterOrEqual(Container(10051).ListItem.Property(rating.rotten),60)</visible>
-								<visible>!String.IsEmpty(Container(10051).ListItem.Property(rating.rotten))</visible>
-							</control>
-							<control type="image">
-								<width>40</width>
-								<texture>flags/ratings/critics_rotten_rotten_monochrome.png</texture>
-								<aspectratio>keep</aspectratio>
-								<visible>!Integer.IsGreaterOrEqual(Container(10051).ListItem.Property(rating.rotten),60)</visible>
-								<visible>!String.IsEmpty(Container(10051).ListItem.Property(rating.rotten))</visible>
-							</control>
-							<control type="label">
-								<label>$INFO[Container(10051).ListItem.Property(rating.rotten),, %]</label>
-								<width>auto</width>
-								<font>debug</font>
-								<textcolor>ffffffff</textcolor>
-								<shadowcolor>50000000</shadowcolor>
-								<visible>!String.IsEmpty(Container(10051).ListItem.Property(rating.rotten))</visible>
-							</control>
-							<include content="spacer_h">
-								<param name="gap" value="10" />
+							<include content="Ratings_Hor">
+								<param name="texture" value="imdb" />
+								<param name="rating" value="Property(rating.imdb)" />
 							</include>
-							<control type="image">
-								<width>40</width>
-								<texture>flags/ratings/metacritic_monochrome.png</texture>
-								<aspectratio>keep</aspectratio>
-								<visible>!String.IsEmpty(Container(10051).ListItem.Property(rating.metacritic))</visible>
-							</control>
-							<control type="label">
-								<label>$INFO[Container(10051).ListItem.Property(rating.metacritic),, %]</label>
-								<width>auto</width>
-								<font>debug</font>
-								<textcolor>ffffffff</textcolor>
-								<shadowcolor>50000000</shadowcolor>
-								<visible>!String.IsEmpty(Container(10051).ListItem.Property(rating.metacritic))</visible>
-							</control>
-							<include content="spacer_h">
-								<param name="gap" value="10" />
-							</include>
-							<control type="image">
-								<width>40</width>
-								<texture>flags/ratings/imdb_monochrome.png</texture>
-								<aspectratio>keep</aspectratio>
-								<visible>!String.IsEmpty(Container(10051).ListItem.Property(rating.imdb))</visible>
-							</control>
-							<control type="label">
-								<label>$INFO[Container(10051).ListItem.Property(rating.imdb)]</label>
-								<width>auto</width>
-								<font>debug</font>
-								<textcolor>ffffffff</textcolor>
-								<shadowcolor>50000000</shadowcolor>
-								<visible>!String.IsEmpty(Container(10051).ListItem.Property(rating.imdb))</visible>
-							</control>
 						</control>
 					</control>
-					<!-- buttons -->
+					
+					<!-- genre etc -->
+					<control type="textbox">
+						<top>150</top>
+						<right>360</right>
+						<height>auto</height>
+						<align>justify</align>
+						<aligny>top</aligny>
+						<label fallback="19055">$INFO[Container(10051).ListItem.Genre,$LOCALIZE[515]: ,[CR]]$INFO[Container(10051).ListItem.Director,$LOCALIZE[20339]: ,]</label>
+						<font>debug</font>
+						<textcolor>$VAR[Nav_HighlightColor]</textcolor>
+						<shadowcolor>50000000</shadowcolor>
+						<autoscroll delay="6000" time="3000" repeat="10000">true</autoscroll>
+					</control>
+					<!-- plot -->
+					<control type="textbox">
+						<top>215</top>
+						<right>360</right>
+						<height max="170">auto</height>
+						<align>justify</align>
+						<aligny>top</aligny>
+						<label fallback="19055">$INFO[Container(10051).ListItem.Plot]</label>
+						<font>PlotCommon</font>
+						<textcolor>ffffffff</textcolor>
+						<shadowcolor>50000000</shadowcolor>
+						<autoscroll delay="6000" time="3000" repeat="10000">true</autoscroll>
+					</control>
+					
 					<control type="panel" id="100">
-					<!-- 	<visible>false</visible> -->
-						<top>100</top>
+						<description>temp use hardcoded b/w</description>
+						<top>375</top>
 						<height>105</height>
 						<width>100%</width>
 						<orientation>horizontal</orientation>
@@ -272,15 +240,14 @@
 								<control type="group">
 									<height>62</height>
 									<control type="image">
-										<texture border="2" colordiffuse="$VAR[Nav_LabelPrimaryColor]">frames/frametest.png</texture>
+										<texture border="2" colordiffuse="white">frames/frametest.png</texture>
 									</control>
 									<control type="label">
 										<height>62</height>
 										<align>center</align>
 										<aligny>center</aligny>
 										<font>font12</font>
-										<textcolor>ffffffff</textcolor>
-										<shadowcolor>50000000</shadowcolor>
+										<textcolor>white</textcolor>
 										<label>$INFO[ListItem.Label]</label>
 									</control>
 								</control>
@@ -295,8 +262,6 @@
 									<height>62</height>
 									<control type="image">
 										<texture colordiffuse="white">colors/white.png</texture>
-										<bordersize>2</bordersize>
-										<bordertexture border="2" colordiffuse="50ffffff">frames/frametest.png</bordertexture>
 									</control>
 									<control type="label">
 										<height>62</height>
@@ -311,13 +276,11 @@
 						</focusedlayout>
 						<content>
 							<item>
-								<visible>System.HasAddon(script.embuary.helper)</visible>
 								<visible>!String.IsEmpty(Container(10051).ListItem.Plot)</visible>
 								<label>$LOCALIZE[207]</label>
 								<onclick>RunScript(script.embuary.helper,action=textviewer,header='$ESCINFO[Container(10051).ListItem.Label]',message='$ESCINFO[Container(10051).ListItem.Plot]')</onclick>
 							</item>
 							<item>
-								<property name="icon">&#xf206;</property>
 								<label>$LOCALIZE[15067]</label>
 								<onclick>Dialog.Close(all)</onclick>
 							</item>
@@ -336,32 +299,6 @@
 							</item>
 						</content>
 					</control>
-					<!-- genre etc -->
-					<control type="textbox">
-						<top>210</top>
-						<right>360</right>
-						<height>auto</height>
-						<align>justify</align>
-						<aligny>top</aligny>
-						<label fallback="19055">[COLOR ff45d374]$INFO[Container(10051).ListItem.Genre,$LOCALIZE[515]: ,[CR]]$INFO[Container(10051).ListItem.Director,$LOCALIZE[20339]: ,[CR]][/COLOR]$INFO[Container(10051).ListItem.Tagline,[B],[/B]]</label>
-						<font>debug</font>
-						<textcolor>ffffffff</textcolor>
-						<shadowcolor>50000000</shadowcolor>
-						<autoscroll delay="6000" time="3000" repeat="10000">true</autoscroll>
-					</control>
-					<!-- plot -->
-					<control type="textbox">
-						<top>270</top>
-						<right>360</right>
-						<height max="170">auto</height>
-						<align>justify</align>
-						<aligny>top</aligny>
-						<label fallback="19055">$INFO[Container(10051).ListItem.Plot]</label>
-						<font>PlotCommon</font>
-						<textcolor>ffffffff</textcolor>
-						<shadowcolor>50000000</shadowcolor>
-						<autoscroll delay="6000" time="3000" repeat="10000">true</autoscroll>
-					</control>
 					<!-- facts -->
 					<control type="group">
 						<visible>!String.IsEmpty(Container(10051).ListItem.Premiered) | !String.IsEmpty(Container(10051).ListItem.Property(release)) | !String.IsEmpty(Container(10051).ListItem.Property(Budget)) | !String.IsEmpty(Container(10051).ListItem.Property(Revenue))</visible>
@@ -369,13 +306,12 @@
 						<right>0</right>
 						<width>320</width>
 						<control type="label">
-							<animation effect="slide" end="0,2" time="0" condition="true">Conditional</animation>
 							<width>auto</width>
 							<height>40</height>
 							<label>$ADDON[script.embuary.info 32008]</label>
-							<font>font12</font>
+							<font>font13</font>
 							<aligny>top</aligny>
-							<textcolor>ff45d374</textcolor>
+							<textcolor>$VAR[Nav_HighlightColor]</textcolor>
 							<shadowcolor>50000000</shadowcolor>
 						</control>
 						<control type="textbox">
@@ -386,8 +322,7 @@
 							<aligny>top</aligny>
 							<label>$INFO[Container(10051).ListItem.Premiered,[CR]$ADDON[script.embuary.info 32011]:   ]$INFO[Container(10051).ListItem.Property(release),[CR]$ADDON[script.embuary.info 32012]:   ]$INFO[Container(10051).ListItem.Property(Budget),[CR]$ADDON[script.embuary.info 32013]:   $]$INFO[Container(10051).ListItem.Property(Revenue),[CR]$ADDON[script.embuary.info 32014]:   $]</label>
 							<font>font12</font>
-							<textcolor>ffffffff</textcolor>
-							<shadowcolor>50000000</shadowcolor>
+							<textcolor>$VAR[Nav_LabelSecondaryColor]</textcolor>
 							<autoscroll>false</autoscroll>
 							<animation type="Conditional" reversible="false" condition="!String.IsEmpty(Container(10051).ListItem.Property(awards))" loop="true">
 								<effect type="fade" start="0" end="100" time="250" delay="0" />
@@ -403,8 +338,7 @@
 							<aligny>top</aligny>
 							<label>$INFO[Container(10051).ListItem.Property(awards),[CR]$ADDON[script.embuary.info 32015]:   ]</label>
 							<font>font12</font>
-							<textcolor>ffffffff</textcolor>
-							<shadowcolor>50000000</shadowcolor>
+							<textcolor>$VAR[Nav_LabelSecondaryColor]</textcolor>
 							<autoscroll>false</autoscroll>
 							<animation type="Conditional" reversible="false" condition="!String.IsEmpty(Container(10051).ListItem.Property(awards))" loop="true">
 								<effect type="fade" start="0" end="100" time="250" delay="5250" />
@@ -418,7 +352,7 @@
 					<right>70</right>
 					<width>400</width>
 					<height>155</height>
-					<texture colordiffuse="$VAR[Nav_LabelPrimaryColor]">icons/radiobuttons/embuaryinfo4.png</texture>
+					<texture colordiffuse="$VAR[Nav_HighlightColor]">icons/radiobuttons/embuaryinfo4.png</texture>
 					<aspectratio align="right">keep</aspectratio>
 				</control>
 			</control>
@@ -433,7 +367,7 @@
 			<!-- crew -->
 			<include content="EmbInfo_ContentContainer">
 				<param name="id" value="10056" />
-				<param name="header" value="$VAR[EmbInfo_ContentHeader1]" />
+				<param name="header" value="$VAR[EmbInfo_ContentHeader]" />
 				<param name="onup" value="10052" />
 				<param name="ondown" value="10057" />
 			</include>
@@ -462,10 +396,10 @@
 			<include content="EmbInfo_ContentContainer">
 				<param name="id" value="10054" />
 				<param name="header" value="YouTube" />
-				<param name="type_height" value="400" />
+				<param name="type_height" value="410" />
 				<param name="tags_visible" value="true" />
 				<param name="visible" value="true" />
-				<param name="layout_height" value="400" />
+				<param name="layout_height" value="410" />
 				<param name="layout_width" value="600" />
 				<param name="itemheight" value="340" />
 				<param name="itemwidth" value="578" />
@@ -499,7 +433,7 @@
 				<param name="itemheight" value="400" />
 				<param name="itemwidth" value="267" />
 				<param name="onup" value="10055" />
-				<param name="ondown" value="10052" />
+				<param name="ondown" value="100" />
 			</include>
 		</control>
 

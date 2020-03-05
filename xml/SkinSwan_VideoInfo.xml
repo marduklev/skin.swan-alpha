@@ -388,13 +388,38 @@
 		</definition>
 	</include>	
 	
-	<!-- temp emb info container -->
-	<variable name="EmbInfo_ContentHeader1">
+	<include name="Ratings_Hor">
+		<param name="texture" default="themoviedb" />
+		<param name="rating" default="rating" />
+		<param name="ratingpostfix" default="" />
+		<definition>
+			<include content="spacer_h">
+				<param name="gap" value="10" />
+			</include>
+			<control type="image">
+				<width>40</width>
+				<texture colordiffuse="$VAR[Nav_LabelPrimaryColor]">flags/ratings/$PARAM[texture]_monochrome.png</texture>
+				<aspectratio>keep</aspectratio>
+				<visible>!String.IsEmpty(Container(10051).ListItem.$PARAM[rating])</visible>
+			</control>
+			<control type="label">
+				<label>$INFO[Container(10051).ListItem.$PARAM[rating],,$PARAM[ratingpostfix]]</label>
+				<width>auto</width>
+				<font>debug</font>
+				<textcolor>$VAR[Nav_LabelPrimaryColor]</textcolor>
+				<visible>!String.IsEmpty(Container(10051).ListItem.$PARAM[rating])</visible>
+			</control>
+		</definition>
+	</include>
+	
+	<variable name="Img_Rotten">
+		<value condition="!Integer.IsGreaterOrEqual(Container(10051).ListItem.Property(rating.rotten),60)">critics_rotten_rotten</value>
+		<value condition="Integer.IsGreaterOrEqual(Container(10051).ListItem.Property(rating.rotten),60)">critics_rotten_fresh</value>
+	</variable>
+	<variable name="EmbInfo_ContentHeader">
 		<value condition="!String.IsEqual(Container(10051).ListItem.DBType,season)">$ADDON[script.embuary.info 32018]</value>
 		<value condition="String.IsEqual(Container(10051).ListItem.DBType,season)">$ADDON[script.embuary.info 32039]</value>
 	</variable>
-	
-	
 	<!--
 	<animation type="conditional" condition="Control.HasFocus($PARAM[id])" reversible="false">
 		<effect type="zoom" end="115,115" time="250" tween="sine" easing="out" center="110,0" />
