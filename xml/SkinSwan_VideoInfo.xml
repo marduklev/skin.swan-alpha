@@ -388,4 +388,71 @@
 		</definition>
 	</include>	
 	
+	<!-- temp emb info container -->
+	<variable name="EmbInfo_ContentHeader1">
+		<value condition="!String.IsEqual(Container(10051).ListItem.DBType,season)">$ADDON[script.embuary.info 32018]</value>
+		<value condition="String.IsEqual(Container(10051).ListItem.DBType,season)">$ADDON[script.embuary.info 32039]</value>
+	</variable>
+	
+	
+	<!--
+	<animation type="conditional" condition="Control.HasFocus($PARAM[id])" reversible="false">
+		<effect type="zoom" end="115,115" time="250" tween="sine" easing="out" center="110,0" />
+		<effect type="zoom" end="91,91" time="150" tween="sine" delay="250" easing="out" center="110,0" />
+	</animation>
+	<animation type="conditional" condition="!Control.HasFocus($PARAM[id])" reversible="false">
+		<effect type="zoom" end="91,91" time="150" tween="sine" easing="out" center="100,0" />
+	</animation>
+	-->
+				
+	<include name="EmbInfo_ContentContainer">
+		<param name="groupheight" default="520" />
+		<param name="layout" default="poster" />
+		<param name="tags_visible" default="true" />
+		<param name="type_height" default="455" />
+		<param name="layout_height" default="455" />
+		<param name="layout_width" default="257" />
+		<param name="itemwidth" default="241" />
+		<param name="itemheight" default="361" />
+		
+		<definition>
+		<control type="group">
+			<visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) | Container($PARAM[id]).IsUpdating</visible>
+			<width>100%</width>
+			<height>$PARAM[groupheight]</height>
+			<left>65</left>
+			
+			<!-- <animation type="conditional" condition="Control.HasFocus($PARAM[id])" reversible="false">
+				<effect type="zoom" end="110,110" time="200" tween="sine" easing="out" center="110,0" />
+				<effect type="zoom" end="95,95" time="200" tween="sine" delay="200" easing="out" center="110,0" />
+			</animation> -->
+			<!-- <animation type="conditional" condition="!Control.HasFocus($PARAM[id])" reversible="false">
+				<effect type="zoom" end="91,91" time="150" tween="sine" easing="out" center="100,0" />
+			</animation> -->
+			
+			<include content="Universal_ContainerHeader">
+				<param name="id" value="$PARAM[id]" />
+				<param name="top" value="0" />
+				<param name="label" value="$PARAM[header]" />
+			</include>
+				
+			<include content="Universal_Container">
+				<param name="id" value="$PARAM[id]" />
+				<param name="type_height" value="$PARAM[type_height]" />
+				<param name="type_pos_top" value="70" />
+				<param name="tags_visible" value="$PARAM[tags_visible]" />
+				<param name="visible" value="true" />
+				<param name="layout_height" value="$PARAM[layout_height]" />
+				<param name="layout_width" value="$PARAM[layout_width]" />
+				<param name="itemwidth" value="$PARAM[itemwidth]" />
+				<param name="itemheight" value="$PARAM[itemheight]" />
+				<param name="layout" value="$PARAM[layout]" />
+				<ondown>$PARAM[ondown]</ondown>
+				<onup>$PARAM[onup]</onup>
+			</include>
+			
+			<nested />
+		</control>
+		</definition>
+	</include>
 </includes>

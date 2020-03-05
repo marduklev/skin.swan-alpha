@@ -19,23 +19,12 @@
 >      Special Ratings for Library/Views (show tmbd,tvdb,imdb,rottentomatoes,metacritic)
 >      StudioLogo Resource Addon Support (colored, monochrome)
 		
-### What is/will be bad
->	PVR Support (will never have one other than PVR Demo Client to test)
->	
->	Game Support (not good as long as main skin is done)
+### Dependencies
+>	(Embuary Helper)[https://forum.kodi.tv/showthread.php?tid=345471]
 
-### Early Previews on 1st Stage
-1st steps testing settings : widgets,addondialogs,setting,bg image and colors, homelayouts
-- https://streamable.com/oprah
-
-- https://streamable.com/rvezy
-
-- https://streamable.com/1kpmv
-
-
-Work on Music HUB
-- https://streamable.com/pecfb
-
+### Supported Addons
+>	(Embuary Info Script)[https://forum.kodi.tv/showthread.php?tid=346034]
+>   (Up Next)[https://forum.kodi.tv/showthread.php?tid=336747]
 
 Credits for (some defaults) currently used Textures belongs to
 - @'Phil65' (skin.estuary) (default[foo].pngs's, some backgroundpatterns)
