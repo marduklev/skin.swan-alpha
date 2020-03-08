@@ -7,19 +7,27 @@
 	-->
 	<include>Animation_OpenClose_MediaWindow</include>
 	<defaultcontrol>100</defaultcontrol>
+	<include>EmbInfo_Onunload</include>
 	<controls>
-		<!-- Storage container for the item details -->
+		
 		<control type="list" id="10051">
 			<include>HiddenContainer</include>
 		</control>
 		
-		<!-- infos -->
-		<control type="grouplist">
+		<control type="group">
+			<visible>!Window.IsActive(script-embuary-image.xml)</visible>
+			<include content="View_BGPanel">
+				<param name="width2" value="0%" />
+				<param name="width3" value="0" />
+			</include>
+		</control>
+		
+		<control type="grouplist" id="50">
 		
 			<include content="Animation_TransitionFadeOut">
-				<param name="condition" value="Window.IsActive(textviewer)" />
+				<param name="condition" value="Window.IsActive(textviewer) | Window.IsActive(script-embuary-image.xml)" />
 			</include>
-		
+			
 			<left>10</left>
 			<right>10</right>
 			<top>20</top>
@@ -33,7 +41,7 @@
 				
 				<height>460</height>
 				<top>60</top>
-				
+				<!-- poster -->
 				<control type="group">
 					<left>70</left>
 					<control type="textbox">
@@ -70,29 +78,27 @@
 				</control>
 				<!-- meta -->
 				<control type="group">
-					<top>-15</top>
 					<left>400</left>
 					<right>70</right>
 					<control type="label">
-						<right>440</right>
-						<height>60</height>
+						<right>360</right>
+						<height>30</height>
 						<label>$INFO[Container(10051).ListItem.Label]</label>
 						<font>font45_title</font>
+						<scroll>true</scroll>
 						<textcolor>$VAR[Nav_LabelPrimaryColor]</textcolor>
-						<aligny>top</aligny>
 					</control>
 					<control type="label">
-						<top>55</top>
-						<right>440</right>
+						<top>40</top>
+						<right>360</right>
 						<height>20</height>
 						<label>$INFO[Container(10051).ListItem.Tagline]</label>
 						<font>debug</font>
 						<textcolor>$VAR[Nav_LabelSecondaryColor]</textcolor>
-						<aligny>top</aligny>
 					</control>
 					<control type="group">
-						<top>100</top>
-						<right>440</right>
+						<top>85</top>
+						<right>360</right>
 						<height>40</height>
 						<control type="grouplist">
 							<height>40</height>
@@ -197,7 +203,7 @@
 					
 					<!-- genre etc -->
 					<control type="textbox">
-						<top>150</top>
+						<top>135</top>
 						<right>360</right>
 						<height>auto</height>
 						<align>justify</align>
@@ -210,7 +216,7 @@
 					</control>
 					<!-- plot -->
 					<control type="textbox">
-						<top>215</top>
+						<top>200</top>
 						<right>360</right>
 						<height max="170">auto</height>
 						<align>justify</align>
@@ -219,61 +225,11 @@
 						<font>PlotCommon</font>
 						<textcolor>ffffffff</textcolor>
 						<shadowcolor>50000000</shadowcolor>
-						<autoscroll delay="6000" time="3000" repeat="10000">true</autoscroll>
+						<autoscroll delay="6000" time="6000" repeat="10000">true</autoscroll>
 					</control>
-					
-					<control type="panel" id="100">
-						<description>temp use hardcoded b/w</description>
-						<top>375</top>
-						<height>105</height>
-						<width>100%</width>
-						<orientation>horizontal</orientation>
-						<defaultcontrol always="true">0</defaultcontrol>
-						<onright>noop</onright>
-						<onleft>noop</onleft>
-						<ondown>10052</ondown>
-						<itemlayout height="100" width="220">
-							<control type="group">
-								<top>30</top>
-								<width>185</width>
-								<height>100</height>
-								<control type="group">
-									<height>62</height>
-									<control type="image">
-										<texture border="2" colordiffuse="white">frames/frametest.png</texture>
-									</control>
-									<control type="label">
-										<height>62</height>
-										<align>center</align>
-										<aligny>center</aligny>
-										<font>font12</font>
-										<textcolor>white</textcolor>
-										<label>$INFO[ListItem.Label]</label>
-									</control>
-								</control>
-							</control>
-						</itemlayout>
-						<focusedlayout height="100" width="220">
-							<control type="group">
-								<top>30</top>
-								<width>185</width>
-								<height>100</height>
-								<control type="group">
-									<height>62</height>
-									<control type="image">
-										<texture colordiffuse="white">colors/white.png</texture>
-									</control>
-									<control type="label">
-										<height>62</height>
-										<align>center</align>
-										<aligny>center</aligny>
-										<font>font12</font>
-										<textcolor>black</textcolor>
-										<label>$INFO[ListItem.Label]</label>
-									</control>
-								</control>
-							</control>
-						</focusedlayout>
+					<include content="panel_100">
+						<param name="top" value="360" />
+						
 						<content>
 							<item>
 								<visible>!String.IsEmpty(Container(10051).ListItem.Plot)</visible>
@@ -298,63 +254,20 @@
 								<onclick condition="Window.IsVisible(MyVideoNav.xml)">Container.Update(videodb://tvshows/titles/$INFO[Container(10051).ListItem.DBID]/)</onclick>
 							</item>
 						</content>
-					</control>
+
+					</include>
+					
+					
+					<!-- logo -->
+					<include content="EmbInfo_Logo">
+						<param name="top" value="-60" />
+					</include>
+					
 					<!-- facts -->
-					<control type="group">
-						<visible>!String.IsEmpty(Container(10051).ListItem.Premiered) | !String.IsEmpty(Container(10051).ListItem.Property(release)) | !String.IsEmpty(Container(10051).ListItem.Property(Budget)) | !String.IsEmpty(Container(10051).ListItem.Property(Revenue))</visible>
-						<top>208</top>
-						<right>0</right>
-						<width>320</width>
-						<control type="label">
-							<width>auto</width>
-							<height>40</height>
-							<label>$ADDON[script.embuary.info 32008]</label>
-							<font>font13</font>
-							<aligny>top</aligny>
-							<textcolor>$VAR[Nav_HighlightColor]</textcolor>
-							<shadowcolor>50000000</shadowcolor>
-						</control>
-						<control type="textbox">
-							<top>3</top>
-							<right>0</right>
-							<height>200</height>
-							<align>left</align>
-							<aligny>top</aligny>
-							<label>$INFO[Container(10051).ListItem.Premiered,[CR]$ADDON[script.embuary.info 32011]:   ]$INFO[Container(10051).ListItem.Property(release),[CR]$ADDON[script.embuary.info 32012]:   ]$INFO[Container(10051).ListItem.Property(Budget),[CR]$ADDON[script.embuary.info 32013]:   $]$INFO[Container(10051).ListItem.Property(Revenue),[CR]$ADDON[script.embuary.info 32014]:   $]</label>
-							<font>font12</font>
-							<textcolor>$VAR[Nav_LabelSecondaryColor]</textcolor>
-							<autoscroll>false</autoscroll>
-							<animation type="Conditional" reversible="false" condition="!String.IsEmpty(Container(10051).ListItem.Property(awards))" loop="true">
-								<effect type="fade" start="0" end="100" time="250" delay="0" />
-								<effect type="fade" start="100" end="0" time="250" delay="5000" />
-								<effect type="fade" start="100" end="0" time="250" delay="10000" />
-							</animation>
-						</control>
-						<control type="textbox">
-							<top>3</top>
-							<right>0</right>
-							<height>200</height>
-							<align>left</align>
-							<aligny>top</aligny>
-							<label>$INFO[Container(10051).ListItem.Property(awards),[CR]$ADDON[script.embuary.info 32015]:   ]</label>
-							<font>font12</font>
-							<textcolor>$VAR[Nav_LabelSecondaryColor]</textcolor>
-							<autoscroll>false</autoscroll>
-							<animation type="Conditional" reversible="false" condition="!String.IsEmpty(Container(10051).ListItem.Property(awards))" loop="true">
-								<effect type="fade" start="0" end="100" time="250" delay="5250" />
-								<effect type="fade" start="100" end="0" time="250" delay="10000" />
-							</animation>
-						</control>
-					</control>
+					<include content="EmbInfo_Facts" />
+				
 				</control>
-				<!-- logo -->
-				<control type="image">
-					<right>70</right>
-					<width>400</width>
-					<height>155</height>
-					<texture colordiffuse="$VAR[Nav_HighlightColor]">icons/radiobuttons/embuaryinfo4.png</texture>
-					<aspectratio align="right">keep</aspectratio>
-				</control>
+				
 			</control>
 
 			<!-- cast -->
@@ -436,6 +349,5 @@
 				<param name="ondown" value="100" />
 			</include>
 		</control>
-
 	</controls>
 </window>

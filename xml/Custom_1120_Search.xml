@@ -30,6 +30,40 @@
 			<param name="HeadingAlignment" value="center" />
 		</include>
 		
+		
+		<!-- <include content="Info_ActorThumb">
+		</include> -->
+		<control type="group">
+			<animation effect="fade" start="100" end="0" time="300" condition="$EXP[Infodialog_IsActive]">Conditional</animation>
+			<animation type="WindowOpen">
+					<effect type="slide" start="-2000,0" end="0" time="600" tween="cubic" easing="in" />
+				</animation>
+				
+			<left>40</left>
+			<top>135</top>
+			<visible>!String.IsEmpty(Window(home).Property(CastMemberTumb))</visible>
+			<control type="image">
+				<fadetime>350</fadetime>
+				<width>500</width>
+				<height>750</height>
+				<left>60</left>
+				<bordersize>2</bordersize>
+				<bordertexture>colors/white.png</bordertexture>
+				<texture background="true">$INFO[Window(home).Property(CastMemberTumb)]</texture>
+				<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
+			</control>
+			
+			<control type="label">
+				<top>760</top>
+				<left>60</left>
+				<height>50</height>
+				<font>font45_title</font>
+				<info>Skin.String(SearchTerm)</info>
+				<textcolor>$VAR[Nav_LabelPrimaryColor]</textcolor>
+			</control>
+		
+		</control>
+		
 		<!--Footer -->
         <control type="button">
 			<animation effect="fade" start="100" end="0" time="300" condition="$EXP[Infodialog_IsActive]">Conditional</animation>
@@ -121,40 +155,16 @@
 				<param name="condition" value="$EXP[Infodialog_IsActive] | Window.IsActive(mediasource)" />
 			</include>
 			
-            <top>130</top>
-            <bottom>100</bottom>
+            <top>120</top>
+            <bottom>90</bottom>
 			<include content="pos_left" condition="String.IsEmpty(Window(home).Property(CastMemberTumb))">
 				<param name="left" value="80" />
 			</include>
 			<include content="pos_left" condition="!String.IsEmpty(Window(home).Property(CastMemberTumb))">
-				<param name="left" value="500" />
+				<param name="left" value="660" />
 			</include>
 			
 			<right>0</right>
-			
-			<control type="group">
-				<left>-510</left>
-				<top>20</top>
-				<visible>!String.IsEmpty(Window(home).Property(CastMemberTumb))</visible>
-				<control type="image">
-					<fadetime>350</fadetime>
-					<width>370</width>
-					<height>555</height>
-					<left>60</left>
-					<bordersize>2</bordersize>
-					<bordertexture>colors/white.png</bordertexture>
-					<texture background="true">$INFO[Window(home).Property(CastMemberTumb)]</texture>
-					<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
-				</control>
-				<control type="textbox">
-					<top>560</top>
-					<left>60</left>
-					<height>50</height>
-					<font>Header_SettingsSections</font>
-					<textcolor>white</textcolor>
-					<label>$INFO[Skin.String(SearchTerm)]</label>
-				</control>
-			</control>
 			
 			<control type="grouplist" id="5600">
                 <animation type="WindowOpen">
@@ -237,7 +247,8 @@
 				</include>
 				<!-- MOVIE and TV SHOW - Actors Named, 
 				msgctxt "#344"
-				msgid "Actors"				-->
+				msgid "Actors" 
+				-->
                 <include content="Universal_ContainerHeader">
                     <param name="groupid" value="7508" />
                     <param name="id" value="5008" />
@@ -256,7 +267,9 @@
 					<param name="layout" value="poster" />
 					<content target="videos">videodb://movies/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22actor%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
                     <content target="videos">videodb://tvshows/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22actor%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D</content>
-                </include>
+                
+				
+				</include>
 				<!-- MOVIE and TV SHOW By Directors Named
 				msgctxt "#20348"
 				msgid "Directors"
@@ -461,6 +474,7 @@
 					<param name="itemheight" value="280" />
 					<param name="itemwidth" value="476" />
 					<param name="layout" value="landscape" />
+					<param name="ls_overlay_visible" value="true" />
 					<content target="music">musicdb://songs/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22songs%22%7D</content>
                 </include>
 		
@@ -481,6 +495,7 @@
 					<param name="itemheight" value="280" />
 					<param name="itemwidth" value="476" />
 					<param name="layout" value="landscape" />
+					<param name="ls_overlay_visible" value="true" />
 					<content target="videos">videodb://musicvideos/titles/?xsp=%7b%22order%22%3a%7b%22direction%22%3a%22ascending%22%2c%22ignorefolders%22%3a0%2c%22method%22%3a%22sorttitle%22%7d%2c%22rules%22%3a%7b%22and%22%3a%5b%7b%22field%22%3a%22title%22%2c%22operator%22%3a%22contains%22%2c%22value%22%3a%5b%22$INFO[Skin.String(SearchTerm)]%22%5d%7d%5d%7d%2c%22type%22%3a%22musicvideos%22%7d</content>
                 </include>
 		
@@ -501,6 +516,7 @@
 					<param name="itemheight" value="280" />
 					<param name="itemwidth" value="476" />
 					<param name="layout" value="landscape" />
+					<param name="ls_overlay_visible" value="true" />
 					<content target="videos">videodb://musicvideos/titles/?xsp=%7b%22order%22%3a%7b%22direction%22%3a%22ascending%22%2c%22ignorefolders%22%3a0%2c%22method%22%3a%22sorttitle%22%7d%2c%22rules%22%3a%7b%22and%22%3a%5b%7b%22field%22%3a%22artist%22%2c%22operator%22%3a%22contains%22%2c%22value%22%3a%5b%22$INFO[Skin.String(SearchTerm)]%22%5d%7d%5d%7d%2c%22type%22%3a%22musicvideos%22%7d</content>
                 </include>
 				
@@ -511,7 +527,7 @@
                     <param name="label" value="$INFO[Skin.String(SearchTerm),$LOCALIZE[31180] [CAPITALIZE]$LOCALIZE[36913][/CAPITALIZE]  $LOCALIZE[1411]  &quot; , &quot;]" />
                     <visible>Control.IsVisible(5009)</visible>
                 </include>
-                <include content="Universal_Container">
+                <include condition="!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.youtube)" content="Universal_Container">
 					<param name="id" value="5009" />
 					<param name="visible" value="Integer.IsGreater(Container(5009).NumItems,0) | Container(5009).IsUpdating" />
 					<param name="type_height" value="365" />
@@ -522,7 +538,7 @@
 					<param name="itemwidth" value="476" />
 					<param name="layout" value="landscape" />
 					<content target="videos" sortby="file" limit="25">plugin://plugin.video.youtube/search/?q=$INFO[Skin.String(SearchTerm)]</content>
-                    <visible>System.HasAddon(plugin.video.youtube)</visible>
+                    <visible>!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.youtube)</visible>
                 </include>
 		
 				<!-- Addons -->

@@ -46,13 +46,19 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
    
     <controls>
 		
+		<control type="image">
+			<animation effect="fade" start="0" end="100" time="600">VisibleChange</animation>
+			<visible>$EXP[TrailerIsPlaying]</visible>
+			<texture colordiffuse="ff000000">colors/white60.png</texture>
+		</control>
+		
+		
 		<control type="group">
 			<visible>!Window.IsActive(filebrowser)</visible>
 			<visible>String.IsEmpty(Window(home).Property(movieinformation))</visible>
 			<include content="Animation_TransitionFadeOut">
-				<param name="condition" value="[Window.IsVisible(script-embuary-video.xml) | Window.IsVisible(script-embuary-person.xml) | Window.IsVisible(script-embuary-image.xml)]" />
+				<param name="condition" value="[Window.IsActive(textviewer) | Window.IsVisible(script-embuary-video.xml) | Window.IsVisible(script-embuary-person.xml) | Window.IsVisible(script-embuary-image.xml)]" />
 			</include>
-			
 			<control type="group">
 				<visible>String.IsEqual(Window.Property(AdditionalInfo),infolist) | [Player.HasVideo + ![VideoPlayer.Content(movies) | VideoPlayer.Content(episodes) | VideoPlayer.Content(musicvideos) | VideoPlayer.Content(livetv)]]</visible>
 				<animation effect="fade" start="0" end="100" time="450">VisibleChange</animation>
@@ -196,12 +202,9 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 			<control type="grouplist">
 				<animation effect="slide" end="0,-850" time="550" tween="cubic" reversible="true" condition="String.IsEqual(Window.Property(AdditionalInfo),infocontainer)">Conditional</animation>
 				<animation effect="fade" start="100" end="0" time="650" reversible="false" condition="String.IsEqual(Window.Property(AdditionalInfo),infocontainer)">Conditional</animation>
-				
 				<animation effect="slide" end="0,950" time="550" tween="cubic" reversible="true" condition="String.IsEqual(Window.Property(AdditionalInfo),infolist)">Conditional</animation>
 				<animation effect="fade" start="100" end="0" time="650" reversible="false" condition="String.IsEqual(Window.Property(AdditionalInfo),infolist)">Conditional</animation>
-				
-				<!-- <animation effect="fade" start="100" end="0" time="650" reversible="false" condition="String.IsEqual(Window.Property(AdditionalInfo),bigpicture)">Conditional</animation> -->
-				<animation effect="fade" start="100" end="0" time="600" condition="Player.HasVideo + ![VideoPlayer.Content(movies) | VideoPlayer.Content(episodes) | VideoPlayer.Content(musicvideos) | VideoPlayer.Content(livetv)]">conditional</animation>
+				<animation effect="fade" start="100" end="0" time="600" condition="$EXP[TrailerIsPlaying]">conditional</animation>
 				
 				<width>1250</width>
 				<height>1000</height>
@@ -446,6 +449,14 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 					<include>Button_VideoInfo</include>
 					<label>13404</label>
 				</control>
+				<control type="button" id="199">
+					<description>show textviewer plot</description>
+					<visible>!Skin.HasSetting(VideoInfo_Button_Plot)</visible>
+					<include>Button_VideoInfo</include>
+					<label>$LOCALIZE[207]</label>
+					<onclick>RunScript(script.embuary.helper,action=textviewer,header='$ESCINFO[ListItem.Title]',message='$ESCINFO[ListItem.Plot]')</onclick>
+				</control>
+				
 				
 				<control type="togglebutton" id="103">
 					<description>Play Trailer</description>
@@ -739,8 +750,8 @@ RunScript(script.embuary.helper,action=resetposition,container=101||102||103||10
 					<param name="label" value="$LOCALIZE[31797] [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$VAR[Title,  &quot; , &quot;][/COLOR]" />
 					<visible>Control.IsVisible(8605)</visible>
 				</include>
-				<!-- <include condition="!$EXP[IsOfflineMode]" content="Universal_Container"> -->
-				<include condition="false" content="Universal_Container">
+				
+				<include condition="!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.youtube)" content="Universal_Container">
 					<param name="id" value="8605" />
 					<param name="visible" value="[Integer.IsGreater(Container(8605).NumItems,0) | Container(8605).IsUpdating]" />
 					<param name="type_height" value="365" />

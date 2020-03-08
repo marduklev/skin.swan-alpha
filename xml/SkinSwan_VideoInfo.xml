@@ -21,6 +21,41 @@
 		<textoffsetx>10</textoffsetx>
 	</include>
 	
+	<include name="Info_ActorThumb">
+				
+		<control type="group">
+			<nested />
+			<left>70</left>
+			
+			<control type="image">
+				<width>500</width>
+				<height>750</height>
+				<top>160</top>
+				<bordersize>1</bordersize>
+				<bordertexture border="2" colordiffuse="$VAR[Nav_LabelPrimaryColor]">frames/frametest.png</bordertexture>
+				<texture background="true" fallback="defaultactor.png">$INFO[Container(10051).ListItem.Art(thumb)]</texture>
+				<aspectratio>scale</aspectratio>
+			</control>	
+			<!-- fadelabel ctrl postercontainer-->
+		
+			<control type="label">
+				<visible>!Control.HasFocus(100)</visible>
+				<top>920</top>
+				<height>40</height>
+				<font>font45_title</font>
+				<info>container(10051).listitem.label</info>
+				<textcolor>$VAR[Nav_LabelPrimaryColor]</textcolor>
+			</control>
+			<control type="textbox">
+				<visible>!Control.HasFocus(100)</visible>
+				<height>40</height>
+				<top>970</top>
+				<font>debug</font>
+				<label>$INFO[Container(10052).NumAllItems,[B]$LOCALIZE[342][/B] : ,   ]$INFO[Container(10053).NumAllItems,[B]$LOCALIZE[20343][/B] : ,   ]</label>
+				<textcolor>$VAR[Nav_LabelSecondaryColor]</textcolor>
+			</control>			
+		</control>
+	</include>
 	
 	<!-- consider 95% 1824 x 1026 -->
 	<!--  1891 x 1064 -->
@@ -388,6 +423,65 @@
 		</definition>
 	</include>	
 	
+	
+	
+	<include name="panel_100">
+		<control type="panel" id="100">
+			<description>temp use hardcoded b/w</description>
+			<top>$PARAM[top]</top>
+			<height>100</height>
+			<width>100%</width>
+			<orientation>horizontal</orientation>
+			<defaultcontrol always="true">0</defaultcontrol>
+			<onright>noop</onright>
+			<onleft>noop</onleft>
+			<ondown>10052</ondown>
+			<itemlayout height="100" width="220">
+				<control type="group">
+					<top>30</top>
+					<width>185</width>
+					<height>100</height>
+					<control type="group">
+						<height>62</height>
+						<control type="image">
+							<texture border="2" colordiffuse="white">frames/frametest.png</texture>
+						</control>
+						<control type="label">
+							<height>62</height>
+							<align>center</align>
+							<aligny>center</aligny>
+							<font>font12</font>
+							<textcolor>white</textcolor>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+					</control>
+				</control>
+			</itemlayout>
+			<focusedlayout height="100" width="220">
+				<control type="group">
+					<top>30</top>
+					<width>185</width>
+					<height>100</height>
+					<control type="group">
+						<height>62</height>
+						<control type="image">
+							<texture colordiffuse="white">colors/white.png</texture>
+						</control>
+						<control type="label">
+							<height>62</height>
+							<align>center</align>
+							<aligny>center</aligny>
+							<font>font12</font>
+							<textcolor>black</textcolor>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+					</control>
+				</control>
+			</focusedlayout>
+			
+			<nested />
+		</control>
+	</include>
 	<include name="Ratings_Hor">
 		<param name="texture" default="themoviedb" />
 		<param name="rating" default="rating" />
@@ -439,13 +533,13 @@
 		<param name="layout_width" default="257" />
 		<param name="itemwidth" default="241" />
 		<param name="itemheight" default="361" />
-		
+		<param name="left" default="65" />
 		<definition>
 		<control type="group">
 			<visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) | Container($PARAM[id]).IsUpdating</visible>
-			<width>100%</width>
+			<right>0</right>
 			<height>$PARAM[groupheight]</height>
-			<left>65</left>
+			<left>$PARAM[left]</left>
 			
 			<!-- <animation type="conditional" condition="Control.HasFocus($PARAM[id])" reversible="false">
 				<effect type="zoom" end="110,110" time="200" tween="sine" easing="out" center="110,0" />
@@ -478,6 +572,101 @@
 			
 			<nested />
 		</control>
+		</definition>
+	</include>
+	<include name="EmbInfo_Onunload">
+		<onload>SetProperty(onnext,SetFocus(100))</onload>
+		<onload>SetProperty(onback_10052,SetFocus(100))</onload>
+		<onload>SetProperty(onback_10053,SetFocus(100))</onload>
+		<onload>SetProperty(onback_10054,SetFocus(100))</onload>
+		<onload>SetProperty(onback_10055,SetFocus(100))</onload>
+		<onload>SetProperty(onback_10056,SetFocus(100))</onload>
+		<onload>SetProperty(onback_10057,SetFocus(100))</onload>
+		<onload>SetProperty(onback_10058,SetFocus(100))</onload>
+		<onload>SetProperty(onback_10059,SetFocus(100))</onload>
+	</include>
+	
+	<include name="EmbInfo_Logo">
+		<control type="image">
+			<top>$PARAM[top]</top>
+			<right>0</right>
+			<width>335</width>
+			<height>120</height>
+			<texture colordiffuse="$VAR[Nav_HighlightColor]">icons/radiobuttons/embuaryinfo4.png</texture>
+			<aspectratio align="left">keep</aspectratio>
+		</control>
+	</include>
+	<include name="EmbInfo_Facts">
+		<control type="grouplist">
+			<top>90</top>
+			<width>320</width>
+			<right>0</right>
+			<height>640</height>
+			<itemgap>5</itemgap>
+			<orientation>vertical</orientation>
+			<aligny>top</aligny>
+			
+			<include content="EmbInfo_FactTemplate">
+				<param name="info" value="Property(Gender)" />
+				<param name="headline" value="$LOCALIZE[39025]" />
+			</include>
+			<include content="EmbInfo_FactTemplate">
+				<param name="info" value="Property(Known_For_Department)" />
+				<param name="headline" value="$ADDON[script.embuary.info 32017]" />
+			</include>
+			<include content="EmbInfo_FactTemplate">
+				<param name="info" value="Property(age)" />
+				<param name="headline" value="$ADDON[script.embuary.info 32006]" />
+			</include>
+			<include content="EmbInfo_FactTemplate">
+				<param name="info" value="Property(birthday)" />
+				<param name="headline" value="$LOCALIZE[21893]" />
+			</include>
+			<include content="EmbInfo_FactTemplate">
+				<param name="info" value="Property(deathday)" />
+				<param name="headline" value="$LOCALIZE[21897]" />
+			</include>
+			<include content="EmbInfo_FactTemplate">
+				<param name="info" value="Property(Place_Of_Birth)" />
+				<param name="headline" value="$ADDON[script.embuary.info 32007]" />
+			</include>
+			<include content="EmbInfo_FactTemplate">
+				<param name="info" value="Premiered" />
+				<param name="headline" value="$ADDON[script.embuary.info 32011]" />
+			</include>
+			<include content="EmbInfo_FactTemplate">
+				<param name="info" value="Property(release)" />
+				<param name="headline" value="$ADDON[script.embuary.info 32012]" />
+			</include>
+			<include content="EmbInfo_FactTemplate">
+				<param name="info" value="Property(Budget)" />
+				<param name="headline" value="$ADDON[script.embuary.info 32013]" />
+			</include>
+			<include content="EmbInfo_FactTemplate">
+				<param name="info" value="Property(Revenue)" />
+				<param name="headline" value="$ADDON[script.embuary.info 32014]" />
+			</include>
+			<include content="EmbInfo_FactTemplate">
+				<param name="height" value="140" />
+				<param name="info" value="Property(Awards)" />
+				<param name="headline" value="$ADDON[script.embuary.info 32015]" />
+			</include>
+		</control>
+	</include>
+	<include name="EmbInfo_FactTemplate">
+		<param name="height" default="70" />
+		<definition>
+			<control type="label">
+				<height>$PARAM[height]</height>
+				<font>font12_lowline</font>
+				<textcolor>$VAR[Nav_LabelPrimaryColor]</textcolor>
+				<scroll>false</scroll>
+				<wrapmultiline>true</wrapmultiline>
+				<align>left</align>
+				<aligny>top</aligny>
+				<label>[COLOR $VAR[Nav_HighlightColor]]$PARAM[headline]:[/COLOR][CR]$INFO[Container(10051).ListItem.$PARAM[info]]</label>
+				<visible>!String.IsEmpty(Container(10051).ListItem.$PARAM[info])</visible>
+			</control>
 		</definition>
 	</include>
 </includes>
