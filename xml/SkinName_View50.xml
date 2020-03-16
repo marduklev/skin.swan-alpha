@@ -4,24 +4,7 @@
 	<include name="view50">
 		<control type="group">
 			<visible>Control.IsVisible(50)</visible>
-					
-			<control type="textbox">
-				<description>info ? later</description>
-				<autoscroll delay="2000" time="1500" repeat="1500">true</autoscroll>
-				<wrapmultiline>true</wrapmultiline>
-				<visible>false</visible>
-				<font>Reg20</font>
-				<height>200</height>
-				<bottom>100</bottom>
-				<width>25%</width>
-				<left>5%</left>
-				<align>center</align>
-				<aligny>center</aligny>
-				<textcolor>red</textcolor>
-				<label>top[CR]middle[CR]bottom</label>
-			</control>
 			
-			<!-- cond hight/top offeset - depending on header bar settings -->
 			<control type="group">
 				<visible>Skin.HasSetting(View_50_ShowBGPanel)</visible>
 				<include content="View_BGPanel">
@@ -34,17 +17,14 @@
 				<param name="id" value="50" />
 			</include>
 			
-			
-			
 			<control type="panel" id="50">
 				<orientation>vertical</orientation>
-				<preloaditems>2</preloaditems>
+				<preloaditems>4</preloaditems>
 				<scrolltime tween="quadratic">400</scrolltime>
+				
 				<left>35%</left>
-				<right>5%</right>
-				<width>57%</width>
-				<bottom>100</bottom>
-				<top>150</top>
+				
+				<include>MediaOffsetValues</include>
 				<include>Oninfo_MovieSetInfo</include>
 				<include>NavControl_Media</include>
 				
@@ -64,10 +44,15 @@
 				<control type="group">
 					<height>90</height>
 					<include>Animation_Item_Focus</include>
+					<!-- <animation type="Focus" reversible="false">
+						<effect type="zoom" end="103,103" time="200" tween="sine" easing="out" center="auto" />
+						<effect type="zoom" end="98,98" time="150" tween="sine" delay="200" easing="out" center="auto" />
+					</animation> -->
 					<control type="group">
 						<control type="image">
 							<description>revisit alpha stuff cdiffuse and img bg texture</description>
 							<left>40</left>
+							<right>20</right>
 							<bordertexture colordiffuse="$VAR[Nav_LabelPrimaryColor]">artworkdiffuse/list_borderfo.png</bordertexture>
 							<texture colordiffuse="cc202020" background="true" diffuse="artworkdiffuse/banner.png">colors/white50.png</texture>
 							<bordersize>3</bordersize>
@@ -90,12 +75,12 @@
 				</control>
 			</focusedlayout>
 			</control>
+			
 			<include content="footer">
 				<param name="view_id" value="50" />
 				<param name="offset_leftpanel" value="25%" />
 				<param name="media_flagalign" value="center" />
 				<param name="media_flagwidth" value="30%" />
-				
 				<param name="rating_flagalign" value="center" />
 			</include>
 		</control>
@@ -131,116 +116,43 @@
 			<visible>ListItem.IsPlaying</visible>
 			<bordertexture colordiffuse="55000000">artworkdiffuse/circle.png</bordertexture>
 		</control>
-		<control type="label">
-			<description>autoscroll and selectedcolor just not  textboxes, may use var and chenge to textb again</description>
-			<wrapmultiline>true</wrapmultiline>
-			<font>CommonTag</font>
-			<width>580</width>
-			<left>105</left>
-			<align>left</align>
-			<aligny>center</aligny>
-			<textcolor>$VAR[Nav_LabelPrimaryColor]</textcolor>
-			<selectedcolor>$VAR[Nav_SelectedColor]</selectedcolor>
-			<label>$INFO[ListItem.Label,[B],[/B]][CR][COLOR=$VAR[Nav_LabelSecondaryColor]]$INFO[ListItem.Year]     $INFO[ListItem.Label2,[B],[/B]][/COLOR]</label>
-		</control>
+		<include content="List_2RowInfo">
+			<param name="left" value="105" />
+			<param name="right" value="250" />
+			<param name="headlinefont" value="CommonTag" />
+		</include>
 		<control type="textbox">
+			<centerbottom>25%</centerbottom>
 			<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
 			<wrapmultiline>true</wrapmultiline>
 			<font>CommonTag</font>
-			<width>100</width>
+			<width>200</width>
 			<right>90</right>
 			<align>right</align>
-			<aligny>center</aligny>
+			<aligny>top</aligny>
 			<textcolor>$VAR[Nav_LabelPrimaryColor]</textcolor>
-			<label>[CR]$INFO[ListItem.Duration(h),, h]$INFO[ListItem.Duration(m), , m] </label>
+			<label>$VAR[ListItemDuration]</label>
 		</control>
-		<control type="image">
-			<description>stars rating, need switch to var</description>
-			<top>8</top>
-			<right>90</right>
-			<visible>true</visible>
-			<width>100</width>
-			<height>40</height>
-			<aspectratio align="center">keep</aspectratio>
-			<texture colordiffuse="$PARAM[highlightcolor]">rating/stars/$INFO[ListItem.Rating].png</texture>
-		</control>
+		<include content="StarsRating_Image">
+			<centertop>30%</centertop>
+			<right>85</right>
+			<param name="width" value="110" />
+			<param name="height" value="50" />
+			<param name="colordiffuse" value="$PARAM[highlightcolor]" />
+		</include>		
+		
 		<include content="ListItem_Indicators">
-				<param name="watched_size" value="20" />
-				<param name="folderind_size" value="50" />
+			<param name="watched_size" value="20" />
+			<param name="folderind_size" value="50" />
 		</include>
 	</include>
 	
-	
-	<include name="View_BGPanel">
-		<control type="image">
-			<description>optional panel</description>
-			<left>0</left>
-			<right>0</right>
-			<width>100%</width>
-			<top>0</top>
-			<bottom>0</bottom>
-			<texture colordiffuse="$VAR[Nav_BGPanelColor]">colors/white50.png</texture>
-		</control>
-		<control type="image">
-			<description>optional panel left</description>
-			<left>0</left>
-			<width>$PARAM[width2]</width>
-			<top>0</top>
-			<bottom>0</bottom>
-			<texture colordiffuse="$VAR[Nav_BGPanelColor]">colors/white50.png</texture>
-		</control>
-		<control type="image">
-			<description>optional panel right</description>
-			<right>0</right>
-			<width>$PARAM[width3]</width>
-			<top>0</top>
-			<bottom>0</bottom>
-			<texture colordiffuse="$VAR[Nav_BGPanelColor]">colors/white50.png</texture>
-		</control>
-	</include>
-	
-	<variable name="thumbframe">
-        <value condition="[
-            Skin.HasSetting(View_50_Prefer_Disc_Video) |
-			Skin.HasSetting(View_50_Prefer_Discart_Album) |
-			Skin.HasSetting(View_50_Prefer_Discart_Song) |
-			Skin.HasSetting(View_50_Prefer_clearlogo) |
-			Skin.HasSetting(View_50_Prefer_clearart)]">colors/white10.png
-        </value>
-        <value condition="![
-            Skin.HasSetting(View_50_Prefer_Disc_Video) |
-			Skin.HasSetting(View_50_Prefer_Discart_Album) |
-			Skin.HasSetting(View_50_Prefer_Discart_Song) |
-			Skin.HasSetting(View_50_Prefer_clearlogo) |
-			Skin.HasSetting(View_50_Prefer_clearart)]">frames/dialog16to9.png
-        </value>
-	</variable>
-	
-	<variable name="ListItemWatchedStatus_OverlayIcon">
-        <value condition="[Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable]">watched.png</value>
-        <value condition="[String.IsEqual(ListItem.Overlay,OverlayUnWatched.png) + ListItem.IsResumable]">progress.png</value>
-		<value condition="![Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable]">unwatched.png</value>
-	</variable>
-	<variable name="ListItemWatchedStatus_OverlayColor">
-        <value condition="[Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable]">$INFO[Skin.String(OverlayWatched)]</value>
-        <value condition="[String.IsEqual(ListItem.Overlay,OverlayUnWatched.png) + ListItem.IsResumable]">$INFO[Skin.String(OverlayProgress)]</value>
-		<value condition="![Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable]">$INFO[Skin.String(OverlayUnwatched)]</value>
-	</variable>
-	
-	
-	
-	<!-- lead thumb sourcing to var to get clean conditions ?, currently ignorging folders
-
-	list 50 just 'poster - keyart - landscape - icon ' ?
-	
-	-->
 	<variable name="ListItem_Icon">
 		<value condition="!Skin.HasSetting(View_50_Prefer_Discart_Song) + [Container.Content(songs) | String.IsEqual(ListItem.dbtype,song)] + !String.IsEmpty(ListItem.Art(album.discart))">$INFO[ListItem.Art(album.discart)]</value>
 		<value>$VAR[ImageLayout_poster]</value>	
 	</variable>
 	
-	
-	<variable name="PreferedThumb_Sourcing">
+	<variable name="PreferedThumb_Sourcing50">
 		<value condition="String.IsEqual(ListItem.Label,..)">defaultfolderback.png</value>
 		<value condition="String.IsEqual(ListItem.Label,$LOCALIZE[21452])">defaultaddoninputstream.png</value>
 		<value condition="String.IsEqual(ListItem.Label,$LOCALIZE[20462])">defaultaddsource.png</value>
@@ -291,10 +203,9 @@
             <visible>!String.IsEqual(ListItem.Label,..)</visible>
             
 			<control description="watched" type="image">
-				<description>watched, unwatched all episodes equal 0</description>
 				<visible>!String.IsEqual(ListItem.dbtype,Set) + Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable</visible>
 				<centertop>50%</centertop>
-				<centerright>3%</centerright>
+				<centerright>5%</centerright>
 				<width>$PARAM[watched_size]</width>
 				<height>$PARAM[watched_size]</height>
 				<texture colordiffuse="$VAR[Nav_ListItem_WatchedColor]" diffuse="watched.png">colors/white.png</texture>
@@ -302,45 +213,33 @@
 				<bordertexture colordiffuse="$VAR[Nav_ListItem_WatchedStateFrameColor]" diffuse="frame_circle.png">colors/white50.png</bordertexture>
 			</control>
             <control description="unwatched" type="image">
-				<description>unwatched, watched episodes equal 0</description>
 				<visible>!String.IsEqual(ListItem.dbtype,Set) + [String.IsEqual(ListItem.Overlay,OverlayUnWatched.png) + !ListItem.IsResumable]</visible>
 				<centertop>50%</centertop>
-				<centerright>3%</centerright>
+				<centerright>5%</centerright>
 				<width>$PARAM[watched_size]</width>
 				<height>$PARAM[watched_size]</height>
 				<texture colordiffuse="$VAR[Nav_ListItem_WatchedStateFrameColor]" diffuse="frame_circle.png">colors/white50.png</texture>
 			</control>
-			
 			<control description="in progress" type="image">
 				<visible>!String.IsEqual(ListItem.dbtype,Set) + [String.IsEqual(ListItem.Overlay,OverlayUnWatched.png) + ListItem.IsResumable]</visible>
-				<description>progress</description>
 				<centertop>50%</centertop>
-				<centerright>3%</centerright>
+				<centerright>5%</centerright>
 				<width>$PARAM[watched_size]</width>
 				<height>$PARAM[watched_size]</height>
 				<texture colordiffuse="$VAR[Nav_ListItem_InProgressColor]" diffuse="progress.png">colors/white.png</texture>
 				<bordersize>2</bordersize>
 				<bordertexture colordiffuse="$VAR[Nav_ListItem_WatchedStateFrameColor]" diffuse="frame_circle.png">colors/white50.png</bordertexture>
 			</control>
-
 			<control description="set" type="image">
 				<visible>String.IsEqual(ListItem.dbtype,Set)</visible>
 				<centertop>50%</centertop>
-				<centerright>3%</centerright>
+				<centerright>5%</centerright>
 				<width>$PARAM[folderind_size]</width>
 				<height>$PARAM[folderind_size]</height>
 				<texture colordiffuse="$VAR[Nav_LabelPrimaryColor]" diffuse="defaultsets.png">colors/white30.png</texture>
 			</control>
         </control>
     </include>
-    
-    <!-- just if unlocalized string
-   		 Skin.HasSetting(View_$INFO[Container.Viewmode]_Prefer_Disc_Video) |
-			Skin.HasSetting(View_$INFO[Container.Viewmode]_Prefer_Discart_Album) |
-			Skin.HasSetting(View_$INFO[Container.Viewmode]_Prefer_Discart_Song) |
-			Skin.HasSetting(View_$INFO[Container.Viewmode]_Prefer_clearlogo) |
-			Skin.HasSetting(View_$INFO[Container.Viewmode]_Prefer_clearart)]
-	-->
     
     <include name="PreferedThumb">
 			<control type="image">
@@ -356,7 +255,7 @@
             </visible>
 				<bordersize>2</bordersize>
 				<bordertexture />
-				<texture>$VAR[PreferedThumb_Sourcing]</texture>
+				<texture>$VAR[PreferedThumb_Sourcing50]</texture>
 				<aspectratio aligny="center" align="center">keep</aspectratio>
 			</control>
 			
@@ -373,8 +272,45 @@
             </visible>
 				<bordersize>2</bordersize>
 				<bordertexture border="5" colordiffuse="$VAR[Nav_LabelPrimaryColor]">frames/dialog16to9.png</bordertexture>
-				<texture>$VAR[PreferedThumb_Sourcing]</texture>
+				<texture>$VAR[PreferedThumb_Sourcing50]</texture>
 				<aspectratio aligny="center" align="center">keep</aspectratio>
 			</control>
+	</include>
+	
+	
+	<include name="List_2RowInfo">
+		<control type="group">
+			<visible>!String.IsEqual(ListItem.Label,..)</visible>
+			<left>$PARAM[left]</left>
+			<right>$PARAM[right]</right>
+			<control type="label">
+				<top>15</top>
+				<height>30</height>
+				<font>$PARAM[headlinefont]</font>
+				<align>left</align>
+				<aligny>top</aligny>
+				<textcolor>$VAR[Nav_LabelPrimaryColor]</textcolor>
+				<selectedcolor>$VAR[Nav_SelectedColor]</selectedcolor>
+				<label>$INFO[ListItem.Label,[B],[/B]]</label>
+			</control>
+			<control type="label">
+				<top>45</top>
+				<font>CommonTag</font>
+				<align>left</align>
+				<aligny>top</aligny>
+				<textcolor>$VAR[Nav_LabelSecondaryColor]</textcolor>
+				<selectedcolor>$VAR[Nav_SelectedColor]</selectedcolor>
+				<label>$VAR[ListItemRelease,,     ]$INFO[ListItem.mpaa,,     ]$INFO[ListItem.genre,,     ]$VAR[ListLabel2]</label>
+			</control>
+		</control>
+	</include>
+	
+	<include name="MediaOffsetValues">
+		<param name="right" default="ScrollBarRight" />
+		<definition>
+			<top>Header</top>
+			<right>$PARAM[right]</right>
+			<bottom>Footer</bottom>
+		</definition>
 	</include>
 </includes>

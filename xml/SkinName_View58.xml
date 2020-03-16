@@ -57,6 +57,8 @@
 					<description>58001 in window 10025 has been asked to focus, but it can't - when using vis conds and onback</description>
 					<texturefocus />
 					<texturenofocus />
+					<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
+				
 					<onfocus condition="Control.IsVisible(58)">RunScript(script.embuary.helper,action=lookforfile,file='"$INFO[listitem.path]$INFO[listitem.FolderName,,-trailer.mp4]"',prop=trailer_avail)</onfocus>
 					<onfocus condition="!Control.IsVisible(58)">SetFocus(50)</onfocus>
 					<onright condition="!Control.IsVisible(58)">SetFocus(50)</onright>
@@ -167,7 +169,8 @@
 						
 						<onup>58001</onup>
 						<ondown>580051</ondown>
-						
+						<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
+				
 						<preloaditems>2</preloaditems>
 						<orientation>horizontal</orientation>
 						<scrolltime tween="quadratic">400</scrolltime>
@@ -245,7 +248,8 @@
 						<onup>58004</onup>
 						<ondown condition="Integer.IsGreater(Container(580052).NumItems,0)">Control.SetFocus(580052,0,absolute)</ondown>
 						<ondown condition="!Integer.IsGreater(Container(580052).NumItems,0)">580061</ondown>
-						
+						<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
+				
 						<preloaditems>2</preloaditems>
 						<orientation>horizontal</orientation>
 						<scrolltime tween="quadratic">400</scrolltime>
@@ -307,7 +311,8 @@
 						<preloaditems>2</preloaditems>
 						<orientation>horizontal</orientation>
 						<scrolltime tween="quadratic" easing="in">400</scrolltime>
-						
+						<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
+				
 						<itemlayout height="430" width="460" condition="!Skin.HasSetting(View58_EpisodeInfoRight)">
 							<control type="group">
 								<top>25</top>
@@ -688,7 +693,8 @@
 						<onup>580052</onup>
 						<ondown condition="Control.IsVisible(580062)">580062</ondown>
 						<ondown condition="!Control.IsVisible(580062)">580071</ondown>
-						
+						<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
+				
 						<include>Action_CastMemberSearchForceOption</include>
 						<top>190</top>
 						<left>40</left>
@@ -742,6 +748,8 @@
 					
 					<onup>580061</onup>
 					<ondown>580071</ondown>
+					<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
+				
 					<onclick condition="!String.IsEmpty(Container(580062).ListItem.Property(LocalTrailer))">PlayMedia($INFO[Container(580062).ListItem.Property(LocalTrailer)],1)</onclick>
 					<onclick condition="String.IsEmpty(Container(580062).ListItem.Property(LocalTrailer))">PlayMedia($INFO[Container(580062).ListItem.FilenameAndPath],1)</onclick>
 					<onclick>SetProperty(TrailerIsPlaying,true,home)</onclick>
@@ -815,7 +823,8 @@
 						<height>500</height>
 						<width>1920</width>
 						<include>58_OnBackAction</include>
-						
+						<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
+				
 						<onup condition="Control.IsVisible(580063)">580063</onup>
 						<onup condition="Control.IsVisible(580062)">580062</onup>
 						<onup condition="![Control.IsVisible(580062) + Control.IsVisible(580063)]">58006</onup>
@@ -997,15 +1006,12 @@
 		<usecontrolcoords>true</usecontrolcoords>
 		<height>50</height>
 		<itemgap>10</itemgap>
-		<control type="image">
-			<description>stars rating, does not really fit on all pages aesthetics and width wise</description>
+		
+		
+		<include content="StarsRating_Image">
 			<visible>Control.HasFocus(58001)</visible>
-			<width>150</width>
-			<height>45</height>
-			<aspectratio align="left" aligny="center">keep</aspectratio>
-			<colordiffuse>red</colordiffuse>
-			<texture background="true">$INFO[Window(home).Property(rating),rating/stars/,.png]</texture>
-		</control>
+		</include>
+		
 		<control type="label">
 			<visible>!String.IsEmpty(ListItem.Year)</visible>	
 			<top>5</top>

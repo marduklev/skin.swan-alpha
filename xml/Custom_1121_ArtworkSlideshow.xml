@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window type="dialog" id="1121">
+    <defaultcontrol always="true">3333</defaultcontrol>
+	<menucontrol />
+	<onunload condition="!String.IsEmpty(Window(home).Property(FanartType))">ClearProperty(FanartType,home)</onunload>
+    <controls>
+        <!-- 
+			ExtrafanartFolderPath local  icon workin in movies $INFO[ListItem.FileNameAndPath]
+			ExtraThumbsFolderPath local
+			ExtraListItemArt native
+		-->
+			
+		<include content="ArtworkSlideshow">
+			<param name="id" value="3333"/>
+			<param name="pagecontrol_id" value="3360"/>
+			<param name="artwork" value="$INFO[ListItem.FileNameAndPath]"/>
+			
+			<include condition="![Container.Content(seasons) | Container.Content(episodes)] + String.IsEqual(Window(home).Property(FanartType),mixedfanart)" content="ExtrafanartSource" />
+			<include condition="[Container.Content(seasons) | Container.Content(episodes)] + String.IsEqual(Window(home).Property(FanartType),mixedfanart)" content="ExtrafanartSource">
+				<param name="prefix" value="tvshow." />
+			</include>
+			
+			<include condition="String.IsEqual(Window(home).Property(FanartType),localextrafanart)" content="ExtrafanartFolderPath" />
+			<include condition="String.IsEqual(Window(home).Property(FanartType),localextrathums)" content="ExtraThumbsFolderPath" />
+			
+		</include>
+	</controls>
+</window>

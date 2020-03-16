@@ -11,7 +11,8 @@
         
 		
 		<!-- id s -->
-		
+	<!-- 	https://kodi.wiki/view/List_of_built-in_functions#List_of_sort_methods
+		https://github.com/xbmc/xbmc/blob/master/xbmc/utils/SortUtils.cpp#L529-L577 -->
 		<control type="group">
 			<visible>!Skin.HasSetting(BlurEnabled)</visible>
 			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
@@ -23,14 +24,19 @@
 			<include>GlobalBlurredBackground</include>
 		</control>
 		
+		<control type="group">
+			<visible>!String.IsEmpty(Window(home).Property(CastMemberTumb))</visible>
+			<include content="View_BGPanel">
+				<param name="width2" value="33%" />
+				<param name="width3" value="0" />
+			</include>
+		</control>
 		<!-- Header -->
 		<include content="HeaderBar">
 			<param name="HasSearchBar" value="false" />
 			<param name="HasBGPanel" value="Skin.HasSetting(MediaWindow_UseHeaderBG)" />
 			<param name="HeadingAlignment" value="center" />
 		</include>
-		
-		
 		<!-- <include content="Info_ActorThumb">
 		</include> -->
 		<control type="group">
@@ -72,6 +78,7 @@
 			<height>90</height>
 			<label>PLACEHOLDER   I n s e r t    M e d i a    F l a g s    h e r e</label>
 			<align>center</align>
+			<visible>false</visible>
 		</control>
 		
 		<!-- spotlight info WIP -->
@@ -111,13 +118,16 @@
 						<texture background="true">$VAR[ListItemClearLogo]</texture>
 						<aspectratio align="center" aligny="center">keep</aspectratio>
 					</control>
-					<control type="image" id="5889">
+					
+					<include content="StarsRating_Image">
+						<param name="id" value="5889" />
+						<param name="width" value="700" />
+						<param name="height" value="35" />
+						<param name="alignx" value="center" />
+						<param name="colordiffuse" value="red" />
 						<visible>!String.IsEmpty(Control.GetLabel(5889))</visible>
-						<height>35</height>
-						<aspectratio align="center" aligny="center">keep</aspectratio>
-						<colordiffuse>$INFO[Skin.String(ViewDetailsHighlightTextColor)]</colordiffuse>
-						<texture background="true">$VAR[rating_value_texture]</texture>
-					</control>
+					</include>
+					
 					<control type="label">
 						<visible>!String.IsEmpty(Control.GetLabel(5888))</visible>
 						<height>35</height>
@@ -265,11 +275,9 @@
 					<param name="itemwidth" value="193" />
 					<param name="itemheight" value="290" />
 					<param name="layout" value="poster" />
-					<content target="videos">videodb://movies/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22actor%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
-                    <content target="videos">videodb://tvshows/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22actor%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D</content>
-                
-				
-				</include>
+					<content target="videos">videodb://movies/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22year%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22actor%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
+                    <content target="videos">videodb://tvshows/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22year%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22actor%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D</content>
+                </include>
 				<!-- MOVIE and TV SHOW By Directors Named
 				msgctxt "#20348"
 				msgid "Directors"
@@ -290,8 +298,8 @@
 					<param name="itemwidth" value="193" />
 					<param name="itemheight" value="290" />
 					<param name="layout" value="poster" />
-				 <content target="videos">videodb://movies/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22director%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
-                    <content target="videos">videodb://tvshows/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22director%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D</content>
+					<content target="videos">videodb://movies/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22year%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22director%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
+                    <content target="videos">videodb://tvshows/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22year%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22director%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D</content>
                 </include>
 				<!-- Episodes - ACTOR - contains SearchString-->
                 <include content="Universal_ContainerHeader">
@@ -311,7 +319,7 @@
 					<param name="itemwidth" value="476" />
 					<param name="ls_overlay_visible" value="true" />
 					<param name="layout" value="landscape" />
-					<content target="videos">videodb://tvshows/titles/-1/-1/-1/-1/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22actor%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</content>
+					<content target="videos">videodb://tvshows/titles/-1/-1/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22actor%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</content>
                 </include>
 				
 				<!-- MOVIE and TV SHOW - GENRE - contains SearchString $LOCALIZE[515]-->

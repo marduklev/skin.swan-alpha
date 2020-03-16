@@ -1,10 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
+
+
+	<!-- 
+	<onclick condition="[!System.GetBool(videolibrary.groupmoviesets) | String.IsEqual(Container($PARAM[id]).ListItem.dbtype,tvshow)] + Skin.HasSetting(DialogItemsForceInfo)">ReplaceWindow(Videos,$INFO[Container($PARAM[id]).ListItem.folderpath])</onclick>
+	-->
+	
+	<include name="Action_ItemForceInfo">
+		<onclick>Dialog.Close(movieinformation)</onclick>
+		<onclick condition="String.IsEqual(Container($PARAM[id]).ListItem.dbtype,movie) + [!System.GetBool(videolibrary.groupmoviesets) | [System.GetBool(videolibrary.groupmoviesets) + String.IsEmpty(Container($PARAM[id]).ListItem.SetId)]]">ReplaceWindow(Videos,videodb://movies/titles/$INFO[Container($PARAM[id]).ListItem.dbid])</onclick>
+		<onclick condition="String.IsEqual(Container($PARAM[id]).ListItem.dbtype,movie) + System.GetBool(videolibrary.groupmoviesets) + !String.IsEmpty(Container($PARAM[id]).ListItem.SetId)">ReplaceWindow(Videos,videodb://movies/sets/$INFO[Container($PARAM[id]).ListItem.SetId]/$INFO[Container($PARAM[id]).ListItem.dbid]?setid=$INFO[Container($PARAM[id]).ListItem.SetId])</onclick>
+		<onclick condition="String.IsEqual(Container($PARAM[id]).ListItem.dbtype,tvshow)">ReplaceWindow(Videos,videodb://tvshows/titles/$INFO[Container($PARAM[id]).ListItem.dbid])</onclick>
+		<onclick>Action(info)</onclick>
+	</include>
+	
+	<include name="Action_ItemForceSelect">
+		<onclick condition="String.IsEqual(Container($PARAM[id]).ListItem.dbtype,movie)">PlayMedia($INFO[Container($PARAM[id]).ListItem.filenameandpath],resume)</onclick>
+		<onclick>Dialog.Close(movieinformation)</onclick>
+		<onclick condition="String.IsEqual(Container($PARAM[id]).ListItem.dbtype,tvshow)">ReplaceWindow(Videos,videodb://tvshows/titles/$INFO[Container($PARAM[id]).ListItem.dbid]/)</onclick> 
+	</include>
+		<!-- <onclick condition="String.IsEqual(Container($PARAM[id]).ListItem.dbtype,movie)">ReplaceWindow(Videos,$INFO[Container($PARAM[id]).ListItem.folderpath])</onclick> -->
+	
+
+	<!-- test avoid call via visible condition fail, use variable instead -->
+	<variable name="content_youtube_videoinfo">
+		<value condition="!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.youtube)">plugin://plugin.video.youtube/search/?q=$VAR[Title]</value>
+	</variable>
+	
+	<variable name="directorthumb">
+		<value condition="System.HasAddon(resource.images.moviedirectorthumbs)">$INFO[ListItem.Director,resource.images.moviedirectorthumbs/,.png]</value>
+		<value>defaultdirector.png</value>
+	</variable>
+	
+	<include name="ArtworkSlideshow">
+		<param name="id" default="1"/>
+		<param name="pagecontrol_id" default="2"/>
+		<param name="artwork" default="$INFO[ListItem.Icon]"/>
+		
+		<definition>
+		<control type="image">
+			<include content="Animation_OpenClose_MediaWindow"/>
+			<texture colordiffuse="ff181818">colors/white70.png</texture>
+		</control>
+		<control type="list" id="$PARAM[id]">
+			<include content="Animation_OpenClose_Zoom"/>
+			<description>REQUIRED: The list of images</description>
+			<width>1920</width>
+			<height>1080</height>
+			<orientation>horizontal</orientation>
+			<pagecontrol>$PARAM[pagecontrol_id]</pagecontrol>
+			<scrolltime tween="quadratic">400</scrolltime>
+			<itemlayout>
+				<control type="image">
+					<width>1920</width>
+					<height>1080</height>
+					<aspectratio aligny="center" align="center">keep</aspectratio>
+					<texture>$PARAM[artwork]</texture>
+				</control>
+			</itemlayout>
+			<focusedlayout>
+				<control type="image">
+					<width>1920</width>
+					<height>1080</height>
+					<aspectratio aligny="center" align="center">keep</aspectratio>
+					<texture>$PARAM[artwork]</texture>
+				</control>
+			</focusedlayout>
+			<nested />
+		</control>
+		<control type="scrollbar" id="$PARAM[pagecontrol_id]">
+			<include content="Animation_OpenClose_MediaWindow"/>
+			<bottom>0</bottom>
+			<width>1920</width>
+			<centerleft>50%</centerleft>
+			<height>5</height>
+			<onleft>$PARAM[pagecontrol_id]</onleft>
+			<onright>$PARAM[pagecontrol_id]</onright>
+			<orientation>horizontal</orientation>
+			<texturesliderbackground colordiffuse="$VAR[scrollbar_panel]">colors/white.png</texturesliderbackground>
+			<texturesliderbar colordiffuse="$VAR[scrollbar_slider_fo]">colors/white.png</texturesliderbar>
+			<textureslidernib />
+		</control>
+		</definition>
+	</include>
+	
+	
 	<variable name="Title">
-		<value condition="String.IsEqual(ListItem.dbtype,episode) | String.IsEqual(ListItem.dbtype,season)">$INFO[ListItem.TVShowTitle] $INFO[ListItem.Title]</value>
+		<value condition="String.IsEqual(ListItem.dbtype,episode) | String.IsEqual(ListItem.dbtype,season)">$INFO[ListItem.TVShowTitle]</value>
 		<value>$INFO[ListItem.Title]</value>
 	</variable>
 	
+	<!-- KODI BUG - EVEN IF dbtype=season - it'll fallback to IsTvShow expression -->
+	<variable name="value_subheader">
+		<value condition="$EXP[IsEpisode]">$INFO[ListItem.Season,$LOCALIZE[20373] , • ]$INFO[ListItem.Episode,$LOCALIZE[20452] [B],[/B]]$INFO[ListItem.Title, : [B],[/B]]</value>
+		<value condition="$EXP[IsSeason]">$INFO[ListItem.Label]</value>
+		<value condition="$EXP[IsTVShow]">$VAR[NumerusSeasons] $INFO[ListItem.Property(TotalSeasons)]</value>
+		<value condition="!String.IsEqual(ListItem.TagLine)">$INFO[ListItem.TagLine]</value>
+	</variable>	
+	<variable name="NumerusSeasons">
+		<value condition="Integer.IsEqual(ListItem.Property(TotalSeasons),1)">$LOCALIZE[20373]</value>
+		<value>$LOCALIZE[33054]</value>
+	</variable>
+	
+		
 	<variable name="EncodeTitle">
 		<value condition="[ContainerContent(episodes) | String.IsEqual(ListItem.DBTYPE,episode)]">$INFO[ListItem.TVShowTitle]</value>
 		<value>$INFO[ListItem.Label]</value>
@@ -15,10 +113,101 @@
 			<value condition="String.IsEqual(ListItem.DBType,tvshow) + !String.IsEmpty(ListItem.DBID)">plugin://script.embuary.helper/?info=getsimilar&amp;dbid=$INFO[ListItem.DBID]&amp;type=tvshow</value>
 		</variable>
 	<include name="Button_VideoInfo">
-		<width>285</width>
+		<width>280</width>
 		<height>40</height>
 		<align>center</align>
-		<textoffsetx>10</textoffsetx>
+		<textoffsetx>5</textoffsetx>
+	</include>
+	
+	<include name="VideoInfo_InfoList">
+		<control type="group">
+			<width>1000</width>
+			<height>40</height>
+			<top>0</top>
+			<left>10</left>
+			<visible>$PARAM[visible]</visible>
+			<control type="label">
+				<left>-10</left>
+				<width>250</width>
+				<height>40</height>
+				<font>Reg33</font>
+				<aligny>center</aligny>
+				<align>right</align>
+				<textcolor>$VAR[Nav_HighlightColor]</textcolor>
+				<label>$PARAM[Info]</label>
+			</control>
+			<control type="image">
+				<left>250</left>
+				<width>40</width>
+				<height>40</height>
+				<colordiffuse>$VAR[Nav_LabelPrimaryColor]</colordiffuse>
+				<texture>$PARAM[icon]</texture>
+			</control>
+			<control type="label">
+				<left>300</left>
+				<width>730</width>
+				<height>40</height>
+				<font>Reg33</font>
+				<aligny>center</aligny>
+				<align>left</align>
+				<textcolor>$VAR[Nav_LabelPrimaryColor]</textcolor>
+				<label>$PARAM[InfoLabel]</label>
+			</control>
+		</control>
+       
+    </include>
+	<include name="VideoInfo_InfoList_AV_Flags">
+		<control type="group">
+			<width>1000</width>
+			<height>40</height>
+			<top>0</top>
+			<left>10</left>
+			<visible>$PARAM[visible]</visible>
+			<control type="label">
+				<left>-10</left>
+				<width>250</width>
+				<height>40</height>
+				<font>Reg33</font>
+				<aligny>center</aligny>
+				<align>right</align>
+				<textcolor>$VAR[Nav_HighlightColor]</textcolor>
+				<label>$PARAM[Info]</label>
+			</control>
+			<control type="image">
+				<left>255</left>
+				<top>5</top>
+				<width>35</width>
+				<height>35</height>
+				<texture colordiffuse="$VAR[Nav_LabelPrimaryColor]">$PARAM[icon]</texture>
+			</control>
+			<control type="grouplist">
+				<top>3</top>
+				<left>300</left>
+				<width>160</width>
+				<usecontrolcoords>true</usecontrolcoords>
+				<itemgap>10</itemgap>
+				<orientation>horizontal</orientation>
+				
+				<control type="image">	
+					<width>40</width>
+					<height>40</height>
+					<texture>$INFO[ListItem.$PARAM[InfoLabelProperty],resource://resource.images.languageflags.colour/,.png]</texture>
+					<visible>!String.IsEmpty(ListItem.$PARAM[InfoLabelProperty]) | !String.IsEmpty(ListItem.Property($PARAM[InfoLabelProperty].1))</visible>
+				</control>
+				<control type="image">
+					<width>40</width>
+					<height>40</height>
+					<texture>$INFO[ListItem.Property($PARAM[InfoLabelProperty].2),resource://resource.images.languageflags.colour/,.png]</texture>
+					<visible>!String.IsEmpty(ListItem.Property($PARAM[InfoLabelProperty].2))</visible>
+				</control>
+				<control type="image">
+					<width>40</width>
+					<height>40</height>
+					<texture>$INFO[ListItem.Property($PARAM[InfoLabelProperty].3),resource://resource.images.languageflags.colour/,.png]</texture>
+					<visible>!String.IsEmpty(ListItem.Property($PARAM[InfoLabelProperty].3))</visible>
+				</control>
+			</control>
+		</control>
 	</include>
 	
 	<include name="Info_ActorThumb">
@@ -151,7 +340,72 @@
 			<include content="ItemArtTemplate">
 				<param name="postfix" value="" />
 				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="animatedfanart" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="animatedposter" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
 				<param name="type" value="poster" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="1" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="poster" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="2" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="poster" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="3" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="poster" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="4" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="poster" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="5" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="poster" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="keyart" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="1" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="keyart" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="2" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="keyart" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="3" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="keyart" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="4" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="keyart" />
+			</include>
+			<include content="ItemArtTemplate">
+				<param name="postfix" value="5" />
+				<param name="parentfolder" value="$PARAM[prefix]" />
+				<param name="type" value="keyart" />
 			</include>
 			<include content="ItemArtTemplate">
 				<param name="postfix" value="" />
@@ -534,20 +788,17 @@
 		<param name="itemwidth" default="241" />
 		<param name="itemheight" default="361" />
 		<param name="left" default="65" />
+		<param name="load_studiocontent" default="false" />
+		<param name="aspectratio" default="scale" />
+		<param name="visible" default="true" />
 		<definition>
 		<control type="group">
 			<visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) | Container($PARAM[id]).IsUpdating</visible>
+			<visible>Control.IsVisible($PARAM[id])</visible>
+			
 			<right>0</right>
 			<height>$PARAM[groupheight]</height>
 			<left>$PARAM[left]</left>
-			
-			<!-- <animation type="conditional" condition="Control.HasFocus($PARAM[id])" reversible="false">
-				<effect type="zoom" end="110,110" time="200" tween="sine" easing="out" center="110,0" />
-				<effect type="zoom" end="95,95" time="200" tween="sine" delay="200" easing="out" center="110,0" />
-			</animation> -->
-			<!-- <animation type="conditional" condition="!Control.HasFocus($PARAM[id])" reversible="false">
-				<effect type="zoom" end="91,91" time="150" tween="sine" easing="out" center="100,0" />
-			</animation> -->
 			
 			<include content="Universal_ContainerHeader">
 				<param name="id" value="$PARAM[id]" />
@@ -560,20 +811,147 @@
 				<param name="type_height" value="$PARAM[type_height]" />
 				<param name="type_pos_top" value="70" />
 				<param name="tags_visible" value="$PARAM[tags_visible]" />
-				<param name="visible" value="true" />
+				<param name="visible" value="$PARAM[visible]" />
 				<param name="layout_height" value="$PARAM[layout_height]" />
 				<param name="layout_width" value="$PARAM[layout_width]" />
 				<param name="itemwidth" value="$PARAM[itemwidth]" />
 				<param name="itemheight" value="$PARAM[itemheight]" />
 				<param name="layout" value="$PARAM[layout]" />
+				<param name="forced_aspectratio" value="$PARAM[aspectratio]" />
+				
 				<ondown>$PARAM[ondown]</ondown>
 				<onup>$PARAM[onup]</onup>
+				
+				<include condition="$PARAM[load_studiocontent]" content="embinfo_static_container" />
 			</include>
 			
-			<nested />
+			
 		</control>
 		</definition>
 	</include>
+	<include name="embinfo_static_container">
+		<content>
+			<include content="embinfo_staticitem_template">
+				<param name="listitem" value="studio" /> 
+				<param name="absolutevalue" value="0" />
+			</include>
+			<include condition="!String.IsEmpty(Container(10051).ListItem.Property(studio.1))"  content="embinfo_staticitem_template">
+				<param name="listitem" value="studio" /> 
+				<param name="absolutevalue" value="1" /> 
+			</include>
+			<include condition="!String.IsEmpty(Container(10051).ListItem.Property(studio.2))"  content="embinfo_staticitem_template">
+				<param name="listitem" value="studio" /> 
+				<param name="absolutevalue" value="2" /> 
+			</include>
+			<include condition="!String.IsEmpty(Container(10051).ListItem.Property(studio.3))"  content="embinfo_staticitem_template">
+				<param name="listitem" value="studio" /> 
+				<param name="absolutevalue" value="3" /> 
+			</include>
+			<include condition="!String.IsEmpty(Container(10051).ListItem.Property(studio.4))"  content="embinfo_staticitem_template">
+				<param name="listitem" value="studio" /> 
+				<param name="absolutevalue" value="4" /> 
+			</include>
+			<include condition="!String.IsEmpty(Container(10051).ListItem.Property(studio.5))"  content="embinfo_staticitem_template">
+				<param name="listitem" value="studio" /> 
+				<param name="absolutevalue" value="5" /> 
+			</include>
+			<include condition="!String.IsEmpty(Container(10051).ListItem.Property(network.0))"  content="embinfo_staticitem_template">
+				<param name="listitem" value="network" /> 
+				<param name="absolutevalue" value="0" /> 
+			</include>
+			<include condition="!String.IsEmpty(Container(10051).ListItem.Property(network.1))"  content="embinfo_staticitem_template">
+				<param name="listitem" value="network" /> 
+				<param name="absolutevalue" value="1" /> 
+			</include>
+			<include condition="!String.IsEmpty(Container(10051).ListItem.Property(network.2))"  content="embinfo_staticitem_template">
+				<param name="listitem" value="network" /> 
+				<param name="absolutevalue" value="2" /> 
+			</include>
+			<include condition="!String.IsEmpty(Container(10051).ListItem.Property(network.3))"  content="embinfo_staticitem_template">
+				<param name="listitem" value="network" /> 
+				<param name="absolutevalue" value="3" /> 
+			</include>
+			<include condition="!String.IsEmpty(Container(10051).ListItem.Property(network.4))"  content="embinfo_staticitem_template">
+				<param name="listitem" value="network" /> 
+				<param name="absolutevalue" value="4" /> 
+			</include>
+			<include condition="!String.IsEmpty(Container(10051).ListItem.Property(network.5))"  content="embinfo_staticitem_template">
+				<param name="listitem" value="network" /> 
+				<param name="absolutevalue" value="5" /> 
+			</include>
+		</content>
+	</include>
+   	<!-- false positive ???
+	<content>
+			<include condition="!String.IsEmpty(Container(10051).ListItem.Property(studio.0))" content="embinfo_staticitem_template">
+				<param name="listitem" value="studio" /> 
+				<param name="absolutevalue" value="0" />
+			</include>
+			<include condition="!String.IsEmpty(Container(10051).ListItem.Property(studio.1))"  content="embinfo_staticitem_template">
+				<param name="listitem" value="studio" /> 
+				<param name="absolutevalue" value="1" /> 
+			</include>
+			<include condition="!String.IsEmpty(Container(10051).ListItem.Property(studio.2))"  content="embinfo_staticitem_template">
+				<param name="listitem" value="studio" /> 
+				<param name="absolutevalue" value="2" /> 
+			</include>
+			<include condition="!String.IsEmpty(Container(10051).ListItem.Property(studio.3))"  content="embinfo_staticitem_template">
+				<param name="listitem" value="studio" /> 
+				<param name="absolutevalue" value="3" /> 
+			</include>
+			<include condition="!String.IsEmpty(Container(10051).ListItem.Property(studio.4))"  content="embinfo_staticitem_template">
+				<param name="listitem" value="studio" /> 
+				<param name="absolutevalue" value="4" /> 
+			</include>
+			<include condition="!String.IsEmpty(Container(10051).ListItem.Property(studio.5))"  content="embinfo_staticitem_template">
+				<param name="listitem" value="studio" /> 
+				<param name="absolutevalue" value="5" /> 
+			</include>
+			<include condition="!String.IsEmpty(Container(10051).ListItem.Property(network.0))"  content="embinfo_staticitem_template">
+				<param name="listitem" value="network" /> 
+				<param name="absolutevalue" value="0" /> 
+			</include>
+			<include condition="!String.IsEmpty(Container(10051).ListItem.Property(network.1))"  content="embinfo_staticitem_template">
+				<param name="listitem" value="network" /> 
+				<param name="absolutevalue" value="1" /> 
+			</include>
+			<include condition="!String.IsEmpty(Container(10051).ListItem.Property(network.2))"  content="embinfo_staticitem_template">
+				<param name="listitem" value="network" /> 
+				<param name="absolutevalue" value="2" /> 
+			</include>
+			<include condition="!String.IsEmpty(Container(10051).ListItem.Property(network.3))"  content="embinfo_staticitem_template">
+				<param name="listitem" value="network" /> 
+				<param name="absolutevalue" value="3" /> 
+			</include>
+			<include condition="!String.IsEmpty(Container(10051).ListItem.Property(network.4))"  content="embinfo_staticitem_template">
+				<param name="listitem" value="network" /> 
+				<param name="absolutevalue" value="4" /> 
+			</include>
+			<include condition="!String.IsEmpty(Container(10051).ListItem.Property(network.5))"  content="embinfo_staticitem_template">
+				<param name="listitem" value="network" /> 
+				<param name="absolutevalue" value="5" /> 
+			</include>
+		</content>
+		-->
+	<!--
+	<icon>$INFO[Container(10051).ListItem.Property($PARAM[listitem].$PARAM[absolutevalue]),resource://resource.images.studios.white/,.png]</icon>
+	<thumb>$INFO[Container(10051).ListItem.Property($PARAM[listitem].icon.$PARAM[absolutevalue])]</thumb>
+	visible cond not workin , no idea why
+	<visible>!String.IsEmpty(Container(10051).ListItem.Property($PARAM[listitem].$PARAM[absolutevalue]))</visible>
+	
+	<onclick>Dialog.Close(all,true)</onclick>
+	<onclick condition="">Activate.Window(Videos)Close(all,true)</onclick>
+	
+	-->
+	<include name="embinfo_staticitem_template">
+		<item>
+			<label>$INFO[Container(10051).ListItem.Property($PARAM[listitem].$PARAM[absolutevalue])]</label>
+			<label2 />
+			<thumb></thumb>
+			<icon>$INFO[Container(10051).ListItem.Property($PARAM[listitem].icon.$PARAM[absolutevalue])]</icon>
+		</item>
+   </include>
+   
 	<include name="EmbInfo_Onunload">
 		<onload>SetProperty(onnext,SetFocus(100))</onload>
 		<onload>SetProperty(onback_10052,SetFocus(100))</onload>

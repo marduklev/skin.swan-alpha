@@ -22,32 +22,44 @@
         <value condition="!String.IsEmpty(ListItem.Art(fanart)) + Skin.HasSetting(EnableFakeDiscArt)">$INFO[ListItem.Art(fanart)]</value>
 	</variable>
 	
-	<variable name="rating_value_texture">
-        <value condition="!String.IsEmpty(ListItem.UserRating)">$INFO[ListItem.UserRating,rating/stars/,.png]</value>
-        <value condition="!String.IsEmpty(ListItem.Rating)">$INFO[ListItem.Rating,rating/stars/,.png]</value>
-		<value>rating/stars/0.0.png</value>
-    </variable>
-	
 	<variable name="premiere_date">
         <value condition="!$EXP[IsMovie] + !String.IsEmpty(ListItem.Premiered)">$INFO[ListItem.Premiered]</value>
         <value condition="!String.IsEmpty(ListItem.Year)">$INFO[ListItem.Year]</value>
     </variable>
 	
 	<variable name="ListItemDurationWithEndTime">
-        <value condition="!String.IsEmpty(ListItem.Duration) + !String.IsEmpty(ListItem.EndTimeResume)">$VAR[ListItemDuration,, ]$INFO[ListItem.EndTimeResume, - $LOCALIZE[31080]: ,]</value>
-		<value condition="!String.IsEmpty(ListItem.Duration) + !String.IsEmpty(ListItem.EndTime)">$VAR[ListItemDuration,, - ]$INFO[ListItem.EndTime,$LOCALIZE[31080]: ,]</value>
+        <value condition="!String.IsEmpty(ListItem.Duration) + !String.IsEmpty(ListItem.EndTimeResume)">$VAR[ListItemDuration]$INFO[ListItem.EndTimeResume, - $LOCALIZE[31080]: ,]</value>
+		<value condition="!String.IsEmpty(ListItem.Duration) + !String.IsEmpty(ListItem.EndTime)">$VAR[ListItemDuration]$INFO[ListItem.EndTime, - $LOCALIZE[31080]: ,]</value>
 		<value>$VAR[ListItemDuration]</value>
     </variable>
 	
-	<!-- String.IsEndsWith(ListItem.Overlay,OverlayWatched.png) , String.IsEndsWith(ListItem.Overlay,OverlayUnwatched.png) -->
-	<variable name="PercentPlayed">
-		<value condition="!Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable">$LOCALIZE[16102] 0%</value>
-		<value condition="Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable">$LOCALIZE[16102] 100%</value>
-		<value>$INFO[ListItem.PercentPlayed,$LOCALIZE[16102] ,%]</value>
+	<variable name="ListItemDuration">
+		<value condition="Integer.IsGreater(ListItem.Duration(h),0)">$INFO[ListItem.Duration(h),,h ]$INFO[ListItem.Duration(m),,min]</value>
+		<value condition="$EXP[IsSong]">$INFO[ListItem.Duration]</value>
+		<value>$INFO[ListItem.Duration(m),, min]</value>
 	</variable>
 	
+	<variable name="ListLabel2">
+		<value condition="String.IsEqual(ListItem.Label2,ListItem.year)"></value>
+		<value condition="String.IsEqual(ListItem.Label2,ListItem.mpaa)"></value>
+		<value condition="String.IsEqual(ListItem.Label2,ListItem.rating)"></value>
+		<value condition="String.IsEqual(ListItem.Label2,ListItem.duration)"></value>
+		<value>$INFO[ListItem.Label2]</value>
+	</variable>
+	<variable name="ListItemRelease">
+		<value condition="[$EXP[IsEpisode]] + !String.IsEmpty(ListItem.Premiered)">$INFO[ListItem.Premiered]</value>
+		<value>$INFO[ListItem.Year]</value>
+	</variable>
+	
+<!-- String.IsEndsWith(ListItem.Overlay,OverlayWatched.png) , String.IsEndsWith(ListItem.Overlay,OverlayUnwatched.png) -->
+	<variable name="PercentPlayed">
+		<value condition="!Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable">[B]0%[/B] [LIGHT][LOWERCASE]$LOCALIZE[16102][/LIGHT][/LOWERCASE]</value>
+		<value condition="Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable">[B]100%[/B] [LIGHT][LOWERCASE]$LOCALIZE[16102][/LIGHT][/LOWERCASE]</value>
+		<value>$INFO[ListItem.PercentPlayed,[B],%[/B] [LIGHT][LOWERCASE]$LOCALIZE[16102][/LIGHT][/LOWERCASE]]</value>
+	</variable>	
+	
 	<variable name="plot">
-		<value condition="String.IsEqual(ListItem.Label,..) | [String.StartsWith(ListItem.Label,*) + String.IsEmpty(Container.ShowPlot)] | Control.HasFocus(7600) | ControlGroup(9000).HasFocus() | String.IsEqual(ListItem.DBTYPE,genre) | String.IsEqual(ListItem.DBTYPE,studio) | String.IsEqual(ListItem.DBTYPE,actor) | String.IsEqual(ListItem.DBTYPE,year) | String.IsEqual(ListItem.DBTYPE,director) | String.IsEqual(ListItem.DBTYPE,country) | String.IsEqual(ListItem.DBTYPE,tag)"></value>
+		<value condition="String.IsEqual(ListItem.Label,..) | [String.StartsWith(ListItem.Label,*) + String.IsEmpty(Container.ShowPlot)] | Control.HasFocus(7600) | [Window.IsActive(home) + ControlGroup(9000).HasFocus()] | String.IsEqual(ListItem.DBTYPE,genre) | String.IsEqual(ListItem.DBTYPE,studio) | String.IsEqual(ListItem.DBTYPE,actor) | String.IsEqual(ListItem.DBTYPE,year) | String.IsEqual(ListItem.DBTYPE,director) | String.IsEqual(ListItem.DBTYPE,country) | String.IsEqual(ListItem.DBTYPE,tag)"></value>
 		<value condition="String.StartsWith(ListItem.Label,*) + !String.IsEmpty(Container.ShowPlot)">$INFO[Container.ShowPlot]</value>
 		<value condition="!String.IsEmpty(ListItem.Plot)">$INFO[ListItem.Plot]</value>
 		<value condition="!String.IsEmpty(ListItem.Property(Album_Description))">$INFO[ListItem.Property(Album_Description)]$INFO[ListItem.ContributorAndRole,[CR],]</value>

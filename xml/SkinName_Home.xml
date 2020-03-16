@@ -314,7 +314,9 @@
 			<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
 				<param name="align" value="right" />
 			</include>
-			<include content="StarsRating_ImageVariable" />
+			
+			<include content="StarsRating_Image" />
+			
 			<control type="label">
 				<visible>!String.IsEmpty(ListItem.Year)</visible>	
 				<top>5</top>
@@ -433,21 +435,8 @@
 		</control>
 	</include>
 
-	<include name="StarsRating_ImageVariable">
-		<param name="width" default="150" />
-		<param name="height" default="45" />
-		<definition>
-		<control type="image">
-			<visible>!String.IsEmpty(ListItem.UserRating) | !String.IsEmpty(ListItem.Rating)</visible>
-			<width>$PARAM[width]</width>
-			<height>$PARAM[height]</height>
-			<aspectratio align="left" aligny="center">keep</aspectratio>
-			<colordiffuse>red</colordiffuse>
-			<texture background="true">$VAR[StarsRating_ImageVariable]</texture>
-		</control>
-		</definition>
-	</include>
-
+	
+	
 	<include name="FramedCodecInfo">
 		<control type="group" id="$PARAM[id]">	
 			<visible>!String.IsEmpty(Control.GetLabel($PARAM[label_id]))</visible>
@@ -520,17 +509,6 @@
 		<value>$INFO[ListItem.Label2]</value>
 	</variable>
 
-	<variable name="StarsRating_ImageVariable">
-        <value condition="!String.IsEmpty(ListItem.UserRating)">$INFO[ListItem.UserRating,rating/stars/,.png]</value>
-        <value condition="!String.IsEmpty(ListItem.Rating)">$INFO[ListItem.Rating,rating/stars/,.png]</value>
-    </variable>
-
-	<variable name="ListItemDuration">
-		<value condition="String.IsEqual(ListItem.DBTYPE,song) | String.IsEqual(ListItem.DBTYPE,musicvideo)">$INFO[ListItem.Duration,, min]</value>
-		<value condition="!Integer.IsGreater(ListItem.Duration(h),0)">$INFO[ListItem.Duration(m),, min]</value>
-		<value>$INFO[ListItem.Duration(h),,h ]$INFO[ListItem.Duration(m),,min]</value>
-	</variable>
-	
 	<variable name="ClearLogo_FallbackHome">
 		<value condition="$EXP[IsSong]">$INFO[ListItem.AlbumArtist,[B],[/B]][CR]$INFO[ListItem.title]</value>
 		<value condition="$EXP[IsAlbum]">$INFO[ListItem.AlbumArtist,[B],[/B]]</value>

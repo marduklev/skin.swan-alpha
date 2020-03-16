@@ -21,7 +21,6 @@
 		<control type="image">
 			<animation effect="slide" start="0,0" end="450,0" time="300" tween="cubic" easing="inout">visible</animation>
 			<animation effect="fade" start="100" end="0" time="150" condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">conditional</animation>
-			
 			<visible>String.IsEqual(Window(Home).Property(MenucontrolActive),true)</visible>
 			<top>0</top>
 			<bottom>0</bottom>
@@ -35,7 +34,7 @@
 		
 		<control type="grouplist" id="8999">
 			<animation effect="slide" start="0,0" end="450,0" time="300" tween="cubic" easing="inout" condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">conditional</animation>
-			
+			<visible>!Control.IsVisible(58)</visible>
 			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
 			<visible>!$EXP[Infodialog_IsActive]</visible>
 			<visible>!Window.IsActive(shutdownmenu)</visible>
@@ -252,7 +251,9 @@ ID 	Type 					Description
 			<onback>ClearProperty(MenucontrolActive,Home)</onback>
 			<onback>SetFocus(50)</onback>
 			
-			<onright>SetFocus(102502)</onright>
+			<onright condition="!Control.IsVisible(58)">SetFocus(8999)</onright>
+			<onright condition="Control.IsVisible(58)">ClearProperty(MenucontrolActive,Home)</onright>
+			<onright condition="Control.IsVisible(58)">SetFocus(50)</onright>
 			
 			<onleft>SetFocus(50)</onleft>
 			<onleft>ClearProperty(MenucontrolActive,Home)</onleft>
@@ -394,7 +395,7 @@ ID 	Type 					Description
 					<param name="actionid" value="next" />
 					<param name="left" value="285" />
 					<param name="onleft" value="60493" />
-					<param name="onright" value="102505" />
+					<param name="onright" value="SetFocus(8999)" />
 					<param name="visible" value="MusicPlayer.HasNext" />
 				</include>
 			</control>
@@ -538,12 +539,12 @@ ID 	Type 					Description
 				<onclick condition="Control.IsVisible(54)">Skin.ToggleSetting(View_54_DisableFooter)</onclick>
 				<onclick condition="Control.IsVisible(56)">Skin.ToggleSetting(View_56_DisableFooter)</onclick>
 				<selected>
-				[Control.IsVisible(50) + Skin.HasSetting(View_50_DisableFooter) | 
-                Control.IsVisible(51) + Skin.HasSetting(View_51_DisableFooter) | 
-				Control.IsVisible(52) + Skin.HasSetting(View_52_DisableFooter) | 
-				Control.IsVisible(53) + Skin.HasSetting(View_53_DisableFooter) | 
-				Control.IsVisible(54) + Skin.HasSetting(View_54_DisableFooter) | 
-				Control.IsVisible(56) + Skin.HasSetting(View_56_DisableFooter)]
+				[Control.IsVisible(50) + !Skin.HasSetting(View_50_DisableFooter) | 
+                Control.IsVisible(51) + !Skin.HasSetting(View_51_DisableFooter) | 
+				Control.IsVisible(52) + !Skin.HasSetting(View_52_DisableFooter) | 
+				Control.IsVisible(53) + !Skin.HasSetting(View_53_DisableFooter) | 
+				Control.IsVisible(54) + !Skin.HasSetting(View_54_DisableFooter) | 
+				Control.IsVisible(56) + !Skin.HasSetting(View_56_DisableFooter)]
 				</selected>
 				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
 			</control>

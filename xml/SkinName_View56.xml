@@ -5,7 +5,6 @@
 		<control type="group">
 			<visible>Control.IsVisible(56)</visible>
 			
-			
 			<control type="group">
 				<visible>Skin.HasSetting(View_56_ShowBGPanel)</visible>
 				<include content="View_BGPanel">
@@ -20,46 +19,41 @@
 				<orientation>vertical</orientation>
 				<preloaditems>2</preloaditems>
 				<focusposition>1</focusposition>
-				<scrolltime tween="quadratic">700</scrolltime>
+				<scrolltime tween="quadratic">400</scrolltime>
 				<left>100</left>
 				
-				<include content="pos_right" condition="!Skin.HasSetting(showblubbuttons)">
-					<param name="right" value="110" />
-				</include>
-				<include content="pos_right" condition="Skin.HasSetting(showblubbuttons)">
-					<param name="right" value="200" />
-				</include>
-				
-				<bottom>100</bottom>
-				<top>120</top>
-				
+				<include>MediaOffsetValues</include>
 				<include>NavControl_Media</include>
 				
 				<viewtype label="episodes">episodes panel</viewtype>
 				
 				<itemlayout height="280">
 					<control type="group">
-					<height>270</height>
-					
-					<include content="list_panel56">
-						<param name="autoscroll" value="false" />
-						<param name="highlightcolor" value="$VAR[Nav_LabelSecondaryColor]" />
-					</include>
-				</control>
-			</itemlayout>
-			<focusedlayout height="280">
-				<include>SetPropOnFocus_HiddenButton</include>
-					
-				<control type="group">
-					<height>270</height>
-					
-					<animation type="Focus" reversible="false">
-						<effect type="zoom" end="102,102" time="200" tween="sine" easing="out" center="auto" />
-						<effect type="zoom" end="98,98" time="150" tween="sine" delay="200" easing="out" center="auto" />
-					</animation>
+						<height>270</height>
+						
+						<include content="list_panel56">
+							<param name="autoscroll" value="false" />
+							<param name="highlightcolor" value="$VAR[Nav_LabelSecondaryColor]" />
+						</include>
+					</control>
+				</itemlayout>
+				<focusedlayout height="280">
+					<include>SetPropOnFocus_HiddenButton</include>
+					<control type="group">
+						<visible>!Control.HasFocus(56)</visible>
+						<height>270</height>
+						<include content="list_panel56">
+							<param name="autoscroll" value="false" />
+							<param name="highlightcolor" value="$VAR[Nav_LabelSecondaryColor]" />
+						</include>
+					</control>
 					
 					<control type="group">
-					
+						<visible>Control.HasFocus(56)</visible>
+						<animation type="Focus" reversible="false">
+							<effect type="zoom" end="102,102" time="200" tween="sine" easing="out" center="auto" />
+							<effect type="zoom" end="98,98" time="150" tween="sine" delay="200" easing="out" center="auto" />
+						</animation>
 						<control type="image">
 							<description>revisit alpha stuff cdiffuse and img bg texture</description>
 							<left>40</left>
@@ -71,35 +65,33 @@
 							<param name="autoscroll" value="true" />
 							<param name="highlightcolor" value="$VAR[Nav_HighlightColor]" />
 						</include>
+						<control type="image">
+							<centertop>50%</centertop>
+							<visible>!String.Contains(ListItem.Icon,default)</visible>
+							<visible>!ListItem.IsPlaying</visible>
+							<left>10</left>
+							<width>60</width>
+							<height>60</height>
+							<bordertexture colordiffuse="ff131313">artworkdiffuse/circle.png</bordertexture>
+							<texture colordiffuse="$VAR[Nav_DimOverlay_Icon]" diffuse="artworkdiffuse/circle.png" background="true">overlay/overlay_button_play.png</texture>
+						</control>
 					</control>
-					<control type="image">
-						<!-- <include>Animation_Item_Focus</include> -->
-						<centertop>50%</centertop>
-						<visible>!String.Contains(ListItem.Icon,default)</visible>
-						<visible>!ListItem.IsPlaying</visible>
-						<left>10</left>
-						<width>60</width>
-						<height>60</height>
-						<bordertexture colordiffuse="ff131313">artworkdiffuse/circle.png</bordertexture>
-						<texture colordiffuse="$VAR[Nav_DimOverlay_Icon]" diffuse="artworkdiffuse/circle.png" background="true">overlay/overlay_button_play.png</texture>
+					<control type="group">
+						<visible>Player.HasMedia + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
+						<top>15</top>
+						<left>50</left>
+						<width>415</width>
+						<height>240</height>
+						<control type="image">
+							<texture colordiffuse="">colors/black.png</texture>
+						</control>
+						<control type="videowindow">
+						
+						</control>
 					</control>
-					
-				</control>
-				<control type="group">
-					<visible>Player.HasMedia + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
-					<top>15</top>
-					<left>50</left>
-					<width>415</width>
-					<height>240</height>
-					<control type="image">
-						<texture colordiffuse="">colors/black.png</texture>
-					</control>
-					<control type="videowindow">
-					
-					</control>
-				</control>
-			</focusedlayout>
+				</focusedlayout>
 			</control>
+			
 			<include content="footer">
 				<param name="view_id" value="56" />
 				<param name="offset_leftpanel" value="34%" />
@@ -107,61 +99,6 @@
 				<param name="media_flagwidth" value="30%" />
 				<param name="rating_flagalign" value="left" />
 			</include>
-			<!-- 
-			<control type="grouplist" id="8997">
-			<animation effect="fade" start="100" end="0" time="500" condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">conditional</animation>
-			
-			<animation effect="fade" start="0" end="100" time="700" tween="cubic" easing="inout">visible</animation>
-			
-				on next <animation effect="slide" start="0,250" end="0,0" time="700" tween="quadratic">visible</animation>
-			
-			
-			<visible>![container.onnext | container.onprevious]</visible>
-			<visible>Skin.HasSetting(showblubbuttons)</visible>
-			<centertop>50%</centertop>
-			<right>80</right>
-			<width>110</width>
-			<height>270</height>
-			
-			<orientation>vertical</orientation>
-			<itemgap>10</itemgap>
-			<usecontrolcoords>true</usecontrolcoords>
-			
-			
-			<onright condition="Control.IsVisible(60)">60</onright>
-			<onright condition="!Control.IsVisible(60)">56</onright>
-			
-			
-			<onleft>56</onleft>
-			
-			<onup>8997</onup>
-			
-			<control type="radiobutton" id="8991">
-				<visible>!String.IsEmpty(Window(home).Property(trailer_avail)) | !String.IsEmpty(ListItem.Trailer)</visible>
-				<include content="Menucontrol_RadioButton">
-					<param name="radiotexture" value="defaultmovies" />
-				</include>
-				
-				<onclick condition="String.IsEmpty(Window(home).Property(trailer_avail)) + !String.IsEmpty(ListItem.Trailer)">PlayMedia($INFO[ListItem.Trailer],1)</onclick>
-				<onclick condition="!String.IsEmpty(Window(home).Property(trailer_avail))">PlayMedia($INFO[container(56).listitem.path]$INFO[container(56).ListItem.FolderName,,-trailer.mp4],1)</onclick>
-					
-				<onclick>SetProperty(TrailerIsPlaying,true,home)</onclick>
-			</control>
-			<control type="radiobutton" id="8992">
-				
-				<include content="Menucontrol_RadioButton">
-					<param name="radiotexture" value="defaultaddoninfoprovider" />
-				</include>
-				<onclick>SetFocus(56)</onclick>
-				<onclick>Action(info)</onclick>
-			</control>
-			<control type="radiobutton" id="8993">
-				<include content="Menucontrol_RadioButton">
-					<param name="radiotexture" value="tmdb3" />
-				</include>
-				<onclick>RunScript(script.embuary.info,call=$VAR[embtmdbinfocall],query='"$VAR[embtmdbinfoquery]'")</onclick>
-			</control>
-		</control> -->
 		</control>
 		
 		
@@ -173,7 +110,7 @@
 	<include name="list_panel56">
 		
 		<control type="image">
-			<visible>String.Contains(ListItem.Icon,default) + !String.StartsWith(ListItem.Label,*)</visible>
+			<visible>String.IsEqual(ListItem.Label,..)</visible>
 			<centerleft>50%</centerleft>
 			<centertop>50%</centertop>
 			<width>90</width>
@@ -185,7 +122,7 @@
 		</control>
 		<control type="image">
 			<visible>!Skin.HasSetting(View_56_Prefer_CircleArt)</visible>
-			<visible>!String.Contains(ListItem.Icon,default) + ![Skin.HasSetting(View_56_Prefer_Disc_Video) | Skin.HasSetting(View_56_Prefer_clearart) | Skin.HasSetting(View_56_Prefer_clearlogo)]</visible>
+			<visible>!String.IsEqual(ListItem.Label,..) + ![Skin.HasSetting(View_56_Prefer_Disc_Video) | Skin.HasSetting(View_56_Prefer_clearart) | Skin.HasSetting(View_56_Prefer_clearlogo)]</visible>
 			<left>50</left>
 			<centertop>50%</centertop>
 			<width>400</width>
@@ -219,6 +156,7 @@
 			<visible>ListItem.IsPlaying</visible>
 			<bordertexture colordiffuse="55000000">artworkdiffuse/circle.png</bordertexture>
 		</control>
+		
 		<control type="group">
 			<visible>Skin.HasSetting(View_56_Prefer_CircleArt)</visible>
 			<visible>!String.Contains(ListItem.Icon,default)</visible>
@@ -279,30 +217,21 @@
 			</control>
 		</control>
 		
+		<include content="List_2RowInfo">
+			<param name="left" value="500" />
+			<param name="right" value="250" />
+			<param name="headlinefont" value="InfoCommon" />
+		</include>
 		
-		<control type="label">
-			<visible>!String.IsEqual(ListItem.Label,..)</visible>
-			<description>autoscroll and selectedcolor just not  textboxes, may use var and chenge to textb again</description>
-			<wrapmultiline>true</wrapmultiline>
-			<font>InfoCommon</font>
-			<width>580</width>
-			<left>500</left>
-			<top>20</top>
-			<align>left</align>
-			<aligny>top</aligny>
-			<textcolor>$VAR[Nav_LabelPrimaryColor]</textcolor>
-			<selectedcolor>$VAR[Nav_SelectedColor]</selectedcolor>
-			<label>$INFO[ListItem.Label,[B],[/B]][CR][COLOR=$VAR[Nav_LabelSecondaryColor]]$INFO[ListItem.Year]     $INFO[ListItem.Genre]   $INFO[ListItem.Label2][/COLOR]</label>
-		</control>
 		<control type="textbox">
-			<autoscroll delay="2000" time="2000" repeat="1500">$PARAM[autoscroll]</autoscroll>
+			<autoscroll delay="2000" time="5000" repeat="1500">$PARAM[autoscroll]</autoscroll>
 			<description>plot</description>
 			<font>PlotCommon</font>
-			<right>300</right>
+			<right>250</right>
 			<left>500</left>
 			<top>100</top>
 			<bottom>70</bottom>
-			<align>left</align>
+			<align>justify</align>
 			<aligny>top</aligny>
 			<textcolor>$VAR[Nav_LabelPrimaryColor]</textcolor>
 			<selectedcolor>$VAR[Nav_SelectedColor]</selectedcolor>
@@ -318,35 +247,19 @@
 			<height>50</height>
 			<align>left</align>
 			<aligny>center</aligny>
-			<textcolor>$VAR[Nav_LabelPrimaryColor]</textcolor>
-			<label>$INFO[ListItem.Duration(mm), , minutes]</label>
+			<textcolor>$VAR[Nav_LabelSecondaryColor]</textcolor>
+			<label>$VAR[ListItemDuration]</label>
 		</control>
-		<control type="textbox">
-			<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
-			<wrapmultiline>true</wrapmultiline>
-			<font>CommonTag</font>
-			<bottom>5</bottom>
-			<width>100</width>
-			<right>90</right>
-			<height>40</height>
-			<align>right</align>
-			<aligny>center</aligny>
-			<textcolor>$VAR[Nav_LabelPrimaryColor]</textcolor>
-			<label>$INFO[ListItem.Premiered]</label>
-		</control>
-		<control type="image">
-			<description>stars rating, need switch to var</description>
-			<top>8</top>
-			<centerright>5%</centerright>
-			<visible>true</visible>
-			<width>150</width>
-			<height>60</height>
-			<aspectratio align="right">keep</aspectratio>
-			<texture colordiffuse="$PARAM[highlightcolor]">rating/stars/$INFO[ListItem.Rating].png</texture>
-		</control>
+		<include content="StarsRating_Image">
+			<centertop>15%</centertop>
+			<right>50</right>
+			<param name="width" value="150" />
+			<param name="height" value="60" />
+			<param name="colordiffuse" value="$PARAM[highlightcolor]" />
+		</include>	
 		<include content="ListItem_Indicators">
-				<param name="watched_size" value="30" />
-				<param name="folderind_size" value="100" />
+			<param name="watched_size" value="30" />
+			<param name="folderind_size" value="100" />
 		</include>
 	</include>
 	
