@@ -21,10 +21,10 @@
 		
 ### Dependencies
 >	(Embuary Helper)[https://forum.kodi.tv/showthread.php?tid=345471]
-
 ### Supported Addons
 >	(Embuary Info Script)[https://forum.kodi.tv/showthread.php?tid=346034]
 >   (Up Next)[https://forum.kodi.tv/showthread.php?tid=336747]
+>	Resource Addon For Actor Thumbs (used in ... ) (resource.images.moviedirectorthumbs) https://forum.kodi.tv/showthread.php?tid=342720
 
 Credits for (some defaults) currently used Textures belongs to
 - @'Phil65' (skin.estuary) (default[foo].pngs's, some backgroundpatterns)
