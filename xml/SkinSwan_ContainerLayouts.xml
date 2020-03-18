@@ -65,19 +65,22 @@
 					<height>32</height>
 					<texture colordiffuse="$VAR[Button_Text_NF]">$VAR[AddonStatus]</texture>
 				</control>
-				<control type="label">
-					<left>$PARAM[layout_height]</left>
-					<label>$INFO[ListItem.Label][CR]$VAR[addonupdate]</label>
-					<textcolor>$VAR[Button_Text_NF]</textcolor>
-					<scroll>true</scroll>
-					<visible>$PARAM[icon_visible]</visible>
-				</control>
-				<control type="label">
-					<left>20</left>
-					<label>$INFO[ListItem.Label]</label>
-					<textcolor>$VAR[Button_Text_NF]</textcolor>
-					<scroll>true</scroll>
-					<visible>!$PARAM[icon_visible]</visible>
+				<control type="group">
+					<visible>!String.IsEqual(ListItem.label,..)</visible>
+					<control type="label">
+						<left>$PARAM[layout_height]</left>
+						<label>$INFO[ListItem.Label][CR]$VAR[addonupdate]</label>
+						<textcolor>$VAR[Button_Text_NF]</textcolor>
+						<scroll>true</scroll>
+						<visible>$PARAM[icon_visible]</visible>
+					</control>
+					<control type="label">
+						<left>20</left>
+						<label>$INFO[ListItem.Label]</label>
+						<textcolor>$VAR[Button_Text_NF]</textcolor>
+						<scroll>true</scroll>
+						<visible>!$PARAM[icon_visible]</visible>
+					</control>
 				</control>
 			</itemlayout>
 			<focusedlayout height="$PARAM[layout_height]">
@@ -130,19 +133,23 @@
 					<texture colordiffuse="$VAR[Button_Text_FO]">$VAR[AddonStatus]</texture>
 					<visible>Window.IsActive(addonbrowser)</visible>
 				</control>
-				<control type="label">
-					<left>$PARAM[layout_height].9</left>
-					<label>$INFO[ListItem.Label,[B],[/B]][CR]$VAR[addonupdate]</label>
-					<textcolor>$VAR[Button_Text_FO]</textcolor>
-					<scroll>true</scroll>
-					<visible>$PARAM[icon_visible]</visible>
-				</control>
-				<control type="label">
-					<left>20</left>
-					<label>$INFO[ListItem.Label,[B],[/B]]</label>
-					<textcolor>$VAR[Button_Text_FO]</textcolor>
-					<scroll>true</scroll>
-					<visible>!$PARAM[icon_visible]</visible>
+				<control type="group">
+					<visible>!String.IsEqual(ListItem.label,..)</visible>
+					
+					<control type="label">
+						<left>$PARAM[layout_height].9</left>
+						<label>$INFO[ListItem.Label,[B],[/B]][CR]$VAR[addonupdate]</label>
+						<textcolor>$VAR[Button_Text_FO]</textcolor>
+						<scroll>true</scroll>
+						<visible>$PARAM[icon_visible]</visible>
+					</control>
+					<control type="label">
+						<left>20</left>
+						<label>$INFO[ListItem.Label,[B],[/B]]</label>
+						<textcolor>$VAR[Button_Text_FO]</textcolor>
+						<scroll>true</scroll>
+						<visible>!$PARAM[icon_visible]</visible>
+					</control>
 				</control>
 			</focusedlayout>
 		</control>
@@ -576,6 +583,7 @@
 					String.IsEmpty(ListItem.Art(albumartist.clearlogo)) +
 					String.IsEmpty(ListItem.Art(clearlogo))
 				</visible>
+				<visible>!String.IsEqual(ListItem.label,..)</visible>
 				<left>5%</left>
 				<width>90%</width>
 				<height>100%</height>
@@ -591,7 +599,8 @@
 		<control type="group">
 			<description>Taglines Bottom</description>
 			<visible>$PARAM[get_tags]</visible>
-			<control type="image">
+			<visible>!String.IsEqual(ListItem.label,..)</visible>
+				<control type="image">
 				<visible>$PARAM[get_tagbgpanel]</visible>
 				<top>99%</top>
 				<left>5</left>
@@ -850,6 +859,7 @@ top-->
 	
 	<!--system current window is inconsistent using addon, sometimes 'empty' | 13020 | 13021 -->
 	<variable name="Tags_Bottom">
+		<value condition="String.IsEqual(ListItem.label,..)"></value>
 		<value condition="[![$EXP[embinfodialogactive]] + String.Contains(Container.Folderpath,script.embuary.info)] + [String.Contains(Container.Folderpath,call=upcoming) | String.Contains(Container.Folderpath,call=now_playing)]">$INFO[ListItem.Label,,[CR]][COLOR=$VAR[Container_label2_itemtag]]$INFO[ListItem.Premiered][/COLOR]</value>
 		<value condition="$EXP[IsEpisode]">$INFO[ListItem.Season,[B]s,[/B]]$INFO[ListItem.Episode,[B]e,[/B] -]$INFO[ListItem.Title,[B],[/B]]$INFO[ListItem.Duration(mm), (, min)][CR][COLOR=$VAR[Container_label2_itemtag]]$INFO[ListItem.Year][/COLOR]</value>
 		<value condition="$EXP[IsSong]">$INFO[ListItem.Label,[B],[/B]][CR][COLOR=$VAR[Container_label2_itemtag]]$INFO[ListItem.Album]$INFO[ListItem.Year, (,)][/COLOR]</value>

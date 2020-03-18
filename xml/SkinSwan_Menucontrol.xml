@@ -548,21 +548,58 @@ ID 	Type 					Description
 				</selected>
 				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
 			</control>
-	<!-- prefer  thumbs -->
+	<!-- set setting prefer  thumbs based on viewtype label="Container.Viewmode" and container.content()
+	- will need a huge variable  instead simple one, but better control VIEW TYPE LABEL NEED TO BE HARDCODED
+	- may issues with selected definitions
+	
+	
+		settinglabel 
+			prefer art ($INFO[Container.Content])
+		setting
+			posterView_Prefer_Disc_movies
+			$INFO[Container.Viewmode]View_Prefer_Disc_$INFO[Container.Content]
+	
+	
+	
+	
+	video
+	id 50
+		keyart
+		animatedposter
+		poster - default
+		clearlogo
+		clearart
+		
+		disc e.g. 
+		
+	id 56
+		animatedfanart
+		fanart
+		landscape - default
+		banner
+		clearlogo
+		clearart
+		characterart
+		
+		
+	music
+	id 50
+		thumb
+		disc - song
+		disc - album
+	
+	
+	-->
 			<include content="PreferArt_Button">
 				<param name="button_id" value="4011" />
 				<param name="artwork_localized_id" value="Key Art" />
 				<param name="artwork" value="keyart" />
-				<param name="visible" value="Control.IsVisible(50)" />
+				<param name="visible" value="Control.IsVisible(50) + Window.IsActive(videos)" />
 				
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_animatedposter)">Skin.ToggleSetting(View_50_Prefer_animatedposter)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_animatedfanart)">Skin.ToggleSetting(View_50_Prefer_animatedfanart)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Discart_Album)">Skin.ToggleSetting(View_50_Prefer_Discart_Album)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Discart_Song)">Skin.ToggleSetting(View_50_Prefer_Discart_Song)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Disc_Video)">Skin.ToggleSetting(View_50_Prefer_Disc_Video)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_poster)">Skin.ToggleSetting(View_50_Prefer_poster)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_landscape)">Skin.ToggleSetting(View_50_Prefer_landscape)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_banner)">Skin.ToggleSetting(View_50_Prefer_banner)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_clearlogo)">Skin.ToggleSetting(View_50_Prefer_clearlogo)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_clearart)">Skin.ToggleSetting(View_50_Prefer_clearart)</onclick>
 				
@@ -572,15 +609,11 @@ ID 	Type 					Description
 				<param name="button_id" value="4012" />
 				<param name="artwork_localized_id" value="animatedposter" />
 				<param name="artwork" value="animatedposter" />
-				<param name="visible" value="Control.IsVisible(50)" />
+				<param name="visible" value="Control.IsVisible(50) + Window.IsActive(videos)" />
 				
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_animatedfanart)">Skin.ToggleSetting(View_50_Prefer_animatedfanart)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Discart_Album)">Skin.ToggleSetting(View_50_Prefer_Discart_Album)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Discart_Song)">Skin.ToggleSetting(View_50_Prefer_Discart_Song)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Disc_Video)">Skin.ToggleSetting(View_50_Prefer_Disc_Video)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_keyart)">Skin.ToggleSetting(View_50_Prefer_keyart)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_landscape)">Skin.ToggleSetting(View_50_Prefer_landscape)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_banner)">Skin.ToggleSetting(View_50_Prefer_banner)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_clearlogo)">Skin.ToggleSetting(View_50_Prefer_clearlogo)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_clearart)">Skin.ToggleSetting(View_50_Prefer_clearart)</onclick>
             
@@ -588,19 +621,17 @@ ID 	Type 					Description
 			
 			<include content="PreferArt_Button">
 				<param name="button_id" value="4013" />
+				<param name="artwork_localized_id" value="Poster" />
+				<param name="artwork" value="poster" />
+				<param name="visible" value="false" />
+			
+			</include>
+			
+			<include content="PreferArt_Button">
+				<param name="button_id" value="4014" />
 				<param name="artwork_localized_id" value="animatedfanart" />
 				<param name="artwork" value="animatedfanart" />
-				<param name="visible" value="Control.IsVisible(50) | Control.IsVisible(56)" />
-				
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_animatedposter)">Skin.ToggleSetting(View_50_Prefer_animatedposter)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Discart_Album)">Skin.ToggleSetting(View_50_Prefer_Discart_Album)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Discart_Song)">Skin.ToggleSetting(View_50_Prefer_Discart_Song)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Disc_Video)">Skin.ToggleSetting(View_50_Prefer_Disc_Video)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_keyart)">Skin.ToggleSetting(View_50_Prefer_keyart)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_landscape)">Skin.ToggleSetting(View_50_Prefer_landscape)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_banner)">Skin.ToggleSetting(View_50_Prefer_banner)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_clearlogo)">Skin.ToggleSetting(View_50_Prefer_clearlogo)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_clearart)">Skin.ToggleSetting(View_50_Prefer_clearart)</onclick>
+				<param name="visible" value="Control.IsVisible(56) + Window.IsActive(videos)" />
 				
 				<onclick condition="Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_Discart_Album)">Skin.ToggleSetting(View_56_Prefer_Discart_Album)</onclick>
 				<onclick condition="Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_Discart_Song)">Skin.ToggleSetting(View_56_Prefer_Discart_Song)</onclick>
@@ -611,56 +642,33 @@ ID 	Type 					Description
 			</include>
 			
 			<include content="PreferArt_Button">
-				<param name="button_id" value="4014" />
+				<param name="button_id" value="4015" />
 				<param name="artwork_localized_id" value="Landscape" />
 				<param name="artwork" value="landscape" />
-				<param name="visible" value="Control.IsVisible(50)" />
+				<param name="visible" value="false" />
 				
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_animatedposter)">Skin.ToggleSetting(View_50_Prefer_animatedposter)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_animatedfanart)">Skin.ToggleSetting(View_50_Prefer_animatedfanart)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Discart_Album)">Skin.ToggleSetting(View_50_Prefer_Discart_Album)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Discart_Song)">Skin.ToggleSetting(View_50_Prefer_Discart_Song)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Disc_Video)">Skin.ToggleSetting(View_50_Prefer_Disc_Video)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_poster)">Skin.ToggleSetting(View_50_Prefer_poster)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_keyart)">Skin.ToggleSetting(View_50_Prefer_keyart)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_banner)">Skin.ToggleSetting(View_50_Prefer_banner)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_clearlogo)">Skin.ToggleSetting(View_50_Prefer_clearlogo)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_clearart)">Skin.ToggleSetting(View_50_Prefer_clearart)</onclick>
-            
 			</include>
-			<include content="PreferArt_Button">
-				<param name="button_id" value="4015" />
-				<param name="artwork_localized_id" value="$LOCALIZE[20020]" />
-				<param name="artwork" value="banner" />
-				<param name="visible" value="Control.IsVisible(50)" />
-				
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_animatedposter)">Skin.ToggleSetting(View_50_Prefer_animatedposter)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_animatedfanart)">Skin.ToggleSetting(View_50_Prefer_animatedfanart)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Discart_Album)">Skin.ToggleSetting(View_50_Prefer_Discart_Album)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Discart_Song)">Skin.ToggleSetting(View_50_Prefer_Discart_Song)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Disc_Video)">Skin.ToggleSetting(View_50_Prefer_Disc_Video)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_poster)">Skin.ToggleSetting(View_50_Prefer_poster)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_keyart)">Skin.ToggleSetting(View_50_Prefer_keyart)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_landscape)">Skin.ToggleSetting(View_50_Prefer_landscape)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_clearlogo)">Skin.ToggleSetting(View_50_Prefer_clearlogo)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_clearart)">Skin.ToggleSetting(View_50_Prefer_clearart)</onclick>
-            
-			</include>
+			
 			<include content="PreferArt_Button">
 				<param name="button_id" value="4016" />
+				<param name="artwork_localized_id" value="$LOCALIZE[20020]" />
+				<param name="artwork" value="banner" />
+				<param name="visible" value="false" />
+			
+			</include>
+			
+			<include content="PreferArt_Button">
+				<param name="button_id" value="4017" />
 				<param name="artwork_localized_id" value="Clear Logo" />
 				<param name="artwork" value="clearlogo" />
 				<param name="visible" value="Control.IsVisible(50) | Control.IsVisible(56)" />
 				
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_animatedposter)">Skin.ToggleSetting(View_50_Prefer_animatedposter)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_animatedfanart)">Skin.ToggleSetting(View_50_Prefer_animatedfanart)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Discart_Album)">Skin.ToggleSetting(View_50_Prefer_Discart_Album)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Discart_Song)">Skin.ToggleSetting(View_50_Prefer_Discart_Song)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Disc_Video)">Skin.ToggleSetting(View_50_Prefer_Disc_Video)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_poster)">Skin.ToggleSetting(View_50_Prefer_poster)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_keyart)">Skin.ToggleSetting(View_50_Prefer_keyart)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_landscape)">Skin.ToggleSetting(View_50_Prefer_landscape)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_banner)">Skin.ToggleSetting(View_50_Prefer_banner)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_clearart)">Skin.ToggleSetting(View_50_Prefer_clearart)</onclick>
 				
 				<onclick condition="Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_animatedfanart)">Skin.ToggleSetting(View_56_Prefer_animatedfanart)</onclick>
@@ -671,20 +679,17 @@ ID 	Type 					Description
             
 			</include>
 			<include content="PreferArt_Button">
-				<param name="button_id" value="4017" />
+				<param name="button_id" value="4018" />
 				<param name="artwork_localized_id" value="Clear Art (else Char)" />
 				<param name="artwork" value="clearart" />
 				<param name="visible" value="Control.IsVisible(50) | Control.IsVisible(56)" />
 				
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_animatedposter)">Skin.ToggleSetting(View_50_Prefer_animatedposter)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_animatedfanart)">Skin.ToggleSetting(View_50_Prefer_animatedfanart)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Discart_Album)">Skin.ToggleSetting(View_50_Prefer_Discart_Album)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Discart_Song)">Skin.ToggleSetting(View_50_Prefer_Discart_Song)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Disc_Video)">Skin.ToggleSetting(View_50_Prefer_Disc_Video)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_poster)">Skin.ToggleSetting(View_50_Prefer_poster)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_keyart)">Skin.ToggleSetting(View_50_Prefer_keyart)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_landscape)">Skin.ToggleSetting(View_50_Prefer_landscape)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_banner)">Skin.ToggleSetting(View_50_Prefer_banner)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_clearlogo)">Skin.ToggleSetting(View_50_Prefer_clearlogo)</onclick>
 				
 				<onclick condition="Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_animatedfanart)">Skin.ToggleSetting(View_56_Prefer_animatedfanart)</onclick>
@@ -695,29 +700,21 @@ ID 	Type 					Description
             
 			</include>
 			
-			<control type="radiobutton" id="4018">
-				<visible>Window.IsActive(videos)</visible>
+			<control type="radiobutton" id="4019">
 				<label>Prefer Discart - Video Nav</label>
 				<font>font10</font>
-				<visible>Control.IsVisible(50) | Control.IsVisible(56)</visible>
+				<visible>Window.IsActive(videos) + !Container.Content(tvshows) + [Control.IsVisible(50) | Control.IsVisible(56)]</visible>
 				<onclick condition="Control.IsVisible(50)">Skin.ToggleSetting(View_50_Prefer_Disc_Video)</onclick>
 				<onclick condition="Control.IsVisible(56)">Skin.ToggleSetting(View_56_Prefer_Disc_Video)</onclick>
 				
 				
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_animatedposter)">Skin.ToggleSetting(View_50_Prefer_animatedposter)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_animatedfanart)">Skin.ToggleSetting(View_50_Prefer_animatedfanart)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Discart_Album)">Skin.ToggleSetting(View_50_Prefer_Discart_Album)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Discart_Song)">Skin.ToggleSetting(View_50_Prefer_Discart_Song)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_poster)">Skin.ToggleSetting(View_50_Prefer_poster)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_keyart)">Skin.ToggleSetting(View_50_Prefer_keyart)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_landscape)">Skin.ToggleSetting(View_50_Prefer_landscape)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_banner)">Skin.ToggleSetting(View_50_Prefer_banner)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_clearlogo)">Skin.ToggleSetting(View_50_Prefer_clearlogo)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_clearart)">Skin.ToggleSetting(View_50_Prefer_clearart)</onclick>
 				
 				<onclick condition="Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_animatedfanart)">Skin.ToggleSetting(View_56_Prefer_animatedfanart)</onclick>
-				<onclick condition="Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_Discart_Album)">Skin.ToggleSetting(View_56_Prefer_Discart_Album)</onclick>
-				<onclick condition="Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_Discart_Song)">Skin.ToggleSetting(View_56_Prefer_Discart_Song)</onclick>
 				<onclick condition="Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_clearart)">Skin.ToggleSetting(View_56_Prefer_clearart)</onclick>
 				<onclick condition="Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_clearlogo)">Skin.ToggleSetting(View_56_Prefer_clearlogo)</onclick>
             
@@ -727,18 +724,14 @@ ID 	Type 					Description
 				</selected>
 				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
 			</control>
-			<control type="radiobutton" id="4019">
+			<control type="radiobutton" id="4020">
 				<label>Prefer Discart - Music Songs</label>
-				<visible>Window.IsActive(music) + Container.Content(Songs)</visible>
 				<font>font10</font>
-				<visible>Control.IsVisible(50) | Control.IsVisible(56)</visible>
+				<visible>Window.IsActive(music) + Container.Content(Songs) + [Control.IsVisible(50) | Control.IsVisible(56)]</visible>
 				<onclick condition="Control.IsVisible(50)">Skin.ToggleSetting(View_50_Prefer_Discart_Song)</onclick>
 				<onclick condition="Control.IsVisible(56)">Skin.ToggleSetting(View_56_Prefer_Discart_Song)</onclick>
 				
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_animatedposter)">Skin.ToggleSetting(View_50_Prefer_animatedposter)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_animatedfanart)">Skin.ToggleSetting(View_50_Prefer_animatedfanart)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Discart_Album)">Skin.ToggleSetting(View_50_Prefer_Discart_Album)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Discart_Video)">Skin.ToggleSetting(View_50_Prefer_Discart_Video)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_poster)">Skin.ToggleSetting(View_50_Prefer_poster)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_keyart)">Skin.ToggleSetting(View_50_Prefer_keyart)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_landscape)">Skin.ToggleSetting(View_50_Prefer_landscape)</onclick>
@@ -747,8 +740,6 @@ ID 	Type 					Description
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_clearart)">Skin.ToggleSetting(View_50_Prefer_clearlogo)</onclick>
 				
 				<onclick condition="Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_animatedfanart)">Skin.ToggleSetting(View_56_Prefer_animatedfanart)</onclick>
-				<onclick condition="Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_Disc_Video)">Skin.ToggleSetting(View_56_Prefer_Disc_Video)</onclick>
-				<onclick condition="Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_Discart_Album)">Skin.ToggleSetting(View_56_Prefer_Discart_Album)</onclick>
 				<onclick condition="Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_clearart)">Skin.ToggleSetting(View_56_Prefer_clearart)</onclick>
 				<onclick condition="Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_clearlogo)">Skin.ToggleSetting(View_56_Prefer_clearlogo)</onclick>
             
@@ -758,27 +749,19 @@ ID 	Type 					Description
 				</selected>
 				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
 			</control>
-			<control type="radiobutton" id="4020">
+			<control type="radiobutton" id="4021">
 				<label>Prefer Discart - Music Albums</label>
-				<visible>Window.IsActive(music) + Container.Content(Albums)</visible>
 				<font>font10</font>
-				<visible>Control.IsVisible(50)</visible>
+				<visible>Window.IsActive(music) + Container.Content(Albums) + Control.IsVisible(50)</visible>
 				<onclick condition="Control.IsVisible(50)">Skin.ToggleSetting(View_50_Prefer_Discart_Album)</onclick>
 				
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_animatedposter)">Skin.ToggleSetting(View_50_Prefer_animatedposter)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_animatedfanart)">Skin.ToggleSetting(View_50_Prefer_animatedfanart)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Discart_Song)">Skin.ToggleSetting(View_50_Prefer_Discart_Song)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Discart_Video)">Skin.ToggleSetting(View_50_Prefer_Discart_Video)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_poster)">Skin.ToggleSetting(View_50_Prefer_poster)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_keyart)">Skin.ToggleSetting(View_50_Prefer_keyart)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_landscape)">Skin.ToggleSetting(View_50_Prefer_landscape)</onclick>
-				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_banner)">Skin.ToggleSetting(View_50_Prefer_banner)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_clearlogo)">Skin.ToggleSetting(View_50_Prefer_clearlogo)</onclick>
 				<onclick condition="Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_clearart)">Skin.ToggleSetting(View_50_Prefer_clearlogo)</onclick>
             
 				<onclick condition="Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_animatedfanart)">Skin.ToggleSetting(View_56_Prefer_animatedfanart)</onclick>
-				<onclick condition="Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_Disc_Video)">Skin.ToggleSetting(View_56_Prefer_Disc_Video)</onclick>
-				<onclick condition="Control.IsVisible(56) + Skin.HasSetting(View_50_Prefer_Discart_Song)">Skin.ToggleSetting(View_50_Prefer_Discart_Song)</onclick>
 				<onclick condition="Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_clearart)">Skin.ToggleSetting(View_56_Prefer_clearart)</onclick>
 				<onclick condition="Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_clearlogo)">Skin.ToggleSetting(View_56_Prefer_clearlogo)</onclick>
             
@@ -789,7 +772,7 @@ ID 	Type 					Description
 				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
 			</control>
 			
-			<control type="radiobutton" id="4021">
+			<control type="radiobutton" id="4022">
 				<label>Prefer Circle Artwork with ClearLogo Overlay</label>
 				<font>font10</font>
 				<visible>Control.IsVisible(56)</visible>
@@ -802,8 +785,6 @@ ID 	Type 					Description
 				<onclick condition="Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_clearart)">Skin.ToggleSetting(View_56_Prefer_clearart)</onclick>
 				<onclick condition="Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_clearlogo)">Skin.ToggleSetting(View_56_Prefer_clearlogo)</onclick>
             
-				
-				
 				<selected>Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_CircleArt)</selected>
 				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
 			</control>

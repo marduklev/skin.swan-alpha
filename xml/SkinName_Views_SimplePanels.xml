@@ -1,31 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 
-	
-	<!-- media flags centered below current art left group  , studio and ratings centered right group ?
-	
-		<include content="MediaFlagGroup_Footer">
-				<param name="width is equal left panel width" value="e.g. 30%" />
-			</include>
-			<include content="Ratings_Footer">
-				<param name="width is equal offset left panel width" value="e.g. 30%" />
-			</include>
-
-		- need cond width h or constant panel width params for each view to let flags fit without exceeding width
-
-	-->
-	
 	<include name="footer">
-		<control description="ratings right" type="group">
-			<animation effect="slide" start="0,90" end="0,0" time="350" tween="back" easing="inout" delay="100">VisibleChange</animation>
-			<description>just test height for footer groulist</description>
+		<control type="group">
+			<animation effect="slide" start="0,90" end="0,0" time="350" tween="quadratic" easing="out" delay="100">VisibleChange</animation>
 			<visible>Control.IsVisible($PARAM[view_id]) + !Skin.HasSetting(View_$PARAM[view_id]_DisableFooter)</visible>
 			<bottom>0</bottom>
 			<height>90</height>
 			<control description="bg panel" type="image">
 				<texture colordiffuse="$VAR[Footer_PanelColor]">colors/white.png</texture>
 			</control>
-			
 			
 			<include content="MediaFlagGroup_Footer">
 				<param name="offset_left" value="$PARAM[offset_leftpanel]" />
@@ -61,7 +45,22 @@
 	<include name="Simple_Panels">
 		
 		<control type="group">
+			<visible>
+             [Control.IsVisible(51) + Skin.HasSetting(View_51_ShowBGPanel)] | 
+             [Control.IsVisible(52) + Skin.HasSetting(View_52_ShowBGPanel)] | 
+             [Control.IsVisible(53) + Skin.HasSetting(View_53_ShowBGPanel)] | 
+             [Control.IsVisible(54) + Skin.HasSetting(View_54_ShowBGPanel)]
+			</visible>
+			<include content="View_BGPanel">
+				<param name="width2" value="90" />
+				<param name="width3" value="100" />
+			</include>
+		</control>
+		
+		<control type="group">
 			<visible>Control.IsVisible(51)</visible>
+			
+			
 			
 			<control type="group">
 				<include content="Universal_Container">
@@ -72,7 +71,7 @@
 					
 					<param name="tags_visible" value="!Skin.HasSetting(View_51_DisableTags)" />
 					
-					<param name="visible" value="Control.IsVisible(51)" />
+					<param name="visible" value="true" />
 					
 					<param name="layout_height" value="430" />
 					<param name="layout_width" value="220" />
@@ -83,7 +82,8 @@
 				 
 					<viewtype label="poster">poster panel</viewtype>
 					
-					<left>4%</left>
+					<left>110</left>
+					<right>100</right>
 					<include>Oninfo_MovieSetInfo</include>
 					<include>NavControl_Media</include>
 					
