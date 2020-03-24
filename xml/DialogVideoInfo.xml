@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
 	<defaultcontrol always="true">8000</defaultcontrol>
-
-	<onload>RunScript(script.embuary.helper,action=encode,string='"$VAR[EncodeTitle]"',prop=EncodedTitle)</onload>
-	<onload condition="!string.isempty(listitem.dbid) + [container.content(movies) | String.IsEqual(ListItem.DBTYPE,movie)]">RunScript(script.embuary.helper,action=lookforfile,file='"$VAR[extrasLocation]"',prop=bonuscontentavail)</onload>
 	<onload>ClearProperty(AdditionalInfo)</onload>
 	<onload>RunScript(script.embuary.helper,action=resetposition,container=8601||8602||8603||8604||8605||8606||8607||8608||8609)</onload>
+	<onload>RunScript(script.embuary.helper,action=encode,string='"$VAR[EncodeTitle]"',prop=EncodedTitle)</onload>
+	<onload condition="!string.isempty(listitem.dbid) + [container.content(movies) | String.IsEqual(ListItem.DBTYPE,movie)]">RunScript(script.embuary.helper,action=lookforfile,file='"$VAR[extrasLocation]"',prop=bonuscontentavail)</onload>
 	
 	<onunload>ClearProperty(AdditionalInfo)</onunload>
 	<onunload>ClearProperty(EncodedTitle,home)</onunload>
@@ -36,7 +35,7 @@
 			<include content="Animation_TransitionFadeOut">
 				<param name="condition" value="[Window.IsActive(textviewer) | Window.IsVisible(script-embuary-video.xml) | Window.IsVisible(script-embuary-person.xml) | Window.IsVisible(script-embuary-image.xml)]" />
 			</include>
-			<animation effect="fade" start="100" end="0" time="250" condition="Control.HasFocus(9003)">conditional</animation>
+			<animation effect="fade" start="100" end="0" time="250" condition="Control.HasFocus(8903)">conditional</animation>
 				
 			<control type="group">
 				<description>bottom info fade studio + folderpath</description>
@@ -112,7 +111,7 @@
 					<param name="width" value="440" />
 					<param name="height" value="55" />
 					<param name="alignx" value="center" />
-					<param name="colordiffuse" value="red" />
+					<param name="colordiffuse" value="$VAR[Nav_HighlightColor]" />
 				</include>
 				<include content="Ratings_Footer">
 					<!-- 
@@ -377,8 +376,8 @@
 				<itemgap>10</itemgap>
 				
 				<onup condition="String.IsEmpty(Window.Property(AdditionalInfo))">SetFocus(8006)</onup>
-				
 				<ondown>SetFocus(8005)</ondown>
+				
 				<onleft>8000</onleft>
 				<onright>8000</onright>
 				<pagecontrol>60</pagecontrol>
@@ -397,7 +396,8 @@
 					<include>Button_VideoInfo</include>
 					<label>13404</label>
 				</control>
-				<control type="button" id="199">
+				
+				<control type="button" id="20">
 					<description>show textviewer plot</description>
 					<visible>!Skin.HasSetting(VideoInfo_Button_Plot)</visible>
 					<include>Button_VideoInfo</include>
@@ -405,7 +405,7 @@
 					<onclick>RunScript(script.embuary.helper,action=textviewer,header='$ESCINFO[ListItem.Title]',message='$ESCINFO[ListItem.Plot]')</onclick>
 				</control>
 				
-				<control type="togglebutton" id="103">
+				<control type="togglebutton" id="21">
 					<description>Play Trailer</description>
 					<visible>!Skin.HasSetting(VideoInfo_Button_Trailer) + [!String.IsEmpty(Window(home).Property(trailer_avail)) | !String.IsEmpty(ListItem.Trailer) | Integer.IsGreater(Container(8605).NumItems,0)]</visible>
 					<include>Button_VideoInfo</include>
@@ -417,7 +417,8 @@
 					<altlabel>244</altlabel>
 					<altclick>FullScreen</altclick>
 				</control>
-				<control type="button" id="105">
+				
+				<control type="button" id="22">
 					<description>Stop Trailer,Prop Cleared via Custom Window</description>
 					<visible>!String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
 					<include>Button_VideoInfo</include>
@@ -425,7 +426,7 @@
 					<onclick>Stop</onclick>
 				</control>
 				
-				<control type="button" id="115">
+				<control type="button" id="23">
 					<description>Embuary TMDB Info</description>
 					<visible>!Skin.HasSetting(EmbuaryTMDBInfo) + System.HasAddon(script.embuary.info)</visible>
 					<include>Button_VideoInfo</include>
@@ -447,7 +448,8 @@
 					<include>Button_VideoInfo</include>
 					<label>13511</label>
 				</control>
-				<control type="button" id="104">
+				
+				<control type="button" id="24">
 					<description>ArtworkBeef get Thumb</description>
 					<visible>[String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,musicvideo) | String.IsEqual(ListItem.DBType,episode)] + [system.hasaddon(script.artwork.beef) + !Skin.HasSetting(VideoInfo_Button_BeefGetThumb)]</visible>
 					<include>Button_VideoInfo</include>
@@ -456,6 +458,7 @@
 					<onclick condition="String.IsEqual(ListItem.DBType,tvshow) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=tvshow, dbid=$INFO[ListItem.DBID])</onclick>
 					<onclick condition="String.IsEqual(ListItem.DBType,movie) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=movie, dbid=$INFO[ListItem.DBID])</onclick>
 				</control>
+				
 				<control type="button" id="6">
 					<description>native refresh</description>
 					<include>Button_VideoInfo</include>
@@ -476,9 +479,9 @@
 					<focusedcolor />
 					<disabledcolor />
 					<pulseonselect />
+					<textoffsetx />
 					<texturefocus flipy="true">info/arrowdown.png</texturefocus>
 					<texturenofocus flipy="true">info/arrowdown.png</texturenofocus>
-					<textoffsetx />
 					
 					<!-- Main Info goto Info List -->
 					<onfocus condition="String.IsEmpty(Window.Property(AdditionalInfo))">SetProperty(AdditionalInfo, infolist)</onfocus>
@@ -498,9 +501,9 @@
 					<focusedcolor />
 					<disabledcolor />
 					<pulseonselect />
+					<textoffsetx />
 					<texturefocus>info/arrowdown.png</texturefocus>
 					<texturenofocus>info/arrowdown.png</texturenofocus>
-					<textoffsetx></textoffsetx>
 					
 					<!-- main page goto Itemcontainers -->
 					<onfocus condition="String.IsEmpty(Window.Property(AdditionalInfo))">SetProperty(AdditionalInfo, infocontainer)</onfocus>
@@ -517,12 +520,11 @@
 				<description>Item Containers</description>
 				<animation effect="slide" end="0,-910" time="1000" tween="cubic" reversible="false" condition="String.IsEqual(Window.Property(AdditionalInfo),infocontainer)">conditional</animation>
 				<animation effect="slide" start="0,-910" end="0,-0" time="800" tween="cubic" reversible="false" condition="!String.IsEqual(Window.Property(AdditionalInfo),infocontainer)">conditional</animation>
-				<animation effect="fade" start="100" end="0" time="250" condition="Control.HasFocus(9003)">conditional</animation>
+				<animation effect="fade" start="100" end="0" time="250" condition="Control.HasFocus(8903)">conditional</animation>
 				
 				<top>1090</top>
 				<left>120</left>
 				<height>880</height>
-				<!-- <width>1730</width> -->
 				<scrolltime tween="quadratic">400</scrolltime>
 				<onup>SetFocus(8006)</onup>
 				<ondown>8001</ondown>
@@ -538,14 +540,14 @@
 				
 				<!-- MovieSet -->
 				<include content="Universal_ContainerHeader">
-					<param name="groupid" value="8500" />
-					<param name="id" value="8600" />
+					<param name="groupid" value="8501" />
+					<param name="id" value="8601" />
 					<param name="label" value="$INFO[ListItem.Set,&quot; , &quot;]" />
-					<visible>Control.IsVisible(8600)</visible>
+					<visible>Control.IsVisible(8601)</visible>
 				</include>
 				<include content="Universal_Container">
-					<param name="id" value="8600" />
-					<param name="visible" value="!String.IsEmpty(ListItem.SetId) + [Integer.IsGreater(Container(8600).NumItems,0) | Container(8600).IsUpdating]" />
+					<param name="id" value="8601" />
+					<param name="visible" value="!String.IsEmpty(ListItem.SetId) + [Integer.IsGreater(Container(8601).NumItems,0) | Container(8601).IsUpdating]" />
 					<param name="type_height" value="380" />
 					<param name="tags_visible" value="true" />
 					<param name="layout_height" value="380" />
@@ -560,36 +562,38 @@
 					<content sortby="year" target="videos">videodb://movies/sets/$INFO[ListItem.SetId]/?setid=$INFO[ListItem.SetId]</content>
 				</include>
 				
+				<!-- NextUp -->
 				<include content="Universal_ContainerHeader">
-					<param name="groupid" value="8510" />
-					<param name="id" value="8610" />
+					<param name="groupid" value="8502" />
+					<param name="id" value="8602" />
 					<param name="label" value="Nächste Episode" />
-					<visible>Control.IsVisible(8610)</visible>
+					<visible>Control.IsVisible(8602)</visible>
 				</include>
-				
 				<include content="Universal_Container">
-					<param name="id" value="8610" />
-					<param name="visible" value="[Integer.IsGreater(ListItem.Property(UnwatchedEpisodes),0) + !String.IsEmpty(ListItem.DBID)] + [Integer.IsGreater(Container(8610).NumItems,0) | Container(8610).IsUpdating]" />
+					<param name="id" value="8602" />
+					<param name="visible" value="[Integer.IsGreater(ListItem.Property(UnwatchedEpisodes),0) + !String.IsEmpty(ListItem.DBID)] + [Integer.IsGreater(Container(8602).NumItems,0) | Container(8602).IsUpdating]" />
 					<param name="type_height" value="370" />
 					<param name="tags_visible" value="false" />
 					<param name="layout_height" value="360" />
 					<param name="layout_width" value="612" />
 					<param name="itemheight" value="350" />
 					<param name="itemwidth" value="595" />
-					<param name="ls_overlay_visible" value="true" />
+					<param name="ls_overlay_visible" value="!String.IsEqual(ListItem.Art(thumb),OverlaySpoiler.png) | [String.IsEqual(ListItem.Art(thumb),OverlaySpoiler.png) + String.IsEmpty(ListItem.Art(tvshow.landscape))]" />
 					<param name="layout" value="landscape" />
+					<param name="is_infowidget" value="!String.IsEqual(ListItem.Plot,$LOCALIZE[20370])" />
 					<content limit="1" sortby="playcount" target="videos">videodb://inprogresstvshows/$INFO[ListItem.DBID]/-1/?tvshowid=$INFO[ListItem.DBID]</content>
 				</include>
+				
 				<!-- CAST -->
 				<include content="Universal_ContainerHeader">
-					<param name="groupid" value="8501" />
-					<param name="id" value="8601" />
+					<param name="groupid" value="8503" />
+					<param name="id" value="8603" />
 					<param name="label" value="$LOCALIZE[344] $INFO[ListItem.Title,  &quot; , &quot;]" />
-					<visible>Control.IsVisible(8601)</visible>
+					<visible>Control.IsVisible(8603)</visible>
 				</include>
 				<include content="Universal_Container">
-					<param name="id" value="8601" />
-					<param name="visible" value="Integer.IsGreater(Container(8601).NumItems,0) | Container(8601).IsUpdating" />
+					<param name="id" value="8603" />
+					<param name="visible" value="Integer.IsGreater(Container(8603).NumItems,0) | Container(8603).IsUpdating" />
 					<param name="type_height" value="380" />
 					<param name="tags_visible" value="true" />
 					<param name="layout_height" value="380" />
@@ -601,15 +605,16 @@
 					<content>$VAR[EmbuaryCast]</content>
 				</include>
 				
+				<!-- Items by CAST -->
 				<include content="Universal_ContainerHeader">
-					<param name="groupid" value="8502" />
-					<param name="id" value="8602" />
-					<param name="label" value="$LOCALIZE[342] &amp; $LOCALIZE[20343] $LOCALIZE[1441] [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$INFO[Container(8601).ListItem.Label, &quot; , &quot;][/COLOR]" />
-					<visible>Control.IsVisible(8602)</visible>
+					<param name="groupid" value="8504" />
+					<param name="id" value="8604" />
+					<param name="label" value="$LOCALIZE[342] &amp; $LOCALIZE[20343] $LOCALIZE[1441] [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$INFO[Container(8603).ListItem.Label, &quot; , &quot;][/COLOR]" />
+					<visible>Control.IsVisible(8604)</visible>
 				</include>
 				<include content="Universal_Container">
-					<param name="id" value="8602" />
-					<param name="visible" value="Integer.IsGreater(Container(8601).NumItems,0) | Container(8601).IsUpdating" />
+					<param name="id" value="8604" />
+					<param name="visible" value="Integer.IsGreater(Container(8603).NumItems,0) | Container(8603).IsUpdating" />
 					<param name="type_height" value="380" />
 					<param name="tags_visible" value="true" />
 					<param name="layout_height" value="380" />
@@ -621,25 +626,24 @@
 					<include condition="!Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceInfo"/>
 					<include condition="Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceSelect"/>
 										
-					<content target="videos">videodb://movies/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22year%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22actor%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Container(8601).ListItem.Label]%22%5D%7D%2C%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
-					<content target="videos">videodb://tvshows/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22year%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22actor%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Container(8601).ListItem.Label]%22%5D%7D%2C%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D</content>
+					<content target="videos">videodb://movies/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22year%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22actor%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Container(8603).ListItem.Label]%22%5D%7D%2C%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
+					<content target="videos">videodb://tvshows/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22year%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22actor%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Container(8603).ListItem.Label]%22%5D%7D%2C%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D</content>
 				</include>
 				
-				<!-- MOVIE and TV SHOW By x1.04 Directors Named
-				<value condition="Control.IsVisible(8601)">$INFO[ListItem.label,[B],[/B]][CR]$INFO[ListItem.label2]</value>-->
+				<!-- MOVIE and TV SHOW by Directors -->
 				
 				<!-- xsp for shows support director, but missing listitem as info label 
 				<content target="videos">videodb://tvshows/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22director%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[ListItem.Director]%22%5D%7D%2C%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D</content> -->
 				
 				<include content="Universal_ContainerHeader">
-					<param name="groupid" value="8503" />
-					<param name="id" value="" />
+					<param name="groupid" value="8505" />
+					<param name="id" value="8605" />
 					<param name="label" value="$LOCALIZE[342] $LOCALIZE[19159] $LOCALIZE[20339] [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$INFO[ListItem.Director, &quot; , &quot;][/COLOR]" />
-					<visible>!String.IsEmpty(ListItem.Director) + Control.IsVisible(8603)</visible>
+					<visible>Control.IsVisible(8605)</visible>
 				</include>
 				<include content="Universal_Container">
-					<param name="id" value="8603" />
-					<param name="visible" value="[!Skin.HasSetting(VideoInfo_Content_Director) + !String.IsEmpty(ListItem.Director)] + [Integer.IsGreater(Container(8603).NumItems,0) | Container(8603).IsUpdating]" />
+					<param name="id" value="8605" />
+					<param name="visible" value="[!Skin.HasSetting(VideoInfo_Content_Director) + !String.IsEmpty(ListItem.Director)] + [Integer.IsGreater(Container(8605).NumItems,0) | Container(8605).IsUpdating]" />
 					<param name="type_height" value="380" />
 					<param name="tags_visible" value="true" />
 					<param name="layout_height" value="380" />
@@ -663,14 +667,14 @@
 								
 				<!-- similiar -->
 				<include content="Universal_ContainerHeader">
-					<param name="groupid" value="8504" />
-					<param name="id" value="8604" />
+					<param name="groupid" value="8510" />
+					<param name="id" value="8610" />
 					<param name="label" value="Similiar [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$INFO[ListItem.Title,  &quot; , &quot;][/COLOR]" />
-					<visible>Control.IsVisible(8604)</visible>
+					<visible>Control.IsVisible(8610)</visible>
 				</include>
 				<include content="Universal_Container">
-					<param name="id" value="8604" />
-					<param name="visible" value="[!String.IsEmpty(ListItem.DBType) + !String.IsEmpty(ListItem.DBID)] + Integer.IsGreater(Container(8604).NumItems,0) | Container(8604).IsUpdating" />
+					<param name="id" value="8610" />
+					<param name="visible" value="[!String.IsEmpty(ListItem.DBType) + !String.IsEmpty(ListItem.DBID)] + Integer.IsGreater(Container(8610).NumItems,0) | Container(8610).IsUpdating" />
 					<param name="type_height" value="380" />
 					<param name="tags_visible" value="true" />
 					<param name="layout_height" value="380" />
@@ -686,17 +690,16 @@
 				</include>
 				
 				<!-- YOU TUBE -->
-				<!-- <param name="visible" value="[Integer.IsGreater(Container(8605).NumItems,0) | Container(8605).IsUpdating]" /> -->
 				<include content="Universal_ContainerHeader">
-					<param name="groupid" value="8505" />
-					<param name="id" value="8605" />
+					<param name="groupid" value="8511" />
+					<param name="id" value="8611" />
 					<param name="label" value="$LOCALIZE[31797] [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$VAR[Title,  &quot; , &quot;][/COLOR]" />
-					<visible>Control.IsVisible(8605)</visible>
+					<visible>Control.IsVisible(8611)</visible>
 				</include>
 				
 				<include condition="!Skin.HasSetting(VideoInfo_Content_Youtube)" content="Universal_Container">
-					<param name="id" value="8605" />
-					<param name="visible" value="!Skin.HasSetting(VideoInfo_Content_Youtube) + [Integer.IsGreater(Container(8605).NumItems,0) | Container(8605).IsUpdating]" />
+					<param name="id" value="8611" />
+					<param name="visible" value="!Skin.HasSetting(VideoInfo_Content_Youtube) + [Integer.IsGreater(Container(8611).NumItems,0) | Container(8611).IsUpdating]" />
 					<param name="type_height" value="365" />
 					<param name="tags_visible" value="true" />
 					<param name="layout_height" value="355" />
@@ -726,15 +729,14 @@
 					<param name="itemwidth" value="620" />
 					<param name="ls_overlay_visible" value="false" />
 					<param name="layout" value="fanart" />
-					<pagecontrol>90060</pagecontrol>
+					<pagecontrol>89060</pagecontrol>
 					<!-- 
 					<onclick condition="!Skin.HasSetting(UseExtraFanartFolder)">SetProperty(FanartType,mixedfanart,home)</onclick>
 					<onclick condition="!Skin.HasSetting(UseExtraFanartFolder)">ActivateWindow(1121)</onclick>
-					
 					-->
 					<!-- missed LOCAL fanart path for episodes -->
-					<onclick condition="Skin.HasSetting(UseExtraFanartFolder)">SetFocus(9001)</onclick>
-					<onclick condition="!Skin.HasSetting(UseExtraFanartFolder)">SetFocus(9003)</onclick>
+					<onclick condition="Skin.HasSetting(UseExtraFanartFolder)">SetFocus(8901)</onclick>
+					<onclick condition="!Skin.HasSetting(UseExtraFanartFolder)">SetFocus(8903)</onclick>
 					<include condition="!Skin.HasSetting(UseExtraFanartFolder) + [Container.Content(seasons) | Container.Content(episodes)]" content="ExtrafanartSource">
 						<param name="prefix" value="tvshow." />
 					</include>
@@ -742,7 +744,7 @@
 					<include condition="Skin.HasSetting(UseExtraFanartFolder)">ExtrafanartFolderPath</include>
 				</include>
 				
-				<!-- stored extra thumbs -->
+				<!-- stored extra thumbs ,content placeholder -->
 				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="8507" />
 					<param name="id" value="8607" />
@@ -751,7 +753,7 @@
 				</include>
 				<include content="Universal_Container">
 					<param name="id" value="8607" />
-					<param name="visible" value="Skin.HasSetting(UseExtraFanartFolder) + Integer.IsGreater(Container(8607).NumItems,0) | Container(8607).IsUpdating" />
+					<param name="visible" value="Skin.HasSetting(UseExtraFanartFolder) + [Integer.IsGreater(Container(8607).NumItems,0) | Container(8607).IsUpdating]" />
 					<param name="type_height" value="370" />
 					<param name="tags_visible" value="false" />
 					<param name="layout_height" value="370" />
@@ -760,11 +762,11 @@
 					<param name="itemwidth" value="620" />
 					<param name="ls_overlay_visible" value="false" />
 					<param name="layout" value="landscape" />
-					<pagecontrol>90060</pagecontrol>
-					<onclick>SetFocus(9002)</onclick>
+					<pagecontrol>89060</pagecontrol>
+					<onclick>SetFocus(8902)</onclick>
 					<content>$VAR[extraThumbsLocation]</content>
-					
 				</include>
+				
 				<!-- stored extras -->
 				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="8509" />
@@ -821,7 +823,7 @@
 				<!-- TotalEpisodes / Unwatched Episodes -->
 				<include content="VideoInfo_InfoList">
 					<param name="Info" value="$LOCALIZE[20360]" />
-                    <param name="InfoLabel" value="$INFO[ListItem.Property(TotalEpisodes),$LOCALIZE[20360]: ,  •  ]$INFO[ListItem.Property(unWatchedepisodes),$LOCALIZE[31092]: ,]" />
+                    <param name="InfoLabel" value="$INFO[ListItem.Property(TotalEpisodes),$LOCALIZE[20360]: ,  •  ]$INFO[ListItem.Property(unWatchedepisodes),$LOCALIZE[16101]: ,]" />
 					<param name="icon" value="dialogs/videoinfo/time-icon.png" />
 					<param name="visible" value="!String.IsEmpty(ListItem.Property(TotalEpisodes))" />
 				</include>
@@ -946,27 +948,27 @@
 		</control>
 		
 		<include content="VideoInfo_SlideshowNav">
-			<param name="ButtonID" value="9001" />
+			<param name="ButtonID" value="8901" />
 			<param name="ContainerID" value="8606" />
 		</include>
 		<include content="VideoInfo_SlideshowNav">
-			<param name="ButtonID" value="9002" />
+			<param name="ButtonID" value="8902" />
 			<param name="ContainerID" value="8607" />
 		</include>
 		<include content="VideoInfo_SlideshowNav">
-			<param name="ButtonID" value="9003" />
+			<param name="ButtonID" value="8903" />
 			<param name="ContainerID" value="8606" />
 			<param name="origin" value="Art(thumb)" />
 		</include>
 		
-		<control type="scrollbar" id="90060">
+		<control type="scrollbar" id="89060">
 			<description> slideshow scrollbar </description>
 			<width>1920</width>
 			<centerleft>50%</centerleft>
 			<height>8</height>
 			<orientation>horizontal</orientation>
 			<bottom>0</bottom>
-			<visible>Control.HasFocus(9001) | Control.HasFocus(9002) | Control.HasFocus(9003)</visible>
+			<visible>Control.HasFocus(8901) | Control.HasFocus(8902) | Control.HasFocus(8903)</visible>
 			<texturesliderbackground colordiffuse="$VAR[scrollbar_panel]">colors/white.png</texturesliderbackground>
 			<texturesliderbar colordiffuse="$VAR[scrollbar_slider_fo]">colors/white.png</texturesliderbar>
 			<textureslidernib />

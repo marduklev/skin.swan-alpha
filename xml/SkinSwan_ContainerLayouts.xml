@@ -344,7 +344,26 @@
         </definition>
     </include>
 	
-	
+	<include name="Custom_Container">
+		<param name="type" default="panel" />
+		<param name="type_height" default="400" />
+		<param name="type_pos_top" default="50" />
+		<param name="orientation" default="horizontal" />
+		
+		<definition>
+		<control type="$PARAM[type]" id="$PARAM[id]">
+			<orientation>$PARAM[orientation]</orientation>
+			<preloaditems>2</preloaditems>
+			<scrolltime tween="quadratic">400</scrolltime>
+			
+			<height>$PARAM[type_height]</height>
+			<top>$PARAM[type_pos_top]</top>
+			<visible>$PARAM[visible]</visible>
+			
+			<nested />
+		</control>
+		</definition>
+	</include>
 	<!-- ##################### -->
 	<!--  Container TYPE UNI   -->
 	<!-- ##################### -->
@@ -361,7 +380,11 @@
 		<param name="tagbgpanel_visible" value="true" />
 		<param name="ls_overlay_visible" default="false" />
 		<param name="banner_overlay_visible" default="false" />
-		<param name="get_bgpanel" value="true" />
+		<param name="get_bgpanel" default="true" />
+		
+		<param name="is_infowidget" default="false" />
+		<param name="infowidth" default="900" />
+		
 		<definition>
 		<control type="$PARAM[type]" id="$PARAM[id]">
 			<nested />
@@ -387,6 +410,15 @@
 						<param name="autoscroll" value="false" />
 						<param name="bordersize_bg" value="6" />
 					</include>
+				</control>
+				<control type="group">
+					<left>$PARAM[itemwidth]</left>
+					<height>$PARAM[itemheight]</height>
+					<width>$PARAM[infowidth]</width>
+					<visible>$PARAM[is_infowidget]</visible>
+					<animation effect="fade" end="30" condition="true">Conditional</animation>
+			
+					<include content="UniversalWidgetInfo" />
 				</control>
 			</itemlayout>
 			<focusedlayout height="$PARAM[layout_height]" width="$PARAM[layout_width]">
@@ -415,6 +447,13 @@
 							</include>
 						</control>
 					</control>
+				</control>
+				<control type="group">
+					<left>$PARAM[itemwidth]</left>
+					<height>$PARAM[itemheight]</height>
+					<width>$PARAM[infowidth]</width>
+					<visible>$PARAM[is_infowidget]</visible>
+					<include content="UniversalWidgetInfo" />
 				</control>
 			</focusedlayout>
 		</control>
@@ -638,7 +677,54 @@
         </definition>
     </include>
 	
+	<include name="UniversalWidgetInfo">
 	
+		<control type="label">
+			<top>0</top>
+			<left>50</left>
+			<font>font36_title</font>
+			<height>50</height>
+			<align>left</align>
+			<aligny>bottom</aligny>
+			<scroll delay="2000">true</scroll>
+			<scrollspeed>40</scrollspeed>
+			<textcolor>$VAR[Nav_HighlightColor]</textcolor>
+			<info>ListItem.Title</info>
+		</control>
+		<control type="textbox">
+			<top>70</top>
+			<left>50</left>
+			<font>PlotSemiBold</font>
+			<bottom>50</bottom>
+			<align>left</align>
+			<aligny>top</aligny>
+			<autoscroll>false</autoscroll>
+			<textcolor>$VAR[Nav_LabelPrimaryColor]</textcolor>
+			<info>ListItem.Plot</info>
+		</control>
+		<control type="textbox">
+			<bottom>0</bottom>
+			<left>50</left>
+			<font>font_flag</font>
+			<height>30</height>
+			<align>left</align>
+			<aligny>top</aligny>
+			<autoscroll>false</autoscroll>
+			<textcolor>$VAR[Nav_HighlightColor]</textcolor>
+			<label>$INFO[ListItem().Duration(m),, $LOCALIZE[12391]]</label>
+		</control>
+		<control type="textbox">
+			<bottom>0</bottom>
+			<left>50</left>
+			<font>font_flag</font>
+			<height>30</height>
+			<align>right</align>
+			<aligny>top</aligny>
+			<autoscroll>false</autoscroll>
+			<textcolor>$VAR[Nav_HighlightColor]</textcolor>
+			<info>ListItem.Premiered</info>
+		</control>
+	</include>
 	
 	<!-- COMMON LAYOUTS - Poster , square, circle , Landscape , Banner -->
 	
@@ -988,6 +1074,9 @@ top-->
 	
 	<variable name="ImageLayout_landscape">
 		<value condition="String.IsEqual(ListItem.Label,..)">defaultfolderback.png</value>
+		
+		<value condition="String.IsEqual(ListItem.Art(thumb),OverlaySpoiler.png) + !String.IsEmpty(ListItem.Art(tvshow.landscape))">$INFO[ListItem.Art(tvshow.landscape)]</value>
+		<value condition="String.IsEqual(ListItem.Art(thumb),OverlaySpoiler.png) + !String.IsEmpty(ListItem.Art(tvshow.fanart))">$INFO[ListItem.Art(tvshow.fanart)]</value>
 		
 		<value condition="[Container.Content(studios) | String.IsEqual(ListItem.dbtype,studio)]">$INFO[ListItem.Label,resource://resource.images.studios.white/,.png]</value>
 		<value condition="String.IsEqual(ListItem.Label,..)">defaultfolderback.png</value>
