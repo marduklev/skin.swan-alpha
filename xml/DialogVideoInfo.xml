@@ -418,13 +418,15 @@
 					<altclick>FullScreen</altclick>
 				</control>
 				
+				<!-- 
+				no scroll even if visible false ?
 				<control type="button" id="22">
 					<description>Stop Trailer,Prop Cleared via Custom Window</description>
 					<visible>!String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
 					<include>Button_VideoInfo</include>
 					<label>36044</label>
 					<onclick>Stop</onclick>
-				</control>
+				</control> -->
 				
 				<control type="button" id="23">
 					<description>Embuary TMDB Info</description>
@@ -790,8 +792,8 @@
 				</include>
 			</control>
 			
-			<!-- 8003 INFOS TOP -->
-			<control type="grouplist" id="8003">
+			<!--  INFOS TOP -->
+			<control type="panel" id="8003">
 				<animation effect="slide" end="0,1200" time="1000" tween="cubic" reversible="false" condition="String.IsEqual(Window.Property(AdditionalInfo),infolist)">conditional</animation>
 				<animation effect="slide" start="0,1200" end="0,-0" time="800" tween="cubic" reversible="false" condition="!String.IsEqual(Window.Property(AdditionalInfo),infolist)">conditional</animation>
 				<animation effect="fade" start="0" end="100" time="600" reversible="false" condition="String.IsEqual(Window.Property(AdditionalInfo),infolist)">conditional</animation>
@@ -799,152 +801,126 @@
 				<animation effect="fade" start="100" end="0" time="600" condition="$EXP[TrailerIsPlaying]">conditional</animation>
 				
 				<top>-890</top>
+				<!-- 
 				<centerleft>30%</centerleft>
-				<width>1000</width>
+                <width>1000</width>
+				-->
+				<left>150</left>
+				<right>600</right>
+				
 				<height>550</height>
-				<orientation>vertical</orientation>
-				<itemgap>7</itemgap>
-				<usecontrolcoords>true</usecontrolcoords>
+				<orientation>horizontal</orientation>
 				
-				<!-- premiere date -->				
-				<include content="VideoInfo_InfoList">
-					<param name="Info" value="$LOCALIZE[20416]" />
-                    <param name="InfoLabel" value="$INFO[ListItem.Premiered]" />
-					<param name="icon" value="dialogs/videoinfo/premiered-icon.png" />
-					<param name="visible" value="!String.IsEmpty(ListItem.premiered)" />
-				</include>
-				<!-- year -->
-				<include content="VideoInfo_InfoList">
-					<param name="Info" value="$LOCALIZE[345]" />
-                    <param name="InfoLabel" value="$INFO[ListItem.Year]" />
-					<param name="icon" value="dialogs/videoinfo/premiered-icon.png" />
-					<param name="visible" value="String.IsEmpty(ListItem.Premiered) + !String.IsEmpty(ListItem.Year)" />
-				</include>
-				<!-- TotalEpisodes / Unwatched Episodes -->
-				<include content="VideoInfo_InfoList">
-					<param name="Info" value="$LOCALIZE[20360]" />
-                    <param name="InfoLabel" value="$INFO[ListItem.Property(TotalEpisodes),$LOCALIZE[20360]: ,  •  ]$INFO[ListItem.Property(unWatchedepisodes),$LOCALIZE[16101]: ,]" />
-					<param name="icon" value="dialogs/videoinfo/time-icon.png" />
-					<param name="visible" value="!String.IsEmpty(ListItem.Property(TotalEpisodes))" />
-				</include>
-				<!-- genre -->
-				<include content="VideoInfo_InfoList">
-					<param name="Info" value="$LOCALIZE[515]" />
-                    <param name="InfoLabel" value="$INFO[ListItem.Genre]" />
-					<param name="icon" value="dialogs/videoinfo/genre-icon.png" />
-					<param name="visible" value="!String.IsEmpty(ListItem.Genre)" />
-				</include>
-				<!-- status -->
-				<include content="VideoInfo_InfoList">
-					<param name="Info" value="$LOCALIZE[515]" />
-                    <param name="InfoLabel" value="$INFO[ListItem.Status]" />
-					<param name="icon" value="dialogs/videoinfo/genre-icon.png" />
-					<param name="visible" value="!String.IsEmpty(ListItem.Status)" />
-				</include>
-				
-				<!-- sh next aired -->
-				<include content="VideoInfo_InfoList">
-					<param name="Info" value="$LOCALIZE[31212] $LOCALIZE[31213]" />
-                    <param name="InfoLabel" value="$INFO[Window(Home).Property(SkinHelper.ListItem.airdaytime.label)]" />
-					<param name="icon" value="dialogs/videoinfo/genre-icon.png" />
-					<param name="visible" value="!String.IsEmpty(Window(Home).Property(SkinHelper.ListItem.airdaytime.label))" />
-				</include>
-				 
-				<!-- rating and votes simple  &amp; $LOCALIZE[205] -->
-				<include content="VideoInfo_InfoList">
-					<param name="Info" value="$LOCALIZE[563]" />
-                    <param name="InfoLabel" value="$INFO[ListItem.RatingAndVotes]" />
-					<param name="icon" value="flags/rating.png" />
-					<param name="visible" value="!String.IsEmpty(ListItem.RatingAndVotes)" />
-				</include>
-				
-				<!-- Director -->
-				<include content="VideoInfo_InfoList">
-					<param name="Info" value="$LOCALIZE[20339]" />
-                    <param name="InfoLabel" value="$INFO[ListItem.Director]" />
-					<param name="icon" value="dialogs/videoinfo/director-icon.png" />
-					<param name="visible" value="!String.IsEmpty(ListItem.Director)" />
-				</include>
-				<!-- Writer -->
-				<include content="VideoInfo_InfoList">
-					<param name="Info" value="$LOCALIZE[20417]" />
-                    <param name="InfoLabel" value="$INFO[ListItem.Writer]" />
-					<param name="icon" value="dialogs/videoinfo/writer-icon.png" />
-					<param name="visible" value="!String.IsEmpty(ListItem.Writer)" />
-				</include>
-				<!-- Studio -->
-				<include content="VideoInfo_InfoList">
-					<param name="Info" value="$LOCALIZE[29909]" />
-                    <param name="InfoLabel" value="$INFO[ListItem.Studio]" />
-					<param name="icon" value="dialogs/videoinfo/tvstudio-icon.png" />
-					<param name="visible" value="!String.IsEmpty(ListItem.Studio)" />
-				</include>
-				<!-- mpaa -->
-				<include content="VideoInfo_InfoList">
-					<param name="Info" value="MPAA" />
-                    <param name="InfoLabel" value="$INFO[ListItem.MPAA]" />
-					<param name="icon" value="flags/mpaa.png" />
-					<param name="visible" value="!String.IsEmpty(ListItem.MPAA)" />
-				</include>
-				<!-- Country -->
-				<include content="VideoInfo_InfoList">
-					<param name="Info" value="$LOCALIZE[574]" />
-                    <param name="InfoLabel" value="$INFO[ListItem.Country]" />
-					<param name="icon" value="dialogs/videoinfo/location.png" />
-					<param name="visible" value="!String.IsEmpty(ListItem.Country)" />
-				</include>
-				<!-- set -->
-				<include content="VideoInfo_InfoList">
-					<param name="Info" value="$LOCALIZE[36910]" />
-                    <param name="InfoLabel" value="$INFO[ListItem.Set]" />
-					<param name="icon" value="flags/discsets/diskmain_w.png" />
-					<param name="visible" value="!String.IsEmpty(ListItem.SetID)" />
-				</include>
-				<!-- sh -->
-				<include content="VideoInfo_InfoList">
-					<param name="Info" value="Einnahmen" />
-                    <param name="InfoLabel" value="$INFO[Window(Home).Property(SkinHelper.ListItem.Revenue.formatted),, $]" />
-					<param name="icon" value="dialogs/videoinfo/dollar.png" />
-					<param name="visible" value="!String.IsEmpty(Window(Home).Property(SkinHelper.ListItem.Revenue.formatted))" />
-				</include> 
-				<!-- sh -->
-				<include content="VideoInfo_InfoList">
-					<param name="Info" value="Budget" />
-                    <param name="InfoLabel" value="$INFO[Window(Home).Property(SkinHelper.ListItem.Budget.formatted),, $]" />
-					<param name="icon" value="dialogs/videoinfo/dollar.png" />
-					<param name="visible" value="!String.IsEmpty(Window(Home).Property(SkinHelper.ListItem.Budget.formatted))" />
-				</include>
-				<!-- sh -->				
-				<include content="VideoInfo_InfoList">
-					<param name="Info" value="BoxOffice" />
-                    <param name="InfoLabel" value="$INFO[Window(Home).Property(SkinHelper.ListItem.BoxOffice.formatted),, $]" />
-					<param name="icon" value="dialogs/videoinfo/dollar.png" />
-					<param name="visible" value="!String.IsEmpty(Window(Home).Property(SkinHelper.ListItem.BoxOffice.formatted))" />
-				</include>
-				<!-- audio stream -->			
-				<include content="VideoInfo_InfoList_AV_Flags">
-					<param name="Info" value="$LOCALIZE[21447]" />
-					<param name="InfoLabelProperty" value="AudioLanguage" />
-					<param name="icon" value="flags/audio.png" />
-					<param name="visible" value="!String.IsEmpty(ListItem.AudioLanguage) | !String.IsEmpty(ListItem.Property(AudioLanguage.1))" />
-                </include>
-				<!-- sub flags -->
-				<include content="VideoInfo_InfoList_AV_Flags">
-					<param name="Info" value="$LOCALIZE[21448]" />
-					<param name="InfoLabelProperty" value="SubtitleLanguage" />
-					<param name="icon" value="flags/subtitles.png" />
-					<param name="visible" value="!String.IsEmpty(ListItem.SubtitleLanguage) | !String.IsEmpty(ListItem.Property(SubtitleLanguage.1))" />
-                </include>
-				<!-- sh  awards -->
-				<include content="VideoInfo_InfoList">
-					<param name="Info" value="Awards" />
-                    <param name="InfoLabel" value="$INFO[Window(Home).Property(SkinHelper.ListItem.Awards)]" />
-					<param name="icon" value="flags/flags_color/addratings/oscarbw.png" />
-					<param name="visible" value="!String.IsEmpty(Window(Home).Property(SkinHelper.ListItem.Awards))" />
-                </include>
+				<itemlayout width="500" height="80">
+					<include content="Static_InfoList" />
+				</itemlayout>
+				<focusedlayout />
+				<content>
+					<include content="Static_Item">
+						<param name="label" value="$LOCALIZE[20416]" />
+						<param name="label2" value="$INFO[ListItem.Premiered]" />
+						<param name="visible" value="!String.IsEmpty(ListItem.premiered)" />
+					</include>
+					<include content="Static_Item">
+						<param name="label" value="$LOCALIZE[345]" />
+						<param name="label2" value="$INFO[ListItem.Year]" />
+						<param name="visible" value="String.IsEmpty(ListItem.Premiered) + !String.IsEmpty(ListItem.Year)" />
+					</include>
+					<include content="Static_Item">
+						<param name="label" value="$LOCALIZE[20360]" />
+						<param name="label2" value="$INFO[ListItem.Property(TotalEpisodes),$LOCALIZE[20360]: ,  •  ]$INFO[ListItem.Property(unWatchedepisodes),$LOCALIZE[16101]: ,]" />
+						<param name="visible" value="!String.IsEmpty(ListItem.Property(TotalEpisodes))" />
+					</include>
+					<include content="Static_Item">
+						<param name="label" value="$LOCALIZE[515]" />
+						<param name="label2" value="$INFO[ListItem.Genre]" />
+						<param name="visible" value="!String.IsEmpty(ListItem.Genre)" />
+					</include>
+					<include content="Static_Item">
+						<param name="label" value="$LOCALIZE[515]" />
+						<param name="label2" value="$INFO[ListItem.Status]" />
+						<param name="visible" value="!String.IsEmpty(ListItem.Status)" />
+					</include>
+					<include content="Static_Item">
+						<param name="label" value="$LOCALIZE[31212] $LOCALIZE[31213]" />
+						<param name="label2" value="$INFO[Window(Home).Property(SkinHelper.ListItem.airdaytime.label)]" />
+						<param name="visible" value="!String.IsEmpty(Window(Home).Property(SkinHelper.ListItem.airdaytime.label))" />
+					</include>
+					<include content="Static_Item">
+						<param name="label" value="$LOCALIZE[563]" />
+						<param name="label2" value="$INFO[ListItem.RatingAndVotes]" />
+						<param name="visible" value="!String.IsEmpty(ListItem.RatingAndVotes)" />
+					</include>
+					<include content="Static_Item">
+						<param name="label" value="$LOCALIZE[20339]" />
+						<param name="label2" value="$INFO[ListItem.Director]" />
+						<param name="visible" value="!String.IsEmpty(ListItem.Director)" />
+					</include>
+					<include content="Static_Item">
+						<param name="label" value="$LOCALIZE[20417]" />
+						<param name="label2" value="$INFO[ListItem.Writer]" />
+						<param name="visible" value="!String.IsEmpty(ListItem.Writer)" />
+					</include>
+					<include content="Static_Item">
+						<param name="label" value="$LOCALIZE[29909]" />
+						<param name="label2" value="$INFO[ListItem.Studio]" />
+						<param name="visible" value="!String.IsEmpty(ListItem.Studio)" />
+					</include>
+					<include content="Static_Item">
+						<param name="label" value="MPAA" />
+						<param name="label2" value="$INFO[ListItem.MPAA]" />
+						<param name="visible" value="!String.IsEmpty(ListItem.MPAA)" />
+					</include>
+					<include content="Static_Item">
+						<param name="label" value="$LOCALIZE[574]" />
+						<param name="label2" value="$INFO[ListItem.Country]" />
+						<param name="visible" value="!String.IsEmpty(ListItem.Country)" />
+					</include>
+					<include content="Static_Item">
+						<param name="label" value="$LOCALIZE[36910]" />
+						<param name="label2" value="$INFO[ListItem.Set]" />
+						<param name="visible" value="!String.IsEmpty(ListItem.SetID)" />
+					</include>
+					<include content="Static_Item">
+						<param name="label" value="Einnahmen" />
+						<param name="label2" value="$INFO[Window(Home).Property(SkinHelper.ListItem.Revenue.formatted),, $]" />
+						<param name="visible" value="!String.IsEmpty(Window(Home).Property(SkinHelper.ListItem.Revenue.formatted))" />
+					</include> 
+					<include content="Static_Item">
+						<param name="label" value="Budget" />
+						<param name="label2" value="$INFO[Window(Home).Property(SkinHelper.ListItem.Budget.formatted),, $]" />
+						<param name="visible" value="!String.IsEmpty(Window(Home).Property(SkinHelper.ListItem.Budget.formatted))" />
+					</include>
+					<include content="Static_Item">
+						<param name="label" value="BoxOffice" />
+						<param name="label2" value="$INFO[Window(Home).Property(SkinHelper.ListItem.BoxOffice.formatted),, $]" />
+						<param name="visible" value="!String.IsEmpty(Window(Home).Property(SkinHelper.ListItem.BoxOffice.formatted))" />
+					</include>
+					<include content="Static_Item">
+						<param name="label" value="Awards" />
+						<param name="label2" value="$INFO[Window(Home).Property(SkinHelper.ListItem.Awards)]" />
+						<param name="visible" value="!String.IsEmpty(Window(Home).Property(SkinHelper.ListItem.Awards))" />
+					</include>
+					<include content="Static_Item">
+						<param name="label" value="$LOCALIZE[21447]" />
+						<param name="label2" value="" />
+						<param name="visible" value="!String.IsEmpty(ListItem.AudioLanguage) | !String.IsEmpty(ListItem.Property(AudioLanguage.1))" />
+						<icon>$INFO[ListItem.AudioLanguage,resource://resource.images.languageflags.colour/,.png]</icon>
+						<property name="Icon2">$INFO[ListItem.Property(AudioLanguage.2),resource://resource.images.languageflags.colour/,.png]</property>
+						<property name="Icon3">$INFO[ListItem.Property(AudioLanguage.3),resource://resource.images.languageflags.colour/,.png]</property>
+						<property name="Icon4">$INFO[ListItem.Property(AudioLanguage.4),resource://resource.images.languageflags.colour/,.png]</property>
+					</include>
+					<include content="Static_Item">
+						<param name="label" value="$LOCALIZE[21448]" />
+						<param name="label2" value="" />
+						<param name="visible" value="!String.IsEmpty(ListItem.SubtitleLanguage) | !String.IsEmpty(ListItem.Property(SubtitleLanguage.1))" />
+						<icon>$INFO[ListItem.SubtitleLanguage,resource://resource.images.languageflags.colour/,.png]</icon>
+						<property name="Icon2">$INFO[ListItem.Property(SubtitleLanguage.2),resource://resource.images.languageflags.colour/,.png]</property>
+						<property name="Icon3">$INFO[ListItem.Property(SubtitleLanguage.3),resource://resource.images.languageflags.colour/,.png]</property>
+						<property name="Icon4">$INFO[ListItem.Property(SubtitleLanguage.4),resource://resource.images.languageflags.colour/,.png]</property>
+					</include>
+				</content>
 			</control>
-			
-			
 		</control>
 		
 		<include content="VideoInfo_SlideshowNav">

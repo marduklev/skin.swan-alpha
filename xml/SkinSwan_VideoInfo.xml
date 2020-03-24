@@ -102,7 +102,6 @@
 		<value>$LOCALIZE[33054]</value>
 	</variable>
 	
-		
 	<variable name="EncodeTitle">
 		<value condition="[ContainerContent(episodes) | String.IsEqual(ListItem.DBTYPE,episode)]">$INFO[ListItem.TVShowTitle]</value>
 		<value>$INFO[ListItem.Label]</value>
@@ -119,97 +118,58 @@
 		<textoffsetx>5</textoffsetx>
 	</include>
 	
-	<include name="VideoInfo_InfoList">
+	
+	<include name="Static_InfoList">
 		<control type="group">
-			<width>1000</width>
-			<height>40</height>
+			<width>500</width>
+			<height>60</height>
 			<top>0</top>
 			<left>10</left>
-			<visible>$PARAM[visible]</visible>
 			<control type="label">
-				<left>-10</left>
-				<width>250</width>
-				<height>40</height>
-				<font>Reg33</font>
+				<width>500</width>
+				<height>25</height>
+				<font>SearchControl</font>
 				<aligny>center</aligny>
-				<align>right</align>
 				<textcolor>$VAR[Nav_HighlightColor]</textcolor>
-				<label>$PARAM[Info]</label>
+				<label>$INFO[ListItem.Label,[B],[/B]]</label>
 			</control>
+			<control type="label">
+				<width>500</width>
+				<height>25</height>
+				<top>25</top>
+				<font>DialogListItem</font>
+				<aligny>center</aligny>
+				<textcolor>$VAR[Nav_LabelPrimaryColor]</textcolor>
+				<label>$INFO[ListItem.Label2]</label>
+			</control>
+			
 			<control type="image">
-				<left>250</left>
+				<top>25</top>
 				<width>40</width>
 				<height>40</height>
-				<colordiffuse>$VAR[Nav_LabelPrimaryColor]</colordiffuse>
-				<texture>$PARAM[icon]</texture>
-			</control>
-			<control type="label">
-				<left>300</left>
-				<width>730</width>
-				<height>40</height>
-				<font>Reg33</font>
-				<aligny>center</aligny>
-				<align>left</align>
-				<textcolor>$VAR[Nav_LabelPrimaryColor]</textcolor>
-				<label>$PARAM[InfoLabel]</label>
-			</control>
-		</control>
-       
-    </include>
-	<include name="VideoInfo_InfoList_AV_Flags">
-		<control type="group">
-			<width>1000</width>
-			<height>40</height>
-			<top>0</top>
-			<left>10</left>
-			<visible>$PARAM[visible]</visible>
-			<control type="label">
-				<left>-10</left>
-				<width>250</width>
-				<height>40</height>
-				<font>Reg33</font>
-				<aligny>center</aligny>
-				<align>right</align>
-				<textcolor>$VAR[Nav_HighlightColor]</textcolor>
-				<label>$PARAM[Info]</label>
+				<texture>$INFO[ListItem.Icon]</texture>
+				<visible>!String.IsEmpty(ListItem.Icon)</visible>
 			</control>
 			<control type="image">
-				<left>255</left>
-				<top>5</top>
-				<width>35</width>
-				<height>35</height>
-				<texture colordiffuse="$VAR[Nav_LabelPrimaryColor]">$PARAM[icon]</texture>
+				<top>25</top>
+				<width>40</width>
+				<height>40</height>
+				<texture>$INFO[ListItem.Property(Icon2)]</texture>
+				<visible>!String.IsEmpty(ListItem.Property(Icon2))</visible>
 			</control>
-			<control type="grouplist">
-				<top>3</top>
-				<left>300</left>
-				<width>160</width>
-				<usecontrolcoords>true</usecontrolcoords>
-				<itemgap>10</itemgap>
-				<orientation>horizontal</orientation>
-				
-				<control type="image">	
-					<width>40</width>
-					<height>40</height>
-					<texture>$INFO[ListItem.$PARAM[InfoLabelProperty],resource://resource.images.languageflags.colour/,.png]</texture>
-					<visible>!String.IsEmpty(ListItem.$PARAM[InfoLabelProperty]) | !String.IsEmpty(ListItem.Property($PARAM[InfoLabelProperty].1))</visible>
-				</control>
-				<control type="image">
-					<width>40</width>
-					<height>40</height>
-					<texture>$INFO[ListItem.Property($PARAM[InfoLabelProperty].2),resource://resource.images.languageflags.colour/,.png]</texture>
-					<visible>!String.IsEmpty(ListItem.Property($PARAM[InfoLabelProperty].2))</visible>
-				</control>
-				<control type="image">
-					<width>40</width>
-					<height>40</height>
-					<texture>$INFO[ListItem.Property($PARAM[InfoLabelProperty].3),resource://resource.images.languageflags.colour/,.png]</texture>
-					<visible>!String.IsEmpty(ListItem.Property($PARAM[InfoLabelProperty].3))</visible>
-				</control>
+			<control type="image">
+				<top>25</top>
+				<width>40</width>
+				<height>40</height>
+				<texture>$INFO[ListItem.Property(Icon3)]</texture>
+				<visible>!String.IsEmpty(ListItem.Property(Icon3))</visible>
 			</control>
+			
+			
 		</control>
 	</include>
 	
+		
 	<include name="Info_ActorThumb">
 				
 		<control type="group">
@@ -677,7 +637,16 @@
 		</definition>
 	</include>	
 	
-	
+	<include name="Static_Item">
+		<definition>
+		<item>
+			<label>$PARAM[label]</label>
+			<label2>$PARAM[label2]</label2>
+			<visible>$PARAM[visible]</visible>
+			<nested />
+		</item>
+		</definition>
+	</include>	
 	
 	<include name="panel_100">
 		<control type="panel" id="100">
