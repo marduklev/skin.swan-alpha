@@ -5,6 +5,7 @@
 	<onload>RunScript(script.embuary.helper,action=encode,string='"$VAR[EncodeTitle]"',prop=EncodedTitle)</onload>
 	<onload condition="!string.isempty(listitem.dbid) + [container.content(movies) | String.IsEqual(ListItem.DBTYPE,movie)]">RunScript(script.embuary.helper,action=lookforfile,file='"$VAR[extrasLocation]"',prop=bonuscontentavail)</onload>
 	<onload>ClearProperty(AdditionalInfo)</onload>
+	<onload>RunScript(script.embuary.helper,action=resetposition,container=8601||8602||8603||8604||8605||8606||8607||8608||8609)</onload>
 	
 	<onunload>ClearProperty(AdditionalInfo)</onunload>
 	<onunload>ClearProperty(EncodedTitle,home)</onunload>
@@ -478,22 +479,15 @@
 					<texturefocus flipy="true">info/arrowdown.png</texturefocus>
 					<texturenofocus flipy="true">info/arrowdown.png</texturenofocus>
 					<textoffsetx />
+					
 					<!-- Main Info goto Info List -->
-					<!-- <onfocus condition="String.IsEmpty(Window.Property(AdditionalInfo))">SetProperty(AdditionalInfo,infolist)</onfocus> -->
-					<!-- Info Containers goto Main Info -->
-					<!-- <onfocus condition="String.IsEqual(Window.Property(AdditionalInfo),infocontainer)">ClearProperty(AdditionalInfo)</onfocus>
-					<onfocus>SetFocus(8000)</onfocus>
-					 -->
-					<!-- Main Info goto Info List -->
-					<onfocus condition="!String.Contains(Window.Property(AdditionalInfo),infocontainer)">SetProperty(AdditionalInfo, infolist)</onfocus>
-					<onfocus condition="!String.Contains(Window.Property(AdditionalInfo),infocontainer)">SetFocus(8003)</onfocus>
-						<!-- - Info List Focus 8000 -->
-						<onfocus condition="!String.Contains(Window.Property(AdditionalInfo),infocontainer)">SetFocus(8000)</onfocus>
+					<onfocus condition="String.IsEmpty(Window.Property(AdditionalInfo))">SetProperty(AdditionalInfo, infolist)</onfocus>
+					<onfocus condition="String.IsEmpty(Window.Property(AdditionalInfo))">SetFocus(8003)</onfocus>
 					
 					<!-- Info Containers goto Main Info -->
 					<onfocus condition="String.Contains(Window.Property(AdditionalInfo),infocontainer)">ClearProperty(AdditionalInfo)</onfocus>
-					<onfocus condition="String.Contains(Window.Property(AdditionalInfo),infocontainer)">SetFocus(8000)</onfocus>
 					
+					<onfocus>SetFocus(8000)</onfocus>
 					
 					
 				</control>
@@ -509,18 +503,8 @@
 					<textoffsetx></textoffsetx>
 					
 					<!-- main page goto Itemcontainers -->
-					<!-- <onfocus condition="String.IsEmpty(Window.Property(AdditionalInfo))">SetFocus(8001)</onfocus>
-					<onfocus condition="String.IsEmpty(Window.Property(AdditionalInfo))">SetProperty(AdditionalInfo,infocontainer)</onfocus>
-					 -->
-					<!-- Info List goto Main Info -->
-					<!-- <onfocus condition="String.IsEqual(Window.Property(AdditionalInfo),infolist)">SetFocus(8000)</onfocus>
-					<onfocus condition="String.IsEqual(Window.Property(AdditionalInfo),infolist)">ClearProperty(AdditionalInfo)</onfocus>
-				 -->
-					
-					<!-- main page goto Itemcontainers -->
-					<onfocus condition="!String.Contains(Window.Property(AdditionalInfo),infolist)">SetProperty(AdditionalInfo, infocontainer)</onfocus>
-					<onfocus condition="!String.Contains(Window.Property(AdditionalInfo),infolist)">SetFocus(8001)</onfocus>
-					
+					<onfocus condition="String.IsEmpty(Window.Property(AdditionalInfo))">SetProperty(AdditionalInfo, infocontainer)</onfocus>
+					<onfocus condition="String.IsEmpty(Window.Property(AdditionalInfo))">SetFocus(8001)</onfocus>
 					
 					<!-- Info List goto Main Info -->
 					<onfocus condition="String.Contains(Window.Property(AdditionalInfo),infolist)">ClearProperty(AdditionalInfo)</onfocus>
