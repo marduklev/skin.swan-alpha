@@ -40,17 +40,34 @@
 				<description>bottom info fade studio + folderpath</description>
 				<visible>String.IsEqual(Window.Property(AdditionalInfo),infolist) | [$EXP[TrailerIsPlaying]]</visible>
 				<animation effect="fade" end="30" time="0" condition="true">conditional</animation>
-				
 				<animation effect="fade" start="0" end="100" time="450">VisibleChange</animation>
 				<include content="studiologo_image">
+					<visible>String.IsEmpty(Control.GetLabel(887767))</visible>
 					<param name="colordiffuse" value="$VAR[Nav_LabelPrimaryColor]"/>
-					<bottom>40</bottom>
-					<right>10</right>
+					<bottom>20</bottom>
+					<right>50</right>
 				</include>
-				<control type="label">
+				<include content="studiologo_image">
+					<visible>!String.IsEmpty(Control.GetLabel(887767))</visible>
+					<param name="colordiffuse" value="$VAR[Nav_LabelPrimaryColor]"/>
+					<top>140</top>
+					<left>470</left>
+				</include>
+				<!-- <control type="label">
 					<align>right</align>
-					<right>20</right>
-					<bottom>5</bottom>
+					<right>100</right>
+					<bottom>2</bottom>
+					<width>95%</width>
+					<height>40</height>
+					<font>debug</font>
+					<textcolor>$VAR[Nav_LabelSecondaryColor]</textcolor>
+					<label>$INFO[ListItem.Folderpath,[B]$LOCALIZE[573]:[/B]    ,]</label>
+					<visible>!String.IsEmpty(ListItem.Folderpath)</visible>
+				</control> -->
+				<control type="label">
+					<align>left</align>
+					<left>150</left>
+					<bottom>2</bottom>
 					<width>95%</width>
 					<height>40</height>
 					<font>debug</font>
@@ -84,10 +101,9 @@
 				<top>150</top>
 				
 				<include content="DiscArt">
-					<param name="size" value="420" />
-					<top>170</top>
-					<left>10</left>
-					<animation effect="slide" start="0" end="-410,0" tween="cubic" easing="inout" time="500" delay="100">VisibleChange</animation>
+					<param name="size" value="440" />
+					<top>120</top>
+					<animation effect="slide" start="0" end="-420,0" tween="cubic" easing="inout" time="500" delay="100">VisibleChange</animation>
 					<visible>String.IsEqual(Window.Property(AdditionalInfo),infolist)</visible>
 				</include>
 				<control type="image">
@@ -96,6 +112,7 @@
 					<description>thumb - test keep</description>
 					<aspectratio align="center" aligny="top" scalediffuse="true">stretch</aspectratio>
 					<texture background="true" diffuse="diffuse/poster.png" border="5">$VAR[ImageLayout_poster]</texture>
+					<!-- <texture background="true" diffuse="artworkdiffuse/poster.png" border="5">$VAR[ImageLayout_poster]</texture> -->
 				</control>
 				<control type="image">
 					<height>660</height>
@@ -104,6 +121,7 @@
 					<visible>!String.IsEqual(ListItem.DBType,musicvideo)</visible>
 					<aspectratio align="center" aligny="top" scalediffuse="true">stretch</aspectratio>
 					<texture background="true" colordiffuse="grey" diffuse="diffuse/poster.png">overlay/tornposter_a.png</texture>
+					<!-- <texture background="true" colordiffuse="grey" diffuse="artworkdiffuse/poster.png">overlay/tornposter_a.png</texture> -->
 				</control>
 				<include content="StarsRating_Image">
 					<top>-40</top>
@@ -149,8 +167,7 @@
 			</control>
 			
 			<control type="group">
-				<animation effect="slide" end="0,-120" time="600" reversible="false" condition="String.IsEqual(Window.Property(AdditionalInfo),infocontainer)">Conditional</animation>
-				<animation effect="slide" start="0,-120" end="0,-0" time="600" reversible="false" condition="!String.IsEqual(Window.Property(AdditionalInfo),infocontainer)">Conditional</animation>
+				<animation effect="slide" end="0,-120" time="600" condition="String.IsEqual(Window.Property(AdditionalInfo),infocontainer)">Conditional</animation>
 				<left>150</left>
 				<top>140</top>
 				<control type="image" id="887767">
@@ -355,23 +372,23 @@
 				<visible>String.IsEqual(Window.Property(AdditionalInfo),infolist) | [$EXP[TrailerIsPlaying]]</visible>
 				<animation effect="fade" start="0" end="100" time="450">VisibleChange</animation>
 				<height>150</height>
-				<bottom>50</bottom>
+				<bottom>100</bottom>
 				<left>100</left>
 				<include content="MediaFlagGroup_Footer">
 					<param name="align" value="left" />
 					<param name="width" value="70%" />
-					<param name="forcedcolor" value="$VAR[Nav_LabelPrimaryColor]" />
+					<param name="forcedcolor" value="$VAR[Nav_LabelSecondaryColor]" />
 				</include>
 			</control>
 					
 			
 			<control type="grouplist" id="8000">
 				<animation effect="fade" start="100" end="0" time="350" reversible="true" condition="String.IsEqual(Window.Property(AdditionalInfo),infocontainer)">Conditional</animation>
-				<animation effect="slide" end="0,130" time="350" reversible="true" condition="String.IsEqual(Window.Property(AdditionalInfo),infolist) | [$EXP[TrailerIsPlaying]]">Conditional</animation>
+				<animation effect="slide" end="0,100" time="350" reversible="true" condition="String.IsEqual(Window.Property(AdditionalInfo),infolist) | [$EXP[TrailerIsPlaying]]">Conditional</animation>
 				<top>850</top>
 				<left>150</left>
 				<right>620</right>
-				<height>50</height>
+				<height>55</height>
 				<itemgap>10</itemgap>
 				
 				<onup condition="String.IsEmpty(Window.Property(AdditionalInfo))">SetFocus(8006)</onup>
@@ -799,18 +816,18 @@
 				
 				<animation effect="fade" start="100" end="0" time="600" condition="$EXP[TrailerIsPlaying]">conditional</animation>
 				
-				<top>-900</top>
+				<top>-910</top>
 				<!-- 
 				<centerleft>30%</centerleft>
                 <width>1000</width>
 				-->
 				<left>150</left>
-				<right>600</right>
-				
-				<height>600</height>
+				<width>1000</width>
+				<autoscroll>true</autoscroll>
+				<height>540</height>
 				<orientation>horizontal</orientation>
 				
-				<itemlayout width="500" height="80">
+				<itemlayout width="500" height="90">
 					<include content="Static_InfoList" />
 				</itemlayout>
 				<focusedlayout />
@@ -840,11 +857,11 @@
 						<label2>$INFO[ListItem.Genre]</label2>
 						<visible>!String.IsEmpty(ListItem.Genre)</visible>
 					</item>
-					<item>
-						<label>$LOCALIZE[20074]</label>
-						<label2>$INFO[ListItem.MPAA]</label2>
-						<visible>!String.IsEmpty(ListItem.MPAA)</visible>
-					</item>
+					<!-- <item>
+						<label>$LOCALIZE[20459]</label>
+						<label2>$INFO[ListItem.Tag]</label2>
+						<visible>!String.IsEmpty(ListItem.Tag)</visible>
+					</item> -->
 					<item>
 						<label>$LOCALIZE[574]</label>
 						<label2>$INFO[ListItem.Country]</label2>
@@ -861,6 +878,11 @@
 						<visible>!String.IsEmpty(ListItem.Writer)</visible>
 					</item>
 					<item>
+						<label>$LOCALIZE[20074]</label>
+						<label2>$INFO[ListItem.MPAA]</label2>
+						<visible>!String.IsEmpty(ListItem.MPAA)</visible>
+					</item>
+					<item>
 						<label>$LOCALIZE[126]</label>
 						<label2>$INFO[ListItem.Status]</label2>
 						<visible>!String.IsEmpty(ListItem.Status)</visible>
@@ -875,7 +897,11 @@
 						<label2>$INFO[ListItem.RatingAndVotes]</label2>
 						<visible>!String.IsEmpty(ListItem.RatingAndVotes)</visible>
 					</item>
-					
+					<item>
+						<label>$LOCALIZE[13409]</label>
+						<label2>$INFO[ListItem.Top250,# ,]</label2>
+						<visible>!String.IsEmpty(ListItem.Top250)</visible>
+					</item>
 					<item>
 						<label>$LOCALIZE[29909]</label>
 						<label2>$INFO[ListItem.Studio]</label2>
@@ -900,6 +926,11 @@
 						<label>Awards</label>
 						<label2>$INFO[Window(Home).Property(SkinHelper.ListItem.Awards)]</label2>
 						<visible>!String.IsEmpty(Window(Home).Property(SkinHelper.ListItem.Awards))</visible>
+					</item>
+					<item>
+						<label />
+						<label2 />
+						<visible>true</visible>
 					</item>
 					<item>
 						<label>$LOCALIZE[21447]</label>
