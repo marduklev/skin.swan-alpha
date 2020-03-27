@@ -409,6 +409,9 @@
 						<param name="get_bannerlogo" value="$PARAM[banner_overlay_visible]" />
 						<param name="autoscroll" value="false" />
 						<param name="bordersize_bg" value="6" />
+						<param name="bottompanelcolor" value="$VAR[Widget_TasBGPanel_NF]" />
+						<param name="bottomtaglabelcolor" value="$VAR[Container_label_itemtag_nf]" />
+						<param name="bottomtaglabel2color" value="$VAR[Container_label2_itemtag_nf]" />
 					</include>
 				</control>
 				<control type="group">
@@ -439,10 +442,16 @@
 							<param name="get_bannerlogo" value="$PARAM[banner_overlay_visible]" />
 							<param name="autoscroll" value="true" />
 							<param name="bordersize_bg" value="4" />
+							<param name="bottompanelcolor" value="$VAR[Widget_TasBGPanel_FO]" />
+							<param name="bottomtaglabelcolor" value="$VAR[Container_label_itemtag_fo]" />
+							<param name="bottomtaglabel2color" value="$VAR[Container_label2_itemtag_fo]" />
 						</include>
 						<control type="group">
 							<visible>!$PARAM[circle_visible]</visible>
-							<include content="FocusOverlay">
+							<include condition="Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]" content="FocusOverlay">
+								<param name="diffusedimtext" value="artworkdiffuse/alt_roundedbganelENABLED/$PARAM[layout].png" />
+							</include>
+							<include condition="!Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]]" content="FocusOverlay">
 								<param name="diffusedimtext" value="artworkdiffuse/$PARAM[layout].png" />
 							</include>
 						</control>
@@ -460,6 +469,30 @@
 		</definition>
 	</include>
 	
+	
+	
+	<!-- variable vs 2 controls + visible cond
+			
+				themed textures diffuse a  if  
+							!Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + string.isequal(Skin.String(Widget_TasBGPanel,none))]
+				=artworkdiffuse/$PARAM[artwork].png
+		
+		
+				round top hard bottom  themed diffuse b  if 
+							[Skin.HasTheme(Roundedge) + !string.isequal(Skin.String(Widget_TasBGPanel,none))]
+			   =artworkdiffusealtpanel/$PARAM[artwork].png
+			
+			
+			contra - defaults
+			based on theme and color
+				var circle,landscape,poster,thumb,square
+				
+				
+			
+			if color is none -->
+			
+			
+	
 	<include name="UniversalLayout">
 		<param name="has_progressbar" default="false" />
 		<param name="has_watchedindicator" default="false" />
@@ -470,32 +503,69 @@
 		
 		<definition>
 		
-		<control type="image">
-			<description>testing framed border instead fullbg texture</description>
-			<texture>artworkdiffuse/$PARAM[artwork]border.png</texture>
-			<colordiffuse>$PARAM[colordiffuse]</colordiffuse>
-			<bordersize>$PARAM[bordersize_bg]</bordersize>
-		</control>
-		<control type="image">
-			<description>temp workaround for def white or very bright border, may an if not cond needed def icons</description>
-			<texture colordiffuse="66131313">artworkdiffuse/$PARAM[artwork].png</texture>
-			<bordersize>8</bordersize>
-			<visible>String.Contains(ListItem.Icon,default)</visible>
-        </control>
-		<control type="image">
-			<description>kodi default, aspectratio scalediffuse="true" aligny="center" align="center" stretch</description>
-			<texture background="true" diffuse="artworkdiffuse/$PARAM[artwork].png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
-			<bordersize>8</bordersize>
-			<visible>!String.IsEmpty(ListItem.Art($PARAM[artwork])) + ![Container.Content(studios) | String.IsEqual(ListItem.dbtype,studio)]</visible>
+		<control type="group">
+			<visible>!Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]]</visible>
+			<control type="image">
+				<description>testing framed border instead fullbg texture</description>
+				<texture>artworkdiffuse/$PARAM[artwork]border.png</texture>
+				<colordiffuse>$PARAM[colordiffuse]</colordiffuse>
+				<bordersize>$PARAM[bordersize_bg]</bordersize>
+			</control>
+			<control type="image">
+				<description>temp workaround for def white or very bright border, may an if not cond needed def icons</description>
+				<texture colordiffuse="66131313">artworkdiffuse/$PARAM[artwork].png</texture>
+				<bordersize>8</bordersize>
+				<visible>String.Contains(ListItem.Icon,default)</visible>
+			</control>
+			<control type="image">
+				<description>kodi default, aspectratio scalediffuse="true" aligny="center" align="center" stretch</description>
+				<texture background="true" diffuse="artworkdiffuse/$PARAM[artwork].png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
+				<bordersize>8</bordersize>
+				<visible>!String.IsEmpty(ListItem.Art($PARAM[artwork])) + ![Container.Content(studios) | String.IsEqual(ListItem.dbtype,studio)]</visible>
+			</control>
+			<control type="image">
+				<description>Fallback aspect scale</description>
+				<texture background="true" diffuse="artworkdiffuse/$PARAM[artwork].png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
+				<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
+				<bordersize>8</bordersize>
+				<visible>String.IsEmpty(ListItem.Art($PARAM[artwork])) + ![Container.Content(studios) | String.IsEqual(ListItem.dbtype,studio)]</visible>
+			</control>
 		</control>
 		
-		<control type="image">
-			<description>Fallback aspect scale</description>
-			<texture background="true" diffuse="artworkdiffuse/$PARAM[artwork].png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
-			<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
-			<bordersize>8</bordersize>
-			<visible>String.IsEmpty(ListItem.Art($PARAM[artwork])) + ![Container.Content(studios) | String.IsEqual(ListItem.dbtype,studio)]</visible>
+		
+		<control type="group">
+			<visible>Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]</visible>
+			<control type="image">
+				<description>testing framed border instead fullbg texture</description>
+				<texture>artworkdiffuse/alt_roundedbganelENABLED/$PARAM[artwork]border.png</texture>
+				<colordiffuse>$PARAM[colordiffuse]</colordiffuse>
+				<bordersize>$PARAM[bordersize_bg]</bordersize>
+			</control>
+			<control type="image">
+				<description>temp workaround for def white or very bright border, may an if not cond needed def icons</description>
+				<texture colordiffuse="66131313">artworkdiffuse/alt_roundedbganelENABLED/$PARAM[artwork].png</texture>
+				<bordersize>8</bordersize>
+				<visible>String.Contains(ListItem.Icon,default)</visible>
+			</control>
+			<control type="image">
+				<description>kodi default, aspectratio scalediffuse="true" aligny="center" align="center" stretch</description>
+				<texture background="true" diffuse="artworkdiffuse/alt_roundedbganelENABLED/$PARAM[artwork].png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
+				<bordersize>8</bordersize>
+				<visible>!String.IsEmpty(ListItem.Art($PARAM[artwork])) + ![Container.Content(studios) | String.IsEqual(ListItem.dbtype,studio)]</visible>
+			</control>
+			<control type="image">
+				<description>Fallback aspect scale</description>
+				<texture background="true" diffuse="artworkdiffuse/alt_roundedbganelENABLED/$PARAM[artwork].png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
+				<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
+				<bordersize>8</bordersize>
+				<visible>String.IsEmpty(ListItem.Art($PARAM[artwork])) + ![Container.Content(studios) | String.IsEqual(ListItem.dbtype,studio)]</visible>
+			</control>
+			
+			
 		</control>
+		
+		
+		
 		
 		<control description="aspect keep" type="group">
 			<visible>[Container.Content(studios) | String.IsEqual(ListItem.dbtype,studio)]</visible>
@@ -554,7 +624,7 @@
 				<font>CircleTag_Small</font>
 				<align>center</align>
 				<aligny>top</aligny>
-				<textcolor>$VAR[Container_label_itemtag]</textcolor>
+				<textcolor>$VAR[Container_label_itemtag_fo]</textcolor>
 				<selectedcolor>white</selectedcolor>
 				<label>$INFO[ListItem.Label,[B],[/B]]</label>
 			</control>
@@ -647,7 +717,7 @@
 				<left>5</left>
 				<right>5</right>
 				<height>70</height>
-				<texture colordiffuse="$VAR[Widget_TasBGPanel]">artworkdiffuse/banner.png</texture>
+				<texture colordiffuse="$PARAM[bottompanelcolor]">artworkdiffuse/tagbottom/tagpanel$PARAM[artwork].png</texture>
 			</control>
 			<control type="textbox">
 				<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
@@ -659,9 +729,9 @@
 				<font>CommonTag</font>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>$VAR[Container_label_itemtag]</textcolor>
+				<textcolor>$PARAM[bottomtaglabelcolor]</textcolor>
 				<selectedcolor>white</selectedcolor>
-				<label>$VAR[Tags_Bottom]</label>
+				<label>$VAR[Tag_label1][CR][COLOR=$PARAM[bottomtaglabel2color]]$VAR[Tag_label2][/COLOR]</label>
 			</control>
 		</control>
 		
@@ -670,10 +740,10 @@
 			<visible>!$PARAM[get_circle]</visible>
 			
 			<include condition="!Skin.HasTheme(Roundedge)" content="pos_left">
-				<param name="left" value="2%" />
+				<param name="left" value="3%" />
 			</include>
 			<include condition="!Skin.HasTheme(Roundedge)" content="pos_right">
-				<param name="right" value="2%" />
+				<param name="right" value="3%" />
 			</include>
 			<include condition="Skin.HasTheme(Roundedge)" content="pos_left">
 				<param name="left" value="15%" />
@@ -807,7 +877,7 @@ top-->
 			<font>CircleTag</font>
 			<align>center</align>
 			<aligny>center</aligny>
-			<textcolor>$VAR[Container_label_itemtag]</textcolor>
+			<textcolor>$VAR[Container_label_itemtag_fo]</textcolor>
 			<selectedcolor>white</selectedcolor>
 			<label>$INFO[ListItem.Label,[B],[/B]]</label>
 		</control>
@@ -956,6 +1026,21 @@ top-->
 		</definition>
 	</include>
 
+	<variable name="Tag_label1">
+		<value condition="String.IsEqual(ListItem.label,..)"></value>
+		<value condition="[![$EXP[embinfodialogactive]] + String.Contains(Container.Folderpath,script.embuary.info)] + [String.Contains(Container.Folderpath,call=upcoming) | String.Contains(Container.Folderpath,call=now_playing)]">$INFO[ListItem.Label]</value>
+		<value condition="$EXP[IsEpisode]">$INFO[ListItem.Season,[B]s,[/B]]$INFO[ListItem.Episode,[B]e,[/B] -]$INFO[ListItem.Title,[B],[/B]]$INFO[ListItem.Duration(mm), (, min)]</value>
+		<value condition="$EXP[IsSong]">$INFO[ListItem.Label,[B],[/B]]</value>
+		<value condition="!String.IsEmpty(ListItem.Year)">$INFO[ListItem.Label,[B],[/B]]</value>
+		<value>$INFO[ListItem.Label,[B],[/B]]</value>
+	</variable>
+	<variable name="Tag_label2">
+		<value condition="[![$EXP[embinfodialogactive]] + String.Contains(Container.Folderpath,script.embuary.info)] + [String.Contains(Container.Folderpath,call=upcoming) | String.Contains(Container.Folderpath,call=now_playing)]">$INFO[ListItem.Premiered]</value>
+		<value condition="$EXP[IsEpisode]">$INFO[ListItem.Year]</value>
+		<value condition="$EXP[IsSong]">$INFO[ListItem.Album]$INFO[ListItem.Year, (,)]</value>
+		<value condition="!String.IsEmpty(ListItem.Year)">$INFO[ListItem.Year]</value>
+		<value>$INFO[ListItem.Label2]</value>
+	</variable>
 	
 	<!--system current window is inconsistent using addon, sometimes 'empty' | 13020 | 13021 -->
 	<variable name="Tags_Bottom">
