@@ -146,16 +146,40 @@
 	
 	<!-- framed flag template label equal visible ? or nested-->
 	<include name="framedflag">
+	<param name="textcolor" default="$VAR[Nav_LabelPrimaryColor]" />
+	<definition>
 		<control type="button" id="$PARAM[id]">
 			<nested />
 			<align>center</align>
-			<textcolor>$VAR[Nav_LabelPrimaryColor]</textcolor>
+			<textcolor>$PARAM[textcolor]</textcolor>
 			<textoffsetx>10</textoffsetx>
-			<disabledcolor>$VAR[Nav_LabelPrimaryColor]</disabledcolor>
+			<disabledcolor>$PARAM[textcolor]</disabledcolor>
 			<texturefocus border="2" colordiffuse="$PARAM[color]">frames/frametest.png</texturefocus>
 			<texturenofocus border="2" colordiffuse="$PARAM[color]">frames/frametest.png</texturenofocus>
 			<enable>false</enable>
 		</control>
+	</definition>
+	</include>
+	<include name="circleframedflag">
+		<param name="size" default="46" />
+		<param name="font" default="debugtiny" />
+		<definition>
+		<control type="button" id="$PARAM[id]">
+			<nested />
+			<visible>!String.IsEmpty(Control.GetLabel($PARAM[id])</visible>
+			<align>center</align>
+			<textcolor>$PARAM[color]</textcolor>
+			<textoffsetx>5</textoffsetx>
+			<disabledcolor>$PARAM[color]</disabledcolor>
+			<texturefocus colordiffuse="$PARAM[color]">frame_circle.png</texturefocus>
+			<texturenofocus colordiffuse="$PARAM[color]">frame_circle.png</texturenofocus>
+			<enable>false</enable>
+			<width>$PARAM[size]</width>
+			<height>$PARAM[size]</height>
+			<font>$PARAM[font]</font>
+			<label>$PARAM[label]</label>
+		</control>
+		</definition>
 	</include>
 	
 	<variable name="StarsRating_ImageVariable">
@@ -597,16 +621,16 @@
 		<param name="align" default="left" />
 		<param name="width" default="70%" />
 		<param name="forcedcolor" default="$VAR[Footer_ItemColor]" />
+		<param name="top" default="5" />
 		<definition>
 		<control type="grouplist">
 			<orientation>horizontal</orientation>
 			<usecontrolcoords>true</usecontrolcoords>
 			<align>$PARAM[align]</align>
-			<top>5</top>
+			<top>$PARAM[top]</top>
 			<left>50</left>
 			<width>$PARAM[width]</width>
 			<itemgap>10</itemgap>
-			
 			<include content="MediaFlags_Footer">
 				<param name="id" value="70501"/>
 				<param name="flagtype" value="audio" />
@@ -637,10 +661,13 @@
 	</include>		
 	
 	<include name="MediaFlags_Footer">
+		<param name="width" default="75" />
+		<param name="height" default="75" />
+		
 		<definition>
 			<control type="image" id="$PARAM[id]">
-				<width>75</width>
-				<height>75</height>
+				<width>$PARAM[width]</width>
+				<height>$PARAM[width]</height>
 				<bordersize>1</bordersize>
 				<aspectratio align="center" aligny="center">keep</aspectratio>
 				<texture colordiffuse="$PARAM[color]">$INFO[ListItem.$PARAM[flag],flags/flagsmedia/$PARAM[flagtype]/,.png]</texture>

@@ -461,7 +461,15 @@
 			<label>Force_Tags</label>
 			<selected>Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)</selected>
 		</control>
-		<control type="button" id="11036">
+		<control type="radiobutton" id="11036">
+			<description>Widget Info panel</description>
+			<onclick condition="!Skin.HasSetting(UserWidget$PARAM[nr]_forceFixedlist)">Skin.ToggleSetting(UserWidget$PARAM[nr]_forceFixedlist)</onclick>
+			<onclick condition="Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)">Skin.ToggleSetting(UserWidget$PARAM[nr]_forceTag)</onclick>
+			<onclick>Skin.ToggleSetting(UserWidget$PARAM[nr]_bottominfo)</onclick>
+			<label>Show Widget Info at bottom (tags will be diasabled)</label>
+			<selected>Skin.HasSetting(UserWidget$PARAM[nr]_bottominfo)</selected>
+		</control>
+		<control type="button" id="11037">
 			<label>$LOCALIZE[581]</label>
 			<onclick>SetProperty(Dialog.1.Label,$LOCALIZE[571])</onclick>
 			<onclick>SetProperty(Dialog.1.BuiltIn,Skin.Reset(UserWidget$PARAM[nr]_sortby)||Skin.Reset(UserWidget$PARAM[nr]_sortby.label))</onclick>
@@ -520,7 +528,7 @@
 			<onclick>RunScript(script.embuary.helper,action=createselect,header=$LOCALIZE[581])</onclick>
 			<label2>$INFO[Skin.String(UserWidget$PARAM[nr]_sortby),',']</label2>
 		</control>
-		<control type="button" id="11037">
+		<control type="button" id="11038">
 			<description>Set Sortorder</description>
 			<label>$LOCALIZE[580]</label>
 			<onclick>SetProperty(Dialog.1.Label,$LOCALIZE[571])</onclick>
@@ -532,7 +540,7 @@
 			<onclick>RunScript(script.embuary.helper,action=createselect,header=$LOCALIZE[580])</onclick>
 			<label2>$INFO[Skin.String(UserWidget$PARAM[nr]_sortorder),',']</label2>
 		</control>
-		<control type="button" id="11038">
+		<control type="button" id="11039">
 			<description>Set Limit</description>
 			<label>$LOCALIZE[21427]</label>
 			<onclick>Skin.SetNumeric(UserWidget$PARAM[nr]_limit)</onclick>
@@ -552,7 +560,6 @@
 			<orientation>horizontal</orientation>
 			<height>350</height>
 			<visible>$PARAM[visible]</visible>
-			<description>kodi.wiki/view/Skinning_Manual#Filling_containers</description>
 			
 			<include content="WidgetHome_landscape" condition="String.IsEqual(Skin.String(UserWidget$PARAM[nr]_layout),landscape)">
 				<param name="nr" value="$PARAM[nr]" />
@@ -594,19 +601,7 @@
 					<texture border="5" background="true" colordiffuse="$PARAM[colordiffuse]">buttons/Genre_Red.png</texture>
 					<aspectratio scalediffuse="false" align="center" aligny="center">scale</aspectratio>
 				</control>
-				<control type="multiimage">
-					<description>multi image for sections</description>
-					<left>8</left>
-					<right>8</right>
-					<top>8</top>
-					<bottom>8</bottom>
-					<imagepath background="true" diffuse="home/home_matte2.png" fallback="home/titan.png">$INFO[ListItem.Icon]</imagepath>
-					<aspectratio scalediffuse="false" align="center" aligny="top">scale</aspectratio>
-					
-					<fadetime>450</fadetime>
-					<include condition="Skin.HasSetting(RandomizeBackground)">randomizeImages</include>
-					<visible>!String.IsEmpty(ListItem.Property(defaultID))</visible>
-				</control>
+				
 				<control type="label">
 					
 					<left>5%</left>
@@ -632,21 +627,7 @@
 					<texture border="5" background="true" colordiffuse="$PARAM[colordiffuse]">buttons/Genre_Red.png</texture>
 					<aspectratio scalediffuse="false" align="center" aligny="center">scale</aspectratio>
 				</control>
-				<control type="multiimage">
-					<description>multi image for sections</description>
-					<left>8</left>
-					<right>8</right>
-					<top>8</top>
-					<bottom>8</bottom>
-					<imagepath background="true" diffuse="home/home_matte2.png" fallback="home/titan.png">$INFO[ListItem.Icon]</imagepath>
-					<aspectratio scalediffuse="false" align="center" aligny="top">scale</aspectratio>
-					
-					<fadetime>450</fadetime>
-					<include condition="Skin.HasSetting(RandomizeBackground)">randomizeImages</include>
-					<visible>!String.IsEmpty(ListItem.Property(defaultID))</visible>
-				</control>
 				<control type="label">
-					
 					<left>5%</left>
 					<width>90%</width>
 					<height>100%</height>
@@ -662,15 +643,15 @@
 	</include>
 	
 	<include name="WidgetHome_poster">
-		<itemlayout height="350" width="200">
+		<itemlayout height="350" width="215" condition="Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)">
 			<control type="group">
-				<width>195</width>
+				<width>205</width>
 				<height>285</height>
 				<include content="UniversalLayout">
 					<param name="colordiffuse" value="$VAR[Container_item_nf]" />
 					<param name="artwork" value="poster" />
 					<param name="get_circle" value="false" />
-					<param name="get_tags" value="Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)" />
+					<param name="get_tags" value="true" />
 					<param name="get_landscapelogo" value="false" />
 					<param name="get_bannerlogo" value="false" />
 					<param name="autoscroll" value="false" />
@@ -681,10 +662,10 @@
 				</include>
 			</control>
 		</itemlayout>
-		<focusedlayout height="340" width="200">
+		<focusedlayout height="350" width="215" condition="Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)">
 			<include>SetPropOnFocus_HiddenButton</include>
 			<control type="group">
-				<width>195</width>
+				<width>205</width>
 				<height>285</height>
 				<control type="group">
 					<visible>!Control.HasFocus($PARAM[id])</visible>
@@ -692,7 +673,7 @@
 						<param name="colordiffuse" value="$VAR[Container_item_nf]" />
 						<param name="artwork" value="poster" />
 						<param name="get_circle" value="false" />
-						<param name="get_tags" value="Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)" />
+						<param name="get_tags" value="true" />
 						<param name="get_landscapelogo" value="false" />
 						<param name="get_bannerlogo" value="false" />
 						<param name="autoscroll" value="false" />
@@ -727,10 +708,71 @@
 				</control>
 			</control>
 		</focusedlayout>
+		<itemlayout height="350" width="245" condition="!Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)">
+			<include content="UniversalLayout">
+				<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+				<param name="artwork" value="poster" />
+				<param name="get_circle" value="false" />
+				<param name="get_tags" value="Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)" />
+				<param name="get_landscapelogo" value="false" />
+				<param name="get_bannerlogo" value="false" />
+				<param name="autoscroll" value="false" />
+				<param name="bordersize_bg" value="6" />
+				<param name="bottompanelcolor" value="$VAR[Widget_TasBGPanel_NF]" />
+				<param name="bottomtaglabelcolor" value="$VAR[Container_label_itemtag_nf]" />
+				<param name="bottomtaglabel2color" value="$VAR[Container_label2_itemtag_nf]" />
+			</include>
+		</itemlayout>
+		<focusedlayout height="350" width="245" condition="!Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)">
+			<include>SetPropOnFocus_HiddenButton</include>
+			<control type="group">
+				<width>234</width>
+				<height>350</height>
+				<control type="group">
+					<visible>!Control.HasFocus($PARAM[id])</visible>
+					<include content="UniversalLayout">
+						<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+						<param name="artwork" value="poster" />
+						<param name="get_circle" value="false" />
+						<param name="get_tags" value="false" />
+						<param name="get_landscapelogo" value="false" />
+						<param name="get_bannerlogo" value="false" />
+						<param name="autoscroll" value="false" />
+						<param name="bordersize_bg" value="6" />
+						<param name="bottompanelcolor" value="$VAR[Widget_TasBGPanel_NF]" />
+						<param name="bottomtaglabelcolor" value="$VAR[Container_label_itemtag_nf]" />
+						<param name="bottomtaglabel2color" value="$VAR[Container_label2_itemtag_nf]" />
+					</include>
+				</control>
+				<control type="group">
+					<visible>Control.HasFocus($PARAM[id])</visible>
+					<include>Animation_Item_Focus</include>
+					<include content="UniversalLayout">
+						<param name="colordiffuse" value="$VAR[Container_item_fo]" />
+						<param name="artwork" value="poster" />
+						<param name="get_circle" value="false" />
+						<param name="get_tags" value="false" />
+						<param name="get_landscapelogo" value="false" />
+						<param name="get_bannerlogo" value="false" />
+						<param name="autoscroll" value="true" />
+						<param name="bordersize_bg" value="4" />
+						<param name="bottompanelcolor" value="$VAR[Widget_TasBGPanel_FO]" />
+						<param name="bottomtaglabelcolor" value="$VAR[Container_label_itemtag_fo]" />
+						<param name="bottomtaglabel2color" value="$VAR[Container_label2_itemtag_fo]" />
+					</include>
+					<include condition="Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]" content="FocusOverlay">
+						<param name="diffusedimtext" value="artworkdiffuse/usebganel/poster.png" />
+					</include>
+					<include condition="!Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]]" content="FocusOverlay">
+						<param name="diffusedimtext" value="artworkdiffuse/poster.png" />
+					</include>
+				</control>
+			</control>
+		</focusedlayout>
 	</include>
 		
 	<include name="WidgetHome_landscape">
-		<itemlayout height="280" width="500">
+		<itemlayout height="350" width="500" condition="Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)">
 			<control type="group">
 				<height>270</height>
 				<width>480</width>
@@ -749,7 +791,7 @@
 				</include>
 			</control>
 		</itemlayout>
-		<focusedlayout height="280" width="500">
+		<focusedlayout height="350" width="500" condition="Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)">
 			<include>SetPropOnFocus_HiddenButton</include>
 			<control type="group">
 				<width>480</width>
@@ -795,13 +837,78 @@
 				</control>
 			</control>
 		</focusedlayout>
+		<itemlayout height="350" width="610" condition="!Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)">
+			<control type="group">
+				<height>350</height>
+				<width>595</width>
+				<include content="UniversalLayout">
+					<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+					<param name="artwork" value="landscape" />
+					<param name="get_circle" value="false" />
+					<param name="get_tags" value="Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)" />
+					<param name="get_landscapelogo" value="true" />
+					<param name="get_bannerlogo" value="false" />
+					<param name="autoscroll" value="false" />
+					<param name="bordersize_bg" value="6" />
+					<param name="bottompanelcolor" value="$VAR[Widget_TasBGPanel_NF]" />
+					<param name="bottomtaglabelcolor" value="$VAR[Container_label_itemtag_nf]" />
+					<param name="bottomtaglabel2color" value="$VAR[Container_label2_itemtag_nf]" />
+				</include>
+			</control>
+		</itemlayout>
+		<focusedlayout height="350" width="610" condition="!Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)">
+			<include>SetPropOnFocus_HiddenButton</include>
+			<control type="group">
+				<height>350</height>
+				<width>595</width>
+				<control type="group">
+					<visible>!Control.HasFocus($PARAM[id])</visible>
+					<include content="UniversalLayout">
+						<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+						<param name="artwork" value="landscape" />
+						<param name="get_circle" value="false" />
+						<param name="get_tags" value="Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)" />
+						<param name="get_landscapelogo" value="true" />
+						<param name="get_bannerlogo" value="false" />
+						<param name="autoscroll" value="false" />
+						<param name="bordersize_bg" value="6" />
+						<param name="bottompanelcolor" value="$VAR[Widget_TasBGPanel_NF]" />
+						<param name="bottomtaglabelcolor" value="$VAR[Container_label_itemtag_nf]" />
+						<param name="bottomtaglabel2color" value="$VAR[Container_label2_itemtag_nf]" />
+				</include>
+				</control>
+				<control type="group">
+					<visible>Control.HasFocus($PARAM[id])</visible>
+					<include>Animation_Item_Focus</include>
+					<include content="UniversalLayout">
+						<param name="colordiffuse" value="$VAR[Container_item_fo]" />
+						<param name="artwork" value="landscape" />
+						<param name="get_circle" value="false" />
+						<param name="get_tags" value="Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)" />
+						<param name="get_landscapelogo" value="true" />
+						<param name="get_bannerlogo" value="false" />
+						<param name="autoscroll" value="true" />
+						<param name="bordersize_bg" value="4" />
+						<param name="bottompanelcolor" value="$VAR[Widget_TasBGPanel_FO]" />
+						<param name="bottomtaglabelcolor" value="$VAR[Container_label_itemtag_fo]" />
+						<param name="bottomtaglabel2color" value="$VAR[Container_label2_itemtag_fo]" />
+					</include>
+					<include condition="Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]" content="FocusOverlay">
+						<param name="diffusedimtext" value="artworkdiffuse/usebganel/landscape.png" />
+					</include>
+					<include condition="!Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]]" content="FocusOverlay">
+						<param name="diffusedimtext" value="artworkdiffuse/landscape.png" />
+					</include>
+				</control>
+			</control>
+		</focusedlayout>
 	</include>
 	
 	<include name="WidgetHome_circle">
-		<itemlayout height="350" width="260">
+		<itemlayout height="350" width="340">
 			<control type="group">
-				<height>250</height>
-				<width>250</width>
+				<height>300</height>
+				<width>300</width>
 				<include content="UniversalLayout">
 					<param name="colordiffuse" value="$VAR[Container_item_nf]" />
 					<param name="artwork" value="circle" />
@@ -814,11 +921,11 @@
 				</include>
 			</control>
 		</itemlayout>
-		<focusedlayout height="350" width="260">
+		<focusedlayout height="350" width="340">
 			<include>SetPropOnFocus_HiddenButton</include>
 			<control type="group">
-				<height>250</height>
-				<width>250</width>
+				<height>300</height>
+				<width>300</width>
 				<control type="group">
 					<visible>!Control.HasFocus($PARAM[id])</visible>
 					<include content="UniversalLayout">
@@ -851,7 +958,7 @@
 	</include>
 	
 	<include name="WidgetHome_square">
-		<itemlayout height="290" width="290">
+		<itemlayout height="350" width="290" condition="Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)">
 			<control type="group">
 				<height>280</height>
 				<width>280</width>
@@ -870,11 +977,76 @@
 				</include>
 			</control>
 		</itemlayout>
-		<focusedlayout height="290" width="290">
+		<focusedlayout height="350" width="290" condition="Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)">
 			<include>SetPropOnFocus_HiddenButton</include>
 			<control type="group">
 				<height>280</height>
 				<width>280</width>
+				<control type="group">
+					<visible>!Control.HasFocus($PARAM[id])</visible>
+					<include content="UniversalLayout">
+						<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+						<param name="artwork" value="thumb" />
+						<param name="get_circle" value="false" />
+						<param name="get_tags" value="Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)" />
+						<param name="get_landscapelogo" value="false" />
+						<param name="get_bannerlogo" value="false" />
+						<param name="autoscroll" value="false" />
+						<param name="bordersize_bg" value="6" />
+						<param name="bottompanelcolor" value="$VAR[Widget_TasBGPanel_NF]" />
+						<param name="bottomtaglabelcolor" value="$VAR[Container_label_itemtag_nf]" />
+						<param name="bottomtaglabel2color" value="$VAR[Container_label2_itemtag_nf]" />
+					</include>
+				</control>
+				<control type="group">
+					<visible>Control.HasFocus($PARAM[id])</visible>
+					<include>Animation_Item_Focus</include>
+					<include content="UniversalLayout">
+						<param name="colordiffuse" value="$VAR[Container_item_fo]" />
+						<param name="artwork" value="thumb" />
+						<param name="get_circle" value="false" />
+						<param name="get_tags" value="Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)" />
+						<param name="get_landscapelogo" value="false" />
+						<param name="get_bannerlogo" value="false" />
+						<param name="autoscroll" value="true" />
+						<param name="bordersize_bg" value="4" />
+						<param name="bottompanelcolor" value="$VAR[Widget_TasBGPanel_FO]" />
+						<param name="bottomtaglabelcolor" value="$VAR[Container_label_itemtag_fo]" />
+						<param name="bottomtaglabel2color" value="$VAR[Container_label2_itemtag_fo]" />
+					</include>
+					<include condition="Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]" content="FocusOverlay">
+						<param name="diffusedimtext" value="artworkdiffuse/usebganel/thumb.png" />
+					</include>
+					<include condition="!Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]]" content="FocusOverlay">
+						<param name="diffusedimtext" value="artworkdiffuse/thumb.png" />
+					</include>
+				</control>
+			</control>
+		</focusedlayout>
+		<itemlayout height="350" width="370" condition="!Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)">
+			<control type="group">
+				<height>350</height>
+				<width>350</width>
+				<include content="UniversalLayout">
+					<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+					<param name="artwork" value="thumb" />
+					<param name="get_circle" value="false" />
+					<param name="get_tags" value="Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)" />
+					<param name="get_landscapelogo" value="false" />
+					<param name="get_bannerlogo" value="false" />
+					<param name="autoscroll" value="false" />
+					<param name="bordersize_bg" value="6" />
+					<param name="bottompanelcolor" value="$VAR[Widget_TasBGPanel_NF]" />
+					<param name="bottomtaglabelcolor" value="$VAR[Container_label_itemtag_nf]" />
+					<param name="bottomtaglabel2color" value="$VAR[Container_label2_itemtag_nf]" />
+				</include>
+			</control>
+		</itemlayout>
+		<focusedlayout height="350" width="370" condition="!Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)">
+			<include>SetPropOnFocus_HiddenButton</include>
+			<control type="group">
+				<height>350</height>
+				<width>350</width>
 				<control type="group">
 					<visible>!Control.HasFocus($PARAM[id])</visible>
 					<include content="UniversalLayout">
@@ -919,9 +1091,11 @@
 	</include>
 	
 	<!--  	1000w x 185h, 5,4  500,92=5,3-->
-	<!-- use currently 2 rows -->
+	
+	<!-- wtf -->
+	
 	<include name="WidgetHome_banner">
-		<itemlayout height="175" width="610">
+		<itemlayout height="175" width="610" condition="!Skin.HasSetting(UserWidget$PARAM[nr]_forceFixedlist) + Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)">
 			<control type="group">
 				<height>110</height>
 				<width>590</width>
@@ -940,18 +1114,118 @@
 				</include>
 			</control>
 		</itemlayout>
-		<focusedlayout height="175" width="610">
+		<focusedlayout height="175" width="610"  condition="!Skin.HasSetting(UserWidget$PARAM[nr]_forceFixedlist) + Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)">
 			<include>SetPropOnFocus_HiddenButton</include>
 			<control type="group">
 				<height>110</height>
 				<width>590</width>
+				<control type="group">
+					<include>Animation_Item_Focus</include>
+					<include content="UniversalLayout">
+						<param name="colordiffuse" value="$VAR[Container_item_fo]" />
+						<param name="artwork" value="banner" />
+						<param name="get_circle" value="false" />
+						<param name="get_tags" value="true" />
+						<param name="get_landscapelogo" value="false" />
+						<param name="get_bannerlogo" value="true" />
+						<param name="autoscroll" value="true" />
+						<param name="bordersize_bg" value="4" />
+						<param name="bottompanelcolor" value="$VAR[Widget_TasBGPanel_FO]" />
+						<param name="bottomtaglabelcolor" value="$VAR[Container_label_itemtag_fo]" />
+						<param name="bottomtaglabel2color" value="$VAR[Container_label2_itemtag_fo]" />
+					</include>
+					
+					<include condition="Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]" content="FocusOverlay">
+						<param name="diffusedimtext" value="artworkdiffuse/usebganel/banner.png" />
+					</include>
+					<include condition="!Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]]" content="FocusOverlay">
+						<param name="diffusedimtext" value="artworkdiffuse/banner.png" />
+					</include>
+				</control>
+			</control>
+		</focusedlayout>
+		<itemlayout height="175" width="820" condition="!Skin.HasSetting(UserWidget$PARAM[nr]_forceFixedlist) + !Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)">
+			<control type="group">
+				<height>150</height>
+				<width>811</width>
+				<include content="UniversalLayout">
+					<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+					<param name="artwork" value="banner" />
+					<param name="get_circle" value="false" />
+					<param name="get_tags" value="false" />
+					<param name="get_landscapelogo" value="false" />
+					<param name="get_bannerlogo" value="true" />
+					<param name="autoscroll" value="false" />
+					<param name="bordersize_bg" value="6" />
+					<param name="bottompanelcolor" value="$VAR[Widget_TasBGPanel_NF]" />
+					<param name="bottomtaglabelcolor" value="$VAR[Container_label_itemtag_nf]" />
+					<param name="bottomtaglabel2color" value="$VAR[Container_label2_itemtag_nf]" />
+				</include>
+			</control>
+		</itemlayout>
+		<focusedlayout height="175" width="820"  condition="!Skin.HasSetting(UserWidget$PARAM[nr]_forceFixedlist) + !Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)">
+			<include>SetPropOnFocus_HiddenButton</include>
+			<control type="group">
+				<height>150</height>
+				<width>811</width>
+				<control type="group">
+					<include>Animation_Item_Focus</include>
+					<include content="UniversalLayout">
+						<param name="colordiffuse" value="$VAR[Container_item_fo]" />
+						<param name="artwork" value="banner" />
+						<param name="get_circle" value="false" />
+						<param name="get_tags" value="false" />
+						<param name="get_landscapelogo" value="false" />
+						<param name="get_bannerlogo" value="true" />
+						<param name="autoscroll" value="true" />
+						<param name="bordersize_bg" value="4" />
+						<param name="bottompanelcolor" value="$VAR[Widget_TasBGPanel_FO]" />
+						<param name="bottomtaglabelcolor" value="$VAR[Container_label_itemtag_fo]" />
+						<param name="bottomtaglabel2color" value="$VAR[Container_label2_itemtag_fo]" />
+					</include>
+					
+					<include condition="Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]" content="FocusOverlay">
+						<param name="diffusedimtext" value="artworkdiffuse/usebganel/banner.png" />
+					</include>
+					<include condition="!Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]]" content="FocusOverlay">
+						<param name="diffusedimtext" value="artworkdiffuse/banner.png" />
+					</include>
+				</control>
+			</control>
+		</focusedlayout>
+		
+		
+		<itemlayout height="250" width="960" condition="Skin.HasSetting(UserWidget$PARAM[nr]_forceFixedlist) + !Skin.HasSetting(UserWidget$PARAM[nr]_bottominfo)">
+			<control type="group">
+				<height>200</height>
+				<width>925</width>
+				<include content="UniversalLayout">
+					<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+					<param name="artwork" value="banner" />
+					<param name="get_circle" value="false" />
+					<param name="get_tags" value="Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)" />
+					<param name="get_landscapelogo" value="false" />
+					<param name="get_bannerlogo" value="true" />
+					<param name="autoscroll" value="false" />
+					<param name="bordersize_bg" value="6" />
+					<param name="bottompanelcolor" value="$VAR[Widget_TasBGPanel_NF]" />
+					<param name="bottomtaglabelcolor" value="$VAR[Container_label_itemtag_nf]" />
+					<param name="bottomtaglabel2color" value="$VAR[Container_label2_itemtag_nf]" />
+				</include>
+			</control>
+		</itemlayout>
+		<focusedlayout height="250" width="960" condition="Skin.HasSetting(UserWidget$PARAM[nr]_forceFixedlist) + !Skin.HasSetting(UserWidget$PARAM[nr]_bottominfo)">
+			<include>SetPropOnFocus_HiddenButton</include>
+			<control type="group">
+				<height>200</height>
+				<width>925</width>
 				<control type="group">
 					<visible>!Control.HasFocus($PARAM[id])</visible>
 					<include content="UniversalLayout">
 						<param name="colordiffuse" value="$VAR[Container_item_nf]" />
 						<param name="artwork" value="banner" />
 						<param name="get_circle" value="false" />
-						<param name="get_tags" value="true" />
+						<param name="get_tags" value="Skin.HasSetting(UserWidget$PARAM[nr]_forceTag)" />
 						<param name="get_landscapelogo" value="false" />
 						<param name="get_bannerlogo" value="true" />
 						<param name="autoscroll" value="false" />
@@ -987,8 +1261,198 @@
 				</control>
 			</control>
 		</focusedlayout>
+		<itemlayout height="350" width="1750" condition="Skin.HasSetting(UserWidget$PARAM[nr]_bottominfo)">
+			<control type="group">
+				<height>350</height>
+				<width>1700</width>
+				<include content="UniversalLayout">
+					<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+					<param name="artwork" value="banner" />
+					<param name="get_circle" value="false" />
+					<param name="get_tags" value="false" />
+					<param name="get_landscapelogo" value="false" />
+					<param name="get_bannerlogo" value="true" />
+					<param name="autoscroll" value="false" />
+					<param name="bordersize_bg" value="6" />
+					<param name="bottompanelcolor" value="$VAR[Widget_TasBGPanel_NF]" />
+					<param name="bottomtaglabelcolor" value="$VAR[Container_label_itemtag_nf]" />
+					<param name="bottomtaglabel2color" value="$VAR[Container_label2_itemtag_nf]" />
+				</include>
+			</control>
+		</itemlayout>
+		<focusedlayout height="350" width="1750" condition="Skin.HasSetting(UserWidget$PARAM[nr]_bottominfo)">
+			<include>SetPropOnFocus_HiddenButton</include>
+			<control type="group">
+				<height>350</height>
+				<width>1700</width>
+				<control type="group">
+					<visible>!Control.HasFocus($PARAM[id])</visible>
+					<include content="UniversalLayout">
+						<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+						<param name="artwork" value="banner" />
+						<param name="get_circle" value="false" />
+						<param name="get_tags" value="false" />
+						<param name="get_landscapelogo" value="false" />
+						<param name="get_bannerlogo" value="true" />
+						<param name="autoscroll" value="false" />
+						<param name="bordersize_bg" value="6" />
+						<param name="bottompanelcolor" value="$VAR[Widget_TasBGPanel_NF]" />
+						<param name="bottomtaglabelcolor" value="$VAR[Container_label_itemtag_nf]" />
+						<param name="bottomtaglabel2color" value="$VAR[Container_label2_itemtag_nf]" />
+					</include>
+				</control>
+				<control type="group">
+					<visible>Control.HasFocus($PARAM[id])</visible>
+					<!-- <include>Animation_Item_Focus</include> -->
+					<include content="UniversalLayout">
+						<param name="colordiffuse" value="$VAR[Container_item_fo]" />
+						<param name="artwork" value="banner" />
+						<param name="get_circle" value="false" />
+						<param name="get_tags" value="false" />
+						<param name="get_landscapelogo" value="false" />
+						<param name="get_bannerlogo" value="true" />
+						<param name="autoscroll" value="true" />
+						<param name="bordersize_bg" value="4" />
+						<param name="bottompanelcolor" value="$VAR[Widget_TasBGPanel_FO]" />
+						<param name="bottomtaglabelcolor" value="$VAR[Container_label_itemtag_fo]" />
+						<param name="bottomtaglabel2color" value="$VAR[Container_label2_itemtag_fo]" />
+					</include>
+					
+					<include condition="Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]" content="FocusOverlay">
+						<param name="diffusedimtext" value="artworkdiffuse/usebganel/banner.png" />
+					</include>
+					<include condition="!Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]]" content="FocusOverlay">
+						<param name="diffusedimtext" value="artworkdiffuse/banner.png" />
+					</include>
+				</control>
+			</control>
+		</focusedlayout>
 	</include>
+	
+	
+	<include name="Widget_Container_BottomInfo">
+		<control type="grouplist" id="70$PARAM[id]">
+			
+			<animation type="conditional" condition="![Container(50$PARAM[id]).OnNext | Container(50$PARAM[id]).OnPrevious]" reversible="false">
+				<effect type="zoom" start="80" end="100" center="50%,50%" delay="60" tween="back" time="250" />
+				<effect type="fade" delay="60" end="100" time="250" />
+			</animation>
+			<animation type="conditional" condition="[Container(50$PARAM[id]).OnNext | Container(50$PARAM[id]).OnPrevious]" reversible="false">
+				<effect type="zoom" start="100" end="80" center="50%,50%" easing="in" tween="back" time="250" />
+				<effect type="fade" start="100" end="0" time="250" />
+			</animation>
 		
+			<animation type="Visible" reversible="false">
+				<effect type="fade" delay="160" end="100" time="240" />
+			</animation>
+			<animation type="Hidden" reversible="false">
+				<effect type="fade" start="100" end="0" time="240" />
+			</animation>
+		
+			<visible>Control.HasFocus(50$PARAM[id])</visible>
+			<orientation>vertical</orientation>
+			<usecontrolcoords>true</usecontrolcoords>
+			<height>196</height>
+			<itemgap>5</itemgap>
+			<align>left</align>
+			<posx>10</posx>
+			<posy>70</posy>
+			<control type="label">
+				<width>auto</width>
+				<label>$INFO[ListItem.Label,[B],[/B]]</label>
+				<height>25</height>
+				<aligny>center</aligny>
+				<textcolor>$VAR[Container_label_itemtag_fo]</textcolor>
+				<font>WidgetHeading</font>
+			</control>
+		
+			<control type="grouplist" id="71$PARAM[id]">
+				<orientation>horizontal</orientation>
+				<usecontrolcoords>true</usecontrolcoords>
+				<height>50</height>
+				<itemgap>15</itemgap>
+				
+				<align>left</align>
+				
+				<include content="framedflag">
+					<top>8</top>
+					<param name="textcolor" value="$VAR[Container_label_itemtag_fo]" />
+					<param name="color" value="$VAR[Container_label_itemtag_fo]" />
+					<visible>!String.IsEmpty(ListItem.Genre)</visible>
+					<width min="32">auto</width>
+					<height>30</height>
+					<font>debug</font>
+					<label>$INFO[ListItem.Genre]</label>
+				</include>
+				
+				<control type="label">
+					<visible>!String.IsEmpty(ListItem.Year)</visible>	
+					<top>5</top>
+					<height>35</height>
+					<width>auto</width>
+					<aligny>center</aligny>
+					<font>debug</font>
+					<label>$INFO[ListItem.Year]</label>
+					<textcolor>$VAR[Container_label_itemtag_fo]</textcolor>
+				</control>
+				
+				<include content="StarsRating_Image">
+					<top>8</top>
+					<param name="width" value="130" />
+					<param name="height" value="30" />
+					<param name="alignx" value="center" />
+					<param name="colordiffuse" value="$VAR[Container_label_itemtag_fo]" />
+				</include>
+				
+				<include content="framedflag">
+					<top>8</top>
+					<param name="textcolor" value="$VAR[Container_label_itemtag_fo]" />
+					<param name="color" value="$VAR[Container_label_itemtag_fo]" />
+					<visible>!String.IsEmpty(ListItem.Mpaa)</visible>
+					<width min="32">auto</width>
+					<height>30</height>
+					<font>debug</font>
+					<label>$INFO[ListItem.Mpaa]</label>
+				</include>
+				<control type="label">
+					<posy>5</posy>
+					<width>auto</width>
+					<label>$VAR[Meta_Top_Details]</label>
+					<height>35</height>
+					<aligny>center</aligny>
+					<textcolor>$VAR[Container_label_itemtag_fo]</textcolor>
+					<font>debug</font>
+				</control>
+				
+				<include content="circleframedflag">
+					<param name="color" value="$VAR[Container_label_itemtag_fo]" />
+					<param name="id" value="611114" />
+					<param name="label" value="$VAR[Simple_Resolution,[B],[/B]]" />
+				</include>
+				<include content="circleframedflag">
+					<param name="color" value="$VAR[Container_label_itemtag_fo]" />
+					<param name="id" value="611115" />
+					<param name="label" value="$VAR[Simple_AudioChannel,[B],[/B]]" />
+				</include>
+				<control type="image">
+					<width>120</width>
+					<aspectratio align="left" aligny="center">keep</aspectratio>
+					<texture colordiffuse="$VAR[Container_label_itemtag_fo]">$INFO[ListItem.AudioCodec,flags/flagsmedia/audio/,.png]</texture>
+				</control>
+				
+			</control>
+			<control type="textbox">
+				<width>800</width>
+				<label>$VAR[plot]</label>
+				<height>120</height>
+				<aligny>center</aligny>
+				<textcolor>$VAR[Container_label2_itemtag_fo]</textcolor>
+				<font>debug</font>
+			</control>
+		</control>
+		
+	</include>
+	
 	<!-- widget grouplist calls -->
 	<include name="Home_Widgets">
 		<control type="grouplist" id="5555">
@@ -1042,6 +1506,9 @@
 				<param name="id" value="5001" />
 				<param name="visible" value="Integer.IsGreater(Container(5001).NumItems,0) | Container(5001).IsUpdating" />
 			</include>
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget1_bottominfo)">
+				<param name="id" value="01" />
+			</include>
 			
 			<include content="Universal_ContainerHeader">
 				<param name="groupid" value="6002" />
@@ -1060,6 +1527,9 @@
 				<param name="nr" value="2" />
 				<param name="id" value="5002" />
 				<param name="visible" value="Integer.IsGreater(Container(5002).NumItems,0) | Container(5002).IsUpdating" />
+			</include>
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget2_bottominfo)">
+				<param name="id" value="02" />
 			</include>
 			
 			<include content="Universal_ContainerHeader">
@@ -1080,6 +1550,9 @@
 				<param name="id" value="5003" />
 				<param name="visible" value="Integer.IsGreater(Container(5003).NumItems,0) | Container(5003).IsUpdating" />
 			</include>
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget3_bottominfo)">
+				<param name="id" value="03" />
+			</include>
 			
 			<include content="Universal_ContainerHeader">
 				<param name="groupid" value="6004" />
@@ -1099,7 +1572,9 @@
 				<param name="id" value="5004" />
 				<param name="visible" value="Integer.IsGreater(Container(5004).NumItems,0) | Container(5004).IsUpdating" />
 			</include>
-			
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget4_bottominfo)">
+				<param name="id" value="04" />
+			</include>
 			<include content="Universal_ContainerHeader">
 				<param name="groupid" value="6005" />
 				<param name="id" value="5005" />
@@ -1117,6 +1592,9 @@
 				<param name="nr" value="5" />
 				<param name="id" value="5005" />
 				<param name="visible" value="Integer.IsGreater(Container(5005).NumItems,0) | Container(5005).IsUpdating" />
+			</include>
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget5_bottominfo)">
+				<param name="id" value="05" />
 			</include>
 			
 			<include content="Universal_ContainerHeader">
@@ -1137,6 +1615,9 @@
 				<param name="id" value="5006" />
 				<param name="visible" value="Integer.IsGreater(Container(5006).NumItems,0) | Container(5006).IsUpdating" />
 			</include>
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget6_bottominfo)">
+				<param name="id" value="06" />
+			</include>
 			
 			<include content="Universal_ContainerHeader">
 				<param name="groupid" value="6007" />
@@ -1155,6 +1636,9 @@
 				<param name="nr" value="7" />
 				<param name="id" value="5007" />
 				<param name="visible" value="Integer.IsGreater(Container(5007).NumItems,0) | Container(5007).IsUpdating" />
+			</include>
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget7_bottominfo)">
+				<param name="id" value="07" />
 			</include>
 			
 			<include content="Universal_ContainerHeader">
@@ -1175,6 +1659,9 @@
 				<param name="id" value="5008" />
 				<param name="visible" value="Integer.IsGreater(Container(5008).NumItems,0) | Container(5008).IsUpdating" />
 			</include>
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget8_bottominfo)">
+				<param name="id" value="08" />
+			</include>
 			
 			<include content="Universal_ContainerHeader">
 				<param name="groupid" value="6009" />
@@ -1193,6 +1680,9 @@
 				<param name="nr" value="9" />
 				<param name="id" value="5009" />
 				<param name="visible" value="Integer.IsGreater(Container(5009).NumItems,0) | Container(5009).IsUpdating" />
+			</include>
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget9_bottominfo)">
+				<param name="id" value="09" />
 			</include>
 			
 			<include content="Universal_ContainerHeader">
@@ -1213,6 +1703,9 @@
 				<param name="id" value="5010" />
 				<param name="visible" value="Integer.IsGreater(Container(5010).NumItems,0) | Container(5010).IsUpdating" />
 			</include>
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget10_bottominfo)">
+				<param name="id" value="10" />
+			</include>
 	
 			<include content="Universal_ContainerHeader">
 				<param name="groupid" value="6011" />
@@ -1231,6 +1724,9 @@
 				<param name="nr" value="11" />
 				<param name="id" value="5011" />
 				<param name="visible" value="Integer.IsGreater(Container(5011).NumItems,0) | Container(5011).IsUpdating" />
+			</include>
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget11_bottominfo)">
+				<param name="id" value="11" />
 			</include>
 			
 			<include content="Universal_ContainerHeader">
@@ -1251,6 +1747,9 @@
 				<param name="id" value="5012" />
 				<param name="visible" value="Integer.IsGreater(Container(5012).NumItems,0) | Container(5012).IsUpdating" />
 			</include>
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget12_bottominfo)">
+				<param name="id" value="12" />
+			</include>
 			
 			<include content="Universal_ContainerHeader">
 				<param name="groupid" value="6013" />
@@ -1269,6 +1768,9 @@
 				<param name="nr" value="13" />
 				<param name="id" value="5013" />
 				<param name="visible" value="Integer.IsGreater(Container(5013).NumItems,0) | Container(5013).IsUpdating" />
+			</include>
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget13_bottominfo)">
+				<param name="id" value="13" />
 			</include>
 			
 			<include content="Universal_ContainerHeader">
@@ -1289,6 +1791,9 @@
 				<param name="id" value="5014" />
 				<param name="visible" value="Integer.IsGreater(Container(5014).NumItems,0) | Container(5014).IsUpdating" />
 			</include>
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget14_bottominfo)">
+				<param name="id" value="14" />
+			</include>
 			
 			<include content="Universal_ContainerHeader">
 				<param name="groupid" value="6015" />
@@ -1307,6 +1812,9 @@
 				<param name="nr" value="15" />
 				<param name="id" value="5015" />
 				<param name="visible" value="Integer.IsGreater(Container(5015).NumItems,0) | Container(5005).IsUpdating" />
+			</include>
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget15_bottominfo)">
+				<param name="id" value="15" />
 			</include>
 			
 			<include content="Universal_ContainerHeader">
@@ -1327,6 +1835,9 @@
 				<param name="id" value="5016" />
 				<param name="visible" value="Integer.IsGreater(Container(5016).NumItems,0) | Container(5016).IsUpdating" />
 			</include>
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget16_bottominfo)">
+				<param name="id" value="16" />
+			</include>
 			
 			<include content="Universal_ContainerHeader">
 				<param name="groupid" value="6017" />
@@ -1345,6 +1856,9 @@
 				<param name="nr" value="7" />
 				<param name="id" value="5017" />
 				<param name="visible" value="Integer.IsGreater(Container(5017).NumItems,0) | Container(5017).IsUpdating" />
+			</include>
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget17_bottominfo)">
+				<param name="id" value="17" />
 			</include>
 			
 			<include content="Universal_ContainerHeader">
@@ -1365,6 +1879,9 @@
 				<param name="id" value="5018" />
 				<param name="visible" value="Integer.IsGreater(Container(5018).NumItems,0) | Container(5018).IsUpdating" />
 			</include>
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget18_bottominfo)">
+				<param name="id" value="18" />
+			</include>
 			
 			<include content="Universal_ContainerHeader">
 				<param name="groupid" value="6019" />
@@ -1383,6 +1900,9 @@
 				<param name="nr" value="19" />
 				<param name="id" value="5019" />
 				<param name="visible" value="Integer.IsGreater(Container(5019).NumItems,0) | Container(5019).IsUpdating" />
+			</include>
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget19_bottominfo)">
+				<param name="id" value="19" />
 			</include>
 			
 			<include content="Universal_ContainerHeader">
@@ -1403,6 +1923,9 @@
 				<param name="id" value="5020" />
 				<param name="visible" value="Integer.IsGreater(Container(5020).NumItems,0) | Container(5020).IsUpdating" />
 			</include>
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget20_bottominfo)">
+				<param name="id" value="20" />
+			</include>
 			
 			<include content="Universal_ContainerHeader">
 				<param name="groupid" value="6021" />
@@ -1421,6 +1944,9 @@
 				<param name="nr" value="21" />
 				<param name="id" value="5021" />
 				<param name="visible" value="Integer.IsGreater(Container(5021).NumItems,0) | Container(5021).IsUpdating" />
+			</include>
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget21_bottominfo)">
+				<param name="id" value="21" />
 			</include>
 			
 			<include content="Universal_ContainerHeader">
@@ -1441,6 +1967,9 @@
 				<param name="id" value="5022" />
 				<param name="visible" value="Integer.IsGreater(Container(5022).NumItems,0) | Container(5022).IsUpdating" />
 			</include>
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget22_bottominfo)">
+				<param name="id" value="22" />
+			</include>
 			
 			<include content="Universal_ContainerHeader">
 				<param name="groupid" value="6023" />
@@ -1459,6 +1988,9 @@
 				<param name="nr" value="23" />
 				<param name="id" value="5023" />
 				<param name="visible" value="Integer.IsGreater(Container(5023).NumItems,0) | Container(5023).IsUpdating" />
+			</include>
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget23_bottominfo)">
+				<param name="id" value="23" />
 			</include>
 			
 			<include content="Universal_ContainerHeader">
@@ -1479,6 +2011,9 @@
 				<param name="id" value="5024" />
 				<param name="visible" value="Integer.IsGreater(Container(5024).NumItems,0) | Container(5024).IsUpdating" />
 			</include>
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget24_bottominfo)">
+				<param name="id" value="24" />
+			</include>
 			
 			<include content="Universal_ContainerHeader">
 				<param name="groupid" value="6025" />
@@ -1497,6 +2032,9 @@
 				<param name="nr" value="25" />
 				<param name="id" value="5025" />
 				<param name="visible" value="Integer.IsGreater(Container(5025).NumItems,0) | Container(5005).IsUpdating" />
+			</include>
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget25_bottominfo)">
+				<param name="id" value="25" />
 			</include>
 			
 			<include content="Universal_ContainerHeader">
@@ -1517,6 +2055,9 @@
 				<param name="id" value="5026" />
 				<param name="visible" value="Integer.IsGreater(Container(5026).NumItems,0) | Container(5026).IsUpdating" />
 			</include>
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget26_bottominfo)">
+				<param name="id" value="26" />
+			</include>
 			
 			<include content="Universal_ContainerHeader">
 				<param name="groupid" value="6027" />
@@ -1536,7 +2077,9 @@
 				<param name="id" value="5027" />
 				<param name="visible" value="Integer.IsGreater(Container(5027).NumItems,0) | Container(5027).IsUpdating" />
 			</include>
-			
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget27_bottominfo)">
+				<param name="id" value="27" />
+			</include>
 			<include content="Universal_ContainerHeader">
 				<param name="groupid" value="6028" />
 				<param name="id" value="5028" />
@@ -1554,6 +2097,9 @@
 				<param name="nr" value="28" />
 				<param name="id" value="5028" />
 				<param name="visible" value="Integer.IsGreater(Container(5028).NumItems,0) | Container(5028).IsUpdating" />
+			</include>
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget29_bottominfo)">
+				<param name="id" value="28" />
 			</include>
 			
 			<include content="Universal_ContainerHeader">
@@ -1574,6 +2120,9 @@
 				<param name="id" value="5029" />
 				<param name="visible" value="Integer.IsGreater(Container(5029).NumItems,0) | Container(5029).IsUpdating" />
 			</include>
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget29_bottominfo)">
+				<param name="id" value="29" />
+			</include>
 			
 			<include content="Universal_ContainerHeader">
 				<param name="groupid" value="6030" />
@@ -1592,6 +2141,9 @@
 				<param name="nr" value="30" />
 				<param name="id" value="5030" />
 				<param name="visible" value="Integer.IsGreater(Container(5030).NumItems,0) | Container(5030).IsUpdating" />
+			</include>
+			<include content="Widget_Container_BottomInfo" condition="Skin.HasSetting(UserWidget30_bottominfo)">
+				<param name="id" value="30" />
 			</include>
 			
 			<!--
