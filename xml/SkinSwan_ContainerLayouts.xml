@@ -501,10 +501,15 @@
 		<param name="get_landscapelogo" default="false" />
 		<param name="get_bgpanel_visible" default="true" />
 		
+		<param name="conditional_artworkdiffuse_themed" default="!Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]]" />
+		<param name="conditional_artworkdiffuse_override" default="Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]" />
+		
 		<definition>
 		
 		<control type="group">
-			<visible>!Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]]</visible>
+			
+			<visible>$PARAM[conditional_artworkdiffuse_themed]</visible>
+			
 			<control type="image">
 				<description>testing framed border instead fullbg texture</description>
 				<texture>artworkdiffuse/$PARAM[artwork]border.png</texture>
@@ -534,7 +539,7 @@
 		
 		
 		<control type="group">
-			<visible>Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]</visible>
+			<visible>$PARAM[conditional_artworkdiffuse_override]</visible>
 			<control type="image">
 				<description>testing framed border instead fullbg texture</description>
 				<texture>artworkdiffuse/usebganel/$PARAM[artwork]border.png</texture>
@@ -710,8 +715,7 @@
 			<description>Taglines Bottom</description>
 			<visible>$PARAM[get_tags]</visible>
 			<visible>!String.IsEqual(ListItem.label,..)</visible>
-				<control type="image">
-					<description>abuse banner diffuse for themes</description>
+			<control type="image">
 				<visible>$PARAM[get_tagbgpanel]</visible>
 				<top>99%</top>
 				<left>5</left>
@@ -739,16 +743,16 @@
 			<description>ProgressBar No Shadow</description>
 			<visible>!$PARAM[get_circle]</visible>
 			
-			<include condition="!Skin.HasTheme(Roundedge)" content="pos_left">
-				<param name="left" value="3%" />
+			<include condition="!Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]]" content="pos_left">
+				<param name="left" value="2.5%" />
 			</include>
-			<include condition="!Skin.HasTheme(Roundedge)" content="pos_right">
-				<param name="right" value="3%" />
+			<include condition="!Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]]" content="pos_right">
+				<param name="right" value="2.5%" />
 			</include>
-			<include condition="Skin.HasTheme(Roundedge)" content="pos_left">
+			<include condition="Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]" content="pos_left">
 				<param name="left" value="15%" />
 			</include>
-			<include condition="Skin.HasTheme(Roundedge)" content="pos_right">
+			<include condition="Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]" content="pos_right">
 				<param name="right" value="15%" />
 			</include>
 	
