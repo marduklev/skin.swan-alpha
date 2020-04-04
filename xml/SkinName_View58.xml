@@ -122,7 +122,7 @@
 						<aligny>bottom</aligny>
 						<scroll delay="2000">true</scroll>
 						<scrollspeed>40</scrollspeed>
-						<textcolor>cyan</textcolor>
+						<textcolor>$VAR[color_spotlightlib_accent]</textcolor>
 						<info>Container(58004).ListItem.Title</info>
 					</control>
 					<control type="textbox">
@@ -134,7 +134,7 @@
 						<align>left</align>
 						<aligny>top</aligny>
 						<autoscroll>false</autoscroll>
-						<textcolor>grey</textcolor>
+						<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
 						<info>Container(58004).ListItem.Plot</info>
 					</control>
 					<control type="textbox">
@@ -146,7 +146,7 @@
 						<align>left</align>
 						<aligny>top</aligny>
 						<autoscroll>false</autoscroll>
-						<textcolor>cyan</textcolor>
+						<textcolor>$VAR[color_spotlightlib_accent]</textcolor>
 						<label>$INFO[Container(58004).ListItem().Duration(m),, $LOCALIZE[12391]]</label>
 					</control>
 					<control type="textbox">
@@ -158,7 +158,7 @@
 						<align>right</align>
 						<aligny>top</aligny>
 						<autoscroll>false</autoscroll>
-						<textcolor>cyan</textcolor>
+						<textcolor>$VAR[color_spotlightlib_accent]</textcolor>
 						<info>Container(58004).ListItem.Premiered</info>
 					</control>
 					
@@ -182,10 +182,11 @@
 								<control type="group">
 									<control type="image">
 										<texture background="true" diffuse="artworkdiffuse/landscape.png">$INFO[ListItem.Art(thumb)]</texture>
-										<bordertexture colordiffuse="$VAR[Container_item_nf]">colors/white.png</bordertexture>
+										<bordertexture colordiffuse="$VAR[color_spotlightlib_main]">colors/white.png</bordertexture>
 										<bordersize>1</bordersize>
 									</control>
 									<control type="progress">
+										<description>custom color missing</description>
 										<visible>ListItem.IsResumable</visible>
 										<bottom>-10</bottom>
 										<left>4</left>
@@ -203,11 +204,12 @@
 								<control type="group">
 									<control type="image">
 										<texture background="true" diffuse="artworkdiffuse/landscape.png">$INFO[ListItem.Art(thumb)]</texture>
-										<bordertexture colordiffuse="$VAR[Container_item_fo]">colors/white.png</bordertexture>
+										<bordertexture colordiffuse="$VAR[color_spotlightlib_main]">colors/white.png</bordertexture>
 										<bordersize>4</bordersize>
 									</control>
 									<include content="FocusOverlay">
 										<param name="bordersize" value="4" />
+										<param name="diffusedimtext" value="artworkdiffuse/fanart.png" />
 									</include>
 									<control type="progress">
 										<visible>ListItem.IsResumable</visible>
@@ -259,7 +261,7 @@
 								<height>310</height>
 								<width>207</width>
 								<include content="UniversalLayout">
-									<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+									<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_nf]" />
 									<param name="artwork" value="poster" />
 									<param name="get_tags" value="true" />
 									<param name="get_landscapelogo" value="false" />
@@ -276,7 +278,7 @@
 								<control type="group">
 								<include>Animation_Item_Focus</include>
 									<include content="UniversalLayout">
-										<param name="colordiffuse" value="$VAR[Container_item_fo]" />
+										<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_fo]" />
 										<param name="artwork" value="poster" />
 										<param name="get_tags" value="true" />
 										<param name="get_landscapelogo" value="false" />
@@ -284,7 +286,9 @@
 										<param name="autoscroll" value="false" />
 										<param name="bordersize_bg" value="4" />
 									</include>
-									<include>FocusOverlay</include>
+									<include  content="FocusOverlay">
+										<param name="diffusedimtext" value="artworkdiffuse/poster.png" />
+									</include>
 								</control>
 							</control>
 						</focusedlayout>
@@ -297,7 +301,7 @@
 						<left>-100</left>
 						<width>110%</width>
 						<height>1</height>
-						<texture colordiffuse="white">colors/white50.png</texture>
+						<texture colordiffuse="$VAR[color_spotlightlib_main]">colors/white50.png</texture>
 					</control>
 					
 					<control type="panel" id="580052">
@@ -321,7 +325,7 @@
 								<control type="image">
 									<description>bordertexture</description>
 									<texture>artworkdiffuse/landscape.png</texture>
-									<colordiffuse>$VAR[Container_item_nf]</colordiffuse>
+									<colordiffuse>$VAR[color_spotlightlib_itemframe_nf]</colordiffuse>
 									<bordersize>7</bordersize>
 								</control>
 								<control type="image">
@@ -342,13 +346,13 @@
 									<control type="image">
 										<bottom>-4%</bottom>
 										<height>3</height>
-										<texture colordiffuse="$VAR[Widget_Progress_Watched]" border="2">colors/white.png</texture>
+										<texture colordiffuse="$VAR[color_lib_watchedoverlay_progressbar_progress]" border="2">colors/white.png</texture>
 										<visible>Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable</visible>
 									</control>
 									<control type="image">
 										<bottom>-4%</bottom>
 										<height>3</height>
-										<texture colordiffuse="$VAR[Widget_Progress_Remain]" border="2">colors/white.png</texture>
+										<texture colordiffuse="$VAR[color_lib_watchedoverlay_progressbar_remain]" border="2">colors/white.png</texture>
 										<visible>!Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable</visible>
 									</control>
 								</control>
@@ -359,7 +363,7 @@
 									<height>20</height>
 									<font>MenucontrolSectionHeading</font>
 									<label>$INFO[ListItem.Episode, $LOCALIZE[36906]  ,]$INFO[ListItem.Title, :  ,]</label>
-									<textcolor>$VAR[Container_label2_itemtag]</textcolor>
+									<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 									<selectedcolor>white</selectedcolor>
 								</control>
 							</control>
@@ -373,7 +377,7 @@
 								<font>debug</font>
 								<align>left</align>
 								<aligny>center</aligny>
-								<textcolor>grey</textcolor>
+								<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
 								<selectedcolor>white</selectedcolor>
 								<label>$INFO[ListItem.Plot]</label>
 							</control>
@@ -387,7 +391,7 @@
 									<description>thumb fake zoom</description>
 									<texture background="true" diffuse="artworkdiffuse/landscape.png" fallback="defaultvideo.png">$VAR[ImageLayout_landscape]</texture>
 									<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
-									<bordertexture colordiffuse="$VAR[Container_item_fo]">artworkdiffuse/landscape.png</bordertexture>
+									<bordertexture colordiffuse="$VAR[color_lib_widgetitem_frame_fo]">artworkdiffuse/landscape.png</bordertexture>
 									<bordersize>3</bordersize>
 								</control>
 								<control type="group">
@@ -401,13 +405,13 @@
 									<control type="image">
 										<bottom>-4%</bottom>
 										<height>3</height>
-										<texture colordiffuse="$VAR[Widget_Progress_Watched]" border="2">colors/white.png</texture>
+										<texture colordiffuse="$VAR[color_lib_watchedoverlay_progressbar_progress]" border="2">colors/white.png</texture>
 										<visible>Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable</visible>
 									</control>
 									<control type="image">
 										<bottom>-4%</bottom>
 										<height>3</height>
-										<texture colordiffuse="$VAR[Widget_Progress_Remain]" border="2">colors/white.png</texture>
+										<texture colordiffuse="$VAR[color_lib_watchedoverlay_progressbar_remain]" border="2">colors/white.png</texture>
 										<visible>!Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable</visible>
 									</control>
 								</control>
@@ -419,11 +423,12 @@
 									<height>20</height>
 									<font>MenucontrolSectionHeading</font>
 									<label>$INFO[ListItem.Episode, $LOCALIZE[36906]  ,]$INFO[ListItem.Title, :  ,]</label>
-									<textcolor>cyan</textcolor>
+									<textcolor>$VAR[color_spotlightlib_accent]</textcolor>
 									<selectedcolor>white</selectedcolor>
 								</control>
 								
 								<include content="FocusOverlay">
+									<param name="diffusedimtext" value="artworkdiffuse/fanart.png" />
 									<param name="bordersize" value="3" />
 								</include>
 								
@@ -444,7 +449,7 @@
 								<font>debug</font>
 								<align>left</align>
 								<aligny>center</aligny>
-								<textcolor>white</textcolor>
+								<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 								<selectedcolor>white</selectedcolor>
 								<label>$INFO[ListItem.Plot]</label>
 							</control>
@@ -459,7 +464,7 @@
 								<control type="image">
 									<description>bordertexture</description>
 									<texture>artworkdiffuse/landscape.png</texture>
-									<colordiffuse>$VAR[Container_item_nf]</colordiffuse>
+									<colordiffuse>$VAR[color_spotlightlib_itemframe_nf]</colordiffuse>
 									<bordersize>7</bordersize>
 								</control>
 								<control type="image">
@@ -480,13 +485,13 @@
 									<control type="image">
 										<bottom>-4%</bottom>
 										<height>3</height>
-										<texture colordiffuse="$VAR[Widget_Progress_Watched]" border="2">colors/white.png</texture>
+										<texture colordiffuse="$VAR[color_lib_watchedoverlay_progressbar_progress]" border="2">colors/white.png</texture>
 										<visible>Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable</visible>
 									</control>
 									<control type="image">
 										<bottom>-4%</bottom>
 										<height>3</height>
-										<texture colordiffuse="$VAR[Widget_Progress_Remain]" border="2">colors/white.png</texture>
+										<texture colordiffuse="$VAR[color_lib_watchedoverlay_progressbar_remain]" border="2">colors/white.png</texture>
 										<visible>!Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable</visible>
 									</control>
 								</control>
@@ -496,7 +501,7 @@
 									<right>50</right>
 									<height>20</height>
 									<font>debug</font>
-									<textcolor>grey</textcolor>
+									<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
 									<selectedcolor>white</selectedcolor>
 									<label>$INFO[ListItem.Episode,$LOCALIZE[36906][B] ,[/B]]</label>
 								</control>
@@ -508,9 +513,9 @@
 								<right>50</right>
 								<height>40</height>
 								<font>debug</font>
-								<textcolor>$VAR[Container_label2_itemtag]</textcolor>
+								<textcolor>$VAR[$VAR[color_spotlightlib_main]]</textcolor>
 								<selectedcolor>white</selectedcolor>
-								<label>$INFO[ListItem.Title,[B],[/B]][CR][COLOR=grey]$VAR[ListItemDuration][/COLOR]</label>
+								<label>$INFO[ListItem.Title,[B],[/B]][CR][COLOR=$VAR[color_spotlightlib_secondary]]$VAR[ListItemDuration][/COLOR]</label>
 							</control>
 							<control type="textbox">
 								<autoscroll delay="2000" time="1500" repeat="1500">false</autoscroll>
@@ -522,7 +527,7 @@
 								<font>debug</font>
 								<align>left</align>
 								<aligny>center</aligny>
-								<textcolor>grey</textcolor>
+								<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
 								<selectedcolor>white</selectedcolor>
 								<label>$INFO[ListItem.Plot]</label>
 							</control>
@@ -532,7 +537,7 @@
 								<right>35</right>
 								<height>20</height>
 								<font>debug</font>
-								<textcolor>$VAR[Container_label2_itemtag]</textcolor>
+								<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
 								<selectedcolor>white</selectedcolor>
 								<label>$INFO[ListItem.Premiered]</label>
 							</control>
@@ -546,12 +551,13 @@
 									<description>thumb fake zoom</description>
 									<texture background="true" diffuse="artworkdiffuse/landscape.png" fallback="defaultvideo.png">$VAR[ImageLayout_landscape]</texture>
 									<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
-									<bordertexture colordiffuse="$VAR[Container_item_fo]">artworkdiffuse/landscape.png</bordertexture>
+									<bordertexture colordiffuse="$VAR[color_lib_widgetitem_frame_fo]">artworkdiffuse/landscape.png</bordertexture>
 									<bordersize>3</bordersize>
 								</control>
 								
 								<include content="FocusOverlay">
 									<param name="bordersize" value="3" />
+									<param name="diffusedimtext" value="artworkdiffuse/fanart.png" />
 								</include>
 								
 								<animation type="Focus" reversible="false">
@@ -571,13 +577,13 @@
 									<control type="image">
 										<bottom>-4%</bottom>
 										<height>3</height>
-										<texture colordiffuse="$VAR[Widget_Progress_Watched]" border="2">colors/white.png</texture>
+										<texture colordiffuse="$VAR[color_lib_watchedoverlay_progressbar_progress]" border="2">colors/white.png</texture>
 										<visible>Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable</visible>
 									</control>
 									<control type="image">
 										<bottom>-4%</bottom>
 										<height>3</height>
-										<texture colordiffuse="$VAR[Widget_Progress_Remain]" border="2">colors/white.png</texture>
+										<texture colordiffuse="$VAR[color_lib_watchedoverlay_progressbar_remain]" border="2">colors/white.png</texture>
 										<visible>!Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable</visible>
 									</control>
 								</control>
@@ -587,7 +593,7 @@
 									<right>50</right>
 									<height>20</height>
 									<font>debug</font>
-									<textcolor>white</textcolor>
+									<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 									<selectedcolor>white</selectedcolor>
 									<label>$INFO[ListItem.Episode,$LOCALIZE[36906][B] ,[/B]]</label>
 									<label2>$INFO[ListItem.Duration]</label2>
@@ -600,9 +606,9 @@
 								<right>50</right>
 								<height>40</height>
 								<font>debug</font>
-								<textcolor>cyan</textcolor>
+								<textcolor>$VAR[color_spotlightlib_accent]</textcolor>
 								<selectedcolor>white</selectedcolor>
-								<label>$INFO[ListItem.Title,[B],[/B]][CR][COLOR=grey]$VAR[ListItemDuration][/COLOR]</label>
+								<label>$INFO[ListItem.Title,[B],[/B]][CR][COLOR=$VAR[color_spotlightlib_secondary]]$VAR[ListItemDuration][/COLOR]</label>
 							</control>
 							<control type="textbox">
 								<autoscroll delay="2000" time="1500" repeat="1500">false</autoscroll>
@@ -614,7 +620,7 @@
 								<font>debug</font>
 								<align>left</align>
 								<aligny>center</aligny>
-								<textcolor>white</textcolor>
+								<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 								<selectedcolor>white</selectedcolor>
 								<label>$INFO[ListItem.Plot]</label>
 							</control>
@@ -624,7 +630,7 @@
 								<right>35</right>
 								<height>20</height>
 								<font>debug</font>
-								<textcolor>cyan</textcolor>
+								<textcolor>$VAR[color_spotlightlib_accent]</textcolor>
 								<selectedcolor>white</selectedcolor>
 								<label>$INFO[ListItem.Premiered]</label>
 							</control>
@@ -662,7 +668,7 @@
 							<height>165</height>
 							<font>debug</font>
 							<align>center</align>
-							<textcolor>white</textcolor>
+							<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 							<selectedcolor>white</selectedcolor>
 							<label>$INFO[Container(580051).ListItem.Plot]</label>
 						</control>
@@ -710,7 +716,7 @@
 								<height>250</height>
 								<width>250</width>
 								<include content="Circle_CastWidget">
-									<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+									<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_nf]" />
 									<param name="autoscroll" value="false" />
 									<param name="bordersize_bg" value="6" />
 								</include>
@@ -723,7 +729,7 @@
 								<include>Animation_Item_Focus</include>
 								<control type="group">
 									<include content="Circle_CastWidget">
-										<param name="colordiffuse" value="$VAR[Container_item_fo]" />
+										<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_fo]" />
 										<param name="autoscroll" value="true" />
 										<param name="bordersize_bg" value="4" />
 									</include>
@@ -765,7 +771,7 @@
 								<width>432</width>
 								<height>243</height>
 								<include content="HUB_Landscape">
-									<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+									<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_nf]" />
 									<param name="autoscroll" value="false" />
 									<param name="bordersize_bg" value="6" />
 								</include>
@@ -778,7 +784,7 @@
 								<include>Animation_Item_Focus</include>
 								<control type="group">
 									<include content="HUB_Landscape">
-										<param name="colordiffuse" value="$VAR[Container_item_fo]" />
+										<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_fo]" />
 										<param name="autoscroll" value="true" />
 										<param name="bordersize_bg" value="4" />
 									</include>
@@ -847,7 +853,7 @@
 								<width>432</width>
 								<height>243</height>
 								<include content="LS_SuggestionWidget">
-									<param name="colordiffuse" value="$VAR[Container_item_nf]" />
+									<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_nf]" />
 									<param name="autoscroll" value="false" />
 									<param name="bordersize_bg" value="6" />
 								</include>
@@ -860,7 +866,7 @@
 								<control type="group">
 									<include>Animation_Item_Focus</include>
 									<include content="LS_SuggestionWidget">
-										<param name="colordiffuse" value="$VAR[Container_item_fo]" />
+										<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_fo]" />
 										<param name="autoscroll" value="true" />
 										<param name="bordersize_bg" value="4" />
 									</include>
@@ -901,7 +907,7 @@
 					<height>200</height>
 					<width>200</width>
 					<aspectratio align="left" aligny="bottom">keep</aspectratio>
-					<colordiffuse>white</colordiffuse>
+					<colordiffuse>$VAR[color_spotlightlib_flags]</colordiffuse>
 					<texture background="true">resource://resource.images.studios.white/$INFO[ListItem.Studio].png</texture>
 				</control>
 			</control>
@@ -964,7 +970,7 @@
 					<width>auto</width>
 					<label>|</label>
 					<aligny>center</aligny>
-					<textcolor>red</textcolor>
+					<textcolor>$VAR[color_spotlightlib_accent]</textcolor>
 					<font>font29</font>
 				</control>
 				<control type="label">
@@ -973,7 +979,7 @@
 					<width>auto</width>
 					<label>$PARAM[widgetdesc]</label>
 					<aligny>top</aligny>
-					<textcolor>white</textcolor>
+					<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 					<font>font29</font>
 				</control>
 				<control type="label">
@@ -981,7 +987,7 @@
 					<width>auto</width>
 					<label> |</label>
 					<aligny>center</aligny>
-					<textcolor>red</textcolor>
+					<textcolor>$VAR[color_spotlightlib_accent]</textcolor>
 					<font>Bold36</font>
 				</control>
 				<control type="label">
@@ -990,7 +996,7 @@
 					<width>auto</width>
 					<label>$INFO[Container(58004).ListItem.Season, $LOCALIZE[36904] ,]$INFO[Container(58004).ListItem.Episode, | $LOCALIZE[36906] ,]</label>
 					<aligny>center</aligny>
-					<textcolor>white</textcolor>
+					<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 					<font>Bold36</font>
 				</control>
 			</control>
@@ -1021,7 +1027,7 @@
 			<aligny>center</aligny>
 			<font>Netflix_DetailRow</font>
 			<label>$INFO[ListItem.Year,[B],[/B]]</label>
-			<textcolor>white</textcolor>
+			<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 		</control>
 		<control type="button">
 			<width min="50">auto</width>
@@ -1029,8 +1035,8 @@
 			<label>$INFO[ListItem.MPAA,[B],[/B]]</label>
 			<aligny>top</aligny>
 			<align>center</align>
-			<textcolor>white</textcolor>
-			<disabledcolor>white</disabledcolor>
+			<textcolor>$VAR[color_spotlightlib_main]</textcolor>
+			<disabledcolor>$VAR[color_spotlightlib_main]</disabledcolor>
 			<posy>3</posy>
 			<height>40</height>
 			<textoffsetx>20</textoffsetx>
@@ -1045,7 +1051,7 @@
 			<label>$INFO[Window(home).Property(totalseasons),, Staffeln | ]$INFO[Window(home).Property(totalepisodes),, Episoden]$INFO[Window(home).Property(status),  | [B],[/B]  | ]</label>
 			<height>35</height>
 			<aligny>center</aligny>
-			<textcolor>white</textcolor>
+			<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 			<font>Netflix_DetailRow</font>
 		</control>
 	</include>
@@ -1070,9 +1076,9 @@
 				<font>CommonTag</font>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>$VAR[HUB_maintextcolor]</textcolor>
+				<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 				<selectedcolor>white</selectedcolor>
-				<label>$VAR[HUB_Tags_Bottom]</label>
+				<label>$VAR[Tag_label1][CR][COLOR=$PARAM[color_spotlightlib_secondary]]$VAR[Tag_label2][/COLOR]</label>
 			</control>
 		</control>
 	</include>
@@ -1096,7 +1102,7 @@
 			<wrapmultiline>true</wrapmultiline>
 			<font>Netflix_Title</font>
 			<align>$PARAM[align]</align>
-			<textcolor>white</textcolor>
+			<textcolor>$VAR[color_spotlightlib_accent]</textcolor>
 			<label>$INFO[ListItem.TVShowTitle]</label>
 		</control>
 	</include>
@@ -1168,7 +1174,7 @@
 		<bottom>10</bottom>
 		<aligny>top</aligny>
 		<label>$VAR[plot]</label>
-		<textcolor>white</textcolor>
+		<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 		<font>Netflix_Plot</font>
 	</include>	
 																			   
