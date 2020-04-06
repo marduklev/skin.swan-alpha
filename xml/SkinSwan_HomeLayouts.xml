@@ -164,12 +164,16 @@
 		<control type="group">
 			<description>S P O T L I G H T  A R T W O R K</description>
 			<include content="DefArtwork">
+				<param name="width" value="1267" />
+				<param name="height" value="731" />
 				<right>0</right>
 				<param name="diffuse" value="diffuse/Spotlight_left_diffuse.png" />
 				<param name="visible" value="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
 			</include>
 			<include content="DefArtwork">
 				<left>0</left>
+				<param name="width" value="1267" />
+				<param name="height" value="731" />
 				<param name="diffuse" value="diffuse/Spotlight_right_diffuse.png" />
 				<param name="visible" value="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
 			</include>
@@ -194,7 +198,6 @@
 				<param name="right" value="60" />
 			</include>
 			<!-- <animation time="300" effect="slide" end="0,200" reversible="true" easing="inout" condition="ControlGroup(9000).HasFocus">Conditional</animation> -->
-		
 			
 			<control type="image" id="1601">
 				<description>clearlogo, didnt need respect alignment setting ?</description>
@@ -211,7 +214,7 @@
 				<height>235</height>
 				<wrapmultiline>true</wrapmultiline>
 				<font>Netflix_Title</font>
-				<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
+				<!-- <font>font_SpotlightTitle</font> -->
 				<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
 					<param name="align" value="center" />
 				</include>
@@ -219,7 +222,7 @@
 					<param name="align" value="right" />
 				</include>
 				<aligny>bottom</aligny>
-				<textcolor>white</textcolor>
+				<textcolor>$VAR[color_home_accent]</textcolor>
 				<label>$VAR[ClearLogo_FallbackHome]</label>
 			</control>
 			
@@ -235,6 +238,7 @@
 				<control type="label">
 					<height>60</height>
 					<font>Netflix_Plot</font>
+					<!-- <font>PlotSemiBold3</font> -->
 					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
 					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
 						<param name="align" value="center" />
@@ -243,7 +247,7 @@
 						<param name="align" value="right" />
 					</include>
 					<aligny>center</aligny>
-					<textcolor>white</textcolor>
+					<textcolor>$VAR[color_home_text_main]</textcolor>
 					<label>[CAPITALIZE]$INFO[ListItem.Title,[B],[/B]][CR]$INFO[ListItem.Season,$LOCALIZE[36904] ,]$INFO[ListItem.Episode, $LOCALIZE[36906] ,][/CAPITALIZE]</label>
 				</control>
 				<control type="label">
@@ -282,13 +286,14 @@
 
 	<include name="Home_Plot">
 		<control type="textbox">
-			<description>terrible auto scroll even if not exceed height</description>
+			<description>may to much width</description>
 			<visible>$PARAM[visible]</visible>
 			<top>$PARAM[top]</top>
 			<height min="80" max="$PARAM[maxheight]">auto</height>
 			<aligny>top</aligny>
 			<label>$VAR[plot]</label>
-			<textcolor>white</textcolor>
+			<textcolor>$VAR[color_home_text_secondary]</textcolor>
+			<shadowcolor>FF000000</shadowcolor>
 			<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
 			<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
 				<param name="align" value="center" />
@@ -297,11 +302,13 @@
 				<param name="align" value="right" />
 			</include>
 			<font>Netflix_Plot</font>
+			<!-- <font>PlotSemiBold3</font> -->
 		</control>
 	</include>
 
 	<include name="Meta_Uncommon_Top">
 		<control type="grouplist">
+			<description>optional ? font-Netflix_DetailRow</description>
 			<orientation>horizontal</orientation>
 			<usecontrolcoords>true</usecontrolcoords>
 			<height>50</height>
@@ -315,7 +322,9 @@
 				<param name="align" value="right" />
 			</include>
 			
-			<include content="StarsRating_Image" />
+			<include content="StarsRating_Image">
+				<param name="colordiffuse" value="$VAR[color_home_accent]" />
+			</include>
 			
 			<control type="label">
 				<visible>!String.IsEmpty(ListItem.Year)</visible>	
@@ -325,23 +334,25 @@
 				<width>auto</width>
 				<aligny>center</aligny>
 				<font>Netflix_DetailRow</font>
+				<!-- <font>SpotlightHome_detail</font> -->
 				<label>$INFO[ListItem.Year,[B],[/B]]</label>
-				<textcolor>white</textcolor>
+				<textcolor>$VAR[color_home_text_main]</textcolor>
 			</control>
 			
 			<control type="button">
 				<width min="50">auto</width>
 				<font>Netflix_DetailRow</font>
+				<!-- <font>SpotlightHome_detail</font> -->
 				<label>$INFO[ListItem.MPAA,[B],[/B]]</label>
 				<aligny>top</aligny>
 				<align>center</align>
-				<textcolor>white</textcolor>
-				<disabledcolor>white</disabledcolor>
+				<textcolor>$VAR[color_home_text_main]</textcolor>
+				<disabledcolor>$VAR[color_home_text_main]</disabledcolor>
 				<posy>3</posy>
 				<height>40</height>
 				<textoffsetx>20</textoffsetx>
 				<textoffsety>4</textoffsety>
-				<texturenofocus border="-2" colordiffuse="white">flags/detailframe.png</texturenofocus>
+				<texturenofocus colordiffuse="$VAR[color_home_text_main]">flags/detailframe.png</texturenofocus>
 				<enable>false</enable>
 				<visible>!String.IsEmpty(ListItem.MPAA)</visible>
 			</control>
@@ -353,8 +364,9 @@
 				<label>$VAR[Meta_Top_Details]</label>
 				<height>35</height>
 				<aligny>center</aligny>
-				<textcolor>white</textcolor>
+				<textcolor>$VAR[color_home_text_main]</textcolor>
 				<font>Netflix_DetailRow</font>
+				<!-- <font>SpotlightHome_detail</font> -->
 			</control>
 			
 			<include content="FramedCodecInfo">
@@ -416,12 +428,12 @@
 				<width>60</width>
 				<control type="image">
 					<texture aligny="center" align="center">diffuse/roundmask.png</texture>
-					<colordiffuse>red</colordiffuse>
+					<colordiffuse>$VAR[color_home_accent]</colordiffuse>
 				</control>
 				<control type="image">
 					<texture aligny="center" align="center">flags/genre.png</texture>
 					<aspectratio>keep</aspectratio>
-					<colordiffuse>black</colordiffuse>
+					<colordiffuse>ff000000</colordiffuse>
 				</control>
 			</control>
 			<control type="label">
@@ -429,8 +441,9 @@
 				<height>50</height>
 				<aligny>center</aligny>
 				<label>$INFO[ListItem.Genre,[B],[/B]]</label>
-				<textcolor>grey</textcolor>
-				<font>Netflix_DetailRow</font>
+				<textcolor>$VAR[color_home_text_main]</textcolor>
+				<font>Netflix_DetailRow</font> ,[B],[/B]
+				<!-- <font>SpotlightHome_detail</font> -->
 			</control>
 		</control>
 	</include>
@@ -451,6 +464,7 @@
 			<control type="image">
 				<description>use netflix bg</description>
 				<bordersize>2</bordersize>
+				<!-- <top>-1</top> -->
 				<width>60</width>
 				<height>35</height>
 				<texture colordiffuse="$VAR[color_home_background_layer1]">colors/white40.png</texture>
@@ -458,6 +472,7 @@
 			<control type="image">
 				<width>60</width>
 				<height>35</height>
+				<!-- <top>-1</top> -->
 				<texture colordiffuse="white">flags/slimframe_softedge.png</texture>
 			</control>
 			<control type="label" id="$PARAM[label_id]">
@@ -494,8 +509,6 @@
         <value condition="String.IsEqual(ListItem.AudioChannels,10)">9.1</value>
         <value condition="!String.IsEmpty(ListItem.Channels)">$INFO[ListItem.Channels]</value>
 	</variable>
-
-	
 
 	<variable name="Meta_Top_Details">
 		<value condition="String.IsEqual(ListItem.DBTYPE,tvshow) + Integer.IsGreater(ListItem.Property(TotalSeasons),1) + Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),0) + !String.IsEmpty(ListItem.Property(TotalEpisodes))">$INFO[ListItem.Property(TotalSeasons),[B], $LOCALIZE[33054][/B]]$INFO[ListItem.Property(UnWatchedEpisodes), (, $LOCALIZE[16101])]</value>
