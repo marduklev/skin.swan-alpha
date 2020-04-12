@@ -114,7 +114,8 @@
 					</include>
 					<onclick>SetProperty(DialogHeader,Choose Custom Login Background,home)</onclick>
 					<onclick>Skin.Reset(texture_profilelogin_background)</onclick>
-					<onclick>Skin.SetImage(texture_profilelogin_background,special://skin/extras/backgroundimages)</onclick>
+					<onclick condition="String.IsEmpty(Skin.String(texturepath_userdefined))">Skin.SetImage(texture_profilelogin_background,special://skin/extras/backgroundimages)</onclick>
+					<onclick condition="!String.IsEmpty(Skin.String(texturepath_userdefined))">Skin.SetImage(texture_profilelogin_background,$INFO[Skin.String(texturepath_userdefined)])</onclick>
 					<visible>System.HasLoginScreen</visible>
 				</control>
 				<include content="SkinSettings_ColorButton">
@@ -135,6 +136,7 @@
 					<param name="skinsetting" value="color_profilelogin_accent" />
 					<param name="visible" value="System.HasLoginScreen" />
 				</include>
+				
 				<include content="SectionHeadline">
 					<param name="id" value="$PARAM[id]005"/>
 					<param name="label" value="C H O O S E    S T A R T     W I N D O W"/>
@@ -154,6 +156,13 @@
 					<onclick></onclick>
 					<selected></selected>
 				</control>
+				<control type="radiobutton" id="$PARAM[id]009">
+					<label>profile login</label>
+					<onclick>ActivateWindow(profiles,return)</onclick>
+					<onclick>SendClick(profiles,4)</onclick>
+					<onclick>ReplaceWindow(skinsettings)</onclick>
+					<selected>System.HasLoginScreen</selected>
+				</control>
 				
 			</include>
 			
@@ -165,35 +174,54 @@
 				<description>B A C K G R O U N D</description>
 				<visible>Container(9000).HasFocus($PARAM[id])</visible>
 				
+				
 				<include content="SectionHeadline">
 					<param name="id" value="$PARAM[id]000"/>
-					<param name="label" value="A R T W O R K"/>
+					<param name="label" value="C U S T O M      I M A G E      O P T I O N S"/>
 				</include>
 				
 				<control type="radiobutton" id="$PARAM[id]001">
-					<label>Show Fanart as Background if available</label>
-					<onclick>Skin.ToggleSetting(ShowFanartBackground)</onclick>
-					<selected>Skin.HasSetting(ShowFanartBackground)</selected>
+					<height>90</height>
+					<include content="SkinSettings_SettingsRadioButton">
+						<param name="label" value="Choose your Folderpath if you like to use own Source Folder(s) for your images[CR][I][B]which will be used for image lookups (e.g. backgrounds ,backgroundoverlay , profile ...)[/B][/I]" />
+						<param name="label2" value="$INFO[Skin.String(texturepath_userdefined)]" />
+					</include>
+					<onclick>SetProperty(DialogHeader,Set Path for your Custom Backgroundimage Folder,home)</onclick>
+					<onclick>Skin.Reset(texturepath_userdefined)</onclick>
+					<onclick>Skin.SetPath(texturepath_userdefined)</onclick>
 				</control>
+				<include content="spacer_h">
+					<param name="id" value="$PARAM[id]002" />
+					<param name="gap" value="15" />
+				</include>
 				
-				
-				<control type="radiobutton" id="$PARAM[id]002">
+				<control type="radiobutton" id="$PARAM[id]003">
+					<height>90</height>
 					<include content="SkinSettings_SettingsRadioButton">
 						<param name="label" value="Set [B]Global[/B] Background Image (middle layer)" />
-						<param name="label2" value="" />
+						<param name="label2" value="[B]Current[/B]    [CR]$INFO[Skin.String(texture_global_background_layer2)]" />
 					</include>
 					<onclick>SetProperty(DialogHeader,Set [B]Global[/B] Background Image (middle layer),home)</onclick>
 					<onclick>Skin.Reset(texture_global_background_layer2)</onclick>
-					<onclick>Skin.SetImage(texture_global_background_layer2,special://skin/extras/backgroundimages)</onclick>
+					<onclick condition="String.IsEmpty(Skin.String(texturepath_userdefined))">Skin.SetImage(texture_global_background_layer2,special://skin/extras/backgroundimages)</onclick>
+					<onclick condition="!String.IsEmpty(Skin.String(texturepath_userdefined))">Skin.SetImage(texture_global_background_layer2,$INFO[Skin.String(texturepath_userdefined)])</onclick>
 				</control>
-				<control type="radiobutton" id="$PARAM[id]003">
-					<height>90</height>
-					<label>Use Tinted Overlay instead Tint the Image itself</label>
-					<label2>80% transp cannot be exceeded    [CR](recommended if using &apos;Show Fanart Background &apos;)    </label2>
+				
+				<control type="radiobutton" id="$PARAM[id]004">
+					<height>60</height>
+					<font>font10</font>
+					<label> - Use Tinted Overlay instead Tint the Image itself</label>
+					<label2>90% transp cannot be exceeded    [CR](recommended if using &apos;Show Fanart Background &apos;)    </label2>
 					<onclick>Skin.ToggleSetting(BG_PreferOverlay2ndLayer)</onclick>
 					<selected>Skin.HasSetting(BG_PreferOverlay2ndLayer)</selected>
 				</control>
-				<!-- <control type="radiobutton" id="$PARAM[id]003">
+				
+				<include content="spacer_h">
+					<param name="id" value="$PARAM[id]005" />
+					<param name="gap" value="5" />
+				</include>
+				<!-- 
+				<control type="radiobutton" id="$PARAM[id]006">
 					<include content="SkinSettings_SettingsRadioButton">
 						<param name="label" value="Experimental Choose a diffuse Image for middle Layer" />
 						<param name="label2" value="" />
@@ -201,51 +229,78 @@
 					<onclick>SetProperty(DialogHeader,texture_global_backgrounddiffusor_layer2,home)</onclick>
 					<onclick>Skin.Reset(texture_global_backgrounddiffusor_layer2)</onclick>
 					<onclick>Skin.SetImage(texture_global_backgrounddiffusor_layer2,special://skin/extras/backgroundimages)</onclick>
-				</control> -->
+				</control>
+				-->
 				
-				<control type="radiobutton" id="$PARAM[id]004">
+				<control type="radiobutton" id="$PARAM[id]007">
+					<height>90</height>
 					<include content="SkinSettings_SettingsRadioButton">
 						<param name="label" value="Set [B]Common[/B] Background Overlay Image (top layer)" />
 						<param name="label2" value="" />
 					</include>
-					
 					<onclick>SetProperty(DialogHeader,Set [B]Common[/B] Background Overlay Image (top layer),home)</onclick>
 					<onclick>Skin.Reset(texture_global_background_layer3)</onclick>
-					<onclick>Skin.SetImage(texture_global_background_layer3,special://skin/extras/backgroundoverlay)</onclick>
+					<onclick condition="String.IsEmpty(Skin.String(texturepath_userdefined))">Skin.SetImage(texture_global_background_layer3,special://skin/extras/backgroundoverlay)</onclick>
+					<onclick condition="!String.IsEmpty(Skin.String(texturepath_userdefined))">Skin.SetImage(texture_global_background_layer3,$INFO[Skin.String(texturepath_userdefined)])</onclick>
 				</control>
-				<control type="radiobutton" id="$PARAM[id]005">
+				<include content="spacer_h">
+					<param name="id" value="$PARAM[id]008" />
+					<param name="gap" value="5" />
+				</include>
+				<control type="radiobutton" id="$PARAM[id]009">
+					<height>90</height>
 					<include content="SkinSettings_SettingsRadioButton">
 						<param name="label" value="Set [B]Home[/B] Background Overlay Image" />
 						<param name="label2" value="" />
 					</include>
 					<onclick>SetProperty(DialogHeader,Set [B]Home Screen[/B] Background Overlay Image (top layer),home)</onclick>
 					<onclick>Skin.Reset(texture_home_background_layer3)</onclick>
-					<onclick>Skin.SetImage(texture_home_background_layer3,special://skin/extras/backgroundoverlay)</onclick>
+					<onclick condition="String.IsEmpty(Skin.String(texturepath_userdefined))">Skin.SetImage(texture_home_background_layer3,special://skin/extras/backgroundoverlay)</onclick>
+					<onclick condition="!String.IsEmpty(Skin.String(texturepath_userdefined))">Skin.SetImage(texture_home_background_layer3,$INFO[Skin.String(texturepath_userdefined)])</onclick>
 				</control>
-				
-				<control type="radiobutton" id="$PARAM[id]006">
+				<include content="spacer_h">
+					<param name="id" value="$PARAM[id]010" />
+					<param name="gap" value="5" />
+				</include>
+				<control type="radiobutton" id="$PARAM[id]011">
+					<height>90</height>
 					<include content="SkinSettings_SettingsRadioButton">
-						<param name="label" value="Set HeaderBar Image" />
+						<param name="label" value="Set [B]Header Bar[/B] Image" />
 						<param name="label2" value="" />
 					</include>
 					<onclick>Skin.Reset(texture_global_headerbar)</onclick>
-					<onclick>Skin.SetImage(texture_global_headerbar,special://skin/extras/headerbartextures)</onclick>
+					<onclick condition="String.IsEmpty(Skin.String(texturepath_userdefined))">Skin.SetImage(texture_global_headerbar,special://skin/extras/headerbartextures)</onclick>
+					<onclick condition="!String.IsEmpty(Skin.String(texturepath_userdefined))">Skin.SetImage(texture_global_headerbar,$INFO[Skin.String(texturepath_userdefined)])</onclick>
 				</control>
 				
-				<control type="radiobutton" id="$PARAM[id]007">
+				
+				<include content="SectionHeadline">
+					<param name="id" value="$PARAM[id]020"/>
+					<param name="label" value="A R T W O R K      O P T I O N S"/>
+				</include>
+				
+				<control type="radiobutton" id="$PARAM[id]021">
+					<label>Show Fanart as Background if available</label>
+					<onclick>Skin.ToggleSetting(ShowFanartBackground)</onclick>
+					<selected>Skin.HasSetting(ShowFanartBackground)</selected>
+				</control>
+				
+				
+				
+				<control type="radiobutton" id="$PARAM[id]022">
 					<label>Animate Background Image/Fanart</label>
 					<onclick>Skin.ToggleSetting(BackgroundAnimation)</onclick>
 					<selected>Skin.HasSetting(BackgroundAnimation)</selected>
 				</control>
 				
-				<control type="radiobutton" id="$PARAM[id]008">
+				<control type="radiobutton" id="$PARAM[id]023">
 					<label>Prefer Animated Fanart (if available)</label>
 					
 					<onclick>Skin.ToggleSetting(AnimatedFanart)</onclick>
 					<selected>Skin.HasSetting(AnimatedFanart)</selected>
 					
 				</control>
-				<control type="radiobutton" id="$PARAM[id]009">
+				<control type="radiobutton" id="$PARAM[id]024">
 					<label>Prefer Animated Poster (if available)</label>
 					<description>tend to toggle via view type settings not global</description>
 					<visible>false</visible>
@@ -253,14 +308,14 @@
 					<selected>Skin.HasSetting(AnimatedPoster)</selected>
 					
 				</control>
-				<control type="radiobutton" id="$PARAM[id]010">
+				<control type="radiobutton" id="$PARAM[id]025">
 					<label>Prefer Rotating Extra Fanart (if available)</label>
 					
 					<onclick>Skin.ToggleSetting(EnableRotatingExtraFanart)</onclick>
 					<selected>Skin.HasSetting(EnableRotatingExtraFanart)</selected>
 					
 				</control>
-				<control type="radiobutton" id="$PARAM[id]011">
+				<control type="radiobutton" id="$PARAM[id]026">
 					<label>Enable Blur BG in Media Windows</label>
 					<onclick>Skin.ToggleSetting(BlurEnabled)</onclick>
 					<onclick condition="String.IsEmpty(Skin.String(BlurContainer))">Skin.SetString(BlurContainer,99005)</onclick>
@@ -269,7 +324,9 @@
 					<selected>Skin.HasSetting(BlurEnabled)</selected>
 				</control>
 				
-				<control type="radiobutton" id="$PARAM[id]012">
+				<!-- 
+				controlled via addon settings ?
+				<control type="radiobutton" id="$PARAM[id]027">
 					<include content="SkinSettings_SettingsRadioButton">
 						<param name="label" value="Set Blur Strength" />
 						<param name="label2" value="" />
@@ -277,23 +334,28 @@
 					<onclick>SetProperty(SettingSection,SetBlurStrength,home)</onclick>
 					<onclick>ActivateWindow(1103)</onclick>
 					<selected>Skin.HasSetting(BlurEnabled)</selected>
-				</control>
+				</control> 
+				-->
 				
+				<!-- use variables for call, unsure if really wanted to have it custom instead of predefined now 
 				<include content="SectionHeadline">
-					<param name="id" value="$PARAM[id]020"/>
+					<param name="id" value="$PARAM[id]030"/>
 					<param name="label" value="R E S O U R C E      A D D O N S"/>
 				</include>
 				
-				<control type="button" id="$PARAM[id]021">
-					<label>W E A T H E R</label>
+				<control type="button" id="$PARAM[id]031">
+					<label>W E A T H E R[CR]$INFO[Skin.String(weathericons.name),   [B],[/B]][CR]$INFO[Skin.String(weathericons.path),   ,]</label>
 					<height>100</height>
+					<onclick condition="System.HasAddon(script.image.resource.select)">RunScript(script.image.resource.select,property=weathericons&amp;type=resource.images.weathericons)</onclick>
+					<onclick condition="!System.HasAddon(script.image.resource.select)">InstallAddon(script.image.resource.select)</onclick>
 				</control>
-				
-				<control type="button" id="$PARAM[id]024">
-					<label>S T U D I O     L O G O</label>
+				<control type="button" id="$PARAM[id]034">
+					<label>S T U D I O     L O G O[CR]$INFO[Skin.String(studios.name),   [B],[/B]][CR]$INFO[Skin.String(studios.path),   ,]</label>
 					<height>100</height>
+					<onclick condition="System.HasAddon(script.image.resource.select)">RunScript(script.image.resource.select,property=studios&amp;type=resource.images.studios)</onclick>
+					<onclick condition="!System.HasAddon(script.image.resource.select)">InstallAddon(script.image.resource.select)</onclick>
 				</control>
-			
+				-->
 			</include>
 			
 			<include content="ButtonList">
