@@ -346,7 +346,6 @@ ID 	Type 					Description
 					<animation effect="slide" start="0,0" end="90,0" center="auto" time="0" condition="String.IsEmpty(Player.Art(album.discart)) + String.IsEmpty(Player.Art(discart))">Conditional</animation>
 				</control>
 				
-				
 				<control type="videowindow">
 					<visible>!Player.HasAudio</visible>
 					<height>262</height>
@@ -376,7 +375,7 @@ ID 	Type 					Description
 					<alttexturenofocus>buttons/osd/pause.png</alttexturenofocus>
 					<usealttexture>!Player.Paused</usealttexture>
 					<onup>19</onup>
-					<ondown>4001</ondown>
+					<ondown>911</ondown>
 					<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
 					<onright>60493</onright>
 					<onleft>60491</onleft>
@@ -400,130 +399,166 @@ ID 	Type 					Description
 				</include>
 			</control>
 			
-			<control type="button" id="4001">
-				<font>font10</font>
-				<label>   Previous ViewMode</label>
-				<visible>Integer.IsGreater(Container.ViewCount,1)</visible>
-				<onclick>Container.NextViewMode</onclick>
-				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
+			<control type="image" id="4398768">
+				<height>1</height>
+				<texture>diffuse/seperator_gradient_hor.png</texture>
+				<visible>Control.IsVisible(6048)</visible>
+			</control> 
+			
+			<control type="label" id="910">
+				<visible>Control.IsVisible(911)</visible>
+				<textoffset>20</textoffset>
+				<label>$VAR[SideBarHeading]</label>
+				<font>font12</font>
+				<wrapmultiline>true</wrapmultiline>
+				<height>115</height>
+				<align>center</align>
 			</control>
-			<control type="button" id="4002">
-				<font>font10</font>
-				<label>   Next ViewMode</label>
-				<visible>Integer.IsGreater(Container.ViewCount,1)</visible>
-				<onclick>Container.PreviousViewMode</onclick>
+			<!-- temp universal - use grid bg for items instead focus frames may switch to 2 containers to diff between nav and filter/container options -->
+			<include content="Universal_Container">
+				<param name="type" value="panel" />
+				<param name="id" value="911" />
+				<!-- <param name="visible" value="!Control.IsVisible(6048)" /> -->
+				<param name="orientation" value="vertical" />
+				<param name="type_height" value="165" />
+				<!-- <param name="type_height" value="80" /> -->
+				<param name="layout_height" value="74" />
+				<param name="layout_width" value="74" />
+				<param name="itemheight" value="79" />
+				<param name="itemwidth" value="79" />
+				<param name="tags_visible" value="false" />
+				<param name="tagbgpanel_visible" value="false" />
+				<param name="layout" value="square" />
+				
 				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
-			</control>
-			<!-- 
-			<control type="button" id="2" description="Search for a string anywhere in the Kodi video database - use own? id otherwise 3 times various  search">
-				<font>font10</font>
-				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
-			</control>
-			-->
+				
+				<content>
+					<control type="radiobutton" id="40077">
+						<font>font10</font>
+						<label>settings</label>
+						<visible>true</visible>
+						<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
+						<selected />
+					</control>
+					<item>
+						<description>keep here or in premenu?</description>
+						<icon>icons/radiobuttons/settings.png</icon>
+						<label>Gehe zu</label>
+						<label2>$LOCALIZE[10004]</label2>
+						<onclick>ActivateWindow(settings)</onclick>
+					</item>
+					<item>
+						<description>keep here or in premenu?</description>
+						<icon>icons/radiobuttons/home.png</icon>
+						<label>Gehe zu</label>
+						<label2>$LOCALIZE[10000]</label2>
+						<onclick>ActivateWindow(home)</onclick>
+						<visible>!Window.IsVisible(home)</visible>
+					</item>
+					<item>
+						<icon>icons/radiobuttons/music_transborder.png</icon>
+						<label>Gehe zu</label>
+						<label2>$LOCALIZE[2]</label2>
+						<onclick>ReplaceWindow(music,musiclibrary://music/)</onclick>
+						<visible>!Window.Is(music)</visible>
+					</item>
+					<item>
+						<icon>defaultmovies.png</icon>
+						<label>Gehe zu</label>
+						<label2>$LOCALIZE[3]</label2>
+						<onclick>ReplaceWindow(videos,library://video/)</onclick>
+						<visible>!Window.Is(videos)</visible>
+					</item>
+					<item>
+						<icon>defaultaddonpvrclient.png</icon>
+						<label>Gehe zu</label>
+						<label2>$LOCALIZE[14204]</label2>
+						<onclick>ReplaceWindow(tvguide)</onclick>
+						<!-- <onclick>ReplaceWindow(pvr,pvr://channels/tv/)</onclick> -->
+						<visible>!Window.Is(tvguide)</visible>
+					</item>
+					<item>
+						<icon>defaultaddonimages.png</icon>
+						<label>Gehe zu</label>
+						<label2>$LOCALIZE[1]</label2>
+						<onclick>ReplaceWindow(pictures)</onclick>
+						<visible>!Window.Is(pictures)</visible>
+					</item>
+					<item>
+						<icon>defaultpartymode.png</icon>
+						<label>$LOCALIZE[589]</label>
+						<label2>$LOCALIZE[20389]</label2>
+						<onclick>SendClick(16)</onclick>
+						<visible>Control.IsVisible(16)</visible>
+					</item>
+					<item>
+						<description>stop scan 13353 condition library.isscanningvideo</description>
+						<icon>icons/radiobuttons/refresh.png</icon>
+						<label>$LOCALIZE[653]</label>
+						<onclick>SendClick(20)</onclick>
+						<visible>Control.IsEnabled(20)</visible>
+					</item>
+					<item>
+						<icon>icons/radiobuttons/viewswitch2.png</icon>
+						<label>$LOCALIZE[457]</label>
+						<label2>$INFO[Container.Viewmode]</label2>
+						<onclick>SendClick(2)</onclick>
+						<visible>Control.IsVisible(2)</visible>
+					</item>
+					<item>
+						<icon>defaultmusicvideotitle.png</icon>
+						<label>$LOCALIZE[580] (↓↑)</label>
+						<label2>$INFO[Container.SortOrder] $VAR[ContainerSortOrderUnicodeArrow]</label2>
+						<onclick>SendClick(4)</onclick>
+						<visible>Control.IsEnabled(4)</visible>
+					</item>
+					<item>
+						<icon>icons/radiobuttons/togglewua.png</icon>
+						<label>Zeige $LOCALIZE[127]</label>
+						<label2>$INFO[Control.GetLabel(10)]$INFO[Container.NumItems, (,)]</label2>
+						<onclick>SendClick(10)</onclick>
+						<visible>Control.IsVisible(10)</visible>
+					</item>
+					
+					<item>
+						<icon>icons/radiobuttons/method.png</icon>
+						<label>$LOCALIZE[21429]</label>
+						<label2>$INFO[Container.SortMethod]</label2>
+						<onclick>SendClick(3)</onclick>
+						<visible>Control.IsEnabled(3)</visible>
+					</item>
+					<item>
+						<icon>icons/radiobuttons/advancedfiltermethod.png</icon>
+						<label>$LOCALIZE[10152]</label>
+						<label2>$LOCALIZE[35226]</label2>
+						<visible>Container.CanFilterAdvanced</visible>
+						<onclick>SetFocus(50)</onclick>
+						<onclick>Filter</onclick>
+					</item>
+					<item>
+					<icon>defaultaddonvfs.png</icon>
+						<label>$INFO[Control.GetLabel(11)]</label>
+						<onclick>SendClick(11)</onclick>
+						<label>$LOCALIZE[20336]</label>
+						<visible>system.haslocks</visible>
+					</item> 
+				</content>
+			</include>
+			
 			<include content="spacer_h">
 				<param name="id" value="4003" />
 				<param name="gap" value="10" />
 			</include>
-			<control type="button" id="4004">
-				<font>font10</font>
-				<visible>Control.IsEnabled(3)</visible>
-				<label>$INFO[Control.GetLabel(3)]</label>
-				<label2 />
-				<onclick>SendClick(3)</onclick>
-				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
-				<label2 />
-			</control>
-			<control type="button" id="4005">
-				<font>font10</font>
-				<visible>Control.IsEnabled(4)</visible>
-				<label>Change Order to </label>
-				<label2>$VAR[NextSortOrder,[B],[/B]]</label2>
-				<onclick>SendClick(4)</onclick>
-				
-				<!-- save view id prop or use conditionl on click 
-				<onclick>Control.SetFocus(50,0,absolute)</onclick>
-				or
-				<onclick>RunScript(script.embuary.helper,action=resetposition,container=50)</onclick>
-				-->
-				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
-				<label2 />
-			</control>
-			
-			<!-- <control type="button" id="5" description="Switch to file mode">
-				<label>$LOCALIZE[1214]</label>
-			</control> -->
-			
-			<control type="button" id="6" description="Play DVD (used the play physical DVD discs)">
-				<label>$LOCALIZE[341]</label>
-				<font>font10</font>
-				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
-			</control>
-			<control type="button" id="8" description="Search for a string anywhere in the Kodi video database - use own? id otherwise 3 times various  search">
-				<label>$LOCALIZE[137]</label>
-				<font>font10</font>
-				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
-			</control>
-			
-			
-		
-			
-		
-			<!-- test end -->
-			<control type="button" id="199">
-				<visible>Container.CanFilterAdvanced</visible>
-				<label>$LOCALIZE[587]</label>
-				<font>font10</font>
-				<onclick>SetFocus(50)</onclick>
-				<onclick>Filter</onclick>
-				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
-			</control>
-			
-			<control type="button" id="10" description="Show only watched, unwatched or all videos">
-				<visible>Window.IsActive(videos)</visible>
-				<font>font10</font>
-				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
-			</control>
-			
-			<!-- 
-			<control type="button" id="11" description="Unlock shares ??">
-				<label>$LOCALIZE[20336]</label>
-			</control>
-			 -->
-			<control type="button" id="16">
-				<label>$LOCALIZE[589]</label>
-				<font>font10</font>
-				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
-			</control>
-			<control type="button" id="20" description="Update library">
-				<label>$LOCALIZE[653]</label>
-				<font>font10</font>
-				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
-			</control>
 			
 			<include content="spacer_h">
 				<param name="id" value="4006" />
 				<param name="gap" value="40" />
 			</include>
-			
-			<control type="radiobutton" id="4007">
-				<font>font10</font>
-				<label>reload skin</label>
-				<visible>true</visible>
-				<onclick>ReloadSkin()</onclick>
-				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
-				<selected />
+			<control type="label" id="4228">
+				<label>   [B]$LOCALIZE[5][/B]</label>
+				<height>40</height>
+				<font>font12</font>
 			</control>
-			<control type="radiobutton" id="40077">
-				<font>font10</font>
-				<label>settings</label>
-				<visible>true</visible>
-				<onclick>ActivateWindow(settings)</onclick>
-				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
-				<selected />
-			</control>
-			
-			<!-- view type settings -->
-			
 			<control type="radiobutton" id="4008">
 				<font>font10</font>
 				<label>Show BG Panel</label>
@@ -1070,7 +1105,7 @@ RadioSearch
 			<width>45</width>
 			<height>45</height>
 			<onup>19</onup>
-			<ondown>4001</ondown>
+			<ondown>911</ondown>
 			<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
 			<left>$PARAM[left]</left>
 			<onright>$PARAM[onright]</onright>
@@ -1108,6 +1143,19 @@ RadioSearch
 		</control>
 	</include>
 	
+	<variable name="ContainerSortOrderUnicodeArrow">
+		<value condition="String.IsEqual(Container.SortOrder,$LOCALIZE[21430)]">[B]↑[/B]</value>
+		<value condition="!String.IsEqual(Container.SortOrder,$LOCALIZE[21430)]">[B]↓[/B]</value>
+	</variable>
 	
+	<variable name="ContainerToggleWatchedUnwatchedFilter">
+		<value condition="String.IsEqual(Control.GetLabel(10),$LOCALIZE[16100])">$LOCALIZE[20367]</value>
+		<value condition="String.IsEqual(Control.GetLabel(10),$LOCALIZE[16101])">$LOCALIZE[593]</value>
+		<value condition="String.IsEqual(Control.GetLabel(10),$LOCALIZE[16102])"></value>
+	</variable>
 	
+	<variable name="SideBarHeading">
+		<value condition="Control.HasFocus(911)">$INFO[Container(911).Listitem.Label,[B],[/B]][CR][COLOR cyan]$INFO[Container(911).Listitem.Label2][/COLOR][CR]</value>
+		<value></value>
+	</variable>
 </includes>
