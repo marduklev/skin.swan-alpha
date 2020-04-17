@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <window>
-	<defaultcontrol always="true">6000</defaultcontrol>
+	<!-- <defaultcontrol always="true">6000</defaultcontrol> -->
+	<defaultcontrol always="true">6001</defaultcontrol>
+	
+	<animation effect="slide" start="0,0" end="0,-100" time="340">WindowOpen</animation>
+	<animation effect="slide" start="0,-100" end="0,0" time="340">WindowClose</animation>
+	<animation effect="fade" start="0" end="0" time="200">WindowOpen</animation>
+	<animation effect="fade" start="100" end="0" time="200">WindowClose</animation>
+	
 	<controls>
 	
 		<control type="group">
@@ -52,5 +59,65 @@
 				</control>
 			</control>
 		</control>
+		
+		<control type="group">
+				
+			<bottom>-100</bottom>
+			<height>100</height>
+			<right>100</right>
+			<visible>![Window.IsVisible(SliderDialog) | Window.IsVisible(osdaudiosettings) | Window.IsVisible(osdvideosettings) | Window.IsVisible(VideoBookmarks) | Window.IsVisible(playerprocessinfo) | Window.IsVisible(osdcmssettings) | Window.IsVisible(PVROSDChannels) | Window.IsVisible(pvrchannelguide)]</visible>
+			
+			<control type="grouplist" id="6001">
+				<orientation>horizontal</orientation>
+				<usecontrolcoords>true</usecontrolcoords>
+				<top>20</top>
+				<width>100%</width>
+				<align>center</align>
+				
+				<right>0</right>
+				<left>0</left>
+				
+				<itemgap>25</itemgap>
+				
+				<!-- estuary copy -->
+					<control type="radiobutton" id="600">
+						<include content="OSDButton">
+							<param name="texture" value="previous"/>
+						</include>
+						<onclick>PlayerControl(Previous)</onclick>
+						<visible>Player.ChapterCount | Integer.IsGreater(Playlist.Length(video),1) | Player.SeekEnabled</visible>
+					</control>
+					<control type="radiobutton" id="602">
+						<include content="OSDButton">
+							<param name="texture" value="play"/>
+						</include>
+						<selected>Player.Paused</selected>
+						<onclick>PlayerControl(Play)</onclick>
+						<visible>Player.PauseEnabled</visible>
+					</control>
+					<control type="radiobutton" id="603">
+						<include content="OSDButton">
+							<param name="texture" value="stop"/>
+						</include>
+						<onclick>PlayerControl(Stop)</onclick>
+					</control>
+					<control type="radiobutton" id="605">
+						<include content="OSDButton">
+							<param name="texture" value="next"/>
+						</include>
+						<onclick>PlayerControl(Next)</onclick>
+						<visible>Player.ChapterCount | Integer.IsGreater(Playlist.Length(video),1) | [VideoPlayer.Content(LiveTV) + Player.SeekEnabled]</visible>
+					</control>
+					<control type="radiobutton" id="804">
+						<include content="OSDButton">
+							<param name="texture" value="osdinfo"/>
+						</include>
+						<onclick>PlayerControl(ShowVideoMenu)</onclick>
+						<visible>VideoPlayer.HasMenu</visible>
+					</control>
+					<!-- estuary copy end-->
+			</control>
+			
+		</control>	
 	</controls>
 </window>

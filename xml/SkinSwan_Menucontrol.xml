@@ -406,40 +406,63 @@ ID 	Type 					Description
 			</control> 
 			
 			<control type="label" id="910">
-				<visible>Control.IsVisible(911)</visible>
+				<visible>Control.HasFocus(911)</visible>
 				<textoffset>20</textoffset>
-				<label>$VAR[SideBarHeading]</label>
+				<label>$INFO[Container(911).Listitem.Label,[B],[/B]][CR][COLOR cyan]$INFO[Container(911).Listitem.Label2][/COLOR][CR]</label>
 				<font>font12</font>
 				<wrapmultiline>true</wrapmultiline>
-				<height>115</height>
+				<height>90</height>
 				<align>center</align>
 			</control>
-			<!-- temp universal - use grid bg for items instead focus frames may switch to 2 containers to diff between nav and filter/container options -->
-			<include content="Universal_Container">
-				<param name="type" value="panel" />
-				<param name="id" value="911" />
-				<!-- <param name="visible" value="!Control.IsVisible(6048)" /> -->
-				<param name="orientation" value="vertical" />
-				<param name="type_height" value="165" />
-				<!-- <param name="type_height" value="80" /> -->
-				<param name="layout_height" value="74" />
-				<param name="layout_width" value="74" />
-				<param name="itemheight" value="79" />
-				<param name="itemwidth" value="79" />
-				<param name="tags_visible" value="false" />
-				<param name="tagbgpanel_visible" value="false" />
-				<param name="layout" value="square" />
-				
-				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
-				
-				<content>
-					<control type="radiobutton" id="40077">
-						<font>font10</font>
-						<label>settings</label>
-						<visible>true</visible>
-						<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
-						<selected />
+			<control type="label" id="912">
+				<visible>!Control.HasFocus(911)</visible>
+				<textoffset>20</textoffset>
+				<label>    [B]Container Settings[/B]</label>
+				<font>font12</font>
+				<wrapmultiline>true</wrapmultiline>
+				<height>40</height>
+				<align>left</align>
+			</control>
+			<control type="panel" id="911">
+					<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
+					<scrolltime tween="quadratic">400</scrolltime>
+					<top>0</top>
+					<preloaditems>2</preloaditems>
+					<orientation>vertical</orientation>
+					<height>165</height>
+					<visible>true</visible>
+					<itemlayout height="74" width="74">
+						<control type="group">
+						<height>78</height>
+						<width>78</width>
+						<include content="UniversalLayout">
+							<param name="colordiffuse" value="22ffffff" />
+							<param name="artwork" value="square" />
+							<param name="get_tags" value="false" />
+							<param name="autoscroll" value="false" />
+							<param name="bordersize_bg" value="4" />
+							<param name="conditional_artworkdiffuse_themed" value="true" />
+							<param name="conditional_artworkdiffuse_override" value="false" />
+						</include>
 					</control>
+				</itemlayout>
+				<focusedlayout height="74" width="74">
+					<control type="group">
+						<height>78</height>
+						<width>78</width>
+						<include>Animation_Item_Focus</include>
+						<include content="UniversalLayout">
+							<param name="colordiffuse" value="cyan" />
+							<param name="artwork" value="square" />
+							<param name="get_tags" value="false" />
+							<param name="bordersize_bg" value="4" />
+							<param name="conditional_artworkdiffuse_themed" value="true" />
+							<param name="conditional_artworkdiffuse_override" value="false" />
+						</include>
+					</control>
+				</focusedlayout>
+				<content>
+					<!-- 
 					<item>
 						<description>keep here or in premenu?</description>
 						<icon>icons/radiobuttons/settings.png</icon>
@@ -474,7 +497,7 @@ ID 	Type 					Description
 						<label>Gehe zu</label>
 						<label2>$LOCALIZE[14204]</label2>
 						<onclick>ReplaceWindow(tvguide)</onclick>
-						<!-- <onclick>ReplaceWindow(pvr,pvr://channels/tv/)</onclick> -->
+						 or ReplaceWindow(pvr,pvr://channels/tv/)</onclick> 
 						<visible>!Window.Is(tvguide)</visible>
 					</item>
 					<item>
@@ -484,6 +507,21 @@ ID 	Type 					Description
 						<onclick>ReplaceWindow(pictures)</onclick>
 						<visible>!Window.Is(pictures)</visible>
 					</item>
+					<item>
+						<icon>defaultmusicplaylists.png</icon>
+						<label>Gehe zu</label>
+						<label2>$LOCALIZE[559]</label2>
+				 msgctxt "#20011"
+msgid "Music playlists"
+msgstr "Musik-Wiedergabelisten"
+
+msgctxt "#20012"
+msgid "Video playlists"
+msgstr "Video-Wiedergabelisten" 
+						<onclick condition="false">ReplaceWindow(music,special://musicplaylists/)</onclick>
+						<onclick condition="true">ReplaceWindow(videos,special://videoplaylists/)</onclick>
+						<visible>true</visible>
+					</item> -->
 					<item>
 						<icon>defaultpartymode.png</icon>
 						<label>$LOCALIZE[589]</label>
@@ -543,24 +581,97 @@ ID 	Type 					Description
 						<visible>system.haslocks</visible>
 					</item> 
 				</content>
-			</include>
+			</control>
+			<control type="label" id="712">
+				<textoffset>20</textoffset>
+				<label>    [B]Navigate to..[/B]</label>
+				<font>font12</font>
+				<wrapmultiline>true</wrapmultiline>
+				<height>40</height>
+				<align>left</align>
+			</control>
+			<!-- radiobutton using icon and label ?,missing props onfocus, using include button -->
+			
+				<control type="button" id="7013">
+					<include>Menucontrol_Button</include>
+					<label>Gehe zu</label>
+					<label2>$LOCALIZE[10004]</label2>
+					<onclick>ActivateWindow(settings)</onclick>
+				</control>
+				<control type="button" id="7113">
+					<include>Menucontrol_Button</include>
+					<label>Gehe zu</label>
+					<label2>$LOCALIZE[10000]</label2>
+					<onclick>ActivateWindow(home)</onclick>
+					<visible>!Window.IsVisible(home)</visible>
+				</control>
+				<control type="button" id="7213">
+					<include>Menucontrol_Button</include>
+					<label>Gehe zu</label>
+					<label2>$LOCALIZE[2]</label2>
+					<onclick>ReplaceWindow(music,musiclibrary://music/)</onclick>
+					<visible>!Window.Is(music)</visible>
+				</control>
+				<control type="button" id="7313">
+					<include>Menucontrol_Button</include>
+					<label>Gehe zu</label>
+					<label2>$LOCALIZE[3]</label2>
+					<onclick>ReplaceWindow(videos,library://video/)</onclick>
+					<visible>!Window.Is(videos)</visible>
+				</control>
+				<control type="button" id="7413">
+					<include>Menucontrol_Button</include>
+					<label>Gehe zu</label>
+					<label2>$LOCALIZE[14204]</label2>
+					<onclick>ReplaceWindow(tvguide)</onclick>
+					 <!-- r ReplaceWindow(pvr,pvr://channels/tv/) -->
+					<visible>!Window.Is(tvguide)</visible>
+				</control>
+				<control type="button" id="7513">
+					<include>Menucontrol_Button</include>
+					<label>Gehe zu</label>
+					<label2>$LOCALIZE[1]</label2>
+					<onclick>ReplaceWindow(pictures)</onclick>
+					<visible>!Window.Is(pictures)</visible>
+				</control>
+				<control type="button" id="7613">
+					<include>Menucontrol_Button</include>
+					<label>Gehe zu</label>
+					<label2>$LOCALIZE[20011]</label2>
+					<onclick>ReplaceWindow(music,special://musicplaylists/)</onclick>
+				</control>
+				<control type="button" id="7713">
+					<include>Menucontrol_Button</include>
+					<label>Gehe zu</label>
+					<label2>$LOCALIZE[20012]</label2>
+					<onclick>ReplaceWindow(videos,special://videoplaylists/)</onclick>
+				</control>
+			
+			
 			
 			<include content="spacer_h">
 				<param name="id" value="4003" />
 				<param name="gap" value="10" />
 			</include>
 			
+			<control type="button" id="45558">
+				<include>Menucontrol_Button</include>
+				<label>reloadskin</label>
+				<onclick>ReloadSkin()</onclick>
+				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
+			</control>
+			 
 			<include content="spacer_h">
 				<param name="id" value="4006" />
 				<param name="gap" value="40" />
 			</include>
 			<control type="label" id="4228">
 				<label>   [B]$LOCALIZE[5][/B]</label>
-				<height>40</height>
+				<height>60</height>
 				<font>font12</font>
 			</control>
 			<control type="radiobutton" id="4008">
-				<font>font10</font>
+				<include>Menucontrol_Button</include>
 				<label>Show BG Panel</label>
 				<visible>Control.IsVisible(50) | Control.IsVisible(51) | Control.IsVisible(52) | Control.IsVisible(53) | Control.IsVisible(54) | Control.IsVisible(56)</visible>
 				<onclick condition="Control.IsVisible(50)">Skin.ToggleSetting(View_50_ShowBGPanel)</onclick>
@@ -577,11 +688,10 @@ ID 	Type 					Description
 				Control.IsVisible(54) + Skin.HasSetting(View_54_ShowBGPanel) | 
 				Control.IsVisible(56) + Skin.HasSetting(View_56_ShowBGPanel)]
 				</selected>
-				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
 			</control>
 			
 			<control type="radiobutton" id="4009">
-				<font>font10</font>
+				<include>Menucontrol_Button</include>
 				<label>Disable tags</label>
 				<visible>Control.IsVisible(51) | Control.IsVisible(53)</visible>
 				<onclick condition="Control.IsVisible(51)">Skin.ToggleSetting(View_51_DisableTags)</onclick>
@@ -590,11 +700,10 @@ ID 	Type 					Description
 				[Control.IsVisible(51) + Skin.HasSetting(View_51_DisableTags) | 
 				Control.IsVisible(53) + Skin.HasSetting(View_53_DisableTags)]
 				</selected>
-				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
 			</control>
 			
 			<control type="radiobutton" id="4010">
-				<font>font10</font>
+				<include>Menucontrol_Button</include>
 				<label>Show footer</label>
 				<visible>Control.IsVisible(50) | Control.IsVisible(51) | Control.IsVisible(52) | Control.IsVisible(53) | Control.IsVisible(54) | Control.IsVisible(56)</visible>
 				<onclick condition="Control.IsVisible(50)">Skin.ToggleSetting(View_50_DisableFooter)</onclick>
@@ -611,22 +720,8 @@ ID 	Type 					Description
 				Control.IsVisible(54) + !Skin.HasSetting(View_54_DisableFooter) | 
 				Control.IsVisible(56) + !Skin.HasSetting(View_56_DisableFooter)]
 				</selected>
-				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
 			</control>
-	<!-- set setting prefer  thumbs based on viewtype label="Container.Viewmode" and container.content()
-	- will need a huge variable  instead simple one, but better control VIEW TYPE LABEL NEED TO BE HARDCODED
-	- may issues with selected definitions
-	
-	
-		settinglabel 
-			prefer art ($INFO[Container.Content])
-		setting
-			posterView_Prefer_Disc_movies
-			$INFO[Container.Viewmode]View_Prefer_Disc_$INFO[Container.Content]
-	
-	
-	
-	
+	<!--
 	video
 	id 50
 		keyart
@@ -744,6 +839,7 @@ ID 	Type 					Description
             
 			</include>
 			<include content="PreferArt_Button">
+				
 				<param name="button_id" value="4018" />
 				<param name="artwork_localized_id" value="Clear Art (else Char)" />
 				<param name="artwork" value="clearart" />
@@ -766,8 +862,8 @@ ID 	Type 					Description
 			</include>
 			
 			<control type="radiobutton" id="4019">
+				<include>Menucontrol_Button</include>
 				<label>Prefer Discart - Video Nav</label>
-				<font>font10</font>
 				<visible>Window.IsActive(videos) + !Container.Content(tvshows) + [Control.IsVisible(50) | Control.IsVisible(56)]</visible>
 				<onclick condition="Control.IsVisible(50)">Skin.ToggleSetting(View_50_Prefer_Disc_Video)</onclick>
 				<onclick condition="Control.IsVisible(56)">Skin.ToggleSetting(View_56_Prefer_Disc_Video)</onclick>
@@ -787,11 +883,10 @@ ID 	Type 					Description
 				[Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Disc_Video) | 
 				Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_Disc_Video)]
 				</selected>
-				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
 			</control>
 			<control type="radiobutton" id="4020">
+				<include>Menucontrol_Button</include>
 				<label>Prefer Discart - Music Songs</label>
-				<font>font10</font>
 				<visible>Window.IsActive(music) + Container.Content(Songs) + [Control.IsVisible(50) | Control.IsVisible(56)]</visible>
 				<onclick condition="Control.IsVisible(50)">Skin.ToggleSetting(View_50_Prefer_Discart_Song)</onclick>
 				<onclick condition="Control.IsVisible(56)">Skin.ToggleSetting(View_56_Prefer_Discart_Song)</onclick>
@@ -812,11 +907,10 @@ ID 	Type 					Description
 				[Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Discart_Song) | 
 				Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_Discart_Song)]
 				</selected>
-				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
 			</control>
 			<control type="radiobutton" id="4021">
+				<include>Menucontrol_Button</include>
 				<label>Prefer Discart - Music Albums</label>
-				<font>font10</font>
 				<visible>Window.IsActive(music) + Container.Content(Albums) + Control.IsVisible(50)</visible>
 				<onclick condition="Control.IsVisible(50)">Skin.ToggleSetting(View_50_Prefer_Discart_Album)</onclick>
 				
@@ -834,12 +928,11 @@ ID 	Type 					Description
 				[Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_Discart_Album) | 
 				Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_Discart_Song)]
 				</selected>
-				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
 			</control>
 			
 			<control type="radiobutton" id="4022">
+				<include>Menucontrol_Button</include>
 				<label>Prefer Circle Artwork with ClearLogo Overlay</label>
-				<font>font10</font>
 				<visible>Control.IsVisible(56)</visible>
 				<onclick condition="Control.IsVisible(56)">Skin.ToggleSetting(View_56_Prefer_CircleArt)</onclick>
 				
@@ -851,41 +944,36 @@ ID 	Type 					Description
 				<onclick condition="Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_clearlogo)">Skin.ToggleSetting(View_56_Prefer_clearlogo)</onclick>
             
 				<selected>Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_CircleArt)</selected>
-				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
 			</control>
 			
 			
 			<control type="radiobutton" id="4041">
-				<font>font10</font>
+				<include>Menucontrol_Button</include>
 				<label>Show Plot right</label>
 				<visible>Control.IsVisible(58)</visible>
 				<onclick>Skin.ToggleSetting(View58_EpisodeInfoRight)</onclick>
 				<selected>Skin.HasSetting(View58_EpisodeInfoRight)</selected>
-				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
 			</control>
 			<control type="radiobutton" id="40042">
-				<font>font10</font>
+				<include>Menucontrol_Button</include>
 				<label>EnebleFanart Background</label>
 				<visible>Control.IsVisible(58)</visible>
 				<onclick>Skin.ToggleSetting(View58_EnebleFanartBG)</onclick>
 				<selected>Skin.HasSetting(View58_EnebleFanartBG)</selected>
-				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
 			</control>
 			<control type="radiobutton" id="4043">
-				<font>font10</font>
+				<include>Menucontrol_Button</include>
 				<label>Show Bottom Panel</label>
 				<visible>Control.IsVisible(58)</visible>
 				<onclick>Skin.ToggleSetting(View58_EnableBottomPanel)</onclick>
 				<selected>Skin.HasSetting(View58_EnableBottomPanel)</selected>
-				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
 			</control>
 			<control type="radiobutton" id="4044">
-				<font>font10</font>
+				<include>Menucontrol_Button</include>
 				<label>Show Fanart right</label>
 				<visible>Control.IsVisible(58)</visible>
 				<onclick>Skin.ToggleSetting(View58_FanartLeftAlignment)</onclick>
 				<selected>Skin.HasSetting(View58_FanartLeftAlignment)</selected>
-				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
 			</control>
 		</control>
 	</include>
@@ -1129,8 +1217,8 @@ RadioSearch
 	
 	<include name="PreferArt_Button">
 		<control type="radiobutton" id="$PARAM[button_id]">
+			<include>Menucontrol_Button</include>
 			<label>Prefer : $PARAM[artwork_localized_id]</label>
-			<font>font10</font>
 			<visible>$PARAM[visible]</visible>
 			<onclick condition="Control.IsVisible(50)">Skin.ToggleSetting(View_50_Prefer_$PARAM[artwork])</onclick>
 			<onclick condition="Control.IsVisible(56)">Skin.ToggleSetting(View_56_Prefer_$PARAM[artwork])</onclick>
@@ -1138,9 +1226,15 @@ RadioSearch
 			[Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_$PARAM[artwork]) | 
 			Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_$PARAM[artwork])]
 			</selected>
-			<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
 			<nested />
 		</control>
+	</include>
+	
+	
+	<include name="Menucontrol_Button">
+			<font>font10</font>
+			<height>40</height>
+			<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
 	</include>
 	
 	<variable name="ContainerSortOrderUnicodeArrow">
@@ -1154,8 +1248,4 @@ RadioSearch
 		<value condition="String.IsEqual(Control.GetLabel(10),$LOCALIZE[16102])"></value>
 	</variable>
 	
-	<variable name="SideBarHeading">
-		<value condition="Control.HasFocus(911)">$INFO[Container(911).Listitem.Label,[B],[/B]][CR][COLOR cyan]$INFO[Container(911).Listitem.Label2][/COLOR][CR]</value>
-		<value></value>
-	</variable>
 </includes>

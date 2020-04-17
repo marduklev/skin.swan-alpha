@@ -549,6 +549,9 @@
 		<!-- get includes -->
 		<!-- OSD -->
 		<control type="group" id="99">
+			
+			
+			
 			<visible>!Player.HasGame + [Window.IsVisible(videoosd) | Window.IsVisible(seekbar) | Player.Paused | Player.ShowTime | $EXP[IsSeek] | !String.IsEmpty(Window(home).Property(ShowOSD))]</visible>
 			
 			<animation effect="fade" start="0" end="100" time="0">Visible</animation>
@@ -559,11 +562,14 @@
 				<bottom>0</bottom>
 				<width>100%</width>
 				<height>400</height>
+				<animation effect="slide" start="0,0" end="0,-100" time="340" condition="Window.IsActive(videoosd)">conditional</animation>
+			
 				<animation effect="slide" start="0,0" end="0,150" time="340" condition="!VideoPlayer.HasInfo | Player.ShowInfo">conditional</animation>
 				<control type="image" id="99">
-					<bottom>0</bottom>
+					<description>bottom offset neg as osd button bg</description>
+					<bottom>-100</bottom>
 					<width>102%</width>
-					<height>250</height>
+					<height>350</height>
 					<aspectratio scalediffuse="true" align="center" aligny="bottom">stretch</aspectratio>
 					<bordersize>0,100,0,0</bordersize>
 					<texture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white.png</texture>
@@ -622,6 +628,7 @@
 				</control>
 				
 			</control>
+			
 			<control type="group" id="99">
 				<bottom>0</bottom>
 				<width>100%</width>
@@ -633,10 +640,29 @@
 					<width>340</width>
 					<texture>$VAR[PlayerThumb]</texture>
 					<!-- <texture>$INFO[Player.Art(fanart)]</texture> -->
-					<aspectratio scalediffuse="false" align="left" aligny="bottom">keep</aspectratio>
+					<aspectratio scalediffuse="false" align="center" aligny="bottom">keep</aspectratio>
 				</control>
 			</control>
 			
 		</control>
+	</include>
+	<include name="OSDButton">
+		<include>Animation_Item_Focus</include>
+		<width>50</width>
+		<height>50</height>
+		<textoffsetx />
+		<label />
+		<radiowidth>50</radiowidth>
+		<radioheight>50</radioheight>		
+
+		<texturefocus />
+		<texturenofocus />
+		
+
+						<radioposx>1</radioposx>
+						<textureradioonfocus>buttons/osd/$PARAM[texture]_fo.png</textureradioonfocus>
+						<textureradioonnofocus>buttons/osd/$PARAM[texture].png</textureradioonnofocus>
+						<textureradioofffocus>buttons/osd/$PARAM[texture]_fo.png</textureradioofffocus>
+						<textureradiooffnofocus>buttons/osd/$PARAM[texture].png</textureradiooffnofocus>					
 	</include>
 </includes>
