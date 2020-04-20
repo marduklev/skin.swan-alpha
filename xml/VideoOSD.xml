@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <window>
-	<!-- <defaultcontrol always="true">6000</defaultcontrol> -->
-	<defaultcontrol always="true">6001</defaultcontrol>
+	<defaultcontrol always="true">6100</defaultcontrol>
 	
-	<animation effect="slide" start="0,0" end="0,-100" time="340">WindowOpen</animation>
-	<animation effect="slide" start="0,-100" end="0,0" time="340">WindowClose</animation>
+	<animation effect="slide" start="0,0" end="0,-100" time="250">WindowOpen</animation>
 	<animation effect="fade" start="0" end="0" time="200">WindowOpen</animation>
+	
+	<animation effect="slide" start="0,-100" end="0,0" time="250">WindowClose</animation>
 	<animation effect="fade" start="100" end="0" time="200">WindowClose</animation>
 	
 	<controls>
@@ -15,47 +15,29 @@
 			<height>300</height>
 			<visible>![Window.IsVisible(SliderDialog) | Window.IsVisible(osdaudiosettings) | Window.IsVisible(osdvideosettings) | Window.IsVisible(VideoBookmarks) | Window.IsVisible(playerprocessinfo) | Window.IsVisible(osdcmssettings) | Window.IsVisible(PVROSDChannels) | Window.IsVisible(pvrchannelguide)]</visible>
 			<!-- <animation effect="fade" time="200">VisibleChange</animation> -->
-			
+			<!-- dialog seekbar ? -->
 			<control type="group" id="6000">
-				<animation effect="slide" start="0,0" end="0,150" time="340" condition="!VideoPlayer.HasInfo | Player.ShowInfo">conditional</animation>
-				
-				<bottom>20</bottom>
-				<width>100%</width>
-				<height>400</height>
 				<visible>Player.SeekEnabled</visible>
-				<control type="button" id="87">
-					<include>HiddenObject</include>
-					<onup>200</onup>
-					<onunfocus condition="Player.Forwarding | Player.Rewinding">PlayerControl(Play)</onunfocus>
-					<ondown>200</ondown>
-					<onright>StepForward</onright>
-					<onleft>StepBack</onleft>
-					<onclick condition="Player.Forwarding | Player.Rewinding">PlayerControl(Play)</onclick>
-				</control>
+				<animation effect="slide" start="0,0" end="0,150" time="250" condition="String.IsEmpty(VideoPlayer.Plot) | Player.ShowInfo">conditional</animation>
 				
-				<control type="slider">
+				<include condition="!VideoPlayer.Content(LiveTV)" content="Video_OSD_Slider_BGTEST">
+					<param name="info" value="Player.Progress" />
+				</include>
+				<include condition="VideoPlayer.Content(LiveTV)" content="Video_OSD_Slider_BGTEST">
+					<param name="info" value="PVR.TimeshiftProgressPlayPos" />
+				</include>
+				
+				<control type="slider" id="6001">
 					<include content="OSD_Slider_Seek" />
 					<info>Player.Progress</info>
 					<action>seek</action>
-					<visible>!Control.HasFocus(87) + !VideoPlayer.Content(LiveTV)</visible>
+					<visible>!VideoPlayer.Content(LiveTV)</visible>
 				</control>
-				<control type="slider">
-					<include content="OSD_Slider_Seek" />
-					<info>Player.Progress</info>
-					<action>seek</action>
-					<visible>Control.HasFocus(87) + !VideoPlayer.Content(LiveTV)</visible>
-				</control>
-				<control type="slider">
+				<control type="slider" id="6002">
 					<include content="OSD_Slider_Seek" />
 					<info>PVR.TimeshiftProgressPlayPos</info>
 					<action>pvr.seek</action>
-					<visible>!Control.HasFocus(87) + VideoPlayer.Content(LiveTV)</visible>
-				</control>
-				<control type="slider">
-					<include content="OSD_Slider_Seek" />
-					<info>PVR.TimeshiftProgressPlayPos</info>
-					<action>pvr.seek</action>
-					<visible>Control.HasFocus(87) + VideoPlayer.Content(LiveTV)</visible>
+					<visible>VideoPlayer.Content(LiveTV)</visible>
 				</control>
 			</control>
 		</control>
@@ -67,7 +49,7 @@
 			<right>100</right>
 			<visible>![Window.IsVisible(SliderDialog) | Window.IsVisible(osdaudiosettings) | Window.IsVisible(osdvideosettings) | Window.IsVisible(VideoBookmarks) | Window.IsVisible(playerprocessinfo) | Window.IsVisible(osdcmssettings) | Window.IsVisible(PVROSDChannels) | Window.IsVisible(pvrchannelguide)]</visible>
 			
-			<control type="grouplist" id="6001">
+			<control type="grouplist" id="6100">
 				<orientation>horizontal</orientation>
 				<usecontrolcoords>true</usecontrolcoords>
 				<top>20</top>
@@ -78,45 +60,131 @@
 				<left>0</left>
 				
 				<itemgap>25</itemgap>
+				<onup condition="Control.IsVisible(6001)">6001</onup>
+				<onup condition="Control.IsVisible(6002)">6002</onup>
 				
-				<!-- estuary copy -->
-					<control type="radiobutton" id="600">
-						<include content="OSDButton">
-							<param name="texture" value="previous"/>
-						</include>
-						<onclick>PlayerControl(Previous)</onclick>
-						<visible>Player.ChapterCount | Integer.IsGreater(Playlist.Length(video),1) | Player.SeekEnabled</visible>
-					</control>
-					<control type="radiobutton" id="602">
-						<include content="OSDButton">
-							<param name="texture" value="play"/>
-						</include>
-						<selected>Player.Paused</selected>
-						<onclick>PlayerControl(Play)</onclick>
-						<visible>Player.PauseEnabled</visible>
-					</control>
-					<control type="radiobutton" id="603">
-						<include content="OSDButton">
-							<param name="texture" value="stop"/>
-						</include>
-						<onclick>PlayerControl(Stop)</onclick>
-					</control>
-					<control type="radiobutton" id="605">
-						<include content="OSDButton">
-							<param name="texture" value="next"/>
-						</include>
-						<onclick>PlayerControl(Next)</onclick>
-						<visible>Player.ChapterCount | Integer.IsGreater(Playlist.Length(video),1) | [VideoPlayer.Content(LiveTV) + Player.SeekEnabled]</visible>
-					</control>
-					<control type="radiobutton" id="804">
-						<include content="OSDButton">
-							<param name="texture" value="osdinfo"/>
-						</include>
-						<onclick>PlayerControl(ShowVideoMenu)</onclick>
-						<visible>VideoPlayer.HasMenu</visible>
-					</control>
-					<!-- estuary copy end-->
+				<control type="button" id="6101">
+					<include content="OSDButton">
+						<param name="texture" value="previous"/>
+					</include>
+					<onclick>PlayerControl(Previous)</onclick>
+					<visible>Player.ChapterCount | Integer.IsGreater(Playlist.Length(video),1) | Player.SeekEnabled</visible>
+				</control>
+				<control type="togglebutton" id="6102">
+					<include content="OSDButton">
+						<param name="texture" value="play"/>
+					</include>
+					<alttexturefocus colordiffuse="$VAR[color_osdvideo_button_fo]">buttons/osd/pause_fo.png</alttexturefocus>
+					<alttexturenofocus colordiffuse="$VAR[color_osdvideo_button_nf]">buttons/osd/pause.png</alttexturenofocus>
+					<usealttexture>!Player.Paused</usealttexture>
+					<onclick>PlayerControl(play)</onclick>
+				</control>
+				<control type="button" id="6103">
+					<include content="OSDButton">
+						<param name="texture" value="stop"/>
+					</include>
+					<onclick>PlayerControl(Stop)</onclick>
+				</control>
+				<control type="button" id="6105">
+					<include content="OSDButton">
+						<param name="texture" value="next"/>
+					</include>
+					<onclick>PlayerControl(Next)</onclick>
+					<!-- <onclick>action(skipnext)</onclick> -->
+					<visible>Player.ChapterCount | Integer.IsGreater(Playlist.Length(video),1) | [VideoPlayer.Content(LiveTV) + Player.SeekEnabled]</visible>
+				</control>
+				<control type="button" id="6110">
+					<include content="OSDButton">
+						<param name="texture" value="visualisation"/>
+					</include>
+					<onclick>PlayerControl(ShowVideoMenu)</onclick>
+					<visible>VideoPlayer.HasMenu</visible>
+					<description>disc menu</description>
+				</control>
+				
+				<!-- <control type="button" id="6130">
+					<include content="OSDButton">
+						<param name="texture" value="bookmarks"/>
+					</include>
+						<description>bookmarks</description>
+						<onclick>ActivateWindow(VideoBookmarks)</onclick>
+						<visible>!VideoPlayer.Content(livetv)</visible>
+				</control> -->
+				
+			
+				
+				<include content="spacer_w">
+					<param name="id" value="6198" />
+					<param name="gap" value="10" />
+				</include>
+				<control type="button" id="6106">
+					<include content="OSDButton">
+						<param name="texture" value="osdinfo"/>
+					</include>
+					<visible>!String.IsEmpty(VideoPlayer.Plot)</visible>
+					<onclick>Info</onclick>
+					<!-- or fullscreen info ? -->
+				</control>
+				<include content="spacer_w">
+					<param name="id" value="6199" />
+					<param name="gap" value="10" />
+				</include>
+				
+				<control type="button" id="6122">
+					<top>5</top>
+					<width>50</width>
+					<height>50</height>
+					<include content="OSDButton">
+						<param name="texture" value="settings_subtitle"/>
+					</include>
+					<onclick>ActivateWindow(osdsubtitlesettings)</onclick>
+					<visible>!VideoPlayer.Content(livetv)</visible>
+				</control>
+				<control type="button" id="6123">
+					<top>5</top>
+					<width>50</width>
+					<height>50</height>
+					<include content="OSDButton">
+						<param name="texture" value="settings_video"/>
+					</include>
+					<onclick>ActivateWindow(osdvideosettings)</onclick>
+					<visible>!VideoPlayer.Content(livetv)</visible>
+				</control>
+				<control type="button" id="6124">
+					<top>5</top>
+					<width>50</width>
+					<height>50</height>
+					<include content="OSDButton">
+						<param name="texture" value="settings_sound"/>
+					</include>
+					<onclick>ActivateWindow(osdaudiosettings)</onclick>
+					<visible>!VideoPlayer.Content(livetv)</visible>
+				</control>
+				<!-- <control type="button" id="6125">
+					<top>5</top>
+					<width>50</width>
+					<height>50</height>
+					<include content="OSDButton">
+						<param name="texture" value="settings_sound"/>
+					</include>
+					<onclick>close</onclick>
+					<onclick>fullscreen</onclick>
+					<visible>Player.HasVideo</visible>
+				</control> -->
+				<control type="button" id="6128">
+					<top>5</top>
+					<width>50</width>
+					<height>50</height>
+					<include content="OSDButton">
+						<param name="texture" value="settings_cms"/>
+					</include>
+					<onclick>ActivateWindow(osdcmssettings)</onclick>
+					<visible>!VideoPlayer.Content(livetv)</visible>
+				</control>
+				
+				
 			</control>
+				
 			
 		</control>	
 	</controls>

@@ -292,7 +292,8 @@
 					<texturenofocus colordiffuse="$VAR[color_osdmusic_secondary]">buttons/osd/radioinfo_1.png</texturenofocus>
 					<animation effect="slide" start="0,0" end="0,20" time="325" condition="!Control.IsVisible(6012)">conditional</animation>
 					<onleft>6092</onleft>
-					<ondown condition="Control.IsVisible(6012)">6012</ondown><onup condition="Control.IsVisible(6012)">6012</onup>
+					<ondown condition="Control.IsVisible(6012)">6012</ondown>
+					<onup condition="Control.IsVisible(6012)">6012</onup>
 					<onright>6021</onright>
 					<onclick condition="String.IsEqual(Window(home).Property(PlayerShowInfo),true)">ClearProperty(PlayerShowInfo,home)</onclick>
 					<onclick>Action(info)</onclick>
@@ -470,20 +471,37 @@
 	<!-- #### V I D E O #### -->
 	<!-- ################### -->
 	
-	<!-- OSD Controls -->
+	<!-- OSD Controls merge video and music -->
+	
+
+	<include condition="" content="pos_left">
+		<param name="left" value="320" /> <!-- value thumb width ? - differ on screen aspect ratio -->
+	</include>
+	
 	<include name="OSD_Slider_Seek">
-		<bottom>222</bottom>
-		<left>305</left>
+		<bottom>141</bottom>
+		<left>320</left>
 		<right>0</right>
-		<height>15</height>
-		<texturesliderbar colordiffuse="none">buttons/slider-back.png</texturesliderbar>
-		<!-- <textureslidernib colordiffuse="$VAR[color_global_button_text_nf]">buttons/slider-nib.png</textureslidernib> -->
-		<!-- <textureslidernibfocus colordiffuse="$VAR[color_osdmusic_accent]">buttons/slider-nib.png</textureslidernibfocus>
-		<textureslidernibfocus colordiffuse="$VAR[color_osdmusic_accent]">buttons/slider-nib.png</textureslidernibfocus> -->
-		<bottom>222</bottom>
-		<left>290</left>
-		<right>0</right>
-		<height>15</height>
+		<height>20</height>
+		<texturesliderbar colordiffuse="none">buttons/slider-nib.png</texturesliderbar>
+		<textureslidernib colordiffuse="$VAR[color_osdvideo_progress]">buttons/slider-nib.png</textureslidernib>
+		<textureslidernibfocus colordiffuse="$VAR[color_osdvideo_button_fo]">buttons/slider-nib.png</textureslidernibfocus>
+		<ondown>6101</ondown>
+	</include>
+	
+	<include name="Video_OSD_Slider_BGTEST">
+		<control type="progress">
+			<bottom>149</bottom>
+			<left>320</left>
+			<right>0</right>
+			<height>4</height>
+			<texturebg colordiffuse="$VAR[color_osdvideo_remain]">diffuse/slider_progressbg.png</texturebg>
+			<midtexture flipx="true" colordiffuse="$VAR[color_osdvideo_progress]">diffuse/gradient_left.png</midtexture>
+			<lefttexture />
+			<righttexture />
+			<overlaytexture />
+			<info>$PARAM[info]</info>
+		</control>
 	</include>
 					
 	<variable name="EmbuaryHelper_GetPlayerInfo_dbid">
@@ -562,9 +580,8 @@
 				<bottom>0</bottom>
 				<width>100%</width>
 				<height>400</height>
-				<animation effect="slide" start="0,0" end="0,-100" time="340" condition="Window.IsActive(videoosd)">conditional</animation>
-			
-				<animation effect="slide" start="0,0" end="0,150" time="340" condition="!VideoPlayer.HasInfo | Player.ShowInfo">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-100" time="250" condition="Window.IsActive(videoosd)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,150" time="250" condition="String.IsEmpty(VideoPlayer.Plot) | Player.ShowInfo">conditional</animation>
 				<control type="image" id="99">
 					<description>bottom offset neg as osd button bg</description>
 					<bottom>-100</bottom>
@@ -579,15 +596,17 @@
 				<control type="label" id="99">
 					<bottom>160</bottom>
 					<left>350</left>
-					<height>60</height>
+					<height>80</height>
 					<font>font13</font>
 					<align>left</align>
+					<aligny>center</aligny>
 					<textcolor>$VAR[color_osdvideo_main]</textcolor>
 					<label>$VAR[PlayerTitle] $INFO[VideoPlayer.Year, (,)]</label>
 				</control>
 				<control type="label" id="99">
 					<bottom>170</bottom>
-					<right>20</right>
+					<!-- <right>20</right> -->
+					<right>140</right>
 					<height>60</height>
 					<width>300</width>
 					<font>font_clock</font>
@@ -595,7 +614,18 @@
 					<textcolor>$VAR[color_osdvideo_secondary]</textcolor>
 					<label>$INFO[System.Time]</label>
 				</control>
+				<control type="label" id="99">
+					<bottom>170</bottom>
+					<right>20</right>
+					<height>60</height>
+					<width>100</width>
+					<font>DialogListItemLowLined</font>
+					<align>left</align>
+					<textcolor>$VAR[color_osdvideo_main]</textcolor>
+					<label>Ends at[CR][B]$INFO[Player.Finishtime][/B]</label>
+				</control>
 				<control type="image" id="99">
+					<visible>[[!String.IsEqual(Weather.fanartcode,na) | !String.IsEmpty(Weather.fanartcode)] + Weather.IsFetched]</visible>
 					<bottom>70</bottom>
 					<right>25</right>
 					<height>60</height>
@@ -612,10 +642,14 @@
 					<align>left</align>
 					<label>$INFO[Weather.Temperature]</label>
 					<font>font12</font>
+					<visible>[[!String.IsEqual(Weather.fanartcode,na) | !String.IsEmpty(Weather.fanartcode)] + Weather.IsFetched]</visible>
 					<textcolor>$VAR[color_osdvideo_main]</textcolor>
 				</control>
 				
 				<control type="textbox" id="99">
+					<description>q: false positive boolean ?</description>
+					<animation effect="fade" start="0" end="100" time="250">Visible</animation>
+					<animation effect="fade" start="100" end="0" time="250">Hidden</animation>
 					<bottom>10</bottom>
 					<left>350</left>
 					<right>350</right>
@@ -625,6 +659,7 @@
 					<textcolor>$VAR[color_osdvideo_secondary]</textcolor>
 					<font>DialogListItem</font>
 					<label>$VAR[PlayerPlot]</label>
+					<visible>!Player.ShowInfo</visible>
 				</control>
 				
 			</control>
@@ -632,15 +667,13 @@
 			<control type="group" id="99">
 				<bottom>0</bottom>
 				<width>100%</width>
-				<height>300</height>
 				<control type="image" id="99">
 					<left>0</left>
 					<bottom>0</bottom>
+					<width>320</width>
 					<height>440</height>
-					<width>340</width>
 					<texture>$VAR[PlayerThumb]</texture>
-					<!-- <texture>$INFO[Player.Art(fanart)]</texture> -->
-					<aspectratio scalediffuse="false" align="center" aligny="bottom">keep</aspectratio>
+					<aspectratio scalediffuse="false" align="left" aligny="bottom">keep</aspectratio>
 				</control>
 			</control>
 			
@@ -648,21 +681,10 @@
 	</include>
 	<include name="OSDButton">
 		<include>Animation_Item_Focus</include>
-		<width>50</width>
-		<height>50</height>
-		<textoffsetx />
-		<label />
-		<radiowidth>50</radiowidth>
-		<radioheight>50</radioheight>		
-
-		<texturefocus />
-		<texturenofocus />
-		
-
-						<radioposx>1</radioposx>
-						<textureradioonfocus>buttons/osd/$PARAM[texture]_fo.png</textureradioonfocus>
-						<textureradioonnofocus>buttons/osd/$PARAM[texture].png</textureradioonnofocus>
-						<textureradioofffocus>buttons/osd/$PARAM[texture]_fo.png</textureradioofffocus>
-						<textureradiooffnofocus>buttons/osd/$PARAM[texture].png</textureradiooffnofocus>					
+		<width>60</width>
+		<height>60</height>
+		<texturefocus colordiffuse="$VAR[color_osdvideo_button_fo]">buttons/osd/$PARAM[texture]_fo.png</texturefocus>
+		<texturenofocus colordiffuse="$VAR[color_osdvideo_button_nf]">buttons/osd/$PARAM[texture].png</texturenofocus>
 	</include>
+	
 </includes>
