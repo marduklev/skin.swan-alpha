@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<window>
+	<defaultcontrol always="true">450</defaultcontrol>
+<!-- 	1.11 DialogFavourites.xml
+ID 		Type 		Description
+450 	container 	List of available favourites 
+ -->
+	<include>Animation_OpenClose_Slide</include>
+	<onload condition="!String.IsEmpty(Window(home).Property(ShortcutFavouritesContent))">SetFocus(8999)</onload>
+	<onunload condition="!String.IsEmpty(Window(home).Property(ShortcutFavouritesContent))">ClearProperty(ShortcutFavouritesContent,home)</onunload>
+	<controls>
+		<control type="group">
+			<description>BG</description>
+			<include content="DialogBackground_TriplePanel" />
+		</control>
+	
+		<control type="group">
+			<include content="Dialog_CommonInfo">
+				<param name="Header_posy" value="50" />
+				<param name="Item_Description" value="$INFO[Skin.String(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_path)]" />
+			</include>
+			
+			<include content="Dialog_Containers">
+				<param name="id" value="450" />
+				<param name="Container_Height" value="70%" />
+				<param name="onleft" value="9000" />
+				<param name="icon_visible" value="true" />
+				<param name="layout_height" value="110" />
+			</include>
+			
+			<control type="button" id="8999">
+				<visible>!String.IsEmpty(Window(home).Property(custom_widget_nr))</visible>
+				<description>Shortcut save button</description>
+				<texturefocus colordiffuse="red">colors/white.png</texturefocus>
+				<texturenofocus colordiffuse="red">colors/white50.png</texturenofocus>
+				<centerleft>50%</centerleft>
+				<top>140</top>
+				<right>100</right>
+				<height>110</height>
+				<width>33.3%</width>
+				<wrapmultiline>true</wrapmultiline>
+				<label>SAVE ME</label>
+				
+				<onup>50</onup>
+				<ondown>50</ondown>
+				<onleft>200</onleft>
+				<onright>200</onright>
+				<onclick>Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_path,favourites://)</onclick>
+				<onclick>Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_name,$LOCALIZE[1036])</onclick>
+				<onclick>Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout,landscape)</onclick>
+				<onclick>Skin.SetString(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_layout.label,landscape)</onclick>
+				<onclick condition="Skin.String(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_target)">Skin.Reset(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_target)</onclick>
+				<onclick condition="Skin.String(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_target.label)">Skin.Reset(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_target.label)</onclick>
+				<onclick condition="Skin.String(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_limit)">Skin.Reset(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_limit)</onclick>
+				<onclick condition="Skin.String(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_sortorder)">Skin.Reset(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_sortorder)</onclick>
+				<onclick condition="Skin.String(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_sortorder.label)">Skin.Reset(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_sortorder.label)</onclick>
+				<onclick condition="Skin.String(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_sortby)">Skin.Reset(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_sortby)</onclick>
+				<onclick condition="Skin.String(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_sortby.label)">Skin.Reset(UserWidget$INFO[Window(home).Property(custom_widget_nr)]_sortby.label)</onclick>
+				<onclick>ClearProperty(SetShortcutInProgress,home)</onclick>
+				<onclick>ClearProperty(custom_widget_nr,home)</onclick>
+				<onclick>ClearProperty(ShortcutFavouritesContent,home)</onclick>
+				<onclick>Dialog.Close(all,true)</onclick>
+			</control>
+			
+			
+			<content target="$INFO[Skin.String(UserWidget$PARAM[nr]_target)]" limit="$INFO[Skin.String(UserWidget$PARAM[nr]_limit)]" sortorder="$INFO[Skin.String(UserWidget$PARAM[nr]_sortorder)]" sortby="$INFO[Skin.String(UserWidget$PARAM[nr]_sortby)]">$INFO[Skin.String(UserWidget$PARAM[nr]_path)]</content>	
+		
+			<!-- <control type="button" id="9000" description="menucontrol unasigned" /> -->
+		</control>
+		<include content="swan_debug_overlay" />	
+		<!-- <include content="swan_debug_overlay" >
+			<param name="" value="" />
+		</include>	 -->
+	</controls>
+</window>
