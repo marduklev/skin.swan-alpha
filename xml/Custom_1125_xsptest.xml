@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window id="1125">
+	<defaultcontrol always="true"></defaultcontrol>
+	<menucontrol>9000</menucontrol>
+	<backgroundcolor>ff000000</backgroundcolor>
+	<controls>
+	
+		<control type="button">
+			<left>100</left>
+			<right>50</right>
+			<label>path :</label>
+			<font>font20</font>
+		<onclick>ActivateWindow(*target*,
+		</onclick>
+		</control>
+		<control type="group">
+			
+		</control>
+		
+		
+		
+
+		</controls>
+		
+
+
+<!--
+
+
+
+https://github.com/xbmc/xbmc/blob/master/xbmc/interfaces/json-rpc/schema/types.json#L103
+Favourite.Type": {
+    "type": "string",
+    "enum": [ "media", "window", "script", "androidapp", "unknown" ]
+  },
+  "Favourite.Details.Favourite": {
+    "type": "object",
+    "properties": {
+      "title": { "type": "string", "required": true },
+      "type": { "$ref": "Favourite.Type", "required": true },
+      "path": { "type": "string" },
+      "window": { "type": "string" },
+      "windowparameter": { "type": "string" },
+      "thumbnail": { "type": "string" }
+    },
+ 
+ 
+ 
+ 
+   "List.Filter.Rule": {
+    "type": "object",
+    "properties": {
+      "operator": { "$ref": "List.Filter.Operators", "required": true },
+      "value": {
+        "type": [
+          { "type": "string", "required": true },
+          { "type": "array", "items": { "type": "string" }, "required": true }
+        ], "required": true
+      }
+    }
+  },
+  
+  
+  "List.Filter.Rule.[foo type , e.g. movies,
+  artists..]":{
+  	
+  
+  
+  
+ "List.Limits": {
+    "type": "object",
+    "properties": {
+      "start": { "type": "integer", "minimum": 0, "default": 0, "description": "Index of the first item to return" },
+      "end": { "$ref": "List.Amount", "description": "Index of the last item to return" }
+    },
+    "additionalProperties": false
+  },
+
+  "List.Sort": {
+    "type": "object",
+    "properties": {
+      "method": { "type": "string", "default": "none",
+        "enum": [ "none", "label", "date", "size", "file", "path", "drivetype", "title", "track", "time", "artist",
+                  "album", "albumtype", "genre", "country", "year", "rating", "userrating", "votes", "top250", "programcount",
+                  "playlist", "episode", "season", "totalepisodes", "watchedepisodes", "tvshowstatus", "tvshowtitle",
+                  "sorttitle", "productioncode", "mpaa", "studio", "dateadded", "lastplayed", "playcount", "listeners",
+                  "bitrate", "random", "totaldiscs", "originaldate", "bpm" ]
+      },
+      "order": { "type": "string", "default": "ascending", "enum": [ "ascending", "descending" ] },
+      "ignorearticle": { "type": "boolean", "default": false },
+      "useartistsortname": { "type": "boolean", "default": false }	  
+    }
+  },
+
+
+
+
+ {"limit":2,"order":{"direction":"ascending","ignorefolders":0,"method":"year"},"rules":{"or":[{"field":"title","operator":"startswith","value":["zur"]},{"field":"title","operator":"contains","value":["dark"]}]},"type":"movies"} /
+%7B%22limit%22%3A2%2C%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22year%22%7D%2C%22rules%22%3A%7B%22or%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22startswith%22%2C%22value%22%3A%5B%22zur%22%5D%7D%2C%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22dark%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D
+
+
+
+
+{	
+	"limit":2,
+	"order":
+	{
+		"direction":"ascending","ignorefolders":0,"method":"year"
+	},
+	"rules":
+	{
+	"or":
+		[
+			{"field":"title","operator":"startswith","value":["zur"]},
+			{"field":"title","operator":"contains","value":["dark"]}
+		]
+	},
+	"type":"movies"
+} 
+
+sortutils.cpp
+
+//clang format off
+const sort_map table[] = {
+  { SortByLabel,                    SORT_METHOD_LABEL,                        SortAttributeNone,          551 },
+  { SortByLabel,                    SORT_METHOD_LABEL_IGNORE_THE,             SortAttributeIgnoreArticle, 551 },
+  { SortByLabel,                    SORT_METHOD_LABEL_IGNORE_FOLDERS,         SortAttributeIgnoreFolders, 551 },
+  { SortByDate,                     SORT_METHOD_DATE,                         SortAttributeNone,          552 },
+  { SortBySize,                     SORT_METHOD_SIZE,                         SortAttributeNone,          553 },
+  { SortByBitrate,                  SORT_METHOD_BITRATE,                      SortAttributeNone,          623 },
+  { SortByDriveType,                SORT_METHOD_DRIVE_TYPE,                   SortAttributeNone,          564 },
+  { SortByTrackNumber,              SORT_METHOD_TRACKNUM,                     SortAttributeNone,          554 },
+  { SortByEpisodeNumber,            SORT_METHOD_EPISODE,                      SortAttributeNone,          20359 },// 20360 "Episodes" used for SORT_METHOD_EPISODE for sorting tvshows by episode count
+  { SortByTime,                     SORT_METHOD_DURATION,                     SortAttributeNone,          180 },
+  { SortByTime,                     SORT_METHOD_VIDEO_RUNTIME,                SortAttributeNone,          180 },
+  { SortByTitle,                    SORT_METHOD_TITLE,                        SortAttributeNone,          556 },
+  { SortByTitle,                    SORT_METHOD_TITLE_IGNORE_THE,             SortAttributeIgnoreArticle, 556 },
+  { SortByTitle,                    SORT_METHOD_VIDEO_TITLE,                  SortAttributeNone,          556 },
+  { SortByArtist,                   SORT_METHOD_ARTIST,                       SortAttributeNone,          557 },
+  { SortByArtistThenYear,           SORT_METHOD_ARTIST_AND_YEAR,              SortAttributeNone,          578 },
+  { SortByArtist,                   SORT_METHOD_ARTIST_IGNORE_THE,            SortAttributeIgnoreArticle, 557 },
+  { SortByAlbum,                    SORT_METHOD_ALBUM,                        SortAttributeNone,          558 },
+  { SortByAlbum,                    SORT_METHOD_ALBUM_IGNORE_THE,             SortAttributeIgnoreArticle, 558 },
+  { SortByGenre,                    SORT_METHOD_GENRE,                        SortAttributeNone,          515 },
+  { SortByCountry,                  SORT_METHOD_COUNTRY,                      SortAttributeNone,          574 },
+  { SortByDateAdded,                SORT_METHOD_DATEADDED,                    SortAttributeIgnoreFolders, 570 },
+  { SortByFile,                     SORT_METHOD_FILE,                         SortAttributeIgnoreFolders, 561 },
+  { SortByRating,                   SORT_METHOD_SONG_RATING,                  SortAttributeNone,          563 },
+  { SortByRating,                   SORT_METHOD_VIDEO_RATING,                 SortAttributeIgnoreFolders, 563 },
+  { SortByUserRating,               SORT_METHOD_SONG_USER_RATING,             SortAttributeIgnoreFolders, 38018 },
+  { SortByUserRating,               SORT_METHOD_VIDEO_USER_RATING,            SortAttributeIgnoreFolders, 38018 },
+  { SortBySortTitle,                SORT_METHOD_VIDEO_SORT_TITLE,             SortAttributeIgnoreFolders, 171 },
+  { SortBySortTitle,                SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE,  (SortAttribute)(SortAttributeIgnoreFolders | SortAttributeIgnoreArticle), 171 },
+  { SortByYear,                     SORT_METHOD_YEAR,                         SortAttributeIgnoreFolders, 562 },
+  { SortByProductionCode,           SORT_METHOD_PRODUCTIONCODE,               SortAttributeNone,          20368 },
+  { SortByProgramCount,             SORT_METHOD_PROGRAM_COUNT,                SortAttributeNone,          567 }, // label is "play count"
+  { SortByPlaylistOrder,            SORT_METHOD_PLAYLIST_ORDER,               SortAttributeIgnoreFolders, 559 },
+  { SortByMPAA,                     SORT_METHOD_MPAA_RATING,                  SortAttributeNone,          20074 },
+  { SortByStudio,                   SORT_METHOD_STUDIO,                       SortAttributeNone,          572 },
+  { SortByStudio,                   SORT_METHOD_STUDIO_IGNORE_THE,            SortAttributeIgnoreArticle, 572 },
+  { SortByPath,                     SORT_METHOD_FULLPATH,                     SortAttributeNone,          573 },
+  { SortByLastPlayed,               SORT_METHOD_LASTPLAYED,                   SortAttributeIgnoreFolders, 568 },
+  { SortByPlaycount,                SORT_METHOD_PLAYCOUNT,                    SortAttributeIgnoreFolders, 567 },
+  { SortByListeners,                SORT_METHOD_LISTENERS,                    SortAttributeNone,          20455 },
+  { SortByChannel,                  SORT_METHOD_CHANNEL,                      SortAttributeNone,          19029 },
+  { SortByChannel,                  SORT_METHOD_CHANNEL_NUMBER,               SortAttributeNone,          549 },
+  { SortByChannel,                  SORT_METHOD_CLIENT_CHANNEL_ORDER,         SortAttributeNone,          19315 },
+  { SortByDateTaken,                SORT_METHOD_DATE_TAKEN,                   SortAttributeIgnoreFolders, 577 },
+  { SortByNone,                     SORT_METHOD_NONE,                         SortAttributeNone,          16018 },
+  { SortByTotalDiscs,               SORT_METHOD_TOTAL_DISCS,                  SortAttributeNone,          38077 },
+  { SortByOrigDate,                 SORT_METHOD_ORIG_DATE,                    SortAttributeNone,          38079 },
+  { SortByBPM,                      SORT_METHOD_BPM,                          SortAttributeNone,          38080 },
+
+  // the following have no corresponding SORT_METHOD_*
+  { SortByAlbumType,                SORT_METHOD_NONE,                         SortAttributeNone,          564 },
+  { SortByVotes,                    SORT_METHOD_NONE,                         SortAttributeNone,          205 },
+  { SortByTop250,                   SORT_METHOD_NONE,                         SortAttributeNone,          13409 },
+  { SortByMPAA,                     SORT_METHOD_NONE,                         SortAttributeNone,          20074 },
+  { SortByDateAdded,                SORT_METHOD_NONE,                         SortAttributeNone,          570 },
+  { SortByTvShowTitle,              SORT_METHOD_NONE,                         SortAttributeNone,          20364 },
+  { SortByTvShowStatus,             SORT_METHOD_NONE,                         SortAttributeNone,          126 },
+  { SortBySeason,                   SORT_METHOD_NONE,                         SortAttributeNone,          20373 },
+  { SortByNumberOfEpisodes,         SORT_METHOD_NONE,                         SortAttributeNone,          20360 },
+  { SortByNumberOfWatchedEpisodes,  SORT_METHOD_NONE,                         SortAttributeNone,          21441 },
+  { SortByVideoResolution,          SORT_METHOD_NONE,                         SortAttributeNone,          21443 },
+  { SortByVideoCodec,               SORT_METHOD_NONE,                         SortAttributeNone,          21445 },
+  { SortByVideoAspectRatio,         SORT_METHOD_NONE,                         SortAttributeNone,          21374 },
+  { SortByAudioChannels,            SORT_METHOD_NONE,                         SortAttributeNone,          21444 },
+  { SortByAudioCodec,               SORT_METHOD_NONE,                         SortAttributeNone,          21446 },
+  { SortByAudioLanguage,            SORT_METHOD_NONE,                         SortAttributeNone,          21447 },
+  { SortBySubtitleLanguage,         SORT_METHOD_NONE,                         SortAttributeNone,          21448 },
+  { SortByRandom,                   SORT_METHOD_NONE,                         SortAttributeNone,          590 }
+};
+
+
+-->
+</window>

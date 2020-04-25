@@ -1111,7 +1111,249 @@ msgstr "Video-Wiedergabelisten"
 	
 	<!-- Home.xml -->
 	<!-- temp, just to have easy navigation,may merge -->
-	<include name="Menucontrol_Home">
+	
+	layout 1 left 
+	<include name="Menucontrol_Home_Custom">
+		<control type="group">
+			<height>100%</height>
+			<!-- <visible>String.IsEqual(Window(Home).Property(ForceMenucontrolHomeActive),true)</visible> -->
+			<control type="image">
+				<animation effect="fade" start="100" end="50" time="250" condition="String.IsEmpty(Window(Home).Property(MenucontrolHomeActive))">conditional</animation>
+				<bordersize>0,0,3,0</bordersize>
+				<texture colordiffuse="$VAR[color_home_menu_backgroundpanel]">colors/white.png</texture>
+				<bordertexture colordiffuse="$VAR[color_home_menu_accent]">diffuse/seperator_gradient_vert.png</bordertexture>
+				<left>-455</left>
+				<width>540</width>
+				<height>100%</height>
+				<animation effect="slide" start="0" end="450" time="300" easing="in" tween="quadratic" condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">conditional</animation>
+			</control>
+			<!-- funny
+			<control type="image">
+				<animation effect="slide" start="0,0" end="85,0" easing="in" tween="quadratic" time="300" condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)" reversible="false">conditional</animation>
+				<animation effect="slide" start="80,0" end="0,0" easing="in" tween="quadratic" time="300" condition="!String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)" reversible="false">conditional</animation>
+				<width>5</width>
+				<right>80</right>
+				<texture colordiffuse="color_home_menu_accent">colors/white90.png</texture>
+			</control>
+			-->
+			<control type="panel" id="9000">
+				<animation effect="slide" start="0" end="447" easing="in" tween="quadratic" time="300" condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">conditional</animation>
+				<!-- 
+				vs
+				<animation condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)" type="conditional" reversible="false">
+					<effect type="slide" start="0" end="460" easing="in" tween="quadratic" time="300" />
+				</animation>
+				<animation condition="!String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)" type="conditional" reversible="false">
+					<effect type="slide" start="460" end="0" easing="in" tween="quadratic" time="300" />
+				</animation>
+				 -->
+				<left>-459</left>
+				<width>544</width>
+				<top>200</top>
+				<bottom>200</bottom>
+				<orientation>vertical</orientation>
+				<aligny>center</aligny>
+				<onup>8777</onup> profiles ?
+				<ondown>200</ondown> shutdown ?
+				
+				<!-- touch workaraound needed -->
+				
+				<onright condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">ClearProperty(MenucontrolHomeActive,home)</onright> widgets
+				
+				<onright condition="!String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">5555</onright> widgets
+				
+				<onleft>SetProperty(MenucontrolHomeActive,true,home)</onleft>		
+				
+				<itemlayout height="80">
+					<include content="Menucontrol_Home_LayoutMainMenu">
+						<param name="itemcolor" value="$VAR[color_home_menu_item_nf]" />
+						<param name="itempanelcolor" value="$VAR[color_home_menu_itempanel_nf]" />
+					</include>
+				</itemlayout>
+				
+				<focusedlayout height="80">
+					<include content="Menucontrol_Home_LayoutMainMenu">
+						<param name="itemcolor" value="$VAR[color_home_menu_item_fo]" />
+						<param name="itempanelcolor" value="$VAR[color_home_menu_itempanel_fo]" />
+					</include>
+					
+				</focusedlayout>
+					
+				<content>
+					<item id="988">
+						<label>menu</label>
+						<label2>skinstring homemenu_item_[nr].name</label2>
+						<icon>icons/swanwidgets_icon.png</icon>
+						<thumb>skinstring homemenu_item_[nr].icon</thumb>
+						<onclick condition="!String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">SetProperty(MenucontrolHomeActive,true,home)</onclick>
+						<onclick condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">ClearProperty(MenucontrolHomeActive,home)</onclick>
+						<visible>true</visible>
+					</item>
+					<item id="989">
+						<icon>icons/radiobuttons/settings.png</icon>
+						<label2 />
+						<label>$LOCALIZE[10004]</label>
+						<onclick>ActivateWindow(settings)</onclick>
+						<onclick condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">ClearProperty(MenucontrolHomeActive,home)</onclick>
+					</item>
+					
+					<include content="mainmenu_item">
+							<param name="id" value="01" />
+							<param name="nr" value="1" />
+					</include>
+					
+					<include content="mainmenu_item">
+							<param name="id" value="02" />
+							<param name="nr" value="2" />
+					</include>
+					
+					<include content="mainmenu_item">
+							<param name="id" value="03" />
+							<param name="nr" value="3" />
+					</include>
+					
+					<include content="mainmenu_item">
+							<param name="id" value="04" />
+							<param name="nr" value="4" />
+					</include>
+					
+					<include content="mainmenu_item">
+							<param name="id" value="05" />
+							<param name="nr" value="5" />
+					</include>
+					
+					<include content="mainmenu_item">
+							<param name="id" value="06" />
+							<param name="nr" value="6" />
+					</include>
+					
+					<include content="mainmenu_item">
+							<param name="id" value="07" />
+							<param name="nr" value="7" />
+					</include>
+					
+					<include content="mainmenu_item">
+							<param name="id" value="08" />
+							<param name="nr" value="8" />
+					</include>
+					
+					<include content="mainmenu_item">
+							<param name="id" value="09" />
+							<param name="nr" value="9" />
+					</include>
+					
+					<include content="mainmenu_item">
+							<param name="id" value="10" />
+							<param name="nr" value="10" />
+					</include>
+					
+					<include content="mainmenu_item">
+							<param name="id" value="11" />
+							<param name="nr" value="11" />
+					</include>
+					
+					<include content="mainmenu_item">
+							<param name="id" value="12" />
+							<param name="nr" value="12" />
+					</include>
+					
+					<include content="mainmenu_item">
+							<param name="id" value="13" />
+							<param name="nr" value="13" />
+					</include>
+					
+					<include content="mainmenu_item">
+							<param name="id" value="14" />
+							<param name="nr" value="14" />
+					</include>
+					
+					<include content="mainmenu_item">
+							<param name="id" value="15" />
+							<param name="nr" value="15" />
+					</include>
+					
+					<include content="mainmenu_item">
+							<param name="id" value="16" />
+							<param name="nr" value="6" />
+					</include>
+					
+					<include content="mainmenu_item">
+							<param name="id" value="17" />
+							<param name="nr" value="17" />
+					</include>
+					
+					<include content="mainmenu_item">
+							<param name="id" value="18" />
+							<param name="nr" value="18" />
+					</include>
+					
+					<include content="mainmenu_item">
+							<param name="id" value="19" />
+							<param name="nr" value="19" />
+					</include>
+					
+					<include content="mainmenu_item">
+							<param name="id" value="20" />
+							<param name="nr" value="20" />
+					</include>
+
+				</content>
+				
+			</control>
+			
+		</control>
+		
+	</include>
+	<include name="mainmenu_item">
+			<item id="900$PARAM[id]">
+					<label>test item nr $PARAM[nr]</label>
+					<label2 />
+					<thumb>$INFO[Skin.String(mainmenuitem$PARAM[nr]_thumb)]</thumb>
+					<icon>defaultmovies.png</icon>
+					<property name="fanart">$INFO[Skin.String(mainmenuitem$PARAM[nr]_fanart)]</property>
+					<onclick>ReplaceWindow($INFO[Skin.String(mainmenuitem$PARAM[nr]_target],$INFO[Skin.String(mainmenuitem$PARAM[nr]_path])</onclick>
+					<onclick condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">ClearProperty(MenucontrolHomeActive,home)</onclick>
+				<visible>!String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_path))</visible>
+			</item>
+	</include>
+	
+	<include name="Menucontrol_Home_LayoutMainMenu">
+		<control type="group">
+			<control type="image">
+				<description>vis if prop slide true</description>
+				<visible>String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)</visible>
+				<height>100%</height>
+				<width>100%</width>
+				<texture colordiffuse="$PARAM[itempanelcolor]">colors/white.png</texture>
+			</control>
+			<control type="image">
+				<description>skinstring homemenu_item_[nr].icon</description>
+				<height>80</height>
+				<width>45</width>
+				<right>20</right>
+				<texture colordiffuse="$PARAM[itemcolor]">$INFO[ListItem.Icon]</texture>
+				<aspectratio aligny="center">keep</aspectratio>
+			</control>
+			<control type="label">
+				<left>20</left>
+				<height>80</height>
+				<right>100</right>
+				<aligny>center</aligny>
+				<align>right</align>
+				<textcolor>$PARAM[itemcolor]</textcolor>
+				<font>font12</font>
+				<wrapmultiline>true</wrapmultiline>
+				<label>$INFO[ListItem.Label]</label>
+			</control>
+			
+			
+		</control>
+	
+	</include>
+
+	<include name="Menucontrol_Home_test1">
+		<animation effect="slide" start="-450,0" end="0,0" time="300" tween="cubic" easing="inout">VisibleHidden</animation>
+		<visible>ControlGroup(9000).HasFocus()</visible>
 		<control type="image">
 			<animation effect="slide" start="0,0" end="450,0" time="300" tween="cubic" easing="inout" condition="ControlGroup(9000).HasFocus()">conditional</animation>
 			<animation effect="fade" start="100" end="0" time="150" condition="!ControlGroup(9000).HasFocus()">conditional</animation>
@@ -1172,7 +1414,7 @@ msgstr "Video-Wiedergabelisten"
 				
 				
 				
-		</include>
+			</include>
 			
 			
 				<control type="textbox" id="900">
@@ -1377,35 +1619,7 @@ RadioSearch
 			<nested />
 		</control>
 	</include>
-	<!-- reference test include hub_button 
 	
-	<include name="hub_buttonorig">
-		<param name="visible" default="true" />
-		<definition>
-			<control type="radiobutton" id="$PARAM[id]">
-				<visible>$PARAM[visible]</visible>
-				<width>110%</width>
-				<height>25</height>
-				<radiowidth>40</radiowidth>
-				<radioheight>40</radioheight>
-				<radioposx>10</radioposx>
-				<textureradioonfocus colordiffuse="$VAR[color_hub_menu_text_fo]">$PARAM[radio_icon]</textureradioonfocus>
-				<textureradioonnofocus colordiffuse="$VAR[color_hub_menu_text_nf]">$PARAM[radio_icon]</textureradioonnofocus>
-				<textureradioofffocus colordiffuse="$VAR[color_hub_menu_text_fo]">$PARAM[radio_icon]</textureradioofffocus>
-				<textureradiooffnofocus colordiffuse="$VAR[color_hub_menu_text_nf]">$PARAM[radio_icon]</textureradiooffnofocus>
-				<texturefocus />
-				<texturenofocus />
-				<font>MenucontrolItem</font>
-				<label>     $PARAM[label]</label>
-				<onclick>SetProperty(HUB_Music,$PARAM[property],home)</onclick>
-				<focusedcolor>$VAR[color_hub_menu_text_fo]</focusedcolor>
-				<textcolor>$VAR[color_hub_menu_text_nf]</textcolor>
-				<selectedcolor>green</selectedcolor>
-				<pulseonselect>no</pulseonselect>
-			</control>
-		</definition>
-	</include>
-	-->
 	<include name="Menucontrol_Button">
 		<param name="section" default="lib" />
 		<definition>
@@ -1418,7 +1632,7 @@ RadioSearch
 			<textcolor>$VAR[color_$PARAM[section]_menu_item_nf]</textcolor>
 		</definition>
 	</include>
-	<!-- Menucontrol_RadioButton -> Menucontrol_ViewSettingsRadioButton -->
+	Menucontrol_RadioButton -> Menucontrol_ViewSettingsRadioButton
 	<include name="Menucontrol_RadioButton">
 		<param name="section" default="lib" />
 		<definition>
