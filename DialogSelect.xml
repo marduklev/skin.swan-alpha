@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+    <defaultcontrol always="true">3</defaultcontrol>
+   
+	<onload condition="!String.IsEmpty(Window(home).Property(ShortcutPlaylistContent))">SetFocus(40)</onload>
+	<include>Animation_OpenClose_Slide</include>
+    <menucontrol>8000</menucontrol>
+	
+	<controls>
+        <control type="group">
+            <include content="DialogBackground_TriplePanel" />
+        </control>
+            
+        <control type="label" id="1">
+            <include content="HiddenObject" />
+        </control>
+        <control type="label" id="2">
+            <include content="HiddenObject" />
+        </control>
+        <control type="label" id="12">
+            <include content="HiddenObject" />
+        </control>
+
+        <control type="group">
+            <visible>!Window.IsVisible(yesnodialog) + !Window.IsVisible(virtualkeyboard) + !Window.IsVisible(numericinput)</visible>
+            <visible>String.IsEmpty(Window(home).Property(ShortcutPlaylistContent))</visible>
+			<include content="Dialog_CommonInfo">
+                <param name="Def_Icon" value="$VAR[image_dialogselect]" />
+                <param name="Header_label" value="$INFO[Control.GetLabel(1),[B],[/B]]" />
+                <param name="Item_Description" value="$INFO[ListItem.AddonName,[B]$LOCALIZE[551]:[/B] ,]$INFO[ListItem.AddonCreator,[CR][B]$LOCALIZE[21863]:[/B] ,]$INFO[ListItem.AddonDescription,[CR][CR][B]$LOCALIZE[31171][/B][CR],]" />
+            </include>
+            <control type="group">
+                <visible>Control.IsVisible(3)</visible>
+                <include content="Dialog_Containers">
+                    <param name="id" value="3" />
+                    <param name="onleft" value="8000" />
+                    <param name="icon_visible" value="true" />
+                    <param name="layout_height" value="60" />
+                </include>
+            </control>
+            <control type="group">
+                <visible>Control.IsVisible(6)</visible>
+                <include content="Dialog_Containers">
+                    <param name="id" value="6" />
+                    <param name="Container_Height" value="63%" />
+                    <param name="onleft" value="8000" />
+                    <param name="icon_visible" value="true" />
+                    <param name="layout_height" value="110" />
+                </include>
+            </control>
+            <control type="group">
+                <description>use Control.IsVisible($PARAM[id]) cause false visible</description>
+                <visible>Control.IsVisible(11)</visible>
+                <include content="Dialog_Containers">
+                    <param name="id" value="11" />
+                    <param name="onleft" value="8000" />
+                    <param name="icon_visible" value="true" />
+                    <param name="layout_height" value="110" />
+                </include>
+            </control>
+            <control type="grouplist" id="8000">
+                <left>34%</left>
+                <bottom>15</bottom>
+                <width>610</width>
+                <height>65</height>
+                <align>center</align>
+                <orientation>horizontal</orientation>
+                <itemgap>10</itemgap>
+                <onup condition="Control.IsVisible(6)">6</onup>
+                <onup condition="!Control.IsVisible(6)">3</onup>
+                <ondown condition="Control.IsVisible(6)">6</ondown>
+                <ondown condition="!Control.IsVisible(6)">3</ondown>
+                <onleft>8000</onleft>
+                <onright>8000</onright>
+                <control type="button" id="5">
+                    <description>OK</description>
+                    <left>0</left>
+                    <label />
+                    <width>300</width>
+                    <height>60</height>
+                </control>
+                <control type="button" id="7">
+                    <description>Close</description>
+                    <label />
+                    <width>300</width>
+                    <height>60</height>
+                    <visible>!String.IsEmpty(Control.GetLabel(7))</visible>
+				</control>
+				
+            </control>
+        </control>
+		
+		<!-- Swan DialogSelect Content -->
+		<control type="group">
+            <visible>!String.IsEmpty(Window(home).Property(ShortcutPlaylistContent))</visible>
+			<include content="Dialog_CommonInfo">
+                <param name="Def_Icon" value="$VAR[image_dialogselect]" />
+                <param name="Header_label" value="$INFO[Control.GetLabel(1),[B],[/B]]" />
+                <param name="Item_Description" value="$INFO[ListItem.FilenameandPath]" />
+            </include>
+			
+			<!-- Playlists -->
+			<control type="group">
+				<visible>!String.IsEmpty(Window(home).Property(ShortcutPlaylistContent))</visible>
+				<control type="panel" id="40">
+					
+					<!-- define play or show action ?-->
+					<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu) + String.IsEqual(Window(home).Property(ShortcutPlaylistContent),video)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_target,videos)</onclick>
+					<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu) + String.IsEqual(Window(home).Property(ShortcutPlaylistContent),music)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_target,music)</onclick>
+					<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_thumb,defaultplaylist.png)</onclick>
+					<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_path,$INFO[ListItem.FilenameandPath])</onclick>
+					<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_name,$INFO[ListItem.Label])</onclick>
+					
+					<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget) + String.IsEqual(Window(home).Property(ShortcutPlaylistContent),video)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_target,videos)</onclick>
+					<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget) + String.IsEqual(Window(home).Property(ShortcutPlaylistContent),music)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_target,music)</onclick>
+					<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget) + tring.IsEqual(Window(home).Property(ShortcutPlaylistContent),video)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout,poster)</onclick>
+					<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget) + String.IsEqual(Window(home).Property(ShortcutPlaylistContent),video)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout.label,poster)</onclick>
+					<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget) + String.IsEqual(Window(home).Property(ShortcutPlaylistContent),music)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout,square)</onclick>
+					<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget) + String.IsEqual(Window(home).Property(ShortcutPlaylistContent),music)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout.label,square)</onclick>
+					
+
+					<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_path,$INFO[ListItem.FilenameandPath])</onclick>
+					<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_name,$INFO[ListItem.Label])</onclick>
+					
+
+					<onclick>Dialog.Close(all,true)</onclick>
+					<onclick>ClearProperty(shortcutitem_name,home)</onclick>
+					<onclick>ClearProperty(userwidgetLayout,home)</onclick>
+					<onclick>ClearProperty(SetShortcutInProgress,home)</onclick>
+					<onclick>ClearProperty(shortcutitem_nr,home)</onclick>
+					<onclick>ClearProperty(ShortcutPlaylistContent,home)</onclick>
+					<include content="SwanShortcuts_PanelList" />
+					<content>special://$INFO[Window(home).Property(ShortcutPlaylistContent)]playlists/</content>
+					<content>special://skin/playlists/$INFO[Window(home).Property(ShortcutPlaylistContent)]/</content>
+				</control>
+			</control>
+		</control>
+    </controls>
+</window>
