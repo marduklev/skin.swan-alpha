@@ -1136,26 +1136,162 @@ msgstr "Video-Wiedergabelisten"
 				<texture colordiffuse="color_home_menu_accent">colors/white90.png</texture>
 			</control>
 			-->
+				
+				
+			<!-- LoadProfile(profilename,[prompt]) 
+
+			Load the specified profile.
+			 If prompt is not specified, and a password would be required for the requested profile, this command will silently fail. If promp' is specified and a password is required, a password dialog will be shown.
+			
+			System.IsLoggedOn	Returns true if a user is currently logged on under a profile	
+			System.HasLoginScreen	Returns true if the profile login screen is enabled
+			
+System.ProfileName	Shows the User name of the currently logged in Kodi user	
+System.ProfileCount	Shows the number of defined profiles	
+System.ProfileAutoLogin	The profile Kodi will auto login to
+			
+			
+			abuse to fetch profilename/label, icon and save to skin string ?
+			
+			skinsettings 
+			onclick open window - fetch/save skinstrings- back to current
+16.1.52 SettingsProfile.xml
+ID	Type	Description
+2	container	List of available profiles
+4	button	Enable the loginscreen
+5	button	Auto login
+
+or via start up
+
+16.1.35 LoginScreen.xml
+ID	Type	Description
+2	label	Heading label
+3	label	Number of the currently selected profile
+52	container	List of the available profiles
+
+-->			
+			<control type="group">
+				<animation effect="slide" start="0" end="447" easing="in" tween="quadratic" time="300" condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">conditional</animation>
+				<height>100</height>
+				<top>10</top>
+			<!-- 	<left>-455</left> -->
+			<left>-500</left>
+				<width>540</width>
+				<control type="image">
+					<!-- <visible>false</visible> -->
+					<left>30</left>
+					<width>336</width>
+					<height>56</height>
+					<texture colordiffuse="$VAR[color_home_menu_itempanel_nf]">buttons/button_6to1_trans.png</texture>
+				</control>
+				<control type="image">
+					<left>336</left>
+					<width>56</width>
+					<height>56</height>
+					<texture colordiffuse="$VAR[color_home_menu_itempanel_nf]">artworkdiffuse/circle.png</texture>
+				</control>
+				<control type="image">
+					<bordersize>3</bordersize>
+					<left>336</left>
+					<width>56</width>
+					<height>56</height>
+					<texture diffuse="artworkdiffuse/circle.png">$INFO[System.ProfileThumb]</texture>
+				</control>
+				<control type="label">
+					<left>60</left>
+					<right>50</right>
+					<width>300</width>
+					<height>56</height>
+					<font>font_labelprofile</font>
+					<!-- <textcolor>$VAR[color_home_menu_backgroundpanel]</textcolor> -->
+					<textcolor>$VAR[color_home_menu_item_nf]</textcolor>
+					<label>Current Profile [CR]$INFO[System.ProfileName]</label>
+				</control>
+				
+			</control>
+			<control type="label">
+				<animation effect="slide" start="0" end="447" easing="in" tween="quadratic" time="300" condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">conditional</animation>
+				<height>26</height>
+				<top>80</top>
+				<left>-420</left>
+				<width>544</width>
+					<font>font_labelprofile</font>
+					<!-- <textcolor>$VAR[color_home_menu_backgroundpanel]</textcolor> -->
+					<textcolor>$VAR[color_home_menu_item_nf]</textcolor>
+					<label>[B]Switch to another profile[/B]</label>
+				</control>
+			<!-- <font>font25_title</font> -->
+			<!-- var to highlight current one as label 2 !String.IsEqual(System.ProfileName,Skin.String(profile_01_label)) +  -->
+			<include content="Universal_Container">
+				<param name="id" value="8999" />
+				<param name="type_height" value="150" />
+				<param name="type_pos_top" value="110" />
+				
+				<param name="tags_visible" value="true" />
+				<param name="visible" value="true" />
+				<param name="layout_height" value="100" />
+				<param name="layout_width" value="90" />
+				<param name="itemwidth" value="85" />
+				<param name="itemheight" value="85" />
+				<param name="layout" value="circle" />
+				<param name="circle_visible" value="false" />
+				<onup>9000</onup>
+				<ondown>9000</ondown>
+				<!-- <onleft>8997</onleft> -->
+				<left>-430</left>
+				<width>544</width>
+				<onback>9000</onback>
+				<animation effect="slide" start="0" end="450" easing="in" tween="quadratic" time="300" condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">conditional</animation>
+				
+				<content>
+					
+					<item id="499">
+						<visible>!String.IsEqual(System.ProfileName,Skin.String(profile_01_label)) + !String.IsEmpty(Skin.String(profile_01_label))</visible>
+						<label>$INFO[Skin.String(profile_01_label]</label>
+						<icon>$INFO[Skin.String(profile_01_thumb)]</icon>
+						<onclick>LoadProfile($INFO[Skin.String(profile_01_label],prompt) </onclick>
+					</item>
+					<item id="498">
+						<visible>!String.IsEqual(System.ProfileName,Skin.String(profile_02_label)) + !String.IsEmpty(Skin.String(profile_02_label))</visible>
+						<label>$INFO[Skin.String(profile_02_label]</label>
+						<icon>$INFO[Skin.String(profile_02_thumb)]</icon>
+						<onclick>LoadProfile($INFO[Skin.String(profile_02_label],prompt) </onclick>
+					</item>
+					<item id="497">
+						<visible>!String.IsEqual(System.ProfileName,Skin.String(profile_03_label)) + !String.IsEmpty(Skin.String(profile_03_label))</visible>
+						<label>$INFO[Skin.String(profile_03_label]</label>
+						<icon>$INFO[Skin.String(profile_03_thumb)]</icon>
+						<onclick>LoadProfile($INFO[Skin.String(profile_03_label],prompt) </onclick>
+					</item>
+					<item id="496">
+						<visible>!String.IsEqual(System.ProfileName,Skin.String(profile_04_label)) + !String.IsEmpty(Skin.String(profile_04_label))</visible>
+						<label>$INFO[Skin.String(profile_04_label]</label>
+						<icon>$INFO[Skin.String(profile_04_thumb)]</icon>
+						<onclick>LoadProfile($INFO[Skin.String(profile_04_label],prompt) </onclick>
+					</item>
+					<item id="495">
+						<visible>false</visible>
+						<label>$INFO[System.ProfileName]</label>
+						<icon>$INFO[System.ProfileThumb]</icon>
+						<onclick>System.LogOff</onclick>
+					</item>
+				</content>
+			</include>
+			
+			
+			
 			<control type="panel" id="9000">
 				<animation effect="slide" start="0" end="447" easing="in" tween="quadratic" time="300" condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">conditional</animation>
-				<!-- 
-				vs
-				<animation condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)" type="conditional" reversible="false">
-					<effect type="slide" start="0" end="460" easing="in" tween="quadratic" time="300" />
-				</animation>
-				<animation condition="!String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)" type="conditional" reversible="false">
-					<effect type="slide" start="460" end="0" easing="in" tween="quadratic" time="300" />
-				</animation>
-				 -->
 				<left>-459</left>
 				<width>544</width>
-				<top>200</top>
-				<bottom>200</bottom>
-				<orientation>vertical</orientation>
+				<top>300</top>
+				<bottom>300</bottom>
 				<aligny>center</aligny>
-				<onup>8777</onup> profiles ?
-				<ondown>200</ondown> shutdown ?
-				
+				<orientation>vertical</orientation>
+				<onup>8999</onup>
+				<ondown>8997</ondown> 
+				<onleft>8997</onleft>
+				<onback>8997</onback>
 				<!-- touch workaraound needed -->
 				
 				<onright condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">ClearProperty(MenucontrolHomeActive,home)</onright> widgets
@@ -1165,21 +1301,28 @@ msgstr "Video-Wiedergabelisten"
 				<onleft>SetProperty(MenucontrolHomeActive,true,home)</onleft>		
 				
 				<itemlayout height="80">
-					<include content="Menucontrol_Home_LayoutMainMenu">
+					<include content="home_mainmenu_layout_verticalpanel">
 						<param name="itemcolor" value="$VAR[color_home_menu_item_nf]" />
 						<param name="itempanelcolor" value="$VAR[color_home_menu_itempanel_nf]" />
 					</include>
 				</itemlayout>
 				
 				<focusedlayout height="80">
-					<include content="Menucontrol_Home_LayoutMainMenu">
+					<include content="home_mainmenu_layout_verticalpanel">
 						<param name="itemcolor" value="$VAR[color_home_menu_item_fo]" />
 						<param name="itempanelcolor" value="$VAR[color_home_menu_itempanel_fo]" />
 					</include>
-					
+					<control type="image">
+						<animation effect="zoom" start="0,100" end="100,100" time="200" center="auto" tween="quadratic" easing="out" reversible="false">Focus</animation>
+						<width>57</width>
+						<right>15</right>
+						<bottom>4</bottom>
+						<height>4</height>
+						
+						<texture colordiffuse="color_home_menu_accent">colors/white.png</texture>
+					</control>
 				</focusedlayout>
-					
-				<content>
+				<include content="home_mainmenu_content">
 					<item id="988">
 						<label>menu</label>
 						<label2>skinstring homemenu_item_[nr].name</label2>
@@ -1196,109 +1339,66 @@ msgstr "Video-Wiedergabelisten"
 						<onclick>ActivateWindow(settings)</onclick>
 						<onclick condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">ClearProperty(MenucontrolHomeActive,home)</onclick>
 					</item>
-					
-					<include content="mainmenu_item">
-							<param name="id" value="01" />
-							<param name="nr" value="1" />
-					</include>
-					
-					<include content="mainmenu_item">
-							<param name="id" value="02" />
-							<param name="nr" value="2" />
-					</include>
-					
-					<include content="mainmenu_item">
-							<param name="id" value="03" />
-							<param name="nr" value="3" />
-					</include>
-					
-					<include content="mainmenu_item">
-							<param name="id" value="04" />
-							<param name="nr" value="4" />
-					</include>
-					
-					<include content="mainmenu_item">
-							<param name="id" value="05" />
-							<param name="nr" value="5" />
-					</include>
-					
-					<include content="mainmenu_item">
-							<param name="id" value="06" />
-							<param name="nr" value="6" />
-					</include>
-					
-					<include content="mainmenu_item">
-							<param name="id" value="07" />
-							<param name="nr" value="7" />
-					</include>
-					
-					<include content="mainmenu_item">
-							<param name="id" value="08" />
-							<param name="nr" value="8" />
-					</include>
-					
-					<include content="mainmenu_item">
-							<param name="id" value="09" />
-							<param name="nr" value="9" />
-					</include>
-					
-					<include content="mainmenu_item">
-							<param name="id" value="10" />
-							<param name="nr" value="10" />
-					</include>
-					
-					<include content="mainmenu_item">
-							<param name="id" value="11" />
-							<param name="nr" value="11" />
-					</include>
-					
-					<include content="mainmenu_item">
-							<param name="id" value="12" />
-							<param name="nr" value="12" />
-					</include>
-					
-					<include content="mainmenu_item">
-							<param name="id" value="13" />
-							<param name="nr" value="13" />
-					</include>
-					
-					<include content="mainmenu_item">
-							<param name="id" value="14" />
-							<param name="nr" value="14" />
-					</include>
-					
-					<include content="mainmenu_item">
-							<param name="id" value="15" />
-							<param name="nr" value="15" />
-					</include>
-					
-					<include content="mainmenu_item">
-							<param name="id" value="16" />
-							<param name="nr" value="6" />
-					</include>
-					
-					<include content="mainmenu_item">
-							<param name="id" value="17" />
-							<param name="nr" value="17" />
-					</include>
-					
-					<include content="mainmenu_item">
-							<param name="id" value="18" />
-							<param name="nr" value="18" />
-					</include>
-					
-					<include content="mainmenu_item">
-							<param name="id" value="19" />
-							<param name="nr" value="19" />
-					</include>
-					
-					<include content="mainmenu_item">
-							<param name="id" value="20" />
-							<param name="nr" value="20" />
-					</include>
-
-				</content>
+				</include>
 				
+				
+					
+			
+			</control>
+			
+			<control type="panel" id="8997">
+				<animation effect="slide" start="0" end="447" easing="in" tween="quadratic" time="300" condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">conditional</animation>
+				
+				<left>-379</left>
+				<width>455</width>
+				<height>120</height>
+				<bottom>100</bottom>
+				<orientation>vertical</orientation>
+				
+				<onup>9000</onup>
+				<ondown>9000</ondown>
+				
+				<onright condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">ClearProperty(MenucontrolHomeActive,home)</onright>
+				<onright condition="!String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">5555</onright>
+				
+				<onleft>9000</onleft>		
+				
+				<itemlayout height="30">
+					<control type="label">
+							<label>$INFO[Listitem.label]</label>
+							<height>20</height>
+							<font>font_labelshutdown</font>
+							<textcolor>$VAR[color_home_menu_item_nf]</textcolor>
+						</control>
+				</itemlayout>
+				
+				<focusedlayout height="30">
+					<control type="label">
+							<label>$INFO[Listitem.label]</label>
+							<height>20</height>
+							
+							<font>font_labelshutdown</font>
+							<textcolor>$VAR[color_home_menu_item_fo]</textcolor>
+						</control>
+						<control type="image">
+						<visible>false</visible>
+						<texture colordiffuse="$VAR[color_home_menu_itempanel_fo]">colors/white.png</texture>
+					</control>
+					<control type="image">
+						<animation effect="zoom" start="0,100" end="100,100" time="300" center="left" tween="quadratic" easing="out" reversible="false">Focus</animation>
+						<bottom>4</bottom>
+						<height>4</height>
+						<right>100</right>
+						<texture colordiffuse="color_home_menu_accent">diffuse/gradient-osdslim.png</texture>
+					</control>
+				</focusedlayout>
+				<include content="shutdownmenu_content">
+					
+				</include>
+				
+				
+					
+			
 			</control>
 			
 		</control>
@@ -1306,7 +1406,7 @@ msgstr "Video-Wiedergabelisten"
 	</include>
 	<include name="mainmenu_item">
 			<item id="900$PARAM[id]">
-					<label>test item nr $PARAM[nr]</label>
+					<label>$INFO[Skin.String(mainmenuitem$PARAM[nr]_name)]</label>
 					<label2 />
 					<thumb>$INFO[Skin.String(mainmenuitem$PARAM[nr]_thumb)]</thumb>
 					<icon>defaultmovies.png</icon>
@@ -1317,7 +1417,93 @@ msgstr "Video-Wiedergabelisten"
 			</item>
 	</include>
 	
-	<include name="Menucontrol_Home_LayoutMainMenu">
+	<include name="home_mainmenu_content">
+		<content>
+					<nested />
+					<include content="mainmenu_item">
+							<param name="id" value="01" />
+							<param name="nr" value="1" />
+					</include>
+					<include content="mainmenu_item">
+							<param name="id" value="02" />
+							<param name="nr" value="2" />
+					</include>
+					<include content="mainmenu_item">
+							<param name="id" value="03" />
+							<param name="nr" value="3" />
+					</include>
+					<include content="mainmenu_item">
+							<param name="id" value="04" />
+							<param name="nr" value="4" />
+					</include>
+					<include content="mainmenu_item">
+							<param name="id" value="05" />
+							<param name="nr" value="5" />
+					</include>
+					<include content="mainmenu_item">
+							<param name="id" value="06" />
+							<param name="nr" value="6" />
+					</include>
+					<include content="mainmenu_item">
+							<param name="id" value="07" />
+							<param name="nr" value="7" />
+					</include>
+					<include content="mainmenu_item">
+							<param name="id" value="08" />
+							<param name="nr" value="8" />
+					</include>
+					<include content="mainmenu_item">
+							<param name="id" value="09" />
+							<param name="nr" value="9" />
+					</include>
+					<include content="mainmenu_item">
+							<param name="id" value="10" />
+							<param name="nr" value="10" />
+					</include>
+					<include content="mainmenu_item">
+							<param name="id" value="11" />
+							<param name="nr" value="11" />
+					</include>
+					<include content="mainmenu_item">
+							<param name="id" value="12" />
+							<param name="nr" value="12" />
+					</include>
+					<include content="mainmenu_item">
+							<param name="id" value="13" />
+							<param name="nr" value="13" />
+					</include>
+					<include content="mainmenu_item">
+							<param name="id" value="14" />
+							<param name="nr" value="14" />
+					</include>
+					<include content="mainmenu_item">
+							<param name="id" value="15" />
+							<param name="nr" value="15" />
+					</include>
+					<include content="mainmenu_item">
+							<param name="id" value="16" />
+							<param name="nr" value="6" />
+					</include>
+					<include content="mainmenu_item">
+							<param name="id" value="17" />
+							<param name="nr" value="17" />
+					</include>
+					<include content="mainmenu_item">
+							<param name="id" value="18" />
+							<param name="nr" value="18" />
+					</include>
+					<include content="mainmenu_item">
+							<param name="id" value="19" />
+							<param name="nr" value="19" />
+					</include>
+					<include content="mainmenu_item">
+							<param name="id" value="20" />
+							<param name="nr" value="20" />
+					</include>
+				</content>
+	</include>
+	
+	<include name="home_mainmenu_layout_verticalpanel">
 		<control type="group">
 			<control type="image">
 				<description>vis if prop slide true</description>
@@ -1663,4 +1849,98 @@ RadioSearch
 		<value condition="String.IsEqual(Control.GetLabel(10),$LOCALIZE[16102])"></value>
 	</variable>
 	
+	<!-- later on use custom -->
+	<include name="shutdownmenu_content">
+				<content>
+					<item>
+						<label>$LOCALIZE[10000]</label>
+						<icon>icons/home.png</icon>
+						<onclick>Dialog.Close(all,true)</onclick>
+						<onclick>ActivateWindow(home)</onclick>
+						<visible>!Window.IsVisible(loginscreen) + !Window.IsVisible(home)</visible>
+					</item>
+					<item>
+						<label>$LOCALIZE[5]</label>
+						<icon>icons/FINISHED_800on1000_settings1.png</icon>
+						<onclick>Dialog.Close(all,true)</onclick>
+						<onclick>ActivateWindow(settings)</onclick>
+						<visible>!Window.IsVisible(loginscreen) + !Window.IsVisible(settings) + !Skin.HasSetting(DialogButton_HidePowerSettings)</visible>
+					</item>
+					<item>
+						<label>$LOCALIZE[13012]</label>
+						<icon>icons/left.png</icon>
+						<onclick>Quit()</onclick>
+						<visible>System.Platform.Android | [System.ShowExitButton + [!Skin.HasSetting(DialogButton_HidePowerExit) | Window.IsVisible(loginscreen)]]</visible>
+					</item>
+					<item>
+						<label>$LOCALIZE[13016]</label>
+						<icon>icons/shutdown_out.png</icon>
+						<onclick>Powerdown()</onclick>
+						<visible>System.CanPowerDown + [!Skin.HasSetting(DialogButton_HidePowerOff) | Window.IsVisible(loginscreen)]</visible>
+					</item>
+					<item>
+						<label>$LOCALIZE[13013]</label>
+						<icon>icons/shittyrebbot.png</icon>
+						<onclick>Reboot()</onclick>
+						<visible>System.CanReboot + [!Skin.HasSetting(DialogButton_HideReboot) | Window.IsVisible(loginscreen)]</visible>
+					</item>
+					
+					<item>
+						<label>$LOCALIZE[20150]</label>
+						<icon>icons/material/set_alarm.png</icon>
+						<onclick>AlarmClock(shutdowntimer,Shutdown())</onclick>
+						<visible>!System.HasAlarm(shutdowntimer) + !Skin.HasSetting(DialogButton_HidePowerTimer) + [System.CanPowerDown | System.CanSuspend | System.CanHibernate]</visible>
+					</item>
+					<item>
+						<label>$LOCALIZE[20151] $INFO[System.AlarmPos,(,)]</label>
+						<icon>icons/material/cancel_alarm.png</icon>
+						<onclick>CancelAlarm(shutdowntimer)</onclick>
+						<visible>System.HasAlarm(shutdowntimer) + !Skin.HasSetting(DialogButton_HidePowerTimer)</visible>
+					</item>
+					<item>
+						<label>$LOCALIZE[13011]</label>
+						<onclick>Suspend()</onclick>
+						<visible>System.CanSuspend + [!Skin.HasSetting(DialogButton_HidePowerSuspend) | Window.IsVisible(loginscreen)]</visible>
+					</item>
+					<item>
+						<label>$LOCALIZE[13010]</label>
+						<icon>icons/hib_unframed1.png</icon>
+						<label2></label2>
+						<onclick>Hibernate()</onclick>
+						<visible>System.CanHibernate + [!Skin.HasSetting(DialogButton_HidePowerHibernate) | Window.IsVisible(loginscreen)]</visible>
+					</item>
+					<item>
+						<label>$LOCALIZE[13017]</label>
+						<label2></label2>
+						<onclick>InhibitIdleShutdown(true)</onclick>
+						<visible>System.HasShutdown + !System.IsInhibit + !Skin.HasSetting(DialogButton_HidePowerIdleShutdown)</visible>
+					</item>
+					<item>
+						<label>$LOCALIZE[13018]</label>
+						<label2></label2>
+						<onclick>InhibitIdleShutdown(false)</onclick>
+						<visible>System.HasShutdown + System.IsInhibit + !Skin.HasSetting(DialogButton_HidePowerIdleShutdown)</visible>
+					</item>
+					<item>
+						<label>$LOCALIZE[20126][CR]$INFO[system.profilename]</label>
+						<label2></label2>
+						<icon>icons/profile_logoff_2.png</icon>
+						<onclick>Dialog.Close(all,true)</onclick>
+						<onclick>System.LogOff</onclick>
+						<visible>[System.HasLoginScreen | Integer.IsGreater(System.ProfileCount,1)] + System.Loggedon</visible>
+					</item>
+					<item>
+						<label>$LOCALIZE[20046]</label>
+						<label2></label2>
+						<onclick>mastermode</onclick>
+						<visible>!Window.IsVisible(loginscreen) + System.HasLocks + System.IsMaster + !Window.IsVisible(loginscreen)</visible>
+					</item>
+					<item>
+						<label>$LOCALIZE[20045]</label>
+						<label2></label2>
+						<onclick>mastermode</onclick>
+						<visible>!Window.IsVisible(loginscreen) + System.HasLocks + !System.IsMaster</visible>
+					</item>
+					</content>
+				</include>
 </includes>

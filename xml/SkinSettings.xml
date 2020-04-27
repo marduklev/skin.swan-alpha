@@ -371,7 +371,7 @@
 				<param name="id" value="14" />
 				
 				<description>H O M E     M E N U I T E M S</description>
-				<visible>Container(9000).HasFocus($PARAM[id])</visible>
+					<visible>Container(9000).HasFocus($PARAM[id])</visible>
 					<include content="SectionHeadline">
 						<param name="id" value="$PARAM[id]000"/>
 						<param name="label" value=""/>
@@ -384,6 +384,39 @@
 						<height>100</height>
 						<onclick>Skin.ToggleSetting(useshortcut_mainmenu)</onclick>
 						<selected>Skin.HasSetting(useshortcut_mainmenu)</selected>
+					</control>
+				
+					<control type="radiobutton" id="$PARAM[id]002">
+						<label>Show Profiles at top (+ fetch profile name + icon) $INFO[System.ProfileCount]</label>
+						<height>60</height>
+						<visible>integer.isgreaterorequal(System.ProfileCount,2)</visible>
+						<!--
+						<radiowidth>60</radiowidth>
+						<radioheight>60</radioheight>
+						<textureradioonfocus colordiffuse="$VAR[color_global_button_text_fo]">defaultaddonsupdates.png</textureradioonfocus>
+						<textureradioonnofocus colordiffuse="$VAR[color_global_button_text_nf]">defaultaddonsupdates.png</textureradioonnofocus>
+						<textureradioofffocus colordiffuse="$VAR[color_global_button_text_fo]">defaultaddonsupdates.png</textureradioofffocus>
+						<textureradiooffnofocus colordiffuse="$VAR[color_global_button_text_nf]">defaultaddonsupdates.png</textureradiooffnofocus>
+						<textureradioondisabled colordiffuse="disabled">defaultaddonsupdates.png</textureradioondisabled>
+						<textureradiooffdisabled colordiffuse="disabled">defaultaddonsupdates.png</textureradiooffdisabled>
+						
+
+						
+						
+						-->
+						<onclick>setproperty(refreshprofile_content,true,home)</onclick>
+						<onclick condition="!String.IsEmpty(Skin.String(profile_01_thumb))">Skin.Reset(profile_01_thumb)</onclick>
+						<onclick condition="!String.IsEmpty(Skin.String(profile_01_label))">Skin.Reset(profile_01_label)</onclick>
+						<onclick condition="!String.IsEmpty(Skin.String(profile_02_thumb))">Skin.Reset(profile_02_thumb)</onclick>
+						<onclick condition="!String.IsEmpty(Skin.String(profile_02_label))">Skin.Reset(profile_02_label)</onclick>
+						<onclick condition="!String.IsEmpty(Skin.String(profile_03_thumb))">Skin.Reset(profile_03_thumb)</onclick>
+						<onclick condition="!String.IsEmpty(Skin.String(profile_03_label))">Skin.Reset(profile_03_label)</onclick>
+						<onclick condition="!String.IsEmpty(Skin.String(profile_04_thumb))">Skin.Reset(profile_04_thumb)</onclick>
+						<onclick condition="!String.IsEmpty(Skin.String(profile_04_label))">Skin.Reset(profile_04_label)</onclick>
+						<onclick>ActivateWindow(profiles,return)</onclick>
+						<onclick>ReplaceWindow(skinsettings)</onclick>
+						<onclick>Skin.ToggleSetting(menucontrol_home_showprofiles)</onclick>
+						<selected>Skin.HasSetting(menucontrol_home_showprofiles)</selected>
 					</control>
 				
 					<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
@@ -516,6 +549,8 @@
 					<onclick>SetProperty(Dialog.3.BuiltIn,Skin.SetString(HomeLayout,InfoPanelTop))</onclick>
 					<onclick>RunScript(script.embuary.helper,action=createselect,header=Choose HomeLayout)</onclick>
 				</control>
+				
+				
 				
 				<control type="radiobutton" id="$PARAM[id]003">
 					<label>show artwork on left side and info right</label>
