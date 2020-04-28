@@ -1110,76 +1110,33 @@ msgstr "Video-Wiedergabelisten"
 	</include>
 	
 	<!-- Home.xml -->
-	<!-- temp, just to have easy navigation,may merge -->
 	
-	layout 1 left 
 	<include name="Menucontrol_Home_Custom">
 		<control type="group">
+			<animation effect="slide" start="0" end="455" easing="in" tween="quadratic" time="300" condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">conditional</animation>
+				
+				
+			<left>-455</left>
+			<width>540</width>
 			<height>100%</height>
-			<!-- <visible>String.IsEqual(Window(Home).Property(ForceMenucontrolHomeActive),true)</visible> -->
+			
+			<!-- BG -->
 			<control type="image">
 				<animation effect="fade" start="100" end="50" time="250" condition="String.IsEmpty(Window(Home).Property(MenucontrolHomeActive))">conditional</animation>
 				<bordersize>0,0,3,0</bordersize>
 				<texture colordiffuse="$VAR[color_home_menu_backgroundpanel]">colors/white.png</texture>
 				<bordertexture colordiffuse="$VAR[color_home_menu_accent]">diffuse/seperator_gradient_vert.png</bordertexture>
-				<left>-455</left>
-				<width>540</width>
-				<height>100%</height>
-				<animation effect="slide" start="0" end="450" time="300" easing="in" tween="quadratic" condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">conditional</animation>
 			</control>
-			<!-- funny
-			<control type="image">
-				<animation effect="slide" start="0,0" end="85,0" easing="in" tween="quadratic" time="300" condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)" reversible="false">conditional</animation>
-				<animation effect="slide" start="80,0" end="0,0" easing="in" tween="quadratic" time="300" condition="!String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)" reversible="false">conditional</animation>
-				<width>5</width>
-				<right>80</right>
-				<texture colordiffuse="color_home_menu_accent">colors/white90.png</texture>
-			</control>
-			-->
-				
-				
-			<!-- LoadProfile(profilename,[prompt]) 
-
-			Load the specified profile.
-			 If prompt is not specified, and a password would be required for the requested profile, this command will silently fail. If promp' is specified and a password is required, a password dialog will be shown.
 			
-			System.IsLoggedOn	Returns true if a user is currently logged on under a profile	
-			System.HasLoginScreen	Returns true if the profile login screen is enabled
-			
-System.ProfileName	Shows the User name of the currently logged in Kodi user	
-System.ProfileCount	Shows the number of defined profiles	
-System.ProfileAutoLogin	The profile Kodi will auto login to
-			
-			
-			abuse to fetch profilename/label, icon and save to skin string ?
-			
-			skinsettings 
-			onclick open window - fetch/save skinstrings- back to current
-16.1.52 SettingsProfile.xml
-ID	Type	Description
-2	container	List of available profiles
-4	button	Enable the loginscreen
-5	button	Auto login
-
-or via start up
-
-16.1.35 LoginScreen.xml
-ID	Type	Description
-2	label	Heading label
-3	label	Number of the currently selected profile
-52	container	List of the available profiles
-
--->			
+			<!-- PROFILES -->
 			<control type="group">
-				<animation effect="slide" start="0" end="447" easing="in" tween="quadratic" time="300" condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">conditional</animation>
-				<visible>Skin.HasSetting(menucontrol_home_showprofiles)</visible>
-				<height>100</height>
-				<top>10</top>
-				<!-- 	<left>-455</left> -->
-				<left>-500</left>
-				<width>540</width>
+				
+				<visible>false</visible>
+				<height>150</height>
+				<top>0</top>
+				<left>-60</left>
+				
 				<control type="image">
-					<!-- <visible>false</visible> -->
 					<left>30</left>
 					<width>336</width>
 					<height>56</height>
@@ -1199,52 +1156,97 @@ ID	Type	Description
 					<texture diffuse="artworkdiffuse/circle.png">$INFO[System.ProfileThumb]</texture>
 				</control>
 				<control type="label">
-					<left>60</left>
+					<left>70</left>
 					<right>50</right>
 					<width>300</width>
 					<height>56</height>
 					<font>font_labelprofile</font>
-					<!-- <textcolor>$VAR[color_home_menu_backgroundpanel]</textcolor> -->
 					<textcolor>$VAR[color_home_menu_item_nf]</textcolor>
 					<label>Current Profile [CR]$INFO[System.ProfileName]</label>
 				</control>
 				
-			</control>
-			<control type="label">
-				<animation effect="slide" start="0" end="447" easing="in" tween="quadratic" time="300" condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">conditional</animation>
-				<visible>Skin.HasSetting(menucontrol_home_showprofiles)</visible>
-				<height>26</height>
-				<top>80</top>
-				<left>-420</left>
-				<width>544</width>
+				<control type="label">
+					<description>20115 vs 20092</description>
+					<left>70</left>
+					<height>26</height>
+					<top>80</top>
 					<font>font_labelprofile</font>
-					<!-- <textcolor>$VAR[color_home_menu_backgroundpanel]</textcolor> -->
 					<textcolor>$VAR[color_home_menu_item_nf]</textcolor>
-					<label>[B]Switch to another profile[/B]</label>
+					<label>[B][/B]</label>
 				</control>
-			<!-- <font>font25_title</font> -->
-			<!-- var to highlight current one as label 2 !String.IsEqual(System.ProfileName,Skin.String(profile_01_label)) +  -->
-			<include content="Universal_Container">
-				<param name="id" value="8999" />
-				<param name="type_height" value="150" />
-				<param name="type_pos_top" value="110" />
+			</control>
+			
+			
+			
+			<!-- 
+			<control type="panel" id="8999">
+				<visible>Skin.HasSetting(menucontrol_home_showprofiles)</visible>
 				
-				<param name="tags_visible" value="true" />
-				<param name="visible" value="Skin.HasSetting(menucontrol_home_showprofiles)" />
-				<param name="layout_height" value="100" />
-				<param name="layout_width" value="90" />
-				<param name="itemwidth" value="85" />
-				<param name="itemheight" value="85" />
-				<param name="layout" value="circle" />
-				<param name="circle_visible" value="false" />
+				<left>10</left>
+				<right>80</right>
+				<height>150</height>
+				<top>110</top>
+				
+				
 				<onup>9000</onup>
 				<ondown>9000</ondown>
-				<!-- <onleft>8997</onleft> -->
-				<left>-430</left>
-				<width>544</width>
 				<onback>9000</onback>
-				<animation effect="slide" start="0" end="450" easing="in" tween="quadratic" time="300" condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">conditional</animation>
 				
+				<orientation>horizontal</orientation>
+				<preloaditems>2</preloaditems>
+				<scrolltime tween="quadratic">400</scrolltime>
+				
+				<itemlayout height="100" width="90">
+					<control type="group">
+						<width>85</width>
+						<height>85</height>
+						<include content="UniversalLayout">
+							<param name="colordiffuse" value="grey" />
+							<param name="artwork" value="square" />
+							<param name="get_circle" value="false" />
+							<param name="get_tags" value="true" />
+							<param name="get_tagbgpanel" value="false" />
+							<param name="get_landscapelogo" value="false" />
+							<param name="get_bannerlogo" value="false" />
+							<param name="autoscroll" value="false" />
+							<param name="bordersize_bg" value="6" />
+							<param name="bottompanelcolor" value="" />
+							<param name="bottomtaglabelcolor" value="white" />
+							<param name="bottomtaglabel2color" value="grey" />
+						</include>
+					</control>
+				</itemlayout>
+				<focusedlayout   height="100" width="90">
+					<control type="group">
+						<width>85</width>
+						<height>85</height>
+						<include>Animation_Item_Focus</include>
+						<control type="group">
+							<include content="UniversalLayout">
+								<param name="colordiffuse" value="cyan" />
+								<param name="artwork" value="circle" />
+								<param name="get_circle" value="false" />
+								<param name="get_tags" value="true" />
+								<param name="get_tagbgpanel" value="false" />
+								<param name="get_landscapelogo" value="false" />
+								<param name="get_bannerlogo" value="false" />
+								<param name="autoscroll" value="false" />
+								<param name="bordersize_bg" value="4" />
+								<param name="bottompanelcolor" value="" />
+								<param name="bottomtaglabelcolor" value="white" />
+								<param name="bottomtaglabel2color" value="grey" />
+							</include>
+							<control type="group">
+								<visible>true</visible>
+								
+								<include condition="!Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]]" content="FocusOverlay">
+									<param name="diffusedimtext" value="artworkdiffuse/circle.png" />
+								</include>
+							</control>
+						</control>
+					</control>
+					
+				</focusedlayout>
 				<content>
 					
 					<item id="499">
@@ -1271,21 +1273,158 @@ ID	Type	Description
 						<icon>$INFO[Skin.String(profile_04_thumb)]</icon>
 						<onclick>LoadProfile($INFO[Skin.String(profile_04_label],prompt) </onclick>
 					</item>
-					<item id="495">
-						<visible>false</visible>
-						<label>$INFO[System.ProfileName]</label>
-						<icon>$INFO[System.ProfileThumb]</icon>
-						<onclick>System.LogOff</onclick>
+				</content>
+			</control> -->
+			
+			
+			<control type="label">
+				<visible>Skin.HasSetting(menucontrol_home_showprofiles)</visible>
+				<description>20115 vs 20092</description>
+				<left>20</left>
+				<height>26</height>
+				<top>20</top>
+				<font>font_labelprofile</font>
+				<textcolor>$VAR[color_home_menu_item_nf]</textcolor>
+				<label>[CR][B]Switch to other Profile[/B]</label>
+			</control>
+			<control type="image">
+				<visible>Skin.HasSetting(menucontrol_home_showprofiles)</visible>
+				<animation effect="zoom" start="0,100" end="100,100" time="300" center="left" tween="quadratic" easing="out" condition="Control.HasFocus(8999)">conditional</animation>
+				<visible>false</visible>
+				<left>0</left>
+				<right>5</right>
+				<height>4</height>
+				<texture colordiffuse="color_home_menu_accent">colors/white.png</texture>
+			</control>
+			
+			<control type="group">
+				<visible>Skin.HasSetting(menucontrol_home_showprofiles)</visible>
+				<top>10</top>
+				<animation effect="fade" end="40" condition="true">conditional</animation>
+				<control type="image">
+					<right>22</right>
+					<bordersize>3</bordersize>
+					<width>46</width>
+					<height>46</height>
+					<texture diffuse="artworkdiffuse/circle.png">$INFO[System.ProfileThumb]</texture>
+				</control>
+				<control type="label">
+					<right>90</right>
+					<width>300</width>
+					<height>46</height>
+					<align>right</align>
+					<font>font_labelprofile</font>
+					<textcolor>$VAR[color_home_menu_item_nf]</textcolor>
+					<label>Current Profile [CR]$INFO[System.ProfileName]</label>
+				</control>
+				
+			</control>
+				
+				
+			<control type="panel" id="8999">
+				<visible>Skin.HasSetting(menucontrol_home_showprofiles)</visible>
+				
+				<left>40</left>
+				<right>80</right>
+				<top>60</top>
+				<height>200</height>
+				
+				<onup>9000</onup>
+				<ondown>9000</ondown>
+				<onback>9000</onback>
+				
+				<orientation>vertical</orientation>
+				<preloaditems>2</preloaditems>
+				<scrolltime tween="quadratic">400</scrolltime>
+				
+				<itemlayout height="50">
+					<control type="group">
+						<height>50</height>
+						
+						
+						<control type="image">
+							<height>50</height>
+							<width>50</width>
+							<texture>artworkdiffuse/squareborder.png</texture>
+							<colordiffuse>white</colordiffuse>
+							<bordersize>4</bordersize>
+						</control>
+						<control type="image">
+							<height>50</height>
+							<width>50</width>
+							<description>Fallback aspect scale</description>
+							<texture background="true" diffuse="artworkdiffuse/usebganel/square.png">$INFO[ListItem.Icon]</texture>
+							<aspect align="left" aligny="center">keep</aspect>
+							<bordersize>8</bordersize>
+						</control>
+						
+						<control type="label">
+							<left>60</left>
+							<right>10</right>
+							<textcolor>$VAR[color_home_menu_item_nf]</textcolor>
+							<info>ListItem.Label</info>
+							<font>font_labelshutdown</font>
+						</control>
+					</control>
+				</itemlayout>
+				<focusedlayout height="50">
+					<control type="group">
+						<include>Animation_Item_Focus</include>
+						<height>50</height>
+						<control type="image">
+							<height>50</height>
+							<width>50</width>
+							<texture>artworkdiffuse/circleborder.png</texture>
+							<colordiffuse>white</colordiffuse>
+							<bordersize>6</bordersize>
+						</control>
+						<control type="image">
+							<height>50</height>
+							<width>50</width>
+							<description>Fallback aspect scale</description>
+							<texture background="true" diffuse="artworkdiffuse/circle.png">$INFO[ListItem.Icon]</texture>
+							<aspect align="left" aligny="center">scale</aspect>
+							<bordersize>8</bordersize>
+						</control>
+						<control type="label">
+							<left>70</left>
+							<right>10</right>
+							<label>$INFO[ListItem.Label,[B],[/B]]</label>
+							<textcolor>$VAR[color_home_menu_item_fo]</textcolor>
+							<font>font_labelshutdown</font>
+						</control>
+					</control>
+				</focusedlayout>
+				<content>
+					
+					<item id="499">
+						<visible>!String.IsEqual(System.ProfileName,Skin.String(profile_01_label)) + !String.IsEmpty(Skin.String(profile_01_label))</visible>
+						<label>$INFO[Skin.String(profile_01_label]</label>
+						<icon>$INFO[Skin.String(profile_01_thumb)]</icon>
+						<onclick>LoadProfile($INFO[Skin.String(profile_01_label],prompt)</onclick>
+					</item>
+					<item id="498">
+						<visible>!String.IsEqual(System.ProfileName,Skin.String(profile_02_label)) + !String.IsEmpty(Skin.String(profile_02_label))</visible>
+						<label>$INFO[Skin.String(profile_02_label)]</label>
+						<icon>$INFO[Skin.String(profile_02_thumb)]</icon>
+						<onclick>LoadProfile($INFO[Skin.String(profile_02_label],prompt)</onclick>
+					</item>
+					<item id="497">
+						<visible>!String.IsEqual(System.ProfileName,Skin.String(profile_03_label)) + !String.IsEmpty(Skin.String(profile_03_label))</visible>
+						<label>$INFO[Skin.String(profile_03_label)]</label>
+						<icon>$INFO[Skin.String(profile_03_thumb)]</icon>
+						<onclick>LoadProfile($INFO[Skin.String(profile_03_label],prompt)</onclick>
+					</item>
+					<item id="496">
+						<visible>!String.IsEqual(System.ProfileName,Skin.String(profile_04_label)) + !String.IsEmpty(Skin.String(profile_04_label))</visible>
+						<label>$INFO[Skin.String(profile_04_label)]</label>
+						<icon>$INFO[Skin.String(profile_04_thumb)]</icon>
+						<onclick>LoadProfile($INFO[Skin.String(profile_04_label],prompt)</onclick>
 					</item>
 				</content>
-			</include>
-			
-			
+			</control>
 			
 			<control type="panel" id="9000">
-				<animation effect="slide" start="0" end="447" easing="in" tween="quadratic" time="300" condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">conditional</animation>
-				<left>-459</left>
-				<width>544</width>
 				<top>300</top>
 				<bottom>300</bottom>
 				<aligny>center</aligny>
@@ -1294,8 +1433,6 @@ ID	Type	Description
 				<ondown>8997</ondown> 
 				<onleft>8997</onleft>
 				<onback>8997</onback>
-				<!-- touch workaraound needed -->
-				
 				<onright condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">ClearProperty(MenucontrolHomeActive,home)</onright> widgets
 				
 				<onright condition="!String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">5555</onright> widgets
@@ -1334,13 +1471,7 @@ ID	Type	Description
 						<onclick condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">ClearProperty(MenucontrolHomeActive,home)</onclick>
 						<visible>true</visible>
 					</item>
-					<item id="989">
-						<icon>icons/radiobuttons/settings.png</icon>
-						<label2 />
-						<label>$LOCALIZE[10004]</label>
-						<onclick>ActivateWindow(settings)</onclick>
-						<onclick condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">ClearProperty(MenucontrolHomeActive,home)</onclick>
-					</item>
+					
 				</include>
 				
 				
@@ -1349,20 +1480,14 @@ ID	Type	Description
 			</control>
 			
 			<control type="panel" id="8997">
-				<animation effect="slide" start="0" end="447" easing="in" tween="quadratic" time="300" condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">conditional</animation>
-				
-				<left>-379</left>
-				<width>455</width>
 				<height>120</height>
 				<bottom>100</bottom>
+				<left>50</left>
 				<orientation>vertical</orientation>
-				
 				<onup>9000</onup>
 				<ondown>9000</ondown>
-				
 				<onright condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">ClearProperty(MenucontrolHomeActive,home)</onright>
 				<onright condition="!String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">5555</onright>
-				
 				<onleft>9000</onleft>		
 				
 				<itemlayout height="30">
