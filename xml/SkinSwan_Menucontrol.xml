@@ -1113,6 +1113,105 @@ msgstr "Video-Wiedergabelisten"
 	
 	<include name="Menucontrol_Home_Custom">
 		<control type="group">
+			<animation effect="slide" start="0" end="-400" easing="in" tween="quadratic" time="300" condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">conditional</animation>
+				<right>-400</right>
+				<width>400</width>
+				<height>100%</height>	
+				<orientation>horizontal</orientation>
+				<itemgap>10</itemgap>
+				<usecontrolcoords>true</usecontrolcoords>
+				<align>left</align>
+				<visible>![Skin.HasSetting(HideTimeDate_Header) + Skin.HasSetting(HideWeather_Header)]</visible>
+				
+				<control type="image">
+					<animation effect="fade" start="100" end="80" time="250" condition="String.IsEmpty(Window(Home).Property(MenucontrolHomeActive))">conditional</animation>
+					<bordersize>2,0,0,0</bordersize>
+					<texture colordiffuse="$VAR[color_home_menu_backgroundpanel]">colors/white80.png</texture>
+					<bordertexture border="0,0,1,0" diffuse="colors/white80.png" colordiffuse="$VAR[color_home_menu_accent]">diffuse/seperator_gradient_vert.png</bordertexture>
+				</control>
+				
+				<control type="group">
+					<description>time and date</description>
+					<visible>!Skin.HasSetting(HideTimeDate_Header)</visible>
+					<top>20</top>
+					<width>380</width>
+					<height>110</height>
+					<control type="label">
+						<width>100%</width>
+						<height>50</height>
+						<align>right</align>
+						<info>System.Time</info>
+						<font>font_clock</font>
+						<textcolor>$VAR[color_header_text_accent]</textcolor>
+					</control>
+					<control type="label">
+						<right>2</right>
+						<top>60</top>
+						<width>100%</width>
+						<height>20</height>
+						<align>right</align>
+						<info>System.Date</info>
+						<textcolor>$VAR[color_header_text_main]</textcolor>
+					</control>
+				</control>
+				
+				<control type="grouplist">
+					<usecontrolcoords>true</usecontrolcoords>
+					<orientation>vertical</orientation>
+					<itemgap>10</itemgap>
+					<description>weather</description>
+					<visible>!Skin.HasSetting(HideWeather_Header) + [!String.Contains(Weather.Temperature,$LOCALIZE[503]) | [!String.IsEqual(Weather.fanartcode,na) + Weather.IsFetched]]</visible>
+					<top>200</top>
+					<width>400</width>
+					<height>600</height>
+					<control type="image">
+						<height>260</height>
+						<width>400</width>
+						<texture colordiffuse="$VAR[color_header_text_main]">$INFO[Weather.FanartCode,resource://resource.images.weathericons.outline-hd/,.png]</texture>
+						<aspectratio aligny="bottom" align="center">keep</aspectratio>
+					</control>
+					<control type="label">
+						<width>400</width>
+						<height>auto</height>
+						<align>center</align>
+						<label>$INFO[Weather.Temperature]</label>
+						<font>font52_title</font>
+						<textcolor>$VAR[color_header_text_main]</textcolor>
+					</control>
+				</control>
+				
+				<control type="grouplist">
+					<visible>false</visible>
+					<top>600</top>
+					<height>200</height>
+					<width>400</width>
+					<usecontrolcoords>true</usecontrolcoords>
+					<orientation>vertical</orientation>
+					<itemgap>10</itemgap>
+					<description>current profile</description>
+					
+					<control type="image">
+						<right>180</right>
+						<bordersize>3</bordersize>
+						<height>100</height>
+						<width>100</width>
+						<bordertexture colordiffuse="ff131313">artworkdiffuse/circle.png</bordertexture>
+						<texture diffuse="artworkdiffuse/circle.png">$INFO[System.ProfileThumb]</texture>
+						<aspect scalediffuse="false" align="center" aligny="center">scale</aspect>
+					</control>
+					<control type="label">
+						<width>400</width>
+						<height>100</height>
+						<align>center</align>
+						<font>font32_title</font>
+						<textcolor>$VAR[color_home_menu_item_nf]</textcolor>
+						<label>Loggin In As [CR]$INFO[System.ProfileName]</label>
+					</control>
+				</control>
+			</control>
+		
+		
+		<control type="group">
 			<animation effect="slide" start="0" end="455" easing="in" tween="quadratic" time="300" condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">conditional</animation>
 				
 				
@@ -1344,6 +1443,7 @@ msgstr "Video-Wiedergabelisten"
 						
 						
 						<control type="image">
+							<left>40</left>
 							<height>50</height>
 							<width>50</width>
 							<texture>artworkdiffuse/squareborder.png</texture>
@@ -1351,6 +1451,7 @@ msgstr "Video-Wiedergabelisten"
 							<bordersize>4</bordersize>
 						</control>
 						<control type="image">
+							<left>40</left>
 							<height>50</height>
 							<width>50</width>
 							<description>Fallback aspect scale</description>
@@ -1360,7 +1461,7 @@ msgstr "Video-Wiedergabelisten"
 						</control>
 						
 						<control type="label">
-							<left>60</left>
+							<left>100</left>
 							<right>10</right>
 							<textcolor>$VAR[color_home_menu_item_nf]</textcolor>
 							<info>ListItem.Label</info>
@@ -1373,6 +1474,7 @@ msgstr "Video-Wiedergabelisten"
 						<include>Animation_Item_Focus</include>
 						<height>50</height>
 						<control type="image">
+							<left>40</left>
 							<height>50</height>
 							<width>50</width>
 							<texture>artworkdiffuse/circleborder.png</texture>
@@ -1380,6 +1482,7 @@ msgstr "Video-Wiedergabelisten"
 							<bordersize>6</bordersize>
 						</control>
 						<control type="image">
+							<left>40</left>
 							<height>50</height>
 							<width>50</width>
 							<description>Fallback aspect scale</description>
@@ -1388,12 +1491,20 @@ msgstr "Video-Wiedergabelisten"
 							<bordersize>8</bordersize>
 						</control>
 						<control type="label">
-							<left>70</left>
+							<left>110</left>
 							<right>10</right>
 							<label>$INFO[ListItem.Label,[B],[/B]]</label>
 							<textcolor>$VAR[color_home_menu_item_fo]</textcolor>
 							<font>font_labelshutdown</font>
 						</control>
+					</control>
+					<control type="image">
+						<width>15</width>
+						<height>15</height>
+						<left>0</left>
+						<top>18</top>
+						<aspectratio>keep</aspectratio>
+						<texture colordiffuse="color_home_menu_accent">artworkdiffuse/circle.png</texture>
 					</control>
 				</focusedlayout>
 				<content>
@@ -1493,31 +1604,30 @@ msgstr "Video-Wiedergabelisten"
 				
 				<itemlayout height="30">
 					<control type="label">
-							<label>$INFO[Listitem.label]</label>
-							<height>20</height>
-							<font>font_labelshutdown</font>
-							<textcolor>$VAR[color_home_menu_item_nf]</textcolor>
-						</control>
+						<left>10</left>
+						<label>$INFO[Listitem.label]</label>
+						<height>20</height>
+						<font>font_labelshutdown</font>
+						<textcolor>$VAR[color_home_menu_item_nf]</textcolor>
+					</control>
 				</itemlayout>
 				
 				<focusedlayout height="30">
 					<control type="label">
-							<label>$INFO[Listitem.label]</label>
-							<height>20</height>
-							
-							<font>font_labelshutdown</font>
-							<textcolor>$VAR[color_home_menu_item_fo]</textcolor>
-						</control>
-						<control type="image">
-						<visible>false</visible>
-						<texture colordiffuse="$VAR[color_home_menu_itempanel_fo]">colors/white.png</texture>
+						<label>$INFO[Listitem.label]</label>
+						<height>20</height>
+						<left>20</left>
+						<font>font_labelshutdown</font>
+						<textcolor>$VAR[color_home_menu_item_fo]</textcolor>
 					</control>
 					<control type="image">
-						<animation effect="zoom" start="0,100" end="100,100" time="300" center="left" tween="quadratic" easing="out" reversible="false">Focus</animation>
-						<bottom>4</bottom>
-						<height>4</height>
-						<right>100</right>
-						<texture colordiffuse="color_home_menu_accent">diffuse/gradient-osdslim.png</texture>
+						<include>Animation_Item_Focus</include>
+						<width>11</width>
+						<height>11</height>
+						<left>0</left>
+						<top>5</top>
+						<aspectratio>keep</aspectratio>
+						<texture colordiffuse="color_home_menu_accent">artworkdiffuse/circle.png</texture>
 					</control>
 				</focusedlayout>
 				<include content="shutdownmenu_content">
