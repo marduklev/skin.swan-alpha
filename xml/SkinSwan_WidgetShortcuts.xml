@@ -125,6 +125,20 @@
 			<label>$LOCALIZE[1036]</label>
 		</control>
 		<!-- weather -->
+		<!-- search -->
+		<control type="button" id="43">
+			<onclick>Dialog.Close(1103)</onclick>
+			<visible>String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)</visible>
+			<onclick>Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_path,1120)</onclick>
+			<onclick>Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_name,$LOCALIZE[137])</onclick>
+			<onclick>Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_thumb,special://skin/extras/tempfoldersqaurethumbs/search.png)</onclick>
+			
+			<onclick>Skin.Reset(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_target)</onclick>
+			
+			<onclick condition="!String.IsEmpty(Window(home).Property(shortcutitem_nr))">ClearProperty(shortcutitem_nr,home)</onclick>
+			<onclick condition="!String.IsEmpty(Window(home).Property(SetShortcutInProgress))">ClearProperty(SetShortcutInProgress,home)</onclick>
+			<label>$LOCALIZE[137]</label>
+		</control>
 		
 		<control type="label" id="50">
 			<height>60</height>
@@ -151,13 +165,14 @@
 	
 	<include name="SwanShortcuts_SetTargetAndPath_CommonButton">
 		<control type="button" id="$PARAM[id]">
-			<description>Set target Template, action window and action set string direct e.g. plailist?xsp path</description>
-			<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_target,$PARAM[target])</onclick>
-			<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),userwidget)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_target,$PARAM[target])</onclick>
-			<onclick>Dialog.Close(1103)</onclick>
-			<onclick>ActivateWindow($PARAM[path],return)</onclick>
-			<label>$PARAM[label]</label>
-		</control>
+				<description>Set target Template, action window and action set string direct e.g. plailist?xsp path</description>
+				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_target,$PARAM[target])</onclick>
+				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),userwidget)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_target,$PARAM[target])</onclick>
+				<onclick>Dialog.Close(1103)</onclick>
+				<onclick>ActivateWindow($PARAM[path],return)</onclick>
+				<label>$PARAM[label]</label>
+				<visible>$PARAM[visible]</visible>
+			</control>
 	</include>
 	
 	<!-- NOTE CHECK THE VIEWTYPE LABELS -->
@@ -269,12 +284,11 @@
 				<textureradioofffocus colordiffuse="white">icons/radiobuttons/enter.png</textureradioofffocus>
 				<textureradiooffnofocus colordiffuse="5cC6C6C8">icons/radiobuttons/enter.png</textureradiooffnofocus>
 				
+				
+				
 				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_path,$INFO[Container.Folderpath])</onclick>
 				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu) + String.IsEmpty(Window(home).Property(shortcutitem_name))">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_name,$INFO[System.CurrentWindow,, • ]$INFO[Container.FolderName])</onclick>
-				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_sortby,$VAR[ContainerSortMethods])</onclick>
-				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_sortby.label,$INFO[Container.SortMethod])</onclick>
-				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_sortorder,$VAR[ContainerSortOrder])</onclick>
-				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_sortorder.label,$INFO[Container.SortOrder])</onclick>
+				
 				
 				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_path,$INFO[Container.Folderpath])</onclick>
 				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget) + String.IsEmpty(Window(home).Property(shortcutitem_name))">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_name,$INFO[System.CurrentWindow,, • ]$INFO[Container.FolderName])</onclick>
@@ -310,7 +324,7 @@
 				<onclick>SetProperty(DialogHeader,Set Name for Widget $INFO[Window(home).Property(shortcutitem_nr)],home)</onclick>
 				<onclick>SetProperty(shortcutitem_name,true,home)</onclick>
 				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_name)</onclick>
-				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)">Skin.SetString(mainmenu$INFO[Window(home).Property(shortcutitem_nr)]_name)</onclick>
+				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_name)</onclick>
 			</control>
 			<control type="radiobutton" id="11033">
 				<visible>String.IsEqual(Window(home).Property(SetShortcutInProgress),widget)</visible>
@@ -347,6 +361,7 @@
 			</control>
 			
 			<control type="radiobutton" id="113">
+				<visible>String.IsEqual(Window(home).Property(SetShortcutInProgress),widget)</visible>
 				<visible>Control.IsEnabled(3)</visible>
 				<description>Select sort method (sort by: name, date size, etc...)</description>
 				<include content="SwanWidgetShortcutAttributes_Button">
@@ -363,6 +378,7 @@
 			
 			
 			<control type="radiobutton" id="114">
+				<visible>String.IsEqual(Window(home).Property(SetShortcutInProgress),widget)</visible>
 				<visible>Control.IsEnabled(4)</visible>
 				<description>Select sortmode (ascending or descending)</description>
 				<include content="SwanWidgetShortcutAttributes_Button">
