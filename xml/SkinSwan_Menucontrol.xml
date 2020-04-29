@@ -1226,8 +1226,14 @@ msgstr "Video-Wiedergabelisten"
 				<texture colordiffuse="$VAR[color_home_menu_backgroundpanel]">colors/white.png</texture>
 				<bordertexture border="0,0,1,0" colordiffuse="$VAR[color_home_menu_accent]">diffuse/seperator_gradient_vert.png</bordertexture>
 			</control>
-			
-			
+				<!-- <control type="image">
+					<description>opacity test</description>
+					<animation effect="fade" start="100" end="80" time="250" condition="String.IsEmpty(Window(Home).Property(MenucontrolHomeActive))">conditional</animation>
+					<bordersize>0,0,2,0</bordersize>
+					<texture colordiffuse="$VAR[color_home_menu_backgroundpanel]">colors/white90.png</texture>
+					<bordertexture border="0,0,1,0" diffuse="colors/white90.png" colordiffuse="$VAR[color_home_menu_accent]">diffuse/seperator_gradient_vert.png</bordertexture>
+				</control>
+			 -->
 			<!-- PROFILES -->
 			<control type="group">
 				
@@ -1539,6 +1545,12 @@ msgstr "Video-Wiedergabelisten"
 						<icon>$INFO[Skin.String(profile_05_thumb)]</icon>
 						<onclick>LoadProfile($INFO[Skin.String(profile_05_label],prompt)</onclick>
 					</item>
+					<item id="494">
+						<visible>!String.IsEqual(System.ProfileName,Skin.String(profile_06_label)) + !String.IsEmpty(Skin.String(profile_06_label))</visible>
+						<label>$INFO[Skin.String(profile_06_label)]</label>
+						<icon>$INFO[Skin.String(profile_06_thumb)]</icon>
+						<onclick>LoadProfile($INFO[Skin.String(profile_06_label],prompt)</onclick>
+					</item>
 				</content>
 			</control>
 			
@@ -1547,15 +1559,21 @@ msgstr "Video-Wiedergabelisten"
 				<bottom>300</bottom>
 				<aligny>center</aligny>
 				<orientation>vertical</orientation>
-				<onup>8999</onup>
-				<ondown>8997</ondown> 
-				<onleft>8997</onleft>
-				<onback>8997</onback>
+				
+				<onup condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">8999</onup>
+				<onup condition="!String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">9000</onup>
+				
+				<ondown condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">8997</ondown>
+				<ondown condition="!String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">9000</ondown> 
+				
 				<onright condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">ClearProperty(MenucontrolHomeActive,home)</onright> widgets
+				<onright>5555</onright>
 				
-				<onright condition="!String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">5555</onright> widgets
+				<onleft condition="!String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">SetProperty(MenucontrolHomeActive,true,home)</onleft>		
+				<onleft condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">8997</onleft>		
 				
-				<onleft>SetProperty(MenucontrolHomeActive,true,home)</onleft>		
+				<onback condition="!String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">SetProperty(MenucontrolHomeActive,true,home)</onback>
+				<onback condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">ClearProperty(MenucontrolHomeActive,home)</onback>
 				
 				<itemlayout height="80">
 					<include content="home_mainmenu_layout_verticalpanel">
@@ -1575,26 +1593,10 @@ msgstr "Video-Wiedergabelisten"
 						<right>15</right>
 						<bottom>4</bottom>
 						<height>4</height>
-						
 						<texture colordiffuse="color_home_menu_accent">colors/white.png</texture>
 					</control>
 				</focusedlayout>
-				<include content="home_mainmenu_content">
-					<item id="988">
-						<label>menu</label>
-						<label2>skinstring homemenu_item_[nr].name</label2>
-						<icon>icons/swanwidgets_icon.png</icon>
-						<thumb>skinstring homemenu_item_[nr].icon</thumb>
-						<onclick condition="!String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">SetProperty(MenucontrolHomeActive,true,home)</onclick>
-						<onclick condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">ClearProperty(MenucontrolHomeActive,home)</onclick>
-						<visible>true</visible>
-					</item>
-					
-				</include>
-				
-				
-					
-			
+				<include content="home_mainmenu_content" />
 			</control>
 			
 			<control type="panel" id="8997">
@@ -1605,7 +1607,7 @@ msgstr "Video-Wiedergabelisten"
 				<onup>9000</onup>
 				<ondown>9000</ondown>
 				<onright condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">ClearProperty(MenucontrolHomeActive,home)</onright>
-				<onright condition="!String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">5555</onright>
+				<onright>5555</onright>
 				<onleft>9000</onleft>		
 				
 				<itemlayout height="30">
@@ -1642,6 +1644,7 @@ msgstr "Video-Wiedergabelisten"
 		</control>
 		
 	</include>
+	
 	<include name="mainmenu_item">
 		<item id="900$PARAM[id]">
 			<visible>!String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_path))</visible>
