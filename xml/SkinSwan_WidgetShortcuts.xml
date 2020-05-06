@@ -9,25 +9,28 @@
 			<font>font30_title</font>
 		</control>
 		<control type="button" id="11">
-			<description>Set target Template, action window and action set string direct e.g. plailist?xsp path</description>
+			<visible>Library.HasContent(video)</visible>
 			<onclick>Dialog.Close(1103)</onclick>
 			<onclick>SetProperty(ShortcutPlaylistContent,video,home)</onclick>
 			<onclick>ActivateWindow(selectdialog)</onclick>
 			<label>$LOCALIZE[20012]</label>
 		</control>
 		<include content="SwanShortcuts_SetTargetAndPath_CommonButton">
+			<param name="visible" value="Library.HasContent(movies)"  />
 			<param name="id" value="12" />
 			<param name="label" value="$LOCALIZE[342]" />
 			<param name="target" value="videos" />
 			<param name="path" value="Videos,videodb://movies/" />
 		</include>
 		<include content="SwanShortcuts_SetTargetAndPath_CommonButton">
+			<param name="visible" value="Library.HasContent(tvshows)"  />
 			<param name="id" value="13" />
 			<param name="label" value="$LOCALIZE[20343]" />
 			<param name="target" value="videos" />
 			<param name="path" value="Videos,videodb://tvshows/" />
 		</include>
 		<include content="SwanShortcuts_SetTargetAndPath_CommonButton">
+			<param name="visible" value="Library.HasContent(musicvideos)"  />
 			<param name="id" value="14" />
 			<param name="label" value="$LOCALIZE[20389]" />
 			<param name="target" value="videos" />
@@ -40,6 +43,7 @@
 			<param name="path" value="Videos,addons://sources/video/" />
 		</include>
 		<include content="SwanShortcuts_SetTargetAndPath_CommonButton">
+			<param name="visible" value="Library.HasContent(movies)"  />
 			<param name="id" value="16" />
 			<param name="label" value="$LOCALIZE[24005] ( $LOCALIZE[14215] )" />
 			<param name="target" value="videos" />
@@ -52,20 +56,20 @@
 			<font>font30_title</font>
 		</control>
 		<control type="button" id="21">
+			<visible>Library.HasContent(Music)</visible>
 			<onclick>Dialog.Close(1103)</onclick>
 			<visible>String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)</visible>
 			<onclick>Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_path,1110)</onclick>
 			<onclick>Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_name,Music HUB)</onclick>
 			<onclick>Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_thumb,defaultaddonaudiodecoder.png)</onclick>
-			
 			<onclick>Skin.Reset(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_target)</onclick>
-			
 			<onclick condition="!String.IsEmpty(Window(home).Property(shortcutitem_nr))">ClearProperty(shortcutitem_nr,home)</onclick>
 			<onclick condition="!String.IsEmpty(Window(home).Property(SetShortcutInProgress))">ClearProperty(SetShortcutInProgress,home)</onclick>
 			<label>Music HUB</label>
 		</control>
 		
 		<control type="button" id="22">
+			<visible>Library.HasContent(Music)</visible>
 			<description>Set target Template, action window and action set string direct e.g. plailist?xsp path</description>
 			<onclick>Dialog.Close(1103)</onclick>
 			<onclick>SetProperty(ShortcutPlaylistContent,music,home)</onclick>
@@ -73,18 +77,21 @@
 			<label>$LOCALIZE[20011]</label>
 		</control>
 		<include content="SwanShortcuts_SetTargetAndPath_CommonButton">
+			<param name="visible" value="Library.HasContent(Music)" />
 			<param name="id" value="23" />
 			<param name="label" value="$LOCALIZE[249]" />
 			<param name="target" value="music" />
 			<param name="path" value="Music,library://music/" />
 		</include>
 		<include content="SwanShortcuts_SetTargetAndPath_CommonButton">
+			
 			<param name="id" value="24" />
 			<param name="label" value="$LOCALIZE[1038]" />
 			<param name="target" value="music" />
 			<param name="path" value="Music,addons://sources/audio/" />
 		</include>
 		<include content="SwanShortcuts_SetTargetAndPath_CommonButton">
+			<param name="visible" value="Library.HasContent(Music)" />
 			<param name="id" value="25" />
 			<param name="label" value="$LOCALIZE[24005] ( $LOCALIZE[10502] )" />
 			<param name="target" value="music" />
@@ -130,44 +137,66 @@
 			<label>21459</label>
 			<font>font30_title</font>
 		</control>
-		<!-- go to:  dialogfavourites -->
 		<control type="button" id="41">
+			<onclick>Dialog.Close(1103)</onclick>
+			<visible>String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)</visible>
+			<onclick>Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_path,settings)</onclick>
+			<onclick>Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_name,$LOCALIZE[10004])</onclick>
+			<onclick>Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_thumb,icons/swanwidgets_icon.png)</onclick>
+			<onclick>Skin.Reset(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_target)</onclick>
+			<onclick condition="!String.IsEmpty(Window(home).Property(shortcutitem_nr))">ClearProperty(shortcutitem_nr,home)</onclick>
+			<onclick condition="!String.IsEmpty(Window(home).Property(SetShortcutInProgress))">ClearProperty(SetShortcutInProgress,home)</onclick>
+			<label>$LOCALIZE[10004]</label>
+		</control>
+		<!-- go to:  dialogfavourites -->
+		<control type="button" id="42">
 			<description>Set target Template, action window and action set string direct e.g. plailist?xsp path</description>
 			<onclick>Dialog.Close(1103)</onclick>
 			<onclick>SetProperty(ShortcutFavouritesContent,true,home)</onclick>
 			<onclick>ActivateWindow(Favourites,return)</onclick>
 			<label>$LOCALIZE[1036]</label>
 		</control>
-		<!-- weather -->
-		<!-- search -->
+		<!-- weather 
 		<control type="button" id="43">
+			<onclick>Dialog.Close(1103)</onclick>
+			<visible>String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)</visible>
+			<onclick>Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_path,weather)</onclick>
+			<onclick>Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_name,$LOCALIZE[12600])</onclick>
+			<onclick>Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_thumb,special://skin/extras/tempfoldersqaurethumbs/weather.png)</onclick>
+			<onclick>Skin.Reset(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_target)</onclick>
+			<onclick condition="!String.IsEmpty(Window(home).Property(shortcutitem_nr))">ClearProperty(shortcutitem_nr,home)</onclick>
+			<onclick condition="!String.IsEmpty(Window(home).Property(SetShortcutInProgress))">ClearProperty(SetShortcutInProgress,home)</onclick>
+			<label>$LOCALIZE[12600]</label>
+		</control>
+		-->
+		<control type="button" id="43">
+			<onclick>Dialog.Close(1103)</onclick>
+			<visible>String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)</visible>
+			<onclick>Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_path,1125)</onclick>
+			<onclick>Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_name, X S P)</onclick>
+			<onclick>Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_thumb,icons/swanwidgets_icon.png)</onclick>
+			<onclick>Skin.Reset(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_target)</onclick>
+			<onclick condition="!String.IsEmpty(Window(home).Property(shortcutitem_nr))">ClearProperty(shortcutitem_nr,home)</onclick>
+			<onclick condition="!String.IsEmpty(Window(home).Property(SetShortcutInProgress))">ClearProperty(SetShortcutInProgress,home)</onclick>
+			<label>$LOCALIZE[10004]</label>
+		</control>
+		<!-- search -->
+		<control type="button" id="44">
 			<onclick>Dialog.Close(1103)</onclick>
 			<visible>String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)</visible>
 			<onclick>Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_path,1120)</onclick>
 			<onclick>Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_name,$LOCALIZE[137])</onclick>
 			<onclick>Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_thumb,special://skin/extras/tempfoldersqaurethumbs/search.png)</onclick>
-			
 			<onclick>Skin.Reset(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_target)</onclick>
-			
 			<onclick condition="!String.IsEmpty(Window(home).Property(shortcutitem_nr))">ClearProperty(shortcutitem_nr,home)</onclick>
 			<onclick condition="!String.IsEmpty(Window(home).Property(SetShortcutInProgress))">ClearProperty(SetShortcutInProgress,home)</onclick>
 			<label>$LOCALIZE[137]</label>
 		</control>
-		
 		<control type="label" id="50">
 			<height>60</height>
 			<label>24001</label>
 			<font>font30_title</font>
 		</control>
-		<!-- go to:  myprograms.xml , unneded
-		<include content="SwanShortcuts_SetTargetAndPath_CommonButton">
-			<param name="id" value="51" />
-			<param name="label" value="All Addons" />
-			<param name="target" value="" />
-			<param name="path" value="Programs,addons://sources/executable/" />
-		</include>
-		-->
-		<!-- go to:  addonbroswer.xml -->
 		<include content="SwanShortcuts_SetTargetAndPath_CommonButton">
 			<param name="id" value="52" />
 			<param name="label" value="$LOCALIZE[24998]" />
@@ -273,8 +302,13 @@
 		</control>
 		
 		<!-- include shortcut save button
-				String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu) mainmenuitem
-				String.IsEqual(Window(home).Property(SetShortcutInProgress),userwidget) userwidget
+				String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu) 
+						mainmenuitem
+								
+				String.IsEqual(Window(home).Property(SetShortcutInProgress),widget) 
+						userwidget
+						
+				Skin.SetString($INFO[Window(home).Property(SetShortcutInProgress)]$INFO[Window(home).Property(shortcutitem_nr)]_name,$INFO[System.CurrentWindow,, • ]$INFO[Container.FolderName])
 		-->
 		
 		<control type="grouplist" id="200">
@@ -500,7 +534,10 @@
 	Notification(header,message[,time,image])	Will display a notification dialog with the specified header and message, in addition you can set the length of time it displays in milliseconds and a icon image.
 	
 	https://kodi.wiki/view/List_of_built-in_functions#List_of_sort_methods
+	https://github.com/xbmc/xbmc/blob/75b31098a8800da653b373cd99a025b483029cfc/xbmc/utils/SortUtils.h#L49-L164
+	
 	https://github.com/xbmc/xbmc/blob/master/xbmc/utils/SortUtils.cpp#L529-L577
+	
 
 container.setsortmethod()
 1	Name

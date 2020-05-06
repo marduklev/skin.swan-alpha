@@ -110,13 +110,19 @@
 				
 				<description>S T A R T U P</description>
 				<visible>Container(9000).HasFocus($PARAM[id])</visible>
-				
 				<include content="SectionHeadline">
 					<param name="id" value="$PARAM[id]000"/>
 					<param name="label" value="P R O F I L E - L O G I N    O P T I O N S"/>
-					<param name="visible" value="System.HasLoginScreen" />
 				</include>
 				<control type="radiobutton" id="$PARAM[id]001">
+					<height>60</height>
+					<label>Enable Profile Login</label>
+					<onclick>ActivateWindow(profiles,return)</onclick>
+					<onclick>SendClick(profiles,4)</onclick>
+					<onclick>ReplaceWindow(skinsettings)</onclick>
+					<selected>System.HasLoginScreen</selected>
+				</control>
+				<control type="radiobutton" id="$PARAM[id]003">
 					<include content="SkinSettings_SettingsRadioButton">
 						<param name="label" value="Background Image [B]Profile Login Screen[/B]" />
 						<param name="label2" value="$VAR[ProfileLoginHinttext]" />
@@ -128,50 +134,40 @@
 					<visible>System.HasLoginScreen</visible>
 				</control>
 				<include content="SkinSettings_ColorButton">
-					<param name="id" value="$PARAM[id]002" />
+					<param name="id" value="$PARAM[id]004" />
 					<param name="label" value="Profile Login-Screen Main Text" />
 					<param name="skinsetting" value="color_profilelogin_text_main" />
 					<param name="visible" value="System.HasLoginScreen" />
 				</include>
 				<include content="SkinSettings_ColorButton">
-					<param name="id" value="$PARAM[id]003" />
+					<param name="id" value="$PARAM[id]005" />
 					<param name="label" value="Profile Login-Screen Secondary Text (nf)" />
 					<param name="skinsetting" value="color_profilelogin_text_secondary" />
 					<param name="visible" value="System.HasLoginScreen" />
 				</include>
 				<include content="SkinSettings_ColorButton">
-					<param name="id" value="$PARAM[id]004" />
+					<param name="id" value="$PARAM[id]006" />
 					<param name="label" value="Profile Login-Screen Highlight Color" />
 					<param name="skinsetting" value="color_profilelogin_accent" />
 					<param name="visible" value="System.HasLoginScreen" />
 				</include>
 				
 				<include content="SectionHeadline">
-					<param name="id" value="$PARAM[id]005"/>
-					<param name="label" value="C H O O S E    S T A R T     W I N D O W"/>
+					<param name="id" value="$PARAM[id]010"/>
+					<param name="label" value="S T A R T     W I N D O W"/>
 				</include>
-				<control type="radiobutton" id="$PARAM[id]006">
-					<label>music hub</label>
-					<onclick></onclick>
-					<selected></selected>
-				</control>
-				<control type="radiobutton" id="$PARAM[id]007">
+				<control type="radiobutton" id="$PARAM[id]011">
 					<label>home</label>
-					<onclick></onclick>
-					<selected></selected>
+					<onclick condition="!String.IsEmpty(Skin.String(custom_startup))">Skin.Reset(custom_startup)</onclick>
+					<selected>String.IsEmpty(Skin.String(custom_startup))</selected>
 				</control>
-				<control type="radiobutton" id="$PARAM[id]008">
-					<label>search</label>
-					<onclick></onclick>
-					<selected></selected>
+				<control type="radiobutton" id="$PARAM[id]014">
+					<include content="SkinSettings_StartupRadioButton">
+						<param name="label" value="music hub" /> 
+						<param name="windowid" value="1110" />
+					</include>
 				</control>
-				<control type="radiobutton" id="$PARAM[id]009">
-					<label>profile login</label>
-					<onclick>ActivateWindow(profiles,return)</onclick>
-					<onclick>SendClick(profiles,4)</onclick>
-					<onclick>ReplaceWindow(skinsettings)</onclick>
-					<selected>System.HasLoginScreen</selected>
-				</control>
+				
 				
 			</include>
 			

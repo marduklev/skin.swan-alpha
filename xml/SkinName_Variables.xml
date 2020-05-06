@@ -5,6 +5,7 @@
 		<value condition="Skin.HasSetting(initial_startup_done) + !String.IsEmpty(Skin.String(custom_startup))">$INFO[Skin.String(custom_startup)]</value>
 		<value condition="Skin.HasSetting(initial_startup_done) + String.IsEmpty(Skin.String(custom_startup))">$INFO[System.StartupWindow]</value>
 	</variable>
+	
 	<variable name="embtmdbinfocall">
 		<value condition="String.IsEqual(Container.ListItem.dbtype,actor)">person</value>
 		<value condition="String.IsEqual(Container.ListItem.dbtype,tvshow) | String.IsEqual(Container.ListItem.dbtype,season) | String.IsEqual(Container.ListItem.dbtype,episode)">tv</value>
@@ -26,10 +27,13 @@
         <value condition="!String.IsEmpty(ListItem.Art(fanart)) + Skin.HasSetting(EnableFakeDiscArt)">$INFO[ListItem.Art(fanart)]</value>
 	</variable>
 	
-	<variable name="premiere_date">
-        <value condition="!$EXP[IsMovie] + !String.IsEmpty(ListItem.Premiered)">$INFO[ListItem.Premiered]</value>
-        <value condition="!String.IsEmpty(ListItem.Year)">$INFO[ListItem.Year]</value>
-    </variable>
+	
+	<!-- revisit VARIABLE-Tag_label2 -->
+	<variable name="ListItemPremieredOrYear">
+		<value condition="[String.Contains(ListItem.FileNameAndPath,/info/movie/tmdb) | $EXP[IsEpisode] | $EXP[IsMusicVideo]] + !String.IsEmpty(ListItem.Premiered)">$INFO[ListItem.Premiered]</value>
+		<value condition="!String.IsEmpty(ListItem.Year)">$INFO[ListItem.Year]</value>
+	</variable>
+	
 	
 	<variable name="ListItemDurationWithEndTime">
         <value condition="!String.IsEmpty(ListItem.Duration) + !String.IsEmpty(ListItem.EndTimeResume)">$VAR[ListItemDuration]$INFO[ListItem.EndTimeResume, - $LOCALIZE[31080]: ,]</value>
@@ -49,10 +53,6 @@
 		<value condition="String.IsEqual(ListItem.Label2,ListItem.rating)"></value>
 		<value condition="String.IsEqual(ListItem.Label2,ListItem.duration)"></value>
 		<value>$INFO[ListItem.Label2]</value>
-	</variable>
-	<variable name="ListItemRelease">
-		<value condition="[$EXP[IsEpisode]] + !String.IsEmpty(ListItem.Premiered)">$INFO[ListItem.Premiered]</value>
-		<value>$INFO[ListItem.Year]</value>
 	</variable>
 	
 <!-- String.IsEndsWith(ListItem.Overlay,OverlayWatched.png) , String.IsEndsWith(ListItem.Overlay,OverlayUnwatched.png) -->
