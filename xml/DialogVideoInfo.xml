@@ -392,6 +392,7 @@
 				<itemgap>10</itemgap>
 				
 				<onup condition="String.IsEmpty(Window.Property(AdditionalInfo))">SetFocus(8006)</onup>
+				
 				<ondown>SetFocus(8005)</ondown>
 				
 				<onleft>8000</onleft>
@@ -549,7 +550,7 @@
 				<usecontrolcoords>true</usecontrolcoords>
 				
 				<include content="spacer_h">
-					<param name="id" value="22" />
+					<param name="id" value="8600" />
 					<param name="gap" value="-20" />
 				</include>
 				
@@ -704,11 +705,56 @@
 					<content target="videos">plugin://script.embuary.helper/?info=getsimilar&amp;dbid=$INFO[ListItem.DBID]&amp;type=$INFO[ListItem.DBType]</content>
 				</include>
 				
-				<!-- YOU TUBE -->
+				<!-- OST lib -->
+				<!-- <include content="Universal_ContainerHeader">
+					<param name="groupid" value="8520" />
+					<param name="id" value="8620" />
+					<param name="label" value="Soundtrack [COLOR $INFO[Skin.String(ViewDetailsHighlightTextColor)]]$VAR[Title,  &quot; , &quot;][/COLOR]" />
+					<visible>Control.IsVisible(8620)</visible>
+				</include>
+				<include condition="!Skin.HasSetting(VideoInfo_Content_Library_OST)" content="Universal_Container">
+					<param name="id" value="8620" />
+					<param name="visible" value="Integer.IsGreater(Container(8620).NumItems,0) | Container(8620).IsUpdating" />
+					<param name="type_height" value="365" />
+					<param name="tags_visible" value="true" />
+					<param name="layout_height" value="355" />
+					<param name="layout_width" value="300" />
+					<param name="itemheight" value="280" />
+					<param name="itemwidth" value="280" />
+					<param name="ls_overlay_visible" value="true" />
+					<param name="layout" value="square" />
+					<content target="music" sortby="tracknumber">$VAR[videoinfo_content_soundtrack]</content>
+				</include>
+				
+				<include content="Universal_ContainerHeader">
+					<param name="groupid" value="8521" />
+					<param name="id" value="8621" />
+					<param name="label" value="Soundtrack (YouTube Results) [COLOR $INFO[Skin.String(ViewDetailsHighlightTextColor)]]$VAR[Title,  &quot; , &quot;][/COLOR]" />
+					<visible>Control.IsVisible(8621)</visible>
+				</include>
+				
+				<include condition="!Skin.HasSetting(VideoInfo_Content_Youtube)" content="Universal_Container">
+					<param name="id" value="8621" />
+					<param name="visible" value="[!Skin.HasSetting(VideoInfo_Content_Youtube_OST) + !Skin.HasSetting(VideoInfo_Content_Youtube_OST)] + [!Control.IsVisible(8620) + !Container(8620).IsUpdating] + [Integer.IsGreater(Container(8621).NumItems,0) | Container(8621).IsUpdating]" />
+					<param name="type_height" value="365" />
+					<param name="tags_visible" value="true" />
+					<param name="layout_height" value="355" />
+					<param name="layout_width" value="355" />
+					<param name="itemheight" value="280" />
+					<param name="itemwidth" value="355" />
+					<param name="ls_overlay_visible" value="true" />
+					<param name="layout" value="square" />
+					<onclick>PlayMedia($INFO[ListItem.FilenameAndPath],1,noresume)</onclick>
+						<onclick>ClearProperty(AdditionalInfo)</onclick>
+					<content target="video" sortby="file" limit="50">$VAR[videoinfo_content_youtube_soundtrack]</content>
+				</include> 
+				-->
+				
+				<!-- YOU TUBE common-->
 				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="8511" />
 					<param name="id" value="8611" />
-					<param name="label" value="$LOCALIZE[31797] [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$VAR[Title,  &quot; , &quot;][/COLOR]" />
+					<param name="label" value="YouTube Results for [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$VAR[videoinfo_youtube_SearchLabel,  &quot; , &quot;][/COLOR]" />
 					<visible>Control.IsVisible(8611)</visible>
 				</include>
 				
@@ -723,7 +769,9 @@
 					<param name="itemwidth" value="476" />
 					<param name="ls_overlay_visible" value="true" />
 					<param name="layout" value="landscape" />
-					<content target="videos" sortby="file" limit="25">$VAR[content_youtube_videoinfo]</content>
+					<onclick>Close</onclick>
+					<onclick>PlayMedia($INFO[ListItem.FilenameAndPath],noresume)</onclick>
+					<content target="videos" sortby="file" limit="25">$VAR[videoinfo_content_youtube]</content>
 				</include>
 				
 				<!-- stored extra fanart $LOCALIZE[20438]-->

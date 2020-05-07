@@ -256,18 +256,23 @@ ID 	Type 					Description
 			<itemgap>0</itemgap>
 			
 			<onup>ClearProperty(MenucontrolActive,Home)</onup>
-			<onup>19</onup>
+			<onup condition="Control.IsVisible(19)">19</onup>
+			<onup condition="!Control.IsVisible(19)">SetFocus(50)</onup>
 			
 			<onback>ClearProperty(MenucontrolActive,Home)</onback>
 			<onback>SetFocus(50)</onback>
 			
+			<!-- has premenu iconbar -->
 			<onright condition="!Control.IsVisible(58)">SetFocus(8999)</onright>
-			<onright condition="Control.IsVisible(58)">ClearProperty(MenucontrolActive,Home)</onright>
-			<onright condition="Control.IsVisible(58)">SetFocus(50)</onright>
+			
+			<!-- has no premenu iconbar -->
+			<onright condition="Control.IsVisible(58) | Window.IsActive(addonbrowser)">ClearProperty(MenucontrolActive,Home)</onright>
+			<onright condition="Control.IsVisible(58) | Window.IsActive(addonbrowser)">SetFocus(50)</onright>
 			
 			<onleft>SetFocus(50)</onleft>
 			<onleft>ClearProperty(MenucontrolActive,Home)</onleft>
 			
+			<!-- Currently Playing HUB -->
 			<control type="group" id="6048">
 				<description>PlaybackCtrl</description>
 				<width>98%</width>
@@ -409,6 +414,7 @@ ID 	Type 					Description
 				</include>
 			</control>
 			
+			<!-- Native GUI Ctrls + Cond Seperators -->
 			<control type="image" id="4398768">
 				<height>1</height>
 				<texture colordiffuse="$VAR[color_lib_menu_item_nf]">diffuse/seperator_gradient_hor.png</texture>
@@ -537,7 +543,7 @@ msgstr "Video-Wiedergabelisten"
 					<item>
 						<icon>defaultpartymode.png</icon>
 						<label>$LOCALIZE[589]</label>
-						<label2>$LOCALIZE[20389]</label2>
+						<label2>$INFO[Control.GetLabel(16)]</label2>
 						<onclick>SendClick(16)</onclick>
 						<visible>Control.IsVisible(16)</visible>
 						<property name="icon">default</property>
@@ -548,6 +554,14 @@ msgstr "Video-Wiedergabelisten"
 						<label>$LOCALIZE[653]</label>
 						<onclick>SendClick(20)</onclick>
 						<visible>Control.IsEnabled(20)</visible>
+						<property name="icon">default</property>
+					</item>
+					<item>
+						<description>addonbrowser update</description>
+						<icon>icons/radiobuttons/refresh.png</icon>
+						<label>$LOCALIZE[24034]</label>
+						<onclick>SendClick(9)</onclick>
+						<visible>Control.IsVisible(9) + Window.IsActive(addonbrowser)</visible>
 						<property name="icon">default</property>
 					</item>
 					<item>
@@ -603,10 +617,12 @@ msgstr "Video-Wiedergabelisten"
 				</content>
 			</control>
 			
-			<!-- diif colors global vs home ? params -->
+			<!-- Naviagtion Panel -->
+			<!-- diff colors global vs home ? params -->
 			<include content="Menucontrol_Content_Navigation">
 			</include>
 			
+			<!-- View Type Settings - use include placements? myvideo, mymusic...? -->
 			<include content="spacer_h">
 				<param name="id" value="4006" />
 				<param name="gap" value="40" />
@@ -615,6 +631,7 @@ msgstr "Video-Wiedergabelisten"
 				<label>   [B]$LOCALIZE[5][/B]</label>
 				<height>60</height>
 				<font>font12</font>
+				<visible>Window.IsMedia</visible>
 				<textcolor>$VAR[color_lib_menu_item_fo]</textcolor>
 			</control>
 			<control type="radiobutton" id="4008">

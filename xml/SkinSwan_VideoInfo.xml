@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
-
-
 	<!-- 
 	<onclick condition="[!System.GetBool(videolibrary.groupmoviesets) | String.IsEqual(Container($PARAM[id]).ListItem.dbtype,tvshow)] + Skin.HasSetting(DialogItemsForceInfo)">ReplaceWindow(Videos,$INFO[Container($PARAM[id]).ListItem.folderpath])</onclick>
 	-->
@@ -89,6 +87,25 @@
 		<value condition="String.IsEqual(ListItem.dbtype,episode) | String.IsEqual(ListItem.dbtype,season)">$INFO[ListItem.TVShowTitle]</value>
 		<value>$INFO[ListItem.Title]</value>
 	</variable>
+	<variable name="videoinfo_youtube_SearchLabel">
+		<value condition="String.IsEqual(ListItem.dbtype,episode) | String.IsEqual(ListItem.dbtype,season)">$INFO[ListItem.TVShowTitle]</value>
+		<value condition="!String.IsEmpty(ListItem.TVShowTitle)">$INFO[ListItem.TVShowTitle] $LOCALIZE[20364]</value>
+		<value>$INFO[ListItem.Title]</value>
+	</variable>
+	
+	<!-- <value condition="!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.youtube)">plugin://plugin.video.youtube/kodion/search/query/?q=$VAR[videoinfo_youtube_SearchLabel,, OST]&amp;searchtype=playlist</value> -->
+	<variable name="videoinfo_content_youtube_soundtrack">
+		<value condition="!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.youtube)">plugin://plugin.video.youtube/search/?q=$VAR[videoinfo_youtube_SearchLabel,, OST]</value>
+	</variable>
+	<variable name="videoinfo_content_youtube">
+		<value condition="!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.youtube)">plugin://plugin.video.youtube/search/?q=$VAR[videoinfo_youtube_SearchLabel]</value>
+	</variable>
+	
+	<!-- too much false positive -->
+	<variable name="videoinfo_content_soundtrack">
+		<value>musicdb://songs/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22album%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22songs%22%7D</value>
+	</variable>
+	
 	
 	<!-- KODI BUG - EVEN IF dbtype=season - it'll fallback to IsTvShow expression -->
 	<variable name="value_subheader">

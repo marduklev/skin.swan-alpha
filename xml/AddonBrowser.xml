@@ -7,7 +7,17 @@
 	<include>Animation_OpenClose_Slide</include>
 	
 	<controls>
-	
+		
+		<control type="togglebutton" id="4">
+			<description>Select sortmode (ascending or descending)</description>
+			<visible>Control.IsEnabled(4)</visible>
+			<include content="HiddenObject" />
+		</control>
+		<control type="togglebutton" id="9">
+			<description>Check Repo Updates</description>
+			<include content="HiddenObject" />
+		</control>
+		
 		<control type="group">
 			<description>BG</description>
 			<include content="DialogBackground_TriplePanel" />
@@ -52,6 +62,22 @@
 			
 			<!-- <control type="button" id="9000" description="menucontrol unasigned" /> -->
 		</control>
+		
+		<control type="group">
+			<animation effect="slide" start="-450,0" end="0,0" time="300" tween="cubic" easing="inout">VisibleHidden</animation>
+			<visible>String.IsEqual(Window(Home).Property(MenucontrolActive),true)</visible>
+			<control type="image">
+				<top>0</top>
+				<bottom>0</bottom>
+				<width>25%</width>
+				<left>0</left>
+				<colordiffuse>$VAR[color_lib_menu_backgroundpanel]</colordiffuse>
+				<texture>colors/white.png</texture>
+			</control>
+				
+			<include content="Menucontrol_Media" condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))" />
+		</control>
+		
 		<include content="swan_debug_overlay" />
 	</controls>
 </window>
