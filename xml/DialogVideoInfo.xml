@@ -21,6 +21,15 @@
    
     <controls>
 		
+		<!-- fetch soundtrack -->
+		<control type="list" id="8699">
+			<description></description>
+			<include>HiddenContainer</include>
+			<visible>!Skin.HasSetting(VideoInfo_Content_Library_OST) + [Integer.IsGreater(Container(8699).NumItems,0) | Container(8699).IsUpdating]</visible>
+			<content limit="1">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22album%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%2C%7B%22field%22%3A%22type%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22soundtrack%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</content>
+		</control>
+		
+		
 		<control type="image">
 			<description>temp ? trailer overlay</description>
 			<animation effect="fade" start="0" end="100" time="600">VisibleChange</animation>
@@ -706,7 +715,7 @@
 				</include>
 				
 				<!-- OST lib -->
-				<!-- <include content="Universal_ContainerHeader">
+				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="8520" />
 					<param name="id" value="8620" />
 					<param name="label" value="Soundtrack [COLOR $INFO[Skin.String(ViewDetailsHighlightTextColor)]]$VAR[Title,  &quot; , &quot;][/COLOR]" />
@@ -714,7 +723,7 @@
 				</include>
 				<include condition="!Skin.HasSetting(VideoInfo_Content_Library_OST)" content="Universal_Container">
 					<param name="id" value="8620" />
-					<param name="visible" value="Integer.IsGreater(Container(8620).NumItems,0) | Container(8620).IsUpdating" />
+					<param name="visible" value="Integer.IsGreater(Container(8699).NumItems,0) | Container(8699).IsUpdating" />
 					<param name="type_height" value="365" />
 					<param name="tags_visible" value="true" />
 					<param name="layout_height" value="355" />
@@ -723,19 +732,19 @@
 					<param name="itemwidth" value="280" />
 					<param name="ls_overlay_visible" value="true" />
 					<param name="layout" value="square" />
-					<content target="music" sortby="tracknumber">$VAR[videoinfo_content_soundtrack]</content>
+					<content target="music" sortby="tracknumber">$INFO[Container(8699).ListItem.Folderpath]</content>
 				</include>
 				
 				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="8521" />
 					<param name="id" value="8621" />
-					<param name="label" value="Soundtrack (YouTube Results) [COLOR $INFO[Skin.String(ViewDetailsHighlightTextColor)]]$VAR[Title,  &quot; , &quot;][/COLOR]" />
+					<param name="label" value="Soundtrack[COLOR $INFO[Skin.String(ViewDetailsHighlightTextColor)]]$VAR[Title,  &quot; , &quot;][/COLOR] (YouTube Results)" />
 					<visible>Control.IsVisible(8621)</visible>
 				</include>
 				
-				<include condition="!Skin.HasSetting(VideoInfo_Content_Youtube)" content="Universal_Container">
+				<include condition="!Skin.HasSetting(VideoInfo_Content_Youtube_OST)" content="Universal_Container">
 					<param name="id" value="8621" />
-					<param name="visible" value="[!Skin.HasSetting(VideoInfo_Content_Youtube_OST) + !Skin.HasSetting(VideoInfo_Content_Youtube_OST)] + [!Control.IsVisible(8620) + !Container(8620).IsUpdating] + [Integer.IsGreater(Container(8621).NumItems,0) | Container(8621).IsUpdating]" />
+					<param name="visible" value="!Integer.IsGreater(Container(8699).NumItems,0) + [Integer.IsGreater(Container(8621).NumItems,0) | Container(8621).IsUpdating]" />
 					<param name="type_height" value="365" />
 					<param name="tags_visible" value="true" />
 					<param name="layout_height" value="355" />
@@ -745,16 +754,15 @@
 					<param name="ls_overlay_visible" value="true" />
 					<param name="layout" value="square" />
 					<onclick>PlayMedia($INFO[ListItem.FilenameAndPath],1,noresume)</onclick>
-						<onclick>ClearProperty(AdditionalInfo)</onclick>
 					<content target="video" sortby="file" limit="50">$VAR[videoinfo_content_youtube_soundtrack]</content>
 				</include> 
-				-->
+				
 				
 				<!-- YOU TUBE common-->
 				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="8511" />
 					<param name="id" value="8611" />
-					<param name="label" value="YouTube Results for [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$VAR[videoinfo_youtube_SearchLabel,  &quot; , &quot;][/COLOR]" />
+					<param name="label" value="YouTube Results for [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$VAR[Title,  &quot; , &quot;][/COLOR]" />
 					<visible>Control.IsVisible(8611)</visible>
 				</include>
 				
