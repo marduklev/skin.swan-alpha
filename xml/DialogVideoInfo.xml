@@ -570,9 +570,9 @@
 					<param name="label" value="$INFO[ListItem.Set,&quot; , &quot;]" />
 					<visible>Control.IsVisible(8601)</visible>
 				</include>
-				<include content="Universal_Container">
+				<include condition="Skin.HasSetting(VideoInfo_Content_SetItems) + !String.IsEmpty(ListItem.SetId)" content="Universal_Container">
 					<param name="id" value="8601" />
-					<param name="visible" value="!String.IsEmpty(ListItem.SetId) + [Integer.IsGreater(Container(8601).NumItems,0) | Container(8601).IsUpdating]" />
+					<param name="visible" value="Integer.IsGreater(Container(8601).NumItems,0) | Container(8601).IsUpdating" />
 					<param name="type_height" value="380" />
 					<param name="tags_visible" value="true" />
 					<param name="layout_height" value="380" />
@@ -594,9 +594,9 @@
 					<param name="label" value="Nächste Episode" />
 					<visible>Control.IsVisible(8602)</visible>
 				</include>
-				<include content="Universal_Container">
+				<include condition="!Skin.HasSetting(VideoInfo_Content_NextUp) + [Integer.IsGreater(ListItem.Property(UnwatchedEpisodes),0) + !String.IsEmpty(ListItem.DBID)]" content="Universal_Container">
 					<param name="id" value="8602" />
-					<param name="visible" value="[Integer.IsGreater(ListItem.Property(UnwatchedEpisodes),0) + !String.IsEmpty(ListItem.DBID)] + [Integer.IsGreater(Container(8602).NumItems,0) | Container(8602).IsUpdating]" />
+					<param name="visible" value="Integer.IsGreater(Container(8602).NumItems,0) | Container(8602).IsUpdating" />
 					<param name="type_height" value="370" />
 					<param name="tags_visible" value="false" />
 					<param name="layout_height" value="360" />
@@ -637,7 +637,7 @@
 					<param name="label" value="$LOCALIZE[342] &amp; $LOCALIZE[20343] $LOCALIZE[1441] [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$INFO[Container(8603).ListItem.Label, &quot; , &quot;][/COLOR]" />
 					<visible>Control.IsVisible(8604)</visible>
 				</include>
-				<include content="Universal_Container">
+				<include condition="!Skin.HasSetting(VideoInfo_Content_ItemsByCastMember)" content="Universal_Container">
 					<param name="id" value="8604" />
 					<param name="visible" value="Integer.IsGreater(Container(8603).NumItems,0) | Container(8603).IsUpdating" />
 					<param name="type_height" value="380" />
@@ -666,9 +666,9 @@
 					<param name="label" value="$LOCALIZE[342] $LOCALIZE[19159] $LOCALIZE[20339] [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$INFO[ListItem.Director, &quot; , &quot;][/COLOR]" />
 					<visible>Control.IsVisible(8605)</visible>
 				</include>
-				<include content="Universal_Container">
+				<include condition="!Skin.HasSetting(VideoInfo_Content_Director)" content="Universal_Container">
 					<param name="id" value="8605" />
-					<param name="visible" value="[!Skin.HasSetting(VideoInfo_Content_Director) + !String.IsEmpty(ListItem.Director)] + [Integer.IsGreater(Container(8605).NumItems,0) | Container(8605).IsUpdating]" />
+					<param name="visible" value="Integer.IsGreater(Container(8605).NumItems,0) | Container(8605).IsUpdating" />
 					<param name="type_height" value="380" />
 					<param name="tags_visible" value="true" />
 					<param name="layout_height" value="380" />
@@ -697,9 +697,9 @@
 					<param name="label" value="Similiar [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$INFO[ListItem.Title,  &quot; , &quot;][/COLOR]" />
 					<visible>Control.IsVisible(8610)</visible>
 				</include>
-				<include content="Universal_Container">
+				<include condition="!Skin.HasSetting(VideoInfo_Content_Similiar) + [!String.IsEmpty(ListItem.DBType) + !String.IsEmpty(ListItem.DBID)]" content="Universal_Container">
 					<param name="id" value="8610" />
-					<param name="visible" value="[!String.IsEmpty(ListItem.DBType) + !String.IsEmpty(ListItem.DBID)] + Integer.IsGreater(Container(8610).NumItems,0) | Container(8610).IsUpdating" />
+					<param name="visible" value="Integer.IsGreater(Container(8610).NumItems,0) | Container(8610).IsUpdating" />
 					<param name="type_height" value="380" />
 					<param name="tags_visible" value="true" />
 					<param name="layout_height" value="380" />
@@ -723,7 +723,7 @@
 				</include>
 				<include condition="!Skin.HasSetting(VideoInfo_Content_Library_OST)" content="Universal_Container">
 					<param name="id" value="8620" />
-					<param name="visible" value="Integer.IsGreater(Container(8699).NumItems,0) | Container(8699).IsUpdating" />
+					<param name="visible" value="Integer.IsGreater(Container(8699).NumItems,0) + !Container(8699).IsUpdating" />
 					<param name="type_height" value="365" />
 					<param name="tags_visible" value="true" />
 					<param name="layout_height" value="355" />

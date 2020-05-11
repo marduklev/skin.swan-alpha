@@ -116,16 +116,19 @@
 		<value condition="Control.HasFocus(8602) | Control.HasFocus(8606) | Control.HasFocus(8607)"></value>
 		<value> | </value>
 	</variable>
+	
+	just videoinfo
 	<variable name="EmbuaryCast">
-		<value condition="String.IsEqual(ListItem.DBType,movie) + !String.IsEmpty(ListItem.DBID) + !String.IsEqual(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=movie&amp;dbid=$INFO[ListItem.DBID]</value>
+		<value condition="String.IsEqual(ListItem.DBType,movie) + [!String.IsEmpty(ListItem.DBID) + !String.IsEqual(ListItem.DBID,0)]">plugin://script.embuary.helper?info=getcast&amp;type=movie&amp;dbid=$INFO[ListItem.DBID]</value>
 		<value condition="String.IsEqual(ListItem.DBType,movie) + String.IsEqual(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=movie&amp;title='$ESCINFO[ListItem.Title]'</value>
-		<value condition="String.IsEqual(ListItem.DBType,tvshow) + !String.IsEmpty(ListItem.DBID) + !String.IsEqual(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[ListItem.DBID]</value>
-		<value condition="String.IsEqual(ListItem.DBType,tvshow) + String.IsEqual(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem.TVShowTitle]'</value>
-		<value condition="[String.IsEqual(ListItem.DBType,episode) | String.IsEqual(ListItem.DBType,season)] + !String.IsEmpty(ListItem.DBID)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem.TVShowTitle]'</value>
+		<value condition="String.IsEqual(ListItem.DBType,tvshow) + [!String.IsEmpty(ListItem.DBID) + !String.IsEqual(ListItem.DBID,0)]">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[ListItem.DBID]</value>
+		<value condition="[String.IsEqual(ListItem.DBType,tvshow) + String.IsEqual(ListItem.DBID,0)] | [[String.IsEqual(ListItem.DBType,episode) | String.IsEqual(ListItem.DBType,season)] + !String.IsEmpty(ListItem.DBID)]">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem.TVShowTitle]'</value>
+		compensate back,all seasons
 		<value condition="Container.Content(seasons) + !String.IsEmpty(ListItem(1).DBID)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem(1).TVShowTitle]'</value>
 		<value condition="Container.Content(seasons) + !String.IsEmpty(ListItem(2).DBID)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem(2).TVShowTitle]'</value>
 		<value>-</value>
 	</variable>
+	
 	
 	<!-- MOVE ME END -->
 	

@@ -222,7 +222,8 @@
 								</control>
 							</control>
 						</focusedlayout>
-						<content sortby="playcount" limit="1">$VAR[NextUp_SeasonLevel]</content>
+						<!-- <content sortby="playcount">$VAR[NextUp_SeasonLevel]</content> -->
+						<content target="videos">videodb://inprogresstvshows/-1/-1/?xsp=%7B%22limit%22%3A1%2C%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22method%22%3A%22playcount%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22tvshow%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22breaking bad%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</content>
 					</control>
 				</control>
 				
@@ -741,7 +742,7 @@
 								</control>
 							</control>
 						</focusedlayout>
-					<content>plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[Window(home).Property(dbid)]</content>
+					<content>$VAR[View58_Cast_Content]</content>
 				</control>
 				
 				<include content="Special_Header">
@@ -978,6 +979,12 @@
 		
 	</include>
 	
+	
+	
+	
+<!-- need cleanup -->
+		
+	<!-- need compare to universal -->
 	<include name="Special_Header">
 		<param name="pos_top" default="200" />
 		<param name="align" default="center" />
@@ -1033,6 +1040,7 @@
         </definition>
     </include>
 	
+	<!-- need compare Meta_Uncommon_Top , Widget_Container_BottomInfo -->
 	<include name="MetaUncommon_Season">
 		<nested />
 		
@@ -1085,7 +1093,9 @@
 			<font>font_SpotlightMetaDataBar</font>
 		</control>
 	</include>
-			
+	
+	
+	<!-- make layout_circle -->
 	<include name="Circle_CastWidget">
 		<control type="image">
 			<description>Fallback aspect keep</description>
@@ -1142,19 +1152,8 @@
 		<value>Nächste Episode</value>
 	</variable>
 	
-	<variable name="View_Cast_Content">
-		<value condition="String.StartsWith(ListItem.Path,plugin://plugin.video.embycon) + Container.Content(seasons) + ListItem.IsParentFolder">plugin://plugin.video.embycon?mode=WIDGET_CONTENT_CAST&amp;id=$INFO[ListItem(1).Property(id)]</value>
-		<value condition="String.StartsWith(ListItem.Path,plugin://plugin.video.embycon)">plugin://plugin.video.embycon?mode=WIDGET_CONTENT_CAST&amp;id=$INFO[ListItem.Property(id)]</value>
-		
-		<value condition="!Window.IsVisible(movieinformation) + Container.Content(seasons) + Integer.IsGreater(ListItemAbsolute(0).DBID) + !String.IsEqual(ListItemAbsolute(0).Label,$LOCALIZE[20366]) + !ListItem.IsParentFolder">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[ListItemAbsolute(0).DBID]&amp;idtype=season</value>
-		<value condition="!Window.IsVisible(movieinformation) + Container.Content(seasons) + Integer.IsGreater(ListItemAbsolute(1).DBID) + !String.IsEqual(ListItemAbsolute(1).Label,$LOCALIZE[20366])">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[ListItemAbsolute(1).DBID]&amp;idtype=season</value>
-		<value condition="!Window.IsVisible(movieinformation) + Container.Content(seasons) + Integer.IsGreater(ListItemAbsolute(2).DBID)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[ListItemAbsolute(2).DBID]&amp;idtype=season</value>
-		<value condition="!Window.IsVisible(movieinformation) + Container.Content(episodes) + Integer.IsGreater(ListItemAbsolute(1).DBID) + ListItem.IsParentFolder">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[ListItemAbsolute(1).DBID]&amp;idtype=episode</value>
-		
-		<value condition="String.IsEqual(ListItem.DBType,movie) + Integer.IsGreater(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=movie&amp;dbid=$INFO[ListItem.DBID]</value>
-		<value condition="String.IsEqual(ListItem.DBType,tvshow) + Integer.IsGreater(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[ListItem.DBID]</value>
-		<value condition="String.IsEqual(ListItem.DBType,episode) + Integer.IsGreater(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=episode&amp;dbid=$INFO[ListItem.DBID]</value>
-		<value condition="String.IsEqual(ListItem.DBType,season) + Integer.IsGreater(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[ListItem.DBID]&amp;idtype=season</value>
+	<variable name="View58_Cast_Content">
+		<value condition="[Control.IsVisible(58) + Container.Content(Seasons)] + !String.IsEmpty(Window(home).Property(dbid))">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[Window(home).Property(dbid)]</value>
 		<value>-</value>
 	</variable>
 	
