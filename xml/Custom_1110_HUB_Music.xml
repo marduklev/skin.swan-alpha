@@ -4,13 +4,22 @@
 	<menucontrol>111098</menucontrol>
 	<defaultcontrol always="true">111098</defaultcontrol>
 	<animation effect="fade" start="0" end="100" time="325">WindowOpen</animation>
-	<onload condition="!Skin.HasSetting(MusicHUB_StartUprecommendation)">SetProperty(HUB_Music,common,home)</onload>
-	<onload condition="Skin.HasSetting(MusicHUB_StartUprecommendation)">SetProperty(HUB_Music,recommendation,home)</onload>
+	<onload condition="!Skin.HasSetting(MusicHUB_StartUprecommendation) + String.IsEmpty(Window(home).Property(HUB_Music))">SetProperty(HUB_Music,common,home)</onload>
+	<onload condition="Skin.HasSetting(MusicHUB_StartUprecommendation) + String.IsEmpty(Window(home).Property(HUB_Music))">SetProperty(HUB_Music,recommendation,home)</onload>
+	
+	<!-- or clear props outside if hub is not active window -->
+	<onload condition="!String.IsEmpty(Window(home).Property(HUB_dbid))">ClearProperty(HUB_dbid,home)</onload>
+	<onload condition="!String.IsEmpty(Window(home).Property(HUB_EncodedValue))">ClearProperty(HUB_EncodedValue,home)</onload>
+	
 	
 	<onunload>ClearProperty(HUB_artwork,home)</onunload>
-	<onunload>ClearProperty(HUB_EncodedArtist,home)</onunload>
+	<onunload>ClearProperty(HUB_dbid,home)</onunload>
+	<onunload>ClearProperty(HUB_EncodedValue,home)</onunload>
 	<onunload>ClearProperty(HUB_Music_artist,home)</onunload>
-	<onunload>ClearProperty(HUB_Music,home)</onunload>
+	<onunload>ClearProperty(HUB_Music_album,home)</onunload>
+	
+	<!-- conditional temp -->
+	<onunload condition="!String.IsEqual(Window(home).Property(HUB_Music),compilations)">ClearProperty(HUB_Music,home)</onunload>
 	
 	<controls>
 	
@@ -286,6 +295,7 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 				<param name="radio_icon" value="defaultaddonlibrary.png" />
 			</include>
 			
+			<!-- to much api calls ?
 			<include content="hub_button">
 				<param name="visible" value="System.HasAddon(plugin.video.youtube)" />
 				<param name="id" value="06" />
@@ -294,6 +304,7 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 				<param name="label" value="You Tube" />
 				<param name="radio_icon" value="icons/youtube_1.png" />
 			</include>
+			-->
 			<!-- <include content="hub_button">
 				<param name="visible" value="System.HasAddon(plugin.audio.spotify)" />
 				<param name="id" value="07" />
@@ -337,7 +348,7 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 			</include>
 			<include content="hub_button">
 				<param name="id" value="14" />
-				<param name="property" value="albums" />
+				<param name="property" value="compilations" />
 				<param name="action" value="ActivateWindow(Music,musicdb://compilations/,return)" />
 				<param name="label" value="$LOCALIZE[521]" />
 				<param name="radio_icon" value="defaultmusiccompilations.png" />
@@ -353,7 +364,7 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 			
 			<include content="hub_button">
 				<param name="id" value="16" />
-				<param name="property" value="artists" />
+				<param name="property" value="genres" />
 				<param name="action" value="ActivateWindow(Music,musicdb://genres/,return)" />
 				<param name="label" value="$LOCALIZE[135]" />
 				<param name="radio_icon" value="defaultmusicgenres.png" />
@@ -361,7 +372,7 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 			
 			<include content="hub_button">
 				<param name="id" value="17" />
-				<param name="property" value="albums" />
+				<param name="property" value="years" />
 				<param name="action" value="ActivateWindow(Music,musicdb://years/,return)" />
 				<param name="label" value="$LOCALIZE[345]" />
 				<param name="radio_icon" value="defaultyear.png" />
@@ -631,11 +642,13 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 			<param name="id" value="01" />
 			<param name="label" value="A R T I S T S" />
 		</include>
+		
 		<control type="panel" id="5001">
 			<description>Common Artists</description>
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),common)</visible>
 			
 			<include condition="Skin.HasSetting(Force_StayInMusicHub)" content="hub_music_OverrideOnClick" />
+			<onclick condition="Skin.HasSetting(Force_StayInMusicHub)">AlarmClock(HuB_ForceFocusDelayed,SetFocus(5120),00:00,silent)</onclick>
 			
 			<left>5</left>
 			<top>50</top>
@@ -676,7 +689,10 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 							<param name="autoscroll" value="true" />
 							<param name="bordersize_bg" value="4" />
 						</include>
-						<include>FocusOverlay</include>
+						<include content="FocusOverlay">
+							<param name="diffusedimtext" value="artworkdiffuse/landscape.png" />
+							<param name="bordersize" value="4" />
+						</include>
 					</control>
 				</control>
 			</focusedlayout>
@@ -695,8 +711,9 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 			
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),common)</visible>
 			
-			<include condition="Skin.HasSetting(Force_StayInMusicHub)" content="hub_music_OverrideOnClick" />
-			
+			<include condition="Skin.HasSetting(Force_StayInMusicHub)" content="hub_music_OverrideOnClick">
+				<param name="goto" default="album" />
+			</include>
 			<left>5</left>
 			<width>1600</width>
 			<height>610</height>
@@ -863,7 +880,10 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 							<param name="autoscroll" value="true" />
 							<param name="bordersize_bg" value="4" />
 						</include>
-						<include>FocusOverlay</include>
+						<include content="FocusOverlay">
+							<param name="diffusedimtext" value="artworkdiffuse/landscape.png" />
+							<param name="bordersize" value="4" />
+						</include>
 					</control>
 				</control>
 			</focusedlayout>
@@ -892,6 +912,7 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 			<pagecontrol>660</pagecontrol>
 			
 			<include condition="Skin.HasSetting(Force_StayInMusicHub)" content="hub_music_OverrideOnClick" />
+			<onclick condition="Skin.HasSetting(Force_StayInMusicHub)">AlarmClock(HuB_ForceFocusDelayed,SetFocus(5120),00:00,silent)</onclick>
 			
 			<onup>5002</onup>
 			<ondown>5002</ondown>
@@ -941,7 +962,9 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 			
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),artists)</visible>
 			
-			<include condition="Skin.HasSetting(Force_StayInMusicHub)" content="hub_music_OverrideOnClick" />
+			<include condition="Skin.HasSetting(Force_StayInMusicHub)" content="hub_music_OverrideOnClick">
+				<param name="goto" value="album" />
+			</include>
 			
 			<left>5</left>
 			<width>1600</width>
@@ -998,7 +1021,9 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 			
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),albums)</visible>
 			
-			<include condition="Skin.HasSetting(Force_StayInMusicHub)" content="hub_music_OverrideOnClick" />
+			<include condition="Skin.HasSetting(Force_StayInMusicHub)" content="hub_music_OverrideOnClick">
+				<param name="goto" value="album" />
+			</include>
 			
 			<left>5</left>
 			<width>1600</width>
@@ -1115,15 +1140,17 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 			<content sortby="title" sortorder="ascending">$VAR[HUB_content_songs_title_or_artist]</content>
 		</control>
 		
-		<!-- <include content="HUB_ContainerHeader">
-			<param name="id" value="40" />
-			<param name="label" value="Soundcloud Album Search" />
+		
+		<!-- temp -
+		wished are different containers like soundtracks, etc -->
+		<include content="HUB_ContainerHeader">
+			<param name="id" value="29" />
+			<param name="label" value="Soundtracks" />
+			<param name="item_label" value="$INFO[Container.ListItem.Album,[B],[/B]]" />
 		</include>
-		<control type="panel" id="5040">
-			<description>Soundcloud Search</description>
-			<visible>String.IsEqual(Window(home).Property(HUB_Music),soundcloud)</visible>
-			<visible>!String.Empty(Control.GetLabel(100002).index(1))</visible>
-			
+		<control type="panel" id="5029">
+			<description>Soundtracks</description>
+			<visible>String.IsEqual(Window(home).Property(HUB_Music),compilations)</visible>
 			<left>5</left>
 			<top>50</top>
 			<width>1600</width>
@@ -1131,48 +1158,48 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 			
 			<preloaditems>2</preloaditems>
 			<orientation>vertical</orientation>
-			
-			<onleft>111060</onleft>
-			<onright>260</onright>
-			<pagecontrol>260</pagecontrol>
-			
-			<onup>5009</onup>
-			<ondown>5009</ondown>
+			<onleft>111098</onleft>
+			<onright>111098</onright>
+			<pagecontrol></pagecontrol>
 			
 			<scrolltime tween="quadratic">400</scrolltime>
 			<autoscroll>true</autoscroll>
 			
-			<itemlayout height="300" width="420">
+			
+			<itemlayout height="305" width="300">
 				<control type="group">
-					<height>243</height>
-					<width>405</width>
-					<include content="HUB_Landscape">
+					<height>280</height>
+					<width>280</width>
+					<include content="HUB_square">
 						<param name="colordiffuse" value="$VAR[color_hub_widget_frame_nf]" />
 						<param name="autoscroll" value="false" />
 						<param name="bordersize_bg" value="6" />
 					</include>
 				</control>
 			</itemlayout>
-			<focusedlayout height="300" width="420">
+			<focusedlayout height="305" width="300">
 				<control type="group">
-					<height>243</height>
-					<width>405</width>
+					<height>280</height>
+					<width>280</width>
 					<include>Animation_Item_Focus</include>
 					<control type="group">
-						<include content="HUB_Landscape">
+						<include content="HUB_square">
 							<param name="colordiffuse" value="$VAR[color_hub_widget_frame_fo]" />
 							<param name="autoscroll" value="true" />
 							<param name="bordersize_bg" value="4" />
 						</include>
-						<include>FocusOverlay</include>
 					</control>
 				</control>
 			</focusedlayout>
 			<include content="emptywidget">
-				<param name="id" value="40" />
+				<param name="id" value="29" />
 			</include>
-			<content>plugin://plugin.audio.soundcloud/search/?action=albums&amp;?query=$INFO[Control.GetLabel(100002).index(1)]</content>
+			<content target="music" sortby="year">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22type%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22soundtrack%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</content>
 		</control>
+		 	<!-- musicdb://compilations/ missing the elvis stuff , using albums get the elvis stuff
+		 - folderpath
+		  -->
+		<!--
 		<include content="HUB_ContainerHeader">
 			<param name="id" value="41" />
 			<param name="label" value="Soundcloud Album Search" />
@@ -1235,11 +1262,79 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 		
 		
 		
+		
+		 
 		<include content="HUB_ContainerHeader">
 			<param name="id" value="30" />
-			<param name="label" value="You Tube" />
+			<param name="label" value="Music Addons" />
 		</include>
 		<control type="panel" id="5030">
+			<description>Common Artists</description>
+			<visible>String.IsEqual(Window(home).Property(HUB_Music),musicaddons)</visible>
+			<left>5</left>
+			<top>50</top>
+			<width>1600</width>
+			<height>850</height>
+			
+			<preloaditems>2</preloaditems>
+			<orientation>vertical</orientation>
+			
+			<onleft>111098</onleft>
+			
+			<onup>5009</onup>
+			<ondown>5009</ondown>
+			
+			<scrolltime tween="quadratic">400</scrolltime>
+			<autoscroll>true</autoscroll>
+			
+			<itemlayout height="300" width="420">
+				<control type="group">
+					<height>243</height>
+					<width>405</width>
+					<include content="HUB_Landscape">
+						<param name="colordiffuse" value="$VAR[color_hub_widget_frame_nf]" />
+						<param name="autoscroll" value="false" />
+						<param name="bordersize_bg" value="6" />
+					</include>
+				</control>
+			</itemlayout>
+			<focusedlayout height="300" width="420">
+				<control type="group">
+					<height>243</height>
+					<width>405</width>
+					<include>Animation_Item_Focus</include>
+					<control type="group">
+						<include content="HUB_Landscape">
+							<param name="colordiffuse" value="$VAR[color_hub_widget_frame_fo]" />
+							<param name="autoscroll" value="true" />
+							<param name="bordersize_bg" value="4" />
+						</include>
+						<include content="FocusOverlay">
+							<param name="diffusedimtext" value="artworkdiffuse/landscape.png" />
+							<param name="bordersize" value="4" />
+						</include>
+					</control>
+				</control>
+			</focusedlayout>
+			<content>
+				<item id="940">
+					<label>Get More Music Addons</label>
+					<label2 />Skin.SetAddon(addon_lyricspath,xbmc.python.lyrics)
+					<onclick>ActivateWindow(AddonBrowser,addons://all/xbmc.addon.audio,return)</onclick>
+					<visible>!Skin.HasSetting(Hide_HUB_GetMoreMAddonsItem)</visible>
+					<icon>defaultaddoninputstream.png</icon>
+					<thumb>defaultaddoninputstream.png</thumb>
+				</item>
+			</content>
+			<content target="music" sortby="file">addons://sources/audio/</content>
+		</control>
+		
+		<!-- 
+		<include content="HUB_ContainerHeader">
+			<param name="id" value="50" />
+			<param name="label" value="You Tube" />
+		</include>
+		<control type="panel" id="5050">
 			<description>YouTube no filter</description>
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),youtube)</visible>
 			
@@ -1283,7 +1378,10 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 							<param name="autoscroll" value="true" />
 							<param name="bordersize_bg" value="4" />
 						</include>
-						<include>FocusOverlay</include>
+						<include content="FocusOverlay">
+							<param name="diffusedimtext" value="artworkdiffuse/landscape.png" />
+							<param name="bordersize" value="4" />
+						</include>
 					</control>
 				</control>
 			</focusedlayout>
@@ -1291,7 +1389,7 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 				<param name="id" value="30" />
 			</include>
 			<content target="videos" sortby="file" limit="25">plugin://plugin.video.youtube/search/?q=$INFO[Control.GetLabel(100002).index(1)]</content>
-		</control>
+		</control> -->
 		<include content="HUB_ContainerHeader">
 			<param name="id" value="40" />
 			<param name="label" value="$INFO[Container(42).ListItem.Label]" />
@@ -1340,7 +1438,10 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 							<param name="autoscroll" value="true" />
 							<param name="bordersize_bg" value="4" />
 						</include>
-						<include>FocusOverlay</include>
+						<include content="FocusOverlay">
+							<param name="diffusedimtext" value="artworkdiffuse/landscape.png" />
+							<param name="bordersize" value="4" />
+						</include>
 					</control>
 				</control>
 			</focusedlayout>
@@ -1478,7 +1579,7 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 					</control>
 					
 				</focusedlayout>
-				<content sortby="year" sortorder="ascending">$VAR[HUB_Albums_by_Artist]</content>
+				<content sortby="artistthanyear" sortorder="ascending">$VAR[HUB_Albums_by_Artist]</content>
 			</control>
 			
 			<control type="panel" id="5121">
@@ -1546,9 +1647,6 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 				</control>
 				</focusedlayout>
 				<content target="music" sortby="tracknumber" sortorder="ascending">$INFO[Container(5120).ListItem.FolderPath]</content>
-				<!-- xsp method pretty slow here, up to 30sec
-				<content sortby="tracknumber" sortorder="ascending">$VAR[HUB_Songs_by_AlbumArtist]</content>
-				 -->
 			</control>
 		</control>
 	</control>
@@ -1615,7 +1713,19 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 			<height>675</height>
 		</control>
 		
-	
-	<include content="swan_debug_overlay" />
+	<include content="swan_debug_overlay">
+	<param name="textleft" value="
+1 Window(home).Property(HUB_Music) : $INFO[Window(home).Property(HUB_Music),[COLOR cyan][B],[/B][/COLOR]]
+
+2 Window(home).Property(HUB_EncodedValue) : $INFO[Window(home).Property(HUB_EncodedValue),[COLOR cyan][B],[/B][/COLOR]]
+
+3 Window(home).Property(HUB_Music_ PARAM[goto]) : $INFO[Window(home).Property(HUB_Music_artist),[COLOR cyan][B],[/B][/COLOR]]   $INFO[Window(home).Property(HUB_Music_album),[COLOR cyan][B],[/B][/COLOR]]
+
+4 Window(home).Property(HUB_artwork) : $INFO[Window(home).Property(HUB_artwork),[COLOR cyan][B],[/B][/COLOR]]
+
+5 Window(home).Property(HUB_dbid) : $INFO[Window(home).Property(HUB_dbid),[COLOR cyan][B],[/B][/COLOR]]
+
+"/>
+	</include>
 	</controls>
 </window>
