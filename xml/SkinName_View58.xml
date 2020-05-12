@@ -222,8 +222,7 @@
 								</control>
 							</control>
 						</focusedlayout>
-						<!-- <content sortby="playcount">$VAR[NextUp_SeasonLevel]</content> -->
-						<content target="videos">videodb://inprogresstvshows/-1/-1/?xsp=%7B%22limit%22%3A1%2C%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22method%22%3A%22playcount%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22tvshow%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22breaking bad%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</content>
+						<content sortby="playcount" limit="1">$VAR[NextUp_SeasonLevel]</content>
 					</control>
 				</control>
 				
@@ -1157,6 +1156,8 @@
 		<value>-</value>
 	</variable>
 	
+	
+	
 	<include name="Plot_Shift">
 		<animation time="300" effect="slide" end="0,200" reversible="true" easing="inout" condition="ControlGroup(9000).HasFocus">Conditional</animation>
 		<visible>!Window.IsActive(shutdownmenu)</visible>
@@ -1173,8 +1174,20 @@
 	<variable name="NextUp_SeasonLevel">
 		 <value condition="[Control.IsVisible(58) + Container.Content(Seasons)] + String.EndsWith(Container.Folderpath,/)">$INFO[Container.Folderpath]-1/</value>
 		 <value condition="[Control.IsVisible(58) + Container.Content(Seasons)] + !String.IsEmpty(Window(home).Property(dbid))">videodb://inprogresstvshows/$INFO[Window(home).Property(dbid)]/-1/?tvshowid=$INFO[Window(home).Property(dbid)]</value>
-		 <value condition="[Control.IsVisible(58) + Container.Content(Seasons)]">videodb://inprogresstvshows/-1/-1/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22tvshow%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</value>
+		 <value condition="[Control.IsVisible(58) + Container.Content(Seasons)]">videodb://inprogresstvshows/-1/-1/?xsp=%7B%22limit%22%3A1%2C%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22method%22%3A%22playcount%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22tvshow%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</value>
+		<value>-</value>
 	</variable>
+	
+	sort by playcount + exclude watched via playcount 0
+	- hide till new episodes if all current watched
+	{"limit":1,"order":{"direction":"ascending","method":"playcount"},"rules":{"and":[{"field":"playcount","operator":"is","value":["0"]},{"field":"tvshow","operator":"is","value":["tvshowtitle"]}]},"type":"episodes"}
+	%7B%22limit%22%3A1%2C%22order%22%3A%7B%22direction%22%3A%22descending%22%2C%22method%22%3A%22playcount%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22playcount%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%220%22%5D%7D%2C%7B%22field%22%3A%22tvshow%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22tvshowtitle%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D
+	
+	vs
+	sort by playcount 
+	- if some eposode(s) watched more often than it' ll break the wished behaviour
+	{"limit":1,"order":{"direction":"ascending","method":"playcount"},"rules":{"and":[{"field":"tvshow","operator":"is","value":["$INFO[Window(home).Property(EncodedTitle)]"]}]},"type":"episodes"}
+	%7B%22limit%22%3A1%2C%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22method%22%3A%22playcount%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22tvshow%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D
 	
 	<variable name="58_OnlineTrailerLookup">
 		<value condition="[Control.IsVisible(58) + Container.Content(Seasons)] + [!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.youtube)]">plugin://plugin.video.youtube/search/?q=$INFO[ListItem.TVShowTitle]$INFO[System.Language, $LOCALIZE[20410],]</value>
