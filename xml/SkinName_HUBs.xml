@@ -1,5 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
+<!-- 
+
+Player.HasMedia 	Returns true if the player has an audio or video file. 	
+Player.HasAudio 	Returns true if the player has an audio file. 	
+Player.HasDuration 	Returns true if Media isn't a true stream 	
+Player.HasVideo 	Returns true if the player has a video file. 	
+Player.Passthrough 	Returns true if the player is using audio passthrough. 	
+Player.Playing 	Returns true if the player is currently playing (ie not ffwding, rewinding or paused.) 	
+Player.Paused 	Returns true if the player is paused. 	
+Player.Forwarding 	Returns true if the player is fast forwarding. 	
+Player.Forwarding2x 	Returns true if the player is fast forwarding at 2x. 	
+Player.Forwarding4x 	Returns true if the player is fast forwarding at 4x. 	
+Player.Forwarding8x 	Returns true if the player is fast forwarding at 8x. 	
+Player.Forwarding16x 	Returns true if the player is fast forwarding at 16x. 	
+Player.Forwarding32x 	Returns true if the player is fast forwarding at 32x. 	
+Player.Rewinding 	Returns true if the player is rewinding. 	
+Player.Rewinding2x 	Returns true if the player is rewinding at 2x. 	
+Player.Rewinding4x 	Returns true if the player is rewinding at 4x. 	
+Player.Rewinding8x 	Returns true if the player is rewinding at 8x. 	
+Player.Rewinding16x 	Returns true if the player is rewinding at 16x. 	
+Player.Rewinding32x 	Returns true if the player is rewinding at 32x. 	
+Player.PauseEnabled 	Returns true if the currently playing stream can be paused. 	
+Player.Caching 	Returns true if the player is current re-caching data (internet based video playback). 	
+Player.DisplayAfterSeek 	Returns true for the first 2.5 seconds after a seek. 	
+Player.Seeking 	Returns true if a seek is in progress 	
+Player.SeekEnabled 	Returns true if player can seek 	
+Player.ShowTime 	Returns true if the user has requested the time to show (occurs in video fullscreen) 	
+Player.ShowInfo 	Returns true if the user has requested the song info to show (occurs in visualisation fullscreen and slideshow) 	
+Player.IsInternetStream 	Returns true if the player is playing an internet stream. 	
+Player.Muted 	Returns true if the volume is muted. 	
+Player.Process(videohwdecoder) 	Returns true if the currently playing video is decoded in hardware 	v17 addition
+Player.TempoEnabled 	Returns true if the current player supports changing the playback speed 	v17 addition
+Player.IsTempo 	Returns true if the current playbackspeed is not equal to 1 	v17 addition
+Player.HasGame 	Returns true if the player is playing a game 	v18
+Player.HasResolutions 	Returns true when multiple resolutions are available 	v18
+Player.FrameAdvance 	Returns true if player is in frame advance mode 	v18 
+
+MusicPlayer.HasNext 	Returns true if the music player has a next song queued in the Playlist. 	
+MusicPlayer.HasPrevious 	Returns true if the music player has a a Previous Song in the Playlist . 	
+MusicPlayer.Offset(number).Exists 	Returns true if the music players playlist has a song queued in position (number). 	
+MusicPlayer.Content(parameter) 	Returns true if the current audio you are playing matches the specified content. The following values are accepted: files, livetv 	
+MusicPartyMode.Enabled
+
+Playlist.IsRandom 	Returns true if the player is in random mode. 	
+Playlist.IsRepeat 	Returns true if the player is in repeat all mode. 	
+Playlist.IsRepeatOne 	Returns true if the player is in repeat one mode.
+
+-->
+	<include name="Hub_PlayerCtrl">
+		<include>Animation_Item_Focus</include>
+		<top>10</top>
+		<height>50</height>
+		<width>50</width>
+		<label/>
+		<onclick>$PARAM[action]</onclick>
+		<texturefocus colordiffuse="$VAR[color_hub_accent]">buttons/osd/$PARAM[button_img].png</texturefocus>
+		<texturenofocus colordiffuse="$VAR[color_hub_menu_text_nf]">buttons/osd/$PARAM[button_img].png</texturenofocus>
+	</include>
+	
+	<!-- ######### -->
+	<!-- Side  Bar -->
+	<!-- ######### -->
+	<include name="hub_sectionheader">
+		<control type="label" id="$PARAM[id]">
+			<height>30</height>
+			<width>300</width>
+			<font>MenucontrolSectionHeading</font>
+			<align>left</align>
+			<textcolor>$VAR[color_hub_menu_text_fo]</textcolor>
+			<label>$PARAM[label]</label>
+		</control>
+	</include>
+	<include name="hub_button">
+		<param name="visible" default="true" />
+		<definition>
+			<control type="radiobutton" id="$PARAM[id]">
+				<visible>$PARAM[visible]</visible>
+				<width>110%</width>
+				<height>25</height>
+				<radiowidth>40</radiowidth>
+				<radioheight>40</radioheight>
+				<radioposx>10</radioposx>
+				<textureradioonfocus colordiffuse="$VAR[color_hub_menu_text_fo]">$PARAM[radio_icon]</textureradioonfocus>
+				<textureradioonnofocus colordiffuse="$VAR[color_hub_menu_text_nf]">$PARAM[radio_icon]</textureradioonnofocus>
+				<textureradioofffocus colordiffuse="$VAR[color_hub_menu_text_fo]">$PARAM[radio_icon]</textureradioofffocus>
+				<textureradiooffnofocus colordiffuse="$VAR[color_hub_menu_text_nf]">$PARAM[radio_icon]</textureradiooffnofocus>
+				<texturefocus />
+				<texturenofocus />
+				<font>MenucontrolItem</font>
+				<label>     $PARAM[label]</label>
+				<onclick>SetProperty(HUB_Music,$PARAM[property],home)</onclick>
+				<focusedcolor>$VAR[color_hub_menu_text_fo]</focusedcolor>
+				<textcolor>$VAR[color_hub_menu_text_nf]</textcolor>
+				<selectedcolor>green</selectedcolor>
+				<pulseonselect>no</pulseonselect>
+			</control>
+		</definition>
+	</include>
 	<!-- ######## -->
 	<!--  Layouts -->
 	<!-- ######## -->
@@ -556,64 +654,64 @@ notinthelast 	True if the field does not fall in the last range specified by the
 	
 	single 
 	artist contains label
-	{"rules":{"and":[{"field":"artist","operator":"contains","value":["$INFO[Control.GetLabel(100002).index(1)]"]}]},"type":"albums"}
-	%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(100002).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D
+	{"rules":{"and":[{"field":"artist","operator":"contains","value":["$INFO[Control.GetLabel(8001).index(1)]"]}]},"type":"albums"}
+	%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D
 	
 	oring
 	albumartist contains label or album contains label
-	{"rules":{"or":[{"field":"albumartist","operator":"contains","value":["$INFO[Control.GetLabel(100002).index(1)]"]},{"field":"album","operator":"contains","value":["$INFO[Control.GetLabel(100002).index(1)]"]}]},"type":"albums"}
+	{"rules":{"or":[{"field":"albumartist","operator":"contains","value":["$INFO[Control.GetLabel(8001).index(1)]"]},{"field":"album","operator":"contains","value":["$INFO[Control.GetLabel(8001).index(1)]"]}]},"type":"albums"}
 	
 	predefine attributes
-	{"order":{"direction":"ascending","ignorefolders":0,"method":"sorttitle"},"rules":{"and":[{"field":"artist","operator":"contains","value":["$INFO[Control.GetLabel(100002).index(1)]"]}]},"type":"artists"}
+	{"order":{"direction":"ascending","ignorefolders":0,"method":"sorttitle"},"rules":{"and":[{"field":"artist","operator":"contains","value":["$INFO[Control.GetLabel(8001).index(1)]"]}]},"type":"artists"}
 	-->
 	 <!-- erkennt keine sonderzeichen z.b. & -->
 	<variable name="HUB_content_artists">
-		<value condition="!String.IsEmpty(Control.GetLabel(100002).index(1))">musicdb://artists/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(100002).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22artists%22%7D</value>
+		<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">musicdb://artists/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22artists%22%7D</value>
 		<value>musicdb://artists/</value>
 	</variable>
 	
 	<variable name="HUB_content_albums_title">
-		<value condition="!String.IsEmpty(Control.GetLabel(100002).index(1))">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22album%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(100002).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</value>
+		<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22album%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</value>
 		<value>musicdb://albums/</value>
 	</variable>
 	<variable name="HUB_content_albums_artist">
-		<value condition="!String.IsEmpty(Control.GetLabel(100002).index(1))">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22albumartist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(100002).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</value>
+		<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22albumartist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</value>
 	</variable>
 	<variable name="HUB_content_albums_artist_or_title">
-		<value condition="!String.IsEmpty(Control.GetLabel(100002).index(1))">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22or%22%3A%5B%7B%22field%22%3A%22albumartist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(100002).index(1)]%22%5D%7D%2C%7B%22field%22%3A%22album%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(100002).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</value>
+		<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22or%22%3A%5B%7B%22field%22%3A%22albumartist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%2C%7B%22field%22%3A%22album%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</value>
 		<value>musicdb://albums/</value>
 	</variable>
 	
 	<variable name="HUB_content_songs_title">
-		<value condition="!String.IsEmpty(Control.GetLabel(100002).index(1))">musicdb://songs/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(100002).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22songs%22%7D</value>
+		<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">musicdb://songs/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22songs%22%7D</value>
 		<value>musicdb://songs/</value>
 	</variable>
 	<variable name="HUB_content_songs_artist">
-		<value condition="!String.IsEmpty(Control.GetLabel(100002).index(1))">musicdb://songs/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(100002).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22songs%22%7D</value>
+		<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">musicdb://songs/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22songs%22%7D</value>
 	</variable>
 	<variable name="HUB_content_songs_title_or_artist">
-		<value condition="!String.IsEmpty(Control.GetLabel(100002).index(1))">musicdb://songs/?xsp=%7B%22rules%22%3A%7B%22or%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(100002).index(1)]%22%5D%7D%2C%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(100002).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22songs%22%7D</value>
+		<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">musicdb://songs/?xsp=%7B%22rules%22%3A%7B%22or%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%2C%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22songs%22%7D</value>
 		<value>musicdb://songs/</value>
 	</variable>
 	
 	<variable name="HUB_content_musicvideo_titles">
-		<value condition="!String.IsEmpty(Control.GetLabel(100002).index(1))">videodb://musicvideos/titles?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(100002).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</value>
+		<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">videodb://musicvideos/titles?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</value>
 		<value>videodb://musicvideos/titles/</value>
 	</variable>
 	
 	<variable name="HUB_content_musicvideo_titles_or_artist">
-		<value condition="!String.IsEmpty(Control.GetLabel(100002).index(1))">videodb://musicvideos/titles?xsp=%7B%22rules%22%3A%7B%22or%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(100002).index(1)]%22%5D%7D%2C%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(100002).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</value>
+		<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">videodb://musicvideos/titles?xsp=%7B%22rules%22%3A%7B%22or%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%2C%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</value>
 		<value>videodb://musicvideos/titles/</value>
 	</variable>
 	
 			<!-- revisit - cant filter musicvideo folder -->
 			<variable name="HUB_content_musicvideo_artist">
-				<value condition="!String.IsEmpty(Control.GetLabel(100002).index(1)) + !String.IsEqual(Window(home).Property(HUB_Music),songs) + !String.IsEqual(Window(home).Property(HUB_Music),albums)">videodb://musicvideos/artists?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(100002).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</value>
-				<value condition="String.IsEmpty(Control.GetLabel(100002).index(1)) + !String.IsEqual(Window(home).Property(HUB_Music),songs) + !String.IsEqual(Window(home).Property(HUB_Music),albums)">videodb://musicvideos/artists/</value>
+				<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1)) + !String.IsEqual(Window(home).Property(HUB_Music),songs) + !String.IsEqual(Window(home).Property(HUB_Music),albums)">videodb://musicvideos/artists?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</value>
+				<value condition="String.IsEmpty(Control.GetLabel(8001).index(1)) + !String.IsEqual(Window(home).Property(HUB_Music),songs) + !String.IsEqual(Window(home).Property(HUB_Music),albums)">videodb://musicvideos/artists/</value>
 			</variable>
 			<variable name="HUB_content_musicvideo_albums">
-				<value condition="!String.IsEmpty(Control.GetLabel(100002).index(1)) + String.IsEqual(Window(home).Property(HUB_Music),albums)">videodb://musicvideos/albums?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22album%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(100002).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</value>
-				<value condition="String.IsEmpty(Control.GetLabel(100002).index(1)) + String.IsEqual(Window(home).Property(HUB_Music),albums)">videodb://musicvideos/albums/</value>
+				<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1)) + String.IsEqual(Window(home).Property(HUB_Music),albums)">videodb://musicvideos/albums?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22album%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</value>
+				<value condition="String.IsEmpty(Control.GetLabel(8001).index(1)) + String.IsEqual(Window(home).Property(HUB_Music),albums)">videodb://musicvideos/albums/</value>
 			</variable>
 	
 	<!-- artist hub test -->
@@ -632,45 +730,7 @@ notinthelast 	True if the field does not fall in the last range specified by the
 	musicdb://artists/[artistdbid]/[albumdbid]/?albumartistsonly=false&amp;artistid=[artistdbid]
 	-->
 	
-	<!-- ######### -->
-	<!-- Side  Bar -->
-	<!-- ######### -->
-	<include name="hub_sectionheader">
-		<control type="label" id="$PARAM[id]">
-			<height>30</height>
-			<width>300</width>
-			<font>MenucontrolSectionHeading</font>
-			<align>left</align>
-			<textcolor>$VAR[color_hub_menu_text_fo]</textcolor>
-			<label>$PARAM[label]</label>
-		</control>
-	</include>
-	<include name="hub_button">
-		<param name="visible" default="true" />
-		<definition>
-			<control type="radiobutton" id="$PARAM[id]">
-				<visible>$PARAM[visible]</visible>
-				<width>110%</width>
-				<height>25</height>
-				<radiowidth>40</radiowidth>
-				<radioheight>40</radioheight>
-				<radioposx>10</radioposx>
-				<textureradioonfocus colordiffuse="$VAR[color_hub_menu_text_fo]">$PARAM[radio_icon]</textureradioonfocus>
-				<textureradioonnofocus colordiffuse="$VAR[color_hub_menu_text_nf]">$PARAM[radio_icon]</textureradioonnofocus>
-				<textureradioofffocus colordiffuse="$VAR[color_hub_menu_text_fo]">$PARAM[radio_icon]</textureradioofffocus>
-				<textureradiooffnofocus colordiffuse="$VAR[color_hub_menu_text_nf]">$PARAM[radio_icon]</textureradiooffnofocus>
-				<texturefocus />
-				<texturenofocus />
-				<font>MenucontrolItem</font>
-				<label>     $PARAM[label]</label>
-				<onclick>SetProperty(HUB_Music,$PARAM[property],home)</onclick>
-				<focusedcolor>$VAR[color_hub_menu_text_fo]</focusedcolor>
-				<textcolor>$VAR[color_hub_menu_text_nf]</textcolor>
-				<selectedcolor>green</selectedcolor>
-				<pulseonselect>no</pulseonselect>
-			</control>
-		</definition>
-	</include>
+	
 	
 	<!-- Top Bar -->
 	<include name="HUB_Button_sendclick_playlist">
