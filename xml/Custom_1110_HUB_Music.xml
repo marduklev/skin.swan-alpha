@@ -45,12 +45,12 @@
 			<!-- Item Bar -->
 			<control type="grouplist" id="111099">
 				<top>10</top>
-				<left>300</left>
+				<left>320</left>
 				<width>1700</width>
-				<height>80</height>
+				<height>90</height>
 				<orientation>horizontal</orientation>
 				<usecontrolcoords>falase</usecontrolcoords>
-				<itemgap>10</itemgap>
+				<itemgap>20</itemgap>
 				<onleft>111098</onleft>
 				<onright>111099</onright>
 				<onup>111097</onup>
@@ -61,13 +61,13 @@
 					<height>60</height>
 					<width>400</width>
 					<hinttext>$LOCALIZE[19140]</hinttext>
-					<texturefocus diffuse="buttons/button_6to1_Trans.png" colordiffuse="$VAR[color_hub_backgroundlayer1]">colors/white10.png</texturefocus>	
-					<texturenofocus diffuse="buttons/button_6to1_Trans.png" colordiffuse="$VAR[color_hub_backgroundlayer1]">colors/white50.png</texturenofocus>
+					<texturefocus diffuse="buttons/button_6to1_Trans.png" colordiffuse="$VAR[color_hub_menu_text_fo]">colors/white20.png</texturefocus>	
+					<texturenofocus diffuse="buttons/button_6to1_Trans.png" colordiffuse="$VAR[color_hub_menu_text_fo]">colors/white10.png</texturenofocus>
 					<font>SearchControl</font>
 					<textoffsetx>20</textoffsetx>
 					<textoffsety>15</textoffsety>
-					<textcolor>grey</textcolor>
-					<focusedcolor>white</focusedcolor>
+					<textcolor>$VAR[color_hub_menu_text_nf]</textcolor>
+					<focusedcolor>$VAR[color_hub_menu_text_fo]</focusedcolor>
 					<disabledcolor />
 					<invalidcolor />
 					<aligny>center</aligny>
@@ -127,66 +127,143 @@ Playlist.IsRepeatOne 	Returns true if the player is in repeat one mode.
 -->
 				
 				<!-- testing -->
+				<include content="spacer_w">
+					<param name="id" value="7475465"/>
+					<param name="gap" value="60"/>
+					<param name="visible" value="Player.HasAudio"/>
+				</include>
 				<control type="image" id="488">
 					<visible>Player.HasAudio</visible>
-					<height>80</height>
-					<width>85</width>
+					<top>0</top>
+					<height>85</height>
+					<width>90</width>
 					<bordersize>1</bordersize>
 					<bordertexture>colors/white.png</bordertexture>
-					<texture>$INFO[Player.Art(thumb)]</texture>
+					<texture fallback="defaultmusicalbums.png">$INFO[Player.Art(thumb)]</texture>
 					<aspectratio align="center" aligny="top">keep</aspectratio>
 				</control>
 				
+				<control type="group" id="493">
+					<visible>Player.HasAudio</visible>
+					<height>100%</height>
+					<width>400</width>
+					<control type="label">
+						<top>5</top>
+						<height>10</height>
+						<label>Currently Playing</label>
+						<label2>test</label2>
+						<font>debugtiny</font>
+						<textcolor>$VAR[color_hub_menu_text_nf]</textcolor>
+					</control>
+					<control type="label">
+						<align>right</align>
+						<top>5</top>
+						<height>10</height>
+						<label>$INFO[Player.Time(mm:ss)]$INFO[Player.Duration(mm:ss), / ,]</label>
+						<font>MenucontrolItem</font>
+						<textcolor>$VAR[color_hub_menu_text_nf]</textcolor>
+					</control>
+					<control type="progress">
+						<top>22</top>
+						<height>1</height>
+						<info>Player.Progress</info>
+						<texturebg colordiffuse="$VAR[color_hub_menu_text_nf]">colors/white50.png</texturebg>
+						<midtexture colordiffuse="$VAR[color_hub_accent]">colors/white.png</midtexture>
+						<lefttexture />
+						<righttexture />
+						<overlaytexture />
+					</control>
+					<control type="label">
+						<top>10</top>
+						<font>DialogListItemLowLined</font>
+						<height>60</height>
+						<label>$INFO[MusicPlayer.Artist,[B],[/B]]</label>
+						<textcolor>$VAR[color_hub_accent]</textcolor>
+					</control>
+					<control type="label">
+						<top>60</top>
+						<height>20</height>
+						<label>[COLOR $VAR[color_hub_accent]]$INFO[MusicPlayer.Tracknumber][/COLOR] $INFO[MusicPlayer.Title,  [B],  [/B]  ][COLOR $VAR[color_hub_accent]]$INFO[MusicPlayer.Album]$INFO[MusicPlayer.Year, (,)][/COLOR]</label>
+						<font>MenucontrolItem</font>
+					</control>
+				</control>
+				<include content="spacer_w">
+					<param name="id" value="74325"/>
+					<param name="gap" value="30"/>
+					<param name="visible" value="Player.HasAudio"/>
+				</include>
 				<control type="button" id="498">
 					<visible>Player.HasAudio</visible>
 					<height>25</height>
 					<width>auto</width>
 					<onclick>playlist</onclick>
 					<label>playlist</label>
+					<visible>false</visible>
 				</control>
 				
 				<control type="button" id="497">
+					<top>10</top>
+					<include>Animation_Item_Focus</include>
 					<visible>MusicPlayer.HasNext</visible>
-					<height>70</height>
-					<width>70</width>
+					<height>50</height>
+					<width>50</width>
 					<onclick>PlayerControl(Previous)</onclick>
 					<label />
-					<texturefocus flipx="true">buttons/osd/next.png</texturefocus>
-					<texturenofocus flipx="true">buttons/osd/next.png</texturenofocus>
+					<texturefocus colordiffuse="$VAR[color_hub_accent]">buttons/osd/previous_fo.png</texturefocus>
+					<texturenofocus colordiffuse="$VAR[color_hub_menu_text_nf]">buttons/osd/previous_fo.png</texturenofocus>
 				</control>
 				<control type="button" id="492">
+					<top>10</top>
+					<include>Animation_Item_Focus</include>
 					<visible>Player.HasAudio</visible>
-					<height>70</height>
-					<width>70</width>
+					<height>50</height>
+					<width>50</width>
 					<onclick>PlayerControl(play)</onclick>
 					<label />
-					<texturefocus>buttons/osd/pause.png</texturefocus>
-					<texturenofocus>buttons/osd/pause.png</texturenofocus>
+					<texturefocus colordiffuse="$VAR[color_hub_accent]">buttons/osd/play_fo.png</texturefocus>
+					<texturenofocus colordiffuse="$VAR[color_hub_menu_text_nf]">buttons/osd/play_fo.png</texturenofocus>
 				</control>
 				<control type="button" id="491">
+					<top>10</top>
+					<include>Animation_Item_Focus</include>
 					<visible>MusicPlayer.Playing</visible>
-					<height>70</height>
-					<width>70</width>
+					<height>50</height>
+					<width>50</width>
 					<onclick>PlayerControl(stop)</onclick>
+					<texturefocus colordiffuse="$VAR[color_hub_accent]">buttons/osd/stop_fo.png</texturefocus>
+					<texturenofocus colordiffuse="$VAR[color_hub_menu_text_nf]">buttons/osd/stop_fo.png</texturenofocus>
 					<label>stop</label>
 				</control>
 				
 				<control type="button" id="496">
+					<top>10</top>
+					<include>Animation_Item_Focus</include>
 					<visible>MusicPlayer.HasNext</visible>
-					<height>70</height>
-					<width>70</width>
+					<height>50</height>
+					<width>50</width>
 					<onclick>PlayerControl(Next)</onclick>
 					<label />
-					<texturefocus>buttons/osd/next.png</texturefocus>
-					<texturenofocus>buttons/osd/next.png</texturenofocus>
+					<texturefocus colordiffuse="$VAR[color_hub_accent]">buttons/osd/next_fo.png</texturefocus>
+					<texturenofocus colordiffuse="$VAR[color_hub_menu_text_nf]">buttons/osd/next_fo.png</texturenofocus>
 				</control>
+				
+				<include content="spacer_w">
+					<param name="id" value="72325"/>
+					<param name="gap" value="30"/>
+					<param name="visible" value="Player.HasAudio"/>
+				</include>
 				<control type="button" id="495">
-					<visible>MusicPlayer.HasNext</visible>
-					<height>25</height>
-					<width>auto</width>
+					<top>10</top>
+					<include>Animation_Item_Focus</include>
+					<height>50</height>
+					<width>50</width>
 					<onclick>PlayerControl(Partymode(music))</onclick>
-					<label>party</label>
+					<onclick>SetProperty(partymode,music,home)</onclick>
+					<label />
+					<texturefocus colordiffuse="$VAR[color_hub_accent]">buttons/osd/hub_partymode_fo.png</texturefocus>
+					<texturenofocus colordiffuse="$VAR[color_hub_menu_text_nf]">buttons/osd/hub_partymode_fo.png</texturenofocus>
 				</control>
+				
 				
 				
 				
@@ -475,7 +552,7 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 				<!-- 
 				<content>
 					<item id="111">
-						<label>Partymode Play</label>
+						<label>Partymode</label>
 						<label2 />
 						<icon>defaultplaylist.png</icon>
 						<thumb>defaultplaylist.png</thumb>
@@ -493,15 +570,12 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 		<description>Current playlist pos offset right</description>
 		<height>100%</height>
         <width>480</width>
-		<visible>false</visible>
 		<posy>100</posy>
 		<right>-480</right>
 		<animation effect="slide" start="0,0" end="-480,0" time="300" tween="cubic" easing="inout" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),true)">conditional</animation>
-		
 		<include content="bg_gradientmulticolor">
 			<param name="layer2_visible" value="true" />
 		</include>
-		
 		<control type="panel" id="98">
 			<left>25</left>
 			<top>50</top>
@@ -509,10 +583,11 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 			<width>440</width>
 			<preloaditems>2</preloaditems>
 			<orientation>vertical</orientation>
-			<visible>false</visible>
-			<onleft>5001</onleft>
+			
 			<onleft>ClearProperty(CurrentPlaylistVisible)</onleft>
+			<onleft>500160</onleft>
 			<onright>ClearProperty(CurrentPlaylistVisible)</onright>
+			<onright>500160</onright>
 			
 			<onclick>RunScript(script.embuary.helper,action=playall,id=98,type=music,method=fromhere)</onclick>
 			
@@ -1668,6 +1743,8 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 		</control>
 		
 		<control type="scrollbar" id="500160">
+			<animation effect="slide" start="0,0" end="-480,0" time="300" tween="cubic" easing="inout" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),true)">conditional</animation>
+		
 			<description>current container</description>
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),common)</visible>
 			<right>10</right>
@@ -1676,8 +1753,8 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 			<onup>500160</onup>
 			<ondown>500160</ondown>
 			
-			<!-- <onright condition="[Integer.IsGreater(Container(98).NumItems,0) | Container(98).IsUpdating]">SetProperty(CurrentPlaylistVisible,true)</onright>
-			<onright condition="[Integer.IsGreater(Container(98).NumItems,0) | Container(98).IsUpdating]">SetFocus(98)</onright> -->
+			<onright condition="[Integer.IsGreater(Container(98).NumItems,0) | Container(98).IsUpdating]">SetProperty(CurrentPlaylistVisible,true)</onright>
+			<onright condition="[Integer.IsGreater(Container(98).NumItems,0) | Container(98).IsUpdating]">SetFocus(98)</onright>
 			<onright condition="![Integer.IsGreater(Container(98).NumItems,0) | Container(98).IsUpdating]">5001</onright>
 			
 			<onleft>5001</onleft>
@@ -1698,6 +1775,7 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 		</control>
 		
 		<control type="scrollbar" id="7060">
+			
 			<description>current artist view,scroll albumtitles</description>
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),IsHUBartistcontent)</visible>
 			<right>50</right>
@@ -1706,7 +1784,8 @@ Play will either pause, resume, or stop ffwding or rewinding. Random toggles ran
 			<onup>7060</onup>
 			<ondown>7060</ondown>
 			
-			<onright></onright>
+			
+			
 			
 			<onleft>5121</onleft>
 			
