@@ -59,6 +59,53 @@ Playlist.IsRepeatOne 	Returns true if the player is in repeat one mode.
 		<texturenofocus colordiffuse="$VAR[color_hub_menu_text_nf]">buttons/osd/$PARAM[button_img].png</texturenofocus>
 	</include>
 	
+	<include name="Hub_Container_Common">
+		<control type="panel" id="$PARAM[id]">
+			<visible>$PARAM[visible]</visible>
+			<left>5</left>
+			<top>50</top>
+			<width>1600</width>
+			<height>$PARAM[height]</height>
+			
+			<preloaditems>2</preloaditems>
+			<orientation>vertical</orientation>
+			<scrolltime tween="quadratic">400</scrolltime>
+				
+			<onleft>666660</onleft>
+			<onfocus>SetProperty(Scrollbar,$PARAM[id]60)</onfocus>
+			<onright condition="Control.IsVisible($PARAM[id]60)">$PARAM[id]60</onright>
+			
+			
+			<pagecontrol>$PARAM[id]60</pagecontrol>
+			
+			<onright condition="!Control.IsVisible($PARAM[id]60) + [Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">SetProperty(CurrentPlaylistVisible,true)</onright>
+			<onright condition="!Control.IsVisible($PARAM[id]60) + [Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">SetFocus(7000)</onright>
+			<onright condition="!Control.IsVisible($PARAM[id]60) + [!Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">$PARAM[id]</onright>
+			<nested />
+		</control>
+	</include>
+	
+	<include name="Hub_Container_Uncommon">
+		<control type="$PARAM[type]" id="$PARAM[id]">
+			<visible>$PARAM[visible]</visible>
+			<left>5</left>
+			<top>50</top>
+			<width>1600</width>
+			<height>$PARAM[height]</height>
+			<focusposition>1</focusposition>
+			<preloaditems>2</preloaditems>
+			<orientation>horizontal</orientation>
+			<scrolltime tween="quadratic">400</scrolltime>
+			
+			<onleft>$PARAM[onleft]</onleft>
+			<onright condition="[Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">SetProperty(CurrentPlaylistVisible,true)</onright>
+			<onright condition="[Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">SetFocus(7000)</onright>
+			<onright condition="[!Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">$PARAM[id]</onright>
+			
+			<nested />
+		</control>
+	</include>
+	
 	<!-- ######### -->
 	<!-- Side  Bar -->
 	<!-- ######### -->
@@ -392,17 +439,18 @@ Playlist.IsRepeatOne 	Returns true if the player is in repeat one mode.
 		<control type="group">
 			<control type="textbox">
 				<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
-				<top>106%</top>
+				<top>103%</top>
 				<left>10</left>
 				<right>10</right>
 				<wrapmultiline>true</wrapmultiline>
-				<height>60</height>
-				<font>CommonTag</font>
+				<height>90</height>
+				<font>HubAT</font>
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>$VAR[color_hub_text_main]</textcolor>
 				<selectedcolor>white</selectedcolor>
 				<label>$VAR[HUB_Tags_Bottom]</label>
+				<visible>Control.HasFocus(5010)</visible>
 			</control>
 		</control>
 	</include>
@@ -423,7 +471,7 @@ Playlist.IsRepeatOne 	Returns true if the player is in repeat one mode.
 		<param name="item_label" default="$INFO[Container.ListItem.Artist,[B],[/B]]" />
 	
 		<definition>
-            <control type="group" id="60$PARAM[id]">
+            <control type="group" id="49$PARAM[id]">
 				<visible>Control.IsVisible(50$PARAM[id])</visible>
                 <top>50</top>
                 <height>55</height>
