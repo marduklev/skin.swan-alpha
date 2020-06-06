@@ -7,13 +7,11 @@
 			<visible>Skin.HasSetting(SwanDebug)</visible>
 				<control type="image">
 					<description>top header</description>
-					<visible>$PARAM[topbar_visible]</visible>
 					<top>0</top>
 					<width>100%</width>
 					<height>100</height>
 					<texture>colors/white.png</texture>
 					<colordiffuse>2211E7B1</colordiffuse>
-					<aspectratio>stretch</aspectratio>
 				</control>
 				<control type="group">
 					<centerleft>50%</centerleft>
@@ -24,7 +22,6 @@
 						<description>hot spot area</description>
 						<texture>colors/white.png</texture>
 						<colordiffuse>cc000000</colordiffuse>
-						<aspectratio>stretch</aspectratio>
 					</control>
 					<control type="textbox">
 						<font>debugtiny</font>
@@ -46,17 +43,28 @@ $PARAM[textleft]
 						<top>10</top>
 						<right>15</right>
 						<textcolor>red</textcolor>
-						<label>Skin.AspectRatio  $INFO[Skin.AspectRatio]
-System.ScreenWidth $INFO[System.ScreenWidth]
-System.ScreenHeight $INFO[System.ScreenHeight]
-$LOCALIZE[31030] $INFO[system.memory(used)] [B]/[/B] $INFO[system.memory(total)] -  $INFO[system.memory(used.percent)]
-$LOCALIZE[13271] $INFO[System.CPUUsage]
-System.GPUTemperature $INFO[System.GPUTemperature]
+						<label>System.BuildVersion:     $VAR[KodiBuildVersion,[B],[/B]]
+System.BuildDate:     $INFO[System.BuildDate]
+
+
+$LOCALIZE[31030] :     $INFO[system.memory(used)] [B]/[/B] $INFO[system.memory(total)]       $INFO[system.memory(used.percent)]
+$LOCALIZE[13271]      $INFO[System.CPUUsage]
+$INFO[System.GPUTemperature,System.GPUTemperature :     ,]
 Property(xmlfile) :     $INFO[Window.Property(xmlfile)]
 System.CurrentWindow :     $INFO[System.CurrentWindow]
 System.CurrentControl :     $INFO[System.CurrentControl]
 System.CurrentControlID :     $INFO[System.CurrentControlID]
+$INFO[System.Progressbar,System.Progressbar :     ,]
+System.InternetState :     $INFO[System.InternetState]
+Network.IPAddress :     $INFO[Network.IPAddress]
+
 </label>
+<!-- $INFO[Container($INFO[System.CurrentControlID]).CurrentItem] -->
+<!-- 
+Skin.AspectRatio  $INFO[Skin.AspectRatio]
+System.ScreenWidth $INFO[System.ScreenWidth]
+System.ScreenHeight $INFO[System.ScreenHeight]
+-->
 					</control>
 				</control>
 				
@@ -78,4 +86,9 @@ System.CurrentControlID :     $INFO[System.CurrentControlID]
 		</control>
 		</definition>
 	</include>
+	
+	<variable name="KodiBuildVersion">
+		<value condition="String.StartsWith(System.BuildVersion,18)">[COLOR cyan]KODI  L e i a[/COLOR]</value>
+		<value condition="String.StartsWith(System.BuildVersion,19)">[COLOR cyan]KODI  M a t r i x[/COLOR]</value>
+	</variable>
 </includes>
