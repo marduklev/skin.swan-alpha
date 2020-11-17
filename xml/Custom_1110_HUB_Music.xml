@@ -1585,7 +1585,8 @@ default
 				
 				<content target="music">$VAR[Container_HUB_5030_Genre_songs]</content>
 			</include>
-			<!-- <include content="HUB_ContainerHeader">
+			<!-- 
+			<include content="HUB_ContainerHeader">
 				<param name="id" value="34" />
 				<param name="label" value="$INFO[Container(5030).ListItem.Label]  MUSICVIDEOS" />
 				<param name="filter_label" value="none" />
@@ -1819,20 +1820,11 @@ default
 			</include>
 		</control>
 		
-		
-		
-		
-		<!-- damn its too long ago -->
-		
-		<!-- Recently...
-                 ...Added 25 Albums (filter)
-        -->
 		<include content="HUB_ContainerHeader">
 			<param name="id" value="28" />
-			<param name="label" value="Neue Alben (Albums by dateadded)" />
-			<param name="item_label" value="$INFO[Container.ListItem.Album,[B],[/B]]" />
+			<param name="label" value="$LOCALIZE[359]" />
+			<param name="item_label" value="$INFO[Container.ListItem.Artist,Artist : [B],[/B]]" />
 		</include>
-		
 		<include content="Hub_Container_Common">
 			<param name="visible" value="String.IsEqual(Window(home).Property(HUB_Music),album_recentadd)" />
 			<param name="id" value="5028" />
@@ -1872,13 +1864,11 @@ default
 				</include>
 			<content target="music" sortby="dateadded" sortorder="descending" limit="25">$VAR[HUB_content_albums_title]</content>
 		</include>
-		<!-- Recently...
-                 ... played 25 Albums (filter)
-        -->
+		
 		<include content="HUB_ContainerHeader">
 			<param name="id" value="29" />
-			<param name="label" value="Zuletzt gehörte Alben (Albums by lastplayed)" />
-			<param name="item_label" value="$INFO[Container.ListItem.Album,[B],[/B]]" />
+			<param name="label" value="$LOCALIZE[517]" />
+			<param name="item_label" value="$INFO[Container.ListItem.Artist,Artist : [B],[/B]]" />
 		</include>
 		
 		<include content="Hub_Container_Common">
@@ -1918,9 +1908,58 @@ default
 				<include content="emptywidget">
 					<param name="id" value="29" />
 				</include>
-			<content target="music" sortby="lastplayed is not supported !" sortorder="ascending" limit="25">$VAR[HUB_content_albums_title]</content>
-		</include> let use playcount  greater 0, cant order it
+				<content target="music" sortorder="ascending">musicdb://recentlyplayedalbums/</content>
+		</include>
 		
+		<include content="HUB_ContainerHeader">
+			<param name="id" value="77" />
+			<param name="label" value="$LOCALIZE[20382]" />
+			<param name="item_label" value="$INFO[Container.ListItem.Artist,Artist : [B],[/B]]$INFO[Container.ListItem.Album, - Album : [B],[/B]]" />
+		</include>
+		
+		<include content="Hub_Container_Common">
+			<param name="visible" value="String.IsEqual(Window(home).Property(HUB_Music),musicvideos_recentadd)" />
+			<param name="id" value="5077" />
+			<param name="height" value="850" />
+			
+			<include condition="Skin.HasSetting(Force_StayInMusicHub)" content="hub_music_OverrideOnClick">
+				<param name="goto" value="album" />
+			</include>
+			
+			<itemlayout height="300" width="460">
+				<control type="group">
+					<height>243</height>
+					<width>405</width>
+					<include content="HUB_Landscape">
+						<param name="colordiffuse" value="$VAR[color_hub_widget_frame_nf]" />
+						<param name="autoscroll" value="false" />
+						<param name="bordersize_bg" value="6" />
+					</include>
+				</control>
+			</itemlayout>
+			<focusedlayout height="300" width="460">
+				<control type="group">
+					<height>243</height>
+					<width>405</width>
+					<include>Animation_Item_Focus</include>
+					<control type="group">
+						<include content="HUB_Landscape">
+							<param name="colordiffuse" value="$VAR[color_hub_widget_frame_fo]" />
+							<param name="autoscroll" value="true" />
+							<param name="bordersize_bg" value="4" />
+						</include>
+						<include content="FocusOverlay">
+							<param name="diffusedimtext" value="artworkdiffuse/landscape.png" />
+							<param name="bordersize" value="8" />
+						</include>
+					</control>
+				</control>
+			</focusedlayout>
+				<include content="emptywidget">
+					<param name="id" value="77" />
+				</include>
+				<content target="videos" sortorder="ascending">videodb://recentlyaddedmusicvideos/</content>
+		</include>
 		
 		
 		<include content="HUB_ContainerHeader">
