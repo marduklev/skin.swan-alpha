@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includes>
+
+	<include name="view59">
+		
+		<control type="group">
+			<visible>Control.IsVisible(59)</visible>
+			
+			<control type="group">
+				<visible>$EXP[TrailerIsPlaying]</visible>
+				<animation effect="fade" start="0" end="100" time="750">VisibleChange</animation>
+				<control type="image">
+					<texture>colors/white.png</texture>
+					<colordiffuse>ff000000</colordiffuse>
+				</control>
+				<control type="videowindow" />
+			</control>
+			
+			
+			<control type="grouplist">
+				
+				<animation type="conditional" condition="![Container(59).OnNext | Container(59).OnPrevious]" reversible="false">
+					<effect type="slide" start="-480,0" end="0,0" center="50%,50%" delay="60" tween="back" time="350" />
+					<effect type="fade" delay="60" end="100" time="350" />
+				</animation>
+				<animation type="conditional" condition="[Container(59).OnNext | Container(59).OnPrevious]" reversible="false">
+					<effect type="slide" start="-480,0" end="0,0" center="50%,50%" delay="60" tween="back" time="350" />
+					<effect type="fade" start="100" end="0" time="350" />
+				</animation>
+			
+				<orientation>vertical</orientation>
+				<usecontrolcoords>true</usecontrolcoords>
+				<height>400</height>
+				<itemgap>10</itemgap>
+				<align>center</align>
+				<left>500</left>
+				<right>100</right>
+				<top>640</top>
+				
+				<control type="label">
+					<width>100%</width>
+					<align>center</align>
+					<label>$INFO[ListItem.Label,[B],[/B]]</label>
+					<height>30</height>
+					<aligny>center</aligny>
+					<textcolor>$VAR[color_home_text_main]</textcolor>
+					<font>Tagline</font>
+				</control>
+			
+				<control type="grouplist">
+					<orientation>horizontal</orientation>
+					<usecontrolcoords>true</usecontrolcoords>
+					<height>70</height>
+					<itemgap>15</itemgap>
+					<align>center</align>
+					
+					<align>left</align>
+					
+					<include content="framedflag">
+						<top>8</top>
+						<param name="textcolor" value="$VAR[color_home_text_main]" />
+						<param name="color" value="$VAR[color_home_text_main]" />
+						<visible>!String.IsEmpty(ListItem.Genre)</visible>
+						<width min="32">auto</width>
+						<height>40</height>
+						<font>font20_title</font>
+						<label>$INFO[ListItem.Genre]</label>
+					</include>
+					
+					<control type="label">
+						<visible>!String.IsEmpty(ListItem.Year) | !String.IsEmpty(ListItem.Premiered)</visible>	
+						<top>5</top>
+						<height>45	</height>
+						<width>auto</width>
+						<aligny>center</aligny>
+						<font>font23_title</font>
+						<label>$VAR[ListItemPremieredOrYear]</label>
+						<textcolor>$VAR[color_home_text_main]</textcolor>
+					</control>
+					
+					<include content="StarsRating_Image">
+						<top>6</top>
+						<param name="width" value="150" />
+						<param name="height" value="40" />
+						<param name="alignx" value="center" />
+						<param name="colordiffuse" value="$VAR[color_home_text_main]" />
+					</include>
+					
+					<include content="framedflag">
+						<top>6</top>
+						<param name="textcolor" value="$VAR[color_home_text_main]" />
+						<param name="color" value="$VAR[color_home_text_main]" />
+						<visible>!String.IsEmpty(ListItem.Mpaa)</visible>
+						<width min="32">auto</width>
+						<height>40</height>
+						<font>font20_title</font>
+						<label>$INFO[ListItem.Mpaa]</label>
+					</include>
+					<control type="label">
+						<top>5</top>
+						<height>45	</height>
+						<width>auto</width>
+						<aligny>center</aligny>
+						<font>font23_title</font>
+						
+						<label>$VAR[Meta_Top_Details]</label>
+						<textcolor>$VAR[color_home_text_main]</textcolor>
+					</control>
+					
+					<include content="circleframedflag">
+						<param name="size" value="56" />
+						<param name="font" value="MenucontrolItem" />
+						<param name="color" value="$VAR[color_home_text_main]" />
+						<param name="id" value="611114" />
+						<param name="label" value="$VAR[Simple_Resolution,[B],[/B]]" />
+					</include>
+					<include content="circleframedflag">
+						<param name="size" value="56" />
+						<param name="font" value="MenucontrolItem" />
+						<param name="color" value="$VAR[color_home_text_main]" />
+						<param name="id" value="611115" />
+						<param name="label" value="$VAR[Simple_AudioChannel,[B],[/B]]" />
+					</include>
+					<control type="image">
+						<top>-10</top>
+						<width>120</width>
+						<aspectratio align="left" aligny="center">keep</aspectratio>
+						<texture colordiffuse="$VAR[color_home_text_main]">$INFO[ListItem.AudioCodec,flags/flagsmedia/audio/,.png]</texture>
+					</control>
+					
+				</control>
+				<control type="textbox">
+					<width>90%</width>
+					<left>3%</left>
+					<label>$VAR[plot]</label>
+					<height>150</height>
+					<align>center</align>
+					<aligny>top</aligny>
+					<textcolor>$VAR[color_home_text_secondary]</textcolor>
+					<font>PlotCommon</font>
+				</control>
+			</control>
+		
+			<control type="group">
+				<include content="Universal_Container">
+					<param name="id" value="59" />
+					<param name="type" value="fixedlist" />
+					<param name="type_height" value="300" />
+					<param name="type_pos_top" value="670" />
+					<param name="orientation" value="vertical" />
+					<param name="circle_visible" value="true" />
+					<param name="tags_visible" value="false" />
+					
+					<param name="layout_height" value="300" />
+					<param name="layout_width" value="270" />
+					
+					<param name="itemheight" value="230" />
+					<param name="itemwidth" value="230" />
+				
+					<param name="layout" value="circle" />
+					<viewtype label="art">Art</viewtype>
+					<focusposition>0</focusposition>
+					<left>200</left>
+					<right>100</right>
+					<include>Oninfo_MovieSetInfo</include>
+					<include>NavControl_Media</include>
+					
+				</include>
+				 <include content="footer">
+					<param name="view_id" value="59" />
+					<param name="offset_leftpanel" value="150" />
+					<param name="media_flagalign" value="center" />
+					<param name="media_flagwidth" value="30%" />
+					<param name="rating_flagalign" value="right" />
+				</include>
+			</control>
+		
+		</control>
+	</include>
+</includes>

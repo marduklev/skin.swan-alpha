@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includes>
+	
+	<include name="view502">
+		
+		<control type="group">
+			<visible>Control.IsVisible(502)</visible>
+					
+		
+			<control type="panel" id="502">
+				<animation effect="fade" start="100" end="0" time="650" condition="$EXP[TrailerIsPlaying]">conditional</animation>
+				<orientation>vertical</orientation>
+				<preloaditems>4</preloaditems>
+				<scrolltime tween="quadratic">400</scrolltime>
+				<left>150</left>
+				
+				<include>MediaOffsetValues</include>
+				<include>Oninfo_MovieSetInfo</include>
+				<include>NavControl_Media</include>
+				
+				<viewtype label="infocards">infocards</viewtype>
+				
+				<itemlayout height="420" width="800">
+					<include content="template501" />
+				</itemlayout>
+			
+				<focusedlayout height="420" width="800">
+					<include>SetPropOnFocus_HiddenButton</include>
+					<include content="template501">
+						<param name="color" value="white" />
+						<param name="tc" value="ff101010" />
+					</include>
+				</focusedlayout>
+			</control>
+			
+			
+			<include content="footer">
+				<param name="view_id" value="502" />
+				<param name="offset_leftpanel" value="25%" />
+				<param name="media_flagalign" value="center" />
+				<param name="media_flagwidth" value="30%" />
+				<param name="rating_flagalign" value="center" />
+			</include>
+		</control>
+		</include>	
+		
+		<include name="template501">
+			<param name="color" default="ff101010" />
+			<param name="tc" default="white" />
+			<param name="tc_2" default="grey" />
+			
+			<definition>
+				<control type="group">
+					<width>780</width>
+					<height>390</height>  
+					<control type="image">
+						<top>0</top>
+						       
+						<texture colordiffuse="$PARAM[color]">colors/white.png</texture>
+						<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
+					</control>
+					<control type="image">
+						<top>10</top>
+						<left>10</left>
+						<width>490</width>
+						<height>289</height>
+						<texture background="true" diffuse="diffuse/Spotlight_right_diffuse.png">$INFO[ListItem.Art(fanart)]</texture>
+						<aspectratio scalediffuse="true" align="left" aligny="top">scale</aspectratio>
+					</control>
+					
+					<control type="image">
+						<visible>!String.IsEmpty(ListItem.Art(clearlogo))</visible>
+						<top>0</top>
+						<right>20</right>
+						<width>250</width> 
+						<height>120</height>
+						<texture background="true" diffuse="colors/white80.png">$INFO[ListItem.Art(clearlogo)]</texture>
+						<aspectratio scalediffuse="true" aligny="center">keep</aspectratio>
+					</control>
+					<control type="textbox">
+						<visible>String.IsEmpty(ListItem.Art(clearlogo))</visible>
+						<top>0</top>
+						<right>20</right>
+						<width>250</width> 
+						<height>120</height>
+						<info>listitem.title</info>
+						<font>debug</font>
+						<textcolor>$PARAM[tc_2]</textcolor>
+						<align>center</align>
+					</control>
+					
+					<!-- 
+					<include content="StarsRating_Image">
+						<top>100</top>
+						<right>80</right>
+						<param name="width" value="100" />
+						<param name="height" value="20" />
+						<param name="alignx" value="center" />
+						<param name="colordiffuse" value="$PARAM[tc]" />
+					</include> 
+					-->
+					
+					
+					<control type="image">
+						<visible>!Container.Content(movies)</visible>
+						<bottom>15</bottom>
+						<right>60</right>
+						<width>100</width>
+						<height>25</height>
+						<texture colordiffuse="$PARAM[tc]">flags/ratings/tvdb_color.png</texture>
+						<aspectratio align="right">keep</aspectratio>
+					</control>
+					<control type="image">
+						<visible>Container.Content(movies)</visible>
+						<bottom>15</bottom>
+						<right>60</right>
+						<width>100</width>
+						<height>25</height>
+						<texture>flags/ratings/themoviedb_color.png</texture>
+						<aspectratio align="right">keep</aspectratio>
+					</control>
+					<control type="textbox">
+						<bottom>15</bottom>
+						<right>20</right>
+						<width>50</width>
+						<height>25</height>
+						<info>listitem.rating</info>
+						<font>debugtiny</font>
+						<align>right</align>
+						<textcolor>cyan</textcolor>
+						
+					</control>
+					
+					
+					
+					<control type="textbox">
+						<top>120</top>
+						<right>20</right>
+						<left>510</left>
+						<width>250</width> 
+						<height>200</height>
+						<info>listitem.plot</info>
+						<font>font20_title</font>
+						<!-- <align>justify</align> -->
+						<textcolor>$PARAM[tc_2]</textcolor>
+						<align>center</align>
+					</control>
+					
+					
+					
+					----
+					<include content="framedflag">
+						<bottom>10</bottom>
+						<left>10</left>
+						<param name="textcolor" value="$PARAM[tc]" />
+						<param name="color" value="$PARAM[tc]" />
+						<visible>!String.IsEmpty(ListItem.Genre)</visible>
+						<width min="32">auto</width>
+						<height>30</height>
+						<font>debugtiny</font>
+						<label>$INFO[ListItem.Genre]</label>
+					</include>
+					
+					
+					<!-- <control type="label">
+						<bottom>10</bottom>
+						<right>10</right>
+						<height>30</height>
+						<width>300</width>
+						<align>right</align>
+						<font>debugtiny</font>
+						
+						<label>$VAR[Meta_Top_Details]</label>
+						<textcolor>$PARAM[tc]</textcolor>
+					</control> -->
+					
+					
+					
+					
+					
+				</control>
+			</definition>
+		</include>
+		
+</includes>
