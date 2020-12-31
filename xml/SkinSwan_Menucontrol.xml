@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 	
+	<!-- musicinfo-->
+	<include name="IconButton">
+		<control type="radiobutton" id="$PARAM[id]">
+			<animation type="focus" reversible="false">
+				<effect type="slide" start="0" end="350" easing="in" tween="quadratic" time="300" />
+			</animation>
+			<animation type="unfocus" reversible="false">
+				<effect type="slide" start="350" end="0" easing="in" tween="quadratic" time="300" />
+			</animation>
+			<textoffsetx>50</textoffsetx>
+			<height>65</height>
+			<width>400</width>
+			<focusedcolor>white</focusedcolor>
+			<textcolor>5cC6C6C8</textcolor>
+			<textureradioonfocus colordiffuse="white">$PARAM[radiobutton_texture].png</textureradioonfocus>
+			<textureradioonnofocus colordiffuse="5cC6C6C8">$PARAM[radiobutton_texture].png</textureradioonnofocus>
+			<textureradioofffocus colordiffuse="white">$PARAM[radiobutton_texture].png</textureradioofffocus>
+			<textureradiooffnofocus colordiffuse="5cC6C6C8">$PARAM[radiobutton_texture].png</textureradiooffnofocus>
+			<texturefocus colordiffuse="white">diffuse/slider_big.png</texturefocus>
+			<texturenofocus colordiffuse="5cC6C6C8">diffuse/slider_big.png</texturenofocus>		 
+			
+			<label>$PARAM[label]</label>
+			<nested />
+		</control>
+	</include>
+	
 	<!-- Custom_1104_CustomContextual.xml , DialogContextMenu.xml -->
 	<include name="Menucontrol_Grouplist">
 		<param name="width" default="60%" />
@@ -669,20 +695,22 @@ msgstr "Video-Wiedergabelisten"
 			<control type="radiobutton" id="4010">
 				<include>Menucontrol_RadioButton</include>
 				<label>Show footer</label>
-				<visible>Control.IsVisible(50) | Control.IsVisible(51) | Control.IsVisible(52) | Control.IsVisible(53) | Control.IsVisible(54) | Control.IsVisible(56)</visible>
+				<visible>Control.IsVisible(50) | Control.IsVisible(51) | Control.IsVisible(52) | Control.IsVisible(53) | Control.IsVisible(54) | Control.IsVisible(56) | Control.IsVisible(502)</visible>
 				<onclick condition="Control.IsVisible(50)">Skin.ToggleSetting(View_50_DisableFooter)</onclick>
 				<onclick condition="Control.IsVisible(51)">Skin.ToggleSetting(View_51_DisableFooter)</onclick>
 				<onclick condition="Control.IsVisible(52)">Skin.ToggleSetting(View_52_DisableFooter)</onclick>
 				<onclick condition="Control.IsVisible(53)">Skin.ToggleSetting(View_53_DisableFooter)</onclick>
 				<onclick condition="Control.IsVisible(54)">Skin.ToggleSetting(View_54_DisableFooter)</onclick>
 				<onclick condition="Control.IsVisible(56)">Skin.ToggleSetting(View_56_DisableFooter)</onclick>
+				<onclick condition="Control.IsVisible(502)">Skin.ToggleSetting(View_502_DisableFooter)</onclick>
 				<selected>
 				[Control.IsVisible(50) + !Skin.HasSetting(View_50_DisableFooter) | 
                 Control.IsVisible(51) + !Skin.HasSetting(View_51_DisableFooter) | 
 				Control.IsVisible(52) + !Skin.HasSetting(View_52_DisableFooter) | 
 				Control.IsVisible(53) + !Skin.HasSetting(View_53_DisableFooter) | 
 				Control.IsVisible(54) + !Skin.HasSetting(View_54_DisableFooter) | 
-				Control.IsVisible(56) + !Skin.HasSetting(View_56_DisableFooter)]
+				Control.IsVisible(56) + !Skin.HasSetting(View_56_DisableFooter) | 
+				Control.IsVisible(502) + !Skin.HasSetting(View_502_DisableFooter)]
 				</selected>
 			</control>
 	<!--
@@ -1569,10 +1597,262 @@ msgstr "Video-Wiedergabelisten"
 			<thumb>$INFO[Skin.String(mainmenuitem$PARAM[nr]_thumb)]</thumb>
 			<icon>defaultmovies.png</icon>
 			<property name="fanart">$INFO[Skin.String(mainmenuitem$PARAM[nr]_fanart)]</property>
+			<property name="containerpath">$INFO[Skin.String(mainmenuitem$PARAM[nr]_path)]</property>
 			<onclick condition="String.IsEqual(Skin.String(mainmenuitem$PARAM[nr]_path),1120)">Skin.SetString(SearchTerm)</onclick>   
 			<onclick>ActivateWindow($INFO[Skin.String(mainmenuitem$PARAM[nr]_target),,$COMMA]$INFO[Skin.String(mainmenuitem$PARAM[nr]_path)],return)</onclick>
 			<onclick condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">ClearProperty(MenucontrolHomeActive,home)</onclick>
 		</item>
+	</include>
+	
+	
+	<include name="Menucontrol_Home_MenuTiles">
+			
+			<control type="multiimage">
+				<depth>DepthBackground</depth>
+				<fadetime>3000</fadetime>
+				<imagepath>special://skin/extras/unsplashdotcom/</imagepath>
+			</control>
+			
+	<control type="group">
+		<animation effect="fade" start="100" end="0" time="350" condition="Window.IsActive(shutdownmenu)">conditional</animation>
+	
+			--- copy from ? - make include -->
+			<control type="group">
+				<description>time and date weather</description>
+				<centerleft>50%</centerleft>
+				<top>50</top>
+				<height>150</height>
+				
+				<control type="label">
+					<width>100%</width>
+					<height>25</height>
+					<align>center</align>
+					<info>System.Time</info>
+					<font>debug</font>
+					<textcolor>ff131313</textcolor>
+				</control>
+				<control type="group">
+					<visible>[!String.Contains(Weather.Temperature,$LOCALIZE[503]) + [!String.IsEqual(Weather.fanartcode,na) + Weather.IsFetched]]</visible>
+					<control type="image">
+						<top>25</top>
+						<height>50</height>
+						<width>100%</width>
+						<texture colordiffuse="ff131313">$INFO[Weather.FanartCode,resource://resource.images.weathericons.outline-hd/,.png]</texture>
+						<aspectratio align="center">keep</aspectratio>
+					</control>
+					<control type="label">
+						<top>75</top>
+						<width>100%</width>
+						<height>10</height>
+						<align>center</align>
+						<label>$INFO[Weather.Temperature]</label>
+						<font>font20_title</font>
+						<textcolor>ff131313</textcolor>
+					</control>
+				</control>
+				
+				<control type="label">
+					<top>100</top>
+					<width>100%</width>
+					<height>20</height>
+					<align>center</align>
+					<info>System.Date</info>
+					<font>debugtiny</font>
+					<textcolor>ff131313</textcolor>
+				</control>
+				
+				
+			
+			</control>
+			
+			
+			----copy from loginscreen.xml - make include --
+			<control type="radiobutton" id="9000">
+				<include content="Animation_Item_Focus" />
+				<top>86%</top>
+				<width>120</width>
+				<height>120</height>
+				<centerleft>50%</centerleft>
+				<textureradioonfocus colordiffuse="$VAR[color_profilelogin_text_main]">icons/shutdown_out.png</textureradioonfocus> 
+				<textureradioonnofocus colordiffuse="ff131313">icons/shutdown_out.png</textureradioonnofocus>
+				<textureradioofffocus colordiffuse="$VAR[color_profilelogin_text_main]">icons/shutdown_out.png</textureradioofffocus>
+				<textureradiooffnofocus colordiffuse="ff131313">icons/shutdown_out.png</textureradiooffnofocus>
+				
+				<!-- 
+				<textureradioonfocus colordiffuse="$VAR[color_home_menu_itempanel_fo]">icons/shutdown_out.png</textureradioonfocus>
+				<textureradioonnofocus colordiffuse="$VAR[color_home_menu_itempanel_nf]">icons/shutdown_out.png</textureradioonnofocus>
+				<textureradioofffocus colordiffuse="$VAR[color_home_menu_itempanel_fo]">icons/shutdown_out.png</textureradioofffocus>
+				<textureradiooffnofocus colordiffuse="$VAR[color_home_menu_itempanel_nf]">icons/shutdown_out.png</textureradiooffnofocus>
+				-->
+				<textoffsetx />
+				<radiowidth>120</radiowidth>
+				<radioheight>120</radioheight>
+				<textureradioondisabled />
+				<textureradiooffdisabled  />
+				<texturefocus />
+				<texturenofocus />
+				<focusedcolor />
+				<textcolor />
+				<label />
+				<selected />
+				<onup>5555</onup>
+				<ondown>5555</ondown>
+				<onleft>5555</onleft>
+				<onright>5555</onright>
+				<onclick>ActivateWindow(shutdownmenu)</onclick>
+			</control>
+			-----
+			
+			
+			<control type="panel" id="5555">
+				<orientation>vertical</orientation>
+				<preloaditems>4</preloaditems>
+				<scrolltime tween="quadratic">400</scrolltime>
+				<centertop>55%</centertop>
+				<centerleft>50%</centerleft>
+				<width>840</width>
+				<height>710</height>
+			get content as container on focus ?
+			suggested movies,shows etc ? big tile fade vis?
+				
+				<ondown>9000</ondown>
+				<itemlayout height="340" width="210">
+					
+					<control type="group">
+						<width>200</width>
+						<height>200</height>
+						<control type="image">
+							<texture colordiffuse="ff131313">colors/white80.png</texture>
+							<top>0</top>
+							<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
+						</control>
+						<control type="image">
+							<bordersize>30</bordersize>
+							<left>10</left>
+							<width>190</width>
+							<height>190</height>
+							<texture background="true" colordiffuse="white">$INFO[ListItem.Art(thumb)]</texture>
+							<aspectratio scalediffuse="true" align="left" aligny="top">scale</aspectratio>
+						</control>
+						<control type="image">
+							<texture colordiffuse="ff252525">colors/white80.png</texture>
+							<top>205</top>
+							<height>90</height>
+							<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
+						</control>
+						<control type="textbox">
+							<top>205</top>
+							<align>center</align>
+							<aligny>center</aligny>
+							<height>90</height>
+							<label>$INFO[ListItem.Label]</label>
+							<textcolor>white</textcolor>
+						</control>
+						
+					</control>
+					
+				</itemlayout>
+			
+				<focusedlayout height="340" width="210">
+					<control type="group">
+						<!-- <include>Animation_Item_Focus</include> -->
+						
+						 <!-- 
+						 <animation type="focus" loop="false" reversible="false">
+							<effect type="fade" time="500"/>
+							<effect type="rotatey" end="360" center="0" tween="back" easing="out" time="1000"/>
+						</animation>
+						-->
+						
+						<!-- on select -->
+						<animation type="focus" loop="false" reversible="false">
+							<effect type="rotatey" end="360" center="100" time="500"/>
+						</animation>
+						
+						<width>200</width>
+						<height>200</height>
+						<control type="image">
+							<texture colordiffuse="white">colors/white80.png</texture>
+							<top>0</top>
+							<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
+						</control>
+						<control type="image">
+							<bordersize>30</bordersize>
+							<left>10</left>
+							<width>190</width>
+							<height>190</height>
+							<texture background="true" colordiffuse="ff131313" diffuse="colors/white.png">$INFO[ListItem.Art(thumb)]</texture>
+							<aspectratio scalediffuse="true" align="left" aligny="top">scale</aspectratio>
+						</control>
+						<control type="image">
+							<texture colordiffuse="white">colors/white.png</texture>
+							<top>205</top>
+							<height>90</height>
+							<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
+						</control>
+						<control type="textbox">
+							<top>205</top>
+							<align>center</align>
+							<aligny>center</aligny>
+							<height>90</height>
+							<label>$INFO[ListItem.Label]</label>
+							<textcolor>ff252525</textcolor>
+						</control>
+					</control>
+				</focusedlayout>
+				<include content="home_mainmenu_content" />
+			</control>
+			
+			<!-- 
+			<control type="panel" id="5556">
+				<orientation>vertical</orientation>
+				<preloaditems>4</preloaditems>
+				<scrolltime tween="quadratic">400</scrolltime>
+				<bottom>150</bottom>
+				<centertop>85%</centertop>
+				<right>500</right>
+				<left>500</left>
+				<centerleft>50%</centerleft>
+				<height>720</height>
+			get content as container on focus ?
+			suggested movies,shows etc ? big tile fade vis?
+				
+				<ondown>9000</ondown>
+				<itemlayout height="340" width="210">
+					
+					<control type="group">
+						
+						<control type="textbox">
+							<top>190</top>
+							<align>center</align>
+							<aligny>center</aligny>
+							<height>90</height>
+							<label>$INFO[ListItem.Label]</label>
+							<textcolor>ff252525</textcolor>
+						</control>
+					</control>
+					
+				</itemlayout>
+			
+				<focusedlayout height="340" width="210">
+					<control type="group">
+						
+						<control type="textbox">
+							<top>190</top>
+							<align>center</align>
+							<aligny>center</aligny>
+							<height>90</height>
+							<label>$INFO[ListItem.Label]</label>
+							<textcolor>ff252525</textcolor>
+						</control>
+					</control>
+				</focusedlayout>
+				<content>$INFO[Container(5555).ListItem.Property(containerpath)]</content>
+			</control>
+			 -->
+		</control>		
+				
+			
 	</include>
 	
 	<include name="home_mainmenu_content">
@@ -1640,7 +1920,7 @@ msgstr "Video-Wiedergabelisten"
 			</include>
 			<include content="mainmenu_item">
 				<param name="id" value="16" />
-				<param name="nr" value="6" />
+				<param name="nr" value="16" />
 			</include>
 			<include content="mainmenu_item">
 				<param name="id" value="17" />
@@ -1747,15 +2027,22 @@ msgstr "Video-Wiedergabelisten"
 			<include content="Menucontrol_Content_Navigation">
 				
 				
-				<control type="button" id="902">
+				<!-- <control type="button" id="902">
 					<label>Gehe zu</label>
 					<label2>sandbox window</label2>
 					<include content="Menucontrol_Button">
 						<param name="section" value="home" />
 					</include>
 					<onclick>ActivateWindow(1123)</onclick>
+				</control> -->
+				<control type="button" id="902">
+					<label>Gehe zu</label>
+					<label2>Media HUB</label2>
+					<include content="Menucontrol_Button">
+						<param name="section" value="home" />
+					</include>
+					<onclick>ActivateWindow(1111)</onclick>
 				</control>
-				
 				
 				
 			</include>

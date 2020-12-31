@@ -24,7 +24,7 @@
 			<info>Weather.FanartCode</info>
 		</control>
 		
-		<include content="GlobalBackground" />
+		<include condition="!String.IsEqual(Skin.String(HomeLayout),MenuTiles)" content="GlobalBackground" />
 		
 		
 		<!-- keep idea
@@ -71,11 +71,21 @@ submenu - restricted depending on custom skinstring mainmenu item - use/show sub
 		</control>
 		
 		<control type="group">
+			<visible>!String.IsEqual(Skin.String(HomeLayout),MenuTiles)</visible>
 			<animation effect="fade" start="100" end="0" time="300" condition="$EXP[Infodialog_IsActive]">Conditional</animation>
 			<!-- Layouts in Early Progress -->
 			<include content="Menucontrol_Home_Custom" condition="Skin.HasSetting(useshortcut_mainmenu)" />
 			<include content="Menucontrol_Home_test1" condition="!Skin.HasSetting(useshortcut_mainmenu)" />
 			<!-- Home_Layout_MainMenuOnly_Center -->
+		</control>
+		
+		<control type="group">
+			
+			<visible>String.IsEqual(Skin.String(HomeLayout),MenuTiles)</visible>
+			
+			<include content="Menucontrol_Home_MenuTiles" />
+				
+			
 		</control>
 		
 		<include content="swan_debug_overlay">
@@ -86,6 +96,8 @@ submenu - restricted depending on custom skinstring mainmenu item - use/show sub
 4  container().FolderPath   $INFO[container().folderpath]
 $INFO[ListItem.FileExtension]
 6  $INFO[Container.FolderPath] and $INFO[ListItemAbsolute(0).label]
+
+6  $INFO[Container(5555).CurrentItem]
 
 
 44 $INFO[Container.ListItem.Label] - $INFO[ListItem.Label]

@@ -6,7 +6,6 @@
 		<control type="group">
 			<visible>Control.IsVisible(502)</visible>
 					
-		
 			<control type="panel" id="502">
 				<animation effect="fade" start="100" end="0" time="650" condition="$EXP[TrailerIsPlaying]">conditional</animation>
 				<orientation>vertical</orientation>
@@ -21,15 +20,19 @@
 				<viewtype label="infocards">infocards</viewtype>
 				
 				<itemlayout height="420" width="800">
-					<include content="template501" />
+					<include content="template501">
+						<param name="is_focused" value="false" />
+					</include>
 				</itemlayout>
 			
 				<focusedlayout height="420" width="800">
-					<include>SetPropOnFocus_HiddenButton</include>
+				
+					
 					<include content="template501">
-						<param name="color" value="white" />
-						<param name="tc" value="ff101010" />
+						<param name="is_focused" value="true" />
+						<include>SetPropOnFocus_HiddenButton</include>
 					</include>
+						
 				</focusedlayout>
 			</control>
 			
@@ -47,139 +50,380 @@
 		<include name="template501">
 			<param name="color" default="ff101010" />
 			<param name="tc" default="white" />
-			<param name="tc_2" default="grey" />
+			<param name="tc_2" default="ffcccccc" />
+			<param name="is_focused" default="true" />
 			
 			<definition>
+			
+			
 				<control type="group">
-					<width>780</width>
-					<height>390</height>  
+					<nested />
+					<width>790</width>
+					<height>400</height>
+					
 					<control type="image">
+						<description>focus frame</description>
+						<texture colordiffuse="white">colors/white.png</texture>
 						<top>0</top>
-						       
+						<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
+						<visible>$PARAM[is_focused]</visible>
+					</control>
+					<control type="image">
+						<description>tile bg</description>
 						<texture colordiffuse="$PARAM[color]">colors/white.png</texture>
+						<top>0</top>
+						<bordersize>5</bordersize>
 						<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
 					</control>
 					<control type="image">
+						<description>diffused fanart</description>
+						<!-- <visible>!String.startswith(listitem.label,..) + String.IsEmpty(listitem.dbid)</visible> -->
 						<top>10</top>
 						<left>10</left>
 						<width>490</width>
 						<height>289</height>
-						<texture background="true" diffuse="diffuse/Spotlight_right_diffuse.png">$INFO[ListItem.Art(fanart)]</texture>
-						<aspectratio scalediffuse="true" align="left" aligny="top">scale</aspectratio>
+						<texture background="true" diffuse="diffuse/Spotlight_right_diffuse.png">$VAR[ImageLayout_fanart]</texture>
+						<aspectratio scalediffuse="false" align="left" aligny="top">scale</aspectratio>
 					</control>
-					
 					<control type="image">
-						<visible>!String.IsEmpty(ListItem.Art(clearlogo))</visible>
+						<description>clear logo</description>
+						<visible>
+						 [
+						  !String.IsEmpty(ListItem.Art(tvshow.clearlogo)) | 
+						  !String.IsEmpty(ListItem.Art(artist.clearlogo)) | 
+						  !String.IsEmpty(ListItem.Art(albumartist.clearlogo)) | 
+						  !String.IsEmpty(ListItem.Art(clearlogo))
+						 ]
+						</visible>
 						<top>0</top>
 						<right>20</right>
 						<width>250</width> 
 						<height>120</height>
-						<texture background="true" diffuse="colors/white80.png">$INFO[ListItem.Art(clearlogo)]</texture>
+						<texture background="true" diffuse="colors/white80.png">$VAR[ListItemClearLogo]</texture>
 						<aspectratio scalediffuse="true" aligny="center">keep</aspectratio>
 					</control>
 					<control type="textbox">
-						<visible>String.IsEmpty(ListItem.Art(clearlogo))</visible>
+						<description>Integer.IsOdd(ListItem.Season) +  clear logo fallback, need title var , e.g. if season show show title</description>
+						<visible>
+						 [
+						 String.IsEmpty(ListItem.Art(clearlogo)) + 
+						 String.IsEmpty(ListItem.Art(tvshow.clearlogo)) + 
+						 String.IsEmpty(ListItem.Art(artist.clearlogo)) + 
+						 String.IsEmpty(ListItem.Art(albumartist.clearlogo))
+						 ]
+						</visible>
 						<top>0</top>
 						<right>20</right>
 						<width>250</width> 
-						<height>120</height>
+						<height>135</height>
 						<info>listitem.title</info>
 						<font>debug</font>
-						<textcolor>$PARAM[tc_2]</textcolor>
+						<textcolor>white</textcolor>
 						<align>center</align>
 					</control>
-					
-					<!-- 
-					<include content="StarsRating_Image">
-						<top>100</top>
-						<right>80</right>
-						<param name="width" value="100" />
-						<param name="height" value="20" />
-						<param name="alignx" value="center" />
-						<param name="colordiffuse" value="$PARAM[tc]" />
-					</include> 
-					-->
-					
-					
-					<control type="image">
-						<visible>!Container.Content(movies)</visible>
-						<bottom>15</bottom>
-						<right>60</right>
-						<width>100</width>
-						<height>25</height>
-						<texture colordiffuse="$PARAM[tc]">flags/ratings/tvdb_color.png</texture>
-						<aspectratio align="right">keep</aspectratio>
-					</control>
-					<control type="image">
-						<visible>Container.Content(movies)</visible>
-						<bottom>15</bottom>
-						<right>60</right>
-						<width>100</width>
-						<height>25</height>
-						<texture>flags/ratings/themoviedb_color.png</texture>
-						<aspectratio align="right">keep</aspectratio>
-					</control>
 					<control type="textbox">
-						<bottom>15</bottom>
-						<right>20</right>
-						<width>50</width>
-						<height>25</height>
-						<info>listitem.rating</info>
-						<font>debugtiny</font>
-						<align>right</align>
-						<textcolor>cyan</textcolor>
-						
-					</control>
-					
-					
-					
-					<control type="textbox">
-						<top>120</top>
+						<description>item description e.g. plot</description>
+						<visible>!String.IsEqual(ListItem.DBtype,season)</visible>
+						<top>130</top>
 						<right>20</right>
 						<left>510</left>
 						<width>250</width> 
-						<height>200</height>
-						<info>listitem.plot</info>
+						<bottom>70</bottom>
+						<label>$VAR[Plots]</label>
 						<font>font20_title</font>
-						<!-- <align>justify</align> -->
 						<textcolor>$PARAM[tc_2]</textcolor>
 						<align>center</align>
+						<aligny>center</aligny>
+						<autoscroll delay="5000" time="4000" repeat="10000">$PARAM[is_focused]</autoscroll>
+					</control>
+					
+					<control type="group">
+						<visible>String.IsEqual(ListItem.DBtype,season)</visible>
+						<description>season got no plots</description>
+						<control type="textbox">
+							
+							<top>120</top>
+							<right>20</right>
+							<width>250</width> 
+							<height>40</height>
+							<info>listitem.label</info>
+							<font>InfoCommon</font>
+							<textcolor>$PARAM[tc_2]</textcolor>
+							<align>center</align>
+						</control>
+						<control type="textbox">
+							<top>180</top>
+							<right>20</right>
+							<width>250</width> 
+							<bottom>70</bottom>
+							<label>$INFO[ListItem.Year,Yahr  [B],[/B]][CR][CR]$INFO[ListItem.Property(TotalEpisodes),Folgen : [B],[/B]][CR]$INFO[ListItem.Property(UnWatchedEpisodes),Nicht gesehen : [B],[/B]]</label>
+							<font>debugtiny</font>
+							<textcolor>$PARAM[tc_2]</textcolor>
+							<align>center</align>
+							<aligny>top</aligny>
+						</control>
 					</control>
 					
 					
+					<control type="group">
+						<description>should be easiest but variable usage failing - when it comes to colors</description>
+						<visible>false</visible>
+						<control type="image">
+							<visible>!String.IsEmpty(ListItem.Rating)</visible>
+							<bottom>15</bottom>
+							<right>60</right>
+							<width>100</width>
+							<height>25</height>
+							<texture>$VAR[502_ratingimage]</texture>
+							<aspectratio align="right">keep</aspectratio>
+						</control>
+						<control type="textbox">
+							<visible>!String.IsEmpty(ListItem.Rating)</visible>
+							<bottom>15</bottom>
+							<right>20</right>
+							<width>50</width>
+							<height>25</height>
+							<label>$INFO[ListItem.Rating]</label>
+							<font>debugtiny</font>
+							<align>right</align>
+							<textcolor>$VAR[502_ratingcolor]</textcolor>
+						</control>
+					</control>
 					
-					----
-					<include content="framedflag">
+					<control type="group">
+						<description>visible condition usage</description>
+						<include content="var_rating_workaraound">
+							<param name="rating" value="tvdb" />
+							<param name="rating_image" value="tvdb" />
+						</include>
+						<include content="var_rating_workaraound">
+							<param name="rating" value="themoviedb" />
+							<param name="rating_image" value="themoviedb" />
+						</include>
+						<include content="var_rating_workaraound">
+							<param name="rating" value="imdb" />
+							<param name="rating_image" value="imdb" />
+						</include>
+						<include content="var_rating_workaraound">
+							<param name="rating" value="metacritic" />
+							<param name="rating_image" value="metacritic" />
+						</include>
+						<include content="var_rating_workaraound">
+							<param name="rating" value="tomatometerallaudience" />
+							<param name="rating_image" value="tomatometerallaudience" />
+						</include>
+						<include content="var_rating_workaraound">
+							<param name="rating" value="tomatometerallcritics" />
+							<param name="rating_image" value="tomatometerallcritics" />
+						</include>
+						<include content="var_rating_workaraound">
+							<param name="rating" value="tomatometeravgaudience" />
+							<param name="rating_image" value="tomatometeravgaudience" />
+						</include>
+						<include content="var_rating_workaraound">
+							<param name="rating" value="tomatometeravgcritics" />
+							<param name="rating_image" value="tomatometeravgcritics" />
+						</include>
+						
+						<control type="image">
+							<visible>
+                             !String.IsEmpty(ListItem.Rating) + [
+                             String.IsEmpty(ListItem.Rating(tvdb)) + 
+                             String.IsEmpty(ListItem.Rating(themoviedb)) + 
+                             String.IsEmpty(ListItem.Rating(imdb)) + 
+                             String.IsEmpty(ListItem.Rating(metacritic)) + 
+                             String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + 
+                             String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + 
+                             String.IsEmpty(ListItem.Rating(tomatometeravgaudience)) + 
+                             String.IsEmpty(ListItem.Rating(tomatometeravgcritics))
+                             ]
+                            </visible>
+							<bottom>15</bottom>
+							<right>60</right>
+							<width>100</width>
+							<height>25</height>
+							<texture>flags/ratings/star.png</texture>
+							<aspectratio align="right">keep</aspectratio>
+						</control>
+						<!-- meeh
+						<control type="image">
+							<visible>!String.IsEmpty(ListItem.UserRating)</visible>
+							<bottom>10</bottom>
+							<right>160</right>
+							<width>100</width>
+							<height>35</height>
+							<texture>flags/ratings/userrating.png</texture> to thin
+							<aspectratio align="right">keep</aspectratio>
+						</control>
+						<control type="textbox">
+							<visible>!String.IsEmpty(ListItem.UserRating)</visible>
+							<bottom>15</bottom>
+							<right>130</right>
+							<width>50</width>
+							<height>25</height>
+							<label>$INFO[ListItem.UserRating]</label>
+							<font>debugtiny</font>
+							<align>right</align>
+							<textcolor>red</textcolor>
+						</control>
+						 -->
+					</control>
+					
+					<control type="button">
+						<visible>false</visible>
+						<visible>!String.IsEmpty(ListItem.Genre)</visible>
+						<align>center</align>
+						<textcolor>$PARAM[tc]</textcolor>
+						<textoffsetx>10</textoffsetx>
+						<disabledcolor>$PARAM[tc]</disabledcolor>
+						<texturefocus border="2" colordiffuse="$PARAM[tc]">frames/frametest.png</texturefocus>
+						<texturenofocus border="2" colordiffuse="$PARAM[tc]">frames/frametest.png</texturenofocus>
+						<enable>false</enable>
 						<bottom>10</bottom>
 						<left>10</left>
-						<param name="textcolor" value="$PARAM[tc]" />
-						<param name="color" value="$PARAM[tc]" />
-						<visible>!String.IsEmpty(ListItem.Genre)</visible>
 						<width min="32">auto</width>
 						<height>30</height>
 						<font>debugtiny</font>
 						<label>$INFO[ListItem.Genre]</label>
-					</include>
+					</control>
 					
-					
-					<!-- <control type="label">
-						<bottom>10</bottom>
-						<right>10</right>
+					<control type="label">
+						<description>genre, like to have it framed</description>
+						<visible>!String.IsEmpty(ListItem.Genre)</visible>
+						<bottom>15</bottom>
+						<left>15</left>
+						<width>auto</width>
 						<height>30</height>
-						<width>300</width>
-						<align>right</align>
 						<font>debugtiny</font>
-						
-						<label>$VAR[Meta_Top_Details]</label>
 						<textcolor>$PARAM[tc]</textcolor>
-					</control> -->
+						<label>$INFO[ListItem.Genre]</label>
+					</control>
+					
+					<control type="label">
+						<description>genre, like to have it framed</description>
+						<visible>String.IsEqual(ListItem.DBtype,episode)</visible>
+						<bottom>50</bottom>
+						<left>15</left>
+						<width>auto</width>
+						<height>30</height>
+						<font>MenucontrolItem</font>
+						<textcolor>$PARAM[tc]</textcolor>
+						<label>$INFO[ListItem.Season,Staffel  [B],[/B]]$INFO[ListItem.Episode,   Folge  [B],[/B]]</label>
+					</control>
 					
 					
 					
+					<control type="group">
+						<description>progress bar, bad in laxout design, bad for seasons</description>
+						
+						<top>280</top>
+						<left>20</left>
+						<width>480</width>
+						<control type="progress">
+							<top>30</top>
+							<height>2</height>
+							<align>left</align>
+							<visible>Integer.IsGreater(ListItem.PercentPlayed,0) + ListItem.IsResumable</visible>
+							<info>ListItem.PercentPlayed</info>
+						</control>
+					</control>
+					
+					</control>
 					
 					
-				</control>
+					
+					<control type="image">
+						<visible>false</visible>
+						<description>indicator tile bg</description>
+						<texture colordiffuse="$PARAM[color]">colors/white.png</texture>
+						<right>-50</right>
+						<width>60</width>
+						<top>5</top>
+						<height>390</height>
+						<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
+					</control>
+					<control type="group">
+						<visible>false</visible>
+						<description>watched indicator NO BAR only if item width ext to 825, wished 800</description>
+						
+						<centertop>50%</centertop>
+						<right>-50</right>
+						<width>50</width>
+						<height>50</height>
+						
+						<control type="image">
+							<height>35</height>
+							<width>35</width>
+							<align>right</align>
+							<bordersize>3</bordersize>
+							<bordertexture colordiffuse="white">watched.png</bordertexture>
+							<texture colordiffuse="ff101010">watched.png</texture>
+							
+						</control>
+						<control type="image">
+							<height>35</height>
+							<width>35</width>
+							<bordersize>5</bordersize>
+							<align>right</align>
+							<texture colordiffuse="cyan">overlaywatched.png</texture>
+							
+						</control>
+					</control>
+				
 			</definition>
 		</include>
 		
+		
+		
+		<variable name="502_ratingimage">
+			<value condition="!String.IsEmpty(ListItem.Rating(tvdb))">flags/ratings/tvdb_color.png</value>
+			<value condition="!String.IsEmpty(ListItem.Rating(themoviedb))">flags/ratings/themoviedb_color.png</value>
+			<value condition="!String.IsEmpty(ListItem.Rating)">icons/star.png</value>
+			<value></value>
+		</variable>
+		
+		<variable name="502_ratingcolor">
+			<value condition="!String.IsEmpty(ListItem.Rating(tvdb))">FF388E3C</value>
+			<value condition="!String.IsEmpty(ListItem.Rating(themoviedb))">FF00FFFF</value>
+			<value condition="!String.IsEmpty(ListItem.Rating(imdb))">ffc1c127</value>
+			<value condition="!String.IsEmpty(ListItem.Rating)">FFFFFFFF</value>
+			<value>FFCE4421</value>
+		</variable>
+		
+		<variable name="502_ratinglabel">
+			<value condition="!String.IsEmpty(ListItem.Rating(tvdb))">$INFO[ListItem.Rating(tvdb)]</value>
+			<value condition="!String.IsEmpty(ListItem.Rating(themoviedb))">$INFO[ListItem.Rating(themoviedb)]</value>
+			<value condition="!String.IsEmpty(ListItem.Rating)">$INFO[listitem.rating]</value>
+			<value>empty</value>
+		</variable>
+		
+		
+		<include name="var_rating_workaraound">
+		
+		<definition>
+			<control type="image">
+				<description>tvdb</description>
+				<visible>!String.IsEmpty(ListItem.Rating($PARAM[rating]))</visible>
+				<bottom>15</bottom>
+				<right>60</right>
+				<width>100</width>
+				<height>25</height>
+				<texture>flags/ratings/$PARAM[rating_image]_color.png</texture>
+				<aspectratio align="right">keep</aspectratio>
+			</control>
+			<control type="textbox">
+				<description>wtf why does colors work correct that way</description>
+				<visible>!String.IsEmpty(ListItem.Rating)</visible>
+				<bottom>15</bottom>
+				<right>20</right>
+				<width>50</width>
+				<height>25</height>
+				<label>$INFO[ListItem.Rating]</label>
+				<font>debugtiny</font>
+				<align>right</align>
+				<textcolor>$VAR[502_ratingcolor]</textcolor>
+			</control>
+			
+		</definition>
+		</include>
 </includes>
