@@ -1,0 +1,1407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includes>
+
+
+<include name="button1">
+	<textoffsetx>0</textoffsetx>
+	<width>400</width>
+	<texturefocus colordiffuse="red">diffuse/poster_reflect.png</texturefocus>
+	<texturenofocus colordiffuse="white">diffuse/poster_reflect.png</texturenofocus>
+	<font>HUB_WidgetSubHeader</font>
+</include>
+
+<!-- 
+videodb://musicvideos/titles/?xsp=%7B%22rules%22%3A%7B%22or%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(MusicInfoEncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</content>
+-->
+		
+			
+
+
+<variable name="musicinfo_99">
+	<value condition="Container.Content(Artists) | String.IsEqual(ListItem.DBType,artist)">musicdb://artists/$INFO[ListItem.dbid]/?albumartistsonly=false&amp;artistid=$INFO[ListItem.dbid]</value>
+	<value>musicdb://albums/$INFO[ListItem.dbid]/?albumartistsonly=false&amp;albumid=$INFO[ListItem.dbid]</value>
+</variable>
+
+<variable name="ArtistOrTitle">
+	<value condition="!String.IsEmpty(ListItem.Title)">$INFO[ListItem.Title]</value>
+	<value>$INFO[ListItem.Artist]</value>
+</variable>
+
+
+songinformation 	WINDOW_DIALOG_SONG_INFO 	10135 	DialogMusicInfo.xml 
+<variable name="Info_Thumb">
+	<!-- <value condition="!String.IsEmpty(ListItem.Art(artist.thumb)) + [[Container.Content(Songs) | String.IsEqual(ListItem.DBType,song)] | [Container.Content(Albums) | String.IsEqual(ListItem.DBType,album)]]">$INFO[ListItem.Art(artist.thumb)]</value> -->
+	<value>$INFO[ListItem.Art(thumb)]</value>
+</variable>
+$INFO[ListItem.Art(artist.thumb)]
+
+
+<include name="Musicinfo_Layout2">
+	
+	<control type="group">
+		<control type="image">
+			<texture background="true" colordiffuse="ff101010">colors/white.png</texture>
+		</control>
+		
+		
+		<control type="image">
+			<top>10</top>
+			<left>10</left>
+			<width>980</width>
+			<height>580</height>
+			<texture background="true" diffuse="diffuse/Spotlight_right_diffuse.png">$VAR[ImageLayout_fanart]</texture>
+			<aspectratio scalediffuse="true" align="left" aligny="top">scale</aspectratio>
+		</control>
+		
+					<control type="videowindow">
+						<width>100%</width>
+						<height>100%</height>
+					</control>
+		
+		<control type="image">
+			<top>30</top>
+			<left>800</left>
+			<height>200</height>
+			<texture background="true">$VAR[ListItemClearLogo]</texture>
+			<aspectratio scalediffuse="true" align="center" aligny="top">keep</aspectratio>
+		</control>
+		
+		
+		<control type="textbox">
+				<top>300</top>
+				<width>700</width>
+				<height>290</height>
+				<left>920</left>
+				<label>$VAR[plot]</label>
+				<font>debug</font>
+				<aligny>bottom</aligny>
+				<align>center</align>
+			</control>
+			
+			
+		<include content="Universal_Container">
+				<param name="id" value="99" />
+				<param name="visible" value="Integer.IsGreater(Container(50).NumItems,0) + !Container(50).IsUpdating" />
+				<param name="type_height" value="300" />
+				<param name="tags_visible" value="true" />
+				<param name="layout_height" value="280" />
+				<param name="layout_width" value="225" />
+				<param name="itemheight" value="220" />
+				<param name="itemwidth" value="220" />
+				<param name="ls_overlay_visible" value="true" />
+				<param name="layout" value="square" />
+				
+				<left>100</left>
+				<top>650</top>
+				
+				<onup>8000</onup>
+				<ondown>8000</ondown>
+				<onleft>50</onleft>
+				<onright>50</onright>
+				
+				<content>musicdb://artists/$INFO[ListItem.dbid/]</content>
+			</include>
+
+
+
+
+			
+			<control type="grouplist" id="8000">
+			icons left, slide out on focus, like shortcut menucontrol, need fix pos/anim
+				<animation effect="fade" start="100" end="0" time="350" reversible="true" condition="String.IsEqual(Window.Property(AdditionalInfo),infocontainer)">Conditional</animation>
+				<left>-340</left>
+				<height>100%</height>
+				<width>600</width>
+				<top>25%</top>
+				<bottom>25%</bottom>
+				<itemgap>10</itemgap>
+				
+				<onup>50</onup>
+				<ondown>50</ondown>
+				
+				<onup>8000</onup>
+				<ondown>8000</ondown>
+				<onleft>50</onleft>
+				<onright>50</onright>
+				<pagecontrol>60</pagecontrol>
+				<orientation>vertical</orientation>
+				
+				
+				<include content="IconButton">
+					<param name="id" value="6" />
+					<param name="label" value="native_Refresh" />
+					<param name="radiobutton_texture" value="buttons/osd/play_fo" />
+				</include>
+				<include content="IconButton">
+					<param name="id" value="7" />
+					<param name="label" value="native_rate" />
+					<param name="radiobutton_texture" value="buttons/osd/play_fo" />
+				</include>
+				<include content="IconButton">
+					<param name="id" value="10" />
+					<param name="label" value="native_get thumb" />
+					<param name="radiobutton_texture" value="buttons/osd/play_fo" />
+				</include>
+				<include content="IconButton">
+					<param name="id" value="11" />
+					<param name="label" value="native_lastfm" />
+					<param name="radiobutton_texture" value="buttons/osd/play_fo" />
+				</include>
+				<include content="IconButton">
+					<param name="id" value="12" />
+					<param name="label" value="native_get fanart" />
+					<param name="radiobutton_texture" value="buttons/osd/play_fo" />
+				</include>
+				<include content="IconButton">
+					<param name="id" value="99" />
+					<param name="label" value="textviever_showinfo_big" />
+					<param name="radiobutton_texture" value="buttons/osd/play_fo" />
+				</include>
+				<include content="IconButton">
+					<param name="id" value="98" />
+					<param name="label" value="ab_get images" />
+					<param name="radiobutton_texture" value="buttons/osd/play_fo" />
+					<onclick condition="String.IsEqual(ListItem.DBType,artist) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=artist, dbid=$INFO[ListItem.DBID])</onclick>
+					<onclick condition="String.IsEqual(ListItem.DBType,album) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=album, dbid=$INFO[ListItem.DBID])</onclick>
+					<onclick condition="String.IsEqual(ListItem.DBType,song) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=song, dbid=$INFO[ListItem.DBID])</onclick>
+					<visible>[String.IsEqual(ListItem.DBType,album) | String.IsEqual(ListItem.DBType,song) | String.IsEqual(ListItem.DBType,artist)] + system.hasaddon(script.artwork.beef)</visible>
+			
+				</include>
+				
+			</control>
+			
+			<control type="textbox">
+				<bottom>80</bottom>
+				<height>100</height>
+				<left>120</left>
+				<label>info of focused album...[CR]yahr 19836[CR]und mehr[CR]noh mehr[CR]viel mehr</label>
+				<font>debugtiny</font>
+				<aligny>bottom</aligny>
+			</control>
+			
+
+</control>
+
+
+</include>
+
+<include name="Musicinfo_Layout1">
+	<control type="group">
+	
+				
+		<animation type="WindowOpen" reversible="false">
+			<effect type="zoom" start="0" end="100" center="50%,50%" tween="quadratic" easing="in" time="500" />
+			<effect type="fade" delay="160" end="100" time="240" />
+		</animation>
+		<animation type="WindowClose" reversible="false">
+			<effect type="zoom" start="100" end="0" center="50%,50%" tween="quadratic" easing="out" time="200" />
+			<effect type="fade" start="100" end="0" time="240" />
+		</animation>
+
+	<!-- 	STATIC -->
+		<!-- optional ? tend prefer global bg atm -->
+		<control type="image">
+			<texture background="true" colordiffuse="ff191919">colors/white.png</texture>
+		</control>
+		
+		
+		<control type="image">
+			<top>0</top>
+			<width>80%</width>
+			<height>80%</height>
+			<centerleft>50%</centerleft>
+			<texture background="true" diffuse="diffuse/tet355.png">$VAR[ImageLayout_fanart]</texture>
+			<aspectratio scalediffuse="true" align="center" aligny="top">keep</aspectratio>
+			<animation effect="fade" start="100" end="20" time="0" condition="true">conditional</animation>
+		</control>
+		
+		
+		
+		
+	<!-- scrollpages	 -->
+		<control type="grouplist" id="33">
+			
+				<width>100%</width>
+				<height>100%</height>
+				<top>0</top>
+				
+				
+				
+				<scrolltime tween="quadratic" easing="in">400</scrolltime>
+				<itemgap>0</itemgap>
+				<orientation>vertical</orientation>
+				<usecontrolcoords>true</usecontrolcoords>
+	
+	
+				
+				<control type="group" id="3301">
+					<description>PAGE 1 METADATA - INFO</description>
+					<height>1080</height>
+					
+					<control type="button" id="3333">
+						<description>may textctrl</description>
+						<height>1</height>
+						<texturefocus />
+						<texturenofocus />
+						
+						
+						<onleft>8000</onleft>
+						<onright>8000</onright>
+						
+						
+						<ondown condition="!Control.IsVisible(50)">98</ondown>
+						<onup condition="!Control.IsVisible(50)">98</onup>
+						
+						<ondown condition="Control.IsVisible(50)">50</ondown>
+						<onup condition="Control.IsVisible(50)">50</onup>
+						
+					</control>
+					
+					<control type="image">
+						<visible>false</visible>
+						<top>20</top>
+						<right>50</right>
+						<height>200</height>
+						<texture background="true">$VAR[ListItemClearLogo]</texture>
+						<aspectratio scalediffuse="true" align="right" aligny="top">keep</aspectratio>
+						<!-- <animation effect="fade" start="100" end="30" time="0" condition="true">Conditional</animation> -->
+				
+					</control>
+			
+			
+			
+					<control type="image">
+						<bordersize>1</bordersize>
+						<bordertexture>colors/white.png</bordertexture>
+						<texture background="true">$VAR[Info_Thumb]</texture>
+						<aspectratio scalediffuse="false" align="right" aligny="top">keep</aspectratio>
+						<top>410</top>
+						<width>300</width>
+						<left>350</left>
+						<!-- 
+						<width>260</width>
+						<left>400</left>
+						-->
+					</control>
+		
+					<control type="grouplist">
+						<description>metadata 1</description>
+						<animation effect="fade" start="100" end="0" time="350" reversible="true" condition="Control.HasFocus(97) | Control.HasFocus(98) | Control.HasFocus(96)">Conditional</animation>
+				
+						<!-- <top>300</top> -->
+						<top>390</top>
+						<centerleft>50%</centerleft>
+						<left>700</left>
+						<right>300</right>
+						<height>800</height>
+						
+						<itemgap>20</itemgap>
+							
+							
+							<control type="label">
+								<height>50</height>
+								<width>850</width>
+								<label>$VAR[ArtistOrTitle]</label>
+								<font>font45_title</font>
+								<aligny>bottom</aligny>
+								<align>justify</align>
+								<textcolor>white</textcolor>
+							</control>	
+							<control type="label">
+								<height>20</height>
+								<width>850</width>
+								<label>$INFO[ListItem.Genre]</label>
+								<font>debugtiny</font>
+								<aligny>bottom</aligny>
+								<align>justify</align>
+								<textcolor>grey</textcolor>
+							</control>
+							<control type="textbox">
+								<height>350</height>
+								<width>850</width>
+								<label>$VAR[plot]</label>
+								<font>MenucontrolItem</font>
+								<aligny>bottom</aligny>
+								<align>justify</align>
+								<textcolor>white</textcolor>
+							</control>
+							<control type="textbox">
+								<visible>false</visible>
+								<description>fallback if no desc</description>
+								<height>350</height>
+								<width>850</width>
+								<label>$VAR[plot]</label>
+								<font>MenucontrolItem</font>
+								<aligny>bottom</aligny>
+								<align>justify</align>
+								<textcolor>white</textcolor>
+							</control>
+					</control>
+					
+					
+					<control type="textbox">
+						
+						<visible>true</visible>
+						
+						<animation effect="fade" start="100" end="0" time="350" reversible="true" condition="Control.HasFocus(97) | Control.HasFocus(98) | Control.HasFocus(96)">Conditional</animation>
+						<top>500</top>
+						<right>50</right>
+						<width>270</width>
+						<height>600</height>
+						<height>200</height>
+						<label>$INFO[ListItem.Artist,ARTIST  :,][CR]$INFO[ListItem.AlbumArtist,AlbumArtist  :,][CR]$INFO[ListItem.Property(Artist_Born),artist born  :,][CR]$INFO[ListItem.Property(Artist_Died),died  :,][CR]$INFO[ListItem.Property(Artist_Formed),formed  :,][CR]$INFO[ListItem.Property(Artist_Disbanded),disbanded  :,][CR]$INFO[ListItem.Property(Artist_YearsActive),years active  :,][CR]$INFO[ListItem.Property(instrument),AlbumArtist  :,][CR]$INFO[ListItem.Property(instrument),AlbumArtist  :,ENDE]</label>
+						<font>debugtiny</font>
+						<align>right</align>
+						<aligny>bottom</aligny>
+					
+						<textcolor>grey</textcolor>
+						</control>
+					
+					experiment - limt 4 random/top rated songs
+					
+					
+					<control type="group">
+						<visible>false</visible>
+											<visible>!Skin.HasSetting(ShowRandom_List)</visible>
+						<visible>Integer.IsGreater(Container(90).NumItems,0) | !Container(90).IsUpdating</visible>
+						<top>700</top>
+						<left>200</left>
+						<right>500</right>
+						<height>50</height>
+							
+						<control type="image">
+							<top>43</top>
+							<left>-10</left>
+							<height>1</height>
+							<texture background="true">colors/white40.png</texture>
+						</control>
+						<control type="label">
+							<left>10</left>
+							<top>3</top>
+							<height>30</height>
+							<width>500</width>
+							<font>debugtiny</font>
+							<align>left</align>
+							<textcolor>$VAR[color_lib_text_main]</textcolor>
+							<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+							<label>TOP RATED Songs By [B]$INFO[listitem.artist][/B]</label>
+						</control>
+						
+						<!-- 
+						<control type="label">
+							<left>10</left>
+							<top>3</top>
+							<height>30</height>
+							<width>500</width>
+							<font>debugtiny</font>
+							<align>left</align>
+							<textcolor>$VAR[color_lib_text_main]</textcolor>
+							<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+							<label>#</label>
+						</control>
+						-->
+						<control type="label">
+							<left>50</left>
+							<top>3</top>
+							<height>30</height>
+							<width>450</width>
+							<font>debugtiny</font>
+							<align>left</align>
+							<textcolor>$VAR[color_lib_text_main]</textcolor>
+							<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+							<label> T I T L E</label>
+						</control>
+						<control type="label">
+							<top>3</top>
+							<left>510</left>
+							<height>30</height>
+							<width>500</width>
+							<font>debugtiny</font>
+							<align>left</align>
+							<textcolor>$VAR[color_lib_text_main]</textcolor>
+							<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+							<label>A R T I S T</label>
+						</control>
+						<control type="label">
+							<top>3</top>
+							<left>1020</left>
+							<width>220</width>
+							<font>CommonTag</font>
+							<align>left</align>
+							<textcolor>$VAR[color_lib_text_secondary]</textcolor>
+							<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+							<label>G E N R E</label>
+						</control>
+						
+					</control>
+					<control type="panel" id="90">
+						<visible>false</visible>
+						<ondown condition="!Control.IsVisible(50)">98</ondown>
+						<onup condition="!Control.IsVisible(50)">98</onup>
+						
+						<ondown condition="Control.IsVisible(50)">50</ondown>
+						<onup condition="Control.IsVisible(50)">50</onup>
+						
+						<orientation>vertical</orientation>
+						<visible>Container.Content(artists) | String.IsEqual(ListItem.DBType,artist)</visible>
+						<animation effect="fade" start="100" end="0" time="350" reversible="true" condition="Control.HasFocus(97) | Control.HasFocus(98) | Control.HasFocus(96)">Conditional</animation>
+				
+						<top>750</top>
+						<height>200</height>
+						<left>200</left>
+						<right>500</right>
+						<preloaditems>2</preloaditems>
+						<scrolltime tween="quadratic">400</scrolltime>
+						
+						<onup>98</onup>
+						<onleft>8000</onleft>
+						
+						<onright>97</onright>
+						<ondown>96</ondown>
+					
+						<itemlayout height="35">
+						
+								<control type="group">
+									<height>30</height>
+									
+									<control type="label">
+										<left>10</left>
+										<top>3</top>
+										<height>30</height>
+										<width>500</width>
+										<font>debugtiny</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_main]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.Tracknumber]</label>
+									</control>
+									<control type="label">
+										<left>50</left>
+										<top>3</top>
+										<height>30</height>
+										<width>450</width>
+										<font>debugtiny</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_main]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.Title]</label>
+									</control>
+									<control type="label">
+										<top>3</top>
+										<left>510</left>
+										<height>30</height>
+										<width>500</width>
+										<font>debugtiny</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_main]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.Artist]</label>
+									</control>
+									<control type="label">
+										<top>3</top>
+										<left>1020</left>
+										<width>320</width>
+										<font>CommonTag</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_secondary]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.genre,,     ]</label>
+									</control>
+									<control type="label">
+										<top>3</top>
+										<left>1350</left>
+										<width>100</width>
+										<font>CommonTag</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_secondary]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.Duration,[B],[/B]]</label>
+									</control>
+									
+									<include content="StarsRating_Image">
+										<centertop>50%</centertop>
+										<right>115</right>
+										<param name="width" value="110" />
+										<param name="height" value="50" />
+										<param name="colordiffuse" value="red" />
+									</include>	
+								
+								
+							</control>
+						</itemlayout>
+						<focusedlayout height="35">
+						
+								<include>SetPropOnFocus_HiddenButton</include>
+							
+						
+								<control type="image">
+									<bordertexture colordiffuse="$VAR[color_lib_text_main]">artworkdiffuse/banner.png</bordertexture>
+									<texture colordiffuse="ff101010" background="true">colors/white60.png</texture>
+									<bordersize>3</bordersize>
+								</control>
+							
+								<control type="group">
+									<height>30</height>
+									<control type="label">
+										<left>10</left>
+										<top>3</top>
+										<height>30</height>
+										<width>500</width>
+										<font>debugtiny</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_main]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.Tracknumber]</label>
+									</control>
+									<control type="label">
+										<left>50</left>
+										<top>3</top>
+										<height>30</height>
+										<width>450</width>
+										<font>debugtiny</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_main]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.Title]</label>
+									</control>
+									<control type="label">
+										<top>3</top>
+										<left>510</left>
+										<height>30</height>
+										<width>500</width>
+										<font>debugtiny</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_main]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.Artist]</label>
+									</control>
+									<control type="label">
+										<top>3</top>
+										<left>1020</left>
+										<width>320</width>
+										<font>debugtiny</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_secondary]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.genre,,     ]</label>
+									</control>
+									<control type="label">
+										<top>3</top>
+										<left>1350</left>
+										<width>100</width>
+										<font>debugtiny</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_secondary]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.Duration,[B],[/B]]</label>
+									</control>
+									
+									<include content="StarsRating_Image">
+										<centertop>50%</centertop>
+										<right>115</right>
+										<param name="width" value="110" />
+										<param name="height" value="50" />
+										<param name="colordiffuse" value="red" />
+									</include>	
+								
+								
+							</control>
+									
+							
+						</focusedlayout>
+						<!-- random takes up longer -->
+						<!-- <content limit="4" sortby="random" target="music">musicdb://songs/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(MusicInfoEncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22songs%22%7D</content> -->
+						<content limit="4" sortby="userrating" target="music">musicdb://songs/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(MusicInfoEncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22songs%22%7D</content>
+					
+					</control>
+				</control>
+		
+		
+		
+				<control type="group" id="3302">
+					<description>PAGE 2 album top, song bottom, video right</description>
+					<top>-300</top>
+					<height>1080</height>
+					
+					<!-- native just songs ? -->
+					<control type="panel" id="50">
+						<visible>Container.Content(songs) | String.IsEqual(ListItem.DBType,song)</visible>
+						<orientation>horizontal</orientation>
+						<preloaditems>2</preloaditems>
+						<scrolltime tween="quadratic">400</scrolltime>
+						<autoscroll>true</autoscroll>
+						
+						<top>200</top>
+						<height>700</height>
+						
+						<left>200</left>
+						<right>200</right>
+							
+							
+						<onleft>8000</onleft>
+						<onright>98</onright>
+						
+						<onup>3301</onup>
+						
+						<ondown>96</ondown>
+					
+						
+						
+						<itemlayout height="50"  width="550" condition="Container.Content(songs) | String.IsEqual(ListItem.DBType,song)">
+							<control type="group">
+									<height>45</height>
+									
+									<control type="label">
+										<left>0</left>
+										<width>250</width>
+										<font>CommonTag</font>
+										<align>right</align>
+										<textcolor>$VAR[color_lib_text_main]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.label,[B],[/B]]</label>
+									</control>
+									
+									<control type="label">
+										<left>260</left>
+										<width>250</width>
+										<font>CommonTag</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_secondary]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.Label2]</label>
+									</control>
+									
+								</control>	
+						</itemlayout>
+						
+						<focusedlayout height="50" width="550" condition="Container.Content(songs) | String.IsEqual(ListItem.DBType,song)">
+							<control type="group">
+									<height>45</height>
+									<control type="label">
+										<aligny>center</aligny>
+										<left>0</left>
+										<width>250</width>
+										<font>CommonTag</font>
+										<align>right</align>
+										<textcolor>$VAR[color_lib_accent]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.label,[B],[/B]]</label>
+									</control>
+									<control type="label">
+										<aligny>center</aligny>
+										<left>260</left>
+										<width>250</width>
+										<font>CommonTag</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_accent]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.Label2]</label>
+									</control>
+									
+									
+								
+							</control>	
+							
+							</focusedlayout>
+					</control>
+			
+		
+					
+					<!-- Container headings -->
+					<!-- info bar or sheet template(songs) -->
+					<control type="label">
+							<visible>Container.Content(artists) | String.IsEqual(ListItem.DBType,artist)</visible>
+							<top>140</top>
+							<left>200</left>
+							<width>900</width>
+							<height>50</height>
+							<align>left</align>
+							<font>font12bold</font>
+							<textcolor>white</textcolor>
+							<label>A L B U M S</label>
+					</control>
+					<control type="label">
+							<visible>Container.Content(songs) | String.IsEqual(ListItem.DBType,songs)</visible>
+							<top>140</top>
+							<left>200</left>
+							<width>900</width>
+							<height>50</height>
+							<align>left</align>
+							<font>font12bold</font>
+							<textcolor>white</textcolor>
+							<label>S O N G     I N F O</label>
+					</control>
+					
+					<control type="label">
+							<visible>Integer.IsGreater(Container(97).NumItems,0) | Container(97).IsUpdating</visible>
+							<top>500</top>
+							<right>10</right>
+							<width>900</width>
+							<height>50</height>
+							<align>right</align>
+							<font>font12bold</font>
+							<textcolor>white</textcolor>
+							<label>M U S I K V I D E O S</label>
+					</control>
+					<control type="label">
+							<visible>Control.HasFocus(97)</visible>
+							<top>500</top>
+							<right>600</right>
+							<width>900</width>
+							<height>50</height>
+							<align>right</align>
+							<font>font12bold</font>
+							<textcolor>cyan</textcolor>
+							<label>$INFO[Container(97).ListItem.Label, meeeh position   ,]</label>
+					</control>
+					
+						
+					<control type="group">
+						<visible>Container.Content(albums) | String.IsEqual(ListItem.DBType,album)</visible>
+						<top>140</top>
+						<left>200</left>
+						<right>200</right>
+						<height>50</height>
+							
+						<control type="image">
+							<top>43</top>
+							<left>-10</left>
+							<height>1</height>
+							<texture background="true">colors/white40.png</texture>
+						</control>
+						
+						<control type="label">
+							<left>10</left>
+							<top>3</top>
+							<height>30</height>
+							<width>500</width>
+							<font>debugtiny</font>
+							<align>left</align>
+							<textcolor>$VAR[color_lib_text_main]</textcolor>
+							<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+							<label>#</label>
+						</control>
+					
+						<control type="label">
+							<left>50</left>
+							<top>3</top>
+							<height>30</height>
+							<width>450</width>
+							<font>debugtiny</font>
+							<align>left</align>
+							<textcolor>$VAR[color_lib_text_main]</textcolor>
+							<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+							<label> T I T L E</label>
+						</control>
+						<control type="label">
+							<top>3</top>
+							<left>510</left>
+							<height>30</height>
+							<width>500</width>
+							<font>debugtiny</font>
+							<align>left</align>
+							<textcolor>$VAR[color_lib_text_main]</textcolor>
+							<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+							<label>A R T I S T</label>
+						</control>
+						<control type="label">
+							<top>3</top>
+							<left>1020</left>
+							<width>220</width>
+							<font>CommonTag</font>
+							<align>left</align>
+							<textcolor>$VAR[color_lib_text_secondary]</textcolor>
+							<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+							<label>G E N R E</label>
+						</control>
+						<control type="label">
+							<top>3</top>
+							<left>1350</left>
+							<width>200</width>
+							<font>CommonTag</font>
+							<align>left</align>
+							<textcolor>$VAR[color_lib_text_secondary]</textcolor>
+							<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+							<label>D U R A T I O N</label>
+						</control>
+					</control>
+					
+					
+					<control type="panel" id="98">
+						
+						
+						
+						<orientation>horizontal</orientation>
+						
+						<onclick condition="String.IsEqual(Container(98).ListItem.dbtype,album)">PlayMedia(musicdb://albums/$INFO[Container(98).ListItem.dbid]/)</onclick>
+						
+						<preloaditems>2</preloaditems>
+						<scrolltime tween="quadratic">400</scrolltime>
+						
+						<top>200</top>
+						<height>300</height>
+						
+						<left>200</left>
+							
+							
+						<onleft>8000</onleft>
+						<onright>98</onright>
+						
+						<onup>3301</onup>
+						
+						<ondown>96</ondown>
+					
+						<itemlayout height="300" width="230" condition="Container.Content(artists) | String.IsEqual(ListItem.DBType,artist)">
+							<control type="group">
+								<width>220</width>
+								<height>220</height>
+								<include content="UniversalLayout">
+								
+									<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_nf]" />
+									<param name="artwork" value="square" />
+									<param name="get_tags" value="true" />
+									<param name="get_tagbgpanel" value="true" />
+									<param name="autoscroll" value="false" />
+									<param name="bordersize_bg" value="6" />
+									<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_nf]" />
+									<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_nf]" />
+									<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_nf]" />
+								</include>
+							</control>
+							
+						</itemlayout>
+						<focusedlayout height="300" width="230" condition="Container.Content(artists) | String.IsEqual(ListItem.DBType,artist)">
+							<include>SetPropOnFocus_HiddenButton</include>
+				
+							<control type="group">
+								<width>220</width>
+								<height>220</height>
+								<include>Animation_Item_Focus</include>
+								<control type="group">
+									<include content="UniversalLayout">
+										<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_fo]" />
+										<param name="artwork" value="square" />
+										<param name="get_tags" value="true" />
+										<param name="get_tagbgpanel" value="true" />
+										<param name="autoscroll" value="true" />
+										<param name="bordersize_bg" value="4" />
+										<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_fo]" />
+										<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_fo]" />
+										<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_fo]" />
+									</include>
+									<control type="group">
+										<include condition="Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]" content="FocusOverlay">
+											<param name="diffusedimtext" value="artworkdiffuse/usebganel/square.png" />
+										</include>
+										<include condition="!Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]]" content="FocusOverlay">
+											<param name="diffusedimtext" value="artworkdiffuse/square.png" />
+										</include>
+									</control>
+								</control>
+							</control>
+							
+						</focusedlayout>
+					
+					
+						
+						<itemlayout height="50" condition="Container.Content(albums) | String.IsEqual(ListItem.DBType,album)">
+						
+								<control type="group">
+									<height>45</height>
+									
+									<control type="label">
+										<left>10</left>
+										<top>3</top>
+										<height>30</height>
+										<width>500</width>
+										<font>debugtiny</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_main]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.Tracknumber]</label>
+									</control>
+									<control type="label">
+										<left>50</left>
+										<top>3</top>
+										<height>30</height>
+										<width>450</width>
+										<font>debugtiny</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_main]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.Title]</label>
+									</control>
+									<control type="label">
+										<top>3</top>
+										<left>510</left>
+										<height>30</height>
+										<width>500</width>
+										<font>debugtiny</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_main]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.Artist]</label>
+									</control>
+									<control type="label">
+										<top>3</top>
+										<left>1020</left>
+										<width>320</width>
+										<font>CommonTag</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_secondary]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.genre,,     ]</label>
+									</control>
+									<control type="label">
+										<top>3</top>
+										<left>1350</left>
+										<width>100</width>
+										<font>CommonTag</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_secondary]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.Duration,[B],[/B]]</label>
+									</control>
+									
+									<include content="StarsRating_Image">
+										<centertop>50%</centertop>
+										<right>115</right>
+										<param name="width" value="110" />
+										<param name="height" value="50" />
+										<param name="colordiffuse" value="red" />
+									</include>	
+								
+								
+							</control>
+						</itemlayout>
+						<focusedlayout height="50" condition="Container.Content(albums) | String.IsEqual(ListItem.DBType,album)">
+							<include>SetPropOnFocus_HiddenButton</include>
+							
+							
+									<control type="image">
+										<bordertexture colordiffuse="$VAR[color_lib_text_main]">artworkdiffuse/banner.png</bordertexture>
+										<texture colordiffuse="ff101010" background="true">colors/white60.png</texture>
+										<bordersize>3</bordersize>
+									</control>
+							
+							<control type="group">
+									<height>45</height>
+									
+									
+									<control type="label">
+										<left>10</left>
+										<top>3</top>
+										<height>30</height>
+										<width>500</width>
+										<font>debugtiny</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_main]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.Tracknumber]</label>
+									</control>
+									<control type="label">
+										<left>50</left>
+										<top>3</top>
+										<height>30</height>
+										<width>450</width>
+										<font>debugtiny</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_main]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.Title]</label>
+									</control>
+									<control type="label">
+										<top>3</top>
+										<left>510</left>
+										<height>30</height>
+										<width>500</width>
+										<font>debugtiny</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_main]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.Artist]</label>
+									</control>
+									<control type="label">
+										<top>3</top>
+										<left>1020</left>
+										<width>320</width>
+										<font>CommonTag</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_secondary]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.genre,,     ]</label>
+									</control>
+									<control type="label">
+										<top>3</top>
+										<left>1350</left>
+										<width>100</width>
+										<font>CommonTag</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_secondary]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.Duration,[B],[/B]]</label>
+									</control>
+									
+									<include content="StarsRating_Image">
+										<centertop>50%</centertop>
+										<right>115</right>
+										<param name="width" value="110" />
+										<param name="height" value="50" />
+										<param name="colordiffuse" value="red" />
+									</include>	
+								
+								
+							</control>
+									
+							
+						</focusedlayout>
+						
+						
+						<itemlayout height="1"  width="1" condition="Container.Content(songs) | String.IsEqual(ListItem.DBType,song)">
+							
+						</itemlayout>
+						
+						<focusedlayout height="1" width="1" condition="Container.Content(songs) | String.IsEqual(ListItem.DBType,song)">
+								<control type="button">
+									<visible allowhiddenfocus="true">false</visible>
+									<onfocus>SetFocus(50)</onfocus>
+								</control>
+							</focusedlayout>
+						<content>$VAR[musicinfo_99]</content>
+					</control>
+					
+					
+					
+					<control type="panel" id="97">
+						<description>musicvideos</description>
+						<top>550</top>
+						
+						
+						<right>10</right>
+						<width>640</width>
+							
+						<onleft>96</onleft>
+						<onright>96</onright>
+						
+						<onup>3301</onup>
+						
+						<ondown>97</ondown>
+						
+						<orientation>vertical</orientation>
+						
+						<onclick>PlayMedia($INFO[Container(97).ListItem.Filenameandpath],1)</onclick>
+						
+						<!-- <onclick>PlayMedia($INFO[Container(97).ListItem.Filenameandpath])</onclick> -->
+						<!-- <onclick>Dialog.Close(musicinformation)</onclick> -->
+						
+						<preloaditems>2</preloaditems>
+						<scrolltime tween="quadratic">400</scrolltime>
+						
+						
+						
+						
+							<itemlayout height="180" width="320">
+							<control type="group">
+								<width>315</width>
+								<height>175</height>
+								<centertop>50%</centertop>
+										<control type="image">
+											<texture fallback="$INFO[ListItem.Icon]" background="true">$INFO[ListItem.Art(fanart)]</texture>
+											<bordersize>3</bordersize>
+										</control>
+									</control>
+									</itemlayout>
+							<focusedlayout height="180" width="320">
+								<control type="group">
+								<width>315</width>
+								<height>175</height>
+								<centertop>50%</centertop>
+									<control type="image">
+										<texture colordiffuse="white">colors/white.png</texture>
+									</control>
+									<control type="image">
+										<texture fallback="$INFO[ListItem.Icon]" background="true">$INFO[ListItem.Art(fanart)]</texture>
+										<bordersize>3</bordersize>
+									</control>
+								</control>
+							
+							</focusedlayout>
+						
+						
+						<content>videodb://musicvideos/titles/?xsp=%7B%22rules%22%3A%7B%22or%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(MusicInfoEncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</content>
+					</control>
+			
+			<!-- <content>videodb://musicvideos/titles/?xsp=%7B%22rules%22%3A%7B%22or%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(MusicInfoEncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</content> -->
+				
+					<control type="videowindow">
+						<top>440</top>
+						<left>200</left>
+						<width>800</width>
+					</control>
+					
+					<control type="panel" id="96">
+						
+						<orientation>vertical</orientation>
+						<visible>Container.Content(artists) | String.IsEqual(ListItem.DBType,artist)</visible>
+						<!-- <animation type="Focus" reversible="false">
+							<effect type="slide" start="0,0" end="0,-600" center="50%,50%" tween="quadratic" easing="in" time="500" />
+							<effect type="fade" delay="160" end="100" time="240" />
+						</animation>
+						<animation type="Unfocus" reversible="false">
+							<effect type="slide" start="0,-600" end="0,0" center="50%,50%" tween="quadratic" easing="out" time="200" />
+							<effect type="fade" start="100" end="0" time="240" />
+						</animation>
+						 -->
+						<top>550</top>
+						<preloaditems>2</preloaditems>
+						<scrolltime tween="quadratic">400</scrolltime>
+						
+						<height>500</height>
+						
+						<left>200</left>
+						<width>700</width>
+						
+						<onup>98</onup>
+						<onleft>8000</onleft>
+						
+						<onright>97</onright>
+						<ondown>96</ondown>
+					
+						<itemlayout height="50" condition="Container.Content(albums) | String.IsEqual(ListItem.DBType,album)">
+						
+								<control type="group">
+									<height>45</height>
+									
+									<control type="label">
+										<left>10</left>
+										<top>3</top>
+										<height>30</height>
+										<width>500</width>
+										<font>debugtiny</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_main]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.Tracknumber]</label>
+									</control>
+									<control type="label">
+										<left>50</left>
+										<top>3</top>
+										<height>30</height>
+										<width>450</width>
+										<font>debugtiny</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_main]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.Title]</label>
+									</control>
+									<control type="label">
+										<top>3</top>
+										<left>510</left>
+										<height>30</height>
+										<width>500</width>
+										<font>debugtiny</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_main]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.Artist]</label>
+									</control>
+									<control type="label">
+										<top>3</top>
+										<left>1020</left>
+										<width>320</width>
+										<font>CommonTag</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_secondary]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.genre,,     ]</label>
+									</control>
+									<control type="label">
+										<top>3</top>
+										<left>1350</left>
+										<width>100</width>
+										<font>CommonTag</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_secondary]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.Duration,[B],[/B]]</label>
+									</control>
+									
+									<include content="StarsRating_Image">
+										<centertop>50%</centertop>
+										<right>115</right>
+										<param name="width" value="110" />
+										<param name="height" value="50" />
+										<param name="colordiffuse" value="red" />
+									</include>	
+								
+								
+							</control>
+						</itemlayout>
+						<focusedlayout height="50" condition="Container.Content(albums) | String.IsEqual(ListItem.DBType,album)">
+							<include>SetPropOnFocus_HiddenButton</include>
+							
+							
+									<control type="image">
+										<bordertexture colordiffuse="$VAR[color_lib_text_main]">artworkdiffuse/banner.png</bordertexture>
+										<texture colordiffuse="ff101010" background="true">colors/white60.png</texture>
+										<bordersize>3</bordersize>
+									</control>
+							
+							<control type="group">
+									<height>45</height>
+									
+									
+									<control type="label">
+										<left>10</left>
+										<top>3</top>
+										<height>30</height>
+										<width>500</width>
+										<font>debugtiny</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_main]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.Tracknumber]</label>
+									</control>
+									<control type="label">
+										<left>50</left>
+										<top>3</top>
+										<height>30</height>
+										<width>450</width>
+										<font>debugtiny</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_main]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.Title]</label>
+									</control>
+									<control type="label">
+										<top>3</top>
+										<left>510</left>
+										<height>30</height>
+										<width>500</width>
+										<font>debugtiny</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_main]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.Artist]</label>
+									</control>
+									<control type="label">
+										<top>3</top>
+										<left>1020</left>
+										<width>320</width>
+										<font>CommonTag</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_secondary]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.genre,,     ]</label>
+									</control>
+									<control type="label">
+										<top>3</top>
+										<left>1350</left>
+										<width>100</width>
+										<font>CommonTag</font>
+										<align>left</align>
+										<textcolor>$VAR[color_lib_text_secondary]</textcolor>
+										<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+										<label>$INFO[ListItem.Duration,[B],[/B]]</label>
+									</control>
+									
+									<include content="StarsRating_Image">
+										<centertop>50%</centertop>
+										<right>115</right>
+										<param name="width" value="110" />
+										<param name="height" value="50" />
+										<param name="colordiffuse" value="red" />
+									</include>	
+								
+								
+							</control>
+									
+							
+						</focusedlayout>
+						<content target="music">musicdb://albums/$INFO[Container(98).ListItem.dbid]/</content>
+					</control>
+
+				</control>
+			
+			</control>
+			
+			
+
+	</control>
+		
+		
+		
+		
+		
+		<control type="grouplist" id="8000">
+			icons left, slide out on focus, like shortcut menucontrol, need fix pos/anim
+				<animation effect="fade" start="100" end="0" time="350" reversible="true" condition="String.IsEqual(Window.Property(AdditionalInfo),infocontainer)">Conditional</animation>
+				<left>-340</left>
+				<height>100%</height>
+				<width>600</width>
+				<top>25%</top>
+				<bottom>25%</bottom>
+				<itemgap>10</itemgap>
+				
+				<!-- <onup condition="Control.IsVisible(98)">98</onup>
+				<onup condition="Control.IsVisible(50)">50</onup>
+				<ondown condition="Control.IsVisible(98)">98</ondown>
+				<ondown condition="Control.IsVisible(50)">50</ondown>
+				 -->
+				
+				
+				<onleft condition="Control.IsVisible(98)">98</onleft>
+				<onleft condition="Control.IsVisible(50)">50</onleft>
+				
+				<onright condition="Control.IsVisible(98)">98</onright>
+				<onright condition="Control.IsVisible(50)">50</onright>
+			
+				<pagecontrol>60</pagecontrol>
+				<orientation>vertical</orientation>
+				
+				
+				<include content="IconButton">
+					<param name="id" value="6" />
+					<param name="label" value="native_Refresh" />
+					<param name="radiobutton_texture" value="buttons/osd/play_fo" />
+				</include>
+				<include content="IconButton">
+					<param name="id" value="7" />
+					<param name="label" value="native_rate" />
+					<param name="radiobutton_texture" value="buttons/osd/play_fo" />
+				</include>
+				<include content="IconButton">
+					<param name="id" value="10" />
+					<param name="label" value="native_get thumb" />
+					<param name="radiobutton_texture" value="buttons/osd/play_fo" />
+				</include>
+				<include content="IconButton">
+					<param name="id" value="11" />
+					<param name="label" value="native_lastfm" />
+					<param name="radiobutton_texture" value="buttons/osd/play_fo" />
+				</include>
+				<include content="IconButton">
+					<param name="id" value="12" />
+					<param name="label" value="native_get fanart" />
+					<param name="radiobutton_texture" value="buttons/osd/play_fo" />
+				</include>
+				<include content="IconButton">
+					<param name="id" value="77" />
+					<param name="label" value="textviever_showinfo_big" />
+					<param name="radiobutton_texture" value="buttons/osd/play_fo" />
+				</include>
+				<include content="IconButton">
+					<param name="id" value="78" />
+					<param name="label" value="ab_get images" />
+					<param name="radiobutton_texture" value="buttons/osd/play_fo" />
+					<onclick condition="String.IsEqual(ListItem.DBType,artist) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=artist, dbid=$INFO[ListItem.DBID])</onclick>
+					<onclick condition="String.IsEqual(ListItem.DBType,album) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=album, dbid=$INFO[ListItem.DBID])</onclick>
+					<onclick condition="String.IsEqual(ListItem.DBType,song) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=song, dbid=$INFO[ListItem.DBID])</onclick>
+					<visible>[String.IsEqual(ListItem.DBType,album) | String.IsEqual(ListItem.DBType,song) | String.IsEqual(ListItem.DBType,artist)] + system.hasaddon(script.artwork.beef)</visible>
+			
+				</include>
+				
+			</control>
+</include>
+
+</includes>
