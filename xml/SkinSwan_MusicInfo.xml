@@ -2,188 +2,129 @@
 <includes>
 
 
-<include name="button1">
-	<textoffsetx>0</textoffsetx>
-	<width>400</width>
-	<texturefocus colordiffuse="red">diffuse/poster_reflect.png</texturefocus>
-	<texturenofocus colordiffuse="white">diffuse/poster_reflect.png</texturenofocus>
-	<font>HUB_WidgetSubHeader</font>
+<include name="container_atts">
+	<orientation>$PARAM[orientation]</orientation>
+	<height>$PARAM[height]</height>
 </include>
 
-<!-- 
-videodb://musicvideos/titles/?xsp=%7B%22rules%22%3A%7B%22or%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(MusicInfoEncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</content>
--->
-		
-			
 
-
-<variable name="musicinfo_99">
+<variable name="musicinfo_content_3201">
 	<value condition="Container.Content(Artists) | String.IsEqual(ListItem.DBType,artist)">musicdb://artists/$INFO[ListItem.dbid]/?albumartistsonly=false&amp;artistid=$INFO[ListItem.dbid]</value>
 	<value>musicdb://albums/$INFO[ListItem.dbid]/?albumartistsonly=false&amp;albumid=$INFO[ListItem.dbid]</value>
 </variable>
+
+<include name="musicinfo_PlaybackCtrlButton">
+	<param name="action" default=""/>
+	<param name="width" default="50"/>
+	<param name="height" default="50"/>
+	<definition>
+		<control type="button" id="$PARAM[id]">
+			<width>$PARAM[width]</width>
+			<height>$PARAM[height]</height>
+			<texturefocus colordiffuse="$VAR[color_lib_menu_accent]">buttons/osd/$PARAM[action]_fo.png</texturefocus>
+			<texturenofocus colordiffuse="$VAR[color_lib_menu_item_nf]">buttons/osd/$PARAM[action].png</texturenofocus>
+			<onclick>$PARAM[action2]</onclick>
+			<onclick>$PARAM[action]</onclick>
+		</control>
+	</definition>
+</include>
+	
+	
+<include name="musicinfo_song_sheet">
+	<param name="top" default="140"/>
+	
+	<definition>
+	
+	
+		<control type="group">
+			<visible>$PARAM[visible]</visible>
+			<top>$PARAM[top]</top>
+			<left>200</left>
+			<right>200</right>
+			<height>50</height>
+				
+			<control type="image">
+				<top>43</top>
+				<left>-10</left>
+				<height>1</height>
+				<texture background="true">colors/white40.png</texture>
+			</control>
+			
+			<control type="label">
+				<visible>false</visible>
+				<left>-60</left>
+				<top>3</top>
+				<height>30</height>
+				<width>50</width>
+				<font>debugtiny</font>
+				<align>left</align>
+				<textcolor>$VAR[color_lib_text_main]</textcolor>
+				<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+				<label>Disc</label>
+			</control>
+			
+			<control type="label">
+				<left>10</left>
+				<top>3</top>
+				<height>30</height>
+				<width>500</width>
+				<font>debugtiny</font>
+				<align>left</align>
+				<textcolor>$VAR[color_lib_text_main]</textcolor>
+				<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+				<label>#</label>
+			</control>
+		
+			<control type="label">
+				<left>50</left>
+				<top>3</top>
+				<height>30</height>
+				<width>450</width>
+				<font>debugtiny</font>
+				<align>left</align>
+				<textcolor>$VAR[color_lib_text_main]</textcolor>
+				<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+				<label> T I T L E</label>
+			</control>
+			<control type="label">
+				<top>3</top>
+				<left>510</left>
+				<height>30</height>
+				<width>500</width>
+				<font>debugtiny</font>
+				<align>left</align>
+				<textcolor>$VAR[color_lib_text_main]</textcolor>
+				<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+				<label>A R T I S T</label>
+			</control>
+			<control type="label">
+				<top>3</top>
+				<left>1020</left>
+				<width>220</width>
+				<font>CommonTag</font>
+				<align>left</align>
+				<textcolor>$VAR[color_lib_text_secondary]</textcolor>
+				<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+				<label>G E N R E</label>
+			</control>
+			<control type="label">
+				<top>3</top>
+				<left>1350</left>
+				<width>200</width>
+				<font>CommonTag</font>
+				<align>left</align>
+				<textcolor>$VAR[color_lib_text_secondary]</textcolor>
+				<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+				<label>D U R A T I O N</label>
+			</control>
+		</control>
+	</definition>				
+</include>
 
 <variable name="ArtistOrTitle">
 	<value condition="!String.IsEmpty(ListItem.Title)">$INFO[ListItem.Title]</value>
 	<value>$INFO[ListItem.Artist]</value>
 </variable>
-
-
-songinformation 	WINDOW_DIALOG_SONG_INFO 	10135 	DialogMusicInfo.xml 
-<variable name="Info_Thumb">
-	<!-- <value condition="!String.IsEmpty(ListItem.Art(artist.thumb)) + [[Container.Content(Songs) | String.IsEqual(ListItem.DBType,song)] | [Container.Content(Albums) | String.IsEqual(ListItem.DBType,album)]]">$INFO[ListItem.Art(artist.thumb)]</value> -->
-	<value>$INFO[ListItem.Art(thumb)]</value>
-</variable>
-$INFO[ListItem.Art(artist.thumb)]
-
-
-<include name="Musicinfo_Layout2">
-	
-	<control type="group">
-		<control type="image">
-			<texture background="true" colordiffuse="ff101010">colors/white.png</texture>
-		</control>
-		
-		
-		<control type="image">
-			<top>10</top>
-			<left>10</left>
-			<width>980</width>
-			<height>580</height>
-			<texture background="true" diffuse="diffuse/Spotlight_right_diffuse.png">$VAR[ImageLayout_fanart]</texture>
-			<aspectratio scalediffuse="true" align="left" aligny="top">scale</aspectratio>
-		</control>
-		
-					<control type="videowindow">
-						<width>100%</width>
-						<height>100%</height>
-					</control>
-		
-		<control type="image">
-			<top>30</top>
-			<left>800</left>
-			<height>200</height>
-			<texture background="true">$VAR[ListItemClearLogo]</texture>
-			<aspectratio scalediffuse="true" align="center" aligny="top">keep</aspectratio>
-		</control>
-		
-		
-		<control type="textbox">
-				<top>300</top>
-				<width>700</width>
-				<height>290</height>
-				<left>920</left>
-				<label>$VAR[plot]</label>
-				<font>debug</font>
-				<aligny>bottom</aligny>
-				<align>center</align>
-			</control>
-			
-			
-		<include content="Universal_Container">
-				<param name="id" value="99" />
-				<param name="visible" value="Integer.IsGreater(Container(50).NumItems,0) + !Container(50).IsUpdating" />
-				<param name="type_height" value="300" />
-				<param name="tags_visible" value="true" />
-				<param name="layout_height" value="280" />
-				<param name="layout_width" value="225" />
-				<param name="itemheight" value="220" />
-				<param name="itemwidth" value="220" />
-				<param name="ls_overlay_visible" value="true" />
-				<param name="layout" value="square" />
-				
-				<left>100</left>
-				<top>650</top>
-				
-				<onup>8000</onup>
-				<ondown>8000</ondown>
-				<onleft>50</onleft>
-				<onright>50</onright>
-				
-				<content>musicdb://artists/$INFO[ListItem.dbid/]</content>
-			</include>
-
-
-
-
-			
-			<control type="grouplist" id="8000">
-			icons left, slide out on focus, like shortcut menucontrol, need fix pos/anim
-				<animation effect="fade" start="100" end="0" time="350" reversible="true" condition="String.IsEqual(Window.Property(AdditionalInfo),infocontainer)">Conditional</animation>
-				<left>-340</left>
-				<height>100%</height>
-				<width>600</width>
-				<top>25%</top>
-				<bottom>25%</bottom>
-				<itemgap>10</itemgap>
-				
-				<onup>50</onup>
-				<ondown>50</ondown>
-				
-				<onup>8000</onup>
-				<ondown>8000</ondown>
-				<onleft>50</onleft>
-				<onright>50</onright>
-				<pagecontrol>60</pagecontrol>
-				<orientation>vertical</orientation>
-				
-				
-				<include content="IconButton">
-					<param name="id" value="6" />
-					<param name="label" value="native_Refresh" />
-					<param name="radiobutton_texture" value="buttons/osd/play_fo" />
-				</include>
-				<include content="IconButton">
-					<param name="id" value="7" />
-					<param name="label" value="native_rate" />
-					<param name="radiobutton_texture" value="buttons/osd/play_fo" />
-				</include>
-				<include content="IconButton">
-					<param name="id" value="10" />
-					<param name="label" value="native_get thumb" />
-					<param name="radiobutton_texture" value="buttons/osd/play_fo" />
-				</include>
-				<include content="IconButton">
-					<param name="id" value="11" />
-					<param name="label" value="native_lastfm" />
-					<param name="radiobutton_texture" value="buttons/osd/play_fo" />
-				</include>
-				<include content="IconButton">
-					<param name="id" value="12" />
-					<param name="label" value="native_get fanart" />
-					<param name="radiobutton_texture" value="buttons/osd/play_fo" />
-				</include>
-				<include content="IconButton">
-					<param name="id" value="99" />
-					<param name="label" value="textviever_showinfo_big" />
-					<param name="radiobutton_texture" value="buttons/osd/play_fo" />
-				</include>
-				<include content="IconButton">
-					<param name="id" value="98" />
-					<param name="label" value="ab_get images" />
-					<param name="radiobutton_texture" value="buttons/osd/play_fo" />
-					<onclick condition="String.IsEqual(ListItem.DBType,artist) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=artist, dbid=$INFO[ListItem.DBID])</onclick>
-					<onclick condition="String.IsEqual(ListItem.DBType,album) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=album, dbid=$INFO[ListItem.DBID])</onclick>
-					<onclick condition="String.IsEqual(ListItem.DBType,song) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=song, dbid=$INFO[ListItem.DBID])</onclick>
-					<visible>[String.IsEqual(ListItem.DBType,album) | String.IsEqual(ListItem.DBType,song) | String.IsEqual(ListItem.DBType,artist)] + system.hasaddon(script.artwork.beef)</visible>
-			
-				</include>
-				
-			</control>
-			
-			<control type="textbox">
-				<bottom>80</bottom>
-				<height>100</height>
-				<left>120</left>
-				<label>info of focused album...[CR]yahr 19836[CR]und mehr[CR]noh mehr[CR]viel mehr</label>
-				<font>debugtiny</font>
-				<aligny>bottom</aligny>
-			</control>
-			
-
-</control>
-
-
-</include>
 
 <include name="Musicinfo_Layout1">
 	<control type="group">
@@ -198,59 +139,58 @@ $INFO[ListItem.Art(artist.thumb)]
 			<effect type="fade" start="100" end="0" time="240" />
 		</animation>
 
-	<!-- 	STATIC -->
+<!-- 	STATIC -->
 		<!-- optional ? tend prefer global bg atm -->
 		<control type="image">
-			<texture background="true" colordiffuse="ff191919">colors/white.png</texture>
+			<texture background="true" colordiffuse="$VAR[color_global_background_layer2]">colors/white.png</texture>
 		</control>
-		
-		
 		<control type="image">
+			<description>make diff transparency image to get rid of fade animation</description>
 			<top>0</top>
 			<width>80%</width>
-			<height>80%</height>
 			<centerleft>50%</centerleft>
 			<texture background="true" diffuse="diffuse/tet355.png">$VAR[ImageLayout_fanart]</texture>
 			<aspectratio scalediffuse="true" align="center" aligny="top">keep</aspectratio>
 			<animation effect="fade" start="100" end="20" time="0" condition="true">conditional</animation>
 		</control>
 		
+		<control type="image">
+			<top>20</top>
+			<visible>!String.IsEmpty(ListItem.Art(clearlogo))</visible>
+			<width>300</width>
+			<centerleft>50%</centerleft>
+			<texture>$INFO[ListItem.Art(clearlogo)]</texture>
+			<aspectratio align="center" aligny="top">keep</aspectratio>
+		</control>
 		
-		
-		
-	<!-- scrollpages	 -->
-		<control type="grouplist" id="33">
-			
+<!-- PAGES	 -->
+		<control type="grouplist" id="3000">
 				<width>100%</width>
 				<height>100%</height>
 				<top>0</top>
-				
-				
-				
 				<scrolltime tween="quadratic" easing="in">400</scrolltime>
 				<itemgap>0</itemgap>
 				<orientation>vertical</orientation>
 				<usecontrolcoords>true</usecontrolcoords>
-	
-	
-				
-				<control type="group" id="3301">
+		<!-- PAGE 1 -->
+				<control type="group">
 					<description>PAGE 1 METADATA - INFO</description>
+					<top>0</top>
 					<height>1080</height>
 					
-					<control type="button" id="3333">
+					<control type="button" id="3101">
 						<description>may textctrl</description>
 						<height>1</height>
 						<texturefocus />
 						<texturenofocus />
 						
-						
 						<onleft>8000</onleft>
 						<onright>8000</onright>
 						
+						<ondown condition="Control.IsVisible(3110)">3110</ondown>
 						
-						<ondown condition="!Control.IsVisible(50)">98</ondown>
-						<onup condition="!Control.IsVisible(50)">98</onup>
+						<ondown condition="!Control.IsVisible(50)">3201</ondown>
+						<onup condition="!Control.IsVisible(50)">3201</onup>
 						
 						<ondown condition="Control.IsVisible(50)">50</ondown>
 						<onup condition="Control.IsVisible(50)">50</onup>
@@ -258,35 +198,31 @@ $INFO[ListItem.Art(artist.thumb)]
 					</control>
 					
 					<control type="image">
+						<description>unhappy position therefore disabled</description>
 						<visible>false</visible>
 						<top>20</top>
 						<right>50</right>
 						<height>200</height>
-						<texture background="true">$VAR[ListItemClearLogo]</texture>
+						<texture diffuse="colors/white30.png" background="true">$VAR[ListItemClearLogo]</texture>
 						<aspectratio scalediffuse="true" align="right" aligny="top">keep</aspectratio>
-						<!-- <animation effect="fade" start="100" end="30" time="0" condition="true">Conditional</animation> -->
-				
 					</control>
 			
-			
-			
 					<control type="image">
+						<description>test wirh a glow diffused bordertexture next time</description>
 						<bordersize>1</bordersize>
-						<bordertexture>colors/white.png</bordertexture>
-						<texture background="true">$VAR[Info_Thumb]</texture>
+						<bordertexture colordiffuse="$VAR[color_lib_text_main]">colors/white.png</bordertexture>
+						<texture background="true">$INFO[ListItem.Art(thumb)]</texture>
 						<aspectratio scalediffuse="false" align="right" aligny="top">keep</aspectratio>
 						<top>410</top>
 						<width>300</width>
 						<left>350</left>
-						<!-- 
-						<width>260</width>
-						<left>400</left>
-						-->
 					</control>
-		
+					
+					
+					
 					<control type="grouplist">
 						<description>metadata 1</description>
-						<animation effect="fade" start="100" end="0" time="350" reversible="true" condition="Control.HasFocus(97) | Control.HasFocus(98) | Control.HasFocus(96)">Conditional</animation>
+						<animation effect="fade" start="100" end="0" time="350" reversible="true" condition="Control.HasFocus(3301) | Control.HasFocus(3201) | Control.HasFocus(3202)">Conditional</animation>
 				
 						<!-- <top>300</top> -->
 						<top>390</top>
@@ -294,7 +230,6 @@ $INFO[ListItem.Art(artist.thumb)]
 						<left>700</left>
 						<right>300</right>
 						<height>800</height>
-						
 						<itemgap>20</itemgap>
 							
 							
@@ -316,8 +251,9 @@ $INFO[ListItem.Art(artist.thumb)]
 								<align>justify</align>
 								<textcolor>grey</textcolor>
 							</control>
-							<control type="textbox">
-								<height>350</height>
+							<control type="textbox" id="3102">
+								<description>condidional height if top4 random list not vis - toggled off 350 height get a scrollbar and onclick to force dialogtextviever or just use a menucontrol button?</description>
+								<height>230</height>
 								<width>850</width>
 								<label>$VAR[plot]</label>
 								<font>MenucontrolItem</font>
@@ -326,11 +262,11 @@ $INFO[ListItem.Art(artist.thumb)]
 								<textcolor>white</textcolor>
 							</control>
 							<control type="textbox">
-								<visible>false</visible>
+								<visible>String.IsEmpty(control.getlabel(3102))</visible>
 								<description>fallback if no desc</description>
 								<height>350</height>
 								<width>850</width>
-								<label>$VAR[plot]</label>
+								<label fallback="$LOCALIZE[]" >$INFO[foobar]</label>
 								<font>MenucontrolItem</font>
 								<aligny>bottom</aligny>
 								<align>justify</align>
@@ -340,10 +276,10 @@ $INFO[ListItem.Art(artist.thumb)]
 					
 					
 					<control type="textbox">
-						
+						<description>metadata right</description>
 						<visible>true</visible>
 						
-						<animation effect="fade" start="100" end="0" time="350" reversible="true" condition="Control.HasFocus(97) | Control.HasFocus(98) | Control.HasFocus(96)">Conditional</animation>
+						<animation effect="fade" start="100" end="0" time="350" reversible="true" condition="Control.HasFocus(3301) | Control.HasFocus(3201) | Control.HasFocus(3202)">Conditional</animation>
 						<top>500</top>
 						<right>50</right>
 						<width>270</width>
@@ -355,109 +291,41 @@ $INFO[ListItem.Art(artist.thumb)]
 						<aligny>bottom</aligny>
 					
 						<textcolor>grey</textcolor>
-						</control>
-					
-					experiment - limt 4 random/top rated songs
-					
-					
-					<control type="group">
-						<visible>false</visible>
-											<visible>!Skin.HasSetting(ShowRandom_List)</visible>
-						<visible>Integer.IsGreater(Container(90).NumItems,0) | !Container(90).IsUpdating</visible>
-						<top>700</top>
-						<left>200</left>
-						<right>500</right>
-						<height>50</height>
-							
-						<control type="image">
-							<top>43</top>
-							<left>-10</left>
-							<height>1</height>
-							<texture background="true">colors/white40.png</texture>
-						</control>
-						<control type="label">
-							<left>10</left>
-							<top>3</top>
-							<height>30</height>
-							<width>500</width>
-							<font>debugtiny</font>
-							<align>left</align>
-							<textcolor>$VAR[color_lib_text_main]</textcolor>
-							<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
-							<label>TOP RATED Songs By [B]$INFO[listitem.artist][/B]</label>
-						</control>
-						
-						<!-- 
-						<control type="label">
-							<left>10</left>
-							<top>3</top>
-							<height>30</height>
-							<width>500</width>
-							<font>debugtiny</font>
-							<align>left</align>
-							<textcolor>$VAR[color_lib_text_main]</textcolor>
-							<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
-							<label>#</label>
-						</control>
-						-->
-						<control type="label">
-							<left>50</left>
-							<top>3</top>
-							<height>30</height>
-							<width>450</width>
-							<font>debugtiny</font>
-							<align>left</align>
-							<textcolor>$VAR[color_lib_text_main]</textcolor>
-							<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
-							<label> T I T L E</label>
-						</control>
-						<control type="label">
-							<top>3</top>
-							<left>510</left>
-							<height>30</height>
-							<width>500</width>
-							<font>debugtiny</font>
-							<align>left</align>
-							<textcolor>$VAR[color_lib_text_main]</textcolor>
-							<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
-							<label>A R T I S T</label>
-						</control>
-						<control type="label">
-							<top>3</top>
-							<left>1020</left>
-							<width>220</width>
-							<font>CommonTag</font>
-							<align>left</align>
-							<textcolor>$VAR[color_lib_text_secondary]</textcolor>
-							<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
-							<label>G E N R E</label>
-						</control>
-						
 					</control>
-					<control type="panel" id="90">
-						<visible>false</visible>
-						<ondown condition="!Control.IsVisible(50)">98</ondown>
-						<onup condition="!Control.IsVisible(50)">98</onup>
+					
+					<!--
+					experiment - limt 4 random/top rated songs
+					hide some control, other wh values
+					<visible>!Skin.HasSetting(musicinfo_hide_randomsongs) + [Integer.IsGreater(Container(3110).NumItems,0) + !Container(3110).IsUpdating]</visible>
+					-->	
+					<include content="musicinfo_song_sheet">
+						<param name="visible" value="!Skin.HasSetting(musicinfo_hide_randomsongs) + Control.IsVisible(3110) + [Integer.IsGreater(Container(3110).NumItems,0) + !Container(3110).IsUpdating]"/>
+						<param name="top" value="820"/>
+					</include>					
+					
+					<control type="panel" id="3110">
+						<visible>!Skin.HasSetting(musicinfo_hide_randomsongs)</visible>
+						<ondown condition="!Control.IsVisible(50)">3201</ondown>
+						<onup condition="!Control.IsVisible(50)">3201</onup>
 						
 						<ondown condition="Control.IsVisible(50)">50</ondown>
 						<onup condition="Control.IsVisible(50)">50</onup>
 						
 						<orientation>vertical</orientation>
 						<visible>Container.Content(artists) | String.IsEqual(ListItem.DBType,artist)</visible>
-						<animation effect="fade" start="100" end="0" time="350" reversible="true" condition="Control.HasFocus(97) | Control.HasFocus(98) | Control.HasFocus(96)">Conditional</animation>
+						<animation effect="fade" start="100" end="0" time="350" reversible="true" condition="Control.HasFocus(3301) | Control.HasFocus(3201) | Control.HasFocus(3202)">Conditional</animation>
 				
-						<top>750</top>
+						<top>870</top>
 						<height>200</height>
 						<left>200</left>
-						<right>500</right>
 						<preloaditems>2</preloaditems>
 						<scrolltime tween="quadratic">400</scrolltime>
 						
-						<onup>98</onup>
+						<onup>3101</onup>
 						<onleft>8000</onleft>
 						
-						<onright>97</onright>
-						<ondown>96</ondown>
+						<onright>8000</onright>
+						<ondown>3201</ondown>
 					
 						<itemlayout height="35">
 						
@@ -618,14 +486,15 @@ $INFO[ListItem.Art(artist.thumb)]
 		
 		
 		
-				<control type="group" id="3302">
+				<control type="group">
 					<description>PAGE 2 album top, song bottom, video right</description>
-					<top>-300</top>
+					<visible>true</visible>
+					<top>0</top>
 					<height>1080</height>
 					
 					<!-- native just songs ? -->
 					<control type="panel" id="50">
-						<visible>Container.Content(songs) | String.IsEqual(ListItem.DBType,song)</visible>
+						<visible>Window.Is(songinformation)</visible>
 						<orientation>horizontal</orientation>
 						<preloaditems>2</preloaditems>
 						<scrolltime tween="quadratic">400</scrolltime>
@@ -639,12 +508,12 @@ $INFO[ListItem.Art(artist.thumb)]
 							
 							
 						<onleft>8000</onleft>
-						<onright>98</onright>
+						<onright>3201</onright>
 						
-						<onup>3301</onup>
-						
-						<ondown>96</ondown>
-					
+						<onup>3101</onup>
+						<ondown condition="Control.IsVisible(3202)">3202</ondown>
+						<ondown condition="!Control.IsVisible(3202) + [Control.IsVisible(3301) + !Container(3301).IsUpdating]">3301</ondown>
+						<ondown condition="!Control.IsVisible(3202) + ![Control.IsVisible(3301) + !Container(3301).IsUpdating]">3101</ondown>
 						
 						
 						<itemlayout height="50"  width="550" condition="Container.Content(songs) | String.IsEqual(ListItem.DBType,song)">
@@ -732,124 +601,41 @@ $INFO[ListItem.Art(artist.thumb)]
 							<label>S O N G     I N F O</label>
 					</control>
 					
-					<control type="label">
-							<visible>Integer.IsGreater(Container(97).NumItems,0) | Container(97).IsUpdating</visible>
-							<top>500</top>
-							<right>10</right>
-							<width>900</width>
-							<height>50</height>
-							<align>right</align>
-							<font>font12bold</font>
-							<textcolor>white</textcolor>
-							<label>M U S I K V I D E O S</label>
-					</control>
-					<control type="label">
-							<visible>Control.HasFocus(97)</visible>
-							<top>500</top>
-							<right>600</right>
-							<width>900</width>
-							<height>50</height>
-							<align>right</align>
-							<font>font12bold</font>
-							<textcolor>cyan</textcolor>
-							<label>$INFO[Container(97).ListItem.Label, meeeh position   ,]</label>
-					</control>
 					
-						
-					<control type="group">
-						<visible>Container.Content(albums) | String.IsEqual(ListItem.DBType,album)</visible>
-						<top>140</top>
-						<left>200</left>
-						<right>200</right>
-						<height>50</height>
-							
-						<control type="image">
-							<top>43</top>
-							<left>-10</left>
-							<height>1</height>
-							<texture background="true">colors/white40.png</texture>
-						</control>
-						
-						<control type="label">
-							<left>10</left>
-							<top>3</top>
-							<height>30</height>
-							<width>500</width>
-							<font>debugtiny</font>
-							<align>left</align>
-							<textcolor>$VAR[color_lib_text_main]</textcolor>
-							<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
-							<label>#</label>
-						</control>
+				<!-- BIG LIST default -->
+					<include content="musicinfo_song_sheet">
+						<param name="visible" value="Integer.IsGreater(Container(3201).NumItems,0) + !Container(3201).IsUpdating + ![Container.Content(artists) | String.IsEqual(ListItem.DBType,artist)]"/>
+					</include>
 					
-						<control type="label">
-							<left>50</left>
-							<top>3</top>
-							<height>30</height>
-							<width>450</width>
-							<font>debugtiny</font>
-							<align>left</align>
-							<textcolor>$VAR[color_lib_text_main]</textcolor>
-							<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
-							<label> T I T L E</label>
-						</control>
-						<control type="label">
-							<top>3</top>
-							<left>510</left>
-							<height>30</height>
-							<width>500</width>
-							<font>debugtiny</font>
-							<align>left</align>
-							<textcolor>$VAR[color_lib_text_main]</textcolor>
-							<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
-							<label>A R T I S T</label>
-						</control>
-						<control type="label">
-							<top>3</top>
-							<left>1020</left>
-							<width>220</width>
-							<font>CommonTag</font>
-							<align>left</align>
-							<textcolor>$VAR[color_lib_text_secondary]</textcolor>
-							<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
-							<label>G E N R E</label>
-						</control>
-						<control type="label">
-							<top>3</top>
-							<left>1350</left>
-							<width>200</width>
-							<font>CommonTag</font>
-							<align>left</align>
-							<textcolor>$VAR[color_lib_text_secondary]</textcolor>
-							<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
-							<label>D U R A T I O N</label>
-						</control>
-					</control>
-					
-					
-					<control type="panel" id="98">
-						
-						
-						
-						<orientation>horizontal</orientation>
-						
-						<onclick condition="String.IsEqual(Container(98).ListItem.dbtype,album)">PlayMedia(musicdb://albums/$INFO[Container(98).ListItem.dbid]/)</onclick>
-						
+					<control type="panel" id="3201">
+						<description>replace of native id 50 for cond oncklick song listing on artist, song listing on album</description>
+						<visible>!Window.Is(songinformation)</visible>
 						<preloaditems>2</preloaditems>
 						<scrolltime tween="quadratic">400</scrolltime>
 						
-						<top>200</top>
-						<height>300</height>
+						<onclick condition="String.IsEqual(Container(3201).ListItem.dbtype,album)">PlayMedia(musicdb://albums/$INFO[Container(3201).ListItem.dbid]/)</onclick>
 						
+						<include condition="[Container.Content(artists) | String.IsEqual(ListItem.DBType,artist)]" content="container_atts">
+							<param name="orientation" value="horizontal"/>
+							<param name="height" value="300"/>
+						</include>
+						<include condition="![Container.Content(artists) | String.IsEqual(ListItem.DBType,artist)]" content="container_atts">
+							<param name="orientation" value="vertical"/>
+							<param name="height" value="800"/>
+						</include>
+						
+						
+						<top>200</top>
 						<left>200</left>
 							
-							
 						<onleft>8000</onleft>
-						<onright>98</onright>
+						<onright>3201</onright>
+						<onup>3101</onup>
 						
-						<onup>3301</onup>
-						
-						<ondown>96</ondown>
+						<onup>3101</onup>
+						<ondown condition="Control.IsVisible(3202)">3202</ondown>
+						<ondown condition="!Control.IsVisible(3202) + [Control.IsVisible(3301) + !Container(3301).IsUpdating]">3301</ondown>
+						<ondown condition="!Control.IsVisible(3202) + ![Control.IsVisible(3301) + !Container(3301).IsUpdating]">3101</ondown>
 					
 						<itemlayout height="300" width="230" condition="Container.Content(artists) | String.IsEqual(ListItem.DBType,artist)">
 							<control type="group">
@@ -1056,102 +842,18 @@ $INFO[ListItem.Art(artist.thumb)]
 							
 						</focusedlayout>
 						
-						
-						<itemlayout height="1"  width="1" condition="Container.Content(songs) | String.IsEqual(ListItem.DBType,song)">
-							
-						</itemlayout>
-						
-						<focusedlayout height="1" width="1" condition="Container.Content(songs) | String.IsEqual(ListItem.DBType,song)">
-								<control type="button">
-									<visible allowhiddenfocus="true">false</visible>
-									<onfocus>SetFocus(50)</onfocus>
-								</control>
-							</focusedlayout>
-						<content>$VAR[musicinfo_99]</content>
+						<content>$VAR[musicinfo_content_3201]</content>
 					</control>
 					
 					
 					
-					<control type="panel" id="97">
-						<description>musicvideos</description>
-						<top>550</top>
-						
-						
-						<right>10</right>
-						<width>640</width>
-							
-						<onleft>96</onleft>
-						<onright>96</onright>
-						
-						<onup>3301</onup>
-						
-						<ondown>97</ondown>
-						
-						<orientation>vertical</orientation>
-						
-						<onclick>PlayMedia($INFO[Container(97).ListItem.Filenameandpath],1)</onclick>
-						
-						<!-- <onclick>PlayMedia($INFO[Container(97).ListItem.Filenameandpath])</onclick> -->
-						<!-- <onclick>Dialog.Close(musicinformation)</onclick> -->
-						
-						<preloaditems>2</preloaditems>
-						<scrolltime tween="quadratic">400</scrolltime>
-						
-						
-						
-						
-							<itemlayout height="180" width="320">
-							<control type="group">
-								<width>315</width>
-								<height>175</height>
-								<centertop>50%</centertop>
-										<control type="image">
-											<texture fallback="$INFO[ListItem.Icon]" background="true">$INFO[ListItem.Art(fanart)]</texture>
-											<bordersize>3</bordersize>
-										</control>
-									</control>
-									</itemlayout>
-							<focusedlayout height="180" width="320">
-								<control type="group">
-								<width>315</width>
-								<height>175</height>
-								<centertop>50%</centertop>
-									<control type="image">
-										<texture colordiffuse="white">colors/white.png</texture>
-									</control>
-									<control type="image">
-										<texture fallback="$INFO[ListItem.Icon]" background="true">$INFO[ListItem.Art(fanart)]</texture>
-										<bordersize>3</bordersize>
-									</control>
-								</control>
-							
-							</focusedlayout>
-						
-						
-						<content>videodb://musicvideos/titles/?xsp=%7B%22rules%22%3A%7B%22or%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(MusicInfoEncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</content>
-					</control>
-			
-			<!-- <content>videodb://musicvideos/titles/?xsp=%7B%22rules%22%3A%7B%22or%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(MusicInfoEncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</content> -->
-				
-					<control type="videowindow">
-						<top>440</top>
-						<left>200</left>
-						<width>800</width>
-					</control>
 					
-					<control type="panel" id="96">
-						
+					
+					<control type="panel" id="3202">
+						<description>song listing on artist, else empty</description>
 						<orientation>vertical</orientation>
 						<visible>Container.Content(artists) | String.IsEqual(ListItem.DBType,artist)</visible>
-						<!-- <animation type="Focus" reversible="false">
-							<effect type="slide" start="0,0" end="0,-600" center="50%,50%" tween="quadratic" easing="in" time="500" />
-							<effect type="fade" delay="160" end="100" time="240" />
-						</animation>
-						<animation type="Unfocus" reversible="false">
-							<effect type="slide" start="0,-600" end="0,0" center="50%,50%" tween="quadratic" easing="out" time="200" />
-							<effect type="fade" start="100" end="0" time="240" />
-						</animation>
-						 -->
+						
 						<top>550</top>
 						<preloaditems>2</preloaditems>
 						<scrolltime tween="quadratic">400</scrolltime>
@@ -1161,12 +863,15 @@ $INFO[ListItem.Art(artist.thumb)]
 						<left>200</left>
 						<width>700</width>
 						
-						<onup>98</onup>
+						<onup>3201</onup>
 						<onleft>8000</onleft>
 						
-						<onright>97</onright>
-						<ondown>96</ondown>
-					
+						<onright condition="Control.IsVisible(3301)">3301</onright>
+						<onright condition="!Control.IsVisible(3301)">3202</onright>
+						
+						<ondown condition="Control.IsVisible(3301)">3301</ondown>
+						<ondown condition="!Control.IsVisible(3301)">3202</ondown>
+						
 						<itemlayout height="50" condition="Container.Content(albums) | String.IsEqual(ListItem.DBType,album)">
 						
 								<control type="group">
@@ -1318,11 +1023,218 @@ $INFO[ListItem.Art(artist.thumb)]
 									
 							
 						</focusedlayout>
-						<content target="music">musicdb://albums/$INFO[Container(98).ListItem.dbid]/</content>
+						<content target="music">musicdb://albums/$INFO[Container(3201).ListItem.dbid]/</content>
+					</control>
+
+				</control>
+				
+				
+				
+		<!-- PAGE 3 -->
+				<control type="group">
+					<description>PAGE 3 video test stage</description>
+					<visible>[Integer.IsGreater(Container(3301).NumItems,0) | Container(3301).IsUpdating]</visible>
+					<!-- <visible>Container.Content(artists) | String.IsEqual(ListItem.DBType,artist)</visible> -->
+					<left>200</left>
+					<top>0</top>
+					<height>1080</height>
+					
+					
+					<control type="label">
+						<description>heading</description>
+						<top>40</top>
+						<height>50</height>
+						<label>[B]M U S I C V I D E O S[/B] of [I][COLOR green]$INFO[ListItem.Artist][/COLOR][/I]</label>
+					</control>
+					
+					
+					<control type="group">
+						<visible>player.hasvideo</visible>
+						<animation effect="fade" start="0" end="100" time="750">Visible</animation>
+						<animation effect="fade" start="100" end="0" time="750">Hidden</animation>
+						<top>360</top>
+						<left>-200</left>
+						<right>0</right>
+						<bottom>0</bottom>
+						<control type="image">
+							<texture>colors/white.png</texture>
+							<colordiffuse>ff000000</colordiffuse>
+						</control>
+						
+						<control type="videowindow">
+							<centerleft>50%</centerleft>
+							<top>40</top>
+							<height>680</height>
+						</control>
+						
+						
+							
+						<control type="group">
+							<description>optional info on playback</description>
+							<visible>false</visible>
+							
+							<control type="label">
+								
+								<top>120</top>
+								<height>500</height>
+								<wrapmultiline>true</wrapmultiline>
+								<width>200</width>
+								<centerleft>90%</centerleft>
+								<aligny>center</aligny>
+								<align>center</align>
+								<label>[B]$INFO[Player.Title][/B]</label>
+								<font>font20_title</font>
+							</control>
+						</control>
+						
+						<control type="group">
+							<animation effect="slide" start="0,0" end="0,200" time="350" reversible="true" condition="!ControlGroup(3399).HasFocus()">Conditional</animation>
+							
+							
+							<control type="image">
+								<description>ctrl bg panel</description>
+								<visible>ControlGroup(3399).HasFocus()</visible>
+								<bottom>-270</bottom>
+								<height>400</height>
+								<width>400</width>
+								<centerleft>50%</centerleft>
+								<texture colordiffuse="ff101010" diffuse="overlay/watchedfull.png" fallback="colors/white.png">colors/white90.png</texture>
+								<aspectratio>keep</aspectratio>
+							</control>
+							
+							<control type="grouplist" id="3399">
+								<description>playback ctrl</description>
+								<visible>Player.HasVideo</visible>
+								<centerleft>50%</centerleft>
+								<height>70</height>
+								<width>400</width>
+								<bottom>10</bottom>
+								<itemgap>30</itemgap>
+								<align>center</align>
+								<onup>3301</onup>
+								<ondown condition="Control.IsVisible(3401)">3401</ondown>
+								<ondown condition="!Control.IsVisible(3401)">3101</ondown>
+								
+								<onleft>3399</onleft>
+								<onright>3399</onright>
+							
+								<pagecontrol />
+								<orientation>horizontal</orientation>
+								
+								<include content="musicinfo_PlaybackCtrlButton">
+									<param name="id" value="99" />
+									<param name="action" value="pause" />
+									</include>
+								<include content="musicinfo_PlaybackCtrlButton">
+									<param name="id" value="98" />
+									<param name="action2" value="back" />
+									<param name="action" value="fullscreen" />
+									<param name="width" value="65"/>
+									<param name="height" value="65"/>
+								</include>
+								<include content="musicinfo_PlaybackCtrlButton">
+									<param name="id" value="97" />
+									<param name="action" value="stop" />
+								</include>
+					
+								
+							</control>
+						</control>
+						
+						
+						
+					</control>
+							
+					
+					
+					
+					
+					
+					<control type="panel" id="3301">
+						
+						<orientation>horizontal</orientation>
+						<top>120</top>
+						<preloaditems>2</preloaditems>
+						<scrolltime tween="quadratic">400</scrolltime>
+						<height>300</height>
+						
+						<onup>3201</onup>
+						<onleft>8000</onleft>
+						<onright>3301</onright>
+						<ondown condition="Player.HasVideo">SetFocus(3399)</ondown>
+						
+						<!-- <ondown condition="Control.IsVisible(3401)">3401</ondown>
+						<ondown condition="!Control.IsVisible(3401)">3101</ondown> -->
+						
+						<onclick>PlayMedia($INFO[Container(3301).ListItem.Filenameandpath],1)</onclick>
+						
+							<itemlayout height="250" width="320">
+								<control type="group">
+									<width>315</width>
+									<height>250</height>
+									
+									<control type="textbox">
+										<top>180</top>
+										<height>50</height>
+										<aligny>top</aligny>
+										<label>$INFO[ListItem.Label]</label>
+										<font>debugtiny</font>
+										<wrapmultiline>true</wrapmultiline>
+									</control>
+									<control type="image">
+										<width>315</width>
+										<height>175</height>
+										<texture fallback="$INFO[ListItem.Icon]" background="true">$INFO[ListItem.Art(fanart)]</texture>
+										<bordersize>3</bordersize>
+									</control>
+								</control>
+							</itemlayout>
+							<focusedlayout height="250" width="320">
+								<control type="group">
+									<width>315</width>
+									<height>250</height>
+									
+									<control type="textbox">
+										<top>180</top>
+										<height>50</height>
+										<aligny>top</aligny>
+										<label>$INFO[ListItem.Label]</label>
+										<font>debugtiny</font>
+										<wrapmultiline>true</wrapmultiline>
+									</control>
+									<control type="image">
+										<width>317</width>
+										<height>177</height>
+										<bordersize>2</bordersize>
+										<bordertexture>colors/white.png</bordertexture>
+										<texture fallback="$INFO[ListItem.Icon]" background="true">$INFO[ListItem.Art(fanart)]</texture>
+										<bordersize>3</bordersize>
+									</control>
+								</control>
+							</focusedlayout>
+						<!-- var? artist vs ?-->
+							
+						<content>videodb://musicvideos/titles/?xsp=%7B%22rules%22%3A%7B%22or%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(MusicInfoEncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</content>
 					</control>
 
 				</control>
 			
+			<!-- PAGE 4 -->
+				<control type="group">
+					<description>addon content or fanart slideshow ?</description>
+					<visible>false</visible>
+					<top>0</top>
+					<height>1080</height>
+				</control>
+			
+			
+			<!-- PAGE 5 -->
+				<control type="group">
+					<description>addon content or fanart slideshow ?</description>
+					<visible>false</visible>
+					<top>0</top>
+					<height>1080</height>
+				</control>
 			</control>
 			
 			
@@ -1343,57 +1255,57 @@ $INFO[ListItem.Art(artist.thumb)]
 				<bottom>25%</bottom>
 				<itemgap>10</itemgap>
 				
-				<!-- <onup condition="Control.IsVisible(98)">98</onup>
+				<!-- <onup condition="Control.IsVisible(3201)">3201</onup>
 				<onup condition="Control.IsVisible(50)">50</onup>
-				<ondown condition="Control.IsVisible(98)">98</ondown>
+				<ondown condition="Control.IsVisible(3201)">3201</ondown>
 				<ondown condition="Control.IsVisible(50)">50</ondown>
 				 -->
 				
 				
-				<onleft condition="Control.IsVisible(98)">98</onleft>
+				<onleft condition="Control.IsVisible(3201)">3201</onleft>
 				<onleft condition="Control.IsVisible(50)">50</onleft>
 				
-				<onright condition="Control.IsVisible(98)">98</onright>
+				<onright condition="Control.IsVisible(3201)">3201</onright>
 				<onright condition="Control.IsVisible(50)">50</onright>
 			
-				<pagecontrol>60</pagecontrol>
+				<pagecontrol />
 				<orientation>vertical</orientation>
 				
 				
 				<include content="IconButton">
 					<param name="id" value="6" />
 					<param name="label" value="native_Refresh" />
-					<param name="radiobutton_texture" value="buttons/osd/play_fo" />
+					<param name="radiobutton_texture" value="icons/radiobuttons/refresh1" />
 				</include>
 				<include content="IconButton">
 					<param name="id" value="7" />
 					<param name="label" value="native_rate" />
-					<param name="radiobutton_texture" value="buttons/osd/play_fo" />
+					<param name="radiobutton_texture" value="defaultfavourites" />
 				</include>
 				<include content="IconButton">
 					<param name="id" value="10" />
 					<param name="label" value="native_get thumb" />
-					<param name="radiobutton_texture" value="buttons/osd/play_fo" />
+					<param name="radiobutton_texture" value="defaultaddonimages" />
 				</include>
 				<include content="IconButton">
 					<param name="id" value="11" />
 					<param name="label" value="native_lastfm" />
-					<param name="radiobutton_texture" value="buttons/osd/play_fo" />
+					<param name="radiobutton_texture" value="defaultaddonlyrics" />
 				</include>
 				<include content="IconButton">
 					<param name="id" value="12" />
 					<param name="label" value="native_get fanart" />
-					<param name="radiobutton_texture" value="buttons/osd/play_fo" />
+					<param name="radiobutton_texture" value="defaultaddonimages" />
 				</include>
 				<include content="IconButton">
 					<param name="id" value="77" />
 					<param name="label" value="textviever_showinfo_big" />
-					<param name="radiobutton_texture" value="buttons/osd/play_fo" />
+					<param name="radiobutton_texture" value="defaultaddoninfoprovider" />
 				</include>
 				<include content="IconButton">
 					<param name="id" value="78" />
 					<param name="label" value="ab_get images" />
-					<param name="radiobutton_texture" value="buttons/osd/play_fo" />
+					<param name="radiobutton_texture" value="icons/cow1" />
 					<onclick condition="String.IsEqual(ListItem.DBType,artist) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=artist, dbid=$INFO[ListItem.DBID])</onclick>
 					<onclick condition="String.IsEqual(ListItem.DBType,album) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=album, dbid=$INFO[ListItem.DBID])</onclick>
 					<onclick condition="String.IsEqual(ListItem.DBType,song) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=song, dbid=$INFO[ListItem.DBID])</onclick>
