@@ -345,6 +345,7 @@ view50 , hub_box_[foo] layout(s) - merging for cleanup
 		</control>
 		
 		<control type="image">
+			<animation effect="fade" start="100" end="0" time="250" condition="Control.HasFocus(8903)">conditional</animation>
 			<top>20</top>
 			<visible>!String.IsEmpty(ListItem.Art(clearlogo))</visible>
 			<width>300</width>
@@ -356,6 +357,8 @@ view50 , hub_box_[foo] layout(s) - merging for cleanup
 <!-- PAGES	 -->
 		<control type="grouplist" id="3000">
 				<include>FullScreenDimensions</include>
+				<animation effect="fade" start="100" end="0" time="250" condition="Control.HasFocus(8903)">conditional</animation>
+			
 		<!-- PAGE 1 -->
 				<control type="group">
 					<description>PAGE 1 METADATA - INFO</description>
@@ -370,26 +373,20 @@ view50 , hub_box_[foo] layout(s) - merging for cleanup
 						<onleft>8000</onleft>
 						<onright>8000</onright>
 						
+						
+						<onup condition="Control.IsVisible(3502)">3502</onup>
+						<!-- <onup condition="Control.IsVisible(3502)">SetFocus(8903)</onup> -->
+						
 						<ondown condition="Control.IsVisible(3110)">3110</ondown>
 						
 						<ondown condition="!Control.IsVisible(50)">3201</ondown>
-						<onup condition="!Control.IsVisible(50)">3201</onup>
+						<!-- <onup condition="!Control.IsVisible(50)">3201</onup> -->
 						
 						<ondown condition="Control.IsVisible(50)">50</ondown>
-						<onup condition="Control.IsVisible(50)">50</onup>
+						<!-- <onup condition="Control.IsVisible(50)">50</onup> -->
 						
 					</control>
 					
-					<control type="image">
-						<description>unhappy position therefore disabled</description>
-						<visible>false</visible>
-						<top>20</top>
-						<right>50</right>
-						<height>200</height>
-						<texture diffuse="colors/white30.png" background="true">$VAR[ListItemClearLogo]</texture>
-						<aspectratio scalediffuse="true" align="right" aligny="top">keep</aspectratio>
-					</control>
-			
 					<control type="image">
 						<description>test wirh a glow diffused bordertexture next time</description>
 						<bordersize>1</bordersize>
@@ -1014,6 +1011,7 @@ view50 , hub_box_[foo] layout(s) - merging for cleanup
 						<onleft>8000</onleft>
 						<onright>3301</onright>
 						<ondown condition="Player.HasVideo">SetFocus(3399)</ondown>
+						<ondown condition="!Player.HasVideo">3502</ondown>
 						
 						<!-- <ondown condition="Control.IsVisible(3401)">3401</ondown>
 						<ondown condition="!Control.IsVisible(3401)">3101</ondown> -->
@@ -1083,12 +1081,76 @@ view50 , hub_box_[foo] layout(s) - merging for cleanup
 				<control type="group">
 					<description>addon content or fanart slideshow ?</description>
 					<include>page_attribute</include>
-					<visible>false</visible>
+					
+					
+					<include content="Universal_Container">
+						<param name="id" value="3502" />
+						<param name="visible" value="Integer.IsGreater(Container(3502).NumItems,0) | Container(3502).IsUpdating" />
+						<param name="type_height" value="300" />
+						<param name="tags_visible" value="true" />
+						<param name="layout_height" value="250" />
+						<param name="layout_width" value="320" />
+						<param name="itemheight" value="180" />
+						<param name="itemwidth" value="320" />
+						<param name="ls_overlay_visible" value="false" />
+						<param name="layout" value="fanart" />
+						<pagecontrol>350260</pagecontrol>
+						<left>200</left>
+						<right>200</right>
+						<top>150</top>
+						
+					<onup condition="Control.IsVisible(3301)">3301</onup>
+					<onup condition="!Control.IsVisible(3301)">3201</onup>
+					
+					<ondown>3101</ondown>
+					<!-- 
+					copy paste from video info not adjusted
+					<onclick condition="!Skin.HasSetting(UseExtraFanartFolder)">SetProperty(FanartType,mixedfanart,home)</onclick>
+					<onclick condition="!Skin.HasSetting(UseExtraFanartFolder)">ActivateWindow(1121)</onclick>
+					-->
+					
+					<onclick condition="Skin.HasSetting(UseExtraFanartFolder)">SetFocus(8901)</onclick>
+					<onclick condition="!Skin.HasSetting(UseExtraFanartFolder)">SetFocus(8903)</onclick>
+					
+					<include condition="!Skin.HasSetting(UseExtraFanartFolder)" content="ExtrafanartSource" />
+					<include condition="Skin.HasSetting(UseExtraFanartFolder)" ontent="ExtrafanartFolderPath" />
+				</include>
+					
+					<!-- lyrics on songinfo ?? check possible -->
 				</control>
 			</control>
 			
 			
-
+			<!-- 
+			copy pase - check if xy moves via cond is posible to have a fs panel insteadv 1 row panel, also check art value
+			e.g. spine, back, inlay...
+			 -->
+			<include content="VideoInfo_SlideshowNav">
+				<param name="ButtonID" value="8901" />
+				<param name="ContainerID" value="3502" />
+			</include>
+			<include content="VideoInfo_SlideshowNav">
+				<param name="ButtonID" value="8902" />
+				<param name="ContainerID" value="8607" />
+			</include>
+			<include content="VideoInfo_SlideshowNav">
+				<param name="ButtonID" value="8903" />
+				<param name="ContainerID" value="3502" />
+				<param name="origin" value="Art(thumb)" />
+			</include>
+			
+			<control type="scrollbar" id="350260">
+				<description> slideshow scrollbar </description>
+				<width>1920</width>
+				<centerleft>50%</centerleft>
+				<height>8</height>
+				<orientation>horizontal</orientation>
+				<bottom>0</bottom>
+				<visible>Control.HasFocus(8901) | Control.HasFocus(8902) | Control.HasFocus(8903)</visible>
+				<texturesliderbackground colordiffuse="$VAR[color_global_scrollbar_panel]">colors/white.png</texturesliderbackground>
+				<texturesliderbar colordiffuse="$VAR[color_global_scrollbar_slider_fo]">colors/white.png</texturesliderbar>
+				<textureslidernib />
+			</control>
 	</control>
 		
 		
