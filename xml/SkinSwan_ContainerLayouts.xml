@@ -374,6 +374,8 @@
 		<param name="type_height" default="400" />
 		<param name="type_pos_top" default="50" />
 		<param name="orientation" default="horizontal" />
+		<param name="bordercolor_fo" default="$VAR[color_universalcontainer_itemframe_fo]" />
+		<param name="bordercolor_nf" default="$VAR[color_universalcontainer_itemframe_nf]" />
 		
 		<param name="circle_visible" default="false" />
 		<param name="tags_visible" default="false" />
@@ -384,6 +386,9 @@
 		
 		<param name="is_infowidget" default="false" />
 		<param name="infowidth" default="900" />
+		
+		<param name="SetPropOnFocus" default="true" />
+		<param name="focusoverlay_visible" default="true" />
 		
 		<definition>
 		<control type="$PARAM[type]" id="$PARAM[id]">
@@ -400,7 +405,7 @@
 					<width>$PARAM[itemwidth]</width>
 					<height>$PARAM[itemheight]</height>
 					<include content="UniversalLayout">
-						<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_nf]" />
+						<param name="colordiffuse" value="$PARAM[bordercolor_nf]" />
 						<param name="artwork" value="$PARAM[layout]" />
 						<param name="get_circle" value="$PARAM[circle_visible]" />
 						<param name="get_tags" value="$PARAM[tags_visible]" />
@@ -425,7 +430,7 @@
 				</control>
 			</itemlayout>
 			<focusedlayout height="$PARAM[layout_height]" width="$PARAM[layout_width]">
-				<include>SetPropOnFocus_HiddenButton</include>
+				<include condition="$PARAM[SetPropOnFocus]" content="SetPropOnFocus_HiddenButton" />
 	
 				<control type="group">
 					<width>$PARAM[itemwidth]</width>
@@ -433,7 +438,7 @@
 					<include>Animation_Item_Focus</include>
 					<control type="group">
 						<include content="UniversalLayout">
-							<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_fo]" />
+							<param name="colordiffuse" value="$PARAM[bordercolor_fo]" />
 							<param name="artwork" value="$PARAM[layout]" />
 							<param name="get_circle" value="$PARAM[circle_visible]" />
 							<param name="get_tags" value="$PARAM[tags_visible]" />
@@ -448,6 +453,7 @@
 						</include>
 						<control type="group">
 							<visible>!$PARAM[circle_visible]</visible>
+							<visible>$PARAM[focusoverlay_visible]</visible>
 							<include condition="Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]" content="FocusOverlay">
 								<param name="diffusedimtext" value="artworkdiffuse/usebganel/$PARAM[layout].png" />
 							</include>
@@ -494,7 +500,7 @@
 			
 	
 	<include name="UniversalLayout">
-		<param name="has_progressbar" default="false" />
+		<param name="has_progressbar" default="true" />
 		<param name="has_watchedindicator" default="false" />
 		<param name="image_fallback_aligny" default="center" />
 		<param name="get_circle" default="false" />
@@ -753,7 +759,7 @@
 		<control type="group">
 			<description>ProgressBar No Shadow</description>
 			<visible>!$PARAM[get_circle]</visible>
-			
+			<visible>$PARAM[has_progressbar]</visible>
 			<include condition="!Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]]" content="pos_left">
 				<param name="left" value="10" />
 			</include>
@@ -766,8 +772,7 @@
 			<include condition="Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]" content="pos_right">
 				<param name="right" value="65" />
 			</include>
-	
-            <include content="ProgressBarOverlay" />
+			<include content="ProgressBarOverlay" />
         </control>
 		
 		
