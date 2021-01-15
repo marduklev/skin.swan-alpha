@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 
-
 <include name="container_atts">
 	<orientation>$PARAM[orientation]</orientation>
 	<height>$PARAM[height]</height>
@@ -9,114 +8,106 @@
 
 <include name="temp_container3201">
 	
-					<control type="$PARAM[type]" id="3201">
-						<description>replace of native id 50 for cond oncklick song listing on artist, song listing on album</description>
-						<visible>!Window.Is(songinformation)</visible>
-						<preloaditems>2</preloaditems>
-						<scrolltime tween="quadratic">400</scrolltime>
-						<focusposition>3</focusposition>
-						<onclick condition="String.IsEqual(Container(3201).ListItem.dbtype,album)">PlayMedia(musicdb://albums/$INFO[Container(3201).ListItem.dbid]/)</onclick>
-						
-						<include condition="[Container.Content(artists) | String.IsEqual(ListItem.DBType,artist)]" content="container_atts">
-							<param name="orientation" value="horizontal"/>
-							<param name="height" value="300"/>
+	<control type="$PARAM[type]" id="3201">
+		<description>replace of native id 50 for cond oncklick song listing on artist, song listing on album</description>
+		<visible>!Window.Is(songinformation)</visible>
+		<preloaditems>2</preloaditems>
+		<scrolltime tween="quadratic">400</scrolltime>
+		<focusposition>3</focusposition>
+		<onclick condition="String.IsEqual(Container(3201).ListItem.dbtype,album)">PlayMedia(musicdb://albums/$INFO[Container(3201).ListItem.dbid]/)</onclick>
+		
+		<include condition="[Container.Content(artists) | String.IsEqual(ListItem.DBType,artist)]" content="container_atts">
+			<param name="orientation" value="horizontal"/>
+			<param name="height" value="300"/>
+		</include>
+		<include condition="![Container.Content(artists) | String.IsEqual(ListItem.DBType,artist)]" content="container_atts">
+			<param name="orientation" value="vertical"/>
+			<param name="height" value="800"/>
+		</include>
+		
+		<animation type="conditional" condition="Control.HasFocus(3202)" reversible="true">
+			<effect type="zoom" start="100" end="150" time="450" />
+			<effect type="slide" start="0,0" end="-700,-50" time="450"  />
+			<effect type="fade" start="100" end="0" time="450"  />
+		</animation>
+		
+		<top>170</top>
+		<left>200</left>
+			
+		<onleft>8000</onleft>
+		<onright>3201</onright>
+		<onup>3101</onup>
+		
+		<onup>3101</onup>
+		<ondown condition="Control.IsVisible(3202)">3202</ondown>
+		<ondown condition="!Control.IsVisible(3202) + [Control.IsVisible(3301) + !Container(3301).IsUpdating]">3301</ondown>
+		<ondown condition="!Control.IsVisible(3202) + ![Control.IsVisible(3301) + !Container(3301).IsUpdating]">3101</ondown>
+	
+		<itemlayout height="300" width="230" condition="Container.Content(artists) | String.IsEqual(ListItem.DBType,artist)">
+			<control type="group">
+				<animation effect="fade" start="100" end="0" time="200" condition="Control.HasFocus(3202)">conditional</animation>
+	
+				<width>220</width>
+				<height>220</height>
+				<include content="UniversalLayout">
+					<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_nf]" />
+					<param name="artwork" value="square" />
+					<param name="get_tags" value="true" />
+					<param name="get_tagbgpanel" value="true" />
+					<param name="autoscroll" value="false" />
+					<param name="bordersize_bg" value="6" />
+					<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_nf]" />
+					<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_nf]" />
+					<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_nf]" />
+				</include>
+			</control>
+		</itemlayout>
+		<focusedlayout height="300" width="230" condition="Container.Content(artists) | String.IsEqual(ListItem.DBType,artist)">
+			<control type="group">
+				<width>220</width>
+				<height>220</height>
+				<include>Animation_Item_Focus</include>
+				<control type="group">
+					<include content="UniversalLayout">
+						<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_fo]" />
+						<param name="artwork" value="square" />
+						<param name="get_tags" value="!Control.HasFocus(3202)" />
+						<param name="get_tagbgpanel" value="true" />
+						<param name="autoscroll" value="true" />
+						<param name="bordersize_bg" value="4" />
+						<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_fo]" />
+						<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_fo]" />
+						<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_fo]" />
+					</include>
+					<control type="group">
+						<include condition="Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]" content="FocusOverlay">
+							<param name="diffusedimtext" value="artworkdiffuse/usebganel/square.png" />
 						</include>
-						<include condition="![Container.Content(artists) | String.IsEqual(ListItem.DBType,artist)]" content="container_atts">
-							<param name="orientation" value="vertical"/>
-							<param name="height" value="800"/>
+						<include condition="!Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]]" content="FocusOverlay">
+							<param name="diffusedimtext" value="artworkdiffuse/square.png" />
 						</include>
-						
-						
-						<animation type="conditional" condition="Control.HasFocus(3202)" reversible="true">
-							<effect type="zoom" start="100" end="150" time="450" />
-							<effect type="slide" start="0,0" end="-700,-50" time="450"  />
-							<effect type="fade" start="100" end="0" time="450"  />
-						</animation>
-						
-						
-						<top>170</top>
-						<left>200</left>
-							
-						<onleft>8000</onleft>
-						<onright>3201</onright>
-						<onup>3101</onup>
-						
-						<onup>3101</onup>
-						<ondown condition="Control.IsVisible(3202)">3202</ondown>
-						<ondown condition="!Control.IsVisible(3202) + [Control.IsVisible(3301) + !Container(3301).IsUpdating]">3301</ondown>
-						<ondown condition="!Control.IsVisible(3202) + ![Control.IsVisible(3301) + !Container(3301).IsUpdating]">3101</ondown>
-					
-						<itemlayout height="300" width="230" condition="Container.Content(artists) | String.IsEqual(ListItem.DBType,artist)">
-							<control type="group">
-								<animation effect="fade" start="100" end="0" time="200" condition="Control.HasFocus(3202)">conditional</animation>
-					
-								<width>220</width>
-								<height>220</height>
-								<include content="UniversalLayout">
-								
-									<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_nf]" />
-									<param name="artwork" value="square" />
-									<param name="get_tags" value="true" />
-									<param name="get_tagbgpanel" value="true" />
-									<param name="autoscroll" value="false" />
-									<param name="bordersize_bg" value="6" />
-									<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_nf]" />
-									<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_nf]" />
-									<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_nf]" />
-								</include>
-							</control>
-							
-						</itemlayout>
-						<focusedlayout height="300" width="230" condition="Container.Content(artists) | String.IsEqual(ListItem.DBType,artist)">
-							<control type="group">
-								
-								<width>220</width>
-								<height>220</height>
-								<include>Animation_Item_Focus</include>
-								<control type="group">
-									<include content="UniversalLayout">
-										<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_fo]" />
-										<param name="artwork" value="square" />
-										<param name="get_tags" value="!Control.HasFocus(3202)" />
-										<param name="get_tagbgpanel" value="true" />
-										<param name="autoscroll" value="true" />
-										<param name="bordersize_bg" value="4" />
-										<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_fo]" />
-										<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_fo]" />
-										<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_fo]" />
-									</include>
-									<control type="group">
-										<include condition="Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]" content="FocusOverlay">
-											<param name="diffusedimtext" value="artworkdiffuse/usebganel/square.png" />
-										</include>
-										<include condition="!Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]]" content="FocusOverlay">
-											<param name="diffusedimtext" value="artworkdiffuse/square.png" />
-										</include>
-									</control>
-								</control>
-							</control>
-							
-						</focusedlayout>
-						
-						<itemlayout height="50" condition="Container.Content(albums) | String.IsEqual(ListItem.DBType,album)">
-							<include content="music_list_1row">
-								<param name="focsed" value="false"/>
-								<param name="text_main" value="$VAR[color_lib_text_secondary]"/>
-								<param name="text_secondary" value="$VAR[color_lib_text_secondary]"/>
-								<param name="text_accent" value="$VAR[color_lib_text_secondary]"/>
-							</include>
-						</itemlayout>
-						<focusedlayout height="50" condition="Container.Content(albums) | String.IsEqual(ListItem.DBType,album)">
-							<include content="music_list_1row">
-								<param name="focsed" value="true"/>
-								<param name="text_main" value="$VAR[color_lib_text_main]"/>
-								<param name="text_secondary" value="$VAR[color_lib_text_secondary]"/>
-								<param name="text_accent" value="$VAR[color_lib_accent]"/>
-							</include>
-						</focusedlayout>
-						<content>$VAR[musicinfo_content_3201]</content>
 					</control>
-
+				</control>
+			</control>
+		</focusedlayout>
+		<itemlayout height="50" condition="Container.Content(albums) | String.IsEqual(ListItem.DBType,album)">
+			<include content="music_list_1row">
+				<param name="focsed" value="false"/>
+				<param name="text_main" value="$VAR[color_lib_text_secondary]"/>
+				<param name="text_secondary" value="$VAR[color_lib_text_secondary]"/>
+				<param name="text_accent" value="$VAR[color_lib_text_secondary]"/>
+			</include>
+		</itemlayout>
+		<focusedlayout height="50" condition="Container.Content(albums) | String.IsEqual(ListItem.DBType,album)">
+			<include content="music_list_1row">
+				<param name="focsed" value="true"/>
+				<param name="text_main" value="$VAR[color_lib_text_main]"/>
+				<param name="text_secondary" value="$VAR[color_lib_text_secondary]"/>
+				<param name="text_accent" value="$VAR[color_lib_accent]"/>
+			</include>
+		</focusedlayout>
+		<content>$VAR[musicinfo_content_3201]</content>
+	</control>
 </include>
 
 

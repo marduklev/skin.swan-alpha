@@ -1,6 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 	
+	
+	use  conditional or define conditions here
+	<include name="SetPropOnFocus_HiddenButton">
+		<control type="button">
+			<visible allowhiddenfocus="true">false</visible>
+			<nested />
+			<onfocus condition="!Window.IsActive(movieinformation) + !String.IsEmpty(Window(home).Property(trailer_avail))">ClearProperty(trailer_avail,home)</onfocus>
+			<onfocus condition="!Window.IsActive(movieinformation) + !String.IsEmpty(Window(home).Property(listitemtrailer))">ClearProperty(listitemtrailer,home)</onfocus>
+			<onfocus condition="!Window.IsActive(movieinformation) + [String.IsEqual(ListItem.DBtype,tvshow) | String.IsEqual(ListItem.DBtype,movie)]">RunScript(script.embuary.helper,action=lookforfile,file='"$INFO[listitem.path]$INFO[listitem.FolderName,,-trailer.mp4]"',prop=trailer_avail)</onfocus>
+			<onfocus condition="!Window.IsActive(movieinformation) + [String.IsEqual(ListItem.DBtype,tvshow) | String.IsEqual(ListItem.DBtype,movie)]">SetProperty(listitemtrailer,$INFO[listitem.path]$INFO[listitem.FolderName,,-trailer.mp4],home)</onfocus>
+			
+			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.dbid)">SetProperty(dbid,$INFO[listitem.dbid],home)</onfocus>
+			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.rating)">SetProperty(rating,$INFO[listitem.rating],home)</onfocus>
+			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + [string.IsEmpty(listitem.rating) + !string.IsEmpty(listitem.userrating)]">SetProperty(rating,$INFO[listitem.userrating],home)</onfocus>
+			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.Property(totalseasons))">SetProperty(totalseasons,$INFO[listitem.Property(totalseasons)],home)</onfocus>
+			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.Property(totalepisodes))">SetProperty(totalepisodes,$INFO[listitem.Property(totalepisodes)],home)</onfocus>
+			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.status)">SetProperty(status,$INFO[listitem.status],home)</onfocus>
+		</control>
+	</include>
+	<!-- MEDIA Windows xmls -->
+	<include name="NativeString_Filter">
+		<control type="edit" id="19">
+			<visible>!$EXP[Infodialog_IsActive] + !Window.IsActive(shutdownmenu) + !Control.IsVisible(58)</visible>
+			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
+			<description>default menucontrol as option ?, add container based on vis ?</description>
+			
+			<onup>50</onup>
+			<ondown>50</ondown>
+			<onright>199</onright>
+			
+			<top>15</top>
+			<left>110</left>
+			<height>60</height>
+			<width>360</width>
+			<hinttext>$LOCALIZE[587]...</hinttext>
+			<texturefocus colordiffuse="$VAR[color_header_backgroundpanel]" diffuse="buttons/button_6to1_Trans.png">colors/white70.png</texturefocus>	
+			<texturenofocus diffuse="buttons/button_6to1_Trans.png">colors/white10.png</texturenofocus>
+			<font>SearchControl</font>
+			<textoffsetx>20</textoffsetx>
+			<textoffsety>15</textoffsety>
+			<textcolor>$VAR[color_header_text_main]</textcolor>
+			<focusedcolor>$VAR[color_header_text_main]</focusedcolor>
+			<disabledcolor />
+			<invalidcolor />
+			<aligny>center</aligny>
+			<pulseonselect>no</pulseonselect>
+			<label />
+		</control>
+		<control type="button">
+			<visible>!$EXP[Infodialog_IsActive] + !Window.IsActive(shutdownmenu) + !Control.IsVisible(58)</visible>
+			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
+			<description>touch mode workaround</description>
+			<animation effect="slide" start="0,0" end="90,0" time="250" tween="sine" condition="!ControlGroup(9000).HasFocus() + [!Skin.HasSetting(HideProfile_Header) + Control.IsVisible(97)]">Conditional</animation>
+			<visible>!String.IsEmpty(Window(home).Property(MenucontrolActive))</visible>
+			<height>110</height>
+			<texturefocus  />	
+			<texturenofocus  />
+			<onfocus>ClearProperty(MenucontrolActive,Home)</onfocus>
+			<onfocus>SetFocus(19)</onfocus>
+		</control>
+		<control type="button" id="199">
+			<visible>!$EXP[Infodialog_IsActive] + !Window.IsActive(shutdownmenu) + !Control.IsVisible(58)</visible>
+			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
+			<include>Animation_Item_Focus</include>
+			<texturefocus diffuse="icons/radiobuttons/advancedfiltermethod.png" colordiffuse="$VAR[color_header_text_accent]">colors/white70.png</texturefocus>	
+			<texturenofocus diffuse="icons/radiobuttons/advancedfiltermethod.png" colordiffuse="$VAR[color_header_text_main]">colors/white50.png</texturenofocus>
+			<top>20</top>
+			<left>415</left>
+			<width>50</width>
+			<height>50</height>
+			<onup>50</onup>
+			<ondown>50</ondown>
+			<visible>Container.CanFilterAdvanced</visible>
+			<font>font10</font>
+			<onright>50</onright>
+			<onleft>19</onleft>
+			<onclick>Filter</onclick>
+			<onfocus>ClearProperty(MenucontrolActive,Home)</onfocus>
+		</control>
+	</include>
+	
+	<!-- PAGES - view58,musicinfo -->
+	<include name="page_attribute">
+		<param name="top" default="0" />
+		<definition>
+		<top>$PARAM[top]</top>
+			<height>1080</height>
+		</definition>
+	</include>
+	
 	<!-- AddonBrowser.xml , DialogSelect.xml -->
 	<include name="Dialog_Containers">
 		<param name="Container_Height" default="67%" />
