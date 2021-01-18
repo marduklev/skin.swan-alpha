@@ -5,159 +5,7 @@
 		<include>Home_Widgets</include>
 	</include>
 
-	<include name="Home_Layout_InfoPanelTop">
-		
-		<control type="group">
-			<description>S P O T L I G H T  A R T W O R K</description>
-			<include content="DefArtwork">
-				<right>0</right>
-				<param name="diffuse" value="diffuse/Spotlight_left_diffuse.png" />
-				<param name="visible" value="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
-			</include>
-			<include content="DefArtwork">
-				<left>0</left>
-				<param name="diffuse" value="diffuse/Spotlight_right_diffuse.png" />
-				<param name="visible" value="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
-			</include>
-		</control>
-				
-		<control type="grouplist">
-			
-			<description>S P O T L I G H T  M E T A D A T A</description>
-			<width>65%</width>
-			<height>250</height>
-			<top>10</top>
-			<bottom>10</bottom>
-			<orientation>vertical</orientation>
-			<itemgap>10</itemgap>
-			<usecontrolcoords>true</usecontrolcoords>
-			
-			<include content="pos_left" condition="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)">
-				<param name="left" value="60" />
-			</include>
-			<include content="pos_right" condition="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)">
-				<param name="right" value="60" />
-			</include>
-			<!-- <animation time="300" effect="slide" end="0,200" reversible="true" easing="inout" condition="ControlGroup(9000).HasFocus">Conditional</animation> -->
-		
-			
-			<control type="image" id="1601">
-				<visible>!String.IsEmpty(Control.GetLabel(1601))</visible>
-				<height>245</height>
-				<bordersize>10</bordersize>
-				<aspectratio align="center" aligny="top">keep</aspectratio>
-				<texture background="true">$VAR[ListItemClearLogo]</texture>
-			</control>
-			
-			<control type="textbox">
-				<description>Fallback Label</description>
-				<visible>String.IsEmpty(Control.GetLabel(1601))</visible>
-				<height>235</height>
-				<wrapmultiline>true</wrapmultiline>
-				<font>font_SpotlightTitle_Large</font>
-				<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
-				<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
-					<param name="align" value="center" />
-				</include>
-				<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
-					<param name="align" value="right" />
-				</include>
-				<aligny>bottom</aligny>
-				<textcolor>white</textcolor>
-				<label>$VAR[ClearLogo_FallbackHome]</label>
-			</control>
-			
-			<include>Meta_Uncommon_Top</include>
-			
-			<control type="grouplist" id="588688">
-				<visible>String.IsEqual(ListItem.DBTYPE,episode)</visible>
-				<orientation>vertical</orientation>
-				<height>125</height>
-				<fadetime>300</fadetime>
-				<control type="label">
-					<visible>!Integer.IsGreater(ListItem.PercentPlayed,0)</visible>
-					<height>25</height>
-					<font>font_SpotlightPlot_RegMedium</font>
-					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
-						<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
-							<param name="align" value="center" />
-						</include>
-						<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
-							<param name="align" value="right" />
-						</include>
-					<aligny>center</aligny>
-					<textcolor>white</textcolor>
-					<label>[CAPITALIZE][B]Next Episode[/B][/CAPITALIZE]</label>
-				</control>
-				<control type="label">
-					<height>25</height>
-					<font>font_SpotlightPlot_RegMedium</font>
-					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
-					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
-						<param name="align" value="center" />
-					</include>
-					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
-						<param name="align" value="right" />
-					</include>
-					<aligny>center</aligny>
-					<textcolor>white</textcolor>
-					<label>NetflixEpisodeInfoLabel</label>
-				</control>
-				<control type="group">
-					<description> progress bar and continue label ,align center correction needed</description>
-					<visible>Integer.IsGreater(ListItem.PercentPlayed,0)</visible>
-					<height>40</height>
-					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
-					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
-						<param name="align" value="center" />
-					</include>
-					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
-						<param name="align" value="right" />
-					</include>
-					<aligny>center</aligny>
-					<control type="progress">
-						<description>progress bar</description>
-						<right>3</right>
-						<top>16</top>
-						<width>150</width>
-						<height>5</height>
-						<texturebg colordiffuse="B1FFFFFF" border="2">colors/white.png</texturebg>
-						<lefttexture></lefttexture>
-						<midtexture colordiffuse="red" border="2">colors/white.png</midtexture>
-						<righttexture></righttexture>
-						<info>ListItem.PercentPlayed</info>
-					</control>
-					<control type="label">
-						<description>continue watching unlocalized</description>
-						<right>175</right>
-						<height>30</height>
-						<align>right</align>
-						<font>font_SpotlightPlot_RegMedium</font>
-						<textcolor>red</textcolor>
-						<label>[B]continue watching[/B]</label>
-					</control>
-				</control>
-			</control>
-			
-			<include content="Home_Plot">
-				<param name="visible" value="!String.IsEqual(ListItem.DBTYPE,episode)" />
-				<param name="maxheight" value="205" />
-				<param name="top" value="0" />
-			</include>
-			
-			<include content="Home_Plot">
-				<param name="visible" value="String.IsEqual(ListItem.DBTYPE,episode)" />
-				<param name="maxheight" value="125" />
-				<param name="top" value="5" />
-			</include>
-			
-			<include content="Meta_Genre_Bottom" />
-				
-		</control>
-			
-		<include>Home_Widgets</include>
-				
-	</include>
+	
 
 	<include name="Home_Layout_Spotlight">
 		
@@ -181,6 +29,65 @@
 			
 			
 		</control>
+		
+		<control type="group">
+			<top>0</top>
+			<visible>Player.HasVideo</visible>
+			<control type="videowindow">
+				<include content="pos_left" condition="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
+				<include content="pos_right" condition="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
+				<width>1267</width>
+				<height>731</height>
+			</control>
+			
+			
+			<control type="image">
+				<visible>false</visible>
+				<texture colordiffuse="$VAR[color_home_background_layer1]" diffuse="diffuse/tes.png">colors/white80.png</texture>
+				<right>0</right>
+				<width>1267</width>
+				<height>731</height>
+			</control>
+			<control type="image">
+				<visible>true</visible>
+				<texture colordiffuse="$VAR[color_home_background_layer1]" diffuse="diffuse/fs_sl_right.png">colors/white.png</texture>
+				<right>0</right>
+			</control>
+			<control type="image">
+				<visible>true</visible>
+				<texture colordiffuse="$VAR[color_home_background_layer3]" diffuse="diffuse/fs_sl_right.png">$VAR[Global_Layer3_OverlayImage]</texture>
+				<right>0</right>
+			</control>
+			
+			
+			<control type="group">
+				<right>20</right>
+				<top>0</top>
+				<width>1267</width>
+				<height>731 </height>
+				<visible>true</visible>
+				<control type="image">
+					<texture flipy="true" colordiffuse="$VAR[color_home_background_layer1]">diffuse/gradient.png</texture>
+					<right>-20</right>
+					<width>1267</width>
+					<height>70 </height>
+				</control>
+				<control type="label">
+					<visible>true</visible>
+					<aligny>top</aligny>
+					<align>right</align>
+					<color>$VAR[color_home_text_main]</color>
+					<label>$INFO[VideoPlayer.Resolution]</label>
+				</control>
+				<control type="label">
+					<visible>true</visible>
+					<aligny>top</aligny>
+					<align>right</align>
+					<color>$VAR[color_home_text_main]</color>
+					<label>$INFO[Player.Title] $INFO[Player.Time(hh:mm)] $INFO[Player.Duration]</label>
+				</control>
+			</control>
+		</control>
 			
 		<control type="label">
 			<visible>[Control.HasFocus(9000) | Control.HasFocus(8997)]</visible>
@@ -195,7 +102,6 @@
 	
 		<control type="grouplist">
 			<description>S P O T L I G H T  M E T A D A T A</description>
-			
 			<animation effect="fade" start="100" end="0" time="250" condition="Window.IsActive(shutdownmenu)">conditional</animation>
 			<width>39%</width>
 			<height>650</height>

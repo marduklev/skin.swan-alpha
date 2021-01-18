@@ -25,8 +25,7 @@
 		</control>
 		
 		<include condition="!String.IsEqual(Skin.String(HomeLayout),MenuTiles)" content="GlobalBackground" />
-		
-		
+	
 		<!-- keep idea
 main menu - restricted? custom items
 submenu - restricted depending on custom skinstring mainmenu item - use/show submenu container where static items lead to window,and dynamic show content - slide top?, hide/slide common main widgets
@@ -61,31 +60,22 @@ submenu - restricted depending on custom skinstring mainmenu item - use/show sub
 			<animation effect="zoom" start="70" end="100" time="250" center="85%,25%" condition="!ControlGroup(9000).HasFocus()">Conditional</animation>
 		
 			<include content="Animation_TransitionFadeOut">
-				<param name="condition" value="$EXP[Infodialog_IsActive] | Window.IsActive(mediasource) | [Window.IsActive(shutdownmenu) + !String.IsEqual(Skin.String(HomeLayout),Spotlight)]" />
+				<param name="condition" value="$EXP[Infodialog_IsActive] | Window.IsActive(mediasource) | Window.IsActive(shutdownmenu)" />
 			</include>
 			
 			<!-- Widget/Home Layouts -->
 			<include condition="String.IsEqual(Skin.String(HomeLayout),Spotlight)">Home_Layout_Spotlight</include>
 			<include condition="String.IsEmpty(Skin.String(HomeLayout)) | String.IsEqual(Skin.String(HomeLayout),WidgetsOnly)">Home_Layout_WidgetOnly</include>
-			<include condition="String.IsEqual(Skin.String(HomeLayout),InfoPanelTop)">Home_Layout_InfoPanelTop</include>
 		</control>
 		
 		<control type="group">
-			<visible>!String.IsEqual(Skin.String(HomeLayout),MenuTiles)</visible>
-			<animation effect="fade" start="100" end="0" time="300" condition="$EXP[Infodialog_IsActive]">Conditional</animation>
+			<description>MENU</description>
+			<animation effect="fade" start="100" end="0" time="300" condition="$EXP[Infodialog_IsActive] + !String.IsEqual(Skin.String(HomeLayout),MenuTiles)">Conditional</animation>
 			<!-- Layouts in Early Progress -->
-			<include content="Menucontrol_Home_Custom" condition="Skin.HasSetting(useshortcut_mainmenu)" />
-			<include content="Menucontrol_Home_test1" condition="!Skin.HasSetting(useshortcut_mainmenu)" />
+			<include content="Menucontrol_Home_Custom" condition="Skin.HasSetting(useshortcut_mainmenu) + !String.IsEqual(Skin.String(HomeLayout),MenuTiles)" />
+			<include content="Menucontrol_Home_test1" condition="!Skin.HasSetting(useshortcut_mainmenu) + !String.IsEqual(Skin.String(HomeLayout),MenuTiles)" />
+			<include content="Menucontrol_Home_MenuTiles" condition="String.IsEqual(Skin.String(HomeLayout),MenuTiles)" />
 			<!-- Home_Layout_MainMenuOnly_Center -->
-		</control>
-		
-		<control type="group">
-			
-			<visible>String.IsEqual(Skin.String(HomeLayout),MenuTiles)</visible>
-			
-			<include content="Menucontrol_Home_MenuTiles" />
-				
-			
 		</control>
 		
 		<include content="swan_debug_overlay">
