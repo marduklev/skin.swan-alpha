@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
+	<include name="media_window_attributes">
+		<param name="defaultcontrol" default="50" />
+		<param name="view_ids" default="50" />
+		<definition>
+			<defaultcontrol always="true">$PARAM[defaultcontrol]</defaultcontrol>
+			<backgroundcolor>$VAR[color_global_background_layer1]</backgroundcolor>
+			<views>$PARAM[view_ids]</views>
+			<include>media_menucontrol</include>
+			<include content="Animation_OpenClose_MediaWindow" condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))" />
+		</definition>
+	</include>
+	
 	
 	<!-- musicinfo-->
 	<include name="IconButton">
@@ -270,6 +282,34 @@ ID 	Type 					Description
 20	button	Update library
 -->
 
+	<!-- 
+	is failing
+	<variable name="media_menucontrol">
+		<value condition="false">9000</value>
+		<value condition="true">8999</value>
+	</variable>
+	
+	is also failing
+	<include name="media_menucontrol">
+		<param name="forced_menu_id" default="9000" />
+		<menucontrol>$PARAM[forced_menu_id]</menucontrol>
+	</include>
+	
+	-->
+	<include name="media_menucontrol">
+		<include content="media_menucontrol_9000" condition="!Skin.HasSetting(menucontrol_forcedfocus_8999)" />
+		<include content="media_menucontrol_8999" condition="Skin.HasSetting(menucontrol_forcedfocus_8999)" />
+	</include>
+	
+	<include name="media_menucontrol_9000">
+		<menucontrol>9000</menucontrol>
+	</include>
+	<include name="media_menucontrol_8999">
+		<menucontrol>8999</menucontrol>
+	</include>
+	
+	
+	
 	<!-- Window.Is(media) , My[foo]Nav.xml -->
 	<include name="Menucontrol_Media">
 	
@@ -595,6 +635,15 @@ msgstr "Video-Wiedergabelisten"
 						<label>$LOCALIZE[457]</label>
 						<label2>$INFO[Container.Viewmode]</label2>
 						<onclick>SendClick(2)</onclick>
+						<visible>Control.IsVisible(2)</visible>
+						<property name="icon">default</property>
+					</item>
+					<item>
+						<icon>icons/radiobuttons/viewswitch2.png</icon>
+						<label>WIP OPEN VIEW SELECTOR</label>
+						<label2>$INFO[Container.Viewmode]</label2>
+						<onclick>SetProperty(view_selection,visible,home)</onclick>
+						<onclick>SetFocus(100)</onclick>
 						<visible>Control.IsVisible(2)</visible>
 						<property name="icon">default</property>
 					</item>
