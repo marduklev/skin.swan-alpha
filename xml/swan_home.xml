@@ -163,10 +163,11 @@
 		
 		<control type="group">
 			<description>S P O T L I G H T  A R T W O R K</description>
+			
 			<include content="DefArtwork">
+				<right>0</right>
 				<param name="width" value="1267" />
 				<param name="height" value="731" />
-				<right>0</right>
 				<param name="diffuse" value="diffuse/Spotlight_left_diffuse.png" />
 				<param name="visible" value="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
 			</include>
@@ -177,12 +178,25 @@
 				<param name="diffuse" value="diffuse/Spotlight_right_diffuse.png" />
 				<param name="visible" value="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
 			</include>
-		</control>
-				
-		<control type="grouplist">
-			<animation effect="fade" start="100" end="0" time="250" condition="Window.IsActive(shutdownmenu)">conditional</animation>
 			
+			
+		</control>
+			
+		<control type="label">
+			<visible>[Control.HasFocus(9000) | Control.HasFocus(8997)]</visible>
+			<visible>false</visible>
+			<left>50%</left>
+			<label>$INFO[Container(9000).ListItem.Label]</label>
+			<textcolor>red</textcolor>
+			<align>center</align>
+			<width>400</width>
+			<font>font_SpotlightTitle_Large</font>
+		</control>
+	
+		<control type="grouplist">
 			<description>S P O T L I G H T  M E T A D A T A</description>
+			
+			<animation effect="fade" start="100" end="0" time="250" condition="Window.IsActive(shutdownmenu)">conditional</animation>
 			<width>39%</width>
 			<height>650</height>
 			<top>10</top>
@@ -194,32 +208,35 @@
 			<include content="pos_left" condition="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)">
 				<param name="left" value="110" />
 			</include>
-			
 			<include content="pos_right" condition="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)">
 				<param name="right" value="60" />
 			</include>
-			<!-- <animation time="300" effect="slide" end="0,200" reversible="true" easing="inout" condition="ControlGroup(9000).HasFocus">Conditional</animation> -->
+			<include content="spacer_h">
+				<param name="gap" value="150" />
+				<param name="visible" value="Skin.HasSetting(home_spotlight_hideplot)" />
+			</include>
 			
-			<!-- check merge improve  ClearLogo_or_Title -->
+	<!-- check merge improve  include ClearLogo_or_Title -->
 			<control type="image" id="1601">
+				<description>choose align for aspectratio respecting skinstring</description>
 				<description>clearlogo, didnt need respect alignment setting ?</description>
 				<visible>!String.IsEmpty(Control.GetLabel(1601))</visible>
 				<height>245</height>
-				<bordersize>10</bordersize>
-				<aspectratio align="center" aligny="top">keep</aspectratio>
+				<aspectratio align="center" aligny="bottom">keep</aspectratio>
 				<texture background="true">$VAR[ListItemClearLogo]</texture>
 			</control>
 			
 			<control type="textbox">
-				<description>Fallback Label</description>
-				<visible>String.IsEmpty(Control.GetLabel(1601))</visible>
+				<description>Fallback Label - make expression home_menucontrol_focused as 3 id s</description>
+				<visible>![Control.HasFocus(9000) | Control.HasFocus(8997)] + String.IsEmpty(Control.GetLabel(1601))</visible>
 				<height>235</height>
 				<wrapmultiline>true</wrapmultiline>
 				<font>font_SpotlightTitle_Large</font>
-				<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
+				<include content="pos_alignx" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
+				<include content="pos_alignx" condition="Skin.HasSetting(home_spotlight_hideplot) | String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
 					<param name="align" value="center" />
 				</include>
-				<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+				<include content="pos_alignx" condition="Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
 					<param name="align" value="right" />
 				</include>
 				<aligny>bottom</aligny>
@@ -240,22 +257,18 @@
 					<height>70</height>
 					<!-- <font>font_SpotlightPlot_RegMedium</font> -->
 					<font>InfoCommon</font>
-					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
-					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
+					<include content="pos_alignx" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
+					<include content="pos_alignx" condition="Skin.HasSetting(home_spotlight_hideplot) | String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
 						<param name="align" value="center" />
 					</include>
-					<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+					<include content="pos_alignx" condition="Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
 						<param name="align" value="right" />
 					</include>
 					<aligny>center</aligny>
 					<textcolor>$VAR[color_home_text_main]</textcolor>
 					<label>[CAPITALIZE]$INFO[ListItem.Title,[B],[/B]][CR]$INFO[ListItem.Season,$LOCALIZE[36904] ,]$INFO[ListItem.Episode, $LOCALIZE[36906] ,][/CAPITALIZE]</label>
 				</control>
-				<control type="label">
-					<height>30</height>
-					<font />
-					<textcolor />
-				</control>
+				<include content="spacer_h" />
 			</control>
 			
 			<include content="Home_Plot">
@@ -290,6 +303,7 @@
 			<width>95%</width>
 			<description>if align right, width doesnt affect alignment</description>
 			<visible>$PARAM[visible]</visible>
+			<visible>!Skin.HasSetting(home_spotlight_hideplot)</visible>
 			<top>$PARAM[top]</top>
 			<height min="80" max="$PARAM[maxheight]">auto</height>
 			<aligny>top</aligny>
@@ -312,12 +326,12 @@
 			<usecontrolcoords>true</usecontrolcoords>
 			<height>50</height>
 			<itemgap>10</itemgap>
-			
-			<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
-			<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
+			<right>25</right>
+			<include content="pos_alignx" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
+			<include content="pos_alignx" condition="Skin.HasSetting(home_spotlight_hideplot) | String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
 				<param name="align" value="center" />
 			</include>
-			<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+			<include content="pos_alignx" condition="Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
 				<param name="align" value="right" />
 			</include>
 			
@@ -406,30 +420,27 @@
 
 	<include name="Meta_Genre_Bottom">
 		<control type="grouplist">
+			<description>got no idea why pos_right is needed but its workin</description>
 			<visible>!String.IsEmpty(ListItem.Genre)</visible>
 			<height>60</height>
 			<orientation>horizontal</orientation>
 			<itemgap>10</itemgap>
 			<usecontrolcoords>true</usecontrolcoords>
-			<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
-			<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
+			<include content="pos_alignx" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
+			<include content="pos_alignx" condition="Skin.HasSetting(home_spotlight_hideplot) | String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
 				<param name="align" value="center" />
 			</include>
-			<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+			<include content="pos_alignx" condition="Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
 				<param name="align" value="right" />
 			</include>
-			<control type="group">
+			<include content="pos_right" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+				<param name="right" value="30" />
+			</include>
+			<control type="image">
 				<height>60</height>
 				<width>60</width>
-				<control type="image">
-					<texture aligny="center" align="center">diffuse/roundmask.png</texture>
-					<colordiffuse>$VAR[color_home_accent]</colordiffuse>
-				</control>
-				<control type="image">
-					<texture aligny="center" align="center">flags/genre.png</texture>
-					<aspectratio>keep</aspectratio>
-					<colordiffuse>ff000000</colordiffuse>
-				</control>
+				<bordertexture colordiffuse="$VAR[color_home_accent]" aligny="center" align="center">diffuse/roundmask.png</bordertexture>
+				<texture colordiffuse="$VAR[color_home_background_layer1]" aligny="center" align="center">flags/genre.png</texture>
 			</control>
 			<control type="label">
 				<width>auto</width>
@@ -442,8 +453,6 @@
 		</control>
 	</include>
 
-	
-	
 	<include name="FramedCodecInfo">
 		<param name="font" default="font_SpotlightMetaDataBar" />
 		<param name="top" default="5" />
@@ -460,12 +469,8 @@
 				<bordersize>2</bordersize>
 				<width>60</width>
 				<height>35</height>
+				<bordertexture colordiffuse="$VAR[color_home_text_main]">flags/slimframe_softedge.png</bordertexture>
 				<texture colordiffuse="$VAR[color_home_background_layer1]">colors/white40.png</texture>
-			</control>
-			<control type="image">
-				<width>60</width>
-				<height>35</height>
-				<texture colordiffuse="white">flags/slimframe_softedge.png</texture>
 			</control>
 			<control type="label" id="$PARAM[label_id]">
 				<width>60</width>
