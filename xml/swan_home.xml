@@ -26,91 +26,12 @@
 				<param name="diffuse" value="diffuse/spotlightrightdiffuse.png" />
 				<param name="visible" value="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
 			</include>
-			
-			
 		</control>
 		
-		<control type="group">
-			<top>0</top>
-			<visible>Player.HasVideo</visible>
-			<control type="videowindow">
-				<include content="pos_left" condition="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
-				<include content="pos_right" condition="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
-				<width>1267</width>
-				<height>731</height>
-			</control>
-			
-			
-			<control type="image">
-				<visible>false</visible>
-				<texture colordiffuse="$VAR[color_home_background_layer1]" diffuse="diffuse/spotlighttoprightinverted.png">colors/white80.png</texture>
-				<right>0</right>
-				<width>1267</width>
-				<height>731</height>
-			</control>
-			<control type="image">
-				<visible>!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)</visible>
-				<texture colordiffuse="$VAR[color_home_background_layer1]" diffuse="diffuse/spotlighttraileroverlayleft.png">colors/white.png</texture>
-				<right>0</right>
-			</control>
-			<control type="image">
-				<visible>!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)</visible>
-				<texture colordiffuse="$VAR[color_home_background_layer3]" diffuse="diffuse/spotlighttraileroverlayleft.png">$VAR[Global_Layer3_OverlayImage]</texture>
-				<right>0</right>
-			</control>
-			
-			<control type="image">
-				<visible>false</visible>
-				<texture colordiffuse="$VAR[color_home_background_layer1]" diffuse="diffuse/spotlighttoprightinverted.png">colors/white80.png</texture>
-				<left>0</left>
-				<width>1267</width>
-				<height>731</height>
-			</control>
-			<control type="image">
-				<visible>Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)</visible>
-				<texture colordiffuse="$VAR[color_home_background_layer1]" diffuse="diffuse/spotlighttraileroverlayright.png">colors/white.png</texture>
-				<left>0</left>
-			</control>
-			<control type="image">
-				<visible>Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)</visible>
-				<texture colordiffuse="$VAR[color_home_background_layer3]" diffuse="diffuse/spotlighttraileroverlayright.png">$VAR[Global_Layer3_OverlayImage]</texture>
-				<left>0</left>
-			</control>
-			
-			
-			
-			<control type="group">
-				<visible>Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)</visible>
-				<visible>false</visible>
-				<right>20</right>
-				<top>0</top>
-				<width>1267</width>
-				<height>731 </height>
-				<visible>true</visible>
-				<control type="image">
-					<texture flipy="true" colordiffuse="$VAR[color_home_background_layer1]">diffuse/gradient.png</texture>
-					<right>-20</right>
-					<width>1267</width>
-					<height>70 </height>
-				</control>
-				<control type="label">
-					<visible>true</visible>
-					<aligny>top</aligny>
-					<align>right</align>
-					<color>$VAR[color_home_text_main]</color>
-					<label>$INFO[VideoPlayer.Resolution]</label>
-				</control>
-				<control type="label">
-					<visible>true</visible>
-					<aligny>top</aligny>
-					<align>right</align>
-					<color>$VAR[color_home_text_main]</color>
-					<label>$INFO[Player.Title] $INFO[Player.Time(hh:mm)] $INFO[Player.Duration]</label>
-				</control>
-			</control>
-		</control>
-			
+		<include>spotlight_trailer_overlay</include>
+		
 		<control type="label">
+			<description>WIP HOME MENU LABELS CENTERED</description>
 			<visible>[Control.HasFocus(9000) | Control.HasFocus(8997)]</visible>
 			<visible>false</visible>
 			<left>50%</left>
@@ -122,7 +43,7 @@
 		</control>
 	
 		<control type="grouplist">
-			<description>S P O T L I G H T  M E T A D A T A</description>
+			<description>S P O T L I G H T  M E T A D A T A 750w</description>
 			<animation effect="fade" start="100" end="0" time="250" condition="Window.IsActive(shutdownmenu)">conditional</animation>
 			<width>39%</width>
 			<height>650</height>
@@ -143,7 +64,6 @@
 				<param name="visible" value="Skin.HasSetting(home_spotlight_hideplot)" />
 			</include>
 			
-	<!-- check merge improve  include ClearLogo_or_Title -->
 			<control type="image" id="1601">
 				<description>choose align for aspectratio respecting skinstring</description>
 				<description>clearlogo, didnt need respect alignment setting ?</description>
@@ -163,8 +83,12 @@
 				<include content="pos_alignx" condition="Skin.HasSetting(home_spotlight_hideplot) | String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
 					<param name="align" value="center" />
 				</include>
-				<include content="pos_alignx" condition="Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+				
+				<include content="pos_alignx" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
 					<param name="align" value="right" />
+				</include>
+				<include content="pos_right" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+					<param name="right" value="30" />
 				</include>
 				<aligny>bottom</aligny>
 				<textcolor>$VAR[color_home_accent]</textcolor>
@@ -254,11 +178,12 @@
 			<height>50</height>
 			<itemgap>10</itemgap>
 			<right>25</right>
+			
 			<include content="pos_alignx" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
 			<include content="pos_alignx" condition="Skin.HasSetting(home_spotlight_hideplot) | String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
 				<param name="align" value="center" />
 			</include>
-			<include content="pos_alignx" condition="Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+			<include content="pos_alignx" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
 				<param name="align" value="right" />
 			</include>
 			
@@ -353,16 +278,19 @@
 			<orientation>horizontal</orientation>
 			<itemgap>10</itemgap>
 			<usecontrolcoords>true</usecontrolcoords>
+			
 			<include content="pos_alignx" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
 			<include content="pos_alignx" condition="Skin.HasSetting(home_spotlight_hideplot) | String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
 				<param name="align" value="center" />
 			</include>
-			<include content="pos_alignx" condition="Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
-				<param name="align" value="right" />
-			</include>
-			<include content="pos_right" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+			
+			<include content="pos_right" condition="!Skin.HasSetting(home_spotlight_hideplot)) + String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
 				<param name="right" value="30" />
 			</include>
+			<include content="pos_alignx" condition="!Skin.HasSetting(home_spotlight_hideplot)) + String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+				<param name="align" value="right" />
+			</include>
+			
 			<control type="image">
 				<height>60</height>
 				<width>60</width>
@@ -457,5 +385,43 @@
 		<value>$INFO[ListItem.Label]</value>	
 	</variable>
 	
+	<include name="spotlight_trailer_overlay">
+		
+		<control type="group">
+			<top>0</top>
+			<visible>Player.HasVideo</visible>
+			
+			<control type="videowindow">
+				<include content="pos_left" condition="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
+				<include content="pos_right" condition="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
+				<width>1267</width>
+				<height>731</height>
+			</control>
+			
+			<control type="image">
+				<description>verstärker</description>
+				<visible>false</visible>
+				<texture colordiffuse="$VAR[color_home_background_layer1]" diffuse="diffuse/spotlighttoprightinverted.png">colors/white80.png</texture>
+				<right>0</right>
+				<width>1267</width>
+				<height>731</height>
+			</control>
+			
+			<control type="image">
+				<description>variable in diffuse tag not workin</description>
+				<visible>!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)</visible>
+				<bordertexture colordiffuse="$VAR[color_home_background_layer1]" diffuse="diffuse/spotlighttraileroverlayleft.png">colors/white.png</bordertexture>
+				<texture colordiffuse="$VAR[color_home_background_layer3]" diffuse="diffuse/spotlighttraileroverlayleft.png">$VAR[Global_Layer3_OverlayImage]</texture>
+				<right>0</right>
+			</control>
+			<control type="image">
+				<description>variable in diffuse tag not workin</description>
+				<visible>Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)</visible>
+				<bordertexture colordiffuse="$VAR[color_home_background_layer1]" diffuse="diffuse/spotlighttraileroverlayright.png">colors/white.png</bordertexture>
+				<texture colordiffuse="$VAR[color_home_background_layer3]" diffuse="diffuse/spotlighttraileroverlayright.png">$VAR[Global_Layer3_OverlayImage]</texture>
+				<left>0</left>
+			</control>
+		</control>
+	</include>
 
 </includes>
