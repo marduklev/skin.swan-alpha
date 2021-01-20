@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window type="dialog" id="1195">
+	<!-- conditions depending on view at later state 
+	
+	NOT DONE
+	hide me on DIALOGS -->
+	<visible>[Window.IsActive(videos) + Skin.HasSetting(autoplay_trailer_common)] | [[Window.IsActive(home) + String.IsEqual(Skin.String(HomeLayout),Spotlight)] + Skin.HasSetting(autoplay_trailer_home)]</visible>
+	<visible>String.IsEmpty(Window(Home).Property(TrailerIsPlaying)) + [!String.IsEmpty(Window(home).Property(trailer_avail)) | !String.IsEmpty(ListItem.Trailer)]</visible>
+	<visible>System.IdleTime(4)</visible>
+	
+	<onload condition="!String.IsEmpty(Window(home).Property(listitemtrailer))">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onload>
+	
+	
+	<onload>SetProperty(TrailerIsPlaying,true,home)</onload>
+	<onload>Dialog.Close(1195,true)</onload>
+				
+	<animation effect="fade" start="100" end="0" time="325">WindowOpen</animation>
+	<animation effect="fade" start="100" end="0" time="325">WindowClose</animation>
+	
+	<controls />
+</window>

@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 	
-	
-	use  conditional or define conditions here
 	<include name="SetPropOnFocus_HiddenButton">
 		<control type="button">
 			<visible allowhiddenfocus="true">false</visible>
 			<nested />
+			
 			<onfocus condition="!Window.IsActive(movieinformation) + !String.IsEmpty(Window(home).Property(trailer_avail))">ClearProperty(trailer_avail,home)</onfocus>
 			<onfocus condition="!Window.IsActive(movieinformation) + !String.IsEmpty(Window(home).Property(listitemtrailer))">ClearProperty(listitemtrailer,home)</onfocus>
-			<onfocus condition="!Window.IsActive(movieinformation) + [String.IsEqual(ListItem.DBtype,tvshow) | String.IsEqual(ListItem.DBtype,movie)]">RunScript(script.embuary.helper,action=lookforfile,file='"$INFO[listitem.path]$INFO[listitem.FolderName,,-trailer.mp4]"',prop=trailer_avail)</onfocus>
-			<onfocus condition="!Window.IsActive(movieinformation) + [String.IsEqual(ListItem.DBtype,tvshow) | String.IsEqual(ListItem.DBtype,movie)]">SetProperty(listitemtrailer,$INFO[listitem.path]$INFO[listitem.FolderName,,-trailer.mp4],home)</onfocus>
+			
+			<onfocus condition="!Window.IsActive(movieinformation) + [String.IsEmpty(listitem.trailer) + [String.IsEqual(ListItem.DBtype,tvshow) | String.IsEqual(ListItem.DBtype,movie)]]">RunScript(script.embuary.helper,action=lookforfile,file='"$INFO[listitem.path]$INFO[listitem.FolderName,,-trailer.mp4]"',prop=trailer_avail)</onfocus>
+			<onfocus condition="!Window.IsActive(movieinformation) + [String.IsEmpty(listitem.trailer) + [String.IsEqual(ListItem.DBtype,tvshow) | String.IsEqual(ListItem.DBtype,movie)]]">SetProperty(listitemtrailer,$INFO[listitem.path]$INFO[listitem.FolderName,,-trailer.mp4],home)</onfocus>
+			<onfocus condition="!Window.IsActive(movieinformation) + !String.IsEmpty(listitem.trailer)">SetProperty(listitemtrailer,$INFO[listitem.trailer],home)</onfocus>
 			
 			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.dbid)">SetProperty(dbid,$INFO[listitem.dbid],home)</onfocus>
 			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.rating)">SetProperty(rating,$INFO[listitem.rating],home)</onfocus>
@@ -18,6 +19,8 @@
 			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.Property(totalseasons))">SetProperty(totalseasons,$INFO[listitem.Property(totalseasons)],home)</onfocus>
 			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.Property(totalepisodes))">SetProperty(totalepisodes,$INFO[listitem.Property(totalepisodes)],home)</onfocus>
 			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.status)">SetProperty(status,$INFO[listitem.status],home)</onfocus>
+			
+			
 		</control>
 	</include>
 	<!-- MEDIA Windows xmls -->
