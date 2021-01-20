@@ -1,17 +1,14 @@
+# skin.swan-alpha
+<img src='./resources/fanart.jpg'>
 
-[wiki](https://github.com/marduklev/skin.swan-alpha.wiki.git)
-
-or just readme.md
-
-[git hub page skin.swan-alpha](https://github.com/marduklev/skin.swan-alpha)
+[git hub link skin.swan-alpha](https://github.com/marduklev/skin.swan-alpha)
 
 
-start
 ##  Credits for some currently used Textures belongs to
 - @'Phil65' (skin.estuary) (default[foo].pngs's, some backgroundpatterns)
 - @'Marcelveldt' , @'mgonzales71' (resource.images.backgroundoverlays.basic)
 - some icons taken from https://materialdesignicons.com/
-- some backgroundimages taken from unsplash.com (image creators are credited in the filename)
+- some backgroundimages taken from [unsplash.com](https://unsplash.com/) (image creators are credited in the filename)
 
 ##  Addon Dependencies & Supported Addons
 **dependencies**
