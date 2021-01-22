@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <window>
-<!-- 	
+<!-- 	busydialog 	WINDOW_DIALOG_BUSY 	10138 	DialogBusy.xml 
 ID 	Type 			Description
 10 	progress 		Progress bar 
 
 test disable bnusy via include usage
 -->
-
-	<onunload condition="!string.isempty(window(home).property(busyspinner_active))">ClearProperty(busyspinner,home)</onunload>
+	
+	<onload condition="!string.isempty(window(home).property(busyspinner))">SetProperty(busyspinner_2ndload,2,home)</onload>
+	<onunload condition="string.isempty(window(home).property(busyspinner)) + !string.isempty(window(home).property(busyspinner_2ndload))">ClearProperty(busyspinner_2ndload,home)</onunload>
+	<onunload condition="!string.isempty(window(home).property(busyspinner))">ClearProperty(busyspinner,home)</onunload>
+	
 	<controls>
 		<control type="group">
-			<visible>string.isempty(window(home).property(busyspinner))</visible>
+			<visible>string.isempty(window(home).property(busyspinner)) + string.isempty(window(home).property(busyspinner_2ndload))</visible>
+			
+			<!-- play act busy close - load activate busy 2nd time yt <visible>string.isempty(window(home).property(TrailerIsPlaying))</visible> -->
 			<control type="image">
 				<texture colordiffuse="$VAR[color_global_dialog_background]">colors/white60.png</texture>
 			</control>
@@ -23,16 +28,13 @@ test disable bnusy via include usage
 				<aspectratio align="center" aligny="center">keep</aspectratio>
 			</control>
 		</control>
-		<!-- 
-		<control type="image">
-			<visible>string.isequal(window(home).property(busyspinner),spotlighttrailerhome)</visible>
-			<centerleft>65%</centerleft>
-			<centertop>30%</centertop>
-			<width>150</width>
-			<height>150</height>
-			<texture colordiffuse="$VAR[color_global_dialog_accent]">special://skin/extras/busy/busyload2.apng</texture>
-			<aspectratio align="center" aligny="center">keep</aspectratio>
-		</control>
-		-->
+		<include condition="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" content="busyspinner_spotlight_autoplaytrailer">
+			<param name="centerleft" value="70%" />
+			<param name="centertop" value="30%" />
+		</include>
+		<include condition="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" content="busyspinner_spotlight_autoplaytrailer">
+			<param name="centerleft" value="30%" />
+			<param name="centertop" value="30%" />
+		</include>
 	</controls>
 </window>

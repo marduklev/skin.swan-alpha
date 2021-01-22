@@ -3,14 +3,16 @@
 	<!-- conditions depending on view at later state at nested hidden button
 	NOT DONE
 	hide me on DIALOGS -->
-	<onload condition="!String.IsEmpty(Window(home).Property(listitemtrailer))">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onload>
-	<onload>SetProperty(TrailerIsPlaying,true,home)</onload>
-	<onunload>SetProperty(busyspinner,spotlighttrailerhome,home)</onunload>
 	
 	<visible>System.IdleTime(4)</visible>
 	<visible>[Window.IsActive(videos) + Skin.HasSetting(autoplay_trailer_common)] | [[Window.IsActive(home) + String.IsEqual(Skin.String(HomeLayout),Spotlight)] + Skin.HasSetting(autoplay_trailer_home)]</visible>
-	<visible>String.IsEmpty(Window(Home).Property(TrailerIsPlaying)) + [!String.IsEmpty(Window(home).Property(trailer_avail)) | !String.IsEmpty(Window(home).Property(listitemtrailer))]</visible>
+	<visible>String.IsEmpty(Window(Home).Property(TrailerIsPlaying)) + !String.IsEmpty(Window(home).Property(trailer_avail))</visible>
 	
+	<onload condition="Window.IsActive(home)">SetProperty(busyspinner,spotlighttrailerhome,home)</onload>
+	<onload condition="!String.IsEmpty(Window(home).Property(listitemtrailer))">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onload>
+	<onload>SetProperty(TrailerIsPlaying,true,home)</onload>
+	<!-- better would be hide busy loader as personal pref if yt fails it can hang in loader -->
+	<!-- set props to prevent loop, still dont like to use alarm -->
 	<animation effect="fade" start="100" end="0" time="325">WindowClose</animation>
 	
 	<controls />
