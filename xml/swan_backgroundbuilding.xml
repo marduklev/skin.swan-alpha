@@ -420,6 +420,7 @@ need varaiable for texture diffuse="" blur vis control + multiimage control
 use this include pr add variable fpr diffuse textures
 
 -->
+	
     <include name="GlobalBlurredBackground">
 			
 			<control type="image" id="99005">
@@ -465,7 +466,7 @@ use this include pr add variable fpr diffuse textures
 		<definition>
 			<control type="image">
 				<animation effect="fade" start="100" end="0" time="300" condition="Window.Is(home) + String.IsEqual(Skin.String(HomeLayout),Spotlight) + Player.HasVideo">Conditional</animation>
-				<description>temp disabled for 58, maybe optional</description>
+				<description>temp disabled for 58, maybe optional or make workaraound with 2nd image </description>
 				<visible>[!Window.IsActive(home) + !String.IsEmpty(Skin.String(texture_global_background_layer3)) + !Control.IsVisible(58)] | [Window.IsActive(home) + !String.IsEmpty(Skin.String(texture_home_background_layer3))]</visible>
 				<depth>DepthBackground2</depth>
 				<texture>$PARAM[texture]</texture>
@@ -473,16 +474,13 @@ use this include pr add variable fpr diffuse textures
 			</control>
 		</definition>
 	</include>
-	
-	
-	
 	<variable name="Global_Layer3_OverlayImage">
 		<value condition="$EXP[IsHome] + !String.IsEmpty(Skin.String(texture_home_background_layer3))">$INFO[Skin.String(texture_home_background_layer3)]</value>
-		<value>$INFO[Skin.String(texture_global_background_layer3)]</value>
+		<value condition="!Window.IsActive(home)">$INFO[Skin.String(texture_global_background_layer3)]</value>
 	</variable>
 	<variable name="Global_Layer3_OverlayImageColor">
 		<value condition="$EXP[IsHome] + !String.IsEmpty(Skin.String(texture_home_background_layer3))">$VAR[color_home_background_layer3]</value>
-		<value>$VAR[color_global_background_layer3]</value>
+		<value condition="!Window.IsActive(home)">$VAR[color_global_background_layer3]</value>
 	</variable>
 	
 	<include name="Rotating_ExtraFanartBackground">
@@ -623,14 +621,16 @@ use this include pr add variable fpr diffuse textures
 		</control>
 	</include>
 	
+	
 	<variable name="backgroundVar">
 		<value condition="[$EXP[IsCurrentyPlayingCommon]] + !Skin.HasSetting(BG_PreferOverlay2ndLayer)">colors/white70.png</value>
-		<value condition="[$EXP[IsCurrentyPlayingCommon]] + Skin.HasSetting(BG_PreferOverlay2ndLayer)"></value>
+		<value condition="[$EXP[IsCurrentyPlayingCommon]] + Skin.HasSetting(BG_PreferOverlay2ndLayer)">colors/none.png</value>
 		<value condition="!String.IsEmpty(ListItem.Art(animatedfanart)) + Skin.HasSetting(animatedfanart)">$INFO[ListItem.Art(animatedfanart)]</value>
 		<value condition="Control.IsVisible(99007) + !String.IsEmpty(Control.GetLabel(99007))">$INFO[Control.GetLabel(99007)]</value>
 		<value condition="Control.IsVisible(99006) + !String.IsEmpty(Control.GetLabel(99006)) + !Skin.HasSetting(BlurEnabled)">$INFO[Control.GetLabel(99006)]</value>
 		<!-- <value condition="Control.IsVisible(99006) + !String.IsEmpty(Control.GetLabel(99006)) + Skin.HasSetting(BlurEnabled)">$INFO[Window(home).Property(listitem_blurred)]</value> -->
 		<value condition="Window.IsActive(MyWeather.xml)">$INFO[Skin.String(WeatherFanArtPack.path)]$INFO[Window(Weather).Property(Current.fanartCode)]$INFO[Skin.String(WeatherFanArtPack.ext)]</value>
+		<!-- home if not spotlight should use own  2nd layer <value condition="!Window.IsActive(home) + Skin.String(texture_global_background_layer2)">$INFO[Skin.String(texture_global_background_layer2)]</value> -->
 		<value condition="Skin.String(texture_global_background_layer2)">$INFO[Skin.String(texture_global_background_layer2)]</value>
 		<value>special://skin/extras/backgroundimages/pattern1.jpg</value>
 	</variable>
