@@ -148,14 +148,41 @@
 			<onclick condition="!String.IsEmpty(Window(home).Property(SetShortcutInProgress))">ClearProperty(SetShortcutInProgress,home)</onclick>
 			<label>$LOCALIZE[10004]</label>
 		</control>
-		<!-- go to:  dialogfavourites -->
 		<control type="button" id="42">
-			<description>Set target Template, action window and action set string direct e.g. plailist?xsp path</description>
 			<onclick>Dialog.Close(1103)</onclick>
-			<onclick>SetProperty(ShortcutFavouritesContent,true,home)</onclick>
-			<onclick>ActivateWindow(Favourites,return)</onclick>
+			<visible>String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)</visible>
+			<onclick>Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_path,skinsettings)</onclick>
+			<onclick>Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_name,$LOCALIZE[10035])</onclick>
+			<onclick>Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_thumb,icons/skinsettings)</onclick>
+			<onclick>Skin.Reset(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_target)</onclick>
+			<onclick condition="!String.IsEmpty(Window(home).Property(shortcutitem_nr))">ClearProperty(shortcutitem_nr,home)</onclick>
+			<onclick condition="!String.IsEmpty(Window(home).Property(SetShortcutInProgress))">ClearProperty(SetShortcutInProgress,home)</onclick>
+			<label>$LOCALIZE[10035]</label>
+		</control>
+		
+		<control type="button" id="45">
+			<onclick>Dialog.Close(1103)</onclick>
+				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_path,favourites)</onclick>
+				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_name,$LOCALIZE[1036])</onclick>
+				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_thumb,special://skin/extras/tempfoldersqaurethumbs/favourites_1.png)</onclick>
+				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)">Skin.Reset(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_target)</onclick>
+				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)">Skin.Reset(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_fanart)</onclick>
+				
+				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_path,favourites://)</onclick>
+				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_name,$LOCALIZE[1036])</onclick>
+				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout,landscape)</onclick>
+				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout.label,landscape)</onclick>
+				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget)">Skin.Reset(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_target)</onclick>
+				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget)">Skin.Reset(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_limit)</onclick>
+				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget)">Skin.Reset(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_sortorder)</onclick>
+				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget)">Skin.Reset(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_sortorder.label)</onclick>
+				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget)">Skin.Reset(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_sortby)</onclick>
+				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget)">Skin.Reset(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_sortby.label)</onclick>
+				<onclick condition="!String.IsEmpty(Window(home).Property(shortcutitem_nr))">ClearProperty(shortcutitem_nr,home)</onclick>
+				<onclick condition="!String.IsEmpty(Window(home).Property(SetShortcutInProgress))">ClearProperty(SetShortcutInProgress,home)</onclick>
 			<label>$LOCALIZE[1036]</label>
 		</control>
+		
 		<!-- weather 
 		<control type="button" id="43">
 			<onclick>Dialog.Close(1103)</onclick>
@@ -169,7 +196,8 @@
 			<label>$LOCALIZE[12600]</label>
 		</control>
 		-->
-		<control type="button" id="43">
+		<!--
+		<control type="button" id="46">
 			<onclick>Dialog.Close(1103)</onclick>
 			<visible>String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)</visible>
 			<onclick>Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_path,1125)</onclick>
@@ -180,8 +208,9 @@
 			<onclick condition="!String.IsEmpty(Window(home).Property(SetShortcutInProgress))">ClearProperty(SetShortcutInProgress,home)</onclick>
 			<label>$LOCALIZE[10004]</label>
 		</control>
+		-->
 		<!-- search -->
-		<control type="button" id="44">
+		<control type="button" id="47">
 			<onclick>Dialog.Close(1103)</onclick>
 			<visible>String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)</visible>
 			<onclick>Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_path,1120)</onclick>
@@ -221,6 +250,8 @@
 	<!-- NOTE CHECK THE VIEWTYPE LABELS -->
 	<include name="SwanShortcuts_Container">
 		<animation effect="slide" start="0,0" end="-700,0" time="250" tween="sine" condition="Window.IsActive(selectdialog)">Conditional</animation>
+			
+		
 			
 		<control type="group">
 			<description>BG</description>
@@ -658,6 +689,7 @@ container.setsortmethod()
 			<onup>200</onup>
 			<onright>200</onright>
 			<onleft>200</onleft>
+			
 			
 			<scrolltime tween="cubic" easing="out">300</scrolltime>
 			

@@ -377,25 +377,27 @@ LatestAlbum.[1-10].Title, LatestAlbum.[1-10].Artist, LatestAlbum.[1-10].Year, La
 			<include content="VideoFullscreenBG" />
 			
 			<!-- use include to circumstance reload needs ? - also optional diffuse masking for bg image is also interesting -->
+			<!-- need diff home vs common -->
+			
 			<control type="image">
 				<description>Layer2 Artwork - optional tint</description>
 				<depth>DepthBackground</depth>
-				<texture diffuse="colors/white.png" background="true">$VAR[backgroundVar]</texture>
+				<texture diffuse="colors/white.png" background="true">$VAR[layer2_image]</texture>
 				<aspectratio align="center" aligny="center">scale</aspectratio>
 				<fadetime>600</fadetime>
-				<include condition="!Skin.HasSetting(BG_PreferOverlay2ndLayer)" content="BG_PreferTintetArt" />
+				<include condition="!Skin.HasSetting(bg_use_coloredglass)" content="colordiffuse_layer2_tint" />
 				<visible>!$EXP[IsNetflixLayout]</visible>
 				<animation effect="zoom" start="110" end="130" center="auto" time="10000" tween="cubic" easing="inout" pulse="true" condition="Skin.HasSetting(BackgroundAnimation) | Window.Is(settings)">Conditional</animation>
 				<animation effect="slide" start="-10,-10" end="10,10" time="8000" tween="cubic" easing="inout" pulse="true" condition="Skin.HasSetting(BackgroundAnimation) | Window.Is(settings)">Conditional</animation>
 			</control>
 			
 			<control type="image">
-				<description>Layer2 Artwork Overlay - if artwork tint is unwished</description>
+				<description>Layer2 pellucidoverlay - if artwork tint is unwished</description>
 				<depth>DepthBackground</depth>
-				<visible>Skin.HasSetting(BG_PreferOverlay2ndLayer)</visible>
+				<visible>Skin.HasSetting(bg_use_coloredglass)</visible>
 				<visible>!$EXP[IsNetflixLayout]</visible>
 				<colordiffuse>$VAR[color_global_background_layer2]</colordiffuse>
-				<texture>$VAR[backgroundOverlayVar]</texture>
+				<texture>$VAR[texture_layer2_coloredglassoverlay]</texture>
 			</control>
 			
 			<include content="BG_Overlay" />
@@ -406,7 +408,7 @@ LatestAlbum.[1-10].Title, LatestAlbum.[1-10].Artist, LatestAlbum.[1-10].Year, La
     </include>
 	
 	
-    <include name="BG_PreferTintetArt">
+    <include name="colordiffuse_layer2_tint">
 		<colordiffuse>$VAR[color_global_background_layer2]</colordiffuse>
 	</include>
 	
@@ -434,14 +436,14 @@ use this include pr add variable fpr diffuse textures
 				
 				<control type="image">
 					<description>conditional diffuse - blurred bg overlay img</description>
-					<include condition="!Skin.HasSetting(BG_PreferOverlay2ndLayer)" content="BG_PreferTintetArt" />
+					<include condition="!Skin.HasSetting(bg_use_coloredglass)" content="colordiffuse_layer2_tint" />
 					<texture>$INFO[Window(home).Property(listitem_blurred)]</texture>
 				</control>
 				
 				<control type="image">
 					<description>Layer2 Artwork Overlay - if artwork tint is unwished</description>
 					<depth>DepthBackground</depth>
-					<visible>Skin.HasSetting(BG_PreferOverlay2ndLayer)</visible>
+					<visible>Skin.HasSetting(bg_use_coloredglass)</visible>
 					<visible>!$EXP[IsNetflixLayout]</visible>
 					<colordiffuse>$VAR[color_global_background_layer2]</colordiffuse>
 					<texture>colors/white70.png</texture>
@@ -474,13 +476,24 @@ use this include pr add variable fpr diffuse textures
 			</control>
 		</definition>
 	</include>
+	
+	
+	<!--  image cond if string not set it'll not be visible
+	exception is spotlight trailer which needs a texture none if not set
 	<variable name="Global_Layer3_OverlayImage">
 		<value condition="$EXP[IsHome] + !String.IsEmpty(Skin.String(texture_home_background_layer3))">$INFO[Skin.String(texture_home_background_layer3)]</value>
-		<value condition="!Window.IsActive(home)">$INFO[Skin.String(texture_global_background_layer3)]</value>
+		<value condition="!$EXP[IsHome] + !String.IsEmpty(Skin.String(texture_global_background_layer3))">$INFO[Skin.String(texture_global_background_layer3)]</value>
+		<value>colors/none.png</value>
+	</variable>
+	-->
+		
+	<variable name="Global_Layer3_OverlayImage">
+		<value condition="$EXP[IsHome] + !String.IsEmpty(Skin.String(texture_home_background_layer3))">$INFO[Skin.String(texture_home_background_layer3)]</value>
+		<value condition="!$EXP[IsHome]">$INFO[Skin.String(texture_global_background_layer3)]</value>
 	</variable>
 	<variable name="Global_Layer3_OverlayImageColor">
 		<value condition="$EXP[IsHome] + !String.IsEmpty(Skin.String(texture_home_background_layer3))">$VAR[color_home_background_layer3]</value>
-		<value condition="!Window.IsActive(home)">$VAR[color_global_background_layer3]</value>
+		<value condition="!$EXP[IsHome]">$VAR[color_global_background_layer3]</value>
 	</variable>
 	
 	<include name="Rotating_ExtraFanartBackground">
@@ -621,22 +634,21 @@ use this include pr add variable fpr diffuse textures
 		</control>
 	</include>
 	
-	
-	<variable name="backgroundVar">
-		<value condition="[$EXP[IsCurrentyPlayingCommon]] + !Skin.HasSetting(BG_PreferOverlay2ndLayer)">colors/white70.png</value>
-		<value condition="[$EXP[IsCurrentyPlayingCommon]] + Skin.HasSetting(BG_PreferOverlay2ndLayer)">colors/none.png</value>
+	<variable name="layer2_image">
+		<value condition="[$EXP[IsCurrentyPlayingCommon]] + !Skin.HasSetting(bg_use_coloredglass)">colors/white70.png</value>
+		<value condition="[$EXP[IsCurrentyPlayingCommon]] + Skin.HasSetting(bg_use_coloredglass)">colors/none.png</value>
 		<value condition="!String.IsEmpty(ListItem.Art(animatedfanart)) + Skin.HasSetting(animatedfanart)">$INFO[ListItem.Art(animatedfanart)]</value>
 		<value condition="Control.IsVisible(99007) + !String.IsEmpty(Control.GetLabel(99007))">$INFO[Control.GetLabel(99007)]</value>
 		<value condition="Control.IsVisible(99006) + !String.IsEmpty(Control.GetLabel(99006)) + !Skin.HasSetting(BlurEnabled)">$INFO[Control.GetLabel(99006)]</value>
 		<!-- <value condition="Control.IsVisible(99006) + !String.IsEmpty(Control.GetLabel(99006)) + Skin.HasSetting(BlurEnabled)">$INFO[Window(home).Property(listitem_blurred)]</value> -->
 		<value condition="Window.IsActive(MyWeather.xml)">$INFO[Skin.String(WeatherFanArtPack.path)]$INFO[Window(Weather).Property(Current.fanartCode)]$INFO[Skin.String(WeatherFanArtPack.ext)]</value>
-		<!-- home if not spotlight should use own  2nd layer <value condition="!Window.IsActive(home) + Skin.String(texture_global_background_layer2)">$INFO[Skin.String(texture_global_background_layer2)]</value> -->
-		<value condition="Skin.String(texture_global_background_layer2)">$INFO[Skin.String(texture_global_background_layer2)]</value>
+		<!-- not needed <value condition="$EXP(IsHome) + Skin.String(texture_home_background_layer2)">$INFO[Skin.String(texture_home_background_layer2)]</value> -->
+		<value condition="!$EXP(IsHome) + Skin.String(texture_global_background_layer2)">$INFO[Skin.String(texture_global_background_layer2)]</value>
 		<value>special://skin/extras/backgroundimages/pattern1.jpg</value>
 	</variable>
 	
 	<!-- better use  - colors/white$INFO[SkinString(opacitydecimal)].png -->
-	<variable name="backgroundOverlayVar">
+	<variable name="texture_layer2_coloredglassoverlay">
 		<value condition="$EXP[IsCurrentyPlayingCommon]">colors/white70.png</value>
 		<value>colors/white90.png</value>
 	</variable>

@@ -7,6 +7,8 @@
 			<defaultcontrol always="true">$PARAM[defaultcontrol]</defaultcontrol>
 			<backgroundcolor>$VAR[color_global_background_layer1]</backgroundcolor>
 			<views>$PARAM[view_ids]</views>
+			<onunload condition="!String.IsEmpty(Window(home).Property(SetShortcutInProgress))">ClearProperty(SetShortcutInProgress,home)</onunload>
+			<onunload condition="!String.IsEmpty(Window(home).Property(shortcutitem_nr))">ClearProperty(shortcutitem_nr,home)</onunload>
 			<include>media_menucontrol</include>
 			<include content="Animation_OpenClose_MediaWindow" condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))" />
 		</definition>
@@ -136,13 +138,12 @@
 			<control type="radiobutton" id="8006">
 				<visible>!String.IsEqual(Window(Home).Property(MenucontrolActive),true)</visible>
 				<visible>String.IsEmpty(Window(home).Property(TrailerIsPlaying))</visible>
-				<visible>!String.IsEmpty(Window(home).Property(trailer_avail)) | !String.IsEmpty(ListItem.Trailer)</visible>
+				<visible>!String.IsEmpty(Window(home).Property(trailer_avail))</visible>
 				<visible>!Skin.HasSetting(premenu_hide_trailer)</visible>
 				<include content="PreMenucontrol_RadioButton">
 					<param name="radiotexture" value="trailer" />
 				</include>
-				<onclick condition="String.IsEmpty(Window(home).Property(trailer_avail)) + !String.IsEmpty(ListItem.Trailer)">PlayMedia($INFO[ListItem.Trailer],1)</onclick>
-				<onclick condition="!String.IsEmpty(Window(home).Property(trailer_avail))">PlayMedia($INFO[container.listitem.path]$INFO[container.ListItem.FolderName,,-trailer.mp4],1)</onclick>
+				<onclick>PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onclick>
 				<onclick>SetProperty(TrailerIsPlaying,true,home)</onclick>
 				<onclick>SetFocus(50)</onclick>
 			</control>
@@ -618,6 +619,7 @@ msgstr "Video-Wiedergabelisten"
 						<description>stop scan 13353 condition library.isscanningvideo</description>
 						<icon>buttons/refresh.png</icon>
 						<label>$LOCALIZE[653]</label>
+						<label2>$VAR[lib_isscanningmedia]</label2>
 						<onclick>SendClick(20)</onclick>
 						<visible>Control.IsEnabled(20)</visible>
 						<property name="icon">default</property>
@@ -639,12 +641,14 @@ msgstr "Video-Wiedergabelisten"
 						<property name="icon">default</property>
 					</item>
 					<item>
+						<description>WIP make viewselector</description>
 						<icon>buttons/viewswitch2.png</icon>
 						<label>WIP OPEN VIEW SELECTOR</label>
 						<label2>$INFO[Container.Viewmode]</label2>
 						<onclick>SetProperty(view_selection,visible,home)</onclick>
 						<onclick>SetFocus(100)</onclick>
 						<visible>Control.IsVisible(2)</visible>
+						<visible>false</visible>
 						<property name="icon">default</property>
 					</item>
 					<item>

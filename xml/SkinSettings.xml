@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
-<!--
+<!-- i got alot ids in use -  take care 
 skin.setaddon()
 static const TypeMapping types[] =
   {{"unknown",                           ADDON_UNKNOWN,                 0, "" },
@@ -48,14 +48,13 @@ static const TypeMapping types[] =
 /**
 
  -->
-	<defaultcontrol always="true">9000</defaultcontrol>
-	<menucontrol>9000</menucontrol>
+	<defaultcontrol always="true">200</defaultcontrol>
+	<!-- <menucontrol>9000</menucontrol> use later -->
 	<backgroundcolor>$VAR[color_global_background_layer1]</backgroundcolor>
 	
 	<controls>
 	
 		<include>GlobalBackground</include>
-		
 		<include>HeaderBar</include>
 		
 		<control type="group">
@@ -63,16 +62,19 @@ static const TypeMapping types[] =
 			
 			<animation effect="slide" start="0,0" end="-100,0" time="250" condition="String.Contains(Window(home).Property(DialogHeader),Background)">Conditional</animation>
 			
-			<control type="list" id="9000">
+			<!-- color slide ? <animation effect="slide" start="0,0" end="-518,0" time="250" condition="true">Conditional</animation> -->
+			
+			
+			<control type="list" id="200">
 				<description>Sections</description>
 				<left>10</left>
 				<width>27%</width>
 				<top>180</top>
 				<height>82%</height>
-				<onleft>10000</onleft>
-				<onright>10000</onright>
-				<onup>9000</onup>
-				<ondown>9000</ondown>
+				<onleft>300</onleft>
+				<onright>300</onright>
+				<onup>200</onup>
+				<ondown>200</ondown>
 				
 				<itemlayout height="60">
 					<control type="label">
@@ -111,26 +113,23 @@ static const TypeMapping types[] =
 					<item id="3">
 						<label>H O M E    L A Y A O U T</label>
 					</item>
-					<item id="14">
+					<item id="4">
 						<label>H O M E     M A I N M E N U</label>
 					</item>
-					<item id="4">
+					<item id="5">
 						<label>H O M E    W I D G E T S</label>
 					</item>
-					<item id="5">
+					<item id="6">
 						<label>L I B R A R Y</label>
 					</item>
-					
-					<item id="6">
+					<item id="7">
 						<label>M E N U    B A R</label>
 					</item>
-					
-					
-					<item id="7">
+					<item id="8">
 						<label>P L A Y E R</label>
 					</item>
-					<item id="8">
-						<label>Install CP if wanted</label>
+					<item id="9">
+						<label>Install Color Picker if wanted</label>
 						<visible>!System.HasAddon(script.skin.helper.colorpicker)</visible>
 					</item>
 					<item id="10">
@@ -145,7 +144,7 @@ static const TypeMapping types[] =
 		</control>
 		
 		<!-- right -->
-		<control type="group" id="10000">
+		<control type="group" id="300">
 		
 			<animation effect="fade" start="100" end="0" time="100" condition="Window.IsActive(filebrowser) | Window.IsActive(1103)">Conditional</animation>
 			
@@ -156,20 +155,25 @@ static const TypeMapping types[] =
 				<param name="id" value="1" />
 				
 				<description>S T A R T U P</description>
-				<visible>Container(9000).HasFocus($PARAM[id])</visible>
+				<visible>Container(200).HasFocus($PARAM[id])</visible>
 				<include content="SectionHeadline">
 					<param name="id" value="$PARAM[id]000"/>
 					<param name="label" value="P R O F I L E - L O G I N    O P T I O N S"/>
 				</include>
 				<control type="radiobutton" id="$PARAM[id]001">
-					<height>60</height>
 					<label>Enable Profile Login</label>
 					<onclick>ActivateWindow(profiles,return)</onclick>
 					<onclick>SendClick(profiles,4)</onclick>
 					<onclick>ReplaceWindow(skinsettings)</onclick>
 					<selected>System.HasLoginScreen</selected>
 				</control>
-				<control type="radiobutton" id="$PARAM[id]003">
+				
+				<include content="SectionHeadline">
+					<param name="id" value="$PARAM[id]003"/>
+					<param name="label" value="P R O F I L E - L O G I N    B A C K G R O U N D    &amp;   C O L O R S"/>
+					<param name="visible" value="System.HasLoginScreen" />
+				</include>
+				<control type="radiobutton" id="$PARAM[id]004">
 					<include content="SkinSettings_SettingsRadioButton">
 						<param name="label" value="Background Image [B]Profile Login Screen[/B]" />
 						<param name="label2" value="$VAR[ProfileLoginHinttext]" />
@@ -181,41 +185,70 @@ static const TypeMapping types[] =
 					<visible>System.HasLoginScreen</visible>
 				</control>
 				<include content="SkinSettings_ColorButton">
-					<param name="id" value="$PARAM[id]004" />
+					<param name="id" value="$PARAM[id]005" />
 					<param name="label" value="Profile Login-Screen Main Text" />
 					<param name="skinsetting" value="color_profilelogin_text_main" />
 					<param name="visible" value="System.HasLoginScreen" />
 				</include>
 				<include content="SkinSettings_ColorButton">
-					<param name="id" value="$PARAM[id]005" />
+					<param name="id" value="$PARAM[id]006" />
 					<param name="label" value="Profile Login-Screen Secondary Text (nf)" />
 					<param name="skinsetting" value="color_profilelogin_text_secondary" />
 					<param name="visible" value="System.HasLoginScreen" />
 				</include>
 				<include content="SkinSettings_ColorButton">
-					<param name="id" value="$PARAM[id]006" />
+					<param name="id" value="$PARAM[id]007" />
 					<param name="label" value="Profile Login-Screen Highlight Color" />
 					<param name="skinsetting" value="color_profilelogin_accent" />
 					<param name="visible" value="System.HasLoginScreen" />
 				</include>
+				<control type="button" id="$PARAM[id]008">
+					<visible>System.HasLoginScreen</visible>
+					<label>Reset Profile-login Colors</label>
+					<include>reset_color_profilelogin</include>
+				</control>	
 				
 				<include content="SectionHeadline">
 					<param name="id" value="$PARAM[id]010"/>
 					<param name="label" value="S T A R T     W I N D O W"/>
 				</include>
 				<control type="radiobutton" id="$PARAM[id]011">
-					<label>home</label>
+					<label>$LOCALIZE[10000]</label>
 					<onclick condition="!String.IsEmpty(Skin.String(custom_startup))">Skin.Reset(custom_startup)</onclick>
 					<selected>String.IsEmpty(Skin.String(custom_startup))</selected>
 				</control>
 				<control type="radiobutton" id="$PARAM[id]014">
+					<description>custom 1110 Music Hub</description>
 					<include content="SkinSettings_StartupRadioButton">
-						<param name="label" value="music hub" /> 
+						<param name="visible" value="Library.HasContent(Music)" /> 
+						<param name="label" value="Music Hub" /> 
 						<param name="windowid" value="1110" />
 					</include>
 				</control>
-				
-				
+				<control type="radiobutton" id="$PARAM[id]015">
+					<description>videos</description>
+					<include content="SkinSettings_StartupRadioButton">
+						<param name="visible" value="Library.HasContent(Video)" /> 
+						<param name="label" value="$LOCALIZE[10025]" /> 
+						<param name="windowid" value="10025" />
+					</include>
+				</control>
+				<control type="radiobutton" id="$PARAM[id]016">
+					<description>music</description>
+					<include content="SkinSettings_StartupRadioButton">
+						<param name="visible" value="Library.HasContent(Music)" /> 
+						<param name="label" value="$LOCALIZE[10502]" /> 
+						<param name="windowid" value="10502" />
+					</include>
+				</control>
+				<control type="radiobutton" id="$PARAM[id]017">
+					<description>filebrowser</description>
+					<include content="SkinSettings_StartupRadioButton">
+						<param name="visible" value="true" /> 
+						<param name="label" value="$LOCALIZE[10126]" /> 
+						<param name="windowid" value="10126" />
+					</include>
+				</control>
 			</include>
 			
 			<!-- Skin.SelectBool(header, label1|setting1, label2|setting2) -->
@@ -224,7 +257,7 @@ static const TypeMapping types[] =
 				<param name="id" value="2" />
 				
 				<description>B A C K G R O U N D</description>
-				<visible>Container(9000).HasFocus($PARAM[id])</visible>
+				<visible>Container(200).HasFocus($PARAM[id])</visible>
 				
 				
 				<include content="SectionHeadline">
@@ -233,10 +266,9 @@ static const TypeMapping types[] =
 				</include>
 				
 				<control type="radiobutton" id="$PARAM[id]001">
-					<height>90</height>
+					<height>120</height>
 					<include content="SkinSettings_SettingsRadioButton">
-						<param name="label" value="Choose your Folderpath if you like to use own Source Folder(s) for your images[CR][I][B]which will be used for image lookups (e.g. backgrounds ,backgroundoverlay , profile ...)[/B][/I]" />
-						<param name="label2" value="$INFO[Skin.String(texturepath_userdefined)]" />
+						<param name="label" value="Choose your Folderpath if you like to use own Source Folder(s) for your images[CR]which will be used for image lookups [I][B](e.g. backgrounds ,backgroundoverlay , profile ...)[/B][/I]$INFO[Skin.String(texturepath_userdefined),[CR]   - [B]$LOCALIZE[21801] : [/B],]" />
 					</include>
 					<onclick>SetProperty(DialogHeader,Set Path for your Custom Backgroundimage Folder,home)</onclick>
 					<onclick>Skin.Reset(texturepath_userdefined)</onclick>
@@ -250,7 +282,7 @@ static const TypeMapping types[] =
 				<control type="radiobutton" id="$PARAM[id]003">
 					<height>90</height>
 					<include content="SkinSettings_SettingsRadioButton">
-						<param name="label" value="Set [B]Global[/B] Background Image (middle layer)" />
+						<param name="label" value="Set     [B]Global[/B]     Background Image (middle layer) - is also Fallback if Fanart empty" />
 						<param name="label2" value="[COLOR $VAR[color_global_button_text_nf]]$INFO[Skin.String(texture_global_background_layer2)][/COLOR]" />
 					</include>
 					<onclick>SetProperty(DialogHeader,Set [B]Global[/B] Background Image (middle layer),home)</onclick>
@@ -262,16 +294,13 @@ static const TypeMapping types[] =
 				<control type="radiobutton" id="$PARAM[id]004">
 					<height>60</height>
 					<font>font10</font>
-					<label> - Use Tinted Overlay instead Tint the Image itself</label>
+					<label>     - Use Tinted Overlay instead Tint the Image itself</label>
 					<label2>90% transp cannot be exceeded    [CR](recommended if using &apos;Show Fanart Background &apos;)    </label2>
-					<onclick>Skin.ToggleSetting(BG_PreferOverlay2ndLayer)</onclick>
-					<selected>Skin.HasSetting(BG_PreferOverlay2ndLayer)</selected>
+					<onclick>Skin.ToggleSetting(bg_use_coloredglass)</onclick>
+					<selected>Skin.HasSetting(bg_use_coloredglass)</selected>
 				</control>
 				
-				<include content="spacer_h">
-					<param name="id" value="$PARAM[id]005" />
-					<param name="gap" value="5" />
-				</include>
+				
 				<!-- 
 				<control type="radiobutton" id="$PARAM[id]006">
 					<include content="SkinSettings_SettingsRadioButton">
@@ -283,11 +312,15 @@ static const TypeMapping types[] =
 					<onclick>Skin.SetImage(texture_global_backgrounddiffusor_layer2,special://skin/extras/backgroundimages)</onclick>
 				</control>
 				-->
+				<include content="spacer_h">
+					<param name="id" value="$PARAM[id]007" />
+					<param name="gap" value="5" />
+				</include>
 				
-				<control type="radiobutton" id="$PARAM[id]007">
+				<control type="radiobutton" id="$PARAM[id]008">
 					<height>90</height>
 					<include content="SkinSettings_SettingsRadioButton">
-						<param name="label" value="Set [B]Common[/B] Background Overlay Image (top layer)" />
+						<param name="label" value="Set     [B]Common[/B]     Background Overlay Image (top layer)" />
 						<param name="label2" value="" />
 					</include>
 					<onclick>SetProperty(DialogHeader,Set [B]Common[/B] Background Overlay Image (top layer),home)</onclick>
@@ -296,13 +329,13 @@ static const TypeMapping types[] =
 					<onclick condition="!String.IsEmpty(Skin.String(texturepath_userdefined))">Skin.SetImage(texture_global_background_layer3,$INFO[Skin.String(texturepath_userdefined)])</onclick>
 				</control>
 				<include content="spacer_h">
-					<param name="id" value="$PARAM[id]008" />
+					<param name="id" value="$PARAM[id]009" />
 					<param name="gap" value="5" />
 				</include>
-				<control type="radiobutton" id="$PARAM[id]009">
+				<control type="radiobutton" id="$PARAM[id]010">
 					<height>90</height>
 					<include content="SkinSettings_SettingsRadioButton">
-						<param name="label" value="Set [B]Home[/B] Background Overlay Image" />
+						<param name="label" value="Set     [B]Home[/B]     Background Overlay Image" />
 						<param name="label2" value="" />
 					</include>
 					<onclick>SetProperty(DialogHeader,Set [B]Home Screen[/B] Background Overlay Image (top layer),home)</onclick>
@@ -310,11 +343,27 @@ static const TypeMapping types[] =
 					<onclick condition="String.IsEmpty(Skin.String(texturepath_userdefined))">Skin.SetImage(texture_home_background_layer3,special://skin/extras/backgroundoverlay)</onclick>
 					<onclick condition="!String.IsEmpty(Skin.String(texturepath_userdefined))">Skin.SetImage(texture_home_background_layer3,$INFO[Skin.String(texturepath_userdefined)])</onclick>
 				</control>
+				
+				<!-- 
+				not needed its just fallback if artwork disabled and or empty - color is window dependent texture not
+				<control type="radiobutton" id="$PARAM[id]009">
+					<height>90</height>
+					<include content="SkinSettings_SettingsRadioButton">
+						<param name="label" value="Set [B]H O M E[/B] Background Image (middle layer)" />
+						<param name="label2" value="[COLOR $VAR[color_global_button_text_nf]]$INFO[Skin.String(texture_global_background_layer2)][/COLOR]" />
+					</include>
+					<onclick>SetProperty(DialogHeader,Set [B]Global[/B] Background Image (middle layer),home)</onclick>
+					<onclick>Skin.Reset(texture_global_background_layer2)</onclick>
+					<onclick condition="String.IsEmpty(Skin.String(texturepath_userdefined))">Skin.SetImage(texture_global_background_layer2,special://skin/extras/backgroundimages)</onclick>
+					<onclick condition="!String.IsEmpty(Skin.String(texturepath_userdefined))">Skin.SetImage(texture_global_background_layer2,$INFO[Skin.String(texturepath_userdefined)])</onclick>
+				</control>
+				-->
+				
 				<include content="spacer_h">
-					<param name="id" value="$PARAM[id]010" />
+					<param name="id" value="$PARAM[id]011" />
 					<param name="gap" value="5" />
 				</include>
-				<control type="radiobutton" id="$PARAM[id]011">
+				<control type="radiobutton" id="$PARAM[id]012">
 					<height>90</height>
 					<include content="SkinSettings_SettingsRadioButton">
 						<param name="label" value="Set [B]Header Bar[/B] Image" />
@@ -411,164 +460,22 @@ static const TypeMapping types[] =
 			</include>
 			
 			<include content="ButtonList">
-				<param name="id" value="14" />
-				
-				<description>H O M E     M A I N M E N U</description>
-					<visible>Container(9000).HasFocus($PARAM[id])</visible>
-					<include content="SectionHeadline">
-						<param name="id" value="$PARAM[id]000"/>
-						<param name="label" value="M A I N M E N U     S E T T I N G S"/>
-					</include>
-					<control type="radiobutton" id="$PARAM[id]001">
-						<label>TEMP SETTING : use custom main menu</label>
-						<font>font30_title</font>
-						<textoffsetx>0</textoffsetx>
-						<height>100</height>
-						<onclick>Skin.ToggleSetting(useshortcut_mainmenu)</onclick>
-						<selected>Skin.HasSetting(useshortcut_mainmenu)</selected>
-					</control>
-				
-					<control type="radiobutton" id="$PARAM[id]002">
-						<description>refresh profile container + toggle setting</description>
-						<label>Show Profiles at top</label>
-						<height>60</height>
-						<visible>Integer.IsGreaterOrEqual(System.ProfileCount,2)</visible>
-						<visible>Skin.HasSetting(useshortcut_mainmenu)</visible>
-						<onclick>ActivateWindow(profiles,return)</onclick>
-						<onclick>ReplaceWindow(skinsettings)</onclick>
-						<onclick>Skin.ToggleSetting(menucontrol_home_showprofiles)</onclick>
-						<selected>Skin.HasSetting(menucontrol_home_showprofiles)</selected>
-						
-					</control>
-					
-					
-					<include content="SectionHeadline">
-						<param name="id" value="$PARAM[id]010"/>
-						<param name="label" value="M A I N M E N U     E N T R Y S"/>
-						<param name="visible" value="Skin.HasSetting(useshortcut_mainmenu)" />
-					</include>
-					
-					
-					<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
-						<param name="id" value="$PARAM[id]011"/>
-						<param name="nr" value="1"/>
-					</include>
-					
-					<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
-						<param name="id" value="$PARAM[id]012"/>
-						<param name="nr" value="2"/>
-					</include>
-					
-					<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
-						<param name="id" value="$PARAM[id]013"/>
-						<param name="nr" value="3"/>
-					</include>
-					<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
-						<param name="id" value="$PARAM[id]014"/>
-						<param name="nr" value="4"/>
-					</include>
-					
-					<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
-						<param name="id" value="$PARAM[id]015"/>
-						<param name="nr" value="5"/>
-					</include>
-					
-					<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
-						<param name="id" value="$PARAM[id]016"/>
-						<param name="nr" value="6"/>
-					</include>
-					
-					<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
-						<param name="id" value="$PARAM[id]017"/>
-						<param name="nr" value="7"/>
-					</include>
-					
-					<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
-						<param name="id" value="$PARAM[id]018"/>
-						<param name="nr" value="8"/>
-					</include>
-					
-					<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
-						<param name="id" value="$PARAM[id]019"/>
-						<param name="nr" value="9"/>
-					</include>
-					
-					<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
-						<param name="id" value="$PARAM[id]020"/>
-						<param name="nr" value="10"/>
-					</include>
-					
-					
-					<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
-						<param name="id" value="$PARAM[id]021"/>
-						<param name="nr" value="11"/>
-					</include>
-					
-					<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
-						<param name="id" value="$PARAM[id]022"/>
-						<param name="nr" value="12"/>
-					</include>
-					
-					<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
-						<param name="id" value="$PARAM[id]023"/>
-						<param name="nr" value="13"/>
-					</include>
-					<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
-						<param name="id" value="$PARAM[id]024"/>
-						<param name="nr" value="14"/>
-					</include>
-					
-					<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
-						<param name="id" value="$PARAM[id]025"/>
-						<param name="nr" value="15"/>
-					</include>
-					
-					<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
-						<param name="id" value="$PARAM[id]026"/>
-						<param name="nr" value="16"/>
-					</include>
-					<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
-						<param name="id" value="$PARAM[id]027"/>
-						<param name="nr" value="17"/>
-					</include>
-					
-					<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
-						<param name="id" value="$PARAM[id]028"/>
-						<param name="nr" value="18"/>
-					</include>
-					
-					<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
-						<param name="id" value="$PARAM[id]029"/>
-						<param name="nr" value="19"/>
-					</include>
-					
-					<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
-						<param name="id" value="$PARAM[id]030"/>
-						<param name="nr" value="20"/>
-					</include>
-					
-				
-				</include>
-				
-					
-				
-			
-			
-			<include content="ButtonList">
 				<param name="id" value="3" />
-				<param name="itemgap" value="0" />
+				<param name="itemgap" value="5" />
 				
 				<description>H O M E    L A Y A O U T</description>
-				<visible>Container(9000).HasFocus($PARAM[id])</visible>
+				<visible>Container(200).HasFocus($PARAM[id])</visible>
 				<!-- ****-->
+				
 				<include content="SectionHeadline">
 					<param name="id" value="$PARAM[id]000"/>
 					<param name="label" value="L A Y O U T"/>
 				</include>
 				
 				<control type="radiobutton" id="$PARAM[id]001">
+					<height>90</height>
 					<include content="SkinSettings_SettingsRadioButton">
-						<param name="label" value="Choose Homelayout" />
+						<param name="label" value="[B]Choose Homelayout[/B]" />
 						<param name="label2" value="$INFO[Skin.String(HomeLayout)]" />
 					</include>
 					<onclick>SetProperty(Dialog.1.Label,Spotlight)</onclick>
@@ -582,60 +489,7 @@ static const TypeMapping types[] =
 					<onclick>RunScript(script.embuary.helper,action=createselect,header=Choose HomeLayout)</onclick>
 				</control>
 				
-				
-				<control type="radiobutton" id="$PARAM[id]002">
-					<label>show artwork on left side and info right</label>
-					<onclick>Skin.ToggleSetting(SpotlightLayout_FanartLeftAlignment)</onclick>
-					<selected>Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)</selected>
-					<visible>String.IsEqual(Skin.String(HomeLayout),Spotlight)</visible>
-				</control>
-				<control type="radiobutton" id="$PARAM[id]003">
-					<label>Dont Show Plot/Description Info</label>
-					<onclick>Skin.ToggleSetting(home_spotlight_hideplot)</onclick>
-					<selected>Skin.HasSetting(home_spotlight_hideplot)</selected>
-					<visible>String.IsEqual(Skin.String(HomeLayout),Spotlight)</visible>
-				</control>
-				
-				<control type="radiobutton" id="$PARAM[id]004">
-					<description>Meta Data Left,Centered,right alignment Skin.String(SpotlightMetadataAlign)</description>
-					<include content="SkinSettings_SettingsRadioButton">
-						<param name="label" value="Choose Item-Info Alignment" />
-						<param name="label2" value="$INFO[Skin.String(SpotlightMetadataAlign)]" />
-					</include>
-					<onclick>SetProperty(Dialog.1.Label,left)</onclick>
-					<onclick>SetProperty(Dialog.1.BuiltIn,Skin.SetString(SpotlightMetadataAlign,left))</onclick>
-					<onclick>SetProperty(Dialog.2.Label,right)</onclick>
-					<onclick>SetProperty(Dialog.2.BuiltIn,Skin.SetString(SpotlightMetadataAlign,right))</onclick>
-					<onclick>SetProperty(Dialog.3.Label,center)</onclick>
-					<onclick>SetProperty(Dialog.3.BuiltIn,Skin.SetString(SpotlightMetadataAlign,center))</onclick>
-					<onclick>RunScript(script.embuary.helper,action=createselect,header=Choose Item-Info Alignment)</onclick>
-					<visible>String.IsEqual(Skin.String(HomeLayout),Spotlight)</visible>
-				</control>
-				
-				<control type="radiobutton" id="$PARAM[id]005">
-					<label>Auto Play Trailers (SystemIdle Time 5 sec hardcoded atm)</label>
-					<onclick>Skin.ToggleSetting(autoplay_trailer_home)</onclick>
-					<selected>Skin.HasSetting(autoplay_trailer_home)</selected>
-					<visible>String.IsEqual(Skin.String(HomeLayout),Spotlight)</visible>
-				</control>
-				
-				<control type="radiobutton" id="$PARAM[id]006">
-					<height>90</height>
-					<include content="SkinSettings_SettingsRadioButton">
-						<param name="label" value="Choose Custom Image for [B]Category / Section Widget[/B]" />
-						<param name="label2" value="" />
-					</include>
-					<onclick>Skin.Reset(texture_categorywidget)</onclick>
-					<onclick condition="String.IsEmpty(Skin.String(texturepath_userdefined))">Skin.SetImage(texture_categorywidget,special://skin/extras/backgroundimages)</onclick>
-					<onclick condition="!String.IsEmpty(Skin.String(texturepath_userdefined))">Skin.SetImage(texture_categorywidget,$INFO[Skin.String(texturepath_userdefined)])</onclick>
-				</control>
-				
-				<control type="radiobutton" id="$PARAM[id]010">
-					<label>show label in widget title</label>
-					<onclick>Skin.ToggleSetting(ShowFocusedLabelInHeader_Home)</onclick>
-					<selected>Skin.HasSetting(ShowFocusedLabelInHeader_Home)</selected>
-				</control>
-				
+				<!-- 
 				<include content="SectionHeadline">
 					<param name="id" value="$PARAM[id]030"/>
 					<param name="label" value="F L A G S"/>
@@ -649,20 +503,254 @@ static const TypeMapping types[] =
 					<label>Show Rotten Ratings</label>
 					<onclick>Skin.ToggleSetting(Home_Show_Rotten_Mediaratings)</onclick>
 					<selected>Skin.HasSetting(Home_Show_Rotten_Mediaratings)</selected>
-				</control>
+				</control> -->
 				<!-- ..****. -->
+				<control type="radiobutton" id="$PARAM[id]010">
+					<label>show artwork on left side and info right</label>
+					<onclick>Skin.ToggleSetting(SpotlightLayout_FanartLeftAlignment)</onclick>
+					<selected>Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)</selected>
+					<visible>String.IsEqual(Skin.String(HomeLayout),Spotlight)</visible>
+				</control>
+				
+				<control type="radiobutton" id="$PARAM[id]011">
+					<description>Meta Data Left,Centered,right alignment Skin.String(SpotlightMetadataAlign)</description>
+					<include content="SkinSettings_SettingsRadioButton">
+						<param name="label" value="choose Item-Info Alignment" />
+						<param name="label2" value="$INFO[Skin.String(SpotlightMetadataAlign)]" />
+					</include>
+					<onclick>SetProperty(Dialog.1.Label,left)</onclick>
+					<onclick>SetProperty(Dialog.1.BuiltIn,Skin.SetString(SpotlightMetadataAlign,left))</onclick>
+					<onclick>SetProperty(Dialog.2.Label,right)</onclick>
+					<onclick>SetProperty(Dialog.2.BuiltIn,Skin.SetString(SpotlightMetadataAlign,right))</onclick>
+					<onclick>SetProperty(Dialog.3.Label,center)</onclick>
+					<onclick>SetProperty(Dialog.3.BuiltIn,Skin.SetString(SpotlightMetadataAlign,center))</onclick>
+					<onclick>RunScript(script.embuary.helper,action=createselect,header=Choose Item-Info Alignment)</onclick>
+					<visible>String.IsEqual(Skin.String(HomeLayout),Spotlight)</visible>
+				</control>
+				<control type="radiobutton" id="$PARAM[id]012">
+					<label>dont Show Plot/Description Info</label>
+					<onclick>Skin.ToggleSetting(home_spotlight_hideplot)</onclick>
+					<selected>Skin.HasSetting(home_spotlight_hideplot)</selected>
+					<visible>String.IsEqual(Skin.String(HomeLayout),Spotlight)</visible>
+				</control>
+				<control type="radiobutton" id="$PARAM[id]013">
+					<label>do auto playback of Trailers if found (SystemIdle Time 4 sec hardcoded)</label>
+					<onclick>Skin.ToggleSetting(autoplay_trailer_home)</onclick>
+					<selected>Skin.HasSetting(autoplay_trailer_home)</selected>
+					<visible>String.IsEqual(Skin.String(HomeLayout),Spotlight)</visible>
+				</control>
+				
+				
+				<control type="radiobutton" id="$PARAM[id]020">
+					<label>show label in widget title</label>
+					<onclick>Skin.ToggleSetting(ShowFocusedLabelInHeader_Home)</onclick>
+					<selected>Skin.HasSetting(ShowFocusedLabelInHeader_Home)</selected>
+				</control>
+				
+				
+				<include content="SectionHeadline">
+					<param name="id" value="$PARAM[id]030"/>
+					<param name="label" value="B A C K G R O U N D    &amp;    C O L O R S"/>
+				</include>
+				
+				<control type="radiobutton" id="$PARAM[id]031">
+					<height>90</height>
+					<include content="SkinSettings_SettingsRadioButton">
+						<param name="label" value="Set [B]Home[/B] Background Overlay Image" />
+						<param name="label2" value="" />
+					</include>
+					<onclick>SetProperty(DialogHeader,Set [B]Home Screen[/B] Background Overlay Image (top layer),home)</onclick>
+					<onclick>Skin.Reset(texture_home_background_layer3)</onclick>
+					<onclick condition="String.IsEmpty(Skin.String(texturepath_userdefined))">Skin.SetImage(texture_home_background_layer3,special://skin/extras/backgroundoverlay)</onclick>
+					<onclick condition="!String.IsEmpty(Skin.String(texturepath_userdefined))">Skin.SetImage(texture_home_background_layer3,$INFO[Skin.String(texturepath_userdefined)])</onclick>
+				</control>
+				<include content="SkinSettings_ColorButton">
+					<param name="id" value="$PARAM[id]032" />
+					<param name="label" value="Home BackgroundColor (1st layer)" />
+					<param name="skinsetting" value="color_home_background_layer1" />
+				</include>
+				<include content="SkinSettings_ColorButton">
+					<param name="id" value="$PARAM[id]033" />
+					<param name="label" value="Home BackgroundColor (2nd layer)" />
+					<param name="skinsetting" value="color_home_background_layer2" />
+				</include>
+				<include content="SkinSettings_ColorButton">
+					<param name="id" value="$PARAM[id]034" />
+					<param name="label" value="Home Overlay Image Tint (3rd layer)" />
+					<param name="skinsetting" value="color_home_background_layer3" />
+				</include>
+				<control type="button" id="$PARAM[id]035">
+					<label>reset Home Main Mennu Colors</label>
+					<include>reset_color_home_background</include>
+				</control>
 		   </include>
+				
 				
 			<include content="ButtonList">
 				<param name="id" value="4" />
 				
-				<description>H O M E    W I D G E T S</description>
-				<visible>Container(9000).HasFocus($PARAM[id])</visible>
+				<description>H O M E     M A I N M E N U</description>
+				<visible>Container(200).HasFocus($PARAM[id])</visible>
+				
 				<include content="SectionHeadline">
-						<param name="id" value="$PARAM[id]000"/>
-						<param name="label" value=""/>
-						<param name="height" value="15" />
+					<param name="id" value="$PARAM[id]000"/>
+					<param name="label" value="H O M E     M E N U     S E T T I N G S"/>
+				</include>
+				<control type="radiobutton" id="$PARAM[id]001">
+					<label>TEMP SETTING : use custom main menu</label>
+					<font>font30_title</font>
+					<textoffsetx>0</textoffsetx>
+					<height>100</height>
+					<onclick>Skin.ToggleSetting(useshortcut_mainmenu)</onclick>
+					<selected>Skin.HasSetting(useshortcut_mainmenu)</selected>
+					<visible>Skin.HasSetting(SwanDebug)</visible>
+				</control>
+			
+				<control type="radiobutton" id="$PARAM[id]002">
+					<description>refresh profile container + toggle setting</description>
+					<label>Show Profiles at top</label>
+					<height>60</height>
+					<visible>Integer.IsGreaterOrEqual(System.ProfileCount,2)</visible>
+					<visible>Skin.HasSetting(useshortcut_mainmenu)</visible>
+					<onclick>ActivateWindow(profiles,return)</onclick>
+					<onclick>ReplaceWindow(skinsettings)</onclick>
+					<onclick>Skin.ToggleSetting(menucontrol_home_showprofiles)</onclick>
+					<selected>Skin.HasSetting(menucontrol_home_showprofiles)</selected>
+				</control>
+				
+				<include content="SectionHeadline">
+					<param name="id" value="$PARAM[id]010"/>
+					<param name="label" value="H O M E     M E N U     E N T R Y S"/>
+					<param name="visible" value="Skin.HasSetting(useshortcut_mainmenu)" />
+				</include>
+				
+				
+				<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
+					<param name="id" value="$PARAM[id]011"/>
+					<param name="nr" value="1"/>
+				</include>
+				
+				<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
+					<param name="id" value="$PARAM[id]012"/>
+					<param name="nr" value="2"/>
+				</include>
+				
+				<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
+					<param name="id" value="$PARAM[id]013"/>
+					<param name="nr" value="3"/>
+				</include>
+				<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
+					<param name="id" value="$PARAM[id]014"/>
+					<param name="nr" value="4"/>
+				</include>
+				
+				<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
+					<param name="id" value="$PARAM[id]015"/>
+					<param name="nr" value="5"/>
+				</include>
+				
+				<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
+					<param name="id" value="$PARAM[id]016"/>
+					<param name="nr" value="6"/>
+				</include>
+				
+				<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
+					<param name="id" value="$PARAM[id]017"/>
+					<param name="nr" value="7"/>
+				</include>
+				
+				<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
+					<param name="id" value="$PARAM[id]018"/>
+					<param name="nr" value="8"/>
+				</include>
+				
+				<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
+					<param name="id" value="$PARAM[id]019"/>
+					<param name="nr" value="9"/>
+				</include>
+				
+				<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
+					<param name="id" value="$PARAM[id]020"/>
+					<param name="nr" value="10"/>
+				</include>
+				
+				
+				<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
+					<param name="id" value="$PARAM[id]021"/>
+					<param name="nr" value="11"/>
+				</include>
+				
+				<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
+					<param name="id" value="$PARAM[id]022"/>
+					<param name="nr" value="12"/>
+				</include>
+				
+				<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
+					<param name="id" value="$PARAM[id]023"/>
+					<param name="nr" value="13"/>
+				</include>
+				<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
+					<param name="id" value="$PARAM[id]024"/>
+					<param name="nr" value="14"/>
+				</include>
+				
+				<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
+					<param name="id" value="$PARAM[id]025"/>
+					<param name="nr" value="15"/>
+				</include>
+				
+				<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
+					<param name="id" value="$PARAM[id]026"/>
+					<param name="nr" value="16"/>
+				</include>
+				<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
+					<param name="id" value="$PARAM[id]027"/>
+					<param name="nr" value="17"/>
+				</include>
+				
+				<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
+					<param name="id" value="$PARAM[id]028"/>
+					<param name="nr" value="18"/>
+				</include>
+				
+				<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
+					<param name="id" value="$PARAM[id]029"/>
+					<param name="nr" value="19"/>
+				</include>
+				
+				<include content="ShortCut_mainmenu_SetPath_ButtonTemplate">
+					<param name="id" value="$PARAM[id]030"/>
+					<param name="nr" value="20"/>
+				</include>
+				
+			
+			</include>
+				
+			<include content="ButtonList">
+				<param name="id" value="5" />
+				
+				<description>H O M E    W I D G E T S</description>
+				<visible>Container(200).HasFocus($PARAM[id])</visible>
+				
+					<control type="radiobutton" id="$PARAM[id]000">
+						<description>show the currently used one in the button ctrl - make better layout</description>
+						<top>30</top>
+						<height>70</height>
+						<include content="SkinSettings_SettingsRadioButton">
+							<param name="label" value="Choose Custom Image for [B]Category / Section Widget[/B]" />
+							<param name="label2" value="" />
+						</include>
+						<onclick>Skin.Reset(texture_categorywidget)</onclick>
+						<onclick condition="String.IsEmpty(Skin.String(texturepath_userdefined))">Skin.SetImage(texture_categorywidget,special://skin/extras/backgroundimages)</onclick>
+						<onclick condition="!String.IsEmpty(Skin.String(texturepath_userdefined))">Skin.SetImage(texture_categorywidget,$INFO[Skin.String(texturepath_userdefined)])</onclick>
+					</control>
+					
+					<!--
+					<include content="spacer_h">
+						<param name="id" value="$PARAM[id]000" />
+						<param name="gap" value="5" />
 					</include>
+					-->
 					
 					<include content="Widget_SetPath_ButtonTemplate">
 						<param name="id" value="$PARAM[id]001"/>
@@ -1066,21 +1154,21 @@ static const TypeMapping types[] =
 			
 			
 			<include content="ButtonList">
-				<param name="id" value="5" />
+				<param name="id" value="6" />
 				
-				<visible>Container(9000).HasFocus($PARAM[id])</visible>
+				<visible>Container(200).HasFocus($PARAM[id])</visible>
 				<description>L I B R A R Y</description>
-				<include content="SectionHeadline">
-					<param name="id" value="$PARAM[id]000"/>
-					<param name="label" value="H E A D E R"/>
-				</include>
 				
 				<control type="radiobutton" id="$PARAM[id]00199">
-					<label>AUTO PLAY TRAILER WIP - ATM COUNT ON ALL VIEWS</label>
+					<label>AUTO PLAY TRAILER WIP - ATM COUNT ON ALL VIEWS - this setting will move to view type settings</label>
 					<onclick>Skin.ToggleSetting(autoplay_trailer_common)</onclick>
 					<selected>Skin.HasSetting(autoplay_trailer_common)</selected>
 				</control>
 				
+				<include content="SectionHeadline">
+					<param name="id" value="$PARAM[id]000"/>
+					<param name="label" value="H E A D E R"/>
+				</include>
 				
 				<control type="radiobutton" id="$PARAM[id]001">
 					<label>Show Header BG Panel Image in Media Windows</label>
@@ -1234,10 +1322,10 @@ static const TypeMapping types[] =
 			</include>
 			
 			<include content="ButtonList">
-				<param name="id" value="6" />
+				<param name="id" value="7" />
 				
 				<description>M E N U    B A R</description>
-				<visible>Container(9000).HasFocus($PARAM[id])</visible>
+				<visible>Container(200).HasFocus($PARAM[id])</visible>
 				
 				<include content="SectionHeadline">
 					<param name="id" value="$PARAM[id]001"/>
@@ -1254,7 +1342,6 @@ static const TypeMapping types[] =
 					<selected>Skin.HasSetting(menucontrol_forcedfocus_8999)</selected>
 				</control>
 				
-				-----
 				<include content="SectionHeadline">
 					<param name="id" value="$PARAM[id]010"/>
 					<param name="label" value="P R E    M E N U    B A R    [I](Library)[/I]"/>
@@ -1354,32 +1441,32 @@ static const TypeMapping types[] =
 					<onclick>Skin.ToggleSetting(menu_hide_navigationtvshows)</onclick>
 					<selected>Skin.HasSetting(menu_hide_navigationtvshows)</selected>
 				</control>
-				<control type="radiobutton" id="$PARAM[id]020">
+				<control type="radiobutton" id="$PARAM[id]030">
 					<label>[B][I]Hide[/I][/B]  go to [B][I]videoplaylists[/I][/B]</label>
 					<onclick>Skin.ToggleSetting(menu_hide_navigationvideoplaylists)</onclick>
 					<selected>Skin.HasSetting(menu_hide_navigationvideoplaylists)</selected>
 				</control>
-				<control type="radiobutton" id="$PARAM[id]021">
+				<control type="radiobutton" id="$PARAM[id]031">
 					<label>[B][I]Hide[/I][/B] go to [B][I]music[/I][/B]</label>
 					<onclick>Skin.ToggleSetting(menu_hide_navigationmusic)</onclick>
 					<selected>Skin.HasSetting(menu_hide_navigationmusic)</selected>
 				</control>
-				<control type="radiobutton" id="$PARAM[id]022">
+				<control type="radiobutton" id="$PARAM[id]032">
 					<label>[B][I]Hide[/I][/B] go to [B][I]musicvideos[/I][/B]</label>
 					<onclick>Skin.ToggleSetting(menu_hide_navigationmusicvideos)</onclick>
 					<selected>Skin.HasSetting(menu_hide_navigationmusicvideos)</selected>
 				</control>
-				<control type="radiobutton" id="$PARAM[id]023">
+				<control type="radiobutton" id="$PARAM[id]033">
 					<label>[B][I]Hide[/I][/B] go to [B][I]musicplaylists[/I][/B]</label>
 					<onclick>Skin.ToggleSetting(menu_hide_navigationmusicplaylists)</onclick>
 					<selected>Skin.HasSetting(menu_hide_navigationmusicplaylists)</selected>
 				</control>
-				<control type="radiobutton" id="$PARAM[id]030">
+				<control type="radiobutton" id="$PARAM[id]040">
 					<label>[B][I]Hide[/I][/B] go to [B][I]pictures[/I][/B]</label>
 					<onclick>Skin.ToggleSetting(menu_hide_navigationpictures)</onclick>
 					<selected>Skin.HasSetting(menu_hide_navigationpictures)</selected>
 				</control>
-				<control type="radiobutton" id="$PARAM[id]040">
+				<control type="radiobutton" id="$PARAM[id]050">
 					<label>[B][I]Hide[/I][/B] go to [B][I]tv guide[/I][/B]</label>
 					<onclick>Skin.ToggleSetting(menu_hide_navigationtvguide)</onclick>
 					<selected>Skin.HasSetting(menu_hide_navigationtvguide)</selected>
@@ -1387,10 +1474,10 @@ static const TypeMapping types[] =
 			
 			</include>
 			<include content="ButtonList">
-				<param name="id" value="7" />
+				<param name="id" value="8" />
 				
 				<description>P L A Y E R</description>
-				<visible>Container(9000).HasFocus($PARAM[id])</visible>
+				<visible>Container(200).HasFocus($PARAM[id])</visible>
 				
 				<include content="SectionHeadline">
 					<param name="id" value="$PARAM[id]000"/>
@@ -1534,10 +1621,10 @@ static const TypeMapping types[] =
 			
 			<!-- install colorpicker -->
 			<include content="ButtonList">
-				<param name="id" value="8" />
+				<param name="id" value="9" />
 				
 				<description>ColorPicker Placeholder</description>
-				<visible>Container(9000).HasFocus($PARAM[id])</visible>
+				<visible>Container(200).HasFocus($PARAM[id])</visible>
 				<visible>!System.HasAddon(script.skin.helper.colorpicker)</visible>
 				
 				
@@ -1563,7 +1650,7 @@ static const TypeMapping types[] =
 				<param name="id" value="10" />
 				<param name="itemgap" value="0" />
 				<description>C U S T O M    C O L O R S</description>
-				<visible>Container(9000).HasFocus($PARAM[id])</visible>
+				<visible>Container(200).HasFocus($PARAM[id])</visible>
 				<visible>System.HasAddon(script.skin.helper.colorpicker) | System.AddonIsEnabeled(script.skin.helper.colorpicker)</visible>
 				<!-- 
 				
@@ -1596,121 +1683,27 @@ static const TypeMapping types[] =
 					<onclick>SetProperty(Dialog.4.BuiltIn,Skin.SetString(defaultcolorpalette,webcolors)||Skin.SetString(defaultcolorpalette.label,$ADDON[script.skin.helper.colorpicker 32145]))</onclick>
 					<onclick>RunScript(script.embuary.helper,action=createselect,header=Set default Pallete)</onclick>
 				</control>
+				<!-- spacer 5 -->
 				<!-- add reset all color skinstrrings, to use common clor themes 7002 -->
 				<control type="button" id="$PARAM[id]002">
-					<label>Reset ALL Colors and use Just predifined Color Theme</label>
+					<label>  [I]Reset ALL Colors[/I]   and use Just predifined Color Theme</label>
 					<label2></label2>
+					<!-- fadeout and replace 9000 with color sections left - and use includes based on focus of new section ids
+					-->
+					<include>reset_color_profilelogin</include>
+					<include>reset_color_shutdown</include>
+					<include>reset_color_header</include>
+					<include>reset_color_footer</include>
 					
-					<onclick>Skin.Reset(color_profilelogin_text_main)</onclick>
-					<onclick>Skin.Reset(color_profilelogin_text_main.name)</onclick>
-					<onclick>Skin.Reset(color_profilelogin_text_secondary)</onclick>
-					<onclick>Skin.Reset(color_profilelogin_text_secondary.name)</onclick>
-					<onclick>Skin.Reset(color_profilelogin_accent)</onclick>
-					<onclick>Skin.Reset(color_profilelogin_accent.name)</onclick>
+					<include>reset_color_global_background</include>
 					
-					<onclick>Skin.Reset(color_shutdown_dimmed_background)</onclick>
-					<onclick>Skin.Reset(color_shutdown_dimmed_background.name)</onclick>
-					<onclick>Skin.Reset(color_shutdown_item_fo)</onclick>
-					<onclick>Skin.Reset(color_shutdown_item_fo.name)</onclick>
-					<onclick>Skin.Reset(color_shutdown_item_nf)</onclick>
-					<onclick>Skin.Reset(color_shutdown_item_nf.name)</onclick>
+					<include>reset_color_global_dialog</include>
 					
-					<onclick>Skin.Reset(color_header_backgroundpanel)</onclick>
-					<onclick>Skin.Reset(color_header_backgroundpanel.name)</onclick>
-					<onclick>Skin.Reset(color_header_text_main)</onclick>
-					<onclick>Skin.Reset(color_header_text_main.name)</onclick>
-					<onclick>Skin.Reset(color_header_text_accent)</onclick>
-					<onclick>Skin.Reset(color_header_text_accent.name)</onclick>
-					
-					<onclick>Skin.Reset(color_footer_backgroundpanel)</onclick>
-					<onclick>Skin.Reset(color_footer_backgroundpanel.name)</onclick>
-					<onclick>Skin.Reset(color_footer_items)</onclick>
-					<onclick>Skin.Reset(color_footer_items.name)</onclick>
-					
-					<onclick>Skin.Reset(color_global_dialog_background)</onclick>
-					<onclick>Skin.Reset(color_global_dialog_background.name)</onclick>
-					<onclick>Skin.Reset(color_global_dialog_accent)</onclick>
-					<onclick>Skin.Reset(color_global_dialog_accent.name)</onclick>
-					
-					<onclick>Skin.Reset(color_global_background_layer1)</onclick>
-					<onclick>Skin.Reset(color_global_background_layer1.name)</onclick>
-					<onclick>Skin.Reset(color_global_background_layer2)</onclick>
-					<onclick>Skin.Reset(color_global_background_layer2.name)</onclick>
-					<onclick>Skin.Reset(color_global_background_layer3)</onclick>
-					<onclick>Skin.Reset(color_global_background_layer3.name)</onclick>
-					
-					<onclick>Skin.Reset(color_lib_menu_backgroundpanel)</onclick>
-					<onclick>Skin.Reset(color_lib_menu_backgroundpanel.name)</onclick>
-					<onclick>Skin.Reset(color_lib_menu_accent)</onclick>
-					<onclick>Skin.Reset(color_lib_menu_accent.name)</onclick>
-					<onclick>Skin.Reset(color_lib_menu_itempanel_fo)</onclick>
-					<onclick>Skin.Reset(color_lib_menu_itempanel_fo.name)</onclick>
-					<onclick>Skin.Reset(color_lib_menu_item_fo)</onclick>
-					<onclick>Skin.Reset(color_lib_menu_item_fo.name)</onclick>
-					<onclick>Skin.Reset(color_lib_menu_itempanel_nf)</onclick>
-					<onclick>Skin.Reset(color_lib_menu_itempanel_nf.name)</onclick>
-					<onclick>Skin.Reset(color_lib_menu_item_nf)</onclick>
-					<onclick>Skin.Reset(color_lib_menu_item_nf.name)</onclick>
-					
-					<onclick>Skin.Reset(color_lib_accent)</onclick>
-					<onclick>Skin.Reset(color_lib_accent.name)</onclick>
+					<include>reset_color_lib</include>
 					
 					
-					<onclick>Skin.Reset(color_lib_backgroundlayer4)</onclick>
-					<onclick>Skin.Reset(color_lib_backgroundlayer4)</onclick>
-					
-					<onclick>Skin.Reset(color_lib_widget_header)</onclick>
-					<onclick>Skin.Reset(color_lib_widget_header.name)</onclick>
-					
-					<onclick>Skin.Reset(color_lib_widgetitem_frame_fo)</onclick>
-					<onclick>Skin.Reset(color_lib_widgetitem_frame_fo.name)</onclick>
-					<onclick>Skin.Reset(color_lib_widgetitem_itemtag_bgpanel_fo)</onclick>
-					<onclick>Skin.Reset(color_lib_widgetitem_itemtag_bgpanel_fo.name)</onclick>
-					<onclick>Skin.Reset(color_lib_widgetitem_itemtag_label1_fo)</onclick>
-					<onclick>Skin.Reset(color_lib_widgetitem_itemtag_label1_fo.name)</onclick>
-					<onclick>Skin.Reset(color_lib_widgetitem_itemtag_label2_fo)</onclick>
-					<onclick>Skin.Reset(color_lib_widgetitem_itemtag_label2_fo.name)</onclick>
-					<onclick>Skin.Reset(color_lib_widgetitem_itemtag_bgpanel_nf)</onclick>
-					<onclick>Skin.Reset(color_lib_widgetitem_itemtag_bgpanel_nf.name)</onclick>
-					<onclick>Skin.Reset(color_lib_widgetitem_frame_nf)</onclick>
-					<onclick>Skin.Reset(color_lib_widgetitem_frame_nf.name)</onclick>
-					<onclick>Skin.Reset(color_lib_widgetitem_itemtag_label1_nf)</onclick>
-					<onclick>Skin.Reset(color_lib_widgetitem_itemtag_label1_nf.name)</onclick>
-					<onclick>Skin.Reset(color_lib_widgetitem_itemtag_label2_nf)</onclick>
-					<onclick>Skin.Reset(color_lib_widgetitem_itemtag_label2_nf.name)</onclick>
-					<onclick>Skin.Reset(color_lib_widgetitem_overlayicon)</onclick>
-					<onclick>Skin.Reset(color_lib_widgetitem_overlayicon.name)</onclick>
-					<onclick>Skin.Reset(color_lib_watchedoverlay_progressbar_remain)</onclick>
-					<onclick>Skin.Reset(color_lib_watchedoverlay_progressbar_remain.name)</onclick>
-					<onclick>Skin.Reset(color_lib_watchedoverlay_progressbar_progress)</onclick>
-					<onclick>Skin.Reset(color_lib_watchedoverlay_progressbar_progress.name)</onclick>
-					<onclick>Skin.Reset(color_lib_watchedoverlay_frame)</onclick>
-					<onclick>Skin.Reset(color_lib_watchedoverlay_frame.name)</onclick>
-					<onclick>Skin.Reset(color_lib_watchedoverlay_watched)</onclick>
-					<onclick>Skin.Reset(color_lib_watchedoverlay_watched.name)</onclick>
-					<onclick>Skin.Reset(color_lib_watchedoverlay_resumeable)</onclick>
-					<onclick>Skin.Reset(color_lib_watchedoverlay_resumeable.name)</onclick>
-					
-					
-					<onclick>Skin.Reset(color_home_background_layer1)</onclick>
-					<onclick>Skin.Reset(color_home_background_layer1.name)</onclick>
-					<onclick>Skin.Reset(color_home_background_layer2)</onclick>
-					<onclick>Skin.Reset(color_home_background_layer2.name)</onclick>
-					<onclick>Skin.Reset(color_home_background_layer3)</onclick>
-					<onclick>Skin.Reset(color_home_background_layer3.name)</onclick>
-					
-					<onclick>Skin.Reset(color_home_menu_backgroundpanel)</onclick>
-					<onclick>Skin.Reset(color_home_menu_backgroundpanel.name)</onclick>
-					<onclick>Skin.Reset(color_home_menu_accent)</onclick>
-					<onclick>Skin.Reset(color_home_menu_accent.name)</onclick>
-					<onclick>Skin.Reset(color_home_menu_itempanel_fo)</onclick>
-					<onclick>Skin.Reset(color_home_menu_itempanel_fo.name)</onclick>
-					<onclick>Skin.Reset(color_home_menu_item_fo)</onclick>
-					<onclick>Skin.Reset(color_home_menu_item_fo.name)</onclick>
-					<onclick>Skin.Reset(color_home_menu_itempanel_nf)</onclick>
-					<onclick>Skin.Reset(color_home_menu_itempanel_nf.name)</onclick>
-					<onclick>Skin.Reset(color_home_menu_item_nf)</onclick>
-					<onclick>Skin.Reset(color_home_menu_item_nf.name)</onclick>
+					<include>reset_color_home_background</include>
+					<include>reset_color_home_menu</include>
 					
 					<onclick>Skin.Reset(color_home_widgetitem_frame_fo)</onclick>
 					<onclick>Skin.Reset(color_home_widgetitem_frame_fo.name)</onclick>
@@ -1810,6 +1803,8 @@ static const TypeMapping types[] =
 					<onclick>Skin.Reset(color_global_scrollbar_slider_nf)</onclick>
 					<onclick>Skin.Reset(color_global_scrollbar_slider_nf.name)</onclick>
 					
+					<!-- <onclick>SHOW BUSY LOADER Till Finished </onclick> -->
+					<onclick>Notification([B]ALL Colors are Reset to default[/B],Default Color Theme Is in Use)</onclick>
 				</control>
 				<control type="radiobutton" id="$PARAM[id]004">
 					<description>Backup All Skin Settings (complete skinbackup)</description>
@@ -1989,6 +1984,7 @@ static const TypeMapping types[] =
 					<param name="label" value="Home Overlay Image Tint (3rd layer)" />
 					<param name="skinsetting" value="color_home_background_layer3" />
 				</include>
+				
 				<include content="SkinSettings_ColorButton">
 					<param name="id" value="$PARAM[id]104" />
 					<param name="label" value="color_home_menu_backgroundpanel" />
@@ -2352,30 +2348,13 @@ static const TypeMapping types[] =
 				</include>
 			</include>			
 			
-			<control type="image">
-				<description>Dialog Header image</description>
-				<left>0</left>
-				<top>160</top>
-				<right>0</right>
-				<height>3</height>
-				<texture colordiffuse="green" border="2">dialogs/separator-grey.png</texture>
-				<!-- <animation condition="[Container(9000).Position(0) | Container(9000).Position(1) | Container(9000).Position(2) | Container(9000).Position(3) | Container(9000).Position(4) | Container(9000).Position(5)]" effect="zoom" start="0,100" end="100,100" time="300" center="auto" tween="quadratic" easing="out" reversible="false">Conditional</animation> -->
-			</control>
-			<control type="image">
-				<description>Dialog Header image</description>
-				<left>0</left>
-				<bottom>134</bottom>
-				<right>0</right>
-				<height>3</height>
-				<texture colordiffuse="red" border="2">dialogs/separator-grey.png</texture>
-			</control>
 			
 			
 			<include content="ButtonList">
 				<param name="id" value="11" />
 				<param name="itemgap" value="0" />
 				<description></description>
-				<visible>Container(9000).HasFocus($PARAM[id])</visible>
+				<visible>Container(200).HasFocus($PARAM[id])</visible>
 				<visible>System.HasAddon(script.skin.helper.colorpicker)</visible>
 				
 				<!-- give info about reset using def / themed setting -->
@@ -2575,9 +2554,12 @@ static const TypeMapping types[] =
 			<top>163</top>
 			<bottom>137</bottom>
 			<orientation>vertical</orientation>
-			
+			<onleft condition="Control.IsVisible(1)">1</onleft>
+			<onright condition="Control.IsVisible(1)">1</onright>
 			<onleft condition="Control.IsVisible(2)">2</onleft>
 			<onright condition="Control.IsVisible(2)">2</onright>
+			<onleft condition="Control.IsVisible(3)">3</onleft>
+			<onright condition="Control.IsVisible(3)">3</onright>
 			<onleft condition="Control.IsVisible(4)">4</onleft>
 			<onright condition="Control.IsVisible(4)">4</onright>
 			<onleft condition="Control.IsVisible(5)">5</onleft>
@@ -2586,12 +2568,16 @@ static const TypeMapping types[] =
 			<onright condition="Control.IsVisible(6)">6</onright>
 			<onleft condition="Control.IsVisible(7)">7</onleft>
 			<onright condition="Control.IsVisible(7)">7</onright>
+			<onleft condition="Control.IsVisible(8)">8</onleft>
+			<onright condition="Control.IsVisible(8)">8</onright>
+			<onleft condition="Control.IsVisible(9)">9</onleft>
+			<onright condition="Control.IsVisible(9)">9</onright>
 			<onleft condition="Control.IsVisible(10)">10</onleft>
 			<onright condition="Control.IsVisible(10)">10</onright>
 			<onleft condition="Control.IsVisible(11)">11</onleft>
 			<onright condition="Control.IsVisible(11)">11</onright>
-			<onleft condition="Control.IsVisible(14)">14</onleft>
-			<onright condition="Control.IsVisible(14)">14</onright>
+			<onleft condition="Control.IsVisible(12)">12</onleft>
+			<onright condition="Control.IsVisible(12)">12</onright>
 			<animation effect="fade" start="0" end="100" time="200">Focus</animation>
 			<animation effect="fade" start="100" end="0" time="200">Unfocus</animation>
 		</control>

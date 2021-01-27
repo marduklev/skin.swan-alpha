@@ -6,8 +6,8 @@
 		<control type="button">
 			<visible allowhiddenfocus="true">false</visible>
 			<nested />
+			<onfocus condition="Window.IsActive(home) + !String.IsEmpty(Window(home).Property(MenucontrolHomeActive))">ClearProperty(MenucontrolHomeActive,home)</onfocus>
 			
-			<onfocus condition="!Window.IsActive(movieinformation) + !String.IsEmpty(Window(home).Property(TrailerIsPlaying))">PlayerControl(Stop)</onfocus>
 			<onfocus condition="!Window.IsActive(movieinformation) + !String.IsEmpty(Window(home).Property(trailer_avail))">ClearProperty(trailer_avail,home)</onfocus>
 			<onfocus condition="!Window.IsActive(movieinformation) + !String.IsEmpty(Window(home).Property(listitemtrailer))">ClearProperty(listitemtrailer,home)</onfocus>
 			
@@ -22,6 +22,9 @@
 			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.Property(totalseasons))">SetProperty(totalseasons,$INFO[listitem.Property(totalseasons)],home)</onfocus>
 			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.Property(totalepisodes))">SetProperty(totalepisodes,$INFO[listitem.Property(totalepisodes)],home)</onfocus>
 			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.status)">SetProperty(status,$INFO[listitem.status],home)</onfocus>
+			
+			<onunfocus condition="!Window.IsActive(movieinformation) + !String.IsEmpty(Window(home).Property(TrailerIsPlaying))">PlayerControl(Stop)</onunfocus>
+			
 		</control>
 	</include>
 	
