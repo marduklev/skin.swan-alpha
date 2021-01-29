@@ -124,13 +124,18 @@ Is a special Music Media Window , from here you can navigate trough every Librar
      *  click down to navigate trough some content containers
 >  by click on a cast member you can decide if you wanna do a local search or tmdb search ( requires embuary info addon )
 
+>  by default the skin overrides the common select action when click on movie or tv show item in a container,
+>  which means that you go to the info dialog for that item
+>  you can disble this behaviour in the L I B R A R Y skinsetting section in the videoinfo subsection
+
+   
 >  by focus a cast member you'll get a list with movies and tv shows from your library
 
-> the skin looks if a soundtrack exists in your music library for the movie/show and if wished do a youtube lookup for a soundtrack which xan be played
+>  the skin looks if a soundtrack exists in your music library for the movie/show and if wished do a youtube lookup for a soundtrack which xan be played
 
- > each container content can be en/disabled within the skinsettings section
+>  each container content can be en/disabled within the skinsettings section
  
-> you can scroll trough some artwork and can go to fullscreen slideshow by click on the artwork.
+>  you can scroll trough some artwork and can go to fullscreen slideshow by click on the artwork.
     there are 2 ways from where those images are loaded which can be selected within the skinsettings
         1. **RECOMMENDED** : show scrapped artwork which respects the definitions from your **advancedsettings.xml**
         2. show content of extrafanart folder which should be place in the item art folder (depreciated method for storing)
@@ -142,15 +147,15 @@ Is a special Music Media Window , from here you can navigate trough every Librar
 ##  MUSIC INFO DIALOG
  *  you can play albums, songs or musicvideos from your library for the current artist without leaving
 
-> you can scroll trough some artwork and can go to fullscreen slideshow by click on the artwork.
+>  you can scroll trough some artwork and can go to fullscreen slideshow by click on the artwork.
 
-> the skin looks if booklet artwork exists
+>  the skin looks if booklet artwork exists
     **this require a images with naming of booklet1,booklet2,booklet3  ...**
     in the album folder. You'll also need to define them in the **advancedsettings.xml**
 
-> the _similiar artists/albums_ , _top 4 list_ ,  _youtube_  , _amazon prime music_ containes can be en/disabled within the skinsettings section
+>  the _similiar artists/albums_ , _top 4 list_ ,  _youtube_  , _amazon prime music_ containes can be en/disabled within the skinsettings section
   
- >  https://kodi.wiki/view/Advancedsettings.xml#Music_library_extra_artwork
+>  https://kodi.wiki/view/Advancedsettings.xml#Music_library_extra_artwork
  
 ##  Header Bar
 
