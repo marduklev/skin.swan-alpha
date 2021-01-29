@@ -1501,13 +1501,13 @@ msgstr "Video-Wiedergabelisten"
 				<aligny>center</aligny>
 				<orientation>vertical</orientation>
 				
-				<onup condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">7777</onup>
-				<onup condition="!String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">9000</onup>
+				<onup condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true) + [Control.IsVisible(7777)">7777</onup>
+				<onup condition="[String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true) + !Control.IsVisible(7777)] | !String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">9000</onup>
 				
-				<ondown condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">8888</ondown>
-				<ondown condition="!String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">9000</ondown> 
+				<ondown condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true) + Control.IsVisible(8888)">8888</ondown>
+				<ondown condition="[String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true) + !Control.IsVisible(8888)] | !String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">9000</ondown> 
 				
-				<onright condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">ClearProperty(MenucontrolHomeActive,home)</onright> widgets
+				<onright condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">ClearProperty(MenucontrolHomeActive,home)</onright>
 				<onright>5555</onright>
 				
 				<onleft condition="!String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">SetProperty(MenucontrolHomeActive,true,home)</onleft>		
@@ -2258,7 +2258,7 @@ RadioSearch
 			<textcolor>$VAR[color_$PARAM[section]_menu_item_nf]</textcolor>
 		</definition>
 	</include>
-	Menucontrol_RadioButton -> Menucontrol_ViewSettingsRadioButton
+	<!-- Menucontrol_RadioButton -> Menucontrol_ViewSettingsRadioButton -->
 	<include name="Menucontrol_RadioButton">
 		<param name="section" default="lib" />
 		<definition>
@@ -2291,96 +2291,95 @@ RadioSearch
 	
 	<!-- later on use custom -->
 	<include name="shutdownmenu_content">
-				<content>
-					<item>
-						<label>$LOCALIZE[10000]</label>
-						<icon>icons/home.png</icon>
-						<onclick>Dialog.Close(all,true)</onclick>
-						<onclick>ActivateWindow(home)</onclick>
-						<visible>!Window.IsVisible(loginscreen) + !Window.IsVisible(home)</visible>
-					</item>
-					<item>
-						<label>$LOCALIZE[5]</label>
-						<icon>icons/settingsslider.png</icon>
-						<onclick>Dialog.Close(all,true)</onclick>
-						<onclick>ActivateWindow(settings)</onclick>
-						<visible>!Window.IsVisible(loginscreen) + !Window.IsVisible(settings) + !Skin.HasSetting(DialogButton_HidePowerSettings)</visible>
-					</item>
-					<item>
-						<label>$LOCALIZE[13012]</label>
-						<icon>icons/arrowleft.png</icon>
-						<onclick>Quit()</onclick>
-						<visible>System.Platform.Android | [System.ShowExitButton + [!Skin.HasSetting(DialogButton_HidePowerExit) | Window.IsVisible(loginscreen)]]</visible>
-					</item>
-					<item>
-						<label>$LOCALIZE[13016]</label>
-						<icon>icons/shutdown.png</icon>
-						<onclick>Powerdown()</onclick>
-						<visible>System.CanPowerDown + [!Skin.HasSetting(DialogButton_HidePowerOff) | Window.IsVisible(loginscreen)]</visible>
-					</item>
-					<item>
-						<label>$LOCALIZE[13013]</label>
-						<icon>icons/shittyrebbot.png</icon>
-						<onclick>Reboot()</onclick>
-						<visible>System.CanReboot + [!Skin.HasSetting(DialogButton_HideReboot) | Window.IsVisible(loginscreen)]</visible>
-					</item>
-					
-					<item>
-						<label>$LOCALIZE[20150]</label>
-						<icon>icons/alarmadd.png</icon>
-						<onclick>AlarmClock(shutdowntimer,Shutdown())</onclick>
-						<visible>!System.HasAlarm(shutdowntimer) + !Skin.HasSetting(DialogButton_HidePowerTimer) + [System.CanPowerDown | System.CanSuspend | System.CanHibernate]</visible>
-					</item>
-					<item>
-						<label>$LOCALIZE[20151] $INFO[System.AlarmPos,(,)]</label>
-						<icon>icons/alarmcancel.png</icon>
-						<onclick>CancelAlarm(shutdowntimer)</onclick>
-						<visible>System.HasAlarm(shutdowntimer) + !Skin.HasSetting(DialogButton_HidePowerTimer)</visible>
-					</item>
-					<item>
-						<label>$LOCALIZE[13011]</label>
-						<onclick>Suspend()</onclick>
-						<visible>System.CanSuspend + [!Skin.HasSetting(DialogButton_HidePowerSuspend) | Window.IsVisible(loginscreen)]</visible>
-					</item>
-					<item>
-						<label>$LOCALIZE[13010]</label>
-						<icon>icons/hibernate.png</icon>
-						<label2></label2>
-						<onclick>Hibernate()</onclick>
-						<visible>System.CanHibernate + [!Skin.HasSetting(DialogButton_HidePowerHibernate) | Window.IsVisible(loginscreen)]</visible>
-					</item>
-					<item>
-						<label>$LOCALIZE[13017]</label>
-						<label2></label2>
-						<onclick>InhibitIdleShutdown(true)</onclick>
-						<visible>System.HasShutdown + !System.IsInhibit + !Skin.HasSetting(DialogButton_HidePowerIdleShutdown)</visible>
-					</item>
-					<item>
-						<label>$LOCALIZE[13018]</label>
-						<label2></label2>
-						<onclick>InhibitIdleShutdown(false)</onclick>
-						<visible>System.HasShutdown + System.IsInhibit + !Skin.HasSetting(DialogButton_HidePowerIdleShutdown)</visible>
-					</item>
-					<item>
-						<label>$LOCALIZE[20126][CR]$INFO[system.profilename]</label>
-						<label2></label2>
-						<icon>icons/profilelogoff.png</icon>
-						<onclick>Dialog.Close(all,true)</onclick>
-						<onclick>System.LogOff</onclick>
-						<visible>[System.HasLoginScreen | Integer.IsGreater(System.ProfileCount,1)] + System.Loggedon</visible>
-					</item>
-					<item>
-						<label>$LOCALIZE[20046]</label>
-						<label2></label2>
-						<onclick>mastermode</onclick>
-						<visible>!Window.IsVisible(loginscreen) + System.HasLocks + System.IsMaster + !Window.IsVisible(loginscreen)</visible>
-					</item>
-					<item>
-						<label>$LOCALIZE[20045]</label>
-						<label2></label2>
-						<onclick>mastermode</onclick>
-						<visible>!Window.IsVisible(loginscreen) + System.HasLocks + !System.IsMaster</visible>
-					</item>
-					</content>
-				</include>
+	<content>
+		<item>
+			<label>$LOCALIZE[10000]</label>
+			<icon>icons/home.png</icon>
+			<onclick>Dialog.Close(all,true)</onclick>
+			<onclick>ActivateWindow(home)</onclick>
+			<visible>!Window.IsVisible(loginscreen) + !Window.IsVisible(home)</visible>
+		</item>
+		<item>
+			<label>$LOCALIZE[5]</label>
+			<icon>icons/settingsslider.png</icon>
+			<onclick>Dialog.Close(all,true)</onclick>
+			<onclick>ActivateWindow(settings)</onclick>
+			<visible>!Window.IsVisible(loginscreen) + !Window.IsVisible(settings) + !Skin.HasSetting(DialogButton_HidePowerSettings)</visible>
+		</item>
+		<item>
+			<label>$LOCALIZE[13012]</label>
+			<icon>icons/arrowleft.png</icon>
+			<onclick>Quit()</onclick>
+			<visible>System.Platform.Android | [System.ShowExitButton + [!Skin.HasSetting(DialogButton_HidePowerExit) | Window.IsVisible(loginscreen)]]</visible>
+		</item>
+		<item>
+			<label>$LOCALIZE[13016]</label>
+			<icon>icons/shutdown.png</icon>
+			<onclick>Powerdown()</onclick>
+			<visible>System.CanPowerDown + [!Skin.HasSetting(DialogButton_HidePowerOff) | Window.IsVisible(loginscreen)]</visible>
+		</item>
+		<item>
+			<label>$LOCALIZE[13013]</label>
+			<icon>icons/shittyrebbot.png</icon>
+			<onclick>Reboot()</onclick>
+			<visible>System.CanReboot + [!Skin.HasSetting(DialogButton_HideReboot) | Window.IsVisible(loginscreen)]</visible>
+		</item>
+		<item>
+			<label>$LOCALIZE[20150]</label>
+			<icon>icons/alarmadd.png</icon>
+			<onclick>AlarmClock(shutdowntimer,Shutdown())</onclick>
+			<visible>!System.HasAlarm(shutdowntimer) + !Skin.HasSetting(DialogButton_HidePowerTimer) + [System.CanPowerDown | System.CanSuspend | System.CanHibernate]</visible>
+		</item>
+		<item>
+			<label>$LOCALIZE[20151] $INFO[System.AlarmPos,(,)]</label>
+			<icon>icons/alarmcancel.png</icon>
+			<onclick>CancelAlarm(shutdowntimer)</onclick>
+			<visible>System.HasAlarm(shutdowntimer) + !Skin.HasSetting(DialogButton_HidePowerTimer)</visible>
+		</item>
+		<item>
+			<label>$LOCALIZE[13011]</label>
+			<onclick>Suspend()</onclick>
+			<visible>System.CanSuspend + [!Skin.HasSetting(DialogButton_HidePowerSuspend) | Window.IsVisible(loginscreen)]</visible>
+		</item>
+		<item>
+			<label>$LOCALIZE[13010]</label>
+			<icon>icons/hibernate.png</icon>
+			<label2></label2>
+			<onclick>Hibernate()</onclick>
+			<visible>System.CanHibernate + [!Skin.HasSetting(DialogButton_HidePowerHibernate) | Window.IsVisible(loginscreen)]</visible>
+		</item>
+		<item>
+			<label>$LOCALIZE[13017]</label>
+			<label2></label2>
+			<onclick>InhibitIdleShutdown(true)</onclick>
+			<visible>System.HasShutdown + !System.IsInhibit + !Skin.HasSetting(DialogButton_HidePowerIdleShutdown)</visible>
+		</item>
+		<item>
+			<label>$LOCALIZE[13018]</label>
+			<label2></label2>
+			<onclick>InhibitIdleShutdown(false)</onclick>
+			<visible>System.HasShutdown + System.IsInhibit + !Skin.HasSetting(DialogButton_HidePowerIdleShutdown)</visible>
+		</item>
+		<item>
+			<label>$LOCALIZE[20126][CR]$INFO[system.profilename]</label>
+			<label2></label2>
+			<icon>icons/profilelogoff.png</icon>
+			<onclick>Dialog.Close(all,true)</onclick>
+			<onclick>System.LogOff</onclick>
+			<visible>[System.HasLoginScreen | Integer.IsGreater(System.ProfileCount,1)] + System.Loggedon</visible>
+		</item>
+		<item>
+			<label>$LOCALIZE[20046]</label>
+			<label2></label2>
+			<onclick>mastermode</onclick>
+			<visible>!Window.IsVisible(loginscreen) + System.HasLocks + System.IsMaster + !Window.IsVisible(loginscreen)</visible>
+		</item>
+		<item>
+			<label>$LOCALIZE[20045]</label>
+			<label2></label2>
+			<onclick>mastermode</onclick>
+			<visible>!Window.IsVisible(loginscreen) + System.HasLocks + !System.IsMaster</visible>
+		</item>
+		</content>
+	</include>
 </includes>
