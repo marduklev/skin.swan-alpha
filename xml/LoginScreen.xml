@@ -11,212 +11,156 @@
 	<onunload>ClearProperty(profileloginbg_color,home)</onunload>
 
 	<controls>
+		<control type="image">
+			<animation effect="fade" start="0" end="100" time="250" condition="String.IsEmpty(Window.Property(HideProfiles))">conditional</animation>
+			<texture>$INFO[Window(home).Property(profileloginbg_blurred)]</texture>
+		</control>
+		<control type="image">
+			<animation effect="fade" start="100" end="0" time="250" condition="String.IsEmpty(Window.Property(HideProfiles))">conditional</animation>
+			<texture>$VAR[texture_profilelogin_background]</texture>
+		</control>
+	
 		<control type="group">
-			<control type="image">
-				<animation effect="fade" start="0" end="100" time="250" condition="String.IsEmpty(Window.Property(HideProfiles))">conditional</animation>
-				<texture>$INFO[Window(home).Property(profileloginbg_blurred)]</texture>
-			</control>
+		<animation effect="fade" start="100" end="0" time="300" condition="Window.IsActive(shutdownmenu)">conditional</animation>
 			
-			<control type="image">
-				<animation effect="fade" start="100" end="0" time="250" condition="String.IsEmpty(Window.Property(HideProfiles))">conditional</animation>
-				<texture>$VAR[texture_profilelogin_background]</texture>
-			</control>
+		<control type="label" id="2">
+			<animation effect="fade" start="100" end="0" time="300" condition="!String.IsEmpty(Window.Property(HideProfiles))">conditional</animation>
+			<top>25%</top>
+			<centerleft>50%</centerleft>
+			<height>100</height>
+			<align>center</align>
+			<textcolor>$VAR[color_profilelogin_text_main]</textcolor>
+			<font>font_SpotlightTitle_Large</font>
+			<label>Choose Your Profile</label>
+		</control>
+		
+		<control type="group">
+						 
+			<animation effect="slide" start="0,0" end="0,-180" time="150" condition="String.IsEmpty(Window.Property(HideProfiles))">conditional</animation>
+			<description>time and date weather</description>
+			<centerleft>50%</centerleft>
+			<top>250</top>
 			
-			<control type="label" id="2">
-				<animation effect="fade" start="100" end="0" time="300" condition="!String.IsEmpty(Window.Property(HideProfiles))">conditional</animation>
-				<top>25%</top>
-				<width>90%</width>
-				<centerleft>50%</centerleft>
-				<height>100</height>
+			<height>300</height>
+			
+			<control type="label">
+				<width>100%</width>
+				<height>50</height>
 				<align>center</align>
+				<info>System.Time</info>
+				<font>font_clockbig</font>
+				<textcolor>$VAR[color_profilelogin_accent]</textcolor>
+			</control>
+   
+			<control type="label">
+																																			  
+				<top>80</top>
+				<width>100%</width>
+								
+				<height>20</height>
+				<align>center</align>
+				<info>System.Date</info>
+				<font>Header_Dialog</font>
 				<textcolor>$VAR[color_profilelogin_text_main]</textcolor>
-				<font>font_SpotlightTitle_Large</font>
-				<label />
+			</control>
+			<control type="image">
+				<animation effect="fade" start="0" end="100" time="350">VisibleChange</animation>
+				<visible>String.IsEmpty(Window.Property(HideProfiles))</visible>
+				<top>120</top>
+				<height>2</height>
+				<width>60%</width>
+				<centerleft>50%</centerleft>
+				<texture colordiffuse="$VAR[color_profilelogin_text_main]">colors/white20.png</texture>
+				<aspectratio aligny="center" align="center">stretch</aspectratio>
 			</control>
 			
 			<control type="group">
-				<animation effect="slide" start="0,0" end="0,-180" time="150" condition="String.IsEmpty(Window.Property(HideProfiles))">conditional</animation>
-				<description>time and date weather</description>
-				<centerleft>50%</centerleft>
-				<top>250</top>
-				<width>60%</width>
-				<height>300</height>
-				
-				<control type="label">
-					<width>100%</width>
-					<height>50</height>
-					<align>center</align>
-					<info>System.Time</info>
-					<font>font_clockbig</font>
-					<textcolor>$VAR[color_profilelogin_accent]</textcolor>
+				<animation effect="fade" start="100" end="0" time="100" condition="String.IsEmpty(Window.Property(HideProfiles))">conditional</animation>
+				<visible>[!String.Contains(Weather.Temperature,$LOCALIZE[503]) | [!String.IsEqual(Weather.fanartcode,na) + Weather.IsFetched]]</visible>
+				<control type="image">
+					<top>-230</top>
+					<height>150</height>
+					<aspectratio>keep</aspectratio>
+					<texture colordiffuse="$VAR[color_profilelogin_text_main]">$INFO[Weather.FanartCode,resource://resource.images.weathericons.outline-hd/,.png]</texture>
 				</control>
 				<control type="label">
-					<top>80</top>
-					<width>100%</width>
+					<top>-75</top>
 					<height>20</height>
 					<align>center</align>
-					<info>System.Date</info>
-					<font>Header_Dialog</font>
+					<label>$INFO[Weather.Temperature]</label>
+					<font>font25_title</font>
 					<textcolor>$VAR[color_profilelogin_text_main]</textcolor>
 				</control>
-				<control type="image">
-					<animation effect="fade" start="0" end="100" time="350">VisibleChange</animation>
-					<visible>String.IsEmpty(Window.Property(HideProfiles))</visible>
-					<top>120</top>
-					<height>2</height>
-					<width>100%</width>
-					<texture colordiffuse="$VAR[color_profilelogin_text_main]">colors/white20.png</texture>
-					<aspectratio align="center">stretch</aspectratio>
-				</control>
-				
-				<control type="group">
-					<animation effect="fade" start="100" end="0" time="100" condition="String.IsEmpty(Window.Property(HideProfiles))">conditional</animation>
-					<visible>[!String.Contains(Weather.Temperature,$LOCALIZE[503]) | [!String.IsEqual(Weather.fanartcode,na) + Weather.IsFetched]]</visible>
-					<control type="image">
-						<top>-200</top>
-						<height>150</height>
-						<width>100%</width>
-						<texture colordiffuse="$VAR[color_profilelogin_text_main]">$INFO[Weather.FanartCode,resource://resource.images.weathericons.outline-hd/,.png]</texture>
-						<aspectratio align="center">keep</aspectratio>
-					</control>
-					<control type="label">
-						<top>-75</top>
-						<width>100%</width>
-						<height>20</height>
-						<align>center</align>
-						<label>$INFO[Weather.Temperature]</label>
-						<font>font25_title</font>
-						<textcolor>$VAR[color_profilelogin_text_main]</textcolor>
-					</control>
-				</control>
-			</control>
-			
-			<control type="radiobutton" id="99">
-				<!-- <animation effect="zoom" start="100,100" center="auto" end="110,110" delay="0" time="600" pulse="true" condition="Control.HasFocus(99)">conditional</animation> -->
-				<animation effect="fade" start="100" end="2" time="350" condition="String.IsEmpty(Window.Property(HideProfiles))">conditional</animation>
-				<!-- <animation effect="slide" start="0,0" end="1000,0" time="350" condition="Skin.HasSetting(52visible)">conditional</animation> -->
-				<include content="Animation_Item_Focus" />
-				<description>bad positioning when labeled</description>
-				<top>40%</top>
-				<!-- <centerleft>55%</centerleft> -->
-				<centerleft>50%</centerleft>
-				<!-- 
-				<height>260</height>
-				<width>80%</width>
-				<radioposx>320</radioposx>
-				-->
-				<height>250</height>
-				<width>250</width>
-				<textureradioonfocus colordiffuse="$VAR[color_profilelogin_text_main]">icons/kodiwatersign.png</textureradioonfocus>
-				<textureradioonnofocus colordiffuse="$VAR[color_profilelogin_text_secondary]">icons/kodiwatersign.png</textureradioonnofocus>
-				<textureradioofffocus colordiffuse="$VAR[color_profilelogin_text_main]">icons/kodiwatersign.png</textureradioofffocus>
-				<textureradiooffnofocus colordiffuse="$VAR[color_profilelogin_text_secondary]">icons/kodiwatersign.png</textureradiooffnofocus>
-				<!-- 
-				<radiowidth>200</radiowidth>
-				<radioheight>200</radioheight>
-				-->
-				<radiowidth>250</radiowidth>
-				<radioheight>250</radioheight>
-				<textureradioondisabled />
-				<textureradiooffdisabled  />
-				<texturefocus />
-				<texturenofocus />
-				<!-- 
-				<align>center</align>
-				<textoffsetx>100</textoffsetx>
-				<font>font60</font>
-				<focusedcolor>$VAR[color_profilelogin_text_main]</focusedcolor>
-				<textcolor>$VAR[color_profilelogin_text_secondary]</textcolor>
-				<label>[B]Welcome Back[/B][CR][I]$LOCALIZE[20092] ?[/I]</label>
-				-->
-				<selected />
-				<ondown>101</ondown>
-				<onup>101</onup>
-				<onclick>ClearProperty(HideProfiles)</onclick>
-				<onclick>SetFocus(52)</onclick>
-			</control>
-			
-			<control type="image">
-				<animation effect="fade" start="0" end="100" time="350">VisibleChange</animation>
-				<visible>String.IsEmpty(Window.Property(HideProfiles))</visible>
-				<top>380</top>
-				<height>2</height>
-				<width>100%</width>
-				<texture colordiffuse="$VAR[color_profilelogin_text_main]">colors/white20.png</texture>
-				<aspectratio align="center">stretch</aspectratio>
-			</control>
-			<control type="image">
-				<animation effect="fade" start="0" end="100" time="350">VisibleChange</animation>
-				<visible>String.IsEmpty(Window.Property(HideProfiles))</visible>
-				<top>382</top>
-				<height>323</height>
-				<texture colordiffuse="ffcccccc">colors/white10.png</texture>
-			</control>
-			<control type="image">
-				<animation effect="fade" start="0" end="100" time="350">VisibleChange</animation>
-				<visible>String.IsEmpty(Window.Property(HideProfiles))</visible>
-				<top>705</top>
-				<height>2</height>
-				<width>100%</width>
-				<texture colordiffuse="$VAR[color_profilelogin_text_main]">colors/white20.png</texture>
-				<aspectratio align="center">stretch</aspectratio>
-			</control>
-			<include content="Universal_Container">
-				<param name="id" value="52" />
-				<param name="type_height" value="300" />
-				<param name="type_pos_top" value="425" />
-				<param name="orientation" value="horizontal" />
-				<param name="tags_visible" value="true" />
-				<param name="visible" value="true" />
-				<param name="layout_height" value="290" />
-				<param name="layout_width" value="270" />
-				<param name="itemwidth" value="200" />
-				<param name="itemheight" value="200" />
-				<param name="layout" value="circle" />
-				<param name="circle_visible" value="false" />
-				<onup>101</onup>
-				<ondown>101</ondown>
-				<left>460</left>
-				<right>450</right>
-				<onback>SetProperty(HideProfiles,true)</onback>
-				<onback>99</onback>
-				
-				<animation effect="slide" start="0,0" end="125,0" time="0" reversible="false" condition="Integer.IsEqual(Container(52).NumItems,3)">conditional</animation>
-				<animation effect="slide" start="0,0" end="255,0" time="0" reversible="false" condition="Integer.IsEqual(Container(52).NumItems,2)">conditional</animation>
-				<animation effect="slide" start="0,0" end="395,0" time="0" reversible="false" condition="Integer.IsEqual(Container(52).NumItems,1)">conditional</animation>
-				
-				<animation effect="fade" start="100" end="0" time="0" reversible="false" condition="!String.IsEmpty(Window.Property(HideProfiles))">conditional</animation>
-				<animation effect="fade" start="0" end="100" time="450" reversible="false" condition="String.IsEmpty(Window.Property(HideProfiles))">conditional</animation>
-																																								
-			</include>
-			
-			<control type="radiobutton" id="101">
-				<include content="Animation_Item_Focus" />
-				<top>75%</top>
-				<width>120</width>
-				<height>120</height>
-				<centerleft>50%</centerleft>
-				<textureradioonfocus colordiffuse="$VAR[color_profilelogin_text_main]">icons/shutdown.png</textureradioonfocus>
-				<textureradioonnofocus colordiffuse="$VAR[color_profilelogin_text_secondary]">icons/shutdown.png</textureradioonnofocus>
-				<textureradioofffocus colordiffuse="$VAR[color_profilelogin_text_main]">icons/shutdown.png</textureradioofffocus>
-				<textureradiooffnofocus colordiffuse="$VAR[color_profilelogin_text_secondary]">icons/shutdown.png</textureradiooffnofocus>
-				<textoffsetx />
-				<radiowidth>120</radiowidth>
-				<radioheight>120</radioheight>
-				<textureradioondisabled />
-				<textureradiooffdisabled  />
-				<texturefocus />
-				<texturenofocus />
-				<focusedcolor />
-				<textcolor />
-				<label />
-				<selected />
-				<onup condition="!String.IsEmpty(Window.Property(HideProfiles))">99</onup>
-				<ondown condition="!String.IsEmpty(Window.Property(HideProfiles))">99</ondown>
-				<onup condition="String.IsEmpty(Window.Property(HideProfiles))">52</onup>
-				<ondown condition="String.IsEmpty(Window.Property(HideProfiles))">52</ondown>
-				<onclick>ActivateWindow(shutdownmenu)</onclick>
 			</control>
 		</control>
+		
+		<control type="button" id="99">
+			<animation effect="fade" start="100" end="2" time="350" condition="String.IsEmpty(Window.Property(HideProfiles))">conditional</animation>
+			<include content="Animation_Item_Focus" />
+			<top>40%</top>
+			<centerleft>50%</centerleft>
+			<include content="icon_button">
+				<param name="diameter" value="250" />
+				<param name="texture" value="icons/kodiwatersign.png" />
+			</include>
+			<ondown>101</ondown>
+			<onup>101</onup>
+			<onclick>ClearProperty(HideProfiles)</onclick>
+			<onclick>SetFocus(52)</onclick>
+		</control>
+		
+		<control type="image">
+			<animation effect="fade" start="0" end="100" time="350">VisibleChange</animation>
+			<visible>String.IsEmpty(Window.Property(HideProfiles))</visible>
+			<top>382</top>
+			<height>323</height>
+			<bordertexture border="2" diffuse="frames/frame.png" colordiffuse="$VAR[color_profilelogin_text_main]">colors/white20.png</bordertexture>
+			<texture colordiffuse="$VAR[color_profilelogin_text_main]">colors/white20.png</texture>
+			<aspectratio>stretch</aspectratio>
+		</control>
+		
+		<include content="Universal_Container">
+			<param name="id" value="52" />
+			<param name="type_height" value="300" />
+			<param name="type_pos_top" value="420" />
+			<param name="tags_visible" value="true" />
+			<param name="layout_height" value="300" />
+			<param name="layout_width" value="270" />
+			<param name="itemwidth" value="200" />
+			<param name="itemheight" value="200" />
+			<param name="layout" value="circle" />
+			<param name="SetPropOnFocus" value="false" />
+			<param name="focusoverlay_visible" value="false" />
+			<onup>101</onup>
+			<ondown>101</ondown>
+			<left>325</left>
+			<right>300</right>
+			<onback>SetProperty(HideProfiles,true)</onback>
+			<onback>99</onback>
+			
+			<animation effect="slide" start="0,0" end="125,0" time="0" reversible="false" condition="Integer.IsEqual(Container(52).NumItems,4)">conditional</animation>
+			<animation effect="slide" start="0,0" end="265,0" time="0" reversible="false" condition="Integer.IsEqual(Container(52).NumItems,3)">conditional</animation>
+			<animation effect="slide" start="0,0" end="400,0" time="0" reversible="false" condition="Integer.IsEqual(Container(52).NumItems,2)">conditional</animation>
+			<animation effect="slide" start="0,0" end="535,0" time="0" reversible="false" condition="Integer.IsEqual(Container(52).NumItems,1)">conditional</animation>
+			
+			<animation effect="fade" start="100" end="0" time="0" reversible="false" condition="!String.IsEmpty(Window.Property(HideProfiles))">conditional</animation>
+			<animation effect="fade" start="0" end="100" time="450" reversible="false" condition="String.IsEmpty(Window.Property(HideProfiles))">conditional</animation>
+		</include>
+		
+		<control type="button" id="101">
+			<include content="icon_button">
+				<param name="diameter" value="120" />
+				<param name="texture" value="icons/shutdown.png" />
+			</include>
+			<include content="Animation_Item_Focus" />
+			<top>75%</top>
+			<centerleft>50%</centerleft>
+			<onup condition="!String.IsEmpty(Window.Property(HideProfiles))">99</onup>
+			<ondown condition="!String.IsEmpty(Window.Property(HideProfiles))">99</ondown>
+			<onup condition="String.IsEmpty(Window.Property(HideProfiles))">52</onup>
+			<ondown condition="String.IsEmpty(Window.Property(HideProfiles))">52</ondown>
+			<onclick>ActivateWindow(shutdownmenu)</onclick>
+		</control>
+	</control>
 	</controls>
 </window>

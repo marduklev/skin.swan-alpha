@@ -105,13 +105,13 @@
 		<definition>
 		<control type="list" id="$PARAM[id]">
 			<animation effect="fade" start="100" end="0" time="200" tween="sine" condition="Window.IsActive(AddonBrowser) + Window.IsTopMost(addoninformation)">Conditional</animation>
+			<viewtype label="535">list</viewtype>
 			<posx>640</posx>
 			<posy>250</posy>
 			<width>640</width>
 			<height>$PARAM[Container_Height]</height>
 			<onleft>$PARAM[onleft]</onleft>
 			<onright>$PARAM[id]60</onright>
-			
 			<onup condition="Control.IsVisible(8999)">8999</onup>
 			<onup condition="!Control.IsVisible(8999)">$PARAM[id]</onup>
 			<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
@@ -838,7 +838,7 @@
 			</control>
 			<control type="textbox">
 				<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
-				<description>unresolved themerounded offset x</description>
+				<description>unresolved themerounded offset x, some times h100 is good idea-e.g. profiles</description>
 				<top>101%</top>
 				<left>10</left>
 				<right>10</right>
@@ -847,7 +847,6 @@
 				<font>CommonTag</font>
 				<align>center</align>
 				<aligny>center</aligny>
-				
 				<textcolor>$PARAM[bottomtaglabelcolor]</textcolor>
 				<selectedcolor>white</selectedcolor>
 				<label>$VAR[Tag_label1][CR][COLOR=$PARAM[bottomtaglabel2color]]$VAR[Tag_label2][/COLOR]</label>
@@ -1008,8 +1007,7 @@ top-->
 		<param name="align" default="left" />
 		<definition>
 			<control type="group" id="$PARAM[groupid]">
-				<top>50</top>
-				<height>70</height>
+				<height>50</height>
 				<description>merge me later with universal header, used for settings heading,centered big bold</description>
 				<visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) | Container($PARAM[id]).IsUpdating</visible>
 				<nested />
@@ -1075,14 +1073,16 @@ top-->
 			<onright condition="!Window.IsVisible(shutdownmenu)">SetProperty(BounceRight,1,home)</onright>
 						
 			<itemlayout height="$PARAM[height]" width="$PARAM[width]">
+				<control type="group">
+					<height>$PARAM[height]</height>
+					<width>$PARAM[width]</width>
 				<control type="image">
 					<centerleft>50%</centerleft>
 					<width>90%</width>
 					<height>90%</height>
 					<texture>$INFO[ListItem.Icon]</texture>
 					<colordiffuse>$VAR[color_$PARAM[builtin_window]_item_nf]</colordiffuse>
-					<align>center</align>
-					<aspectratio>keep</aspectratio>
+					<aspectratio aligny="top" align="center">keep</aspectratio>
 				</control>
 				<control type="textbox">
 					<height>60</height>
@@ -1094,9 +1094,16 @@ top-->
 					<textcolor>$VAR[color_$PARAM[builtin_window]_item_nf]</textcolor>
 					<font>font25_narrow</font>
 				</control>
+				</control>
 			</itemlayout>
 			<focusedlayout height="$PARAM[height]" width="$PARAM[width]">
+				<control type="button">
+					<visible allowhiddenfocus="true">false</visible>
+					<onfocus>ClearProperty(MenucontrolActive,Home)</onfocus>
+				</control>
 				<control type="group">
+					<height>$PARAM[height]</height>
+					<width>$PARAM[width]</width>
 					<visible>!Control.HasFocus($PARAM[id])</visible>
 					<control type="image">
 						<centerleft>50%</centerleft>
@@ -1105,7 +1112,7 @@ top-->
 						<texture>$INFO[ListItem.Icon]</texture>
 						<colordiffuse>$VAR[color_$PARAM[builtin_window]_item_nf]</colordiffuse>
 						<align>center</align>
-						<aspectratio align="center" aligny="center">keep</aspectratio>
+						<aspectratio aligny="top" align="center">keep</aspectratio>
 					</control>
 						<control type="textbox">
 						<height>60</height>
@@ -1117,9 +1124,10 @@ top-->
 						<textcolor>$VAR[color_$PARAM[builtin_window]_item_nf]</textcolor>
 						<font>font25_narrow</font>
 					</control>
-				
 				</control>
 				<control type="group">
+					<height>$PARAM[height]</height>
+					<width>$PARAM[width]</width>
 					<visible>Control.HasFocus($PARAM[id])</visible>
 					<include>Animation_Item_Focus</include>
 				
@@ -1130,9 +1138,8 @@ top-->
 						<texture>$INFO[ListItem.Icon]</texture>
 						<colordiffuse>$VAR[color_$PARAM[builtin_window]_item_fo]</colordiffuse>
 						<align>center</align>
-						<aspectratio align="center" aligny="center">keep</aspectratio>
+						<aspectratio aligny="bottom" align="center">keep</aspectratio>
 					</control>
-					
 					<control type="textbox">
 						<height>60</height>
 						<top>$PARAM[height]</top>

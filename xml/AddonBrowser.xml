@@ -22,60 +22,35 @@
 			<description>BG</description>
 			<include content="DialogBackground_TriplePanel" />
 		</control>
-	
+		
+		
+		<!-- Shortcut -->
+		<include content="SwanShortcuts_Container" condition="!string.isempty(window(home).property(shortcutitem_nr))" />
+			
 		<control type="group">
-			<include content="Dialog_CommonInfo">
+			<include condition="string.isempty(window(home).property(shortcutitem_nr))" content="Dialog_CommonInfo">
 				<param name="Header_posy" value="50" />
 				<param name="Item_Description" value="$INFO[ListItem.AddonName,[B]$LOCALIZE[551]:[/B] ,]$INFO[ListItem.AddonCreator,[CR][B]$LOCALIZE[21863]:[/B] ,]$INFO[ListItem.AddonDescription,[CR][CR][B]$LOCALIZE[31171][/B][CR],]" />
 			</include>
 			
-			<include content="Dialog_Containers">
+			<include condition="string.isempty(window(home).property(shortcutitem_nr))" content="Dialog_Containers">
 				<param name="id" value="50" />
 				<param name="Container_Height" value="70%" />
 				<param name="onleft" value="9000" />
 				<param name="icon_visible" value="true" />
 				<param name="layout_height" value="110" />
 			</include>
-			
-			<control type="button" id="8999">
-				<visible>!String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
-				<description>Shortcut save button</description>
-				<texturefocus colordiffuse="red">colors/white.png</texturefocus>
-				<texturenofocus colordiffuse="red">colors/white50.png</texturenofocus>
-				<centerleft>50%</centerleft>
-				<top>140</top>
-				<right>100</right>
-				<height>110</height>
-				<width>33.3%</width>
-				<wrapmultiline>true</wrapmultiline>
-				<label>SAVE ME</label>
-				
-				<onup>50</onup>
-				<ondown>50</ondown>
-				<onleft>200</onleft>
-				<onright>200</onright>
-				<onclick>Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_path,$INFO[Container.Folderpath])</onclick>
-				<onclick>ClearProperty(SetShortcutInProgress,home)</onclick>
-				<onclick>ClearProperty(shortcutitem_nr,home)</onclick>
-				<onclick>ReplaceWindow(skinsettings,dir)</onclick>
-			</control>
-			
-			<!-- <control type="button" id="9000" description="menucontrol unasigned" /> -->
 		</control>
+		
+		<include content="menucontrol_background_layer"/>
 		
 		<control type="group">
 			<animation effect="slide" start="-450,0" end="0,0" time="300" tween="cubic" easing="inout">VisibleHidden</animation>
 			<visible>String.IsEqual(Window(Home).Property(MenucontrolActive),true)</visible>
-			<control type="image">
-				<top>0</top>
-				<bottom>0</bottom>
-				<width>25%</width>
-				<left>0</left>
-				<colordiffuse>$VAR[color_lib_menu_backgroundpanel]</colordiffuse>
-				<texture>colors/white.png</texture>
-			</control>
-				
-			<include content="Menucontrol_Media" condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))" />
+			<include content="menucontrol_global" condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">
+				<param name="has_premenu" value="false" />
+				<param name="has_no_premenu" value="true" />
+			</include>
 		</control>
 		
 		<include content="swan_debug_overlay" />

@@ -126,17 +126,20 @@ static const TypeMapping types[] =
 						<label>M E N U    B A R</label>
 					</item>
 					<item id="8">
-						<label>P L A Y E R</label>
+						<label>C U R R E N T L Y   P L A Y I N G</label>
 					</item>
 					<item id="9">
+						<label>P L A Y E R</label>
+					</item>
+					<item id="10">
 						<label>Install Color Picker if wanted</label>
 						<visible>!System.HasAddon(script.skin.helper.colorpicker)</visible>
 					</item>
-					<item id="10">
+					<item id="11">
 						<label>C U S T O M    C O L O R S</label>
 						<visible>System.HasAddon(script.skin.helper.colorpicker)</visible>
 					</item>
-					<item id="11">
+					<item id="12">
 						<label>S H U T D O W N    M E N U</label>
 					</item>
 				</content>
@@ -1473,8 +1476,49 @@ static const TypeMapping types[] =
 				</control>
 			
 			</include>
+			
 			<include content="ButtonList">
 				<param name="id" value="8" />
+				<description>C U R R E N T L Y   P L A Y I N G  - WIP Currently Playing - use dialog select and image var or show preview here</description>
+				<visible>Container(200).HasFocus($PARAM[id])</visible>
+				
+				<include content="SectionHeadline">
+					<param name="id" value="$PARAM[id]000"/>
+					<param name="label" value="O P T I O N S"/>
+				</include>
+				
+				<control type="radiobutton" id="$PARAM[id]001">
+					<label>[I]placeholder button[/I] Show Currently Playing Gadget in Menucontrol [I](default)[/I]</label>
+					<onclick condition="Skin.HasSetting(header_currentlyplaying)">Skin.ToggleSetting(header_currentlyplaying)</onclick>
+					<onclick condition="Skin.HasSetting(other_currentlyplaying)">Skin.ToggleSetting(other_currentlyplaying)</onclick>
+					<selected>!Skin.HasSetting(header_currentlyplaying) + !Skin.HasSetting(other_currentlyplaying)</selected>
+				</control>
+				
+				<control type="radiobutton" id="$PARAM[id]002">
+					<label>[I]placeholder button[/I] Show Currently Playing Gadget in Header</label>
+					<onclick condition="Skin.HasSetting(other_currentlyplaying)">Skin.ToggleSetting(other_currentlyplaying)</onclick>
+					<onclick>Skin.ToggleSetting(header_currentlyplaying)</onclick>
+					<selected>Skin.HasSetting(header_currentlyplaying)</selected>
+				</control>
+				<control type="radiobutton" id="$PARAM[id]003">
+					<label>[I]placeholder button[/I] Use a Currently Playing Gadget elsewhere</label>
+					<onclick condition="Skin.HasSetting(header_currentlyplaying)">Skin.ToggleSetting(header_currentlyplaying)</onclick>
+					<onclick>Skin.ToggleSetting(other_currentlyplaying)</onclick>
+					<selected>Skin.HasSetting(other_currentlyplaying)</selected>
+				</control>
+				
+				<control type="image" id="$PARAM[id]004">
+					<texture>colors/white.png</texture>
+					<height>400</height>
+					<width>600</width>
+					<top>100</top>
+					<centerleft>50%</centerleft>
+				</control>
+				
+			</include>
+			
+			<include content="ButtonList">
+				<param name="id" value="9" />
 				
 				<description>P L A Y E R</description>
 				<visible>Container(200).HasFocus($PARAM[id])</visible>
@@ -1621,7 +1665,7 @@ static const TypeMapping types[] =
 			
 			<!-- install colorpicker -->
 			<include content="ButtonList">
-				<param name="id" value="9" />
+				<param name="id" value="10" />
 				
 				<description>ColorPicker Placeholder</description>
 				<visible>Container(200).HasFocus($PARAM[id])</visible>
@@ -1647,7 +1691,7 @@ static const TypeMapping types[] =
 			</include>
 			<!-- Colors -->
 			<include content="ButtonList">
-				<param name="id" value="10" />
+				<param name="id" value="11" />
 				<param name="itemgap" value="0" />
 				<description>C U S T O M    C O L O R S</description>
 				<visible>Container(200).HasFocus($PARAM[id])</visible>
@@ -2260,7 +2304,7 @@ static const TypeMapping types[] =
 			
 			
 			<include content="ButtonList">
-				<param name="id" value="11" />
+				<param name="id" value="12" />
 				<param name="itemgap" value="0" />
 				<description></description>
 				<visible>Container(200).HasFocus($PARAM[id])</visible>

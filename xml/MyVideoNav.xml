@@ -3,8 +3,6 @@
 	<include content="media_window_attributes">
 		<param name="view_ids" value="50,51,52,53,54,502,56,58,501" />
 	</include>
-	
-			
 	<controls>
 		
 		<!-- skin helping stuff -->
@@ -25,25 +23,6 @@
 			<include>HiddenContainer</include>
 			<content limit="1">$VAR[EmbuaryHelper_NextUp]</content>
 		</control>
-		
-		<!-- 
-		<control type="button" id="2003">
-				<visible>!String.IsEmpty(Window(home).Property(trailer_avail)) | !String.IsEmpty(ListItem.Trailer)</visible>
-				<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
-				
-				<include content="HiddenObject" />
-				<onclick condition="String.IsEmpty(Window(home).Property(trailer_avail)) + !String.IsEmpty(ListItem.Trailer)">PlayMedia($INFO[ListItem.Trailer],1)</onclick>
-				<onclick condition="!String.IsEmpty(Window(home).Property(trailer_avail))">PlayMedia($INFO[container.listitem.path]$INFO[container.ListItem.FolderName,,-trailer.mp4],1)</onclick>
-				<onclick>SetProperty(TrailerIsPlaying,true,home)</onclick>
-				
-				<onfocus condition="String.IsEmpty(Window(home).Property(trailer_avail)) + !String.IsEmpty(ListItem.Trailer)">PlayMedia($INFO[ListItem.Trailer],1)</onfocus>
-				<onfocus condition="!String.IsEmpty(Window(home).Property(trailer_avail))">PlayMedia($INFO[container.listitem.path]$INFO[container.ListItem.FolderName,,-trailer.mp4],1)</onfocus>
-				<onfocus>SetProperty(TrailerIsPlaying,true,home)</onfocus>
-				
-		</control>
-		-->
-		
-		
 		
 		<!-- native GUI Ctrls -->
 		<control type="button" id="2">
@@ -108,9 +87,6 @@
 18	label	Warning to the user to turn off library mode when no scanned media is found
 -->
 		
-		
-		
-		
 		<control type="group">
 			<visible>!Skin.HasSetting(BlurEnabled)</visible>
 			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
@@ -153,7 +129,6 @@
 				<description>vertical</description>
 				<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
 				<visible>!Control.IsVisible(58)</visible>
-				<!-- <right>2%</right> -->
 				<right>45</right>
 				<top>160</top>
 				<height>74%</height>
@@ -168,13 +143,15 @@
 			<param name="HasBGPanel" value="Skin.HasSetting(MediaWindow_UseHeaderBG)" />
 		</include>
 		
-		<!-- Pre-MenuControl -->
 		<include content="PreMenucontrol" />
 		
 		<control type="group">
 			<animation effect="slide" start="-450,0" end="0,0" time="300" tween="cubic" easing="inout">VisibleHidden</animation>
 			<visible>String.IsEqual(Window(Home).Property(MenucontrolActive),true)</visible>
-			<include content="Menucontrol_Media" condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))" />
+			<include content="menucontrol_global" condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">
+				<param name="has_premenu" value="!Control.IsVisible(58)" />
+				<param name="has_no_premenu" value="Control.IsVisible(58)" />
+			</include>
 		</control>
 		
 		<!-- <include content="ViewSelection" /> -->
@@ -196,10 +173,7 @@
 		
 		</control>
 
-		
 		<include content="NativeString_Filter" />
-		
-		
 		
 		<include content="swan_debug_overlay">
 			<param name="textleft" value="1  istitem.filenameandpath :  $INFO[listitem.filenameandpath]

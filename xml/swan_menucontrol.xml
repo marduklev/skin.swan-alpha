@@ -58,8 +58,8 @@
 		</definition>
 	</include>
 	
-	<!-- My[foo]Nav.xml -->
-	<include name="PreMenucontrol">
+	<!-- global menu bg panel image -->
+	<include name="menucontrol_background_layer">
 		<control type="image">
 			<animation effect="slide" start="0,0" end="450,0" time="300" tween="cubic" easing="inout">visible</animation>
 			<animation effect="fade" start="100" end="0" time="150" condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">conditional</animation>
@@ -72,6 +72,11 @@
 			<texture>colors/white.png</texture>
 			<aspectratio>stretch</aspectratio>
 		</control>
+	</include>
+		
+	<!-- take care of this id , may change - 8999 - its a global skin id -->
+	<include name="PreMenucontrol">
+		<include content="menucontrol_background_layer"/>
 		
 		
 		<control type="grouplist" id="8999">
@@ -311,175 +316,47 @@ ID 	Type 					Description
 	
 	
 	
-	<!-- Window.Is(media) , My[foo]Nav.xml -->
-	<include name="Menucontrol_Media">
-	
-		<control type="grouplist" id="9000">
+	<!-- global Window.Is(media) , My[foo]Nav.xml -->
+	<include name="menucontrol_global">
+		<param name="menucontrol_id" default="9000" />
+		<param name="window_defaultcontrol_id" default="50" />
+		<param name="has_premenu" default="!Control.IsVisible(58)" />
+		<param name="has_no_premenu" default="Control.IsVisible(58)" />
+		
+		<definition>
+		<control type="grouplist" id="$PARAM[menucontrol_id]">
 			<description>need get cond vis content</description>
-			<top>11%</top>
-			<bottom>1%</bottom>
+			<top>120</top>
+			<bottom>120</bottom>
 			<width>445</width>
 			<left>0</left>
 			<itemgap>0</itemgap>
 			
 			<onup>ClearProperty(MenucontrolActive,Home)</onup>
+			
 			<onup condition="Control.IsVisible(19)">19</onup>
-			<onup condition="!Control.IsVisible(19)">SetFocus(50)</onup>
+			<onup condition="!Control.IsVisible(19)">$PARAM[menucontrol_id]</onup>
 			
 			<onback>ClearProperty(MenucontrolActive,Home)</onback>
-			<onback>SetFocus(50)</onback>
+			<onback>SetFocus($PARAM[window_defaultcontrol_id])</onback>
 			
-			<!-- has premenu iconbar -->
-			<onright condition="!Control.IsVisible(58)">SetFocus(8999)</onright>
-			
-			<!-- has no premenu iconbar -->
-			<onright condition="Control.IsVisible(58) | Window.IsActive(addonbrowser)">ClearProperty(MenucontrolActive,Home)</onright>
-			<onright condition="Control.IsVisible(58) | Window.IsActive(addonbrowser)">SetFocus(50)</onright>
+			<onright condition="$PARAM[has_premenu]">SetFocus(8999)</onright>
+			<onright condition="$PARAM[has_no_premenu]">ClearProperty(MenucontrolActive,Home)</onright>
+			<onright condition="$PARAM[has_no_premenu]">SetFocus($PARAM[window_defaultcontrol_id])</onright>
 			
 			<onleft>SetFocus(50)</onleft>
 			<onleft>ClearProperty(MenucontrolActive,Home)</onleft>
 			
-			<!-- Currently Playing HUB -->
-			<control type="group" id="6048">
-				<description>PlaybackCtrl</description>
-				<width>98%</width>
-				<height>500</height>
-				<visible>$EXP[IsCurrentyPlayingCommon] | Player.HasAudio</visible>
-				
-				<control type="label">
-					<left>10</left>
-					<right>10</right>
-					<height>20</height>
-					<width>425</width>
-					<font>font17</font>
-					<align>center</align>
-					<label>CURRENTLY  PLAYING</label>
-					<textcolor>$VAR[color_lib_menu_accent]</textcolor>
-				</control>
-				
-				<control type="label">
-					<top>30</top>
-                    <visible>$EXP[PlayerClearLogo_IsEmpty]</visible>
-					<left>10</left>
-					<right>10</right>
-					<height>100</height>
-					<width>425</width>
-					<wrapmultiline>true</wrapmultiline>
-					<font>font22</font>
-					<align>center</align>
-					<label>$VAR[Menucontrol_LogoFallback,&quot;[B],[/B]&quot;]</label>
-					<textcolor>$VAR[color_lib_menu_item_nf]</textcolor>
-				</control>
-				
-				<control type="label">
-					<visible>player.hasaudio</visible>
-					<description>bad bcause overlay temp just use if logo empty</description>
-					<!-- <visible>$EXP[PlayerClearLogo_IsEmpty]</visible> -->
-					<top>30</top>
-					<left>10</left>
-					<right>10</right>
-					<height>15</height>
-					<width>425</width>
-					<font>font20_title</font>
-					<align>center</align>
-					<label>$INFO[MusicPlayer.Album]</label>
-					<textcolor>$VAR[color_lib_menu_item_fo]</textcolor>
-				</control>
-				
-				<control type="image">
-					<texture>$VAR[PlayerClearlogo]</texture>
-					<aspectratio aligny="center" align="center">keep</aspectratio>
-					<height>90</height>
-					<top>30</top>
-					<left>15</left>
-					<right>0</right>
-				</control>
-				<control type="label">
-					<top>130</top>
-					<left>20</left>
-					<height>20</height>
-					<width>425</width>
-					<font>MenucontrolItem</font>
-					<align>center</align>
-					<label>$VAR[MenucontrolPlayerDuration]</label>
-					<textcolor>$VAR[color_lib_menu_accent]</textcolor>
-				</control>
-				
-				<control type="image">
-					<visible>Player.HasAudio</visible>
-					<texture>$VAR[PlayerDisc]</texture>
-					<aspectratio aligny="bottom" align="right">keep</aspectratio>
-					<width>245</width>
-					<height>245</height>
-					<top>160</top>
-					<left>200</left>
-					<right>10</right>
-					<animation effect="rotate" end="-360" center="auto" time="4800" loop="true" reversible="false" condition="!Player.Paused">Conditional</animation>
-				</control>
-				<control type="image">
-					<visible>Player.HasAudio</visible>
-					<texture>$INFO[Player.Icon]</texture>
-					<aspectratio aligny="bottom" align="left">keep</aspectratio>
-					<width>245</width>
-					<height>245</height>
-					<top>160</top>
-					<left>20</left>
-					<right>10</right>
-					<animation effect="slide" start="0,0" end="90,0" center="auto" time="0" condition="String.IsEmpty(Player.Art(album.discart)) + String.IsEmpty(Player.Art(discart))">Conditional</animation>
-				</control>
-				
-				<control type="videowindow">
-					<visible>!Player.HasAudio</visible>
-					<height>262</height>
-					<top>150</top>
-					<left>20</left>
-				</control>
-				
-				<include content="Menucontrol_PlaybackCtrlButton">
-					<param name="id" value="1" />
-					<param name="actionid" value="previous" />
-					<param name="left" value="120" />
-					<param name="onleft" value="60494" />
-					<param name="onright" value="60492" />
-					<param name="visible" value="MusicPlayer.HasPrevious" />
-					<param name="action2" value="PlayerControl(previous)" />
-				</include>
-				<control type="togglebutton" id="60492">
-					<left>175</left>
-					<top>425</top>
-					<width>45</width>
-					<height>45</height>
-					<label />
-					<altlabel />
-					<texturefocus colordiffuse="$VAR[color_lib_menu_accent]">buttons/osd/play_fo.png</texturefocus>
-					<texturenofocus colordiffuse="$VAR[color_lib_menu_item_nf]">buttons/osd/play.png</texturenofocus>
-					<alttexturefocus colordiffuse="$VAR[color_lib_menu_accent]">buttons/osd/pause_fo.png</alttexturefocus>
-					<alttexturenofocus colordiffuse="$VAR[color_lib_menu_item_nf]">buttons/osd/pause.png</alttexturenofocus>
-					<usealttexture>!Player.Paused</usealttexture>
-					<onup>19</onup>
-					<ondown>911</ondown>
-					<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
-					<onright>60493</onright>
-					<onleft>60491</onleft>
-					<onclick>PlayerControl(play)</onclick>
-				</control>
-				
-				<include content="Menucontrol_PlaybackCtrlButton">
-					<param name="id" value="3" />
-					<param name="actionid" value="stop" />
-					<param name="left" value="230" />
-					<param name="onleft" value="60492" />
-					<param name="onright" value="60494" />
-				</include>
-				<include content="Menucontrol_PlaybackCtrlButton">
-					<param name="id" value="4" />
-					<param name="actionid" value="next" />
-					<param name="left" value="285" />
-					<param name="onleft" value="60493" />
-					<param name="onright" value="SetFocus(8999)" />
-					<param name="visible" value="MusicPlayer.HasNext" />
-				</include>
+			<control type="image" id="4398768">
+				<visible>Window.IsActive(settings)</visible>
+				<height>300</height>
+				<bordersize>100</bordersize>
+				<texture colordiffuse="$VAR[color_lib_menu_item_nf]">icons/swanwatersign.png</texture>
+				<aspectratio>keep</aspectratio>
 			</control>
+			
+			<!-- Currently Playing HUB -->
+			<include content="menucontrol_currentlyplaying" condition="!Skin.HasSetting(header_currentlyplaying)" />
 			
 			<!-- Native GUI Ctrls + Cond Seperators -->
 			<control type="image" id="4398768">
@@ -499,6 +376,7 @@ ID 	Type 					Description
 				<textcolor>$VAR[color_lib_menu_item_fo]</textcolor>
 			</control>
 			<control type="label" id="912">
+				<visible>Window.IsMedia</visible>
 				<visible>!Control.HasFocus(911)</visible>
 				<textoffset>20</textoffset>
 				<label>[CR][B]    Container Settings[/B]</label>
@@ -509,15 +387,16 @@ ID 	Type 					Description
 				<textcolor>$VAR[color_lib_menu_item_fo]</textcolor>
 			</control>
 			<control type="panel" id="911">
-					<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
-					<scrolltime tween="quadratic">400</scrolltime>
-					<top>0</top>
-					<preloaditems>2</preloaditems>
-					<orientation>vertical</orientation>
-					<height>165</height>
-					<visible>true</visible>
-					<itemlayout height="74" width="74">
-						<control type="group">
+				<visible>Window.IsMedia</visible>
+				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
+				<scrolltime tween="quadratic">400</scrolltime>
+				<top>0</top>
+				<preloaditems>2</preloaditems>
+				<orientation>vertical</orientation>
+				<height>165</height>
+				
+				<itemlayout height="74" width="74">
+					<control type="group">
 						<height>78</height>
 						<width>78</width>
 						<include content="UniversalLayout">
@@ -698,9 +577,156 @@ msgstr "Video-Wiedergabelisten"
 			
 			<!-- Naviagtion Panel -->
 			<!-- diff colors global vs home ? params -->
-			<include content="Menucontrol_Content_Navigation">
-			</include>
+			<include content="Menucontrol_Content_Navigation" />
+			<include content="menucontrol_mymedia_viewid_settings" condition="Window.IsMedia" />
+		
+		</control>
+		</definition>
+	</include>
+	
+	<include name="menucontrol_currentlyplaying">
+		<control type="group" id="6048">
+			<description>PlaybackCtrl</description>
+			<width>98%</width>
+			<height>500</height>
+			<visible>$EXP[IsCurrentyPlayingCommon] | Player.HasAudio</visible>
 			
+			<control type="label">
+				<left>10</left>
+				<right>10</right>
+				<height>20</height>
+				<width>425</width>
+				<font>font17</font>
+				<align>center</align>
+				<label>CURRENTLY  PLAYING</label>
+				<textcolor>$VAR[color_lib_menu_accent]</textcolor>
+			</control>
+			
+			<control type="label">
+				<top>30</top>
+				<visible>$EXP[PlayerClearLogo_IsEmpty]</visible>
+				<left>10</left>
+				<right>10</right>
+				<height>100</height>
+				<width>425</width>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font22</font>
+				<align>center</align>
+				<label>$VAR[Menucontrol_LogoFallback,&quot;[B],[/B]&quot;]</label>
+				<textcolor>$VAR[color_lib_menu_item_nf]</textcolor>
+			</control>
+			
+			<control type="label">
+				<visible>player.hasaudio</visible>
+				<description>bad bcause overlay temp just use if logo empty</description>
+				<!-- <visible>$EXP[PlayerClearLogo_IsEmpty]</visible> -->
+				<top>30</top>
+				<left>10</left>
+				<right>10</right>
+				<height>15</height>
+				<width>425</width>
+				<font>font20_title</font>
+				<align>center</align>
+				<label>$INFO[MusicPlayer.Album]</label>
+				<textcolor>$VAR[color_lib_menu_item_fo]</textcolor>
+			</control>
+			
+			<control type="image">
+				<texture>$VAR[PlayerClearlogo]</texture>
+				<aspectratio aligny="center" align="center">keep</aspectratio>
+				<height>90</height>
+				<top>30</top>
+				<left>15</left>
+				<right>0</right>
+			</control>
+			<control type="label">
+				<top>130</top>
+				<left>20</left>
+				<height>20</height>
+				<width>425</width>
+				<font>MenucontrolItem</font>
+				<align>center</align>
+				<label>$VAR[MenucontrolPlayerDuration]</label>
+				<textcolor>$VAR[color_lib_menu_accent]</textcolor>
+			</control>
+			
+			<control type="image">
+				<visible>Player.HasAudio</visible>
+				<texture>$VAR[PlayerDisc]</texture>
+				<aspectratio aligny="bottom" align="right">keep</aspectratio>
+				<width>245</width>
+				<height>245</height>
+				<top>160</top>
+				<left>200</left>
+				<right>10</right>
+				<animation effect="rotate" end="-360" center="auto" time="4800" loop="true" reversible="false" condition="!Player.Paused">Conditional</animation>
+			</control>
+			<control type="image">
+				<visible>Player.HasAudio</visible>
+				<texture>$INFO[Player.Icon]</texture>
+				<aspectratio aligny="bottom" align="left">keep</aspectratio>
+				<width>245</width>
+				<height>245</height>
+				<top>160</top>
+				<left>20</left>
+				<right>10</right>
+				<animation effect="slide" start="0,0" end="90,0" center="auto" time="0" condition="String.IsEmpty(Player.Art(album.discart)) + String.IsEmpty(Player.Art(discart))">Conditional</animation>
+			</control>
+			
+			<control type="videowindow">
+				<visible>!Player.HasAudio</visible>
+				<height>262</height>
+				<top>150</top>
+				<left>20</left>
+			</control>
+			
+			<include content="Menucontrol_PlaybackCtrlButton">
+				<param name="id" value="1" />
+				<param name="actionid" value="previous" />
+				<param name="left" value="120" />
+				<param name="onleft" value="60494" />
+				<param name="onright" value="60492" />
+				<param name="visible" value="MusicPlayer.HasPrevious" />
+				<param name="action2" value="PlayerControl(previous)" />
+			</include>
+			<control type="togglebutton" id="60492">
+				<left>175</left>
+				<top>425</top>
+				<width>45</width>
+				<height>45</height>
+				<label />
+				<altlabel />
+				<texturefocus colordiffuse="$VAR[color_lib_menu_accent]">buttons/osd/play_fo.png</texturefocus>
+				<texturenofocus colordiffuse="$VAR[color_lib_menu_item_nf]">buttons/osd/play.png</texturenofocus>
+				<alttexturefocus colordiffuse="$VAR[color_lib_menu_accent]">buttons/osd/pause_fo.png</alttexturefocus>
+				<alttexturenofocus colordiffuse="$VAR[color_lib_menu_item_nf]">buttons/osd/pause.png</alttexturenofocus>
+				<usealttexture>!Player.Paused</usealttexture>
+				<onup>19</onup>
+				<ondown>911</ondown>
+				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
+				<onright>60493</onright>
+				<onleft>60491</onleft>
+				<onclick>PlayerControl(play)</onclick>
+			</control>
+			
+			<include content="Menucontrol_PlaybackCtrlButton">
+				<param name="id" value="3" />
+				<param name="actionid" value="stop" />
+				<param name="left" value="230" />
+				<param name="onleft" value="60492" />
+				<param name="onright" value="60494" />
+			</include>
+			<include content="Menucontrol_PlaybackCtrlButton">
+				<param name="id" value="4" />
+				<param name="actionid" value="next" />
+				<param name="left" value="285" />
+				<param name="onleft" value="60493" />
+				<param name="onright" value="SetFocus(8999)" />
+				<param name="visible" value="MusicPlayer.HasNext" />
+			</include>
+		</control>
+	</include>
+	<include name="menucontrol_mymedia_viewid_settings">
 			<!-- View Type Settings - use include placements? myvideo, mymusic...? -->
 			<include content="spacer_h">
 				<param name="id" value="4006" />
@@ -1020,10 +1046,7 @@ msgstr "Video-Wiedergabelisten"
 				<onclick>Skin.ToggleSetting(View58_FanartLeftAlignment)</onclick>
 				<selected>Skin.HasSetting(View58_FanartLeftAlignment)</selected>
 			</control>
-		</control>
-	</include>
-	
-	
+		</include>
 	<include name="Menucontrol_Content_Navigation">
 		
 		<control type="label" id="7000">
@@ -2337,8 +2360,8 @@ RadioSearch
 	</include>
 	
 	<variable name="ContainerSortOrderUnicodeArrow">
-		<value condition="String.IsEqual(Container.SortOrder,$LOCALIZE[21430])">[B]↑[/B]</value>
-		<value condition="!String.IsEqual(Container.SortOrder,$LOCALIZE[21430])">[B]↓[/B]</value>
+		<value condition="String.IsEqual(Container.SortOrder,$LOCALIZE[21430])">[B]↓[/B]</value>
+		<value condition="!String.IsEqual(Container.SortOrder,$LOCALIZE[21430])">[B]↑[/B]</value>
 	</variable>
 	
 	<variable name="ContainerToggleWatchedUnwatchedFilter">
