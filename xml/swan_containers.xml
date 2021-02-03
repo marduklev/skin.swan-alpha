@@ -1,5 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
+	<!-- dialog addon info programs,addonsbrowser -->
+	<include name="dialog_addoninfo_buttons_faderight">
+			<include content="ButtonList">
+			<param name="id" value="8000" />
+			<param name="top" value="30%" />
+			<param name="bottom" value="0" />
+			<param name="left" value="68%" />
+			<param name="right" value="0" />
+			<param name="itemgap" value="3" />
+			<param name="onleft" value="9000" />
+			<height>60%</height>
+			<width>30%</width>
+				<control type="radiobutton" id="6">
+					<selected>ListItem.Property(addon.isinstalled) | !Window.IsActive(addonbrowser)</selected>
+					<label />
+				</control>
+				<control type="radiobutton" id="7">
+					<selected>!String.StartsWith(Control.GetLabel(7),$LOCALIZE[24022]) | !Window.IsActive(addonbrowser)</selected>
+					<label />
+				</control>
+				<control type="button" id="8">
+					<label>$LOCALIZE[24069]</label>
+				</control>
+				<control type="button" id="9">
+					<label>$LOCALIZE[24020]</label>
+				</control>
+				<control type="button" id="10">
+					<label>$LOCALIZE[39024]</label>
+				</control>
+				<control type="button" id="12">
+					<label>$LOCALIZE[518]</label>
+				</control>
+				<control type="radiobutton" id="13">
+					<visible>Control.IsEnabled(13)</visible>
+					<label />
+				</control>
+			</include>
+			<control type="panel" id="50">
+				<include>HiddenObject</include>
+			</control>
+		</include>
+	include list 1 row - use includes to hide content on windows instead use vis conditions
+	
 	
 	<!-- dont forget to use nested benefit later, and that onunfucus -->
 	<include name="SetPropOnFocus_HiddenButton">
@@ -104,7 +147,7 @@
 		<param name="Container_Height" default="67%" />
 		<definition>
 		<control type="list" id="$PARAM[id]">
-			<animation effect="fade" start="100" end="0" time="200" tween="sine" condition="Window.IsActive(AddonBrowser) + Window.IsTopMost(addoninformation)">Conditional</animation>
+			<animation effect="fade" start="100" end="0" time="200" tween="sine" condition="[Window.IsActive(addonbrowser) | Window.IsActive(programs)] + Window.IsTopMost(addoninformation)">Conditional</animation>
 			<viewtype label="535">list</viewtype>
 			<posx>640</posx>
 			<posy>250</posy>
