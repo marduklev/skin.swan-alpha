@@ -1,4 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
-	<include content="media_window_attributes" />
+	<include content="media_window_attributes">
+		<param name="view_ids" value="50,51,52,53,54,502,56,58,501" />
+	</include>
+	<controls>
+		
+		
+		<control type="group" id="70">
+			<description>viewtypes</description>
+			<include content="Animation_Close_MediaContainer" condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))" />
+			<centerleft>50%</centerleft>
+			
+			<!-- 
+			<include content="Animation_TransitionFadeOut">
+				<param name="condition" value="$EXP[Infodialog_IsActive] | Window.IsActive(mediasource)" />
+			</include> 
+			-->
+			<animation type="Conditional" condition="$EXP[Infodialog_IsActive] | Window.IsActive(mediasource) | [Window.IsActive(shutdownmenu) + !Control.IsVisible(58)]">
+				<effect type="fade" start="100" end="0" time="250" tween="sine" easing="out" />
+				<effect type="zoom" center="50%,50%" start="100" end="0" time="300" tween="cubic" easing="out" />
+			</animation>
+			
+			<!-- Shortcut -->
+			<include content="SwanShortcuts_Container" condition="!string.isempty(window(home).property(shortcutitem_nr))" />
+				
+			<!-- Regular -->
+			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view50</include>
+			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">Simple_Panels</include>
+			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view56</include>
+			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view58</include>
+			
+			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view502</include>
+			
+			<control type="scrollbar" id="60">
+				<!-- focus animation ? -->
+				<description>vertical</description>
+				<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
+				<visible>!Control.IsVisible(58)</visible>
+				<right>45</right>
+				<top>160</top>
+				<height>74%</height>
+				<onup>60</onup>
+				<ondown>60</ondown>
+				<onleft>SetFocus(50)</onleft>
+				<onright>19</onright>
+			</control>
+		</control>
+		
+		<include content="HeaderBar">
+			<param name="HasBGPanel" value="Skin.HasSetting(MediaWindow_UseHeaderBG)" />
+		</include>
+		
+		<include content="PreMenucontrol" />
+		
+		<control type="group">
+			<animation effect="slide" start="-450,0" end="0,0" time="300" tween="cubic" easing="inout">VisibleHidden</animation>
+			<visible>String.IsEqual(Window(Home).Property(MenucontrolActive),true)</visible>
+			<include content="menucontrol_global" condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">
+				<param name="has_premenu" value="!Control.IsVisible(58)" />
+				<param name="has_no_premenu" value="Control.IsVisible(58)" />
+			</include>
+		</control>
+		
+		<!-- <include content="ViewSelection" /> -->
+		<control type="group">
+			<right>0</right>
+			<width>1375</width>
+			<visible>String.IsEqual(Window(Home).Property(view_selection),visible)</visible>
+			<animation effect="slide" start="1375,0" end="0,0" time="300" tween="cubic" easing="inout">VisibleHidden</animation>
+		
+			<control type="image">
+				<texture>colors/white20.png</texture>
+			</control>
+			
+			<control type="button" id="100">
+				<texturefocus>colors/white.png</texturefocus>
+				<onclick>ClearProperty(view_selection,home)</onclick>
+				<onclick>SetFocus(9000)</onclick>
+			</control>
+		
+		</control>
+
+		<include content="NativeString_Filter" />
+		
+		<include content="swan_debug_overlay">
+			<param name="textleft" value="1  istitem.filenameandpath :  $INFO[listitem.filenameandpath]
+2  listitem.path :         $INFO[listitem.path]
+listitem.dbid $INFO[listitem.dbid]
+3  ListItem.FolderName :  $INFO[ListItem.FolderName]
+
+4  Container.FolderPath :  $INFO[Container.FolderPath]
+test  ListItem.FolderPath :  $INFO[ListItem.FolderPath]
+5  Container.Content  :  $INFO[Container.Content]  ; Container.ListItem.dbtype  :  $INFO[ Container.ListItem.dbtype]
+
+6 window Prop Shortcuts $INFO[Window(home).Property(shortcutitem_nr)]
+7 window Prop SetShortcutInProgress $INFO[Window(home).Property(SetShortcutInProgress)]
+
+8 Container.Viewmode  $INFO[Container.Viewmode]
+"/>
+</include>
+	</controls>
 </window>
