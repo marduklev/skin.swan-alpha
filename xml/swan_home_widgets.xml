@@ -467,6 +467,7 @@
 		</include>
 		
 		<control type="radiobutton" id="$PARAM[id]1">
+			<description> need var $INFO[Skin.String(mainmenuitem$PARAM[nr]_executebuiltin)] but may not workin</description>
 			<radioposx>200</radioposx>
 			<radioposxy>5</radioposxy>
 			<radiowidth>42</radiowidth>
@@ -485,7 +486,7 @@
 			
 			<onclick>ActivateWindow(1103,return)</onclick>
 			<label>                             Set Entry</label>
-			<label2>ActivateWindow($INFO[Skin.String(mainmenuitem$PARAM[nr]_target),,$COMMA]$INFO[Skin.String(mainmenuitem$PARAM[nr]_path),,$COMMAreturn)]</label2>
+			<label2>ActivateWindow($INFO[Skin.String(mainmenuitem$PARAM[nr]_target)]$INFO[Skin.String(mainmenuitem$PARAM[nr]_path)]$COMMAreturn)$INFO[Skin.String(mainmenuitem$PARAM[nr]_executebuiltin)]</label2>
 		</control>
 		<control type="radiobutton" id="$PARAM[id]2">
 			<height>80</height>
@@ -500,7 +501,7 @@
 			<textureradioondisabled colordiffuse="disabled">icons/settings.png</textureradioondisabled>
 			<textureradiooffdisabled colordiffuse="disabled">icons/settings.png</textureradiooffdisabled>
 			<description>$INFO[Window(home).Property(shortcutitem_nr)]</description>
-			<visible>!String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_path))</visible>
+			<visible>!String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_target)) | !String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_path)) | !String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_executebuiltin))</visible>
 			<onclick>SetProperty(shortcutitem_nr,$PARAM[nr],home)</onclick>
 			<onclick>SetProperty(SettingSection,MainmenuAttributes,home)</onclick>
 			<onclick>ActivateWindow(1103)</onclick>
@@ -510,14 +511,14 @@
 		
 		<control type="button" id="$PARAM[id]4">
 			<description>RESET</description>
-			<visible>!String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_path))</visible>
+			<visible>!String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_target)) | !String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_path)) | !String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_executebuiltin))</visible>
 			<height>25</height>
 			<onclick>Skin.Reset(mainmenuitem$PARAM[nr]_name)</onclick>
 			<onclick>Skin.Reset(mainmenuitem$PARAM[nr]_target)</onclick>
 			<onclick>Skin.Reset(mainmenuitem$PARAM[nr]_path)</onclick>
 			<onclick>Skin.Reset(mainmenuitem$PARAM[nr]_thumb)</onclick>
 			<onclick>Skin.Reset(mainmenuitem$PARAM[nr]_fanart)</onclick>
-			
+			<onclick>Skin.Reset(mainmenuitem$PARAM[nr]_executebuiltin)</onclick>
 			<label>                        Remove/Reset</label>
 			<label2 />
 		</control>

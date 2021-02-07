@@ -1588,9 +1588,11 @@ msgstr "Video-Wiedergabelisten"
 		</control>
 	</include>
 	
+	
+	<!-- custom build ins could be interesting _executebuiltin-->
 	<include name="mainmenu_item">
 		<item id="900$PARAM[id]">
-			<visible>!String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_path))</visible>
+			<visible>!String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_target)) | !String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_path)) | !String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_executebuiltin))</visible>
 			<label>$INFO[Skin.String(mainmenuitem$PARAM[nr]_name)]</label>
 			<label2 />
 			<thumb>$INFO[Skin.String(mainmenuitem$PARAM[nr]_thumb)]</thumb>
@@ -1598,7 +1600,10 @@ msgstr "Video-Wiedergabelisten"
 			<property name="fanart">$INFO[Skin.String(mainmenuitem$PARAM[nr]_fanart)]</property>
 			<property name="containerpath">$INFO[Skin.String(mainmenuitem$PARAM[nr]_path)]</property>
 			<onclick condition="String.IsEqual(Skin.String(mainmenuitem$PARAM[nr]_path),1120)">Skin.SetString(SearchTerm)</onclick>   
-			<onclick>ActivateWindow($INFO[Skin.String(mainmenuitem$PARAM[nr]_target),,$COMMA]$INFO[Skin.String(mainmenuitem$PARAM[nr]_path)],return)</onclick>
+			<onclick condition="!String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_executebuiltin))">$INFO[Skin.String(mainmenuitem$PARAM[nr]_executebuiltin)]</onclick>
+			<onclick condition="String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_executebuiltin)) + String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_path))">ActivateWindow($INFO[Skin.String(mainmenuitem$PARAM[nr]_target)],return)</onclick>
+			<onclick condition="String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_executebuiltin)) + !String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_path))">ActivateWindow($INFO[Skin.String(mainmenuitem$PARAM[nr]_target),,$COMMA]$INFO[Skin.String(mainmenuitem$PARAM[nr]_path)],return)</onclick>
+			<onclick condition="!String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_executebuiltin)) + !String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_path))">$INFO[Skin.String(mainmenuitem$PARAM[nr]_executebuiltin)]</onclick>
 			<onclick condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">ClearProperty(MenucontrolHomeActive,home)</onclick>
 		</item>
 	</include>
