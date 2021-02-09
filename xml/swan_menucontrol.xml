@@ -2,21 +2,6 @@
 <includes>
 
 
-	<!-- use global in future - dialog vs common ?-->
-	<include name="media_window_attributes">
-		<param name="defaultcontrol" default="50" />
-		<param name="view_ids" default="50" />
-		<definition>
-			<defaultcontrol always="true">$PARAM[defaultcontrol]</defaultcontrol>
-			<backgroundcolor>$VAR[color_global_background_layer1]</backgroundcolor>
-			<views>$PARAM[view_ids]</views>
-			<onunload condition="!String.IsEmpty(Window(home).Property(SetShortcutInProgress))">ClearProperty(SetShortcutInProgress,home)</onunload>
-			<onunload condition="!String.IsEmpty(Window(home).Property(shortcutitem_nr))">ClearProperty(shortcutitem_nr,home)</onunload>
-			<include>media_menucontrol</include>
-			<include content="Animation_OpenClose_MediaWindow" condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))" />
-		</definition>
-	</include>
-	
 	<variable name="menucontrol_profiles_fovsnf">
 		<value condition="Control.HasFocus(7777)">$VAR[color_home_menu_item_fo]</value>
 		<value>$VAR[color_home_menu_item_nf]</value>
@@ -501,8 +486,8 @@ ID 	Type 					Description
 		<definition>
 		<control type="grouplist" id="$PARAM[menucontrol_id]">
 			<description>need get cond vis content</description>
-			<top>120</top>
-			<bottom>120</bottom>
+			<top>110</top>
+			<bottom>10</bottom>
 			<width>445</width>
 			<left>0</left>
 			<itemgap>0</itemgap>
@@ -938,12 +923,14 @@ msgstr "Video-Wiedergabelisten"
 			<control type="radiobutton" id="4009">
 				<include>Menucontrol_RadioButton</include>
 				<label>Disable tags</label>
-				<visible>Control.IsVisible(51) | Control.IsVisible(53)</visible>
+				<visible>Control.IsVisible(51) | Control.IsVisible(53) | Control.IsVisible(54)</visible>
 				<onclick condition="Control.IsVisible(51)">Skin.ToggleSetting(View_51_DisableTags)</onclick>
 				<onclick condition="Control.IsVisible(53)">Skin.ToggleSetting(View_53_DisableTags)</onclick>
+				<onclick condition="Control.IsVisible(54)">Skin.ToggleSetting(View_54_DisableTags)</onclick>
 				<selected>
 				[Control.IsVisible(51) + Skin.HasSetting(View_51_DisableTags) | 
-				Control.IsVisible(53) + Skin.HasSetting(View_53_DisableTags)]
+				Control.IsVisible(53) + Skin.HasSetting(View_53_DisableTags) | 
+				Control.IsVisible(54) + Skin.HasSetting(View_54_DisableTags)]
 				</selected>
 			</control>
 			

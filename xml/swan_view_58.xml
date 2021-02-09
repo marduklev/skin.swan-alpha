@@ -4,8 +4,21 @@
 	<include name="view58">
 		
 		<control type="group">
-			<visible>Control.IsVisible(58) + Container.Content(seasons)</visible>
-					
+		
+			<visible>Control.IsVisible(58)</visible>
+			
+			<control type="list" id="58">
+				<visible>Container.Content(seasons)</visible>
+				<viewtype label="NetflixSeason1">Netflix Info</viewtype>
+				
+				<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
+				<onfocus>RunScript(script.embuary.helper,action=encode,string='"$INFO[ListItem.TVShowTitle]"',prop=EncodedTitle)</onfocus>
+				<onfocus>SetFocus(58001)</onfocus>
+				
+				<include>HiddenContainer</include>
+			</control>
+			
+			
 			<animation type="Visible" reversible="false">
 				<effect type="zoom" start="0" end="100" center="50%,50%" tween="quadratic" easing="in" time="500" />
 				<effect type="fade" delay="160" end="100" time="240" />
@@ -642,14 +655,7 @@
 				<animation effect="slide" alignx="true" start="0,0" end="0,-310" tween="quadratic" time="400" condition="!Control.HasFocus(58001)">Conditional</animation>
 			</control>
 			
-			<control type="list" id="58">
-				<include>HiddenContainer</include>
-				<visible>Container.Content(seasons)</visible>
-				<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
-				<onfocus>RunScript(script.embuary.helper,action=encode,string='"$INFO[ListItem.TVShowTitle]"',prop=EncodedTitle)</onfocus>
-				<onfocus>SetFocus(58001)</onfocus>
-				<viewtype label="NetflixSeason1">Netflix Info</viewtype>
-			</control>
+			
 			
 			<control type="videowindow">
 				<visible>Player.HasMedia + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>

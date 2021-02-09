@@ -1,5 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
+	
+	<!-- use global in future - dialog vs common ?
+	also check https://kodi.wiki/view/List_of_built-in_functions#Weather_built-in.27s
+	<onload>Weather.Refresh</onload> 
+	-->
+	<include name="media_window_attributes">
+		<param name="defaultcontrol" default="50" />
+		<param name="view_ids" default="50" />
+		<definition>
+			<defaultcontrol always="true">$PARAM[defaultcontrol]</defaultcontrol>
+			<backgroundcolor>$VAR[color_global_background_layer1]</backgroundcolor>
+			<views>$PARAM[view_ids]</views>
+			
+			<onunload condition="!String.IsEmpty(Window(home).Property(SetShortcutInProgress))">ClearProperty(SetShortcutInProgress,home)</onunload>
+			<onunload condition="!String.IsEmpty(Window(home).Property(shortcutitem_nr))">ClearProperty(shortcutitem_nr,home)</onunload>
+			<include>media_menucontrol</include>
+			<include content="Animation_OpenClose_MediaWindow" condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))" />
+		</definition>
+	</include>
+	
+	<!-- temp solution slide down with footer instead of using botton 0 -->
+	<include name="Media_Container_Attributes">
+		<param name="left" default="BackgroundPanelLeft" />
+		<param name="right" default="BackgroundPanelRight" />
+		<param name="bottom" default="Footer" />
+		<definition>
+			<animation effect="slide" start="0,0" end="0,90" time="350" tween="quadratic" easing="in" delay="100" condition="Skin.HasSetting(View_$PARAM[view_id]_DisableFooter)">conditional</animation>
+            
+			<orientation>vertical</orientation>
+			<preloaditems>2</preloaditems>
+			<scrolltime tween="quadratic">400</scrolltime>
+            
+			<top>Header</top>
+			<left>$PARAM[left]</left>
+			<right>$PARAM[right]</right>
+			<bottom>$PARAM[bottom]</bottom>
+		</definition>
+	</include>
+	
+	<!-- use me inside Media_Container_Attributes later - when uncommon param usage is defined -->
+	<!-- <include>Oninfo_MovieSetInfo</include> shouldnt be needed in MATRIX -->
+	
+	<include name="Media_Values_ContainerNavigation">
+		<pagecontrol>60</pagecontrol>
+		<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
+		<onleft condition="Control.IsVisible(8999)">8999</onleft>
+		<onright condition="Control.IsVisible(60)">60</onright>
+	</include>
+	
+	<include name="footer">
+		<control type="group">
+			<animation effect="slide" start="0,90" end="0,0" time="350" tween="quadratic" easing="out" delay="100">VisibleChange</animation>
+			<visible>Control.IsVisible($PARAM[view_id]) + !Skin.HasSetting(View_$PARAM[view_id]_DisableFooter)</visible>
+			<bottom>0</bottom>
+			<height>90</height>
+			<control description="bg panel" type="image">
+				<texture colordiffuse="$VAR[color_footer_backgroundpanel]">colors/white.png</texture>
+			</control>
+			
+			<include content="MediaFlagGroup_Footer">
+				<param name="offset_left" value="$PARAM[offset_leftpanel]" />
+				<param name="align" value="$PARAM[media_flagalign]" />
+				<param name="width" value="$PARAM[media_flagwidth]" />
+			</include>
+			<include content="Ratings_Footer">
+				<param name="offset_left" value="$PARAM[offset_leftpanel]" />
+				<param name="align" value="$PARAM[rating_flagalign]" />
+			</include>
+		</control>
+	</include>
+
+	<include name="Oninfo_MovieSetInfo">
+		<oninfo condition="String.IsEqual(ListItem.dbtype,set)">ActivateWindow(movieinformation,return)</oninfo>
+	</include>
+	<!-- <oninfo condition="String.IsEqual(ListItem.dbtype,set)">SetProperty(movieinformation,set,home)</oninfo> -->
+	
+	
 	<!-- dialog addon info programs,addonsbrowser -->
 	<include name="dialog_addoninfo_buttons_faderight">
 			<include content="ButtonList">
@@ -49,7 +126,6 @@
 		<control type="button">
 			<visible allowhiddenfocus="true">false</visible>
 			<nested />
-			<onfocus condition="Window.IsActive(home) + !String.IsEmpty(Window(home).Property(MenucontrolHomeActive))">ClearProperty(MenucontrolHomeActive,home)</onfocus>
 			
 			<onfocus condition="!Window.IsActive(movieinformation) + !String.IsEmpty(Window(home).Property(trailer_avail))">ClearProperty(trailer_avail,home)</onfocus>
 			<onfocus condition="!Window.IsActive(movieinformation) + !String.IsEmpty(Window(home).Property(listitemtrailer))">ClearProperty(listitemtrailer,home)</onfocus>
@@ -373,11 +449,12 @@
 			<animation reversible="false" effect="fade" start="100" end="0" time="0">UnFocus</animation>
 			
 			<control type="image">
+				<description>temp solution for ... folder</description>
+				<visible>![String.Contains(ListItem.Icon,default) + String.IsEqual(ListItem.Label,..)]</visible>
 				<bordersize>$PARAM[bordersize]</bordersize>
 				<colordiffuse>ff000000</colordiffuse>
 				<texture diffuse="$PARAM[diffusedimtext]">overlay/overlaydiffusor.png</texture>
 			</control>
-			
 			<control type="group">
 				<visible>!String.IsEqual(ListItem.Label,$LOCALIZE[284])</visible>
 				<visible>![String.IsEqual(ListItem.FileExtension,jpg) | String.IsEqual(ListItem.FileExtension,png)]</visible>
@@ -649,15 +726,14 @@
 		<param name="get_bannerlogo" default="false" />
 		<param name="get_bgpanel_visible" default="true" />
 		
-		<param name="conditional_artworkdiffuse_themed" default="!Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]]" />
-		<param name="conditional_artworkdiffuse_override" default="Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]" />
+		<param name="conditional_artworkdiffuse_themed" default="String.IsEqual(ListItem.Label,..) | !Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]]" />
+		<param name="conditional_artworkdiffuse_override" default="!String.IsEqual(ListItem.Label,..) + Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]" />
 		
 		<definition>
 		
 		<control type="group">
 			
 			<visible>$PARAM[conditional_artworkdiffuse_themed]</visible>
-			
 			<control type="image">
 				<description>testing framed border instead fullbg texture</description>
 				<texture>artworkdiffuse/$PARAM[artwork]border.png</texture>
@@ -725,9 +801,6 @@
 			
 			
 		</control>
-		
-		
-		
 		
 		<control description="aspect keep" type="group">
 			<visible>[Container.Content(studios) | String.IsEqual(ListItem.dbtype,studio)]</visible>
@@ -798,7 +871,7 @@
 			<control type="image">
 				<visible>
 				[[$EXP[IsEpisode]] | 
-					[[$EXP[IsMovie] | $EXP[IsTVShow] | $EXP[IsArtist]] + 
+					[[$EXP[IsMovie] | $EXP[IsTVShow] | $EXP[IsSeason] | $EXP[IsArtist]] + 
 						String.IsEmpty(ListItem.Art(tvshow.landscape)) +
 						String.IsEmpty(ListItem.Art(artist.landscape)) +
 						String.IsEmpty(ListItem.Art(albumartist.landscape)) +
@@ -807,7 +880,7 @@
 				</visible>
 				<visible>
 					[!String.IsEmpty(ListItem.Art(clearlogo)) + !$EXP[IsEpisode]] | 
-					[!String.IsEmpty(ListItem.Art(tvshow.clearlogo)) + $EXP[IsEpisode]] | 
+					[!String.IsEmpty(ListItem.Art(tvshow.clearlogo)) + [$EXP[IsEpisode] | $EXP[IsSeason]]] | 
 					!String.IsEmpty(ListItem.Art(artist.clearlogo)) | 
 					!String.IsEmpty(ListItem.Art(albumartist.clearlogo))
 				</visible>
@@ -897,7 +970,7 @@
 		</control>
 		
 		<control type="group">
-			<description>ProgressBar No Shadow</description>
+			<description>WIP ProgressBar No Shadow - may use cond zoom x anim</description>
 			<visible>!$PARAM[get_circle]</visible>
 			<visible>$PARAM[has_progressbar]</visible>
 			<include condition="!Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]]" content="pos_left">
@@ -979,6 +1052,8 @@
 		<right>0</right>
     </include>
 	<include name="ProgressBarOverlay">
+		
+		
 		<control type="progress">
 			<bottom>0</bottom>
 			<height>3</height>
@@ -997,7 +1072,6 @@
 			<bottom>0</bottom>
 			<height>3</height>
 			<visible>false</visible>
-			
 			<texture colordiffuse="$VAR[color_universalcontainer_watchedoverlay_progressbar_remain]">colors/white.png</texture>
 			<visible>$EXP[IsMovie] | $EXP[IsEpisode]</visible>
 			<visible>!Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable</visible>

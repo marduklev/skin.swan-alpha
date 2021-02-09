@@ -8,16 +8,14 @@
 					
 			<control type="panel" id="502">
 				<animation effect="fade" start="100" end="0" time="650" condition="$EXP[TrailerIsPlaying]">conditional</animation>
-				<orientation>vertical</orientation>
-				<preloaditems>4</preloaditems>
-				<scrolltime tween="quadratic">400</scrolltime>
-				<left>150</left>
-				
-				<include>MediaOffsetValues</include>
-				<include>Oninfo_MovieSetInfo</include>
-				<include>NavControl_Media</include>
-				
 				<viewtype label="infocards">infocards</viewtype>
+				
+				<include content="Media_Container_Attributes">
+					<param name="view_id" value="502" />
+					<param name="left" value="150" />
+				</include>
+				<include>Media_Values_ContainerNavigation</include>
+				
 				
 				<itemlayout height="420" width="800">
 					<include content="template501">
@@ -26,16 +24,12 @@
 				</itemlayout>
 			
 				<focusedlayout height="420" width="800">
-				
-					
 					<include content="template501">
 						<param name="is_focused" value="true" />
 						<include>SetPropOnFocus_HiddenButton</include>
 					</include>
-						
 				</focusedlayout>
 			</control>
-			
 			
 			<include content="footer">
 				<param name="view_id" value="502" />
@@ -45,8 +39,8 @@
 				<param name="rating_flagalign" value="center" />
 			</include>
 		</control>
-		</include>	
-		
+	</include>	
+		<!-- all wip - colors - frames -->
 		<include name="template501">
 			<param name="color" default="ff101010" />
 			<param name="tc" default="white" />
@@ -54,8 +48,6 @@
 			<param name="is_focused" default="true" />
 			
 			<definition>
-			
-			
 				<control type="group">
 					<nested />
 					<width>790</width>
@@ -288,7 +280,7 @@
 					</control>
 					
 					<control type="label">
-						<description>genre, like to have it framed</description>
+						<description>genre, like to have it framed but button wont work good</description>
 						<visible>!String.IsEmpty(ListItem.Genre)</visible>
 						<bottom>15</bottom>
 						<left>15</left>
@@ -311,20 +303,29 @@
 						<label>$INFO[ListItem.Season,Staffel  [B],[/B]]$INFO[ListItem.Episode,   Folge  [B],[/B]]</label>
 					</control>
 					
-					
-					
 					<control type="group">
-						<description>progress bar, bad in laxout design, bad for seasons</description>
-						
+						<description>progress bar maybe use for playable media , folder use just icon as indicator ??</description>
+							
+						<visible>![Container.Content(tvshows) | Container.Content(Seasons) | Container.Content(sets)]</visible>
+							
 						<top>280</top>
 						<left>20</left>
 						<width>480</width>
 						<control type="progress">
+							<visible>Integer.IsGreater(ListItem.PercentPlayed,0) + ListItem.IsResumable</visible>
 							<top>30</top>
 							<height>2</height>
 							<align>left</align>
-							<visible>Integer.IsGreater(ListItem.PercentPlayed,0) + ListItem.IsResumable</visible>
+							<!-- $VAR[color_lib_watchedoverlay_progressbar_progress] -->
 							<info>ListItem.PercentPlayed</info>
+						</control>
+						<control type="image">
+							<visible>[Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable]</visible>
+							<texture colordiffuse="$VAR[color_lib_watchedoverlay_progressbar_progress]">colors/white.png</texture>
+							<top>30</top>
+							<height>2</height>
+							<align>left</align>
+							<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
 						</control>
 					</control>
 					

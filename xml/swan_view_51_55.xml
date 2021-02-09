@@ -1,52 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 
-	<include name="footer">
-		<control type="group">
-			<animation effect="slide" start="0,90" end="0,0" time="350" tween="quadratic" easing="out" delay="100">VisibleChange</animation>
-			<visible>Control.IsVisible($PARAM[view_id]) + !Skin.HasSetting(View_$PARAM[view_id]_DisableFooter)</visible>
-			<bottom>0</bottom>
-			<height>90</height>
-			<control description="bg panel" type="image">
-				<texture colordiffuse="$VAR[color_footer_backgroundpanel]">colors/white.png</texture>
-			</control>
-			
-			<include content="MediaFlagGroup_Footer">
-				<param name="offset_left" value="$PARAM[offset_leftpanel]" />
-				<param name="align" value="$PARAM[media_flagalign]" />
-				<param name="width" value="$PARAM[media_flagwidth]" />
-			</include>
-			<include content="Ratings_Footer">
-				<param name="offset_left" value="$PARAM[offset_leftpanel]" />
-				<param name="align" value="$PARAM[rating_flagalign]" />
-			</include>
-			
-		</control>
-		
-	</include>
-	
-	
-	
-	<include name="Oninfo_MovieSetInfo">
-		<oninfo condition="String.IsEqual(ListItem.dbtype,set)">ActivateWindow(movieinformation,return)</oninfo>
-	</include>
-	<!-- <oninfo condition="String.IsEqual(ListItem.dbtype,set)">SetProperty(movieinformation,set,home)</oninfo> -->
-	
-	<include name="NavControl_Media">
-		<pagecontrol>60</pagecontrol>
-		<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
-		<onleft condition="Control.IsVisible(8999)">8999</onleft>
-		<onright condition="Control.IsVisible(60)">60</onright>
-	</include>
-		
+	<!-- split me to single files later ? -->
 	<include name="Simple_Panels">
 		
 		<control type="group">
-			<visible>
+			<visible>!Control.IsVisible(50) + [
              [Control.IsVisible(51) + Skin.HasSetting(View_51_ShowBGPanel)] | 
              [Control.IsVisible(52) + Skin.HasSetting(View_52_ShowBGPanel)] | 
              [Control.IsVisible(53) + Skin.HasSetting(View_53_ShowBGPanel)] | 
-             [Control.IsVisible(54) + Skin.HasSetting(View_54_ShowBGPanel)]
+             [Control.IsVisible(54) + Skin.HasSetting(View_54_ShowBGPanel)]]
 			</visible>
 			<include content="View_BGPanel">
 				<param name="width2" value="90" />
@@ -57,32 +20,119 @@
 		<control type="group">
 			<visible>Control.IsVisible(51)</visible>
 			
-			<include content="Universal_Container">
-				<param name="id" value="51" />
-				<param name="type_height" value="880" />
-				<param name="type_pos_top" value="115" />
-				<param name="orientation" value="vertical" />
-				
-				<param name="tags_visible" value="!Skin.HasSetting(View_51_DisableTags)" />
-				
-				<param name="visible" value="true" />
-				
-				<param name="layout_height" value="440" />
-				<param name="layout_width" value="270" />
-				
-				<param name="itemwidth" value="240" />
-				<param name="itemheight" value="350" />
-				<param name="layout" value="poster" />
-			 
+			<control type="panel" id="51">
 				<viewtype label="poster">poster panel</viewtype>
 				
 				
-				<include>Oninfo_MovieSetInfo</include>
-				<include>NavControl_Media</include>
-				<left>170</left>
-				<right>100</right>
+				<include content="Media_Container_Attributes">
+					<param name="view_id" value="51" />
+					<param name="left" value="170" />
+				</include>
+				<include>Media_Values_ContainerNavigation</include>
+				
+				<!-- currently use slide, as best option to avoid reload skin even if bottom offset 0 is wished 
+				<include condition="Skin.HasSetting(View_51_DisableFooter)" content="Media_Container_Attributes">
+					<param name="left" value="170" />
+					<param name="bottom" value="0" />
+				</include>
+				-->
+				
+				<itemlayout height="445" width="260" condition="!Skin.HasSetting(View_51_DisableTags)">
+					<control type="group">
+						<width>240</width>
+						<height>350</height>
+						<include content="UniversalLayout">
+							<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_nf]" />
+							<param name="artwork" value="poster" />
+							<param name="get_tags" value="true" />
+							<param name="get_tagbgpanel" value="true" />
+							<param name="autoscroll" value="false" />
+							<param name="bordersize_bg" value="6" />
+							<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_nf]" />
+							<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_nf]" />
+							<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_nf]" />
+						</include>
+					</control>
+				</itemlayout>
+				<focusedlayout height="445" width="260" condition="!Skin.HasSetting(View_51_DisableTags)">
+					<include content="SetPropOnFocus_HiddenButton" />
+					<control type="group">
+						<width>240</width>
+						<height>350</height>
+						<description>to avoid relaod skin on disable footer and avoid bottom offset fade out 3rd row of items</description>
+						<include>Animation_Item_Focus</include>
+						<control type="group">
+							<include content="UniversalLayout">
+								<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_fo]" />
+								<param name="artwork" value="poster" />
+								<param name="get_tags" value="true" />
+								<param name="get_tagbgpanel" value="true" />
+								<param name="autoscroll" value="true" />
+								<param name="bordersize_bg" value="4" />
+								<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_fo]" />
+								<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_fo]" />
+								<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_fo]" />
+							</include>
+							<control type="group">
+								<include condition="![String.StartsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),00) | String.EndsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),one)]" content="FocusOverlay">
+									<param name="diffusedimtext" value="artworkdiffuse/usebganel/poster.png" />
+								</include>
+								<include condition="[String.StartsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),00) | String.EndsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),one)]" content="FocusOverlay">
+									<param name="diffusedimtext" value="artworkdiffuse/poster.png" />
+								</include>
+							</control>
+						</control>
+					</control>
+				</focusedlayout>
+				<itemlayout height="365" width="260" condition="Skin.HasSetting(View_51_DisableTags)">
+					<control type="group">
+						<width>240</width>
+						<height>350</height>
+						<include content="UniversalLayout">
+							<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_nf]" />
+							<param name="artwork" value="poster" />
+							<param name="get_tags" value="false" />
+							<param name="get_tagbgpanel" value="false" />
+							<param name="autoscroll" value="false" />
+							<param name="bordersize_bg" value="6" />
+							<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_nf]" />
+							<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_nf]" />
+							<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_nf]" />
+							<param name="conditional_artworkdiffuse_themed" value="true" />
+							<param name="conditional_artworkdiffuse_override" value="false" />
+						</include>
+					</control>
+				</itemlayout>
+				<focusedlayout height="365" width="260" condition="Skin.HasSetting(View_51_DisableTags)">
+					<include content="SetPropOnFocus_HiddenButton" />
+					<control type="group">
+						<width>240</width>
+						<height>350</height>
+						<include>Animation_Item_Focus</include>
+						<control type="group">
+							<include content="UniversalLayout">
+								<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_fo]" />
+								<param name="artwork" value="poster" />
+								<param name="get_tags" value="false" />
+								<param name="get_tagbgpanel" value="false" />
+								<param name="autoscroll" value="true" />
+								<param name="bordersize_bg" value="4" />
+								<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_fo]" />
+								<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_fo]" />
+								<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_fo]" />
+								<param name="conditional_artworkdiffuse_themed" value="true" />
+								<param name="conditional_artworkdiffuse_override" value="false" />
+							</include>
+							<control type="group">
+								<include content="FocusOverlay">
+									<param name="diffusedimtext" value="artworkdiffuse/poster.png" />
+								</include>
+							</control>
+						</control>
+					</control>
+				</focusedlayout>
+			</control>
 			
-			</include>
 			<include content="footer">
 				<param name="view_id" value="51" />
 				<param name="offset_leftpanel" value="150" />
@@ -90,9 +140,7 @@
 				<param name="media_flagwidth" value="30%" />
 				<param name="rating_flagalign" value="right" />
 			</include>
-			
 		</control>
-		
 		
 		<control type="group">
 			<visible>Control.IsVisible(52)</visible>
@@ -103,24 +151,19 @@
 				<param name="type_pos_top" value="120" />
 				<param name="orientation" value="vertical" />
 				<param name="circle_visible" value="true" />
-				<param name="tags_visible" value="false" />
-				
 				<param name="visible" value="!Container.Content(songs)" />
-				
 				<param name="layout_height" value="300" />
 				<param name="layout_width" value="250" />
-				
 				<param name="itemheight" value="210" />
 				<param name="itemwidth" value="210" />
-			
 				<param name="layout" value="circle" />
+				
+				<animation effect="slide" start="0,0" end="0,90" time="350" tween="quadratic" easing="in" delay="100" condition="Skin.HasSetting(View_52_DisableFooter)">conditional</animation>
 				<viewtype label="circle">circle panel</viewtype>
-				
+				<include>Media_Values_ContainerNavigation</include>
 				<left>5%</left>
-				<include>Oninfo_MovieSetInfo</include>
-				<include>NavControl_Media</include>
-				
 			</include>
+			
 			<include content="footer">
 				<param name="view_id" value="52" />
 				<param name="offset_leftpanel" value="150" />
@@ -133,32 +176,114 @@
 		<control type="group">
 			<visible>Control.IsVisible(53)</visible>
 			
-			<include content="Universal_Container">
-				<param name="id" value="53" />
-				<param name="type_height" value="860" />
-				<param name="type_pos_top" value="120" />
-				<param name="orientation" value="vertical" />
-				
-				<param name="tags_visible" value="!Skin.HasSetting(View_53_DisableTags)" />
-				<param name="visible" value="true" />
-				
-				<param name="layout_height" value="320" />
-				<param name="layout_width" value="400" />
-				
-				<param name="itemheight" value="225" />
-				<param name="itemwidth" value="383" />
-			
-				<param name="layout" value="landscape" />
-				<param name="ls_overlay_visible" value="![$EXP[IsEpisode]]" />
-				
+			<control type="panel" id="53">
 				<viewtype label="landscape">landscape panel</viewtype>
 				
-				<left>175</left>
-				<right>100</right>
-				<include>Oninfo_MovieSetInfo</include>
-				<include>NavControl_Media</include>
-			
-			</include>
+				<include content="Media_Container_Attributes">
+					<param name="view_id" value="53" />
+					<param name="left" value="175" />
+				</include>
+				<include>Media_Values_ContainerNavigation</include>
+				
+				<itemlayout height="321" width="400" condition="!Skin.HasSetting(View_53_DisableTags)">
+					<control type="group">
+						<width>383</width>
+						<height>225</height>
+						<include content="UniversalLayout">
+							<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_nf]" />
+							<param name="artwork" value="landscape" />
+							<param name="get_tags" value="true" />
+							<param name="get_tagbgpanel" value="true" />
+							<param name="autoscroll" value="false" />
+							<param name="bordersize_bg" value="6" />
+							<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_nf]" />
+							<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_nf]" />
+							<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_nf]" />
+							<param name="get_landscapelogo" value="![$EXP[IsEpisode]]" />
+						</include>
+					</control>
+				</itemlayout>
+				<focusedlayout height="321" width="400" condition="!Skin.HasSetting(View_53_DisableTags)">
+					<include content="SetPropOnFocus_HiddenButton" />
+					<control type="group">
+						<width>383</width>
+						<height>225</height>
+						<description>to avoid relaod skin on disable footer and avoid bottom offset fade out 3rd row of items</description>
+						<include>Animation_Item_Focus</include>
+						<control type="group">
+							<include content="UniversalLayout">
+								<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_fo]" />
+								<param name="artwork" value="landscape" />
+								<param name="get_tags" value="true" />
+								<param name="get_tagbgpanel" value="true" />
+								<param name="autoscroll" value="true" />
+								<param name="bordersize_bg" value="4" />
+								<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_fo]" />
+								<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_fo]" />
+								<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_fo]" />
+								<param name="get_landscapelogo" value="![$EXP[IsEpisode]]" />
+							</include>
+							<control type="group">
+								<include condition="![String.StartsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),00) | String.EndsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),one)]" content="FocusOverlay">
+									<param name="diffusedimtext" value="artworkdiffuse/usebganel/landscape.png" />
+								</include>
+								<include condition="[String.StartsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),00) | String.EndsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),one)]" content="FocusOverlay">
+									<param name="diffusedimtext" value="artworkdiffuse/landscape.png" />
+								</include>
+							</control>
+						</control>
+					</control>
+				</focusedlayout>
+				<itemlayout height="241" width="400" condition="Skin.HasSetting(View_53_DisableTags)">
+					<control type="group">
+						<width>383</width>
+						<height>225</height>
+						<include content="UniversalLayout">
+							<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_nf]" />
+							<param name="artwork" value="landscape" />
+							<param name="get_tags" value="false" />
+							<param name="get_tagbgpanel" value="false" />
+							<param name="autoscroll" value="false" />
+							<param name="bordersize_bg" value="6" />
+							<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_nf]" />
+							<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_nf]" />
+							<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_nf]" />
+							<param name="conditional_artworkdiffuse_themed" value="true" />
+							<param name="conditional_artworkdiffuse_override" value="false" />
+							<param name="get_landscapelogo" value="![$EXP[IsEpisode]]" />
+						</include>
+					</control>
+				</itemlayout>
+				<focusedlayout height="241" width="400" condition="Skin.HasSetting(View_53_DisableTags)">
+					<include content="SetPropOnFocus_HiddenButton" />
+					<control type="group">
+						<width>383</width>
+						<height>225</height>
+						<include>Animation_Item_Focus</include>
+						<control type="group">
+							<include content="UniversalLayout">
+								<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_fo]" />
+								<param name="artwork" value="landscape" />
+								<param name="get_tags" value="false" />
+								<param name="get_tagbgpanel" value="false" />
+								<param name="autoscroll" value="true" />
+								<param name="bordersize_bg" value="4" />
+								<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_fo]" />
+								<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_fo]" />
+								<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_fo]" />
+								<param name="conditional_artworkdiffuse_themed" value="true" />
+								<param name="conditional_artworkdiffuse_override" value="false" />
+								<param name="get_landscapelogo" value="![$EXP[IsEpisode]]" />
+							</include>
+							<control type="group">
+								<include content="FocusOverlay">
+									<param name="diffusedimtext" value="artworkdiffuse/landscape.png" />
+								</include>
+							</control>
+						</control>
+					</control>
+				</focusedlayout>
+			</control>
 			
 			<include content="footer">
 				<param name="view_id" value="53" />
@@ -168,36 +293,115 @@
 				<param name="rating_flagalign" value="right" />
 			</include>
 		</control>
-		<!-- diffuse image still wrong one, get glow/shadow, bordertexture,dont cut main texture sqaurethunb
-		danger - thumb diffuse img  is eqaul landscape, 
 		
-		-->
 		<control type="group">
 			<visible>Control.IsVisible(54)</visible>
 			<description>keep in mind thumb is supposed stretched, square is supposed scaled</description>
-			<include content="Universal_Container">
-				<param name="id" value="54" />
-				<param name="type_height" value="860" />
-				<param name="type_pos_top" value="120" />
-				<param name="orientation" value="vertical" />
-				
-				<param name="tags_visible" value="!Skin.HasSetting(View_54_DisableTags)" />
-				<param name="visible" value="true" />
-				
-				<param name="layout_height" value="440" />
-				<param name="layout_width" value="420" />
-				
-				<param name="itemheight" value="345" />
-				<param name="itemwidth" value="345" />
-			
-				<param name="layout" value="square" />
+						
+			<control type="panel" id="54">
 				<viewtype label="square">square panel</viewtype>
 				
-				<left>9%</left>
-				<include>Oninfo_MovieSetInfo</include>
-				<include>NavControl_Media</include>
-			
-			</include>
+				<include content="Media_Container_Attributes">
+					<param name="view_id" value="54" />
+					<param name="left" value="160" />
+				</include>
+				<include>Media_Values_ContainerNavigation</include>
+				
+				<itemlayout height="445" width="410" condition="!Skin.HasSetting(View_54_DisableTags)">
+					<control type="group">
+						<width>345</width>
+						<height>345</height>
+						<include content="UniversalLayout">
+							<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_nf]" />
+							<param name="artwork" value="square" />
+							<param name="get_tags" value="true" />
+							<param name="get_tagbgpanel" value="true" />
+							<param name="autoscroll" value="false" />
+							<param name="bordersize_bg" value="6" />
+							<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_nf]" />
+							<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_nf]" />
+							<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_nf]" />
+						</include>
+					</control>
+				</itemlayout>
+				<focusedlayout height="445" width="410" condition="!Skin.HasSetting(View_54_DisableTags)">
+					<include content="SetPropOnFocus_HiddenButton" />
+					<control type="group">
+						<width>345</width>
+						<height>345</height>
+						<description>to avoid relaod skin on disable footer and avoid bottom offset fade out 3rd row of items</description>
+						<include>Animation_Item_Focus</include>
+						<control type="group">
+							<include content="UniversalLayout">
+								<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_fo]" />
+								<param name="artwork" value="square" />
+								<param name="get_tags" value="true" />
+								<param name="get_tagbgpanel" value="true" />
+								<param name="autoscroll" value="true" />
+								<param name="bordersize_bg" value="4" />
+								<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_fo]" />
+								<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_fo]" />
+								<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_fo]" />
+							</include>
+							<control type="group">
+								<include condition="![String.StartsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),00) | String.EndsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),one)]" content="FocusOverlay">
+									<param name="diffusedimtext" value="artworkdiffuse/usebganel/square.png" />
+								</include>
+								<include condition="[String.StartsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),00) | String.EndsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),one)]" content="FocusOverlay">
+									<param name="diffusedimtext" value="artworkdiffuse/square.png" />
+								</include>
+							</control>
+						</control>
+					</control>
+				</focusedlayout>
+				<itemlayout height="370" width="410" condition="Skin.HasSetting(View_54_DisableTags)">
+					<control type="group">
+						<width>345</width>
+						<height>345</height>
+						<include content="UniversalLayout">
+							<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_nf]" />
+							<param name="artwork" value="square" />
+							<param name="get_tags" value="false" />
+							<param name="get_tagbgpanel" value="false" />
+							<param name="autoscroll" value="false" />
+							<param name="bordersize_bg" value="6" />
+							<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_nf]" />
+							<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_nf]" />
+							<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_nf]" />
+							<param name="conditional_artworkdiffuse_themed" value="true" />
+							<param name="conditional_artworkdiffuse_override" value="false" />
+						</include>
+					</control>
+				</itemlayout>
+				<focusedlayout height="370" width="410" condition="Skin.HasSetting(View_54_DisableTags)">
+					<include content="SetPropOnFocus_HiddenButton" />
+					<control type="group">
+						<width>345</width>
+						<height>345</height>
+						<include>Animation_Item_Focus</include>
+						<control type="group">
+							<include content="UniversalLayout">
+								<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_fo]" />
+								<param name="artwork" value="square" />
+								<param name="get_tags" value="false" />
+								<param name="get_tagbgpanel" value="false" />
+								<param name="autoscroll" value="true" />
+								<param name="bordersize_bg" value="4" />
+								<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_fo]" />
+								<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_fo]" />
+								<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_fo]" />
+								<param name="conditional_artworkdiffuse_themed" value="true" />
+								<param name="conditional_artworkdiffuse_override" value="false" />
+							</include>
+							<control type="group">
+								<include content="FocusOverlay">
+									<param name="diffusedimtext" value="artworkdiffuse/square.png" />
+								</include>
+							</control>
+						</control>
+					</control>
+				</focusedlayout>
+			</control>
 			
 			<include content="footer">
 				<param name="view_id" value="54" />
@@ -207,43 +411,7 @@
 				<param name="rating_flagalign" value="right" />
 			</include>
 		</control>
-		<!-- 
-		<control type="group">
-			<visible>Control.IsVisible(55)</visible>
-			
-			<include content="Universal_Container">
-				<param name="id" value="55" />
-				<param name="type_height" value="860" />
-				<param name="type_pos_top" value="120" />
-				<param name="orientation" value="vertical" />
-				
-				<param name="tags_visible" value="!Skin.HasSetting(View_55_DisableTags)" />
-				
-				<param name="visible" value="true" />
-				
-				<param name="layout_height" value="175" />
-				<param name="layout_width" value="610" />
-				
-				<param name="itemheight" value="110" />
-				<param name="itemwidth" value="590" />
-				<param name="get_bannerlogo" value="true" />
-				<param name="layout" value="banner" />
-				<viewtype label="banner">banner panel</viewtype>
-				
-				<left>9%</left>
-				<include>Oninfo_MovieSetInfo</include>
-				<include>NavControl_Media</include>
-			
-			</include>
-			
-			<include content="footer">
-				<param name="view_id" value="55" />
-				<param name="offset_leftpanel" value="150" />
-				<param name="media_flagalign" value="center" />
-				<param name="media_flagwidth" value="30%" />
-				<param name="rating_flagalign" value="right" />
-			</include>
-		</control> -->
+		
 	</include>
 		
 </includes>
