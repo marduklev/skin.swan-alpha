@@ -1819,17 +1819,14 @@ e.g. top250 unrelated to media type , fail as method in =xsp? , if not used as m
 	
 	<include name="WidgetHome_poster_to_fanart">
 		
-        <itemlayout height="350" width="210">
+        <itemlayout height="350" width="210" condition="!Skin.HasSetting(userwidget$PARAM[nr]_IsSection) + Skin.HasSetting(userwidget$PARAM[nr]_forceTag)">
 			<control type="group">
 				<width>205</width>
 				<height>285</height>
 				<include content="UniversalLayout">
 					<param name="colordiffuse" value="$VAR[color_home_widgetitem_frame_nf]" />
 					<param name="artwork" value="poster" />
-					<param name="get_circle" value="false" />
 					<param name="get_tags" value="true" />
-					<param name="get_landscapelogo" value="false" />
-					<param name="get_bannerlogo" value="false" />
 					<param name="autoscroll" value="false" />
 					<param name="bordersize_bg" value="6" />
 					<param name="bottompanelcolor" value="$VAR[color_home_widgetitem_itemtag_bgpanel_nf]" />
@@ -1838,17 +1835,14 @@ e.g. top250 unrelated to media type , fail as method in =xsp? , if not used as m
 				</include>
 			</control>
 		</itemlayout>
-        <focusedlayout height="350" width="210" condition="!Control.HasFocus($PARAM[id])">
+        <focusedlayout height="350" width="210" condition="[!Control.HasFocus($PARAM[id]) + !Skin.HasSetting(userwidget$PARAM[nr]_IsSection) + Skin.HasSetting(userwidget$PARAM[nr]_forceTag)]">
 			<control type="group">
 				<width>205</width>
 				<height>285</height>
 				<include content="UniversalLayout">
 					<param name="colordiffuse" value="$VAR[color_home_widgetitem_frame_nf]" />
 					<param name="artwork" value="poster" />
-					<param name="get_circle" value="false" />
 					<param name="get_tags" value="true" />
-					<param name="get_landscapelogo" value="false" />
-					<param name="get_bannerlogo" value="false" />
 					<param name="autoscroll" value="false" />
 					<param name="bordersize_bg" value="6" />
 					<param name="bottompanelcolor" value="$VAR[color_home_widgetitem_itemtag_bgpanel_nf]" />
@@ -1857,37 +1851,98 @@ e.g. top250 unrelated to media type , fail as method in =xsp? , if not used as m
 				</include>
 			</control>
 		</focusedlayout>
-		<focusedlayout height="350" width="490" condition="Control.HasFocus($PARAM[id])">
-				<control type="group">
-					<width>480</width>
-					<height>285</height>
-					<animation type="Focus" reversible="false">
-						<effect type="zoom" start="30,100" end="100,100" time="200" center="auto" tween="quadratic" easing="out" />
-					</animation>
-					<include>Animation_Item_Focus</include>
-					<include content="UniversalLayout">
-						<param name="colordiffuse" value="$VAR[color_home_widgetitem_frame_fo]" />
-						<param name="artwork" value="landscape" />
-						<param name="get_circle" value="false" />
-						<param name="get_tags" value="true" />
-						<param name="get_landscapelogo" value="true" />
-						<param name="get_bannerlogo" value="false" />
-						<param name="autoscroll" value="true" />
-						<param name="bordersize_bg" value="4" />
-						<param name="bottompanelcolor" value="$VAR[color_home_widgetitem_itemtag_bgpanel_fo]" />
-						<param name="bottomtaglabelcolor" value="$VAR[color_home_widgetitem_itemtag_label1_fo]" />
-						<param name="bottomtaglabel2color" value="$VAR[color_home_widgetitem_itemtag_label2_fo]" />
-						<param name="conditional_artworkdiffuse_themed" value="false" />
-						<param name="conditional_artworkdiffuse_override" value="true" />
-					</include>
-					<include content="FocusOverlay">
-						<param name="diffusedimtext" value="artworkdiffuse/usebganel/landscape.png" />
-						<param name="forced_color" value="home" />
-					</include>
-					
-				</control>
-				<!-- <include condition="Skin.HasSetting(HomeWidget_FocusOverlay)">FocusOverlay</include> -->
-              
+		<focusedlayout height="350" width="490" condition="[Control.HasFocus($PARAM[id]) + !Skin.HasSetting(userwidget$PARAM[nr]_IsSection) + Skin.HasSetting(userwidget$PARAM[nr]_forceTag)]">
+			<control type="group">
+				<width>480</width>
+				<height>285</height>
+				<animation type="Focus" reversible="false">
+					<effect type="zoom" start="30,100" end="100,100" time="200" center="auto" tween="quadratic" easing="out" />
+				</animation>
+				<include>Animation_Item_Focus</include>
+				<include content="UniversalLayout">
+					<param name="colordiffuse" value="$VAR[color_home_widgetitem_frame_fo]" />
+					<param name="artwork" value="landscape" />
+					<param name="get_tags" value="true" />
+					<param name="get_landscapelogo" value="true" />
+					<param name="autoscroll" value="true" />
+					<param name="bordersize_bg" value="4" />
+					<param name="bottompanelcolor" value="$VAR[color_home_widgetitem_itemtag_bgpanel_fo]" />
+					<param name="bottomtaglabelcolor" value="$VAR[color_home_widgetitem_itemtag_label1_fo]" />
+					<param name="bottomtaglabel2color" value="$VAR[color_home_widgetitem_itemtag_label2_fo]" />
+					<param name="conditional_artworkdiffuse_themed" value="false" />
+					<param name="conditional_artworkdiffuse_override" value="true" />
+				</include>
+				<include content="FocusOverlay">
+					<param name="diffusedimtext" value="artworkdiffuse/usebganel/landscape.png" />
+					<param name="forced_color" value="home" />
+				</include>
+			</control>
+        </focusedlayout>
+		
+		
+		
+		<itemlayout height="350" width="245" condition="[!Skin.HasSetting(userwidget$PARAM[nr]_IsSection) + !Skin.HasSetting(userwidget$PARAM[nr]_forceTag)]">
+			<control type="group">
+				<width>234</width>
+				<height>350</height>
+				<include content="UniversalLayout">
+					<param name="colordiffuse" value="$VAR[color_home_widgetitem_frame_nf]" />
+					<param name="artwork" value="poster" />
+					<param name="get_tags" value="false" />
+					<param name="autoscroll" value="false" />
+					<param name="bordersize_bg" value="6" />
+					<param name="bottompanelcolor" value="$VAR[color_home_widgetitem_itemtag_bgpanel_nf]" />
+					<param name="bottomtaglabelcolor" value="$VAR[color_home_widgetitem_itemtag_label1_nf]" />
+					<param name="bottomtaglabel2color" value="$VAR[color_home_widgetitem_itemtag_label2_nf]" />
+					<param name="conditional_artworkdiffuse_themed" value="true" />
+					<param name="conditional_artworkdiffuse_override" value="false" />
+				</include>
+			</control>
+		</itemlayout>
+		<focusedlayout height="350" width="245" condition="[!Control.HasFocus($PARAM[id]) + !Skin.HasSetting(userwidget$PARAM[nr]_IsSection) + !Skin.HasSetting(userwidget$PARAM[nr]_forceTag)]">
+			<control type="group">
+				<width>234</width>
+				<height>350</height>
+				<include content="UniversalLayout">
+					<param name="colordiffuse" value="$VAR[color_home_widgetitem_frame_nf]" />
+					<param name="artwork" value="poster" />
+					<param name="get_tags" value="false" />
+					<param name="autoscroll" value="false" />
+					<param name="bordersize_bg" value="6" />
+					<param name="bottompanelcolor" value="$VAR[color_home_widgetitem_itemtag_bgpanel_nf]" />
+					<param name="bottomtaglabelcolor" value="$VAR[color_home_widgetitem_itemtag_label1_nf]" />
+					<param name="bottomtaglabel2color" value="$VAR[color_home_widgetitem_itemtag_label2_nf]" />
+					<param name="conditional_artworkdiffuse_themed" value="true" />
+					<param name="conditional_artworkdiffuse_override" value="false" />
+				</include>
+			</control>
+		</focusedlayout>
+		<focusedlayout height="350" width="590" condition="[Control.HasFocus($PARAM[id]) + !Skin.HasSetting(userwidget$PARAM[nr]_IsSection) + !Skin.HasSetting(userwidget$PARAM[nr]_forceTag)]">
+			<control type="group">
+				<width>585</width>
+				<height>350</height>
+				<animation type="Focus" reversible="false">
+					<effect type="zoom" start="35,100" end="100,100" time="200" center="auto" tween="quadratic" easing="out" />
+				</animation>
+				<include>Animation_Item_Focus</include>
+				<include content="UniversalLayout">
+					<param name="colordiffuse" value="$VAR[color_home_widgetitem_frame_fo]" />
+					<param name="artwork" value="landscape" />
+					<param name="get_tags" value="false" />
+					<param name="get_landscapelogo" value="true" />
+					<param name="autoscroll" value="true" />
+					<param name="bordersize_bg" value="4" />
+					<param name="bottompanelcolor" value="$VAR[color_home_widgetitem_itemtag_bgpanel_fo]" />
+					<param name="bottomtaglabelcolor" value="$VAR[color_home_widgetitem_itemtag_label1_fo]" />
+					<param name="bottomtaglabel2color" value="$VAR[color_home_widgetitem_itemtag_label2_fo]" />
+					<param name="conditional_artworkdiffuse_themed" value="true" />
+					<param name="conditional_artworkdiffuse_override" value="false" />
+				</include>
+				<include content="FocusOverlay">
+					<param name="diffusedimtext" value="artworkdiffuse/landscape.png" />
+					<param name="forced_color" value="home" />
+				</include>
+			</control>
         </focusedlayout>
 	
 	
