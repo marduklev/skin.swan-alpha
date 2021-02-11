@@ -315,11 +315,13 @@
 	
 	<include name="SwanShortcuts_SetTargetAndPath_CommonButton">
 		<control type="button" id="$PARAM[id]">
-		<description>Set target Template, action window and action set string direct e.g. plailist?xsp path</description>
+		<description>set string need be set on save me button - need var for system window, therefore preset here use unlocalized for label string is intended Set target Template, action window and action set string direct e.g. plailist?xsp path</description>
 				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_target,$PARAM[target])</onclick>
 				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_target,$PARAM[target])</onclick>
+				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_target.label,$PARAM[target])</onclick>
+				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_target.label,$PARAM[target])</onclick>
 		<onclick>Dialog.Close(1103)</onclick>
-		<onclick>ActivateWindow($PARAM[path],return)</onclick>
+		<onclick>ActivateWindow($PARAM[path])</onclick>
 		<label>$PARAM[label]</label>
 		<visible>$PARAM[visible]</visible>
 	</control>
@@ -455,11 +457,9 @@
 				<textureradioofffocus colordiffuse="white">buttons/enter.png</textureradioofffocus>
 				<textureradiooffnofocus colordiffuse="5cC6C6C8">buttons/enter.png</textureradiooffnofocus>
 				
-				
 				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)">Skin.Reset(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_executebuiltin)</onclick>
 				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_path,$INFO[Container.Folderpath])</onclick>
 				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu) + String.IsEmpty(Window(home).Property(shortcutitem_name))">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_name,$INFO[System.CurrentWindow,, • ]$INFO[Container.FolderName])</onclick>
-				
 				
 				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_path,$INFO[Container.Folderpath])</onclick>
 				<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget) + String.IsEmpty(Window(home).Property(shortcutitem_name))">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_name,$INFO[System.CurrentWindow,, • ]$INFO[Container.FolderName])</onclick>

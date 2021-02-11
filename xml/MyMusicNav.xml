@@ -3,9 +3,9 @@
 	<include content="media_window_attributes">
 		<param name="view_ids" value="50,51,52,53,54,502" />
 	</include>
-
 	<controls>
-	<control type="button" id="2">
+		<!-- native GUI Ctrls -->
+		<control type="button" id="2">
 			<description>Select viewtype</description>
 			<include content="HiddenObject" />
 		</control>
@@ -40,22 +40,19 @@
 			<description>Update library</description>
 			<include content="HiddenObject" />
 		</control>
-	
-	<control type="group">
-		<visible>!Skin.HasSetting(BlurEnabled)</visible>
-		<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
-		<include>GlobalBackground</include>
-	</control>
-	<control type="group">
-		<visible>Skin.HasSetting(BlurEnabled)</visible>
-		<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
-		<include>GlobalBlurredBackground</include>
-	</control>
-	
-	<control type="group" id="70">
-			<descriptiopn>viewtypes</descriptiopn>
+		<control type="group">
+			<visible>!Skin.HasSetting(BlurEnabled)</visible>
+			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
+			<include>GlobalBackground</include>
+		</control>
+		<control type="group">
+			<visible>Skin.HasSetting(BlurEnabled)</visible>
+			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
+			<include>GlobalBlurredBackground</include>
+		</control>
+		<control type="group" id="70">
+			<description>viewtypes</description>
 			<include content="Animation_Close_MediaContainer" condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))" />
-			<centerleft>50%</centerleft>
 			
 			<!-- NOTE - keep idea cond slide and show current musicplaylist right -->
 			
@@ -69,13 +66,11 @@
 				<effect type="zoom" center="50%,50%" start="100" end="0" time="300" tween="cubic" easing="out" />
 			</animation>
 			
-			<!-- Shortcut -->
 			<include content="SwanShortcuts_Container" condition="!string.isempty(window(home).property(shortcutitem_nr))" />
 				
-			<!-- Regular -->
 			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view50</include>
 			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">Simple_Panels</include>
-			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view56</include>
+			
 			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view58</include>
 			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view502</include>
 			
@@ -83,7 +78,7 @@
 				<description>vertical</description>
 				<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
 				<visible>!Control.IsVisible(58)</visible>
-				<right>2%</right>
+				<right>45</right>
 				<top>160</top>
 				<height>74%</height>
 				<onup>60</onup>
@@ -94,12 +89,9 @@
 		</control>
 		
 		<include content="HeaderBar">
-			<param name="HasSearchBar" value="true" />
 			<param name="HasBGPanel" value="Skin.HasSetting(MediaWindow_UseHeaderBG)" />
-			<param name="HeadingAlignment" value="center" />
 		</include>
 		
-		<!-- Pre-MenuControl -->
 		<include content="PreMenucontrol" />
 		
 		<control type="group">
@@ -108,6 +100,8 @@
 			<include content="menucontrol_global" condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))" />
 		</control>
 		
+		<!-- <include content="ViewSelection" /> -->
+										  
 		<include content="NativeString_Filter" />
 		
 		<include content="swan_debug_overlay">
