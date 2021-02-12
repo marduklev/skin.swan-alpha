@@ -126,6 +126,12 @@
 		<control type="button">
 			<visible allowhiddenfocus="true">false</visible>
 			<nested />
+			<!-- clear
+			in window -->
+			
+			<include condition="Skin.HasSetting(autoplay_trailer_home) + Window.IsActive(home) + String.IsEqual(Skin.String(HomeLayout),WidgetsOnly)">home_listitem_propertys</include>
+			
+			
 			
 			<onfocus condition="!Window.IsActive(movieinformation) + !String.IsEmpty(Window(home).Property(trailer_avail))">ClearProperty(trailer_avail,home)</onfocus>
 			<onfocus condition="!Window.IsActive(movieinformation) + !String.IsEmpty(Window(home).Property(listitemtrailer))">ClearProperty(listitemtrailer,home)</onfocus>
@@ -1316,7 +1322,7 @@ top-->
 			<top>0</top>
 			<width>$PARAM[width]</width>
 			<height>$PARAM[height]</height>         
-			<texture background="true" diffuse="$PARAM[diffuse]">$VAR[ArtworkThumb]</texture>
+			<texture fallback="$INFO[Container.ListItem.Art(fanart)]" background="true" diffuse="$PARAM[diffuse]">$VAR[ArtworkThumb]</texture>
 			<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
 			<animation effect="zoom" start="110" end="130" center="auto" time="12000" tween="cubic" easing="inout" pulse="true" condition="Skin.HasSetting(BackgroundAnimation)">Conditional</animation>
 			<animation effect="slide" start="-10,-10" end="10,10" time="8000" tween="cubic" easing="inout" pulse="true" condition="Skin.HasSetting(BackgroundAnimation)">Conditional</animation>
@@ -1332,6 +1338,8 @@ top-->
 		<value condition="Control.IsVisible(99007)">$INFO[Control.GetLabel(99007)]</value>					 
 		<!-- normal fanart background -->
         <value condition="Control.IsVisible(99006) + !String.IsEmpty(Control.GetLabel(99006))">$INFO[Control.GetLabel(99006)]</value>
+		
+		<value condition="!String.IsEmpty(Container.ListItem.Art(fanart))">$INFO[Container.ListItem.Art(fanart)]</value>
 		<!-- fallback home sections -->
 		<value condition="xystaticitemsegweather">$INFO[ListItem.Property(FanartThumb)]</value>
 	</variable>

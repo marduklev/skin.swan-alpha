@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
-
+	<include name="home_listitem_propertys">
+		<onfocus condition="!String.IsEmpty(listitem.art(tvshow.clearlogo))">SetProperty(clearlogo,$INFO[listitem.art(tvshow.clearlogo)],home)</onfocus>
+		<onfocus condition="!String.IsEmpty(listitem.art(clearlogo))">SetProperty(clearlogo,$INFO[listitem.art(clearlogo)],home)</onfocus>
+		<onfocus condition="!String.IsEmpty(listitem.title)">SetProperty(title,$INFO[listitem.title],home)</onfocus>
+	</include>
+			
 	<include name="Home_Layout_WidgetOnly">
 		<include>Home_Widgets</include>
 	</include>
@@ -17,14 +22,21 @@
 				<param name="width" value="1267" />
 				<param name="height" value="731" />
 				<param name="diffuse" value="diffuse/spotlightleftdiffuse.png" />
-				<param name="visible" value="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
+				<param name="visible" value="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment) + String.IsEmpty(Window(Home).Property(MenucontrolHomeActive))" />
 			</include>
 			<include content="DefArtwork">
 				<left>0</left>
 				<param name="width" value="1267" />
 				<param name="height" value="731" />
 				<param name="diffuse" value="diffuse/spotlightrightdiffuse.png" />
-				<param name="visible" value="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
+				<param name="visible" value="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment) + String.IsEmpty(Window(Home).Property(MenucontrolHomeActive))" />
+			</include>
+			<include content="DefArtwork">
+				<left>0</left>
+				<param name="width" value="1920" />
+				<param name="height" value="1080" />
+				<param name="diffuse" value="colors/gradienthorizontal.png" />
+				<param name="visible" value="!String.IsEmpty(Window(Home).Property(MenucontrolHomeActive))" />
 			</include>
 		</control>
 		
@@ -33,7 +45,6 @@
 		<control type="label">
 			<description>WIP HOME MENU LABELS CENTERED</description>
 			<visible>[Control.HasFocus(9000) | Control.HasFocus(8888)]</visible>
-			<visible>false</visible>
 			<left>50%</left>
 			<label>$INFO[Container(9000).ListItem.Label]</label>
 			<textcolor>red</textcolor>
@@ -45,6 +56,7 @@
 		<control type="grouplist">
 			<description>S P O T L I G H T  M E T A D A T A 750w</description>
 			<animation effect="fade" start="100" end="0" time="250" condition="Window.IsActive(shutdownmenu)">conditional</animation>
+			<visible>String.IsEmpty(Window(Home).Property(MenucontrolHomeActive))</visible>
 			<width>39%</width>
 			<height>650</height>
 			<top>10</top>
@@ -142,8 +154,8 @@
 	</include>
 
 	<include name="Home_WidgetPositioning">
-		<param name="height" default="95%" />
-		<param name="bottom" default="25" />
+		<param name="height" default="98%" />
+		<param name="bottom" default="5" />
 		<definition>
 			<height>$PARAM[height]</height>
 			<bottom>$PARAM[bottom]</bottom>

@@ -50,32 +50,30 @@ submenu - restricted depending on custom skinstring mainmenu item - use/show sub
 		-->
 		
 		
-		<!-- menucontrol -->
-		
 		<control type="group">
-			<!-- TEMP SLIDE -->
-			<!-- <animation effect="slide" start="450,0" end="0,0" time="300" tween="cubic" easing="inout" condition="!ControlGroup(9000).HasFocus()">Conditional</animation> -->
-			<animation effect="zoom" start="70" end="100" time="250" center="85%,25%" condition="!ControlGroup(9000).HasFocus()">Conditional</animation>
 		
 			<include content="Animation_TransitionFadeOut">
-				<param name="condition" value="$EXP[Infodialog_IsActive] | Window.IsActive(mediasource) | Window.IsActive(shutdownmenu)" />
+				<param name="condition" value="Window.IsActive(1122) | $EXP[Infodialog_IsActive] | Window.IsActive(mediasource) | Window.IsActive(shutdownmenu)" />
 			</include>
 			
-			<!-- Widget/Home Layouts -->
-			<include condition="String.IsEqual(Skin.String(HomeLayout),Spotlight)">Home_Layout_Spotlight</include>
-			<include condition="String.IsEmpty(Skin.String(HomeLayout)) | String.IsEqual(Skin.String(HomeLayout),WidgetsOnly)">Home_Layout_WidgetOnly</include>
+			<!-- menucontrol -->
+			<control type="group">
+				<description>home layouts</description>
+			<!-- TEMP SLIDE non custom menu -->
+			<animation effect="zoom" start="70" end="100" time="250" center="85%,25%" condition="!ControlGroup(9000).HasFocus()">Conditional</animation>
+				
+				<include condition="String.IsEqual(Skin.String(HomeLayout),Spotlight)">Home_Layout_Spotlight</include>
+				<include condition="String.IsEmpty(Skin.String(HomeLayout)) | String.IsEqual(Skin.String(HomeLayout),WidgetsOnly)">Home_Layout_WidgetOnly</include>
+			</control>
+			
+			<control type="group">
+				<description>menucontrol</description>
+				<include content="menucontrol_home_iconpanel_left" condition="Skin.HasSetting(useshortcut_mainmenu) + !String.IsEqual(Skin.String(HomeLayout),MenuTiles)" />
+				<include content="Menucontrol_Home_test1" condition="!Skin.HasSetting(useshortcut_mainmenu) + !String.IsEqual(Skin.String(HomeLayout),MenuTiles)" />
+				<include content="Menucontrol_Home_MenuTiles" condition="String.IsEqual(Skin.String(HomeLayout),MenuTiles)" />
+			</control>
+			
 		</control>
-		
-		<control type="group">
-			<description>MENU</description>
-			<animation effect="fade" start="100" end="0" time="300" condition="$EXP[Infodialog_IsActive] + !String.IsEqual(Skin.String(HomeLayout),MenuTiles)">Conditional</animation>
-			<!-- Layouts in Early Progress -->
-			<include content="menucontrol_home_iconpanel_left" condition="Skin.HasSetting(useshortcut_mainmenu) + !String.IsEqual(Skin.String(HomeLayout),MenuTiles)" />
-			<include content="Menucontrol_Home_test1" condition="!Skin.HasSetting(useshortcut_mainmenu) + !String.IsEqual(Skin.String(HomeLayout),MenuTiles)" />
-			<include content="Menucontrol_Home_MenuTiles" condition="String.IsEqual(Skin.String(HomeLayout),MenuTiles)" />
-			<!-- Home_Layout_MainMenuOnly_Center -->
-		</control>
-		
 		<include content="swan_debug_overlay">
 			<param name="textleft" value="1  istitem.imdbtop250 :    $INFO[listitem.top250]
 1  istitem.filenameandpath :    $INFO[listitem.filenameandpath]

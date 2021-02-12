@@ -971,6 +971,7 @@ e.g. top250 unrelated to media type , fail as method in =xsp? , if not used as m
 					<param name="bottomtaglabelcolor" value="$VAR[color_home_widgetitem_itemtag_label1_nf]" />
 					<param name="bottomtaglabel2color" value="$VAR[color_home_widgetitem_itemtag_label2_nf]" />
 				</include>
+				
 			</control>
 		</itemlayout>
 		<focusedlayout height="350" width="215" condition="!Skin.HasSetting(userwidget$PARAM[nr]_IsSection) + Skin.HasSetting(userwidget$PARAM[nr]_forceTag)">
@@ -1020,6 +1021,19 @@ e.g. top250 unrelated to media type , fail as method in =xsp? , if not used as m
 					</include>
 				</control>
 			</control>
+			<!-- <control type="group">
+				<animation condition="player.hasvideo" type="conditional">
+					<effect type="fade" start="0" end="100" time="300" tween="sine" easing="out" />
+					<effect type="slide" start="320,0" end="0,0" time="400" tween="cubic" easing="out" />
+				</animation>
+				<animation condition="!player.hasvideo" type="conditional">
+					<effect type="fade" start="100" end="0" time="300" tween="sine" easing="out" />
+					<effect type="slide" start="0,0" end="320,0" time="300" tween="cubic" easing="out" />
+				</animation>
+					<control type="videowindow">
+						<width>610</width>
+					</control>
+				</control> -->
 		</focusedlayout>
 		<itemlayout height="350" width="245" condition="!Skin.HasSetting(userwidget$PARAM[nr]_IsSection) + !Skin.HasSetting(userwidget$PARAM[nr]_forceTag)">
 			<control type="group">
@@ -1184,7 +1198,24 @@ e.g. top250 unrelated to media type , fail as method in =xsp? , if not used as m
 						<param name="forced_color" value="home" />
 					</include>
 				</control>
+				
 			</control>
+			<control type="group">
+					<visible>Skin.HasSetting(home_trailer_showwidget) + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
+					<visible>Control.HasFocus($PARAM[id])</visible>
+					<animation condition="player.hasvideo" type="conditional">
+						<effect type="fade" start="100" end="400" time="350" />
+						<effect type="slide" start="0,0" end="500,0" time="500" />
+					</animation>
+				
+					<control type="image">
+						<visible>Skin.HasSetting(home_trailer_showwidget)</visible>
+						<texture>colors/white.png</texture>
+					</control>
+					<control type="videowindow">
+						<height>350</height>
+					</control>
+				</control>
 		</focusedlayout>
 		<itemlayout height="350" width="610" condition="!Skin.HasSetting(userwidget$PARAM[nr]_IsSection) + !Skin.HasSetting(userwidget$PARAM[nr]_forceTag)">
 			<control type="group">
@@ -1329,7 +1360,25 @@ e.g. top250 unrelated to media type , fail as method in =xsp? , if not used as m
 						<param name="bordersize_bg" value="4" />
 					</include>
 				</control>
+				
+				
 			</control>
+				<control type="group">
+					<visible>Skin.HasSetting(home_trailer_showwidget) + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
+					<visible>Control.HasFocus($PARAM[id])</visible>
+					<animation condition="player.hasvideo" type="conditional">
+						<effect type="fade" start="100" end="400" time="350" />
+						<effect type="slide" start="0,0" end="335,0" time="500" />
+					</animation>
+				
+					<control type="image">
+						<visible>Skin.HasSetting(home_trailer_showwidget)</visible>
+						<texture>colors/white.png</texture>
+					</control>
+					<control type="videowindow">
+						<width>610</width>
+					</control>
+				</control>
 		</focusedlayout>
 		<itemlayout height="110" width="110" condition="Skin.HasSetting(userwidget$PARAM[nr]_IsSection)">
 			<control type="group">
@@ -2059,13 +2108,33 @@ e.g. top250 unrelated to media type , fail as method in =xsp? , if not used as m
 				</control>
 				
 			</control>
-			<control type="textbox">
-				<width>800</width>
-				<label>$VAR[plot]</label>
+			
+			<control type="grouplist" id="71$PARAM[id]">
+				<orientation>horizontal</orientation>
+				<usecontrolcoords>true</usecontrolcoords>
 				<height>120</height>
-				<aligny>center</aligny>
-				<textcolor>$VAR[color_home_text_secondary]</textcolor>
-				<font>font20_title</font>
+				<itemgap>15</itemgap>
+			
+				<control type="textbox">
+					<width>800</width>
+					<label>$VAR[plot]</label>
+					<height>120</height>
+					<aligny>center</aligny>
+					<textcolor>$VAR[color_home_text_secondary]</textcolor>
+					<font>font20_title</font>
+				</control>
+				<include content="spacer_w">
+					<param name="gap" value="200"/>
+					<param name="visible" value="!String.IsEmpty(ListItem.PercentPlayed)"/>
+				</include>
+				<control type="image">
+						<description>progress circle - layout test</description>
+						<height>90</height>
+						<width>90</width>
+						<bordersize>10</bordersize>
+						<bordertexture>artworkdiffuse/circleborder.png</bordertexture>
+						<texture diffuse="artworkdiffuse/circleborder.png">flags/progresscircle/$INFO[ListItem.PercentPlayed] % used.png</texture>
+					</control>
 			</control>
 		</control>
 		
