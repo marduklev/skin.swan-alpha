@@ -10,8 +10,6 @@
 		<include>Home_Widgets</include>
 	</include>
 
-	
-
 	<include name="Home_Layout_Spotlight">
 		
 		<control type="group">
@@ -40,7 +38,8 @@
 			</include>
 		</control>
 		
-		<include>spotlight_trailer_overlay</include>
+		<!-- shhow current playing if not trailer ?? or conditional -->
+		<include condition="true">spotlight_trailer_overlay</include>
 		
 		<control type="label">
 			<description>WIP HOME MENU LABELS CENTERED</description>
@@ -399,11 +398,9 @@
 	</variable>
 	
 	<include name="spotlight_trailer_overlay">
-		
 		<control type="group">
 			<top>0</top>
-			<visible>Player.HasVideo</visible>
-			
+			<visible>[Player.HasVideo + String.IsEmpty(Window(Home).Property(TrailerIsPlaying))] | [!Skin.HasSetting(home_trailer_showwidget) + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))]</visible>
 			<control type="videowindow">
 				<include content="pos_left" condition="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
 				<include content="pos_right" condition="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
