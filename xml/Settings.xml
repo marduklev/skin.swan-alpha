@@ -183,7 +183,8 @@
 					<param name="visible" value="true" />
 					
 					<!-- <animation effect="slide" start="0,0" end="130,0" time="0" reversible="false" condition="Integer.IsEqual(Container(52).NumItems,6)">conditional</animation> -->
-					
+					<!-- 
+							 -->
 					<content>
 						<item>
 							<label>$LOCALIZE[24001]</label>
@@ -191,12 +192,15 @@
 							<icon>icons/addons.png</icon>
 						</item>
 						<item>
-							<label>$INFO[Weather.plugin]</label>
+							<label>$LOCALIZE[24029]</label>
 							<icon>icons/weather.png</icon>
-							<onclick>ActivateWindow(ServiceSettings,weather)</onclick>
-							<visible>!String.IsEmpty(Weather.plugin)</visible>
+							<onclick condition="String.IsEmpty(Weather.plugin)">ActivateWindow(addonbrowser,addons://repository.xbmc.org/xbmc.python.weather/,return)</onclick>
+							<!-- <onclick condition="String.IsEmpty(Weather.plugin)">Addon.Default.Set(xbmc.python.weather)</onclick> -->
+							<onclick condition="!String.IsEmpty(Weather.plugin)">Addon.Default.OpenSettings(xbmc.python.weather)</onclick>
+							<!-- <onclick condition="!String.IsEmpty(Weather.plugin)">ActivateWindow(ServiceSettings,weather)</onclick> -->
 						</item>
 						<item>
+							<visible>String.StartsWith(System.BuildVersion,18.9)</visible>
 							<label>Netflix</label>
 							<icon>icons/netflix.png</icon>
 							<onclick condition="!System.HasAddon(plugin.video.netflix)">InstallAddon(plugin.video.netflix)</onclick>
@@ -213,6 +217,12 @@
 							<icon>icons/embuaryhelper.png</icon>
 							<visible>System.HasAddon(script.embuary.helper)</visible>
 							<onclick>Addon.OpenSettings(script.embuary.helper)</onclick>
+						</item>
+						<item>
+							<label>$INFO[System.AddonTitle(script.embuary.info)]</label>
+							<icon>icons/embuaryinfo1.png</icon>
+							<visible>System.HasAddon(script.embuary.info)</visible>
+							<onclick>Addon.OpenSettings(script.embuary.info)</onclick>
 						</item>
 						<include condition="String.StartsWith(System.BuildVersion,18.9)">temp_matrix_static_artwork_beef</include>
 						<include condition="String.StartsWith(System.BuildVersion,19.)">temp_matrix_static_artwork_dump</include>

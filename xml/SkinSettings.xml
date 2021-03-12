@@ -1717,11 +1717,13 @@ static const TypeMapping types[] =
 					<param name="label" value="M I S C    S E T T I N G S"/>
 				</include>
 				<control type="radiobutton" id="$PARAM[id]001">
-					<description>Set Pallete</description>
+					<description>Set Pallete : pending https://github.com/kodi-community-addons/script.skin.helper.colorpicker/pull/14/commits/4ec0cf603b6220a63e7134a71de07ec7fb4f28cd</description>
 					<include content="SkinSettings_SettingsRadioButton">
 						<param name="label" value="Set $ADDON[script.skin.helper.colorpicker 32141]" />
 						<param name="label2" value="$INFO[Skin.String(defaultcolorpalette.label)]" />
 					</include>
+					<!-- 
+					pending https://github.com/kodi-community-addons/script.skin.helper.colorpicker/pull/14/commits/4ec0cf603b6220a63e7134a71de07ec7fb4f28cd
 					<onclick>SetProperty(Dialog.1.Label,$ADDON[script.skin.helper.colorpicker 32142])</onclick>
 					<onclick>SetProperty(Dialog.1.BuiltIn,Skin.SetString(defaultcolorpalette,basic)||Skin.SetString(defaultcolorpalette.label,$ADDON[script.skin.helper.colorpicker 32142]))</onclick>
 					<onclick>SetProperty(Dialog.2.Label,$ADDON[script.skin.helper.colorpicker 32143])</onclick>
@@ -1729,7 +1731,16 @@ static const TypeMapping types[] =
 					<onclick>SetProperty(Dialog.3.Label,$ADDON[script.skin.helper.colorpicker 32144])</onclick>
 					<onclick>SetProperty(Dialog.3.BuiltIn,Skin.SetString(defaultcolorpalette,material-design)||Skin.SetString(defaultcolorpalette.label,$ADDON[script.skin.helper.colorpicker 32144]))</onclick>
 					<onclick>SetProperty(Dialog.4.Label,$ADDON[script.skin.helper.colorpicker 32145])</onclick>
-					<onclick>SetProperty(Dialog.4.BuiltIn,Skin.SetString(defaultcolorpalette,webcolors)||Skin.SetString(defaultcolorpalette.label,$ADDON[script.skin.helper.colorpicker 32145]))</onclick>
+					<onclick>SetProperty(Dialog.4.BuiltIn,Skin.SetString(defaultcolorpalette,webcolors)||Skin.SetString(defaultcolorpalette.label,$ADDON[script.skin.helper.colorpicker 32145]))</onclick> -->
+					
+					<onclick>SetProperty(Dialog.1.Label,basic)</onclick>
+					<onclick>SetProperty(Dialog.1.BuiltIn,Skin.SetString(defaultcolorpalette,basic)||Skin.SetString(defaultcolorpalette.label,basic))</onclick>
+					<onclick>SetProperty(Dialog.2.Label,rainbow)</onclick>
+					<onclick>SetProperty(Dialog.2.BuiltIn,Skin.SetString(defaultcolorpalette,rainbow)||Skin.SetString(defaultcolorpalette.label,rainbow))</onclick>
+					<onclick>SetProperty(Dialog.3.Label,material-design)</onclick>
+					<onclick>SetProperty(Dialog.3.BuiltIn,Skin.SetString(defaultcolorpalette,material-design)||Skin.SetString(defaultcolorpalette.label,material-design))</onclick>
+					<onclick>SetProperty(Dialog.4.Label,webcolors)</onclick>
+					<onclick>SetProperty(Dialog.4.BuiltIn,Skin.SetString(defaultcolorpalette,webcolors)||Skin.SetString(defaultcolorpalette.label,webcolors))</onclick>
 					<onclick>RunScript(script.embuary.helper,action=createselect,header=Set default Pallete)</onclick>
 				</control>
 				<!-- spacer 5 -->
@@ -1766,7 +1777,17 @@ static const TypeMapping types[] =
 					<onclick>Notification([B]ALL Colors are Reset to default[/B],Default Color Theme Is in Use)</onclick>
 				</control>
 				
+				<control type="radiobutton" id="$PARAM[id]003">
+					<visible>!System.HasAddon(script.skin.helper.skinbackup)</visible>
+					<description>Backup All Skin Settings (complete skinbackup)</description>
+					<include content="SkinSettings_SettingsRadioButton">
+						<param name="label" value="  [I]Install Skinhelper Addon : script.skin.helper.skinbackup[/I]" />
+						<param name="label2" value="" />
+					</include>
+					<onclick condition="">InstallAddon(script.skin.helper.skinbackup)</onclick>
+				</control>
 				<control type="radiobutton" id="$PARAM[id]004">
+					<visible>System.HasAddon(script.skin.helper.skinbackup)</visible>
 					<description>Backup All Skin Settings (complete skinbackup)</description>
 					<include content="SkinSettings_SettingsRadioButton">
 						<param name="label" value="Create Skinbackup" />
@@ -1775,6 +1796,7 @@ static const TypeMapping types[] =
 					<onclick>RunScript(script.skin.helper.skinbackup,action=backup,promptfilename=true) </onclick>
 				</control>
 				<control type="radiobutton" id="$PARAM[id]005">
+					<visible>System.HasAddon(script.skin.helper.skinbackup)</visible>
 					<description>Restore a Skin Backup</description>
 					<include content="SkinSettings_SettingsRadioButton">
 						<param name="label" value="Restore a Skin Backup" />
@@ -1783,6 +1805,7 @@ static const TypeMapping types[] =
 					<onclick>RunScript(script.skin.helper.skinbackup,action=restore)</onclick>
 				</control>
 				<control type="radiobutton" id="$PARAM[id]006">
+					<visible>System.HasAddon(script.skin.helper.skinbackup)</visible>
 					<description>Manage Skin Themes (backup just colors, textures)</description>
 					<include content="SkinSettings_SettingsRadioButton">
 						<param name="label" value="Manage Skin Theme(s)" />
