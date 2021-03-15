@@ -17,6 +17,10 @@
 				<param name="id" value="50" />
 			</include>
 			
+			<!-- 
+			get include as similiar trailer/preview window used elsewhere
+			 dialog videoinfo
+			-->
 			<control type="group">
 				<visible>$EXP[TrailerIsPlaying]</visible>
 				<animation effect="fade" start="0" end="100" time="750">VisibleChange</animation>
@@ -35,7 +39,7 @@
 			<control type="list" id="50">
 				<animation effect="fade" start="100" end="0" time="650" condition="$EXP[TrailerIsPlaying]">conditional</animation>
 				<viewtype label="535">list</viewtype>
-				
+				<top>150</top>
 				<include content="Media_Container_Attributes">
 					<param name="view_id" value="50" />
 					<param name="left" value="35%" />
@@ -44,45 +48,43 @@
 				
 				<itemlayout height="105">
 					<control type="group">
-					<height>90</height>
-						<include content="list_panel">
+						<height>90</height>
+						<include content="listcontainer_infolayout">
+							<param name="artwork_w" value="90" />
+							<param name="artwork_h" value="90" />
+							<param name="artwork" value="circle" />
+							<param name="info_posy" value="105" />
+							<param name="info_headlinefont" value="CommonTag" />
+							<param name="info_dur_alignx" value="right" />
+							<param name="indicator_watchedstate_size" value="20" />
+							<param name="indicator_folderind_size" value="50" />
+							<param name="rating_width" value="110" />
+							<param name="rating_offset_right" value="90" />
 							<param name="autoscroll" value="false" />
 							<param name="highlightcolor" value="$VAR[color_lib_text_secondary]" />
 						</include>
 					</control>
 				</itemlayout>
 				<focusedlayout height="105">
-					<include>SetPropOnFocus_HiddenButton</include>
 					<control type="group">
 						<height>90</height>
-						<animation type="Focus" reversible="false">
-							<effect type="zoom" end="103,103" time="200" tween="sine" easing="out" center="auto" />
-							<effect type="zoom" end="99,99" time="150" tween="sine" delay="200" easing="out" center="auto" />
-						</animation>
-						<control type="group">
-							<control type="image">
-								<description>revisit alpha stuff cdiffuse and img bg texture</description>
-								<left>40</left>
-								<right>20</right>
-								<bordertexture colordiffuse="$VAR[color_lib_text_main]">artworkdiffuse/list_borderfo.png</bordertexture>
-								<texture colordiffuse="cc202020" background="true">colors/white50.png</texture>
-								<bordersize>3</bordersize>
-							</control>
-							<include content="list_panel">
-								<param name="autoscroll" value="true" />
-								<param name="highlightcolor" value="$VAR[color_lib_accent]" />
-							</include>
-						</control>
-						<control type="image">
-							<description>make visible optional</description>
-							<centertop>50%</centertop>
-							<visible>false</visible>
-							<left>14</left>
-							<visible>true</visible>
-							<width>60</width>
-							<height>60</height>
-							<texture colordiffuse="$VAR[color_lib_widgetitem_overlayicon]" diffuse="artworkdiffuse/circle.png" background="true">overlay/overlayplay.png</texture>
-						</control>
+						<include content="listcontainer_infolayout_focused">
+							<param name="bordertexture" value="artworkdiffuse/list_borderfo.png" />
+						</include>
+						<include content="listcontainer_infolayout">
+							<param name="artwork_w" value="90" />
+							<param name="artwork_h" value="90" />
+							<param name="artwork" value="circle" />
+							<param name="info_posy" value="105" />
+							<param name="info_headlinefont" value="CommonTag" />
+							<param name="info_dur_alignx" value="right" />
+							<param name="indicator_watchedstate_size" value="20" />
+							<param name="indicator_folderind_size" value="50" />
+							<param name="rating_width" value="110" />
+							<param name="rating_offset_right" value="90" />
+							<param name="autoscroll" value="true" />
+							<param name="highlightcolor" value="$VAR[color_lib_accent]" />
+						</include>
 					</control>
 				</focusedlayout>
 			</control>
@@ -97,91 +99,142 @@
 		</control>
 	</include>
 	
-	<include name="list_panel">
+	<include name="listcontainer_infolayout_focused">
+		<animation type="Focus" reversible="false">
+			<effect type="zoom" end="103,103" time="200" tween="sine" easing="out" center="auto" />
+			<effect type="zoom" end="99,99" time="150" tween="sine" delay="200" easing="out" center="auto" />
+		</animation>
+		<include>SetPropOnFocus_HiddenButton</include>
 		<control type="image">
-			<width>90</width>
-			<height>90</height>
-			<description>temp workaround for def white or very bright border, may an if not cond needed def icons</description>
-			<texture colordiffuse="cc181818">artworkdiffuse/circle.png</texture>
-			<bordersize>6</bordersize>
-			<visible>String.Contains(ListItem.Icon,default)</visible>
-        </control>
-		<control type="image">
-			<description>het half cutted circle for icon border studio or thumb midgrey just as workaround</description>
-			<width>90</width>
-			<height>90</height>
-			<texture background="true" diffuse="artworkdiffuse/circle.png">$VAR[ListItem_Icon]</texture>
-			<bordertexture colordiffuse="$VAR[color_lib_text_main]">artworkdiffuse/circleborder.png</bordertexture>
-			<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
-			<bordersize>2</bordersize>
+			<description>40 percent diffuse temp hardcoded - tend to use 20 percent color_lib_text_main - if fixedlist use bg frame outside of item,focusedlayout - current just id50</description>
+			<animation effect="fade" start="100" end="0" time="0" condition="Control.IsVisible(50) + String.IsEqual(ListItem.Label,..)">conditional</animation>
+			<description>revisit alpha stuff cdiffuse and img bg texture</description>
+			<left>40</left>
+			<right>20</right>
+			<bordertexture border="2" colordiffuse="$VAR[color_lib_text_main]">$PARAM[bordertexture]</bordertexture>
+			<texture colordiffuse="ff181818" background="true">colors/white40.png</texture>
+			<bordersize>3</bordersize>
+			<visible>!Control.IsVisible(56)</visible>
 		</control>
-		<control type="image">
-			<description>dont put gif n apng to xbt compression</description>
-			<centertop>50%</centertop>
-			<left>14</left>
-			<width>60</width>
-			<height>60</height>
-			<texture background="true">special://skin/extras/song_gifs/playingsong.gif</texture>
-			<colordiffuse>$VAR[color_lib_text_main]</colordiffuse>
-			<bordersize>4</bordersize>
-			<visible>ListItem.IsPlaying</visible>
-			<bordertexture colordiffuse="55000000">artworkdiffuse/circle.png</bordertexture>
-		</control>
-		<include content="List_2RowInfo">
-			<param name="left" value="105" />
-			<param name="right" value="250" />
-			<param name="headlinefont" value="CommonTag" />
-		</include>
-		<control type="textbox">
-			<centerbottom>25%</centerbottom>
-			<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
-			<wrapmultiline>true</wrapmultiline>
-			<font>CommonTag</font>
-			<width>200</width>
-			<right>90</right>
-			<align>right</align>
-			<aligny>top</aligny>
-			<textcolor>$VAR[color_lib_text_main]</textcolor>
-			<label>$VAR[ListItemDuration]</label>
-		</control>
-		<include content="StarsRating_Image">
-			<centertop>30%</centertop>
-			<right>85</right>
-			<param name="width" value="110" />
-			<param name="height" value="50" />
-			<param name="colordiffuse" value="$PARAM[highlightcolor]" />
-		</include>		
-		
-		<include content="ListItem_Indicators">
-			<param name="watched_size" value="20" />
-			<param name="folderind_size" value="50" />
-		</include>
 	</include>
 	
-	<variable name="ListItem_Icon">
-		<value condition="!Skin.HasSetting(View_50_Prefer_Discart_Song) + [Container.Content(songs) | String.IsEqual(ListItem.dbtype,song)] + !String.IsEmpty(ListItem.Art(album.discart))">$INFO[ListItem.Art(album.discart)]</value>
-		<value>$VAR[ImageLayout_poster]</value>	
+	<include name="listcontainer_infolayout">
+		<nested />
+		<control type="image">
+			<description>centered folderback</description>
+			<visible>String.IsEqual(ListItem.Label,..) + Control.IsVisible(56)</visible>
+			<centerleft>50%</centerleft>
+			<centertop>50%</centertop>
+			<width>90</width>
+			<height>90</height>
+			<texture colordiffuse="$VAR[color_lib_text_main]">defaultfolderback.png</texture>
+			<bordertexture colordiffuse="$VAR[color_lib_text_main]">artworkdiffuse/circleborder.png</bordertexture>
+			<aspectratio scalediffuse="false" aligny="center" align="left">scale</aspectratio>
+			<bordersize>2</bordersize>
+		</control>
+		<control type="group">
+			<control type="image">
+				<description>just 50 temp workaround for def white or very bright border, may an if not cond needed def icons</description>
+				<width>90</width>
+				<height>90</height>
+				<texture colordiffuse="cc181818">artworkdiffuse/circle.png</texture>
+				<bordersize>6</bordersize>
+				<visible>String.Contains(ListItem.Icon,default)</visible>
+				<visible>Control.IsVisible(50)</visible>
+			</control>
+			<control type="image">
+				<centertop>50%</centertop>
+				<left>$PARAM[artwork_posx]</left>
+				<centertop>50%</centertop>
+				<description>get half cutted circle for icon border studio or thumb midgrey just as workaround</description>
+				<width>$PARAM[artwork_w]</width>
+				<height>$PARAM[artwork_h]</height>
+				<texture background="true" diffuse="artworkdiffuse/$PARAM[artwork].png">$VAR[listcontainer_artwork]</texture>
+				<bordertexture colordiffuse="$VAR[color_lib_text_main]">artworkdiffuse/$PARAM[artwork]border.png</bordertexture>
+				<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
+				<bordersize>2</bordersize>
+			</control>
+			<control type="image">
+				<description>dont put gif n apng to xbt compression</description>
+				<centertop>50%</centertop>
+				<left>14</left>
+				<width>60</width>
+				<height>60</height>
+				<texture>special://skin/extras/song_gifs/playingsong.gif</texture>
+				<colordiffuse>$VAR[color_lib_text_main]</colordiffuse>
+				<bordersize>4</bordersize>
+				<visible>$EXP[ListView_UseItemOverlay] | ListItem.IsPlaying</visible>
+				<bordertexture colordiffuse="55000000">artworkdiffuse/circle.png</bordertexture>
+			</control>
+			<include content="List_2RowInfo">
+				<param name="left" value="$PARAM[info_posy]" />
+				<param name="right" value="250" />
+				<param name="headlinefont" value="$PARAM[info_headlinefont]" />
+			</include>
+			<control type="label">
+				<description>if needed width was 200</description>
+				<font>CommonTag</font>
+				<right>90</right>
+				<left>$PARAM[info_posy]</left>
+				<align>$PARAM[info_dur_alignx]</align>
+				<bottom>20</bottom>
+				<height>20</height>
+				<textcolor>$VAR[color_lib_text_main]</textcolor>
+				<label>$VAR[ListItemDuration]</label>
+			</control>
+			<include content="StarsRating_Image">
+				<description>56 not placed and adjusted like wished</description>
+				<top>5%</top>
+				<right>$PARAM[rating_offset_right]</right>
+				<param name="alignx" value="right" />
+				<param name="width" value="$PARAM[rating_width]" />
+				<param name="colordiffuse" value="$PARAM[highlightcolor]" />
+			</include>		
+			<include content="ListItem_Indicators" description="56 not placed and adjusted like wished">
+				<param name="watched_size" value="$PARAM[indicator_watchedstate_size]" />
+				<param name="folderind_size" value="$PARAM[indicator_folderind_size]" />
+			</include>
+		</control>
+	</include>
+	<!-- create variable
+	<value condition="$EXP[ListView_UseItemOverlay] + $EXP[Is_MediaFileItem]">overlay/overlayplay.png</value>
+	<value condition="$EXP[ListView_UseItemOverlay] + $EXP[Is_MediaFolderItem]">overlay/overlayfolder.png</value>
+	<value condition="ListItem.IsPlaying">special://skin/extras/song_gifs/playingsong.gif</value>
+	-->
+			
+	<variable name="listcontainer_artwork">
+		<value condition="Control.IsVisible(50) + [Skin.HasSetting(View_50_Prefer_Discart_Song) + !String.IsEmpty(ListItem.Art(album.discart)) + [Container.Content(songs) | String.IsEqual(ListItem.dbtype,song)]]">$INFO[ListItem.Art(album.discart)]</value>
+		<value condition="Control.IsVisible(56) + String.IsEqual(ListItem.Label,..)"></value>
+		<!-- unmerged -->
+		<value condition="Control.IsVisible(56) + !Skin.HasSetting(View_56_Prefer_CircleArt)">$VAR[PreferedThumb_Sourcing56]</value>
+		<!-- in future <value condition="Control.IsVisible(56)">$VAR[ImageLayout_landscape]</value> -->
+		<value condition="Control.IsVisible(50)">$VAR[ImageLayout_poster]</value>	
 	</variable>
 	
-	<variable name="PreferedThumb_Sourcing50">
-		<value condition="Skin.HasSetting(View_50_Prefer_Discart_Song) + !String.IsEmpty(ListItem.Art(album.discart)) + String.IsEqual(ListItem.dbtype,song)">$INFO[ListItem.Art(album.discart)]</value>
-		<value condition="!String.IsEmpty(ListItem.Art(discart)) + [String.IsEqual(ListItem.dbtype,album) + Skin.HasSetting(View_50_Prefer_Discart_Album)] | [Window.IsActive(videos) + Skin.HasSetting(View_50_Prefer_Disc_Video)]">$INFO[ListItem.Art(discart)]</value>
-		
+	
+	<!-- curr confusing - 50 is thumbsourcing for left big thumb, 56 use at itemlayout thumb -->
+	<variable name="PreferedArt_View_50">
+		disc song
+		<value condition="!String.IsEmpty(ListItem.Art(album.discart)) + Skin.HasSetting(View_50_Prefer_Discart_Song) + String.IsEqual(ListItem.dbtype,song)">$INFO[ListItem.Art(album.discart)]</value>
+		disc album or movie
+		<value condition="!String.IsEmpty(ListItem.Art(discart)) + [[Skin.HasSetting(View_50_Prefer_Discart_Album) + String.IsEqual(ListItem.dbtype,album)] | [Window.IsActive(videos) + Skin.HasSetting(View_50_Prefer_Disc_Video)]]">$INFO[ListItem.Art(discart)]</value>
+		clearart (remove in future ?)
 		<value condition="Skin.HasSetting(View_50_Prefer_clearart) + !String.IsEmpty(ListItem.Art(clearart))">$INFO[ListItem.Art(clearart)]</value>
-		<value condition="Skin.HasSetting(View_50_Prefer_clearart) + String.IsEmpty(ListItem.Art(clearart)) + !String.IsEmpty(ListItem.Art(characterart))">$INFO[ListItem.Art(characterart)]</value>
-		<value condition="[Skin.HasSetting(View_50_Prefer_clearlogo) | [Skin.HasSetting(View_50_Prefer_clearart) + String.IsEmpty(ListItem.Art(clearart)) + String.IsEmpty(ListItem.Art(characterart))]] + !String.IsEmpty(ListItem.Art(clearlogo))">$INFO[ListItem.Art(clearlogo)]</value>
-		
-		
+		clearart fallback = characterart (remove in future ?)
+		<value condition="Skin.HasSetting(View_50_Prefer_clearart) + [String.IsEmpty(ListItem.Art(clearart)) + !String.IsEmpty(ListItem.Art(characterart))]">$INFO[ListItem.Art(characterart)]</value>
+		clearlogo (keep) | clearart fallback = characterart (remove in future ?)
+		<value condition="[Skin.HasSetting(View_50_Prefer_clearlogo) | [Skin.HasSetting(View_50_Prefer_clearart) + [String.IsEmpty(ListItem.Art(clearart)) + String.IsEmpty(ListItem.Art(characterart))]]] + !String.IsEmpty(ListItem.Art(clearlogo))">$INFO[ListItem.Art(clearlogo)]</value>
+		landscape
 		<value condition="Skin.HasSetting(View_50_Prefer_landscape) + !String.IsEmpty(ListItem.Art(landscape))">$INFO[ListItem.Art(landscape)]</value>
-		<value condition="Skin.HasSetting(View_50_Prefer_landscape) + String.IsEmpty(ListItem.Art(landscape)) + !String.IsEmpty(ListItem.Art(fanart))">$INFO[ListItem.Art(fanart)]</value>
-		
+		fallback landscape ( will need check for clearlogo as overlay in sepereate control if empty landscape + not empty clearlogo )
+		<value condition="Skin.HasSetting(View_50_Prefer_landscape) + [String.IsEmpty(ListItem.Art(landscape)) + !String.IsEmpty(ListItem.Art(fanart))]">$INFO[ListItem.Art(fanart)]</value>
+		banner (removed from 50 )
 		<value condition="Skin.HasSetting(View_50_Prefer_banner) + !String.IsEmpty(ListItem.Art(banner))">$INFO[ListItem.Art(banner)]</value>
-		
+		keyart ( rem or keep? )
 		<value condition="Skin.HasSetting(View_50_Prefer_keyart) + !String.IsEmpty(ListItem.Art(keyart))">$INFO[ListItem.Art(keyart)]</value>
-		
+		animated poster ( keep ? )
 		<value condition="Skin.HasSetting(View_50_Prefer_animatedposter) + !String.IsEmpty(ListItem.Art(animatedposter))">$INFO[ListItem.Art(animatedposter)]</value>
-		
-		
+		poster = default | fallback for default icons
 		<value>$VAR[ImageLayout_poster]</value>
 	</variable>	
 	
@@ -191,7 +244,13 @@
 	
 	
 	shitty textures via paint,300x300
+	
+	indicator use global for needs
+	- list containers
+	- embuary info windows ?
+	- view 502
 	-->
+		
 	<include name="ListItem_Indicators">
         <control type="group">
             <visible>!String.IsEqual(ListItem.Label,..)</visible>
@@ -235,45 +294,48 @@
         </control>
     </include>
     
+	
+	<!-- view 50 big thumb left -->
     <include name="PreferedThumb">
-			<control type="image">
-				<left>5%</left>
-				<centertop>51%</centertop>
-				<width>26%</width>
-				<visible>[
-            Skin.HasSetting(View_$PARAM[id]_Prefer_Disc_Video) |
-            Skin.HasSetting(View_$PARAM[id]_Prefer_Discart_Album) |
-            Skin.HasSetting(View_$PARAM[id]_Prefer_Discart_Song) |
-            Skin.HasSetting(View_$PARAM[id]_Prefer_clearlogo) |
-            Skin.HasSetting(View_$PARAM[id]_Prefer_clearart)]
-            </visible>
-				<bordersize>2</bordersize>
-				<bordertexture />
-				<texture>$VAR[PreferedThumb_Sourcing50]</texture>
-				<aspectratio aligny="center" align="center">keep</aspectratio>
-			</control>
-			
-			<control type="image">
-				<left>5%</left>
-				<centertop>51%</centertop>
-				<width>26%</width>
-				<visible>![
-            Skin.HasSetting(View_$PARAM[id]_Prefer_Disc_Video) |
-            Skin.HasSetting(View_$PARAM[id]_Prefer_Discart_Album) |
-            Skin.HasSetting(View_$PARAM[id]_Prefer_Discart_Song) |
-            Skin.HasSetting(View_$PARAM[id]_Prefer_clearlogo) |
-            Skin.HasSetting(View_$PARAM[id]_Prefer_clearart)]
-            </visible>
-				<bordersize>2</bordersize>
-				<bordertexture border="5" colordiffuse="$VAR[color_lib_text_main]">frames/frame320x380.png</bordertexture>
-				<texture>$VAR[PreferedThumb_Sourcing50]</texture>
-				<aspectratio aligny="center" align="center">keep</aspectratio>
-			</control>
+		<control type="image">
+			<left>5%</left>
+			<centertop>51%</centertop>
+			<width>26%</width>
+			<visible>[
+		Skin.HasSetting(View_$PARAM[id]_Prefer_Disc_Video) |
+		Skin.HasSetting(View_$PARAM[id]_Prefer_Discart_Album) |
+		Skin.HasSetting(View_$PARAM[id]_Prefer_Discart_Song) |
+		Skin.HasSetting(View_$PARAM[id]_Prefer_clearlogo) |
+		Skin.HasSetting(View_$PARAM[id]_Prefer_clearart)]
+		</visible>
+			<bordersize>2</bordersize>
+			<bordertexture />
+			<texture background="true">$VAR[PreferedArt_View_$PARAM[id]]</texture>
+			<aspectratio aligny="center" align="center">keep</aspectratio>
+		</control>
+		
+		<control type="image">
+			<left>5%</left>
+			<centertop>51%</centertop>
+			<width>26%</width>
+			<visible>![
+		Skin.HasSetting(View_$PARAM[id]_Prefer_Disc_Video) |
+		Skin.HasSetting(View_$PARAM[id]_Prefer_Discart_Album) |
+		Skin.HasSetting(View_$PARAM[id]_Prefer_Discart_Song) |
+		Skin.HasSetting(View_$PARAM[id]_Prefer_clearlogo) |
+		Skin.HasSetting(View_$PARAM[id]_Prefer_clearart)]
+		</visible>
+			<bordersize>2</bordersize>
+			<bordertexture border="5" colordiffuse="$VAR[color_lib_text_main]">frames/frame320x380.png</bordertexture>
+			<texture background="true">$VAR[PreferedArt_View_$PARAM[id]]</texture>
+			<aspectratio aligny="center" align="center">keep</aspectratio>
+		</control>
 	</include>
 	
 	
 	<include name="List_2RowInfo">
 		<control type="group">
+			<description>font maybe global InfoCommon </description>
 			<visible>!String.IsEqual(ListItem.Label,..)</visible>
 			<left>$PARAM[left]</left>
 			<right>$PARAM[right]</right>
@@ -290,6 +352,7 @@
 			<control type="label">
 				<top>45</top>
 				<font>CommonTag</font>
+				<font>font20_title</font>
 				<align>left</align>
 				<aligny>top</aligny>
 				<textcolor>$VAR[color_lib_text_secondary]</textcolor>
@@ -297,10 +360,5 @@
 				<label>$VAR[ListItemPremieredOrYear,,     ]$INFO[ListItem.mpaa,,     ]$INFO[ListItem.genre,,     ]$VAR[ListLabel2]</label>
 			</control>
 		</control>
-	</include>
-	
-			<!-- Skin.HasSetting(View_502_DisableFooter)
-			
-			!Skin.HasSetting(View_502_DisableFooter) -->
-			
+	</include>		
 </includes>

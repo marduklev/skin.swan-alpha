@@ -13,6 +13,17 @@
 				</include>
 			</control>
 			
+			<control type="image">
+				<description>revisit alpha stuff cdiffuse and img bg texture</description>
+				<visible>control.hasfocus(56)</visible>
+				<bordertexture border="2" colordiffuse="$VAR[color_lib_text_main]">frames/frame.png</bordertexture>
+				<texture colordiffuse="cc202020" background="true">colors/white50.png</texture>
+				<bordersize>3</bordersize>
+				<left>135</left>
+				<right>100</right>
+				<height>270</height>
+				<centertop>50%</centertop>
+			</control>
 			
 			<control type="fixedlist" id="56">
 				<visible>Container.Content(movies) | Container.Content(sets) | Container.Content(tvshows) | Container.Content(episodes) | Container.Content(artists) | Container.Content(albums)</visible>
@@ -30,70 +41,86 @@
 				
 				<viewtype label="episodes">episodes panel</viewtype>
 				
-				<itemlayout height="280">
+				<itemlayout height="285">
 					<control type="group">
 						<height>270</height>
 						
-						<include content="list_panel56">
+						<include content="listcontainer_infolayout">
+							<param name="artwork_w" value="400" />
+							<param name="artwork_h" value="236" />
+							<param name="artwork_posx" value="50" />
+							<param name="artwork" value="landscape" />
+							
+							<param name="info_posy" value="500" />
+							<param name="info_headlinefont" value="InfoCommon" />
+							<param name="info_dur_alignx" value="left" />
+							
 							<param name="autoscroll" value="false" />
 							<param name="highlightcolor" value="$VAR[color_lib_text_secondary]" />
+							<param name="indicator_watchedstate_size" value="30" />
+							<param name="indicator_folderind_size" value="100" />
+							
+							<param name="rating_width" value="150" />
+							<param name="rating_offset_right" value="55" />
+							<include content="list_landscape_info">
+							</include>
+							
 						</include>
 					</control>
 				</itemlayout>
-				<focusedlayout height="280">
+				<focusedlayout height="285">
 					
 					<control type="group">
-						<visible>!Control.HasFocus(56)</visible>
 						<height>270</height>
-						<include content="list_panel56">
+						<include content="listcontainer_infolayout_focused">
+							<param name="bordertexture" value="frames/frame.png" />
+						</include>
+						
+						<include content="listcontainer_infolayout">
+							<param name="artwork_w" value="400" />
+							<param name="artwork_h" value="236" />
+							<param name="artwork_posx" value="63" />
+							<param name="artwork" value="landscape" />
+							
+							<param name="info_posy" value="500" />
+							<param name="info_headlinefont" value="InfoCommon" />
+							<param name="info_dur_alignx" value="left" />
 							<param name="autoscroll" value="false" />
 							<param name="highlightcolor" value="$VAR[color_lib_text_secondary]" />
+							<param name="indicator_watchedstate_size" value="30" />
+							<param name="indicator_folderind_size" value="100" />
+							<param name="rating_width" value="160" />
+							<param name="rating_offset_right" value="55" />
+							<include content="list_landscape_info">
 						</include>
-					</control>
-					
-					<control type="group">
-						<include content="SetPropOnFocus_HiddenButton">
-							<onunfocus condition="!String.IsEmpty(Window(Home).Property(TrailerIsPlaying))">PlayerControl(stop)</onunfocus>
+							
 						</include>
-						<visible>Control.HasFocus(56)</visible>
-						<animation type="Focus" reversible="false">
-							<effect type="zoom" end="102,102" time="200" tween="sine" easing="out" center="auto" />
-							<effect type="zoom" end="98,98" time="150" tween="sine" delay="200" easing="out" center="auto" />
-						</animation>
+						
 						<control type="image">
-							<description>revisit alpha stuff cdiffuse and img bg texture</description>
-							<left>40</left>
-							<bordertexture border="2" colordiffuse="$VAR[color_lib_text_main]">frames/frame.png</bordertexture>
-							<texture colordiffuse="cc202020" background="true">colors/white50.png</texture>
-							<bordersize>3</bordersize>
-						</control>
-						<include content="list_panel56">
-							<param name="autoscroll" value="true" />
-							<param name="highlightcolor" value="$VAR[color_lib_accent]" />
-						</include>
-						<control type="image">
+							<animation type="Focus" reversible="false">
+								<effect type="fade" start="0" end="100" time="350" delay="100" tween="sine" easing="out" center="auto" />
+							</animation>
 							<centertop>50%</centertop>
 							<visible>!String.Contains(ListItem.Icon,default)</visible>
 							<visible>!ListItem.IsPlaying</visible>
-							<left>10</left>
+							<left>30</left>
 							<width>60</width>
 							<height>60</height>
 							<bordertexture colordiffuse="ff131313">artworkdiffuse/circle.png</bordertexture>
 							<texture colordiffuse="$VAR[color_lib_widgetitem_overlayicon]" diffuse="artworkdiffuse/circle.png" background="true">overlay/overlayplay.png</texture>
 						</control>
+						
 					</control>
 					<control type="group">
 						<visible>Player.HasMedia + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
-						<top>15</top>
-						<left>50</left>
-						<width>415</width>
-						<height>240</height>
+						<top>10</top>
+						<left>40</left>
+						<width>420</width>
+						<height>245</height>
 						<control type="image">
-							<texture colordiffuse="">colors/black.png</texture>
+							<texture>colors/black.png</texture>
 						</control>
-						<control type="videowindow">
-						
-						</control>
+						<control type="videowindow" />
 					</control>
 				</focusedlayout>
 			</control>
@@ -106,70 +133,15 @@
 				<param name="rating_flagalign" value="left" />
 			</include>
 		</control>
-		
-		
-		
-		
-		
 	</include>
 	
-	<include name="list_panel56">
-		
-		<control type="image">
-			<visible>String.IsEqual(ListItem.Label,..)</visible>
-			<centerleft>50%</centerleft>
-			<centertop>50%</centertop>
-			<width>90</width>
-			<height>90</height>
-			<texture  colordiffuse="$VAR[color_lib_text_main]" background="true" diffuse="artworkdiffuse/circle.png">$VAR[ListItem_Icon]</texture>
-			<bordertexture colordiffuse="$VAR[color_lib_text_main]">artworkdiffuse/circleborder.png</bordertexture>
-			<aspectratio scalediffuse="false" aligny="center" align="left">scale</aspectratio>
-			<bordersize>2</bordersize>
-		</control>
-		<control type="image">
-			<visible>!Skin.HasSetting(View_56_Prefer_CircleArt)</visible>
-			<visible>!String.IsEqual(ListItem.Label,..) + ![Skin.HasSetting(View_56_Prefer_Disc_Video) | Skin.HasSetting(View_56_Prefer_clearart) | Skin.HasSetting(View_56_Prefer_clearlogo)]</visible>
-			<left>50</left>
-			<centertop>50%</centertop>
-			<width>400</width>
-			<height>236</height>
-			<!-- <bordertexture border="2" colordiffuse="$VAR[color_lib_text_main]">frames/frame.png</bordertexture> -->
-			<bordertexture colordiffuse="$VAR[color_lib_text_main]">artworkdiffuse/landscapeborder.png</bordertexture>
-			<texture colordiffuse="$VAR[color_lib_text_main]" background="true" diffuse="artworkdiffuse/landscape.png">$VAR[PreferedThumb_Sourcing56]</texture>
-			<aspectratio>keep</aspectratio>
-			<bordersize>2</bordersize>
-		</control>
-		<control type="image">
-			<visible>!Skin.HasSetting(View_56_Prefer_CircleArt)</visible>
-			<visible>!String.Contains(ListItem.Icon,default) + [Skin.HasSetting(View_56_Prefer_Disc_Video) | Skin.HasSetting(View_56_Prefer_clearart) | Skin.HasSetting(View_56_Prefer_clearlogo)]</visible>
-			<left>50</left>
-			<centertop>50%</centertop>
-			<width>400</width>
-			<height>236</height>
-			<texture colordiffuse="$VAR[color_lib_text_main]" background="true" diffuse="artworkdiffuse/landscape.png">$VAR[PreferedThumb_Sourcing56]</texture>
-			<aspectratio>keep</aspectratio>
-			<bordersize>2</bordersize>
-		</control>
-		<control type="image">
-			<description>dont put gif n apng to xbt compression</description>
-			<centertop>50%</centertop>
-			<left>15</left>
-			<width>60</width>
-			<height>60</height>
-			<texture background="true">special://skin/extras/song_gifs/playingsong.gif</texture>
-			<colordiffuse>$VAR[color_lib_text_main]</colordiffuse>
-			<bordersize>4</bordersize>
-			<visible>ListItem.IsPlaying</visible>
-			<bordertexture colordiffuse="55000000">artworkdiffuse/circle.png</bordertexture>
-		</control>
-		
+	<include name="list_landscape_info">
 		<control type="group">
 			<visible>Skin.HasSetting(View_56_Prefer_CircleArt)</visible>
 			<visible>!String.Contains(ListItem.Icon,default)</visible>
 			<left>10</left>
 			<width>430</width>
 			<height>280</height>
-			<visible>true</visible>
 				
 			<control type="image">
 				<width>200</width>
@@ -223,12 +195,6 @@
 			</control>
 		</control>
 		
-		<include content="List_2RowInfo">
-			<param name="left" value="500" />
-			<param name="right" value="250" />
-			<param name="headlinefont" value="InfoCommon" />
-		</include>
-		
 		<control type="textbox">
 			<autoscroll delay="2000" time="5000" repeat="1500">$PARAM[autoscroll]</autoscroll>
 			<description>plot</description>
@@ -243,40 +209,10 @@
 			<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
 			<label>$VAR[plot]</label>
 		</control>
-		<control type="textbox">
-			<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
-			<wrapmultiline>true</wrapmultiline>
-			<font>CommonTag</font>
-			<width>580</width>
-			<left>500</left>
-			<bottom>5</bottom>
-			<height>50</height>
-			<align>left</align>
-			<aligny>center</aligny>
-			<textcolor>$VAR[color_lib_text_secondary]</textcolor>
-			<label>$VAR[ListItemDuration]</label>
-		</control>
-		<include content="StarsRating_Image">
-			<centertop>15%</centertop>
-			<right>50</right>
-			<param name="width" value="150" />
-			<param name="height" value="60" />
-			<param name="colordiffuse" value="$PARAM[highlightcolor]" />
-		</include>	
-		<include content="ListItem_Indicators">
-			<param name="watched_size" value="30" />
-			<param name="folderind_size" value="100" />
-		</include>
 	</include>
 	
 	<variable name="PreferedThumb_Sourcing56">
-		<value condition="String.IsEqual(ListItem.Label,$LOCALIZE[21452])">defaultaddoninputstream.png</value>
-		<value condition="String.IsEqual(ListItem.Label,$LOCALIZE[20462])">defaultaddsource.png</value>
-		
-		<value condition="[Container.Content(studios) | String.IsEqual(ListItem.dbtype,studio)]">$INFO[ListItem.Label,resource://resource.images.studios.white/,.png]</value>
-		
-		<value condition="String.StartsWith(ListItem.Label,*) + !String.IsEmpty(Container.Art(thumb))">$INFO[Container.Art(thumb)]</value>
-		
+	
 		<value condition="Skin.HasSetting(View_56_Prefer_Discart_Song) + !String.IsEmpty(ListItem.Art(album.discart)) + String.IsEqual(ListItem.dbtype,song)">$INFO[ListItem.Art(album.discart)]</value>
 		<value condition="!String.IsEmpty(ListItem.Art(discart)) + [[String.IsEqual(ListItem.dbtype,album) + Skin.HasSetting(View_56_Prefer_Discart_Album)] | [Window.IsActive(videos) + Skin.HasSetting(View_56_Prefer_Disc_Video)]]">$INFO[ListItem.Art(discart)]</value>
 		
