@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window type="dialog" id="1194">
-	<!-- conditions depending on view at later state at nested hidden button
-	NOT DONE
-	hide me on DIALOGS -->
-	
-	<visible>System.IdleTime(5) + String.StartsWith(System.CurrentControlID,50) + !Player.HasMedia</visible>
-	<visible>[Window.IsActive(videos) + Skin.HasSetting(autoplay_trailer_common)] | [[Window.IsActive(home) + !String.IsEqual(Skin.String(HomeLayout),MenuTiles)] + Skin.HasSetting(autoplay_trailer_home)]</visible>
+	<visible>System.IdleTime(5) + !Player.HasMedia</visible>
+	<visible>[Window.IsActive(videos) + 
+			[String.IsEqual(System.CurrentControlID,50) + Skin.HasSetting(View_50_AutoPlayTrailer)] | 
+			[String.IsEqual(System.CurrentControlID,56) + Skin.HasSetting(View_56_AutoPlayTrailer)] | 
+			[String.IsEqual(System.CurrentControlID,502) + Skin.HasSetting(View_502_AutoPlayTrailer)]] | 
+            [[Window.IsActive(home) + String.StartsWith(System.CurrentControlID,50)] + Skin.HasSetting(autoplay_trailer_home)]</visible>
 	<visible>String.IsEmpty(Window(Home).Property(TrailerIsPlaying)) + !String.IsEmpty(Window(home).Property(trailer_avail))</visible>
 	
 	<onload condition="Window.IsActive(home) + String.IsEqual(Skin.String(HomeLayout),Spotlight)">SetProperty(busyspinner,spotlighttrailerhome,home)</onload>
 	<onload condition="!String.IsEmpty(Window(home).Property(listitemtrailer))">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onload>
-	
 	<onload>SetProperty(TrailerIsPlaying,true,home)</onload>
-	<onload condition="!Skin.HasSetting(home_trailer_showwidget) + !String.IsEqual(Skin.String(HomeLayout),Spotlight)">ActivateWindow(1122)</onload>
+	<onload condition="Window.IsActive(home) + !Skin.HasSetting(home_trailer_showwidget) + !String.IsEqual(Skin.String(HomeLayout),Spotlight)">ActivateWindow(1122)</onload>
 	<!-- better would be hide busy loader as personal pref if yt fails it can hang in loader -->
 	<!-- set props to prevent loop, still dont like to use alarm -->
 	<animation effect="fade" start="100" end="0" time="325">WindowClose</animation>
