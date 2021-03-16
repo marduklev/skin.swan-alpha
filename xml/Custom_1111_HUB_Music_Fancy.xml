@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<window type="window" id="1110">
+<window type="window" id="1111">
 
 <!-- 
 
@@ -100,14 +100,12 @@ default
 		<description>H U B    H E A D E R    B A R</description>	
 		<height>100</height>
         <width>100%</width>
-		
 		<control type="image">
 			<texture colordiffuse="$VAR[color_hub_menu_panel_gradienttop]">colors/white.png</texture>
 		</control>
-		
 		<control type="grouplist" id="8000">
 			<top>10</top>
-			<left>300</left>
+			<left>150</left>
 			<!-- <align>right</align> -->
 			<width>83%</width>
 			<height>90</height>
@@ -272,16 +270,17 @@ default
 		
 	<control type="group">
 		<description>H U B   B A C K G R O U N D</description>
-		<animation effect="slide" start="0,0" end="-310,0" time="300" tween="cubic" easing="in" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),true)">conditional</animation>
 		<right>0</right>
 		<top>100</top>
-		<width>84%</width>
+		<width>100%</width>
 		<control type="image">
 			<visible>String.StartsWith(Window(home).Property(HUB_Music),Is)</visible>
-			<fadetime>350</fadetime>
-			<bordertexture diffuse="diffuse/gradientlandscapetop100.png" colordiffuse="$VAR[color_hub_backgroundlayer1]">colors/white.png</bordertexture>
-			<texture background="true" diffuse="diffuse/gradientlandscapetop50.png">$INFO[Window(home).Property(HUB_artwork)]</texture>
-			<aspectratio scalediffuse="true" align="right" aligny="top">keep</aspectratio>
+			<height>500</height>
+			<top>0</top>
+			<left>150</left>
+			<texture background="true" diffuse="diffuse/spotlightgradientcenter.png">$INFO[Window(home).Property(HUB_artwork)]</texture>
+			<aspectratio scalediffuse="true" align="left" aligny="top">keep</aspectratio>
+			<animation effect="fade" start="100" end="50" time="0" condition="true">conditional</animation>
 		</control>
 		
 		<control type="group">
@@ -295,14 +294,14 @@ default
 				<aspectratio scalediffuse="true" align="right" aligny="top">scale</aspectratio>
 			</control>
 		</control>
-		<control type="image">
+	<!-- 	<control type="image">
 			<description>10percentgrey</description>
 			<visible>String.StartsWith(Window(home).Property(HUB_Music),Is) + !Player.HasVideo</visible>
 			<fadetime>350</fadetime>
 			<bordertexture diffuse="diffuse/gradientlandscapetop100.png" colordiffuse="1A686868">colors/white.png</bordertexture>
 			<texture diffuse="diffuse/gradientlandscapetop100.png" colordiffuse="$VAR[color_hub_backgroundlayer1]">colors/white70.png</texture>
 			<aspectratio scalediffuse="true" align="right" aligny="top">stretch</aspectratio>
-		</control>
+		</control> -->
 		
 		
 		<!-- Conditional Info stuff -->
@@ -331,255 +330,7 @@ default
 		</control>
 	</control>
 	
-	<control type="group">
-		<description>S I D E    B A R    L E F T</description>
-		
-		<animation effect="slide" start="0,0" end="-450,0" time="300" tween="cubic" easing="inout" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),true)">conditional</animation>
-		<height>100%</height>
-        <width>16%</width>
-		<posy>100</posy>
-		
-		<include content="bg_gradientmulticolor" />
-		
-		<control type="grouplist" id="9000">
-			<posx>10</posx>
-			<onup>8001</onup>
-			<ondown>9000</ondown>
-			<onleft>8000</onleft>
-			<onright>6666</onright>
-			<orientation>vertical</orientation>
-			<itemgap>10</itemgap>
-			
-			<include content="hub_sectionheader">
-				<param name="id" value="01" />
-				<param name="label" value="$LOCALIZE[10516]" />
-			</include>
-			
-			<include content="hub_button">
-				<param name="visible" value="PVR.HasRadioChannels" />
-				<param name="id" value="02" />
-				<param name="property" value="pvr" />
-				<param name="action" value="ActivateWindow(PVR,pvr://channels/radio/,return)" />
-				<param name="label" value="$LOCALIZE[19024]" />
-				<param name="radio_icon" value="defaultaddonartistinfo.png" />
-			</include>
-			
-			<include content="hub_button">
-				<param name="id" value="03" />
-				<param name="property" value="common" />
-				<param name="action" value="ActivateWindow(Music,sources://music/,return)" />
-				<param name="label" value="$LOCALIZE[2]" />
-				<param name="radio_icon" value="defaultaddonmusic.png" />
-			</include>
-			
-			<include content="hub_button">
-				<param name="id" value="04" />
-				<param name="property" value="musicvideos" />
-				<param name="action" value="ActivateWindow(Videos,videodb://musicvideos/titles/,return)" />
-				<param name="label" value="$LOCALIZE[20389]" />
-				<param name="radio_icon" value="defaultmusicvideos.png" />
-			</include>
-			
-			<include content="hub_button">
-				<param name="id" value="05" />
-				<param name="property" value="musicaddons" />
-				<param name="action" value="ActivateWindow(Music,addons://sources/audio/,return)" />
-				<param name="label" value="$LOCALIZE[1038]" />
-				<param name="radio_icon" value="defaultaddonlibrary.png" />
-			</include>
-			
-			<!-- to much api calls ?
-			<include content="hub_button">
-				<param name="visible" value="System.HasAddon(plugin.video.youtube)" />
-				<param name="id" value="06" />
-				<param name="property" value="youtube" />
-				<param name="action" value="RunPlugin(plugin.video.youtube)" />
-				<param name="label" value="You Tube" />
-				<param name="radio_icon" value="icons/youtube.png" />
-			</include>
-			-->
-			<!-- 
-			<include content="hub_button">
-				<param name="visible" value="System.HasAddon(plugin.audio.spotify)" />
-				<param name="id" value="07" />
-				<param name="property" value="musicaddons" />
-				<param name="action" value="RunPlugin(plugin.audio.spotify)" />
-				<param name="label" value="Spotify" />
-				<param name="radio_icon" value="icons/spotify.png" />
-			</include>
-			<include content="hub_button">
-				<param name="visible" value="System.HasAddon(plugin.audio.soundcloud)" />
-				<param name="id" value="08" />
-				<param name="property" value="soundcloud" />
-				<param name="action" value="RunPlugin(plugin.audio.soundcloud)" />
-				<param name="label" value="Soundcloud" />
-				<param name="radio_icon" value="icons/sound2.png" />
-			</include> -->
-			
-			<include content="spacer_h">
-				<param name="id" value="10" />
-			</include>
-			<include content="hub_sectionheader">
-				<param name="id" value="11" />
-				<param name="label" value="$LOCALIZE[31148]" />
-			</include>
-			
-			<include content="hub_button">
-				<param name="id" value="12" />
-				<param name="property" value="artists" />
-				<param name="action" value="ActivateWindow(Music,musicdb://artists/,return)" />
-				<param name="label" value="$LOCALIZE[133]" />
-				<param name="radio_icon" value="defaultmusicartists.png" />
-			</include>
-			
-			<include content="hub_button">
-				<param name="id" value="13" />
-				<param name="property" value="albums" />
-				<param name="action" value="ActivateWindow(Music,musicdb://albums/,return)" />
-				<param name="label" value="$LOCALIZE[132]" />
-				<param name="radio_icon" value="defaultmusicalbums.png" />
-			</include>
-			<include content="hub_button">
-				<param name="id" value="14" />
-				<param name="property" value="compilations" />
-				<param name="action" value="ActivateWindow(Music,musicdb://compilations/,return)" />
-				<param name="label" value="$LOCALIZE[521]" />
-				<param name="radio_icon" value="defaultmusiccompilations.png" />
-			</include>
-			
-			<include content="hub_button">
-				<param name="id" value="15" />
-				<param name="property" value="songs" />
-				<param name="action" value="ActivateWindow(Music,musicdb://songs/,return)" />
-				<param name="label" value="$LOCALIZE[134]" />
-				<param name="radio_icon" value="defaultaddonaudiodecoder.png" />
-			</include>
-			
-			<include content="hub_button">
-				<param name="id" value="16" />
-				<param name="property" value="genres" />
-				<param name="action" value="ActivateWindow(Music,musicdb://genres/,return)" />
-				<param name="label" value="$LOCALIZE[135]" />
-				<param name="radio_icon" value="defaultmusicgenres.png" />
-			</include>
-			
-			<include content="hub_button">
-				<param name="id" value="17" />
-				<param name="property" value="years" />
-				<param name="action" value="ActivateWindow(Music,musicdb://years/,return)" />
-				<param name="label" value="$LOCALIZE[345]" />
-				<param name="radio_icon" value="defaultyear.png" />
-			</include>
-			
-			<include content="spacer_h">
-				<param name="id" value="20" />
-			</include>
-			<include content="hub_sectionheader">
-				<param name="id" value="21" />
-				<param name="label" value="$LOCALIZE[20382]" />
-			</include>
-			
-			<include content="hub_button">
-				<param name="id" value="22" />
-				<param name="property" value="album_recentadd" />
-				<param name="action" value="ActivateWindow(Music,musicdb://recentlyaddedalbums/,return)" />
-				<param name="label" value="$LOCALIZE[359]" />
-				<param name="radio_icon" value="defaultaddonaudiodecoder.png" />
-			</include>
-			<include content="hub_button">
-				<param name="id" value="23" />
-				<param name="property" value="albums_recentplayed" />
-				<param name="action" value="ActivateWindow(Music,musicdb://recentlyplayedalbums/,return)" />
-				<param name="label" value="$LOCALIZE[517]" />
-				<param name="radio_icon" value="defaultaddonaudiodecoder.png" />
-			</include>
-			<include content="hub_button">
-				<param name="id" value="24" />
-				<param name="property" value="musicvideos_recentadd" />
-				<param name="action" value="ActivateWindow(Videos,videodb://recentlyaddedmusicvideos/,return)" />
-				<param name="label" value="$LOCALIZE[20390]" />
-				<param name="radio_icon" value="defaultaddonaudiodecoder.png" />
-			</include>
-			
-			<include content="spacer_h">
-				<param name="id" value="40" />
-				<param name="gap" value="100" />
-			</include>
-			
-			<include content="hub_sectionheader">
-				<param name="id" value="41" />
-				<param name="label" value="Meine Playlists" />
-			</include>
-			
-			<control type="panel" id="9042">
-				<description>stored playlists</description>
-				<preloaditems>2</preloaditems>
-				<orientation>vertical</orientation>
-				<width>300</width>
-				<height>159</height>
-				<onleft>41</onleft>
-				<onright condition="Control.IsVisible(5040)">5040</onright>
-				<onup>41</onup>
-				<ondown>42</ondown>
-				
-				<!-- <onclick>ActivateWindow(Music,special://musicplaylists/,return)</onclick> -->
-				<onclick>SetProperty(HUB_Music,playlists,home)</onclick>
-				<onclick>SetProperty(XSP,$INFO[ListItem.Folderpath],home)</onclick>
-				
-				<scrolltime tween="quadratic">400</scrolltime>
-				
-				<itemlayout height="40" width="240">
-					<control type="image">
-						<top>-5</top>
-						<width>40</width>
-						<height>40</height>
-						<left>10</left>
-						<texture colordiffuse="$VAR[color_hub_menu_text_nf]">defaultplaylist.png</texture>
-					</control>
-					<control type="textbox">
-						<left>60</left>
-						<width>110%</width>
-						<height>25</height>
-						<textcolor>$VAR[color_hub_menu_text_nf]</textcolor>
-						<font>MenucontrolItem</font>
-						<autoscroll>false</autoscroll>
-						<label>$INFO[ListItem.Label]</label>
-					</control>
-				</itemlayout>
-				<focusedlayout height="40" width="240">
-					<control type="image">
-						<top>-5</top>
-						<width>40</width>
-						<height>40</height>
-						<left>10</left>
-						<texture colordiffuse="$VAR[color_hub_menu_text_fo]">defaultplaylist.png</texture>
-					</control>
-					<control type="textbox">
-						<left>60</left>
-						<width>110%</width>
-						<height>25</height>
-						<font>MenucontrolItem</font>
-						<textcolor>$VAR[color_hub_menu_text_fo]</textcolor>
-						<autoscroll>true</autoscroll>
-						<label>$INFO[ListItem.Label]</label>
-					</control>
-				</focusedlayout>
-				<!-- 
-				<content>
-					<item id="111">
-						<label>Partymode</label>
-						<label2 />
-						<icon>defaultplaylist.png</icon>
-						<thumb>defaultplaylist.png</thumb>
-						<onclick>PlayerControl(Partymode(music))</onclick>
-					</item>
-				</content>
-				-->
-				<content>special://musicplaylists/</content>
-				<content>special://skin/playlists/music/</content>
-			</control>
-		</control>
-	</control>
+	
 	
 	
 	
@@ -587,11 +338,15 @@ default
 	<!-- multiple gouplist based on visible by prop ? -->
 	<control type="grouplist" id="6666">
 		<animation effect="slide" start="0,0" end="-300,0" time="300" tween="cubic" easing="in" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),true)">conditional</animation>
+		
+		<!-- <animation effect="slide" start="0,0" end="300,0" time="350" tween="cubic" easing="inout" condition="String.IsEqual(Window.Property(Menucontrol),focus)">conditional</animation> -->
+		
+		<onfocus condition="!String.IsEmpty(Window.Property(Menucontrol))">ClearProperty(Menucontrol)</onfocus>
 		<description>fucking scrollbar issue drives me nuts</description>
 		<top>150</top>
 		<bottom>5</bottom>
-		<left>19%</left>
-		<width>81%</width>
+		<left>150</left>
+		<width>1555</width>
 		<itemgap>-45</itemgap>
 		<orientation>vertical</orientation>
 		<usecontrolcoords>true</usecontrolcoords>
@@ -601,7 +356,8 @@ default
 		<onup>8001</onup>
 		
 		<pagecontrol>666660</pagecontrol>
-		<onleft>666660</onleft>
+		<onleft condition="Control.IsVisible(666660)">666660</onleft>
+		<onleft condition="!Control.IsVisible(666660)">9000</onleft>
 		
 		<include content="spacer_h">
 			<param name="id" value="5000" />
@@ -1263,6 +1019,7 @@ default
 			<ondown>5009</ondown>
 			
 			<scrolltime tween="quadratic">400</scrolltime>
+			<autoscroll>true</autoscroll>
 			
 			<itemlayout height="300" width="420">
 				<control type="group">
@@ -2034,6 +1791,7 @@ default
 			<ondown>5009</ondown>
 			
 			<scrolltime tween="quadratic">400</scrolltime>
+			<autoscroll>true</autoscroll>
 			
 			<itemlayout height="300" width="420">
 				<control type="group">
@@ -2109,6 +1867,7 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<ondown>5009</ondown>
 			
 			<scrolltime tween="quadratic">400</scrolltime>
+			<autoscroll>true</autoscroll>
 			
 			<onclick condition="!String.IsEqual(Container(5040).ListItem.DBtype,song)">PlayMedia($INFO[Container(9042).ListItem.Folderpath],isdir)</onclick>
 			<onclick condition="String.IsEqual(Container(5040).ListItem.DBtype,song)">PlayMedia($INFO[Container(9042).ListItem.Folderpath])</onclick>
@@ -2151,38 +1910,53 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 		<!-- SPECIAL ARTIST VIEW -->
 		<!-- ################### -->
 		<control type="group" id="6020">
-			<height>350</height>
+			<left>800</left>
+			<height>300</height>
 			<width>100%</width>
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),IsHUBartistContent) | String.IsEqual(Window(home).Property(HUB_Music),IsHUBalbumContent)</visible>
-				
-			<control type="textbox" id="6021">
-				<top>160</top>
+			<control type="label" id="6021">
+				<top>50</top>
 				<aligny>top</aligny>
 				<height>50</height>
 				<width>100%</width>
-				<font>HUB_WidgetHeader</font>
+				<font>font_titlefallbackspotlight</font>
 				<label>$INFO[Window(home).Property(HUB_Music_artist)]</label>
 				<textcolor>$VAR[color_hub_text_main]</textcolor>
 			</control>
+			<control type="grouplist" id="94443">
+				<ondown>6023</ondown>
+					<itemgap>50</itemgap>
+					<top>200</top>
+					<orientation>horizontal</orientation>
+					<height>50</height>
+					<width>600</width>
+						<control type="button" id="94444"><width>50</width><height>50</height></control>
+						<control type="button" id="94445"><width>50</width><height>50</height></control>
+						<control type="button" id="94446"><width>50</width><height>50</height></control>
+						<control type="button" id="94447"><width>50</width><height>50</height></control>
+				</control>
 			<control type="textbox" id="6022">
-				<top>200</top>
-				<height>200</height>
+				<top>250</top>
 				<aligny>top</aligny>
+				<height>50</height>
 				<width>100%</width>
-				<font>CommonTag</font>
-				<label>$INFO[Container(5120).NumAllItems,Albums (,)][CR][CR]$INFO[ListItem.Property(Artist_YearsActive)]</label>
+				<font>font_Montserrat_30_semibold</font>
+				<!-- <label>$INFO[Window(home).Property(HUB_artistinfo)]</label> -->
+				<label>test</label>
 				<textcolor>$VAR[color_hub_text_main]</textcolor>
 			</control>
+			
 		</control>
+		
+		
 		<control type="grouplist" id="6023">
 			<description>albums and song - by artist</description>
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),IsHUBartistContent) | String.IsEqual(Window(home).Property(HUB_Music),IsHUBalbumContent)</visible>
 			<left>0</left>
-			<height>675</height>
+			<height>700</height>
 			<width>100%</width>
-			
-			<itemgap>30</itemgap>
-			<orientation>horizontal</orientation>
+			<itemgap>20</itemgap>
+			<orientation>vertical</orientation>
 			
 			<usecontrolcoords>true</usecontrolcoords>
 			
@@ -2191,21 +1965,16 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<onleft>9000</onleft>
 			<onright>7060</onright>
 			
-			<control type="panel" id="5120">
-				
-				
-				<width>450</width>
-				<height>680</height>
+			<control type="fixedlist" id="5120">
+				<top>100</top>
+				<width>1500</width>
+				<height>300</height>
 				<preloaditems>2</preloaditems>
-				<orientation>vertical</orientation>
-				
-				<scrolltime tween="quadratic">400</scrolltime>
-				
+				<orientation>horizontal</orientation>
+				<focusposition>2</focusposition>
 				<pagecontrol />
-				
-				
-				<onup>5002</onup>
-				<ondown>5002</ondown>
+				<onup></onup>
+				<ondown>5121</ondown>
 				
 				<include content="hub_music_ClearPropsOnBack" />
 				
@@ -2219,49 +1988,33 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 				
 				<onback>9000</onback>
 			
-				<itemlayout height="680" width="500">
+				<itemlayout height="260" width="270">
 					<control type="group">
-						<height>450</height>
-						<width>450</width>
+						<height>255</height>
+						<width>255</width>
 						<control type="group">
 							<control type="image">
-								<texture background="true" diffuse="artworkdiffuse_unthemed/thumb.png" fallback="defaultaudio.png">$INFO[ListItem.Art(thumb)]</texture>
+								<texture background="true" diffuse="artworkdiffuse/square.png" fallback="defaultaudio.png">$INFO[ListItem.Art(thumb)]</texture>
 								<bordersize>2</bordersize>
-								<bordertexture colordiffuse="$VAR[color_hub_text_main]">artworkdiffuse_unthemed/thumbborder.png</bordertexture>
-								<aspectratio scalediffuse="true" align="left" aligny="top">keep</aspectratio>
+								<bordertexture colordiffuse="$VAR[color_hub_text_main]">artworkdiffuse/square.png</bordertexture>
+								<aspectratio scalediffuse="true" align="center" aligny="top">keep</aspectratio>
 							</control>
-							<control type="textbox">
-								<top>460</top>
-								<height>350</height>
-								<font>HubAT</font>
-								<textcolor>$VAR[color_hub_text_main]</textcolor>
-								<label>$INFO[Container(5120).ListItem.Albumartist,[B],[/B]][CR]$INFO[ListItem.Album]$INFO[ListItem.Year,  (,)]</label>
-								<aligny>top</aligny>
-								<wrapmultiline>true</wrapmultiline>
-							</control>
+						
 						</control>
 					</control>
 					
 				</itemlayout>
-				<focusedlayout height="680" width="500">
+				<focusedlayout height="260" width="275">
 					<control type="group">
-						<height>450</height>
-						<width>450</width>
+						<include>Animation_Item_Focus</include>
+						<height>255</height>
+						<width>255</width>
 						<control type="group">
 							<control type="image">
-								<texture background="true" diffuse="artworkdiffuse_unthemed/thumb.png" fallback="defaultaudio.png">$INFO[ListItem.Art(thumb)]</texture>
-								<bordersize>2</bordersize>
-								<bordertexture colordiffuse="$VAR[color_hub_accent]">artworkdiffuse_unthemed/thumbborder.png</bordertexture>
-								<aspectratio scalediffuse="true" align="left" aligny="top">keep</aspectratio>
-							</control>
-							<control type="textbox">
-								<top>460</top>
-								<height>350</height>
-								<font>HubAT</font>
-								<textcolor>$VAR[color_hub_text_main]</textcolor>
-								<label>$INFO[Container(5120).ListItem.Albumartist,[B],[/B]][CR]$INFO[ListItem.Album]$INFO[ListItem.Year,  (,)]</label>
-								<aligny>top</aligny>
-								<wrapmultiline>true</wrapmultiline>
+								<texture background="true" diffuse="artworkdiffuse/square.png" fallback="defaultaudio.png">$INFO[ListItem.Art(thumb)]</texture>
+								<bordersize>4</bordersize>
+								<bordertexture colordiffuse="$VAR[color_hub_accent]">artworkdiffuse/square.png</bordertexture>
+								<aspectratio scalediffuse="true" align="center" aligny="top">keep</aspectratio>
 							</control>
 						</control>
 					</control>
@@ -2270,13 +2023,12 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 				<content sortby="artistthanyear" sortorder="ascending">$VAR[HUB_Albums_by_Artist]</content>
 			</control>
 			
+			
 			<control type="panel" id="5121">
 				<width>1020</width>
-				<height>679</height>
-				
+				<height>280</height>
 				<preloaditems>2</preloaditems>
-				<orientation>vertical</orientation>
-				
+				<orientation>horizontal</orientation>
 				<scrolltime tween="quadratic">400</scrolltime>
 				
 				<onclick>RunScript(script.embuary.helper,action=playall,id=5121,type=music,method=fromhere)</onclick>
@@ -2291,10 +2043,10 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 				
 				<onback>6666</onback>
 			
-				<itemlayout height="50" width="1000">
+				<itemlayout height="75" width="500">
 					<control type="group">
 						<height>40</height>
-						<width>1000</width>
+						<width>500</width>
 						<include content="HUB_box_test">
 							<param name="colordiffuse" value="$VAR[color_hub_widget_frame_nf]" />
 							<param name="autoscroll" value="false" />
@@ -2302,12 +2054,12 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 						</include>
 					</control>
 				</itemlayout>
-				<focusedlayout height="50" width="1000">
+				<focusedlayout height="75" width="500">
 				<control type="group">
 					<height>40</height>
-					<width>1000</width>
+					<width>500</width>
 					<control type="image">
-						<width>1000</width>
+						<width>440</width>
 						<bordertexture colordiffuse="$VAR[color_hub_text_main]">colors/white10.png</bordertexture>
 						<texture colordiffuse="$VAR[color_hub_text_main]" background="true">colors/white10.png</texture>
 						<bordersize>4</bordersize>
@@ -2338,6 +2090,275 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 		</control>
 	</control>
 		<!-- main grouplist 6666 end here -->
+		
+	<control type="group">
+		<description>S I D E    B A R    L E F T</description>
+		<animation effect="slide" start="0,0" end="300,0" time="350" tween="cubic" easing="inout" condition="String.IsEqual(Window.Property(Menucontrol),focus)">conditional</animation>
+		
+		<animation effect="slide" start="0,0" end="-450,0" time="300" tween="cubic" easing="inout" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),true)">conditional</animation>
+		
+		
+		<height>100%</height>
+        <width>400</width>
+		<left>-300</left>
+		<!-- <include content="bg_gradientmulticolor" /> -->
+		<control type="image">
+			<texture flipy="true" colordiffuse="$VAR[color_hub_menu_panel_gradienttop]">diffuse/gradienttoplinear50.png</texture>
+			<bordertexture colordiffuse="$VAR[color_hub_menu_panel_gradientcenter]">diffuse/gradienttoplinear100.png</bordertexture>
+		</control>
+		<control type="grouplist" id="9000">
+			<posx>10</posx>
+			<onup>8001</onup>
+			<ondown>9000</ondown>
+			
+			<onleft>SetProperty(Menucontrol,focus)</onleft>
+			<onright>ClearProperty(Menucontrol)</onright>
+		
+			<onleft condition="String.IsEqual(Window.Property(Menucontrol),focus)">8000</onleft>
+			
+			<onright condition="String.IsEqual(Window.Property(Menucontrol),focus)">ClearProperty(Menucontrol)</onright>
+			<onright>6666</onright>
+			
+			<onleft condition="!String.IsEqual(Window.Property(Menucontrol),focus)"></onleft>
+			<onright condition="!String.IsEqual(Window.Property(Menucontrol),focus)"></onright>
+			
+			
+			
+			<orientation>vertical</orientation>
+			<itemgap>10</itemgap>
+			
+			<include content="hub_sectionheader">
+				<param name="id" value="01" />
+				<param name="label" value="$LOCALIZE[10516]" />
+			</include>
+			
+			<include content="hub_button_fancy">
+				<param name="visible" value="PVR.HasRadioChannels" />
+				<param name="id" value="02" />
+				<param name="property" value="pvr" />
+				<param name="action" value="ActivateWindow(PVR,pvr://channels/radio/,return)" />
+				<param name="label" value="$LOCALIZE[19024]" />
+				<param name="radio_icon" value="defaultaddonartistinfo.png" />
+			</include>
+			
+			<include content="hub_button_fancy">
+				<param name="id" value="03" />
+				<param name="property" value="common" />
+				<param name="action" value="ActivateWindow(Music,sources://music/,return)" />
+				<param name="label" value="$LOCALIZE[2]" />
+				<param name="radio_icon" value="defaultaddonmusic.png" />
+			</include>
+			
+			<include content="hub_button_fancy">
+				<param name="id" value="04" />
+				<param name="property" value="musicvideos" />
+				<param name="action" value="ActivateWindow(Videos,videodb://musicvideos/titles/,return)" />
+				<param name="label" value="$LOCALIZE[20389]" />
+				<param name="radio_icon" value="defaultmusicvideos.png" />
+			</include>
+			
+			<include content="hub_button_fancy">
+				<param name="id" value="05" />
+				<param name="property" value="musicaddons" />
+				<param name="action" value="ActivateWindow(Music,addons://sources/audio/,return)" />
+				<param name="label" value="$LOCALIZE[1038]" />
+				<param name="radio_icon" value="defaultaddonlibrary.png" />
+			</include>
+			
+			<!-- to much api calls ?
+			<include content="hub_button_fancy">
+				<param name="visible" value="System.HasAddon(plugin.video.youtube)" />
+				<param name="id" value="06" />
+				<param name="property" value="youtube" />
+				<param name="action" value="RunPlugin(plugin.video.youtube)" />
+				<param name="label" value="You Tube" />
+				<param name="radio_icon" value="icons/youtube.png" />
+			</include>
+			-->
+			<!-- 
+			<include content="hub_button_fancy">
+				<param name="visible" value="System.HasAddon(plugin.audio.spotify)" />
+				<param name="id" value="07" />
+				<param name="property" value="musicaddons" />
+				<param name="action" value="RunPlugin(plugin.audio.spotify)" />
+				<param name="label" value="Spotify" />
+				<param name="radio_icon" value="icons/spotify.png" />
+			</include>
+			<include content="hub_button_fancy">
+				<param name="visible" value="System.HasAddon(plugin.audio.soundcloud)" />
+				<param name="id" value="08" />
+				<param name="property" value="soundcloud" />
+				<param name="action" value="RunPlugin(plugin.audio.soundcloud)" />
+				<param name="label" value="Soundcloud" />
+				<param name="radio_icon" value="icons/sound2.png" />
+			</include> -->
+			
+			<include content="spacer_h">
+				<param name="id" value="10" />
+			</include>
+			<include content="hub_sectionheader">
+				<param name="id" value="11" />
+				<param name="label" value="$LOCALIZE[31148]" />
+			</include>
+			
+			<include content="hub_button_fancy">
+				<param name="id" value="12" />
+				<param name="property" value="artists" />
+				<param name="action" value="ActivateWindow(Music,musicdb://artists/,return)" />
+				<param name="label" value="$LOCALIZE[133]" />
+				<param name="radio_icon" value="defaultmusicartists.png" />
+			</include>
+			
+			<include content="hub_button_fancy">
+				<param name="id" value="13" />
+				<param name="property" value="albums" />
+				<param name="action" value="ActivateWindow(Music,musicdb://albums/,return)" />
+				<param name="label" value="$LOCALIZE[132]" />
+				<param name="radio_icon" value="defaultmusicalbums.png" />
+			</include>
+			<include content="hub_button_fancy">
+				<param name="id" value="14" />
+				<param name="property" value="compilations" />
+				<param name="action" value="ActivateWindow(Music,musicdb://compilations/,return)" />
+				<param name="label" value="$LOCALIZE[521]" />
+				<param name="radio_icon" value="defaultmusiccompilations.png" />
+			</include>
+			
+			<include content="hub_button_fancy">
+				<param name="id" value="15" />
+				<param name="property" value="songs" />
+				<param name="action" value="ActivateWindow(Music,musicdb://songs/,return)" />
+				<param name="label" value="$LOCALIZE[134]" />
+				<param name="radio_icon" value="defaultaddonaudiodecoder.png" />
+			</include>
+			
+			<include content="hub_button_fancy">
+				<param name="id" value="16" />
+				<param name="property" value="genres" />
+				<param name="action" value="ActivateWindow(Music,musicdb://genres/,return)" />
+				<param name="label" value="$LOCALIZE[135]" />
+				<param name="radio_icon" value="defaultmusicgenres.png" />
+			</include>
+			
+			<include content="hub_button_fancy">
+				<param name="id" value="17" />
+				<param name="property" value="years" />
+				<param name="action" value="ActivateWindow(Music,musicdb://years/,return)" />
+				<param name="label" value="$LOCALIZE[345]" />
+				<param name="radio_icon" value="defaultyear.png" />
+			</include>
+			
+			<include content="spacer_h">
+				<param name="id" value="20" />
+			</include>
+			<include content="hub_sectionheader">
+				<param name="id" value="21" />
+				<param name="label" value="$LOCALIZE[20382]" />
+			</include>
+			
+			<include content="hub_button_fancy">
+				<param name="id" value="22" />
+				<param name="property" value="album_recentadd" />
+				<param name="action" value="ActivateWindow(Music,musicdb://recentlyaddedalbums/,return)" />
+				<param name="label" value="$LOCALIZE[359]" />
+				<param name="radio_icon" value="defaultaddonaudiodecoder.png" />
+			</include>
+			<include content="hub_button_fancy">
+				<param name="id" value="23" />
+				<param name="property" value="albums_recentplayed" />
+				<param name="action" value="ActivateWindow(Music,musicdb://recentlyplayedalbums/,return)" />
+				<param name="label" value="$LOCALIZE[517]" />
+				<param name="radio_icon" value="defaultaddonaudiodecoder.png" />
+			</include>
+			<include content="hub_button_fancy">
+				<param name="id" value="24" />
+				<param name="property" value="musicvideos_recentadd" />
+				<param name="action" value="ActivateWindow(Videos,videodb://recentlyaddedmusicvideos/,return)" />
+				<param name="label" value="$LOCALIZE[20390]" />
+				<param name="radio_icon" value="defaultaddonaudiodecoder.png" />
+			</include>
+			
+			<include content="spacer_h">
+				<param name="id" value="40" />
+				<param name="gap" value="100" />
+			</include>
+			
+			<include content="hub_sectionheader">
+				<param name="id" value="41" />
+				<param name="label" value="Meine Playlists" />
+			</include>
+			
+			<control type="panel" id="9042">
+				<description>stored playlists</description>
+				<preloaditems>2</preloaditems>
+				<orientation>vertical</orientation>
+				<width>300</width>
+				<height>159</height>
+				<onleft>41</onleft>
+				<onright condition="Control.IsVisible(5040)">5040</onright>
+				<onup>41</onup>
+				<ondown>42</ondown>
+				
+				<!-- <onclick>ActivateWindow(Music,special://musicplaylists/,return)</onclick> -->
+				<onclick>SetProperty(HUB_Music,playlists,home)</onclick>
+				<onclick>SetProperty(XSP,$INFO[ListItem.Folderpath],home)</onclick>
+				
+				<scrolltime tween="quadratic">400</scrolltime>
+				<autoscroll>true</autoscroll>
+				
+				<itemlayout height="40" width="240">
+					<control type="image">
+						<top>-5</top>
+						<width>40</width>
+						<height>40</height>
+						<left>10</left>
+						<texture colordiffuse="$VAR[color_hub_menu_text_nf]">defaultplaylist.png</texture>
+					</control>
+					<control type="textbox">
+						<left>60</left>
+						<width>110%</width>
+						<height>25</height>
+						<textcolor>$VAR[color_hub_menu_text_nf]</textcolor>
+						<font>MenucontrolItem</font>
+						<autoscroll>false</autoscroll>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+				</itemlayout>
+				<focusedlayout height="40" width="240">
+					<control type="image">
+						<top>-5</top>
+						<width>40</width>
+						<height>40</height>
+						<left>10</left>
+						<texture colordiffuse="$VAR[color_hub_menu_text_fo]">defaultplaylist.png</texture>
+					</control>
+					<control type="textbox">
+						<left>60</left>
+						<width>110%</width>
+						<height>25</height>
+						<font>MenucontrolItem</font>
+						<textcolor>$VAR[color_hub_menu_text_fo]</textcolor>
+						<autoscroll>true</autoscroll>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+				</focusedlayout>
+				<!-- 
+				<content>
+					<item id="111">
+						<label>Partymode</label>
+						<label2 />
+						<icon>defaultplaylist.png</icon>
+						<thumb>defaultplaylist.png</thumb>
+						<onclick>PlayerControl(Partymode(music))</onclick>
+					</item>
+				</content>
+				-->
+				<content>special://musicplaylists/</content>
+				<content>special://skin/playlists/music/</content>
+			</control>
+		</control>
+	</control>	
+		
 	<control type="group">
 		<description>P L A Y L I S T    C O N T A I N E R    S I D E B A R     R I G H T</description>
 		<height>100%</height>
@@ -2470,7 +2491,8 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<animation effect="slide" start="0,0" end="-300,0" time="200" tween="cubic" easing="in" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),true)">conditional</animation>
 			<description>prop common all content LeftScrollBar</description>
 			<showonepage>true</showonepage>
-			<visible>String.IsEqual(Window(home).Property(HUB_Music),common) | String.IsEqual(Window(home).Property(HUB_Music),compilations)</visible>
+			<visible>false</visible>
+			<!-- <visible>String.IsEqual(Window(home).Property(HUB_Music),common) | String.IsEqual(Window(home).Property(HUB_Music),compilations)</visible> -->
 			<left>301</left>
 			<top>100</top>
 			<height>980</height>
@@ -2645,6 +2667,9 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 		
 	<include content="swan_debug_overlay">
 	<param name="textleft" value="
+	
+	$INFO[ListItem.Property(Artist_Description)]
+	
 1 Window(home).Property(HUB_Music) : $INFO[Window(home).Property(HUB_Music),[COLOR cyan][B],[/B][/COLOR]]
 
 2 Window(home).Property(HUB_EncodedValue) : $INFO[Window(home).Property(HUB_EncodedValue),[COLOR cyan][B],[/B][/COLOR]]

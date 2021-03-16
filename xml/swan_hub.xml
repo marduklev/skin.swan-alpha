@@ -174,6 +174,40 @@ Playlist.IsRepeatOne 	Returns true if the player is in repeat one mode.
 			</control>
 		</definition>
 	</include>
+	<include name="hub_button_fancy">
+		<param name="visible" default="true" />
+		<definition>
+			<control type="radiobutton" id="90$PARAM[id]">
+				<visible>$PARAM[visible]</visible>
+				<width>110%</width>
+				<height>45</height>
+				<radiowidth>50</radiowidth>
+				<radioheight>50</radioheight>
+				<radioposx>300</radioposx>
+				<textureradioonfocus colordiffuse="$VAR[color_hub_menu_text_fo]">$PARAM[radio_icon]</textureradioonfocus>
+				<textureradioonnofocus colordiffuse="$VAR[color_hub_menu_text_nf]">$PARAM[radio_icon]</textureradioonnofocus>
+				<textureradioofffocus colordiffuse="$VAR[color_hub_menu_text_fo]">$PARAM[radio_icon]</textureradioofffocus>
+				<textureradiooffnofocus colordiffuse="$VAR[color_hub_menu_text_nf]">$PARAM[radio_icon]</textureradiooffnofocus>
+				
+				<texturefocus colordiffuse="orange">diffuse/gradienttoplinear50.png</texturefocus>
+				
+				<texturenofocus />
+				<font>MenucontrolItem</font>
+				<label>$PARAM[label]</label>
+				<onclick>SetProperty(HUB_Music,$PARAM[property],home)</onclick>
+				<focusedcolor>$VAR[color_hub_menu_text_fo]</focusedcolor>
+				<textcolor>$VAR[color_hub_menu_text_nf]</textcolor>
+				<selectedcolor>green</selectedcolor>
+				<pulseonselect>no</pulseonselect>
+			</control>
+			<control type="image" id="99$PARAM[id]">
+				<texture diffuse="colors/white20.png">diffuse/gradienthorizontal.png</texture>
+				<bordersize>280,0,20,0</bordersize>
+				<height>1</height>
+			</control>
+				
+		</definition>
+	</include>
 	<!-- ######## -->
 	<!--  Layouts -->
 	<!-- ######## -->
@@ -737,7 +771,13 @@ Playlist.IsRepeatOne 	Returns true if the player is in repeat one mode.
 			<onclick condition="!String.IsEmpty(Window(home).Property(HUB_Music))">SetProperty(HUB_Music_PrevProp,$INFO[Window(home).Property(HUB_Music)],home)</onclick>
 			
 			<onclick condition="!String.IsEmpty(ListItem.$PARAM[goto])">RunScript(script.embuary.helper,action=encode,string='"$INFO[ListItem.$PARAM[goto]]"',prop=HUB_EncodedValue)</onclick>
+			
 			<onclick condition="!String.IsEmpty(ListItem.$PARAM[goto])">SetProperty(HUB_Music_$PARAM[goto],$INFO[ListItem.$PARAM[goto]],home)</onclick>
+			<!-- 
+			use hidden label and control get label as parenthesis causing error
+			<onclick condition="!String.IsEmpty(ListItem.Property(Artist_Description))">SetProperty(HUB_artistinfo,$INFO[ListItem.Property(Artist_Description)],home)</onclick>
+			
+			 -->
 			<onclick condition="!String.IsEmpty(ListItem.Art(fanart))">SetProperty(HUB_artwork,$INFO[ListItem.Art(fanart)],home)</onclick>
 			<onclick condition="String.IsEmpty(ListItem.Art(fanart)) + !String.IsEmpty(ListItem.Art(landscape))">SetProperty(HUB_artwork,$INFO[ListItem.Art(fanart)],home)</onclick>
 			<onclick condition="String.IsEmpty(ListItem.Art(fanart)) + String.IsEmpty(ListItem.Art(landscape)) + !String.IsEmpty(ListItem.Art(thumb))">SetProperty(HUB_artwork,$INFO[ListItem.Art(thumb)],home)</onclick>
@@ -844,6 +884,7 @@ all by album of artist		videodb://musicvideos/artists/[artists video dbid ]/[alb
 	</variable>
 	<variable name="HUB_content_albums_artist">
 		<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22albumartist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</value>
+		<value>-</value>
 	</variable>
 	<variable name="HUB_content_albums_artist_or_title">
 		<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22or%22%3A%5B%7B%22field%22%3A%22albumartist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%2C%7B%22field%22%3A%22album%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</value>
