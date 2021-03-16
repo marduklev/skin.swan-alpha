@@ -773,11 +773,9 @@ Playlist.IsRepeatOne 	Returns true if the player is in repeat one mode.
 			<onclick condition="!String.IsEmpty(ListItem.$PARAM[goto])">RunScript(script.embuary.helper,action=encode,string='"$INFO[ListItem.$PARAM[goto]]"',prop=HUB_EncodedValue)</onclick>
 			
 			<onclick condition="!String.IsEmpty(ListItem.$PARAM[goto])">SetProperty(HUB_Music_$PARAM[goto],$INFO[ListItem.$PARAM[goto]],home)</onclick>
-			<!-- 
-			use hidden label and control get label as parenthesis causing error
-			<onclick condition="!String.IsEmpty(ListItem.Property(Artist_Description))">SetProperty(HUB_artistinfo,$INFO[ListItem.Property(Artist_Description)],home)</onclick>
-			
-			 -->
+			<onclick condition="!String.IsEmpty(ListItem.Property(Artist_Description))">SetProperty(HUB_artistinfo,$ESCINFO[ListItem.Property(Artist_Description)],home)</onclick>
+			<onclick condition="!String.IsEmpty(ListItem.Property(Album_Description))">SetProperty(HUB_albuminfo,$ESCINFO[ListItem.Property(Album_Description)],home)</onclick>
+				
 			<onclick condition="!String.IsEmpty(ListItem.Art(fanart))">SetProperty(HUB_artwork,$INFO[ListItem.Art(fanart)],home)</onclick>
 			<onclick condition="String.IsEmpty(ListItem.Art(fanart)) + !String.IsEmpty(ListItem.Art(landscape))">SetProperty(HUB_artwork,$INFO[ListItem.Art(fanart)],home)</onclick>
 			<onclick condition="String.IsEmpty(ListItem.Art(fanart)) + String.IsEmpty(ListItem.Art(landscape)) + !String.IsEmpty(ListItem.Art(thumb))">SetProperty(HUB_artwork,$INFO[ListItem.Art(thumb)],home)</onclick>
@@ -811,6 +809,8 @@ Playlist.IsRepeatOne 	Returns true if the player is in repeat one mode.
 			<onback condition="!String.IsEmpty(Window(home).Property(HUB_Music_PrevID))">AlarmClock(HuB_ForceFocusDelayed,SetFocus($INFO[Window(home).Property(HUB_Music_PrevID)]),00:00,silent)</onback>
 			<onback>ClearProperty(HUB_artwork,home)</onback>
 			<onback>ClearProperty(HUB_EncodedValue,home)</onback>
+			<onback condition="!String.IsEmpty(Window(home).Property(HUB_artistinfo))">ClearProperty(HUB_artistinfo,home)</onback>
+			<onback condition="!String.IsEmpty(Window(home).Property(HUB_albuminfo))">ClearProperty(HUB_albuminfo,home)</onback>
 			<onback>ClearProperty(HUB_Music_$PARAM[comefrom],home)</onback>
 			<onback>ClearProperty($PARAM[comefrom]HUB_dbid,home)</onback>
 			<onback>ClearProperty(HUB_Music_PrevID,home)</onback>

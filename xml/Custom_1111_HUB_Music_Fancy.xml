@@ -85,6 +85,11 @@ default
 	<onload condition="!String.IsEmpty(Window(home).Property(HUB_EncodedValue))">ClearProperty(HUB_EncodedValue,home)</onload>
 	
 	
+	<!-- temp -->
+	<onload condition="!String.IsEmpty(Window(home).Property(HUB_artistinfo))">ClearProperty(HUB_artistinfo,home)</onload>
+	<onload condition="!String.IsEmpty(Window(home).Property(HUB_albuminfo))">ClearProperty(HUB_albuminfo,home)</onload>
+	
+	
 	<onunload>ClearProperty(HUB_artwork,home)</onunload>
 	<onunload>ClearProperty(HUB_dbid,home)</onunload>
 	<onunload>ClearProperty(HUB_EncodedValue,home)</onunload>
@@ -95,6 +100,11 @@ default
 	<onunload condition="!String.IsEqual(Window(home).Property(HUB_Music),compilations)">ClearProperty(HUB_Music,home)</onunload>
 	
 	<controls>
+	
+	<!-- <control type="label" id="2">
+		<info>ListItem.Property(Artist_Description)</info>
+		<include content="HiddenObject" />
+	</control> -->
 	
 	<control type="group">
 		<description>H U B    H E A D E R    B A R</description>	
@@ -110,7 +120,7 @@ default
 			<width>83%</width>
 			<height>90</height>
 			<orientation>horizontal</orientation>
-			<usecontrolcoords>falase</usecontrolcoords>
+			<usecontrolcoords>false</usecontrolcoords>
 			<itemgap>20</itemgap>
 			<onleft>9000</onleft>
 			<onright>8000</onright>
@@ -410,7 +420,8 @@ default
 			<include content="emptywidget">
 				<param name="id" value="01" />
 			</include>
-			<content target="music">$VAR[HUB_content_artists]</content>
+			<content limit="1" target="music">musicdb://artists/</content>
+			<!-- <content target="music">$VAR[HUB_content_artists]</content> -->
 		</include>
 		
 		<include content="HUB_ContainerHeader">
@@ -1917,11 +1928,20 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<control type="label" id="6021">
 				<top>50</top>
 				<aligny>top</aligny>
-				<height>50</height>
 				<width>100%</width>
 				<font>font_titlefallbackspotlight</font>
 				<label>$INFO[Window(home).Property(HUB_Music_artist)]</label>
 				<textcolor>$VAR[color_hub_text_main]</textcolor>
+			</control>
+			<control type="label" id="6020001">
+				<top>125</top>
+				<aligny>top</aligny>
+				<height>25</height>
+				<width>100%</width>
+				<font>font_Montserrat_semibold_22</font>
+				<visible>!String.IsEmpty(Container().ListItem.Genre)</visible>
+				<label>$INFO[Container().ListItem.Genre,[B],[/B]]</label>
+				<textcolor>$VAR[color_hub_accent]</textcolor>
 			</control>
 			<control type="grouplist" id="94443">
 				<ondown>6023</ondown>
@@ -1938,11 +1958,12 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<control type="textbox" id="6022">
 				<top>250</top>
 				<aligny>top</aligny>
-				<height>50</height>
-				<width>100%</width>
-				<font>font_Montserrat_30_semibold</font>
-				<!-- <label>$INFO[Window(home).Property(HUB_artistinfo)]</label> -->
-				<label>test</label>
+				<height>190</height>
+				<width>700</width>
+				<font>font_Montserrat_semibold_22</font>
+				<!-- <font>font_sans_bold_16</font> -->
+				<autoscroll>false</autoscroll>
+				<label>$INFO[Window(home).Property(HUB_artistinfo)]</label>
 				<textcolor>$VAR[color_hub_text_main]</textcolor>
 			</control>
 			
@@ -1965,13 +1986,12 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<onleft>9000</onleft>
 			<onright>7060</onright>
 			
-			<control type="fixedlist" id="5120">
+			<control type="list" id="5120">
 				<top>100</top>
 				<width>1500</width>
 				<height>300</height>
 				<preloaditems>2</preloaditems>
 				<orientation>horizontal</orientation>
-				<focusposition>2</focusposition>
 				<pagecontrol />
 				<onup></onup>
 				<ondown>5121</ondown>
@@ -1988,33 +2008,64 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 				
 				<onback>9000</onback>
 			
-				<itemlayout height="260" width="270">
+				<itemlayout height="300" width="270">
 					<control type="group">
 						<height>255</height>
 						<width>255</width>
 						<control type="group">
+							<control type="label">
+								<top>0</top>
+								<height>25</height>
+								<info>listitem.year</info>
+								<font>debugtiny</font>
+								<aligny>center</aligny>
+							</control>
 							<control type="image">
+								<top>25</top>
 								<texture background="true" diffuse="artworkdiffuse/square.png" fallback="defaultaudio.png">$INFO[ListItem.Art(thumb)]</texture>
 								<bordersize>2</bordersize>
 								<bordertexture colordiffuse="$VAR[color_hub_text_main]">artworkdiffuse/square.png</bordertexture>
 								<aspectratio scalediffuse="true" align="center" aligny="top">keep</aspectratio>
 							</control>
-						
+							<control type="label">
+								<top>280</top>
+								<width>250</width>
+								<height>25</height>
+								<info>listitem.album</info>
+								<font>debugtiny</font>
+								<aligny>center</aligny>
+							</control>
 						</control>
 					</control>
 					
 				</itemlayout>
-				<focusedlayout height="260" width="275">
+				<focusedlayout height="300" width="275">
 					<control type="group">
 						<include>Animation_Item_Focus</include>
 						<height>255</height>
 						<width>255</width>
 						<control type="group">
+							
+							<control type="label">
+								<top>0</top>
+								<height>25</height>
+								<info>listitem.year</info>
+								<font>debugtiny</font>
+								<aligny>center</aligny>
+							</control>
 							<control type="image">
+								<top>25</top>
 								<texture background="true" diffuse="artworkdiffuse/square.png" fallback="defaultaudio.png">$INFO[ListItem.Art(thumb)]</texture>
 								<bordersize>4</bordersize>
 								<bordertexture colordiffuse="$VAR[color_hub_accent]">artworkdiffuse/square.png</bordertexture>
 								<aspectratio scalediffuse="true" align="center" aligny="top">keep</aspectratio>
+							</control>
+							<control type="label">
+								<top>280</top>
+								<height>25</height>
+								<info>listitem.album</info>
+								<font>debugtiny</font>
+								<aligny>center</aligny>
 							</control>
 						</control>
 					</control>
@@ -2668,8 +2719,6 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 	<include content="swan_debug_overlay">
 	<param name="textleft" value="
 	
-	$INFO[ListItem.Property(Artist_Description)]
-	
 1 Window(home).Property(HUB_Music) : $INFO[Window(home).Property(HUB_Music),[COLOR cyan][B],[/B][/COLOR]]
 
 2 Window(home).Property(HUB_EncodedValue) : $INFO[Window(home).Property(HUB_EncodedValue),[COLOR cyan][B],[/B][/COLOR]]
@@ -2681,6 +2730,12 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 5 Window(home).Property([B]PARAM[goto][/B]HUB_dbid) : 
             artistHUB_dbid : $INFO[Window(home).Property(artistHUB_dbid),[COLOR cyan][B],[/B][/COLOR]]
             albumHUB_dbid  : $INFO[Window(home).Property(albumHUB_dbid),[COLOR cyan][B],[/B][/COLOR]]
+
+[COLOR cyan]6 HUB_artistinfo   -  $INFO[Window(home).Property(HUB_artistinfo)] [/COLOR]
+7 HUB_artistinfo   -  $INFO[Window(home).Property(HUB_artistinfo2)]
+
+	[B]$INFO[Control.GetLabel(2)][/B]
+	
 
 8 dbid : $INFO[ListItem.dbid,[COLOR cyan][B],[/B][/COLOR]]
 9 dbtype : $INFO[ListItem.dbtype,[COLOR cyan][B],[/B][/COLOR]]
