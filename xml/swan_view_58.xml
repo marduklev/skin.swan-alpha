@@ -10,14 +10,14 @@
 			<control type="list" id="58">
 				<visible>Container.Content(seasons)</visible>
 				<viewtype label="NetflixSeason1">Netflix Info</viewtype>
-				
 				<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
 				<onfocus>RunScript(script.embuary.helper,action=encode,string='"$INFO[ListItem.TVShowTitle]"',prop=EncodedTitle)</onfocus>
+				<onfocus condition="!String.IsEmpty(Window.Property(refreshtrailer))">RunScript(script.embuary.helper,action=lookforfile,file='"$INFO[container.listitem.path]$INFO[container.listitem.FolderName,,-trailer.mp4]"',prop=trailer_avail)</onfocus>
+				<onfocus condition="!String.IsEmpty(Window.Property(refreshtrailer))">SetProperty(listitemtrailer,$INFO[container.listitem.path]$INFO[container.listitem.FolderName,,-trailer.mp4],home)</onfocus>
+				<onfocus condition="!String.IsEmpty(Window.Property(refreshtrailer))">ClearProperty(refreshtrailer)</onfocus>
 				<onfocus>SetFocus(58001)</onfocus>
-				
 				<include>HiddenContainer</include>
 			</control>
-			
 			
 			<animation type="Visible" reversible="false">
 				<effect type="zoom" start="0" end="100" center="50%,50%" tween="quadratic" easing="in" time="500" />
@@ -27,10 +27,11 @@
 				<effect type="zoom" start="100" end="0" center="50%,50%" tween="quadratic" easing="out" time="200" />
 				<effect type="fade" start="100" end="0" time="240" />
 			</animation>
-				
-				
-			<control type="group">
-				<visible>Skin.HasSetting(View58_EnebleFanartBG)</visible>
+			
+			<control type="group">	
+				<visible>Control.IsVisible(58)</visible>
+										
+				<visible>Skin.HasSetting(View58_EnableFanartBG)</visible>
 				<control type="image">
 					<visible>!Control.HasFocus(58001) + Skin.HasSetting(View58_EnableBottomPanel)</visible>
 					<fadetime>350</fadetime>
@@ -50,21 +51,16 @@
 			
 			<control type="grouplist" id="58000">
 				<include>FullScreenDimensions</include>
+				<animation reversible="true" time="300" effect="fade" start="100" end="0" condition="$EXP[TrailerIsPlaying]">Conditional</animation>
+				<visible>Control.IsVisible(58)</visible>
 				<top>110</top>
 					
-				<animation reversible="true" time="300" effect="fade" start="100" end="0" condition="$EXP[TrailerIsPlaying]">Conditional</animation>
-				
 				<onup>58000</onup>
 				<ondown>58000</ondown>
-				
 				<pagecontrol>5860</pagecontrol>
 				
-				<scrolltime tween="quadratic" easing="in">400</scrolltime>
-				<itemgap>0</itemgap>
-				<orientation>vertical</orientation>
-				<usecontrolcoords>true</usecontrolcoords>
-				
 				<control type="button" id="58001">
+					
 					<description>58001 in window 10025 has been asked to focus, but it can't - when using vis conds and onback</description>
 					<texturefocus />
 					<texturenofocus />
@@ -76,6 +72,7 @@
 					<ondown condition="Control.IsVisible(58)">58004</ondown>
 					
 					<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
+					
 					<onfocus condition="!Control.IsVisible(58)">SetFocus(50)</onfocus>
 					<onright condition="!Control.IsVisible(58)">SetFocus(50)</onright>
 					<onleft condition="!Control.IsVisible(58)">SetFocus(50)</onleft>
@@ -89,12 +86,12 @@
 					<description>PAGE 1. only workaround to respact screen aspect are includes which detect screen reso,currently ommit width tag</description>
 					<height>970</height>
 					
-					<include content="DefArtwork">
+					<include content="Fanart_Diffused">
 						<right>0</right>
 						<param name="diffuse" value="diffuse/spotlightleftdiffuse.png" />
 						<param name="visible" value="!Skin.HasSetting(View58_FanartLeftAlignment)" />
 					</include>
-					<include content="DefArtwork">
+					<include content="Fanart_Diffused">
 						<left>0</left>
 						<param name="diffuse" value="diffuse/spotlightrightdiffuse.png" />
 						<param name="visible" value="Skin.HasSetting(View58_FanartLeftAlignment)" />
@@ -104,14 +101,14 @@
 						<right>60</right>
 						<align>right</align>
 						<visible>Skin.HasSetting(View58_FanartLeftAlignment)</visible>
-						<include content="Plot_Shift" />
+						<include content="View58_Plot_Shift" />
 					</control>
 					
 					<control type="textbox">
 						<left>50</left>
 						<align>left</align>
 						<visible>!Skin.HasSetting(View58_FanartLeftAlignment)</visible>
-						<include content="Plot_Shift" />
+						<include content="View58_Plot_Shift" />
 					</control>
 					
 				</control>
@@ -124,7 +121,7 @@
 					<include content="Special_Header">
 						<param name="pos_top" value="300" />
 						<param name="align" value="left" />
-						<param name="widgetdesc" value="[B]$VAR[ResumeOrNext][/B]" />
+						<param name="widgetdesc" value="[B]$VAR[View58_Label_ResumeOrNext][/B]" />
 					</include>
 									
 					<control type="label">
@@ -178,28 +175,29 @@
 					</control>
 					
 					<include content="Universal_Container">
-						<description> used border workaround in var color_universalcontainer_itemframe_foo is not my friend therefpore create 2 new params for include</description>
-						
+						<description>Resume Or Next - Item</description>
 						<param name="id" value="58004" />
 						<param name="type_height" value="1080" />
 						<param name="type_pos_top" value="370" />
 						<param name="bordercolor_fo" value="$VAR[color_spotlightlib_main]" />
 						<param name="bordercolor_nf" value="$VAR[color_spotlightlib_main]" />
-						<param name="visible" value="true" />
+						<param name="visible" value="Control.IsVisible(58)" />
 						<param name="layout_height" value="388" />
 						<param name="layout_width" value="648" />
 						<param name="itemheight" value="388" />
 						<param name="itemwidth" value="648" />
 						<param name="layout" value="landscape" />
 						<param name="focusoverlay_visible" value="false" />
-						
+						<param name="root_conditional_artworkdiffuse_themed" value="true" />
+						<param name="root_conditional_artworkdiffuse_override" value="false" />
+						<param name="SetPropOnFocus" value="false" />
 						<onback>SetFocus(50)</onback>
 						<onup>58001</onup>
 						<ondown>580051</ondown>
 						<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
-						<content sortby="playcount" limit="1">$VAR[NextUp_SeasonLevel]</content>
+						<content sortby="playcount" limit="1">$VAR[View58_Content_View58_Label_ResumeOrNext]</content>
 					</include>
-					</control>
+				</control>
 				
 				<control type="group" id="58005">
 					<description>PAGE 3 seasons + episodes</description>
@@ -221,7 +219,7 @@
 						<param name="bordercolor_fo" value="$VAR[color_spotlightlib_itemframe_fo]" />
 						<param name="bordercolor_nf" value="$VAR[color_spotlightlib_itemframe_nf]" />
 						<param name="tags_visible" value="true" />
-						<param name="visible" value="true" />
+						<param name="visible" value="Control.IsVisible(58)" />
 						<param name="layout_height" value="370" />
 						<param name="layout_width" value="220" />
 						<param name="itemheight" value="310" />
@@ -235,10 +233,10 @@
 						<ondown condition="Integer.IsGreater(Container(580052).NumItems,0)">Control.SetFocus(580052,0,absolute)</ondown>
 						<ondown condition="!Integer.IsGreater(Container(580052).NumItems,0)">580061</ondown>
 						<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
-						<content target="videos" sortby="season">$INFO[Container.Folderpath]</content>
+						<content target="videos" sortby="season">$VAR[View58_Content_Seasons]</content>
 					</include>
 					
-					<include>vie58_seperator_temp</include>
+					<include>View58_seperator</include>
 					
 					<control type="panel" id="580052">
 						<description>folder content - episode thumb</description>
@@ -266,6 +264,8 @@
 									<param name="get_tags" value="false" />
 									<param name="autoscroll" value="false" />
 									<param name="bordersize_bg" value="6" />
+									<param name="conditional_artworkdiffuse_themed" value="true" />
+									<param name="conditional_artworkdiffuse_override" value="false" />
 								</include>
 								
 								<control type="label">
@@ -302,6 +302,8 @@
 									<param name="get_tags" value="false" />
 									<param name="autoscroll" value="false" />
 									<param name="bordersize_bg" value="4" />
+									<param name="conditional_artworkdiffuse_themed" value="true" />
+									<param name="conditional_artworkdiffuse_override" value="false" />
 								</include>
 								<control type="label">
 									<top>-30</top>
@@ -315,10 +317,7 @@
 									<effect type="zoom" end="112,112" time="200" tween="sine" easing="out" center="auto" />
 									<effect type="zoom" end="91,91" time="150" tween="sine" delay="200" easing="out" center="auto" />
 								</animation>
-								<include condition="Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]" content="FocusOverlay">
-									<param name="diffusedimtext" value="artworkdiffuse/usebganel/landscape.png" />
-								</include>
-								<include condition="!Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]]" content="FocusOverlay">
+								<include content="FocusOverlay">
 									<param name="diffusedimtext" value="artworkdiffuse/landscape.png" />
 								</include>
 							</control>
@@ -350,6 +349,8 @@
 									<param name="get_tags" value="false" />
 									<param name="autoscroll" value="false" />
 									<param name="bordersize_bg" value="6" />
+									<param name="conditional_artworkdiffuse_themed" value="true" />
+									<param name="conditional_artworkdiffuse_override" value="false" />
 								</include>
 								<control type="label">
 									<left>5</left>
@@ -361,7 +362,7 @@
 									<label>$INFO[ListItem.Episode,$LOCALIZE[36906][B] ,[/B]]</label>
 								</control>
 							</control>
-							<include content="vie58_episodes_inforight">
+							<include content="View58_Layout_EpisodeInfo_right">
 								<param name="color_accent" value="$VAR[color_spotlightlib_secondary]" />
 								<param name="color_main" value="$VAR[color_spotlightlib_secondary]" />
 								<param name="color_secondary" value="$VAR[color_spotlightlib_secondary]" />
@@ -379,11 +380,10 @@
 									<param name="get_tags" value="false" />
 									<param name="autoscroll" value="false" />
 									<param name="bordersize_bg" value="4" />
+									<param name="conditional_artworkdiffuse_themed" value="true" />
+									<param name="conditional_artworkdiffuse_override" value="false" />
 								</include>
-								<include condition="Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]" content="FocusOverlay">
-									<param name="diffusedimtext" value="artworkdiffuse/usebganel/landscape.png" />
-								</include>
-								<include condition="!Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]]" content="FocusOverlay">
+								<include content="FocusOverlay">
 									<param name="diffusedimtext" value="artworkdiffuse/landscape.png" />
 								</include>
 								<animation type="Focus" reversible="false">
@@ -401,14 +401,14 @@
 									<label2>$INFO[ListItem.Duration]</label2>
 								</control>
 							</control>
-							<include content="vie58_episodes_inforight">
+							<include content="View58_Layout_EpisodeInfo_right">
 								<param name="color_accent" value="$VAR[color_spotlightlib_accent]" />
 								<param name="color_main" value="$VAR[color_spotlightlib_main]" />
 								<param name="color_secondary" value="$VAR[color_spotlightlib_secondary]" />
 							</include>
 						</focusedlayout>
 						
-						<content sortby="year" target="videos">$INFO[Container(580051).ListItem.Folderpath]</content>
+						<content sortby="year" target="videos">$VAR[View58_Content_Episodes]</content>
 					</control>
 					
 					<control type="group">
@@ -460,7 +460,7 @@
 					<description>PAGE 4, cast and trailer</description>
 					<left>130</left>
 					<height>1080</height>
-					<visible>[Integer.IsGreater(Container(580061).NumItems,0) | Container(580061).IsUpdating | Integer.IsGreater(Container(580062).NumItems,0) | Container(580062).IsUpdating]</visible>
+					<!-- <visible>[Integer.IsGreater(Container(580061).NumItems,0) | Container(580061).IsUpdating | Integer.IsGreater(Container(580062).NumItems,0) | Container(580062).IsUpdating]</visible> -->
 					<include content="Special_Header">
 						<param name="visible" value="Integer.IsGreater(Container(580061).NumItems,0) | Container(580061).IsUpdating" />
 						<param name="pos_top" value="80" />
@@ -508,7 +508,7 @@
 								</control>
 							</control>
 						</focusedlayout>
-						<content>$VAR[View58_Cast_Content]</content>
+						<content>$VAR[View58_Content_Cast]</content>
 					</control>
 				
 					<include content="Special_Header">
@@ -524,7 +524,7 @@
 						<param name="bordercolor_fo" value="$VAR[color_spotlightlib_itemframe_fo]" />
 						<param name="bordercolor_nf" value="$VAR[color_spotlightlib_itemframe_nf]" />
 						<param name="tags_visible" value="true" />
-						<param name="visible" value="" />
+						<param name="visible" value="Control.IsVisible(58)" />
 						<param name="layout_height" value="250" />
 						<param name="layout_width" value="440" />
 						<param name="itemheight" value="243" />
@@ -536,22 +536,23 @@
 						<onup>580061</onup>
 						<ondown>580071</ondown>
 						<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
-						<onclick condition="!String.IsEmpty(Container(580062).ListItem.Property(LocalTrailer))">PlayMedia($INFO[Container(580062).ListItem.Property(LocalTrailer)],1)</onclick>
+						
+						<onclick condition="String.IsEqual(Container(580062).ListItem.Property(LocalTrailer),true)">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onclick>
 						<onclick condition="String.IsEmpty(Container(580062).ListItem.Property(LocalTrailer))">PlayMedia($INFO[Container(580062).ListItem.FilenameAndPath],1)</onclick>
 						<onclick>SetProperty(TrailerIsPlaying,true,home)</onclick>
 						<onback>SetFocus(50)</onback>
 						
 						<content>
-							<item id="989832">
-								<visible>!String.IsEmpty(Window(home).Property(trailer_avail))</visible>
+							<item>
+								<visible>!String.IsEmpty(Window(home).Property(listitemtrailer))</visible>
 								<label>Local Trailer</label>
 								<label2 />
-								<property name="LocalTrailer">$INFO[ListItem.Path]$INFO[ListItem.FolderName,,-trailer.mp4]</property>
-								<icon>$VAR[TVShowArt]</icon>
-								<thumb>$VAR[TVShowArt]</thumb>
+								<property name="LocalTrailer">true</property>
+								<icon>$VAR[View58_Image_LocalTrailer]</icon>
+								<thumb>$VAR[View58_Image_LocalTrailer]</thumb>
 							</item>
 						</content>
-						<content target="videos" sortby="file" limit="3">$VAR[58_OnlineTrailerLookup]</content>
+						<content target="videos" sortby="file" limit="3">$VAR[View58_Content_YoutubeTrailer]</content>
 					</include>
 				</control>
 				
@@ -586,12 +587,18 @@
 						<param name="layout" value="landscape" />
 						<param name="ls_overlay_visible" value="true" />
 						<param name="SetPropOnFocus" value="false" />
+						<param name="root_conditional_artworkdiffuse_themed" value="true" />
+						<param name="root_conditional_artworkdiffuse_override" value="false" />
+						<param name="diffuse_art_topedges" value="false" />
+						<param name="diffuse_art_alledges" value="true" />
+		
 						
 						<onback>SetFocus(50)</onback>
 						<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
 						<onup condition="Control.IsVisible(580063)">580063</onup>
 						<onup condition="Control.IsVisible(580062)">580062</onup>
 						<onup condition="![Control.IsVisible(580062) + Control.IsVisible(580063)]">58006</onup>
+						<onclick>SetProperty(refreshtrailer,true)</onclick>
 						<onclick condition="!string.IsEmpty(container(580071).listitem.dbid)">SetProperty(dbid,$INFO[container(580071).listitem.dbid],home)</onclick>
 						<onclick condition="!string.IsEmpty(container(580071).listitem.rating)">SetProperty(rating,$INFO[container(580071).listitem.rating],home)</onclick>
 						<onclick condition="!string.IsEmpty(container(580071).listitem.userrating) + string.IsEmpty(container(580071).listitem.rating)">SetProperty(rating,$INFO[container(580071).listitem.userrating],home)</onclick>
@@ -610,7 +617,7 @@
 				<description>ClearLogo Overlay</description>
 				<visible>!Skin.HasSetting(View58_FanartLeftAlignment)</visible>
 				<left>40</left>
-				<include content="ClearLogo_or_Title">
+				<include content="View58_ClearLogo_or_Title">
 					<param name="align" value="left" />
 				</include>
 				<animation center="12%,-88%" effect="zoom" start="100,100" end="75,75" time="400" tween="quadratic" condition="!Control.HasFocus(58001)">Conditional</animation>
@@ -620,7 +627,7 @@
 				<description>ClearLogo Overlay, pretty ugly pos x for other than page 1</description>
 				<visible>Skin.HasSetting(View58_FanartLeftAlignment)</visible>
 				<right>45</right>
-				<include content="ClearLogo_or_Title">
+				<include content="View58_ClearLogo_or_Title">
 					<param name="align" value="right" />
 				</include>
 				<animation center="99%,-88%" effect="zoom" start="100,100" end="75,75" time="400" tween="quadratic" condition="!Control.HasFocus(58001)">Conditional</animation>
@@ -654,9 +661,6 @@
 				<include>MetaUncommon_Season</include>
 				<animation effect="slide" alignx="true" start="0,0" end="0,-310" tween="quadratic" time="400" condition="!Control.HasFocus(58001)">Conditional</animation>
 			</control>
-			
-			
-			
 			<control type="videowindow">
 				<visible>Player.HasMedia + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
 				<height>70%</height>
@@ -664,14 +668,7 @@
 				<centertop>60%</centertop>
 			</control>
 		</control>
-		
-
-		
-		
 	</include>
-	
-	
-	
 	
 <!-- need cleanup -->
 		
@@ -741,7 +738,6 @@
 		<height>50</height>
 		<itemgap>10</itemgap>
 		
-		
 		<include content="StarsRating_Image">
 			<param name="colordiffuse" value="$VAR[color_spotlightlib_accent]" />
 			<visible>Control.HasFocus(58001)</visible>
@@ -777,7 +773,7 @@
 		<control type="label">
 			<posy>5</posy>
 			<width>auto</width>
-			<label>$INFO[Window(home).Property(totalseasons),, Staffeln | ]$INFO[Window(home).Property(totalepisodes),, Episoden]$INFO[Window(home).Property(status),  | [B],[/B]]</label>
+			<label>$INFO[Window(home).Property(totalseasons)] $VAR[Season_PluSing] | $INFO[Window(home).Property(totalepisodes)] $VAR[Episode_PluSing] $INFO[Window(home).Property(status),  | [B],[/B]]</label>
 			<height>35</height>
 			<aligny>center</aligny>
 			<textcolor>$VAR[color_spotlightlib_main]</textcolor>
@@ -785,40 +781,11 @@
 		</control>
 	</include>
 	
-	
-	<!-- make layout_circle -->
-	<include name="Circle_CastWidget">
-		<control type="image">
-			<description>Fallback aspect keep</description>
-			<bordertexture colordiffuse="$PARAM[colordiffuse]">artworkdiffuse/circle.png</bordertexture>
-			<texture background="true" diffuse="artworkdiffuse/circle.png" fallback="defaultactor.png">$INFO[ListItem.Thumb]</texture>
-			<aspectratio scalediffuse="false" aligny="top" align="center">scale</aspectratio>
-			<bordersize>$PARAM[bordersize_bg]</bordersize>
-		</control>
-		
-		<control type="group">
-			<control type="textbox">
-				<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
-				<top>106%</top>
-				<left>10</left>
-				<right>10</right>
-				<wrapmultiline>true</wrapmultiline>
-				<height>60</height>
-				<font>CommonTag</font>
-				<align>center</align>
-				<aligny>center</aligny>
-				<textcolor>$VAR[color_spotlightlib_main]</textcolor>
-				<selectedcolor>white</selectedcolor>
-				<label>$VAR[Tag_label1][CR][COLOR $VAR[color_spotlightlib_secondary]]$VAR[Tag_label2][/COLOR]</label>
-			</control>
-		</control>
-	</include>
-	
-	<include name="ClearLogo_or_Title">
+	<include name="View58_ClearLogo_or_Title">
 		<top>240</top>
 				
 		<control type="image">
-			<visible>!String.IsEmpty(ListItem.Art(tvshow.clearlogo)) | !String.IsEmpty(ListItem.Art(clearlogo))</visible>
+			<visible>[!String.IsEmpty(ListItem.Art(tvshow.clearlogo)) | !String.IsEmpty(ListItem.Art(clearlogo)) | !String.IsEmpty(Container.Art(tvshow.clearlogo)]</visible>
 			<height>265</height>
 			<bordersize>10</bordersize>
 			<aspectratio align="$PARAM[align]" aligny="top">keep</aspectratio>
@@ -828,7 +795,7 @@
 			<description>Fallback Label</description>
 			<left>10</left>
 			<width>36%</width>
-			<visible>String.IsEmpty(ListItem.Art(tvshow.clearlogo)) + String.IsEmpty(ListItem.Art(clearlogo))</visible>
+			<visible>String.IsEmpty(ListItem.Art(tvshow.clearlogo)) + String.IsEmpty(ListItem.Art(clearlogo)) + String.IsEmpty(Container.Art(tvshow.clearlogo))</visible>
 			<height>255</height>
 			<wrapmultiline>true</wrapmultiline>
 			<font>font_SpotlightTitle_Large</font>
@@ -837,38 +804,8 @@
 			<label>$INFO[ListItem.TVShowTitle]</label>
 		</control>
 	</include>
+	<!-- 
 	
-	<variable name="ResumeOrNext">
-		<value condition="Container(58004).ListItem.IsResumable">Weiterschauen</value>
-		<value>Nächste Episode</value>
-	</variable>
-	
-	<variable name="View58_Cast_Content">
-		<value condition="[Control.IsVisible(58) + Container.Content(Seasons)] + !String.IsEmpty(Window(home).Property(dbid))">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[Window(home).Property(dbid)]</value>
-		<value>-</value>
-	</variable>
-	
-	
-	
-	<include name="Plot_Shift">
-		<animation time="300" effect="slide" end="0,200" reversible="true" easing="inout" condition="ControlGroup(9000).HasFocus">Conditional</animation>
-		<visible>!Window.IsActive(shutdownmenu)</visible>
-		<width>39%</width>
-		<height>225</height>
-		<top>460</top>
-		<bottom>10</bottom>
-		<aligny>top</aligny>
-		<label>$VAR[plot]</label>
-		<textcolor>$VAR[color_spotlightlib_main]</textcolor>
-		<font>font_SpotlightPlot_RegMedium</font>
-	</include>	
-																			   
-	<variable name="NextUp_SeasonLevel">
-		 <value condition="[Control.IsVisible(58) + Container.Content(Seasons)] + String.EndsWith(Container.Folderpath,/)">$INFO[Container.Folderpath]-1/</value>
-		 <value condition="[Control.IsVisible(58) + Container.Content(Seasons)] + !String.IsEmpty(Window(home).Property(dbid))">videodb://inprogresstvshows/$INFO[Window(home).Property(dbid)]/-1/?tvshowid=$INFO[Window(home).Property(dbid)]</value>
-		 <value condition="[Control.IsVisible(58) + Container.Content(Seasons)]">videodb://inprogresstvshows/-1/-1/?xsp=%7B%22limit%22%3A1%2C%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22method%22%3A%22playcount%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22tvshow%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</value>
-		<value>-</value>
-	</variable>
 	
 	sort by playcount + exclude watched via playcount 0
 	- hide till new episodes if all current watched
@@ -881,21 +818,59 @@
 	{"limit":1,"order":{"direction":"ascending","method":"playcount"},"rules":{"and":[{"field":"tvshow","operator":"is","value":["$INFO[Window(home).Property(EncodedTitle)]"]}]},"type":"episodes"}
 	%7B%22limit%22%3A1%2C%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22method%22%3A%22playcount%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22tvshow%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D
 	
-	<variable name="58_OnlineTrailerLookup">
-		<value condition="[Control.IsVisible(58) + Container.Content(Seasons)] + [!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.youtube)]">plugin://plugin.video.youtube/search/?q=$INFO[ListItem.TVShowTitle]$INFO[System.Language, $LOCALIZE[20410],]</value>
+	 -->
+	<variable name="View58_Label_ResumeOrNext">
+		<value condition="Container(58004).ListItem.IsResumable">Weiterschauen</value>
+		<value>Nächste Episode</value>
 	</variable>
-	<variable name="Season_PluSing">
-		<value condition="!String.IsEmpty(Container(5055).ListItem.Property(TotalSeasons)) + Integer.IsEqual(Container(5055).ListItem.Property(TotalSeasons),1)">$LOCALIZE[20373]</value>
-		<value condition="!String.IsEmpty(Container(5055).ListItem.Property(TotalSeasons))">$LOCALIZE[33054]</value>
+	
+	<!-- reminder - season level - kodi bools - "myvideos.flatten" - "videolibrary.showallitems" label starts with * "filelists.showparentdiritems" listitem.thumb equal defaultfolderback , listitem.label equal .. -->
+	<!-- Container.Folderpath should match videodb://tvshows/titles/dbid of show/ -->
+	
+	<variable name="View58_Content_View58_Label_ResumeOrNext">
+		 <value condition="[Control.IsVisible(58) + Container.Content(Seasons)] + String.EndsWith(Container.Folderpath,/)">$INFO[Container.Folderpath]-1/</value>
+		 <value condition="[Control.IsVisible(58) + Container.Content(Seasons)] + !String.IsEmpty(Window(home).Property(dbid))">videodb://inprogresstvshows/$INFO[Window(home).Property(dbid)]/-1/?tvshowid=$INFO[Window(home).Property(dbid)]</value>
+		 <value condition="[Control.IsVisible(58) + Container.Content(Seasons)] + !String.IsEmpty(Window(home).Property(EncodedTitle))">videodb://inprogresstvshows/-1/-1/?xsp=%7B%22limit%22%3A1%2C%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22method%22%3A%22playcount%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22tvshow%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</value>
+		<value>-</value>
 	</variable>
-	<variable name="TVShowArt">
+	<variable name="View58_Content_Seasons">
+		<value condition="[Control.IsVisible(58) + Container.Content(Seasons)] + !String.IsEmpty(Container.Folderpath)">$INFO[Container.Folderpath]</value>
+		<value>-</value>
+	</variable>
+	<variable name="View58_Content_Episodes">
+		<value condition="[Control.IsVisible(58) + Container.Content(Seasons)] + !String.IsEmpty(Container(580051).ListItem.Folderpath)">$INFO[Container(580051).ListItem.Folderpath]</value>
+		<value>-</value>
+	</variable>
+	<variable name="View58_Content_Cast">
+		<value condition="[Control.IsVisible(58) + Container.Content(Seasons)] + !String.IsEmpty(Window(home).Property(dbid))">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[Window(home).Property(dbid)]</value>
+		<value>-</value>
+	</variable>
+	<variable name="View58_Content_YoutubeTrailer">
+		<value condition="[Control.IsVisible(58) + Container.Content(Seasons)] + [!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.youtube) + !Skin.HasSetting(View_58_DisableOnlineTrailers)]">plugin://plugin.video.youtube/search/?q=$INFO[Container.FolderName]$INFO[System.Language, $LOCALIZE[20410],]</value>
+		<value>-</value>
+	</variable>
+	
+	<include name="View58_Plot_Shift">
+		<animation time="300" effect="slide" end="0,200" reversible="true" easing="inout" condition="ControlGroup(9000).HasFocus">Conditional</animation>
+		<visible>!Window.IsActive(shutdownmenu)</visible>
+		<width>39%</width>
+		<height>225</height>
+		<top>460</top>
+		<bottom>10</bottom>
+		<aligny>top</aligny>
+		<label>$VAR[plot]</label>
+		<textcolor>$VAR[color_spotlightlib_main]</textcolor>
+		<font>font_SpotlightPlot_RegMedium</font>
+	</include>	
+	
+	<variable name="View58_Image_LocalTrailer">
+		<value condition="!String.IsEmpty(Container.Art(tvshow.landscape))">$INFO[Container.Art(tvshow.landscape)]</value>
+		<value condition="!String.IsEmpty(Container.Art(tvshow.fanart))">$INFO[Container.Art(tvshow.fanart)]</value>
 		<value condition="!String.IsEmpty(ListItem.Art(tvshow.landscape))">$INFO[ListItem.Art(tvshow.landscape)]</value>
 		<value condition="!String.IsEmpty(ListItem.Art(tvshow.fanart))">$INFO[ListItem.Art(tvshow.fanart)]</value>
-		<value>$INFO[ListItem.Art(thumb)]</value>
 	</variable>
 	
-	
-	<include name="vie58_episodes_inforight">
+	<include name="View58_Layout_EpisodeInfo_right">
 		<control type="label">
 			<top>30</top>
 			<left>425</left>
@@ -932,7 +907,7 @@
 		</control>
 	</include>
 	
-	<include name="vie58_seperator_temp">
+	<include name="View58_seperator">
 		<control type="image">
 			<description>seperator, no place for header</description>
 			<top>555</top>

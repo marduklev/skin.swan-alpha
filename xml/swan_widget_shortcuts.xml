@@ -425,7 +425,13 @@
 				<include content="SwanShortcuts_PanelList" />
 			</control>
 		</control>
-		
+		<control type="group">
+			<visible>Control.IsVisible(503)</visible>
+			<control type="panel" id="503">
+				<viewtype label="spot">spot</viewtype>
+				<include content="SwanShortcuts_PanelList" />
+			</control>
+		</control>
 		<!-- include shortcut save button
 				String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu) 
 						mainmenuitem
@@ -1377,6 +1383,9 @@ container.setsortmethod()
 		<!-- <texture fallback="special://skin/extras/selectdialog/widgetlayout_nolayout.png">$INFO[Skin.String(userwidget$PARAM[nr]_layout),artworkdiffuse/,.png]</texture> -->
 		<!-- SkinSettings.xml widget script.embuary helper - set attributes - call custom window 1103 -->
 	
+	
+	<!-- revisit ? - check where reload needed -->
+	
 	<include name="Widget_SetAttributes_ButtonTemplate">
 		
 		<control type="button" id="11031">
@@ -1426,12 +1435,14 @@ container.setsortmethod()
 			<selected>Skin.HasSetting(userwidget$PARAM[nr]_forceFixedlist)</selected>
 		</control>
 		<control type="radiobutton" id="11035">
-			<description>Toggle Tags</description>
+			<description>Toggle Tags - need reload</description>
 			<onclick>Skin.ToggleSetting(userwidget$PARAM[nr]_forceTag)</onclick>
+			<onclick>SetProperty(RefreshWidgets,tags,home)</onclick>
 			<label>Force_Tags</label>
 			<selected>Skin.HasSetting(userwidget$PARAM[nr]_forceTag)</selected>
 		</control>
 		<control type="radiobutton" id="11036">
+			<visible>!String.IsEqual(Skin.String(HomeLayout),Spotlight)</visible>
 			<description>Widget Info panel</description>
 			<onclick condition="!Skin.HasSetting(userwidget$PARAM[nr]_forceFixedlist)">Skin.ToggleSetting(userwidget$PARAM[nr]_forceFixedlist)</onclick>
 			<onclick condition="Skin.HasSetting(userwidget$PARAM[nr]_forceTag)">Skin.ToggleSetting(userwidget$PARAM[nr]_forceTag)</onclick>
