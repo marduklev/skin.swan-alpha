@@ -15,13 +15,7 @@
 				<onfocus condition="!String.IsEmpty(Window.Property(refreshtrailer))">RunScript(script.embuary.helper,action=lookforfile,file='"$INFO[container.listitem.path]$INFO[container.listitem.FolderName,,-trailer.mp4]"',prop=trailer_avail)</onfocus>
 				<onfocus condition="!String.IsEmpty(Window.Property(refreshtrailer))">SetProperty(listitemtrailer,$INFO[container.listitem.path]$INFO[container.listitem.FolderName,,-trailer.mp4],home)</onfocus>
 				<onfocus condition="!String.IsEmpty(Window.Property(refreshtrailer))">ClearProperty(refreshtrailer)</onfocus>
-				
 				<onfocus>SetFocus(58001)</onfocus>
-				<!-- <onfocus condition="!Skin.HasSetting(View58_FirstFocus_NextUp) + !Skin.HasSetting(View58_FirstFocus_Seasons)">SetFocus(58001)</onfocus>
-				
-				<onfocus condition="Skin.HasSetting(View58_FirstFocus_NextUp)">SetFocus(58004)</onfocus>
-				<onfocus condition="Skin.HasSetting(View58_FirstFocus_Seasons)">SetFocus(580051)</onfocus>
-				 -->
 				<include>HiddenContainer</include>
 			</control>
 			
@@ -34,9 +28,9 @@
 				<effect type="fade" start="100" end="0" time="240" />
 			</animation>
 			
-			<control type="group">
-				<description>hide if 58001 + string.isempty(window(home).property(MenucontrolActive))</description>
+			<control type="group">	
 				<visible>Control.IsVisible(58)</visible>
+										
 				<visible>Skin.HasSetting(View58_EnableFanartBG)</visible>
 				<control type="image">
 					<visible>!Control.HasFocus(58001) + Skin.HasSetting(View58_EnableBottomPanel)</visible>
@@ -47,7 +41,7 @@
 					<animation effect="slide" start="0,1080" end="0,0" tween="quadratic" easing="in" time="400">VisibleChange</animation>
 				</control>
 				<control type="image">
-					<visible>!Control.HasFocus(58001) + !Skin.HasSetting(View58_EnableBottomPanel)</visible>
+					<visible>!Skin.HasSetting(View58_EnableBottomPanel) + !Control.HasFocus(58001)</visible>
 					<fadetime>350</fadetime>
 					<texture background="true" diffuse="colors/white10.png">$VAR[ArtworkThumb]</texture>
 					<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
@@ -78,10 +72,6 @@
 					<ondown condition="Control.IsVisible(58)">58004</ondown>
 					
 					<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
-					
-					<onfocus condition="Control.IsVisible(58) + !Skin.HasSetting(View58_FirstFocus_NextUp) + !Skin.HasSetting(View58_FirstFocus_Seasons)">SetFocus(58001)</onfocus>
-					<onfocus condition="Control.IsVisible(58) + Skin.HasSetting(View58_FirstFocus_NextUp)">SetFocus(58004)</onfocus>
-					<onfocus condition="Control.IsVisible(58) + Skin.HasSetting(View58_FirstFocus_Seasons)">SetFocus(580051)</onfocus>
 					
 					<onfocus condition="!Control.IsVisible(58)">SetFocus(50)</onfocus>
 					<onright condition="!Control.IsVisible(58)">SetFocus(50)</onright>
