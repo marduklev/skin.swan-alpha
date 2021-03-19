@@ -5,35 +5,6 @@
 	also check https://kodi.wiki/view/List_of_built-in_functions#Weather_built-in.27s
 	<onload>Weather.Refresh</onload> 
 	-->
-	
-	<!-- make layout_circle -->
-	<include name="Circle_CastWidget">
-		<control type="image">
-			<description>Fallback aspect keep</description>
-			<bordertexture colordiffuse="$PARAM[colordiffuse]">artworkdiffuse/circle.png</bordertexture>
-			<texture background="true" diffuse="artworkdiffuse/circle.png" fallback="defaultactor.png">$INFO[ListItem.Thumb]</texture>
-			<aspectratio scalediffuse="false" aligny="top" align="center">scale</aspectratio>
-			<bordersize>$PARAM[bordersize_bg]</bordersize>
-		</control>
-		
-		<control type="group">
-			<control type="textbox">
-				<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
-				<top>106%</top>
-				<left>10</left>
-				<right>10</right>
-				<wrapmultiline>true</wrapmultiline>
-				<height>60</height>
-				<font>CommonTag</font>
-				<align>center</align>
-				<aligny>center</aligny>
-				<textcolor>$VAR[color_spotlightlib_main]</textcolor>
-				<selectedcolor>white</selectedcolor>
-				<label>$VAR[Tag_label1][CR][COLOR $VAR[color_spotlightlib_secondary]]$VAR[Tag_label2][/COLOR]</label>
-			</control>
-		</control>
-	</include>
-	
 	<include name="media_window_attributes">
 		<param name="defaultcontrol" default="50" />
 		<param name="view_ids" default="50" />
@@ -627,7 +598,7 @@
 		
 		<param name="circle_visible" default="false" />
 		<param name="tags_visible" default="false" />
-		<param name="tagbgpanel_visible" value="true" />
+		<param name="tagbgpanel_visible" default="true" />
 		<param name="ls_overlay_visible" default="false" />
 		<param name="banner_overlay_visible" default="false" />
 		<param name="get_bgpanel" default="true" />
@@ -638,13 +609,6 @@
 		<param name="SetPropOnFocus" default="true" />
 		<param name="focusoverlay_visible" default="true" />
 		
-		<param name="diffuse_art_topedges" default="Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]" />
-		<param name="diffuse_art_alledges" default="!Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]]" />
-		<param name="root_conditional_artworkdiffuse_themed" default="String.IsEqual(ListItem.Label,..) | !Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]]" />
-		<param name="root_conditional_artworkdiffuse_override" default="!String.IsEqual(ListItem.Label,..) + Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]" />
-		
-
-
 		<definition>
 		<control type="$PARAM[type]" id="$PARAM[id]">
 			<nested />
@@ -672,8 +636,6 @@
 						<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_nf]" />
 						<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_nf]" />
 						<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_nf]" />
-						<param name="conditional_artworkdiffuse_themed" value="$PARAM[root_conditional_artworkdiffuse_themed]" />
-						<param name="conditional_artworkdiffuse_override" value="$PARAM[root_conditional_artworkdiffuse_override]" />
 					</include>
 				</control>
 				<control type="group">
@@ -707,16 +669,14 @@
 							<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_fo]" />
 							<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_fo]" />
 							<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_fo]" />
-							<param name="conditional_artworkdiffuse_themed" value="$PARAM[root_conditional_artworkdiffuse_themed]" />
-							<param name="conditional_artworkdiffuse_override" value="$PARAM[root_conditional_artworkdiffuse_override]" />
 						</include>
 						<control type="group">
 							<visible>!$PARAM[circle_visible]</visible>
 							<visible>$PARAM[focusoverlay_visible]</visible>
-							<include condition="$PARAM[diffuse_art_topedges]" content="FocusOverlay">
+							<include condition="Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]" content="FocusOverlay">
 								<param name="diffusedimtext" value="artworkdiffuse/usebganel/$PARAM[layout].png" />
 							</include>
-							<include condition="$PARAM[diffuse_art_alledges]" content="FocusOverlay">
+							<include condition="!Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]]" content="FocusOverlay">
 								<param name="diffusedimtext" value="artworkdiffuse/$PARAM[layout].png" />
 							</include>
 						</control>
@@ -766,6 +726,7 @@
 		<param name="get_landscapelogo" default="false" />
 		<param name="get_bannerlogo" default="false" />
 		<param name="get_bgpanel_visible" default="true" />
+		
 		<param name="conditional_artworkdiffuse_themed" default="String.IsEqual(ListItem.Label,..) | !Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]]" />
 		<param name="conditional_artworkdiffuse_override" default="!String.IsEqual(ListItem.Label,..) + Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]" />
 		
@@ -807,7 +768,9 @@
 				<colordiffuse>$PARAM[colordiffuse]</colordiffuse>
 				<bordersize>8</bordersize>
 			</control>
+			
 		</control>
+		
 		
 		<control type="group">
 			<visible>$PARAM[conditional_artworkdiffuse_override]</visible>
@@ -1341,7 +1304,7 @@ top-->
 	<!-- ######### -->
 	
 	<!-- Artwork Thumb -->
-	<include name="Fanart_Diffused">
+	<include name="DefArtwork">
 		<param name="visible" default="true" />
 		<param name="width" default="1344" />
 		<param name="height" default="770" />

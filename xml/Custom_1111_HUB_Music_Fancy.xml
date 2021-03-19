@@ -3,74 +3,14 @@
 
 <!-- 
 
-menucontrol / left bar 9000
- - items  90*id*
- - playlists  9042
-current playlist container / right bar  7000
-player ctrl / top bar  8000
+menu left 9000
 
-- get hidden container linked to videos,musicvideos/artist to fetch videodb id of artist ? 
-						
+group(s) 10
+container CCC
 
-prop containers 6666 - pagecontrol 666660
+currentlyplaying,playlist righ 8000
 
-default 
-		
-		header			id  49**
-		container		id  50**
-		emptywidget id 9****
-		
-	- common			A R T I S T S							5001 / 500160		- filter artist contain ; onclick override 'set IsHub*artist*Content'
-						
-						A L B U M S								5002 / 500260		- filter albumtitle or albumartist contain  ; onclick override 'set IsHub*album*Content'	
-						S O N G S								5004 / 500460		- filter songtitle or songartist contain
-						M U S I C V I D E O S		  			5007 / 500760		- filter musicvideotitle or musicvideoartist contain
-								 
-								
-	- artist			A R T I S T S							5010 / -			- filter artist contain ; onclick override 'set IsHub*artist*Content'	
-							ALBUMS - Artist Folderpath			5011 / -			- none	  ; onclick override 'set IsHub*album*Content'	
-				reserved	MUSICVIDEOS - Artist Folderpath		5012 / -			- none
-							 or
-				reserved		linked focused Album
-				reserved	ARTWORK								5014
-				reserved	INFO								5015
 
-	- songs				S O N G S								5018 / 501860		- filter songtitle contain
-	
-	- albums			A L B U M S								5020 / 502060		- filter albumtitle contain		; onclick override 'set IsHub*album*Content'		
-											5021 genres
-	
-	- compilations	  S O U N D T R A C K S		   				5026 / -		- currently none	; onclick override 'set IsHub*album*Content'		
-	- compilations	  C O M P I L A T I O N S 		 			5027 / -		- currently none	; onclick override 'set IsHub*album*Content'	
-	
-	
-	- new Albums 												5028 / -	
-	- recently played Albums 									5029 / -	
-
-- genres using id												5030 / -	
-		root		musicdb://genres/
-		artists		musicdb://genres/[genre id]/
-		albums  	musicdb://genres/[genre id]/-1/?genreid=[genre id]
-		songs		musicdb://genres/[genre id]/-1/-1/?genreid=[genre id]
-		
-- years															5035 / -	
-		root		musicdb://years/
-		albums  	musicdb://years/[genre id]/
-		songs		musicdb://years/[year num]/-1/?year=[year num]
-
-	- musicaddons	Music Addons				  				5060
-	
-	- playlist		[playlist name]						 		5040 conditionial layout needed (video,album,song)
-	
-	special
-	- IsHUB[artist/album]Content 	group 6020
-		
-			- info text 6021, 6022
-				grouplist 6023 can lead to double usage need fix
-				album left	5120
-				songs right 5121
-				
-	
 -->
 	
 	<backgroundcolor>$VAR[color_hub_backgroundlayer1]</backgroundcolor>
@@ -145,6 +85,8 @@ default
 				<invalidcolor />
 				<label />
 			</control>
+			
+			<!-- 
 			<include content="spacer_w">
 				<param name="id" value="8002"/>
 				<param name="gap" value="60"/>
@@ -274,7 +216,7 @@ default
 					<param name="action" value="PlayerControl(Partymode(music))"/>
 					<param name="button_img" value="hub_partymode_fo"/>
 				</include>
-			</control>
+			</control> -->
 		</control>	
 	</control>
 		
@@ -347,20 +289,18 @@ default
 	
 	<!-- multiple gouplist based on visible by prop ? -->
 	<control type="grouplist" id="6666">
+		<description>later id 200</description>
+	
 		<animation effect="slide" start="0,0" end="-300,0" time="300" tween="cubic" easing="in" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),true)">conditional</animation>
 		
 		<!-- <animation effect="slide" start="0,0" end="300,0" time="350" tween="cubic" easing="inout" condition="String.IsEqual(Window.Property(Menucontrol),focus)">conditional</animation> -->
 		
 		<onfocus condition="!String.IsEmpty(Window.Property(Menucontrol))">ClearProperty(Menucontrol)</onfocus>
-		<description>fucking scrollbar issue drives me nuts</description>
-		<top>150</top>
-		<bottom>5</bottom>
+		
+		<top>140</top>
 		<left>150</left>
-		<width>1555</width>
-		<itemgap>-45</itemgap>
-		<orientation>vertical</orientation>
-		<usecontrolcoords>true</usecontrolcoords>
-		<scrolltime tween="cubic" easing="in">300</scrolltime>
+		<width>1870</width>
+		
 		
 		<ondown>6666</ondown>
 		<onup>8001</onup>
@@ -369,39 +309,75 @@ default
 		<onleft condition="Control.IsVisible(666660)">666660</onleft>
 		<onleft condition="!Control.IsVisible(666660)">9000</onleft>
 		
-		<include content="spacer_h">
-			<param name="id" value="5000" />
-			<param name="gap" value="0" />
-		</include>
+		<control description="recommendations PLACEHOLDER" type="group">
+			<!-- <visible>String.IsEqual(Window(home).Property(HUB_Music),recommendations)</visible> -->
+			<visible>String.IsEqual(Window(home).Property(HUB_Music),common)</visible>
+			<description>Placeholder Recommendations PAGE</description>
+			<height>940</height>
+			<control type="image">
+				<width>100%</width>
+				<height>900</height>
+				<bordersize>10</bordersize>
+				<texture>insp.jpg</texture>
+				<bordertexture colordiffuse="purple">colors/white20.png</bordertexture>
+				<aspectratio scalediffuse="false">keep</aspectratio>
+			</control>
+			<control type="button" id="99">
+				<description>placeholder button to hold focus and nav actions</description>
+				<ondown>110</ondown>
+				<onup condition="Control.IsVisible(8001)">8001</onup>
+				<texturefocus />
+				<texturenofocus />
+				<height>900</height>
+			</control>
+		</control>
 		
-		<include content="HUB_ContainerHeader">
-			<param name="id" value="01" />
-			<param name="label" value="A R T I S T S" />
-		</include>
-		
-		<include content="Hub_Container_Common">
-			<param name="visible" value="String.IsEqual(Window(home).Property(HUB_Music),common)" />
-			<param name="id" value="5001" />
-			<param name="height" value="850" />
+		<!-- default page height for head and container = 
+				rootgroup			940
+					group			100
+						heading			25
+						optins  
+					container		790
+		-->
+		<control description="common artists" type="group" id="66">
+			<visible>String.IsEqual(Window(home).Property(HUB_Music),common)</visible>
+			<description>artist common</description>
 			
-			<onup>8001</onup>
-		
-			<include condition="Skin.HasSetting(Force_StayInMusicHub)" content="hub_music_OverrideOnClick" />
+			<height>940</height> 
+			<include content="HUB_Heading_and_Options">
+				<param name="belonging_containerid" value="110" />
+				<param name="label" value="A R T I S T S" />
+			</include>
+			
+			<include content="Hub_Container_Fancy">
+				<param name="visible" value="String.IsEqual(Window(home).Property(HUB_Music),common)" />
+				<param name="id" value="110" />
+				<param name="previousid" value="99" />
+				<param name="height" value="790" />
+				<param name="container_can_sort" value="true" />
+			
+					<onup condition="Control.IsVisible($PARAM[id]01)">$PARAM[id]01</onup>
+					<onup condition="!Control.IsVisible($PARAM[id]01) + Control.IsVisible(99)">99</onup>
+					<onup condition="!Control.IsVisible($PARAM[id]01) + !Control.IsVisible(99)">8001</onup>
+				
+					<ondown>120</ondown>
+				
+				<include condition="Skin.HasSetting(Force_StayInMusicHub)" content="hub_music_OverrideOnClick" />
 
-			<itemlayout height="300" width="460">
+				<itemlayout height="270" width="410">
+					<control type="group">
+						<height>210</height>
+						<width>405</width>
+						<include content="HUB_Landscape">
+							<param name="colordiffuse" value="$VAR[color_hub_widget_frame_nf]" />
+							<param name="autoscroll" value="false" />
+							<param name="bordersize_bg" value="6" />
+						</include>
+					</control>
+				</itemlayout>
+				<focusedlayout height="270" width="410">
 				<control type="group">
-					<height>243</height>
-					<width>405</width>
-					<include content="HUB_Landscape">
-						<param name="colordiffuse" value="$VAR[color_hub_widget_frame_nf]" />
-						<param name="autoscroll" value="false" />
-						<param name="bordersize_bg" value="6" />
-					</include>
-				</control>
-			</itemlayout>
-			<focusedlayout height="300" width="460">
-				<control type="group">
-					<height>243</height>
+					<height>220</height>
 					<width>405</width>
 					<include>Animation_Item_Focus</include>
 					<control type="group">
@@ -416,178 +392,219 @@ default
 						</include>
 					</control>
 				</control>
-			</focusedlayout>
-			<include content="emptywidget">
-				<param name="id" value="01" />
+				</focusedlayout>
+				<include content="emptywidget">
+					<param name="id" value="$PARAM[id]" />
+				</include>
+				<content limit="18" target="music">$VAR[HUB_content_artists]</content>
 			</include>
-			<content limit="1" target="music">musicdb://artists/</content>
-			<!-- <content target="music">$VAR[HUB_content_artists]</content> -->
-		</include>
+		</control>
 		
-		<include content="HUB_ContainerHeader">
-			<param name="id" value="02" />
-			<param name="label" value="A L B U M S" />
-			<param name="filter_label" value="albumtitleorartist" />
-		</include>
-		<include content="Hub_Container_Common">
-			<param name="visible" value="String.IsEqual(Window(home).Property(HUB_Music),common)" />
-			<param name="id" value="5002" />
-			<param name="height" value="610" />
-			
-			<include condition="Skin.HasSetting(Force_StayInMusicHub)" content="hub_music_OverrideOnClick">
-				<param name="goto" value="album" />
+		<control description="common albums" type="group" id="200002">
+			<visible>String.IsEqual(Window(home).Property(HUB_Music),common)</visible>
+			<description>album common</description>
+			<height>940</height> 
+			<include content="HUB_Heading_and_Options">
+				<param name="belonging_containerid" value="120" />
+				<param name="label" value="A L B U M S" />
 			</include>
 			
-			<itemlayout height="300" width="300">
-				<control type="group">
-					<height>280</height>
-					<width>280</width>
-					<include content="HUB_square">
-						<param name="colordiffuse" value="$VAR[color_hub_widget_frame_nf]" />
-						<param name="autoscroll" value="false" />
-						<param name="bordersize_bg" value="6" />
-					</include>
-				</control>
-			</itemlayout>
-			<focusedlayout height="300" width="300">
-				<control type="group">
-					<height>280</height>
-					<width>280</width>
-					<include>Animation_Item_Focus</include>
+			
+			<include content="Hub_Container_Fancy">
+				<param name="visible" value="String.IsEqual(Window(home).Property(HUB_Music),common)" />
+				<param name="id" value="120" />
+				<param name="height" value="600" />
+				<param name="container_can_sort" value="true" />
+			
+					<onup condition="Control.IsVisible($PARAM[id]01)">$PARAM[id]01</onup>
+					<onup condition="!Control.IsVisible($PARAM[id]01)">120</onup>
+					<ondown>130</ondown>
+				
+				<include condition="Skin.HasSetting(Force_StayInMusicHub)" content="hub_music_OverrideOnClick">
+					<param name="goto" value="album" />
+				</include>
+				
+				<itemlayout height="300" width="300">
 					<control type="group">
+						<height>280</height>
+						<width>280</width>
 						<include content="HUB_square">
-							<param name="colordiffuse" value="$VAR[color_hub_widget_frame_fo]" />
-							<param name="autoscroll" value="true" />
-							<param name="bordersize_bg" value="4" />
+							<param name="colordiffuse" value="$VAR[color_hub_widget_frame_nf]" />
+							<param name="autoscroll" value="false" />
+							<param name="bordersize_bg" value="6" />
 						</include>
 					</control>
-				</control>
-			</focusedlayout>
-			<include content="emptywidget">
-				<param name="id" value="02" />
-			</include>
-			<content sortby="year" sortorder="ascending" limit="0">$VAR[HUB_content_albums_artist_or_title]</content>
-		</include>
-		
-		<include content="HUB_ContainerHeader">
-			<param name="id" value="04" />
-			<param name="label" value="S O N G S" />
-			<param name="filter_label" value="songtitleorartist" />
-		</include>
-		<include content="Hub_Container_Common">
-			<param name="visible" value="String.IsEqual(Window(home).Property(HUB_Music),common)" />
-			<param name="id" value="5004" />
-			<param name="height" value="200" />
-			
-			<itemlayout height="100" width="500">
-				<control type="group">
-					<height>90</height>
-					<width>480</width>
-					<include content="HUB_box">
-						<param name="colordiffuse" value="$VAR[color_hub_widget_frame_nf]" />
-						<param name="autoscroll" value="false" />
-						<param name="bordersize_bg" value="6" />
-					</include>
-				</control>
-			</itemlayout>
-			<focusedlayout height="100" width="500">
-				<control type="group">
-					<height>90</height>
-					<width>480</width>
-					<include>Animation_Item_Focus</include>
+				</itemlayout>
+				<focusedlayout height="300" width="300">
 					<control type="group">
+						<height>280</height>
+						<width>280</width>
+						<include>Animation_Item_Focus</include>
+						<control type="group">
+							<include content="HUB_square">
+								<param name="colordiffuse" value="$VAR[color_hub_widget_frame_fo]" />
+								<param name="autoscroll" value="true" />
+								<param name="bordersize_bg" value="4" />
+							</include>
+						</control>
+					</control>
+				</focusedlayout>
+				<include content="emptywidget">
+					<param name="id" value="PARAM[id]" />
+				</include>
+				<content limit="18" sortby="year" sortorder="ascending">$VAR[HUB_content_albums_artist_or_title]</content>
+			</include>
+		</control>
+		
+		<control description="common songs" type="group" id="200003">
+			<visible>String.IsEqual(Window(home).Property(HUB_Music),common)</visible>
+			<description>songs common</description>
+			<height>470</height> 
+			<include content="HUB_Heading_and_Options">
+				<param name="belonging_containerid" value="130" />
+				<param name="label" value="S O N G S" />
+				<param name="filter_label" value="songtitleorartist" />
+			</include>
+			<include content="Hub_Container_Fancy">
+				<param name="visible" value="String.IsEqual(Window(home).Property(HUB_Music),common)" />
+				<param name="id" value="130" />
+				<param name="height" value="200" />
+				<param name="container_can_sort" value="true" />
+			
+					<onup condition="Control.IsVisible($PARAM[id]01)">$PARAM[id]01</onup>
+					<onup condition="!Control.IsVisible($PARAM[id]01)">130</onup>
+					<ondown>140</ondown>
+				
+				<itemlayout height="100" width="500">
+					<control type="group">
+						<height>90</height>
+						<width>480</width>
 						<include content="HUB_box">
-							<param name="colordiffuse" value="$VAR[color_hub_widget_frame_fo]" />
-							<param name="autoscroll" value="true" />
-							<param name="bordersize_bg" value="4" />
+							<param name="colordiffuse" value="$VAR[color_hub_widget_frame_nf]" />
+							<param name="autoscroll" value="false" />
+							<param name="bordersize_bg" value="6" />
 						</include>
 					</control>
-					<control type="image">
-						<centertop>50%</centertop>
-						<visible>!ListItem.IsPlaying</visible>
-						<left>14</left>
-						<visible>true</visible>
-						<width>60</width>
-						<height>60</height>
-						<texture diffuse="artworkdiffuse/circle.png" background="true">overlay/overlayplay.png</texture>
-						<colordiffuse>white</colordiffuse>
-						<bordersize>2</bordersize>
-						<bordertexture colordiffuse="55000000">artworkdiffuse/circle.png</bordertexture>
-					</control>
-				</control>
-			</focusedlayout>
-			<include content="emptywidget">
-				<param name="id" value="04" />
-			</include>
-			<content sortby="title" sortorder="ascending">$VAR[HUB_content_songs_title_or_artist]</content>
-		</include>
-		
-		<include content="HUB_ContainerHeader">
-			<param name="id" value="08" />
-			<param name="label" value="Music Video Genres" />
-			<param name="filter_label" value="none" />
-		</include>
-		<include content="Hub_Container_Genre">
-			<param name="visible" value="!String.IsEqual(Window(home).Property(HUB_Music),common) + String.IsEqual(Window(home).Property(HUB_Music),musicvideos)" />
-			<param name="id" value="5008" />
-			<param name="height" value="150" />
-			<param name="orientation" value="horizontal" />
-			<param name="focusonback_id" value="9000"/>
-			<itemlayout height="110" width="320">
-				<control type="group">
-					<height>100</height>
-					<width>300</width>
-					<include content="HUB_box_old">
-						<param name="colordiffuse" value="$VAR[color_hub_widget_frame_nf]" />
-						<param name="autoscroll" value="false" />
-						<param name="bordersize_bg" value="6" />
-					</include>
-				</control>
-			</itemlayout>
-			<focusedlayout height="110" width="320">
-				<control type="group">
-					<height>100</height>
-					<width>300</width>
-					<include>Animation_Item_Focus</include>
+				</itemlayout>
+				<focusedlayout height="100" width="500">
 					<control type="group">
+						<height>90</height>
+						<width>480</width>
+						<include>Animation_Item_Focus</include>
+						<control type="group">
+							<include content="HUB_box">
+								<param name="colordiffuse" value="$VAR[color_hub_widget_frame_fo]" />
+								<param name="autoscroll" value="true" />
+								<param name="bordersize_bg" value="4" />
+							</include>
+						</control>
+						<control type="image">
+							<centertop>50%</centertop>
+							<visible>!ListItem.IsPlaying</visible>
+							<left>14</left>
+							<visible>true</visible>
+							<width>60</width>
+							<height>60</height>
+							<texture diffuse="artworkdiffuse/circle.png" background="true">overlay/overlayplay.png</texture>
+							<colordiffuse>white</colordiffuse>
+							<bordersize>2</bordersize>
+							<bordertexture colordiffuse="55000000">artworkdiffuse/circle.png</bordertexture>
+						</control>
+					</control>
+				</focusedlayout>
+				<include content="emptywidget">
+					<param name="id" value="04" />
+				</include>
+				<content limit="18" sortby="title" sortorder="ascending">$VAR[HUB_content_songs_title_or_artist]</content>
+			</include>
+			
+			
+			
+		</control>
+		
+		 <!-- prop = uncommon + musicvideos -->
+			<include content="HUB_ContainerHeader">
+				<param name="id" value="08" />
+				<param name="top" default="0" />
+				<param name="height" default="50" />
+				<param name="label" value="Music Video Genres" />
+				<param name="filter_label" value="none" />
+			</include>
+			<include content="Hub_Container_Genre">
+				<param name="top" value="50"/>
+				<param name="visible" value="!String.IsEqual(Window(home).Property(HUB_Music),common) + String.IsEqual(Window(home).Property(HUB_Music),musicvideos)" />
+				<param name="id" value="5008" />
+				<param name="height" value="150" />
+				<param name="orientation" value="horizontal" />
+				<param name="focusonback_id" value="9000"/>
+				<itemlayout height="110" width="320">
+					<control type="group">
+						<height>100</height>
+						<width>300</width>
 						<include content="HUB_box_old">
-							<param name="colordiffuse" value="$VAR[color_hub_widget_frame_fo]" />
-							<param name="autoscroll" value="true" />
-							<param name="bordersize_bg" value="4" />
-						</include>
-						<include content="FocusOverlay">
-							<param name="diffusedimtext" value="artworkdiffuse/landscape.png" />
-							<param name="bordersize" value="8" />
+							<param name="colordiffuse" value="$VAR[color_hub_widget_frame_nf]" />
+							<param name="autoscroll" value="false" />
+							<param name="bordersize_bg" value="6" />
 						</include>
 					</control>
-				</control>
-			</focusedlayout>
-			<content target="videos">videodb://musicvideos/genres/</content>
+				</itemlayout>
+				<focusedlayout height="110" width="320">
+					<control type="group">
+						<height>100</height>
+						<width>300</width>
+						<include>Animation_Item_Focus</include>
+						<control type="group">
+							<include content="HUB_box_old">
+								<param name="colordiffuse" value="$VAR[color_hub_widget_frame_fo]" />
+								<param name="autoscroll" value="true" />
+								<param name="bordersize_bg" value="4" />
+							</include>
+							<include content="FocusOverlay">
+								<param name="diffusedimtext" value="artworkdiffuse/landscape.png" />
+								<param name="bordersize" value="8" />
+							</include>
+						</control>
+					</control>
+				</focusedlayout>
+				<content target="videos">videodb://musicvideos/genres/</content>
 		</include>
-		<include content="HUB_ContainerHeader">
-			<param name="id" value="07" />
-			<param name="label" value="Music Videos" />
-			<param name="filter_label" value="songtitleorartist" />
-		</include>
-		<include content="Hub_Container_Common">
-			<param name="visible" value="String.IsEqual(Window(home).Property(HUB_Music),common) | String.IsEqual(Window(home).Property(HUB_Music),musicvideos)" />
-			<param name="id" value="5007" />
-			<param name="height" value="850" />
 			
-			<itemlayout height="300" width="460">
+		<control description="common foo" type="group" id="200004">
+			<visible>String.IsEqual(Window(home).Property(HUB_Music),common) | String.IsEqual(Window(home).Property(HUB_Music),musicvideos)</visible>
+			<height>940</height> 
+			
+			<include content="HUB_Heading_and_Options">
+				<param name="belonging_containerid" value="140" />
+				<param name="label" value="M U S I K V I D E O S" />
+				<param name="filter_label" value="songtitleorartist" />
+			</include>
+			<include content="Hub_Container_Fancy">
+				<param name="visible" value="String.IsEqual(Window(home).Property(HUB_Music),common) | String.IsEqual(Window(home).Property(HUB_Music),musicvideos)" />
+				<!-- <param name="visible" value="String.IsEqual(Window(home).Property(HUB_Music),common)" /> -->
+				<param name="id" value="140" />
+				<param name="height" value="790" />
+				
+				<onup condition="Control.IsVisible(5008)">5008</onup>
+				<onup condition="!Control.IsVisible(5008)">1003</onup>
+				
+				<ondown></ondown>
+				
+				<include condition="Skin.HasSetting(Force_StayInMusicHub)" content="hub_music_OverrideOnClick" />
+
+				<itemlayout height="270" width="410">
+					<control type="group">
+						<height>210</height>
+						<width>405</width>
+						<include content="HUB_Landscape">
+							<param name="colordiffuse" value="$VAR[color_hub_widget_frame_nf]" />
+							<param name="autoscroll" value="false" />
+							<param name="bordersize_bg" value="6" />
+						</include>
+					</control>
+				</itemlayout>
+				<focusedlayout height="270" width="410">
 				<control type="group">
-					<height>243</height>
-					<width>405</width>
-					<include content="HUB_Landscape">
-						<param name="colordiffuse" value="$VAR[color_hub_widget_frame_nf]" />
-						<param name="autoscroll" value="false" />
-						<param name="bordersize_bg" value="6" />
-					</include>
-				</control>
-			</itemlayout>
-			<focusedlayout height="300" width="460">
-				<control type="group">
-					<height>243</height>
+					<height>220</height>
 					<width>405</width>
 					<include>Animation_Item_Focus</include>
 					<control type="group">
@@ -602,14 +619,21 @@ default
 						</include>
 					</control>
 				</control>
-			</focusedlayout>
-			<include content="emptywidget">
-				<param name="id" value="07" />
+				</focusedlayout>
+				<include content="emptywidget">
+					<param name="id" value="$PARAM[id]" />
+				</include>
+				<content limit="18" sortby="artist" sortorder="ascending" target="videos">$VAR[HUB_content_musicvideo_titles_or_artist]</content>
 			</include>
-			<content sortby="artist" sortorder="ascending" limit="0" target="videos">$VAR[HUB_content_musicvideo_titles_or_artist]</content>
-		</include>
-		add musicvideo genres ? if prop match
+		</control>
 		
+		
+		<!--
+			
+			
+		</control>
+		add musicvideo genres ? if prop match
+		 -->
 		
 		<include content="HUB_ContainerHeader">
 			<param name="id" value="10" />
@@ -1988,7 +2012,6 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			
 			<control type="list" id="5120">
 				<top>100</top>
-				<width>1500</width>
 				<height>300</height>
 				<preloaditems>2</preloaditems>
 				<orientation>horizontal</orientation>
@@ -2146,7 +2169,7 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 		<description>S I D E    B A R    L E F T</description>
 		<animation effect="slide" start="0,0" end="300,0" time="350" tween="cubic" easing="inout" condition="String.IsEqual(Window.Property(Menucontrol),focus)">conditional</animation>
 		
-		<animation effect="slide" start="0,0" end="-450,0" time="300" tween="cubic" easing="inout" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),true)">conditional</animation>
+		<animation effect="slide" start="0,0" end="-450,0" time="350" tween="cubic" easing="inout" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),true)">conditional</animation>
 		
 		
 		<height>100%</height>
@@ -2157,11 +2180,28 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<texture flipy="true" colordiffuse="$VAR[color_hub_menu_panel_gradienttop]">diffuse/gradienttoplinear50.png</texture>
 			<bordertexture colordiffuse="$VAR[color_hub_menu_panel_gradientcenter]">diffuse/gradienttoplinear100.png</bordertexture>
 		</control>
+		
+		<control type="image">
+			<animation effect="slide" start="0,0" end="-100,0" time="350" tween="cubic" easing="inout" condition="!String.IsEqual(Window.Property(Menucontrol),focus)">conditional</animation>
+			<visible>false</visible>
+			<centertop>50%</centertop>
+			<!-- <animation effect="rotatey" start="0" end="180" center="60" time="350" tween="cubic" easing="inout" condition="!String.IsEqual(Window.Property(Menucontrol),focus)">conditional</animation>
+			 -->
+			<description>menu arrow indicator, need get goog image</description>
+			<left>380</left>
+			<width>40</width>
+			<height>40</height>
+			<aspectratio>keep</aspectratio>
+			<bordersize>10</bordersize>
+			<bordertexture diffuse="artworkdiffuse/circle.png" colordiffuse="$VAR[color_hub_menu_panel_gradientcenter]">colors/white70.png</bordertexture>
+			<texture>buttons/arrowleft.png</texture>
+		</control>
+		
+		
 		<control type="grouplist" id="9000">
 			<posx>10</posx>
 			<onup>8001</onup>
 			<ondown>9000</ondown>
-			
 			<onleft>SetProperty(Menucontrol,focus)</onleft>
 			<onright>ClearProperty(Menucontrol)</onright>
 		
@@ -2172,8 +2212,6 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			
 			<onleft condition="!String.IsEqual(Window.Property(Menucontrol),focus)"></onleft>
 			<onright condition="!String.IsEqual(Window.Property(Menucontrol),focus)"></onright>
-			
-			
 			
 			<orientation>vertical</orientation>
 			<itemgap>10</itemgap>
@@ -2412,45 +2450,172 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 		
 	<control type="group">
 		<description>P L A Y L I S T    C O N T A I N E R    S I D E B A R     R I G H T</description>
-		<height>100%</height>
-        <width>480</width>
-		<posy>100</posy>
-		<right>-480</right>
-		<animation effect="slide" start="0,0" end="-480,0" time="300" tween="cubic" easing="in" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),true)">conditional</animation>
+		<width>380</width>
+		<right>-380</right>
+		<visible>Player.HasAudio</visible>
+		<!-- <animation effect="slide" start="0,0" end="-500,0" time="300" tween="cubic" easing="in" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),true)">conditional</animation> -->
+		<animation effect="slide" start="0,0" end="-380,0" time="300" tween="cubic" easing="in" condition="true">conditional</animation>
 		
-		<include content="bg_gradientmulticolor" />
-		
-		<control type="label">
-			<right>30</right>
-			<top>0</top>
-			<height>50</height>
-			<label>Current Playlist</label>
-			<font>font36_title</font>
-			<align>right</align>
+		<control type="image">
+			<texture colordiffuse="ff303030">colors/white.png</texture>
 		</control>
+		<!-- 
+		<control type="image">
+			<right>380</right>
+			<width>20</width>
+			<texture flipx="true" colordiffuse="$VAR[color_hub_accent]">diffuse/gradientleft.png</texture>
+		</control>
+		-->
+		
+		
+			<control type="group">
+				<height>500</height>
+				<width>380</width>
+				
+				
+				<control type="image" id="8003">
+					<right>0</right>
+					<top>0</top>
+					<height>500</height>
+					<width>380</width>
+					<texture colordiffuse="orange">colors/white.png</texture>
+				</control>		
+				<control type="image" id="8003">
+					<right>0</right>
+					<top>0</top>
+					<height>380</height>
+					<width>380</width>
+					<texture fallback="defaultmusicalbums.png">$INFO[Player.Art(thumb)]</texture>
+					<aspectratio align="right" aligny="bottom">keep</aspectratio>
+				</control>
+				<control type="image">
+					<height>20</height>
+					<top>500</top>
+					<texture border="1" flipy="true" colordiffuse="orange">diffuse/gradient.png</texture>
+				</control>				
+				
+					<control type="progress">
+						<top>385</top>
+						<width>380</width>
+						<height>5</height>
+						<info>Player.Progress</info>
+						<texturebg colordiffuse="$VAR[color_hub_menu_text_nf]">colors/white50.png</texturebg>
+						<midtexture colordiffuse="white">colors/white.png</midtexture>
+						<lefttexture />
+						<righttexture />
+					</control>
+					
+						<control type="label">
+							<top>10</top>
+							<font>DialogListItemLowLined</font>
+							<height>60</height>
+							<label>$INFO[MusicPlayer.Artist,[B],[/B]]</label>
+							<textcolor>$VAR[color_hub_accent]</textcolor>
+						</control>
+				
+				<control type="label">
+					<top>60</top>
+					<height>20</height>
+					<label>[COLOR $VAR[color_hub_accent]]$INFO[MusicPlayer.Tracknumber][/COLOR]$INFO[MusicPlayer.Title,  [B],[/B]]</label>
+					<font>MenucontrolItem</font>
+				</control>
+				<control type="label">
+					<top>60</top>
+					<right>0</right>
+					<align>right</align>
+					<height>20</height>
+					<textcolor>$VAR[color_hub_accent]</textcolor>
+					<label>$INFO[MusicPlayer.Album]$INFO[MusicPlayer.Year, (,)]</label>
+					<font>MenucontrolItem</font>
+				</control>
+			</control>
+			
+			
+			
+			<control type="group">
+				<top>360</top>
+
+				<control type="button" id="8007">
+					<visible>MusicPlayer.HasPrevious</visible>
+					<include content="Hub_PlayerCtrl">
+						<param name="action" value="PlayerControl(Previous)"/>
+						<param name="button_img" value="previous_fo"/>
+					</include>
+				</control>
+				<control type="togglebutton" id="8008">
+					<alttexturefocus colordiffuse="$VAR[color_hub_accent]">buttons/osd/pause_fo.png</alttexturefocus>
+					<alttexturenofocus colordiffuse="$VAR[color_hub_menu_text_nf]">buttons/osd/pause_fo.png</alttexturenofocus>
+					<usealttexture>!Player.Paused</usealttexture>
+					<include content="Hub_PlayerCtrl">
+						<param name="action" value="PlayerControl(play)"/>
+						<param name="button_img" value="play_fo"/>
+					</include>
+				</control>
+				<control type="button" id="8009">
+					<visible>MusicPlayer.Playing</visible>
+					<include content="Hub_PlayerCtrl">
+						<param name="action" value="PlayerControl(stop)"/>
+						<param name="button_img" value="stop_fo"/>
+					</include>
+				</control>
+				<control type="button" id="8010">
+					<visible>MusicPlayer.HasNext</visible>
+					<include content="Hub_PlayerCtrl">
+						<param name="action" value="PlayerControl(Next)"/>
+						<param name="button_img" value="next_fo"/>
+					</include>
+				</control>
+				<include content="spacer_w">
+					<param name="id" value="8011"/>
+					<param name="gap" value="80"/>
+					<param name="visible" value="Player.HasAudio"/>
+				</include>
+				<control type="button" id="8006">
+					<include content="Hub_PlayerCtrl">
+						<param name="action" value="SetProperty(CurrentPlaylistVisible,true)"/>
+						<param name="button_img" value="playlist"/>
+					</include>
+					<onclick>SetFocus(7000)</onclick>
+				</control>
+				<control type="button" id="8012">
+					<visible>Player.HasMedia</visible>
+					<include content="Hub_PlayerCtrl">
+						<param name="action" value="fullscreen"/>
+						<param name="button_img" value="fullscreen"/>
+					</include>
+				</control>
+				<control type="button" id="8013">
+					<include content="Hub_PlayerCtrl">
+						<param name="action" value="PlayerControl(Partymode(music))"/>
+						<param name="button_img" value="hub_partymode_fo"/>
+					</include>
+				</control>
+		</control>
+		
+		
 		<control type="panel" id="7000">
-			<left>25</left>
-			<top>50</top>
-			<height>890</height>
-			<width>440</width>
+				<left>25</left>
+				<top>500</top>
+				<height>550</height>
+				<width>380</width>
 			
-			<preloaditems>2</preloaditems>
-			<orientation>vertical</orientation>
-			<pagecontrol>700060</pagecontrol>
-			<scrolltime tween="quadratic">400</scrolltime>
+				<preloaditems>2</preloaditems>
+				<orientation>vertical</orientation>
+				<pagecontrol>700060</pagecontrol>
+				<scrolltime tween="quadratic">400</scrolltime>
+				
+				<onleft>ClearProperty(CurrentPlaylistVisible)</onleft>
+				<onleft>6666</onleft>
+				
+				<onright condition="Control.IsVisible(700060)">700060</onright>
+				
+				<onright condition="!Control.IsVisible(700060)">ClearProperty(CurrentPlaylistVisible)</onright>
+				<onright condition="!Control.IsVisible(700060)">8008</onright>
+				
+				<onup>7000</onup>
+				<ondown>7000</ondown>
 			
-			<onleft>ClearProperty(CurrentPlaylistVisible)</onleft>
-			<onleft>6666</onleft>
-			
-			<onright condition="Control.IsVisible(700060)">700060</onright>
-			
-			<onright condition="!Control.IsVisible(700060)">ClearProperty(CurrentPlaylistVisible)</onright>
-			<onright condition="!Control.IsVisible(700060)">8008</onright>
-			
-			<onup>7000</onup>
-			<ondown>7000</ondown>
-			
-			<onclick>RunScript(script.embuary.helper,action=playall,id=7000,type=music,method=fromhere)</onclick>
+				<onclick>RunScript(script.embuary.helper,action=playall,id=7000,type=music,method=fromhere)</onclick>
 			
 			<!-- just If media is a playlist !! -->
 			<!-- <onclick>PlayMedia(musicdb://albums/$INFO[Container(5120).ListItem.dbid]/,playoffset=$INFO[Container(7000).CurrentItem])</onclick> -->
@@ -2537,21 +2702,21 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 
 	</control>
 	
+	
+	<control type="scrollbar" id="666660">
 		
-		<control type="scrollbar" id="666660">
 			<animation effect="slide" start="0,0" end="-300,0" time="200" tween="cubic" easing="in" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),true)">conditional</animation>
-			<description>prop common all content LeftScrollBar</description>
+			<description>prop common all content LeftScrollBar replace with icon bar instead</description>
 			<showonepage>true</showonepage>
-			<visible>false</visible>
 			<!-- <visible>String.IsEqual(Window(home).Property(HUB_Music),common) | String.IsEqual(Window(home).Property(HUB_Music),compilations)</visible> -->
-			<left>301</left>
+			<right>50</right>
 			<top>100</top>
 			<height>980</height>
 			<onup>8000</onup>
 			<ondown>666660</ondown>
 			<onleft>9000</onleft>
 			<onright>6666</onright>
-		</control>
+	</control>
 		
 		<control type="scrollbar" id="700060">
 			<description>Playlist ScrollBar</description>

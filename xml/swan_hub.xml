@@ -1,5 +1,189 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
+	
+	<include name="HUB_ContainerButtons">
+		<description>create alpha channel of needed textures
+need deactivate b if a is true and so on		
+</description>
+		<height>70</height>
+		<width>70</width>
+		<radioposx>10</radioposx>
+		<radioposy>10</radioposy>
+		<radioheight>50</radioheight>
+		<radiowidth>50</radiowidth>
+		<textureradioonfocus colordiffuse="$VAR[color_hub_accent]">$PARAM[texture]</textureradioonfocus>
+		<textureradioonnofocus  diffuse="colors/white80.png" colordiffuse="$VAR[color_hub_accent]">$PARAM[texture]</textureradioonnofocus>
+		
+		<textureradioofffocus colordiffuse="$VAR[color_hub_backgroundlayer1]">$PARAM[texture]</textureradioofffocus>
+		<!-- <textureradioofffocus colordiffuse="$VAR[color_hub_text_main]">$PARAM[texture]</textureradioofffocus> -->
+		
+		<textureradiooffnofocus  diffuse="colors/white80.png" colordiffuse="$VAR[color_hub_text_main]">$PARAM[texture]</textureradiooffnofocus>
+		
+		<textureradioondisabled colordiffuse="disabled">$PARAM[texture]</textureradioondisabled>
+		<textureradiooffdisabled colordiffuse="disabled">$PARAM[texture]</textureradiooffdisabled>
+		
+		<texturefocus diffuse="colors/white80.png" colordiffuse="$VAR[color_hub_text_main]">buttons/radioonfo.png</texturefocus>
+		
+		<texturenofocus diffuse="colors/white30.png" colordiffuse="$VAR[color_hub_text_main]">buttons/radioonfo.png</texturenofocus>
+	</include>
+
+	<include name="HUB_Heading_and_Options">
+		<param name="top" />
+		<param name="item_label" default="$INFO[Container.ListItem.Artist,[B],[/B]]" />
+		<param name="filter_label" default="common" />
+		<param name="container_can_sort" default="false" />
+
+		<definition>
+            <control type="group">
+				<visible>Control.IsVisible($PARAM[belonging_containerid]) + [Container($PARAM[belonging_containerid]).IsUpdating  | Integer.IsGreater(Container($PARAM[belonging_containerid]).NumItems,0)]</visible>
+				<height>100</height>
+                <top>$PARAM[top]</top>
+				<control type="label">
+					<top>10</top>
+					<left>15</left>
+					<width>auto</width>
+					<label>[B]$PARAM[label][/B]$VAR[$PARAM[filter_label]_Filter]</label>
+					<aligny>center</aligny>
+					<textcolor>$VAR[color_hub_text_main]</textcolor>
+					<font>Montserrat_ExtraBold_50</font>
+					<height>25</height>
+				</control>
+				
+				<nested />
+					<!-- <description>nested buttons to set sortby,sortorder,limit, open info, play all, shuffle </description> -->
+				
+				
+				<control type="grouplist">
+                    <animation effect="fade" start="0" end="100" time="300" easing="inout" condition="Control.HasFocus($PARAM[belonging_containerid])">conditional</animation>
+			
+					<description>i can also be a radiobutton to set skinstring filter methods used via xsp</description>
+					<top>70</top>
+					<height>55</height>
+                    <orientation>horizontal</orientation>
+                    <usecontrolcoords>true</usecontrolcoords>
+                    <itemgap>10</itemgap>
+					
+					
+					<control type="label">
+						<top>-2</top>
+						<height>50</height>
+						<width>auto</width>
+                        <label> | </label>
+						<aligny>top</aligny>
+                        <textcolor>$VAR[color_hub_accent]</textcolor>
+                        <font>Bold36</font>
+                        <visible>Control.HasFocus($PARAM[belonging_containerid]) + !Container($PARAM[belonging_containerid]).IsUpdating</visible>
+                        <visible>!String.IsEmpty(Container($PARAM[belonging_containerid]).ListItem.Label)</visible>
+                    </control>
+					<control type="label">
+						<top>10</top>
+                        <width>auto</width>
+						<label>$PARAM[item_label]</label>
+                        <aligny>center</aligny>
+						<textcolor>$VAR[color_hub_text_main]</textcolor>
+						<font>font27</font>
+                        <height>24</height>
+						<visible>Control.HasFocus($PARAM[belonging_containerid]) + !Container($PARAM[belonging_containerid]).IsUpdating</visible>
+                    </control>
+					<control type="image">
+						<visible>Container($PARAM[belonging_containerid]).IsUpdating</visible>
+						<width>40</width>
+						<height>40</height>
+						<aspectratio scalediffuse="false" align="center" aligny="center">keep</aspectratio>
+						<texture colordiffuse="$VAR[color_hub_accent]">special://skin/extras/busy/skypishball.apng</texture>
+						<aspectratio align="center" aligny="center">keep</aspectratio>
+					</control>
+				</control>
+				<control type="label">
+					<animation effect="fade" start="0" end="100" time="300" easing="inout" condition="Control.HasFocus($PARAM[belonging_containerid])">conditional</animation>
+			
+					<top>40</top>
+					<left>11</left>
+					<width>auto</width>
+					<label>$INFO[Container($PARAM[belonging_containerid]).NumItems, numitems (,)]</label>
+					<aligny>center</aligny>
+					<textcolor>$VAR[color_hub_text_main]</textcolor>
+					<font>HUB_WidgetSubHeader</font>
+					<height>24</height>
+					<visible>!Container($PARAM[belonging_containerid]).IsUpdating</visible>
+				</control>
+            </control>
+        </definition>
+    </include>
+
+	<include name="Hub_Container_Fancy">
+		<param name="top" default="150" />
+		
+		<definition>
+		<control type="grouplist" id="$PARAM[id]01">
+			<visible>$PARAM[container_can_sort]</visible>
+			<animation effect="slide" start="0,0" end="0,-10" time="0" condition="true">conditional</animation>
+			<!-- <animation effect="fade" start="100" end="0" time="300" easing="inout" condition="!Control.HasFocus($PARAM[belonging_containerid])">conditional</animation> -->
+			<description>
+try using control id is enabled + prop is true for content call
+auto disable control via on focus or use hidden window - booth should could be usable by using send click
+</description>
+			<right>250</right>
+			<align>right</align>
+			<height>70</height>
+			<orientation>horizontal</orientation>
+			
+			
+			<onup>$PARAM[previousid]</onup>
+			<ondown>$PARAM[id]</ondown>
+			
+			
+			<itemgap>50</itemgap>
+				<control type="radiobutton" id="$PARAM[id]02">
+					<include content="HUB_ContainerButtons">
+						<param name="texture" value="defaultmusicvideotitle.png" />
+					</include>
+				</control>
+				<control type="radiobutton" id="$PARAM[id]03">
+					<include content="HUB_ContainerButtons">
+						<param name="texture" value="defaultyear.png" />
+					</include>
+				</control>
+				<control type="radiobutton" id="$PARAM[id]04">
+					<include content="HUB_ContainerButtons">
+						<param name="texture" value="defaultaddoninfoprovider.png" />
+					</include>
+				</control>
+				<control type="radiobutton" id="$PARAM[id]05">
+					<include content="HUB_ContainerButtons">
+						<param name="texture" value="defaultmusicplaylists.png" />
+					</include>
+				</control>
+		</control>
+		<control type="panel" id="$PARAM[id]">
+			<animation effect="slide" start="0,0" end="0,-80" time="300" easing="inout" condition="!Control.HasFocus($PARAM[id])">conditional</animation>
+			
+			<visible>$PARAM[visible]</visible>
+			<top>$PARAM[top]</top>
+			<width>98%</width>
+			<height>$PARAM[height]</height>
+			<preloaditems>2</preloaditems>
+			<orientation>vertical</orientation>
+			<scrolltime tween="quadratic">400</scrolltime>
+			
+			<onback>9000</onback>
+			<onleft>666660</onleft>
+			<onfocus>SetProperty(Scrollbar,$PARAM[id]60)</onfocus>
+			
+			<onright condition="Control.IsVisible($PARAM[id]60)">$PARAM[id]60</onright>
+			
+			
+			<pagecontrol>$PARAM[id]60</pagecontrol>
+			
+			
+			
+			<onright condition="!Control.IsVisible($PARAM[id]60) + [Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">SetProperty(CurrentPlaylistVisible,true)</onright>
+			<onright condition="!Control.IsVisible($PARAM[id]60) + [Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">SetFocus(7000)</onright>
+			<onright condition="!Control.IsVisible($PARAM[id]60) + [!Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">$PARAM[id]</onright>
+			<nested />
+		</control>
+		</definition>
+	</include>
 <!-- 
 
 Player.HasMedia 	Returns true if the player has an audio or video file. 	
@@ -87,6 +271,7 @@ Playlist.IsRepeatOne 	Returns true if the player is in repeat one mode.
 	
 	
 	<include name="Hub_Container_Genre">
+		<param name="top" default="50"/>
 		<param name="orientation" default="vertical"/>
 		<param name="left" default="5"/>
 		<param name="focusonback_id" default="5030"/>
@@ -95,7 +280,7 @@ Playlist.IsRepeatOne 	Returns true if the player is in repeat one mode.
 			<control type="panel" id="$PARAM[id]">
 				<visible>$PARAM[visible]</visible>
 				<left>$PARAM[left]</left>
-				<top>50</top>
+				<top>$PARAM[top]</top>
 				
 				<height>$PARAM[height]</height>
 				<right>10</right>
@@ -179,17 +364,16 @@ Playlist.IsRepeatOne 	Returns true if the player is in repeat one mode.
 		<definition>
 			<control type="radiobutton" id="90$PARAM[id]">
 				<visible>$PARAM[visible]</visible>
-				<width>110%</width>
 				<height>45</height>
 				<radiowidth>50</radiowidth>
 				<radioheight>50</radioheight>
-				<radioposx>300</radioposx>
+				<radioposx>310</radioposx>
 				<textureradioonfocus colordiffuse="$VAR[color_hub_menu_text_fo]">$PARAM[radio_icon]</textureradioonfocus>
 				<textureradioonnofocus colordiffuse="$VAR[color_hub_menu_text_nf]">$PARAM[radio_icon]</textureradioonnofocus>
 				<textureradioofffocus colordiffuse="$VAR[color_hub_menu_text_fo]">$PARAM[radio_icon]</textureradioofffocus>
 				<textureradiooffnofocus colordiffuse="$VAR[color_hub_menu_text_nf]">$PARAM[radio_icon]</textureradiooffnofocus>
 				
-				<texturefocus colordiffuse="orange">diffuse/gradienttoplinear50.png</texturefocus>
+				<!-- <texturefocus colordiffuse="orange">diffuse/gradienttoplinear50.png</texturefocus> -->
 				
 				<texturenofocus />
 				<font>MenucontrolItem</font>
@@ -202,7 +386,7 @@ Playlist.IsRepeatOne 	Returns true if the player is in repeat one mode.
 			</control>
 			<control type="image" id="99$PARAM[id]">
 				<texture diffuse="colors/white20.png">diffuse/gradienthorizontal.png</texture>
-				<bordersize>280,0,20,0</bordersize>
+				<bordersize>290,0,20,0</bordersize>
 				<height>1</height>
 			</control>
 				
@@ -583,13 +767,15 @@ Playlist.IsRepeatOne 	Returns true if the player is in repeat one mode.
 	
 	<!-- Container Header : label- sep - focused item label - busy -->
 	<include name="HUB_ContainerHeader">
+		<param name="top" default="50" />
+		<param name="height" default="55" />
 		<param name="item_label" default="$INFO[Container.ListItem.Artist,[B],[/B]]" />
 		<param name="filter_label" default="common" />
 		<definition>
             <control type="group" id="49$PARAM[id]">
 				<visible>Control.IsVisible(50$PARAM[id]) + [Container(50$PARAM[id]).IsUpdating  | Integer.IsGreater(Container(50$PARAM[id]).NumItems,0)]</visible>
-                <top>50</top>
-                <height>55</height>
+                <top>$PARAM[top]</top>
+                <height>$PARAM[height]</height>
                 <nested />
 				<control type="grouplist">
                     <description>i can also be a radiobutton to set skinstring filter methods used via xsp</description>
@@ -752,16 +938,15 @@ Playlist.IsRepeatOne 	Returns true if the player is in repeat one mode.
 	
 	<include name="emptywidget">
 		<content>
-			<item id="9$PARAM[id]">
+			<item>
 				<label>$LOCALIZE[284]</label>
 				<label2 />
-				<visible>String.IsEmpty(Container(50$PARAM[id]).ListitemNoWrap(0).Artist) + String.IsEmpty(container(50$PARAM[id]).ListitemNoWrap(1).Artist)</visible>
+				<visible>String.IsEmpty(Container($PARAM[id]).ListitemNoWrap(0).Artist) + String.IsEmpty(container($PARAM[id]).ListitemNoWrap(1).Artist)</visible>
 				<icon>icons/emptywidget.png</icon>
 				<thumb>icons/emptywidget.png</thumb>
 			</item>
 		</content>
 	</include>
-	
 	
 	<!-- prefer dbid paths over encoded xsp paths if not mixed media -->
 	<include name="hub_music_OverrideOnClick">
