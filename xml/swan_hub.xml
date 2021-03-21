@@ -1,6 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 	
+	
+	<!-- 3 List of sort methods
+
+These ID's can be used with the Container.SetSortMethod(id) function as listed here:
+ID 	Description
+1 	Name
+2 	Date
+3 	Size
+4 	File
+5 	Path
+6 	DriveType
+7 	Title
+8 	TrackNumber
+9 	Time
+10 	Artist
+11 	ArtistThenYear
+12 	Album
+13 	AlbumType
+14 	Genre
+15 	Country
+16 	Year
+17 	Rating
+18 	UserRating
+19 	Votes
+20 	Top250
+21 	ProgramCount
+22 	PlaylistOrder
+23 	EpisodeNumber
+24 	Season
+25 	NumberOfEpisodes
+26 	NumberOfWatchedEpisodes
+27 	TvShowStatus
+28 	TvShowTitle
+29 	SortTitle
+30 	ProductionCode
+31 	MPAA
+32 	VideoResolution
+33 	VideoCodec
+34 	VideoAspectRatio
+35 	AudioChannels
+36 	AudioCodec
+37 	AudioLanguage
+38 	SubtitleLanguage
+39 	Studio
+40 	DateAdded
+41 	LastPlayed
+42 	Playcount
+43 	Listeners
+44 	Bitrate
+45 	Random
+46 	Channel
+47 	ChannelNumber
+48 	DateTaken
+49 	Relevance
+50 	InstallDate
+51 	LastUpdated
+52 	LastUsed  
+-->
+	
 	<include name="HUB_ContainerButtons">
 		<description>create alpha channel of needed textures
 need deactivate b if a is true and so on		
@@ -25,19 +84,32 @@ need deactivate b if a is true and so on
 		<texturefocus diffuse="colors/white80.png" colordiffuse="$VAR[color_hub_text_main]">buttons/radioonfo.png</texturefocus>
 		
 		<texturenofocus diffuse="colors/white30.png" colordiffuse="$VAR[color_hub_text_main]">buttons/radioonfo.png</texturenofocus>
+		
+		
 	</include>
 
 	<include name="HUB_Heading_and_Options">
-		<param name="top" />
+		
+
+		<definition>
+          
+        </definition>
+    </include>
+
+	<include name="Hub_Container_Fancy">
+		<param name="Container_postop" default="150" />
+		<param name="HeadeingGroup_postop" />
 		<param name="item_label" default="$INFO[Container.ListItem.Artist,[B],[/B]]" />
 		<param name="filter_label" default="common" />
 		<param name="container_can_sort" default="false" />
-
+		
+		
 		<definition>
-            <control type="group">
-				<visible>Control.IsVisible($PARAM[belonging_containerid]) + [Container($PARAM[belonging_containerid]).IsUpdating  | Integer.IsGreater(Container($PARAM[belonging_containerid]).NumItems,0)]</visible>
+		
+		  <control type="group">
+				<visible>Control.IsVisible($PARAM[id]) + [Container($PARAM[id]).IsUpdating  | Integer.IsGreater(Container($PARAM[id]).NumItems,0)]</visible>
 				<height>100</height>
-                <top>$PARAM[top]</top>
+                <top>$PARAM[HeadeingGroup_postop]</top>
 				<control type="label">
 					<top>10</top>
 					<left>15</left>
@@ -49,12 +121,8 @@ need deactivate b if a is true and so on
 					<height>25</height>
 				</control>
 				
-				<nested />
-					<!-- <description>nested buttons to set sortby,sortorder,limit, open info, play all, shuffle </description> -->
-				
-				
 				<control type="grouplist">
-                    <animation effect="fade" start="0" end="100" time="300" easing="inout" condition="Control.HasFocus($PARAM[belonging_containerid])">conditional</animation>
+                    <animation effect="fade" start="0" end="100" time="300" easing="inout" condition="Control.HasFocus($PARAM[id])">conditional</animation>
 			
 					<description>i can also be a radiobutton to set skinstring filter methods used via xsp</description>
 					<top>70</top>
@@ -72,8 +140,8 @@ need deactivate b if a is true and so on
 						<aligny>top</aligny>
                         <textcolor>$VAR[color_hub_accent]</textcolor>
                         <font>Bold36</font>
-                        <visible>Control.HasFocus($PARAM[belonging_containerid]) + !Container($PARAM[belonging_containerid]).IsUpdating</visible>
-                        <visible>!String.IsEmpty(Container($PARAM[belonging_containerid]).ListItem.Label)</visible>
+                        <visible>Control.HasFocus($PARAM[id]) + !Container($PARAM[id]).IsUpdating</visible>
+                        <visible>!String.IsEmpty(Container($PARAM[id]).ListItem.Label)</visible>
                     </control>
 					<control type="label">
 						<top>10</top>
@@ -83,10 +151,10 @@ need deactivate b if a is true and so on
 						<textcolor>$VAR[color_hub_text_main]</textcolor>
 						<font>font27</font>
                         <height>24</height>
-						<visible>Control.HasFocus($PARAM[belonging_containerid]) + !Container($PARAM[belonging_containerid]).IsUpdating</visible>
+						<visible>Control.HasFocus($PARAM[id]) + !Container($PARAM[id]).IsUpdating</visible>
                     </control>
 					<control type="image">
-						<visible>Container($PARAM[belonging_containerid]).IsUpdating</visible>
+						<visible>Container($PARAM[id]).IsUpdating</visible>
 						<width>40</width>
 						<height>40</height>
 						<aspectratio scalediffuse="false" align="center" aligny="center">keep</aspectratio>
@@ -95,26 +163,21 @@ need deactivate b if a is true and so on
 					</control>
 				</control>
 				<control type="label">
-					<animation effect="fade" start="0" end="100" time="300" easing="inout" condition="Control.HasFocus($PARAM[belonging_containerid])">conditional</animation>
+					<animation effect="fade" start="0" end="100" time="300" easing="inout" condition="Control.HasFocus($PARAM[id])">conditional</animation>
 			
 					<top>40</top>
 					<left>11</left>
 					<width>auto</width>
-					<label>$INFO[Container($PARAM[belonging_containerid]).NumItems, numitems (,)]</label>
+					<label>$INFO[Container($PARAM[id]).NumItems, numitems (,)]</label>
 					<aligny>center</aligny>
 					<textcolor>$VAR[color_hub_text_main]</textcolor>
 					<font>HUB_WidgetSubHeader</font>
 					<height>24</height>
-					<visible>!Container($PARAM[belonging_containerid]).IsUpdating</visible>
+					<visible>!Container($PARAM[id]).IsUpdating</visible>
 				</control>
             </control>
-        </definition>
-    </include>
-
-	<include name="Hub_Container_Fancy">
-		<param name="top" default="150" />
 		
-		<definition>
+		
 		<control type="grouplist" id="$PARAM[id]01">
 			<visible>$PARAM[container_can_sort]</visible>
 			<animation effect="slide" start="0,0" end="0,-10" time="0" condition="true">conditional</animation>
@@ -136,18 +199,41 @@ auto disable control via on focus or use hidden window - booth should could be u
 			<itemgap>50</itemgap>
 				<control type="radiobutton" id="$PARAM[id]02">
 					<include content="HUB_ContainerButtons">
+						<description>Window.Property($PARAM[id]_sortorder)</description>
 						<param name="texture" value="defaultmusicvideotitle.png" />
 					</include>
+						
+						<onclick condition="!String.IsEqual(Window.Property($PARAM[id]_sortorder),ascending)">SetProperty($PARAM[id]_sortorder,ascending)</onclick>
+						<onclick condition="!String.IsEqual(Window.Property($PARAM[id]_sortorder),descending)">SetProperty($PARAM[id]_sortorder,descending)</onclick>
+						
+						<onclick>SetFocus($PARAM[id],$INFO[Container($PARAM[id]).NumItems],absolute)</onclick>
+						<onclick>Notification([B]A R T I S T[/B] [I]Sort Order[/I],$INFO[Window.Property($PARAM[id]_sortorder)])</onclick>
+						<onclick>Notification([B]A R T I S T[/B] [I]Sort Order[/I],$INFO[Window.Property($PARAM[id]_sortorder)])</onclick>
+						<onclick>SetFocus($PARAM[id]02)</onclick>
+						
 				</control>
 				<control type="radiobutton" id="$PARAM[id]03">
 					<include content="HUB_ContainerButtons">
 						<param name="texture" value="defaultyear.png" />
 					</include>
+						<onclick>SetProperty(ContainerID,$PARAM[id])</onclick>
+						<onclick>SetProperty(ForcedelayedFocus,true)</onclick>
+							
+							<onclick>SetFocus(333)</onclick>
+					
+					<!-- need hidden dialog to force focus if refresh is done for given conatiner ,otherwise i always focus a item dbid before container refreshed -->
+					<onclick condition="!String.IsEqual(Window.Property($PARAM[id]_sortby),artist)">SetProperty($PARAM[id]_sortby,artist)</onclick>
+					<onclick condition="!String.IsEqual(Window.Property($PARAM[id]_sortby),dateadded)">SetProperty($PARAM[id]_sortby,dateadded)</onclick>
+<!-- 				<onclick>Notification([B]A R T I S T[/B] [I]Sort By[/I],$INFO[Window.Property($PARAM[id]_sortby)])</onclick>
+					<onclick>SetFocus($PARAM[id],0,absolute)</onclick> -->
+					
 				</control>
 				<control type="radiobutton" id="$PARAM[id]04">
 					<include content="HUB_ContainerButtons">
 						<param name="texture" value="defaultaddoninfoprovider.png" />
 					</include>
+					<onclick>SetFocus($PARAM[id])</onclick>
+					<onclick>Action(info)</onclick>
 				</control>
 				<control type="radiobutton" id="$PARAM[id]05">
 					<include content="HUB_ContainerButtons">
@@ -159,7 +245,7 @@ auto disable control via on focus or use hidden window - booth should could be u
 			<animation effect="slide" start="0,0" end="0,-80" time="300" easing="inout" condition="!Control.HasFocus($PARAM[id])">conditional</animation>
 			
 			<visible>$PARAM[visible]</visible>
-			<top>$PARAM[top]</top>
+			<top>$PARAM[Container_postop]</top>
 			<width>98%</width>
 			<height>$PARAM[height]</height>
 			<preloaditems>2</preloaditems>
@@ -1058,6 +1144,19 @@ mvidalbums					videodb://musicvideos/artists/[artists video dbid ]/
 all by artist				videodb://musicvideos/artists/[artists video dbid ]/-1/?artistid=[artists video dbid]
 all by album of artist		videodb://musicvideos/artists/[artists video dbid ]/[album id]/?artistid=[artists video dbid]
 -->
+
+	control = $INFO[Control.GetLabel(8001).index(1)]
+method1		{"rules":{"and":[{"field":"artist","operator":"contains","value":["CONTROL"]}]},"type":"artists"}
+method 2	{"limit":1,"order":{"direction":"ascending","method":"playcount"},"rules":{"and":[{"field":"playcount","operator":"is","value":["0"]},{"field":"tvshow","operator":"is","value":["tvshowtitle"]}]},"type":"episodes"}
+	
+
+
+	<variable name="HUB_content_artists_TEST">
+		<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">musicdb://artists/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22artists%22%7D</value>
+		<value>musicdb://artists/</value>
+	</variable>
+	
+	
 	<variable name="HUB_content_artists">
 		<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">musicdb://artists/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22artists%22%7D</value>
 		<value>musicdb://artists/</value>

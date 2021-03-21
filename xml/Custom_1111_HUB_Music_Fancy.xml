@@ -15,8 +15,15 @@ currentlyplaying,playlist righ 8000
 	
 	<backgroundcolor>$VAR[color_hub_backgroundlayer1]</backgroundcolor>
 	<menucontrol>9000</menucontrol>
-	<defaultcontrol always="true">9000</defaultcontrol>
+	<defaultcontrol always="true">6666</defaultcontrol>
 	<animation effect="fade" start="0" end="100" time="325">WindowOpen</animation>
+	
+	
+	<!-- set default container sortby temp -->
+	<onload>SetProperty(110_sortby,artist)</onload>
+	
+	
+	
 	<onload condition="!Skin.HasSetting(MusicHUB_StartUprecommendation) + String.IsEmpty(Window(home).Property(HUB_Music))">SetProperty(HUB_Music,common,home)</onload>
 	<onload condition="Skin.HasSetting(MusicHUB_StartUprecommendation) + String.IsEmpty(Window(home).Property(HUB_Music))">SetProperty(HUB_Music,recommendation,home)</onload>
 	
@@ -41,10 +48,44 @@ currentlyplaying,playlist righ 8000
 	
 	<controls>
 	
-	<!-- <control type="label" id="2">
-		<info>ListItem.Property(Artist_Description)</info>
-		<include content="HiddenObject" />
-	</control> -->
+	<!-- shit -->
+	<control type="button" id="333">
+		<description>cant use dialog as conatiner is updating need looked in current window
+		<visible allowhiddenfocus="true">Container(110).IsUpdating + !String.IsEmpty(Window(1111).Property(ForcedelayedFocus))</visible>
+		<visible>Container(110).IsUpdating</visible>
+		use me the have vis and unfocus action
+		</description>
+		<top>200</top>
+		<left>500</left>
+		<width>300</width>
+		<height>600</height>
+		<texturenofocus />
+		<texturefocus colordiffuse="green">colors/white.png</texturefocus>
+		
+		
+		<onunfocus>SetFocus(110,0,absolute)</onunfocus>
+		<onunfocus>Notification(test,333)</onunfocus>
+		<onunfocus>ClearProperty(ForcedelayedFocus)</onunfocus>
+		
+		<ondown>SetFocus(110,0,absolute)</ondown>
+		<onup>SetFocus(110,0,absolute)</onup>
+		<onleft>SetFocus(110,0,absolute)</onleft>
+		<onright>SetFocus(110,0,absolute)</onright>
+		
+		<ondown>Notification(test,333)</ondown>
+		<onup>Notification(test,333)</onup>
+		<onleft>Notification(test,333)</onleft>
+		<onright>Notification(test,333)</onright>
+		
+		<ondown>ClearProperty(ForcedelayedFocus)</ondown>
+		<onup>ClearProperty(ForcedelayedFocus)</onup>
+		<onleft>ClearProperty(ForcedelayedFocus)</onleft>
+		<onright>ClearProperty(ForcedelayedFocus)</onright>
+		
+		<onback>Notification(test,BACK)</onback>
+		
+	</control>
+	
 	
 	<control type="group">
 		<description>H U B    H E A D E R    B A R</description>	
@@ -310,8 +351,9 @@ currentlyplaying,playlist righ 8000
 		<onleft condition="!Control.IsVisible(666660)">9000</onleft>
 		
 		<control description="recommendations PLACEHOLDER" type="group">
-			<!-- <visible>String.IsEqual(Window(home).Property(HUB_Music),recommendations)</visible> -->
-			<visible>String.IsEqual(Window(home).Property(HUB_Music),common)</visible>
+			<visible>String.IsEqual(Window(home).Property(HUB_Music),recommendations)</visible>
+			<!-- <visible>String.IsEqual(Window(home).Property(HUB_Music),common)</visible> -->
+			<visible>String.IsEmpty(Control.GetLabel(8001).index(1))</visible>
 			<description>Placeholder Recommendations PAGE</description>
 			<height>940</height>
 			<control type="image">
@@ -341,16 +383,14 @@ currentlyplaying,playlist righ 8000
 		-->
 		<control description="common artists" type="group" id="66">
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),common)</visible>
-			<description>artist common</description>
-			
 			<height>940</height> 
-			<include content="HUB_Heading_and_Options">
-				<param name="belonging_containerid" value="110" />
-				<param name="label" value="A R T I S T S" />
-			</include>
-			
+		
+			<!-- def artist sort methods
+					Artist = 10
+					DateAdded = 40 -->
 			<include content="Hub_Container_Fancy">
 				<param name="visible" value="String.IsEqual(Window(home).Property(HUB_Music),common)" />
+				<param name="label" value="A R T I S T S" />
 				<param name="id" value="110" />
 				<param name="previousid" value="99" />
 				<param name="height" value="790" />
@@ -396,28 +436,27 @@ currentlyplaying,playlist righ 8000
 				<include content="emptywidget">
 					<param name="id" value="$PARAM[id]" />
 				</include>
-				<content limit="18" target="music">$VAR[HUB_content_artists]</content>
+				<content target="music" sortby="$INFO[Window.Property(110_sortby)]" sortorder="$INFO[Window.Property(110_sortorder)]" limit="0">$VAR[HUB_content_artists_TEST]</content>
+				<!-- <content limit="18" sortby="label" sortorder="$INFO[Window.Property(110_sortorder)]" target="music">$VAR[HUB_content_artists]</content> -->
+				<!-- <content sortby="label" sortorder="$INFO[Window.Property(110_sortorder)]" target="music">$VAR[HUB_content_artists_TEST]</content> -->
+			
 			</include>
 		</control>
 		
 		<control description="common albums" type="group" id="200002">
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),common)</visible>
-			<description>album common</description>
 			<height>940</height> 
-			<include content="HUB_Heading_and_Options">
-				<param name="belonging_containerid" value="120" />
-				<param name="label" value="A L B U M S" />
-			</include>
-			
 			
 			<include content="Hub_Container_Fancy">
 				<param name="visible" value="String.IsEqual(Window(home).Property(HUB_Music),common)" />
+				<param name="label" value="A L B U M S" />
 				<param name="id" value="120" />
 				<param name="height" value="600" />
 				<param name="container_can_sort" value="true" />
-			
+				<param name="previousid" value="110" />
+				
 					<onup condition="Control.IsVisible($PARAM[id]01)">$PARAM[id]01</onup>
-					<onup condition="!Control.IsVisible($PARAM[id]01)">120</onup>
+					<onup condition="!Control.IsVisible($PARAM[id]01)">110</onup>
 					<ondown>130</ondown>
 				
 				<include condition="Skin.HasSetting(Force_StayInMusicHub)" content="hub_music_OverrideOnClick">
@@ -458,21 +497,19 @@ currentlyplaying,playlist righ 8000
 		
 		<control description="common songs" type="group" id="200003">
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),common)</visible>
-			<description>songs common</description>
 			<height>470</height> 
-			<include content="HUB_Heading_and_Options">
-				<param name="belonging_containerid" value="130" />
-				<param name="label" value="S O N G S" />
-				<param name="filter_label" value="songtitleorartist" />
-			</include>
+			
 			<include content="Hub_Container_Fancy">
 				<param name="visible" value="String.IsEqual(Window(home).Property(HUB_Music),common)" />
+				<param name="label" value="S O N G S" />
+				<param name="filter_label" value="songtitleorartist" />
 				<param name="id" value="130" />
 				<param name="height" value="200" />
 				<param name="container_can_sort" value="true" />
-			
+				<param name="previousid" value="120" />
+					
 					<onup condition="Control.IsVisible($PARAM[id]01)">$PARAM[id]01</onup>
-					<onup condition="!Control.IsVisible($PARAM[id]01)">130</onup>
+					<onup condition="!Control.IsVisible($PARAM[id]01)">120</onup>
 					<ondown>140</ondown>
 				
 				<itemlayout height="100" width="500">
@@ -575,19 +612,27 @@ currentlyplaying,playlist righ 8000
 			
 			<include content="HUB_Heading_and_Options">
 				<param name="belonging_containerid" value="140" />
-				<param name="label" value="M U S I K V I D E O S" />
-				<param name="filter_label" value="songtitleorartist" />
+				
 			</include>
 			<include content="Hub_Container_Fancy">
 				<param name="visible" value="String.IsEqual(Window(home).Property(HUB_Music),common) | String.IsEqual(Window(home).Property(HUB_Music),musicvideos)" />
+				<param name="label" value="M U S I K V I D E O S" />
+				<param name="filter_label" value="songtitleorartist" />
 				<!-- <param name="visible" value="String.IsEqual(Window(home).Property(HUB_Music),common)" /> -->
 				<param name="id" value="140" />
 				<param name="height" value="790" />
+				<param name="previousid" value="130" />
 				
-				<onup condition="Control.IsVisible(5008)">5008</onup>
-				<onup condition="!Control.IsVisible(5008)">1003</onup>
 				
-				<ondown></ondown>
+					<!-- exceptio in onup for option ctrl - !! -->
+					<onup condition="Control.IsVisible(5008)">5008</onup>
+					<onup condition="!Control.IsVisible(5008)">130</onup>
+				
+					<onup condition="Control.IsVisible($PARAM[id]01)">$PARAM[id]01</onup>
+					<onup condition="!Control.IsVisible($PARAM[id]01)">120</onup>
+					<ondown>140</ondown>
+				
+						<ondown>110</ondown>
 				
 				<include condition="Skin.HasSetting(Force_StayInMusicHub)" content="hub_music_OverrideOnClick" />
 
@@ -623,7 +668,7 @@ currentlyplaying,playlist righ 8000
 				<include content="emptywidget">
 					<param name="id" value="$PARAM[id]" />
 				</include>
-				<content limit="18" sortby="artist" sortorder="ascending" target="videos">$VAR[HUB_content_musicvideo_titles_or_artist]</content>
+				<content limit="18" sortby="artist" sortorder="" target="videos">$VAR[HUB_content_musicvideo_titles_or_artist]</content>
 			</include>
 		</control>
 		
@@ -2884,48 +2929,13 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 	<include content="swan_debug_overlay">
 	<param name="textleft" value="
 	
-1 Window(home).Property(HUB_Music) : $INFO[Window(home).Property(HUB_Music),[COLOR cyan][B],[/B][/COLOR]]
-
-2 Window(home).Property(HUB_EncodedValue) : $INFO[Window(home).Property(HUB_EncodedValue),[COLOR cyan][B],[/B][/COLOR]]
-
-3 Window(home).Property(HUB_Music_[B]PARAM[goto][/B]) : $INFO[Window(home).Property(HUB_Music_artist),[COLOR cyan][B],[/B][/COLOR]]   $INFO[Window(home).Property(HUB_Music_album),[COLOR cyan][B],[/B][/COLOR]]
-
-4 Window(home).Property(HUB_artwork) : $INFO[Window(home).Property(HUB_artwork),[COLOR cyan][B],[/B][/COLOR]]
-
-5 Window(home).Property([B]PARAM[goto][/B]HUB_dbid) : 
-            artistHUB_dbid : $INFO[Window(home).Property(artistHUB_dbid),[COLOR cyan][B],[/B][/COLOR]]
-            albumHUB_dbid  : $INFO[Window(home).Property(albumHUB_dbid),[COLOR cyan][B],[/B][/COLOR]]
-
-[COLOR cyan]6 HUB_artistinfo   -  $INFO[Window(home).Property(HUB_artistinfo)] [/COLOR]
-7 HUB_artistinfo   -  $INFO[Window(home).Property(HUB_artistinfo2)]
-
-	[B]$INFO[Control.GetLabel(2)][/B]
-	
-
-8 dbid : $INFO[ListItem.dbid,[COLOR cyan][B],[/B][/COLOR]]
-9 dbtype : $INFO[ListItem.dbtype,[COLOR cyan][B],[/B][/COLOR]]
-
-Container(5001).CurrentItem : $INFO[Container(5001).CurrentItem,[COLOR cyan][B],[/B][/COLOR]] - omitting id result in empty string
-
-
-10 HUB_Music_PrevID : $INFO[Window(home).Property(HUB_Music_PrevID),[COLOR cyan][B],[/B][/COLOR]]
-11 HUB_Music_PrevProp : $INFO[Window(home).Property(HUB_Music_PrevProp),[COLOR cyan][B],[/B][/COLOR]]
-
-12 Container.ListItem.FileNameAndPath : $INFO[Container.ListItem.FilenameAndPath]
-13 ListItem.FileNameAndPath : $INFO[ListItem.FilenameAndPath]
-
-XSP = $INFO[Window(home).Property(XSP),[COLOR cyan][B],[/B][/COLOR]]
-
-ListItem.Path : $INFO[ListItem.Path,[COLOR cyan][B],[/B][/COLOR]]
-ListItem.FolderName : $INFO[ListItem.FolderName,[COLOR cyan][B],[/B][/COLOR]]
-ListItem.FolderPath : $INFO[ListItem.FolderPath,[COLOR cyan][B],[/B][/COLOR]]
-ListItem.FileNameAndPath : $INFO[ListItem.FileNameAndPath,[COLOR cyan][B],[/B][/COLOR]]
-ListItem.FileExtension : $INFO[ListItem.FileExtension,[COLOR cyan][B],[/B][/COLOR]]
-playlist Container(7000).CurrentItem : $INFO[Container(7000).CurrentItem,[COLOR cyan][B],[/B][/COLOR]]
-
-Container(9042).ListItem.Folderpath  :  $INFO[Container(9042).ListItem.Folderpath]
-Container(9042).ListItem.FileNameAndPath  :  $INFO[Container(9042).ListItem.FileNameAndPath]
-
+ 110_sortorder $INFO[Window.Property(110_sortorder)]
+  110_sortby $INFO[Window.Property(110_sortby)]
+  ContainerID $INFO[Window(1111).Property(ContainerID)]
+  ContainerID $INFO[Window.Property(ContainerID)]
+  ForcedelayedFocus $INFO[Window.Property(ForcedelayedFocus)]
+  
+ 
 "/>
 	</include>
 	</controls>
