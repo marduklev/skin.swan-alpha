@@ -1,452 +1,257 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <includes>
-	
-	<include name="view503">
+   <include name="503_test">
 		
 		<control type="group">
-			<visible>Control.IsVisible(503)</visible>
-					
-			<control type="panel" id="503">
-				<viewtype label="spot">spot</viewtype>
+		<visible>Control.IsVisible(503)</visible>
+		
+		
+			<control type="group">
+				<description>S P O T L I G H T  A R T W O R K</description>
 				
-				<include content="Media_Container_Attributes">
-					<param name="view_id" value="503" />
-					<param name="left" value="150" />
+				<include content="Fanart_Diffused">
+					<right>0</right>
+					<param name="width" value="1267" />
+					<param name="height" value="731" />
+					<param name="diffuse" value="diffuse/spotlightleftdiffuse.png" />
+					<param name="visible" value="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment) + String.IsEmpty(Window(Home).Property(MenucontrolHomeActive))" />
 				</include>
-				<include>Media_Values_ContainerNavigation</include>
-				
-				
-				<itemlayout height="420" width="800">
-					<include content="template501">
-						<param name="is_focused" value="false" />
-					</include>
-				</itemlayout>
-			
-				<focusedlayout height="420" width="800">
-					
-					<include content="template501">
-						<param name="is_focused" value="true" />
-						<include>SetPropOnFocus_HiddenButton</include>
-					</include>
-					<control type="group">
-						<visible>Player.HasMedia + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
-						<left>10</left>
-						<top>5</top>
-						<width>500</width>
-						<height>300</height>
-						<control type="image">
-							<texture colordiffuse="ff101010">colors/white.png</texture>
-						</control>
-						<control type="videowindow" />
-						<control type="image">
-							<texture colordiffuse="ff101010">overlay/spotlightright.png</texture>
-						</control>
-					</control>
-					
-				</focusedlayout>
+				<include content="Fanart_Diffused">
+					<left>0</left>
+					<param name="width" value="1267" />
+					<param name="height" value="731" />
+					<param name="diffuse" value="diffuse/spotlightrightdiffuse.png" />
+					<param name="visible" value="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment) + String.IsEmpty(Window(Home).Property(MenucontrolHomeActive))" />
+				</include>
+				<include content="Fanart_Diffused">
+					<left>0</left>
+					<param name="width" value="1920" />
+					<param name="height" value="1080" />
+					<param name="diffuse" value="colors/gradienthorizontal.png" />
+					<param name="visible" value="!String.IsEmpty(Window(Home).Property(MenucontrolHomeActive))" />
+				</include>
 			</control>
+		
+			<!-- shhow current playing if not trailer ?? or conditional -->
+			<include condition="true">spotlight_trailer_overlay</include>
+		
+		
+		<control type="grouplist">
+			<description>S P O T L I G H T  M E T A D A T A 750w</description>
+			<animation effect="fade" start="100" end="0" time="250" condition="Window.IsActive(shutdownmenu)">conditional</animation>
+			<visible>String.IsEmpty(Window(Home).Property(MenucontrolHomeActive))</visible>
+			<width>39%</width>
+			<height>650</height>
+			<top>10</top>
+			<bottom>10</bottom>
+			<orientation>vertical</orientation>
+			<itemgap>10</itemgap>
+			<usecontrolcoords>true</usecontrolcoords>
 			
-			<include content="footer">
-				<param name="view_id" value="503" />
-				<param name="offset_leftpanel" value="25%" />
-				<param name="media_flagalign" value="center" />
-				<param name="media_flagwidth" value="30%" />
-				<param name="rating_flagalign" value="center" />
+			<include content="pos_left" condition="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)">
+				<param name="left" value="110" />
 			</include>
-		</control>
-	</include>	
-		<!-- all wip - colors - frames -->
-			<!-- 
-			<param name="color" default="$VAR[color_spotlightlib_background_layer1]" />
-			<param name="tc" default="$VAR[color_spotlightlib_main]" />
-			<param name="tc_2" default="$VAR[color_spotlightlib_secondary]" />
-			<param name="is_focused" default="true" />
-		 -->
-			<!-- color_spotlightlib_flags -->
+			<include content="pos_right" condition="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)">
+				<param name="right" value="60" />
+			</include>
+			<include content="spacer_h">
+				<param name="gap" value="150" />
+				<param name="visible" value="Skin.HasSetting(home_spotlight_hideplot)" />
+			</include>
 			
-		<include name="template501">
-			<param name="color" default="ff101010" />
-			<param name="tc" default="white" />
-			<param name="tc_2" default="ffcccccc" />
-			<param name="is_focused" default="true" />
+			<control type="image" id="1601">
+				<description>choose align for aspectratio respecting skinstring</description>
+				<description>clearlogo, didnt need respect alignment setting ?</description>
+				<visible>!String.IsEmpty(Control.GetLabel(1601))</visible>
+				<height>245</height>
+				<aspectratio align="center" aligny="bottom">keep</aspectratio>
+				<texture background="true">$VAR[ListItemClearLogo]</texture>
+			</control>
 			
-			<definition>
-				<control type="group">
-					<nested />
-					<width>790</width>
-					<height>400</height>
+			<control type="label">
+				<description>Fallback Label - make expression home_menucontrol_focused as 3 id s</description>
+				<visible>![Control.HasFocus(9000) | Control.HasFocus(8888)] + String.IsEmpty(Control.GetLabel(1601))</visible>
+				<height>245</height>
+				<wrapmultiline>true</wrapmultiline>
+				<font>font_titlefallbackspotlight</font>
+				<include content="pos_alignx" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
+				<include content="pos_alignx" condition="Skin.HasSetting(home_spotlight_hideplot) | String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
+					<param name="align" value="center" />
+				</include>
+				<include content="pos_alignx" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+					<param name="align" value="right" />
+				</include>
+				<include content="pos_right" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+					<param name="right" value="30" />
+				</include>
+				<aligny>center</aligny>
+				<textcolor>$VAR[color_home_accent]</textcolor>
+				<label>$VAR[ClearLogo_FallbackHome]</label>
+			</control>
+			
+			<include>Meta_Uncommon_Top</include>
+			
+			<control type="grouplist" id="588688">
+				<visible>String.IsEqual(ListItem.DBTYPE,episode)</visible>
+				<orientation>vertical</orientation>
+				<height>125</height>
+				<fadetime>300</fadetime>
+				<itemgap>10</itemgap>
+				<include content="pos_right" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+					<param name="right" value="40" />
+				</include>
+				<control type="label">
+					<height>70</height>
+					<font>InfoCommon</font>
+					<include content="pos_alignx" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
+					<include content="pos_alignx" condition="Skin.HasSetting(home_spotlight_hideplot) | String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
+						<param name="align" value="center" />
+					</include>
+					<include content="pos_alignx" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+						<param name="align" value="right" />
+					</include>
 					
-					<control type="image">
-						<description>focus frame bad if item bg match global bg</description>
-						<texture colordiffuse="$PARAM[tc]">colors/white.png</texture>
-						<top>0</top>
-						<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
-						<visible>$PARAM[is_focused]</visible>
-					</control>
-					<control type="image">
-						<description>tile bg</description>
-						<texture colordiffuse="$PARAM[color]">colors/white.png</texture>
-						<top>0</top>
-						<bordersize>5</bordersize>
-						<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
-					</control>
-					<control type="image">
-						<description>diffused fanart</description>
-						<top>10</top>
-						<left>10</left>
-						<width>490</width>
-						<height>289</height>
-						<texture background="true" diffuse="diffuse/spotlightrightdiffuse.png">$VAR[ImageLayout_fanart]</texture>
-						<aspectratio scalediffuse="false" align="left" aligny="top">scale</aspectratio>
-					</control>
-					<control type="image">
-						<description>clear logo</description>
-						<visible>
-						 [
-						  !String.IsEmpty(ListItem.Art(tvshow.clearlogo)) | 
-						  !String.IsEmpty(ListItem.Art(artist.clearlogo)) | 
-						  !String.IsEmpty(ListItem.Art(albumartist.clearlogo)) | 
-						  !String.IsEmpty(ListItem.Art(clearlogo))
-						 ]
-						</visible>
-						<top>0</top>
-						<right>20</right>
-						<width>250</width> 
-						<height>120</height>
-						<texture background="true" diffuse="colors/white80.png">$VAR[ListItemClearLogo]</texture>
-						<aspectratio scalediffuse="true" aligny="center">keep</aspectratio>
-					</control>
-					<control type="textbox">
-						<description>Integer.IsOdd(ListItem.Season) +  clear logo fallback, need title var , e.g. if season show show title</description>
-						<visible>
-						 [
-						 String.IsEmpty(ListItem.Art(clearlogo)) + 
-						 String.IsEmpty(ListItem.Art(tvshow.clearlogo)) + 
-						 String.IsEmpty(ListItem.Art(artist.clearlogo)) + 
-						 String.IsEmpty(ListItem.Art(albumartist.clearlogo))
-						 ]
-						</visible>
-						<top>0</top>
-						<right>20</right>
-						<width>250</width> 
-						<height>135</height>
-						<info>listitem.title</info>
-						<font>debug</font>
-						<textcolor>white</textcolor>
-						<align>center</align>
-					</control>
-					<control type="textbox">
-						<description>item description e.g. plot</description>
-						<visible>!String.IsEqual(ListItem.DBtype,season)</visible>
-						<top>130</top>
-						<right>20</right>
-						<left>510</left>
-						<width>250</width> 
-						<bottom>70</bottom>
-						<label>$VAR[Plots]</label>
-						<font>font20_title</font>
-						<textcolor>$PARAM[tc_2]</textcolor>
-						<align>center</align>
-						<aligny>center</aligny>
-						<autoscroll delay="5000" time="4000" repeat="10000">$PARAM[is_focused]</autoscroll>
-					</control>
-					
-					<control type="group">
-						<visible>String.IsEqual(ListItem.DBtype,season)</visible>
-						<description>season got no plots</description>
-						<control type="textbox">
-							
-							<top>120</top>
-							<right>20</right>
-							<width>250</width> 
-							<height>40</height>
-							<info>listitem.label</info>
-							<font>InfoCommon</font>
-							<textcolor>$PARAM[tc_2]</textcolor>
-							<align>center</align>
-						</control>
-						<control type="textbox">
-							<top>180</top>
-							<right>20</right>
-							<width>250</width> 
-							<bottom>70</bottom>
-							<label>$INFO[ListItem.Year,Yahr  [B],[/B]][CR][CR]$INFO[ListItem.Property(TotalEpisodes),Folgen : [B],[/B]][CR]$INFO[ListItem.Property(UnWatchedEpisodes),Nicht gesehen : [B],[/B]]</label>
-							<font>debugtiny</font>
-							<textcolor>$PARAM[tc_2]</textcolor>
-							<align>center</align>
-							<aligny>top</aligny>
-						</control>
-					</control>
-					
-					
-					<control type="group">
-						<description>should be easiest but variable usage failing - when it comes to colors</description>
-						<visible>false</visible>
-						<control type="image">
-							<visible>!String.IsEmpty(ListItem.Rating)</visible>
-							<bottom>15</bottom>
-							<right>60</right>
-							<width>100</width>
-							<height>25</height>
-							<texture>$VAR[503_ratingimage]</texture>
-							<aspectratio align="right">keep</aspectratio>
-						</control>
-						<control type="textbox">
-							<visible>!String.IsEmpty(ListItem.Rating)</visible>
-							<bottom>15</bottom>
-							<right>20</right>
-							<width>50</width>
-							<height>25</height>
-							<label>$INFO[ListItem.Rating]</label>
-							<font>debugtiny</font>
-							<align>right</align>
-							<textcolor>$VAR[503_ratingcolor]</textcolor>
-						</control>
-					</control>
-					
-					<control type="group">
-						<description>visible condition usage</description>
-						<include content="var_rating_workaraound">
-							<param name="rating" value="tvdb" />
-							<param name="rating_image" value="tvdb" />
-						</include>
-						<include content="var_rating_workaraound">
-							<param name="rating" value="themoviedb" />
-							<param name="rating_image" value="themoviedb" />
-						</include>
-						<include content="var_rating_workaraound">
-							<param name="rating" value="imdb" />
-							<param name="rating_image" value="imdb" />
-						</include>
-						<include content="var_rating_workaraound">
-							<param name="rating" value="metacritic" />
-							<param name="rating_image" value="metacritic" />
-						</include>
-						<include content="var_rating_workaraound">
-							<param name="rating" value="tomatometerallaudience" />
-							<param name="rating_image" value="tomatometerallaudience" />
-						</include>
-						<include content="var_rating_workaraound">
-							<param name="rating" value="tomatometerallcritics" />
-							<param name="rating_image" value="tomatometerallcritics" />
-						</include>
-						<include content="var_rating_workaraound">
-							<param name="rating" value="tomatometeravgaudience" />
-							<param name="rating_image" value="tomatometeravgaudience" />
-						</include>
-						<include content="var_rating_workaraound">
-							<param name="rating" value="tomatometeravgcritics" />
-							<param name="rating_image" value="tomatometeravgcritics" />
-						</include>
-						
-						<control type="image">
-							<visible>
-                             !String.IsEmpty(ListItem.Rating) + [
-                             String.IsEmpty(ListItem.Rating(tvdb)) + 
-                             String.IsEmpty(ListItem.Rating(themoviedb)) + 
-                             String.IsEmpty(ListItem.Rating(imdb)) + 
-                             String.IsEmpty(ListItem.Rating(metacritic)) + 
-                             String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + 
-                             String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + 
-                             String.IsEmpty(ListItem.Rating(tomatometeravgaudience)) + 
-                             String.IsEmpty(ListItem.Rating(tomatometeravgcritics))
-                             ]
-                            </visible>
-							<bottom>15</bottom>
-							<right>60</right>
-							<width>100</width>
-							<height>25</height>
-							<texture>flags/ratings/star.png</texture>
-							<aspectratio align="right">keep</aspectratio>
-						</control>
-						<!-- meeh
-						<control type="image">
-							<visible>!String.IsEmpty(ListItem.UserRating)</visible>
-							<bottom>10</bottom>
-							<right>160</right>
-							<width>100</width>
-							<height>35</height>
-							<texture>flags/ratings/userrating.png</texture> to thin
-							<aspectratio align="right">keep</aspectratio>
-						</control>
-						<control type="textbox">
-							<visible>!String.IsEmpty(ListItem.UserRating)</visible>
-							<bottom>15</bottom>
-							<right>130</right>
-							<width>50</width>
-							<height>25</height>
-							<label>$INFO[ListItem.UserRating]</label>
-							<font>debugtiny</font>
-							<align>right</align>
-							<textcolor>red</textcolor>
-						</control>
-						 -->
-					</control>
-					
-					<control type="button">
-						<visible>false</visible>
-						<visible>!String.IsEmpty(ListItem.Genre)</visible>
-						<align>center</align>
-						<textcolor>$PARAM[tc]</textcolor>
-						<textoffsetx>10</textoffsetx>
-						<disabledcolor>$PARAM[tc]</disabledcolor>
-						<texturefocus border="2" colordiffuse="$PARAM[tc]">frames/frame.png</texturefocus>
-						<texturenofocus border="2" colordiffuse="$PARAM[tc]">frames/frame.png</texturenofocus>
-						<enable>false</enable>
-						<bottom>10</bottom>
-						<left>10</left>
-						<width min="32">auto</width>
-						<height>30</height>
-						<font>debugtiny</font>
-						<label>$INFO[ListItem.Genre]</label>
-					</control>
-					
-					<control type="label">
-						<description>genre, like to have it framed but button wont work good</description>
-						<visible>!String.IsEmpty(ListItem.Genre)</visible>
-						<bottom>15</bottom>
-						<left>15</left>
-						<width>auto</width>
-						<height>30</height>
-						<font>debugtiny</font>
-						<textcolor>$PARAM[tc]</textcolor>
-						<label>$INFO[ListItem.Genre]</label>
-					</control>
-					
-					<control type="label">
-						<description>genre, like to have it framed</description>
-						<visible>String.IsEqual(ListItem.DBtype,episode)</visible>
-						<bottom>50</bottom>
-						<left>15</left>
-						<width>auto</width>
-						<height>30</height>
-						<font>MenucontrolItem</font>
-						<textcolor>$PARAM[tc]</textcolor>
-						<label>$INFO[ListItem.Season,Staffel  [B],[/B]]$INFO[ListItem.Episode,   Folge  [B],[/B]]</label>
-					</control>
-					
-					<control type="group">
-						<description>progress bar maybe use for playable media , folder use just icon as indicator ??</description>
-							
-						<visible>![Container.Content(tvshows) | Container.Content(Seasons) | Container.Content(sets)]</visible>
-							
-						<top>280</top>
-						<left>20</left>
-						<width>480</width>
-						<control type="progress">
-							<visible>Integer.IsGreater(ListItem.PercentPlayed,0) + ListItem.IsResumable</visible>
-							<top>30</top>
-							<height>2</height>
-							<align>left</align>
-							<!-- $VAR[color_lib_watchedoverlay_progressbar_progress] -->
-							<info>ListItem.PercentPlayed</info>
-						</control>
-						<control type="image">
-							<visible>[Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable]</visible>
-							<texture colordiffuse="$VAR[color_lib_watchedoverlay_progressbar_progress]">colors/white.png</texture>
-							<top>30</top>
-							<height>2</height>
-							<align>left</align>
-							<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
-						</control>
-					</control>
-					
-					</control>
-					
-					
-					
-					<control type="image">
-						<visible>false</visible>
-						<description>indicator tile bg</description>
-						<texture colordiffuse="$PARAM[color]">colors/white.png</texture>
-						<right>-50</right>
-						<width>60</width>
-						<top>5</top>
-						<height>390</height>
-						<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
-					</control>
-					<control type="group">
-						<visible>false</visible>
-						<description>watched indicator NO BAR only if item width ext to 825, wished 800</description>
-						
-						<centertop>50%</centertop>
-						<right>-50</right>
-						<width>50</width>
-						<height>50</height>
-						
-						<control type="image">
-							<height>35</height>
-							<width>35</width>
-							<align>right</align>
-							<bordersize>3</bordersize>
-							<bordertexture colordiffuse="white">watched.png</bordertexture>
-							<texture colordiffuse="ff101010">watched.png</texture>
-							
-						</control>
-						<control type="image">
-							<height>35</height>
-							<width>35</width>
-							<bordersize>5</bordersize>
-							<align>right</align>
-							<texture colordiffuse="cyan">overlaywatched.png</texture>
-							
-						</control>
-					</control>
+					<aligny>center</aligny>
+					<textcolor>$VAR[color_home_text_main]</textcolor>
+					<label>[CAPITALIZE]$INFO[ListItem.Title,[B],[/B]][CR]$INFO[ListItem.Season,$LOCALIZE[36904] ,]$INFO[ListItem.Episode, $LOCALIZE[36906] ,][/CAPITALIZE]</label>
+				</control>
+				<include content="spacer_h" />
+			</control>
+			
+			<include content="Home_Plot">
+				<param name="visible" value="![$EXP[IsEpisode]]" />
+				<param name="maxheight" value="205" />
+				<param name="top" value="0" />
+			</include>
+			<include content="Home_Plot">
+				<param name="visible" value="$EXP[IsEpisode]" />
+				<param name="maxheight" value="160" />
+				<param name="top" value="0" />
+			</include>
+			
+			<include content="Meta_Genre_Bottom" />
+			
+			
+				<!-- 
+				<include content="footer">
+					<param name="view_id" value="503" />
+					<param name="offset_leftpanel" value="150" />
+					<param name="media_flagalign" value="center" />
+					<param name="media_flagwidth" value="30%" />
+					<param name="rating_flagalign" value="right" />
+				</include> -->
+			</control>
+			<control type="group">
 				
-			</definition>
-		</include>
-		
-		
-		
-		<variable name="503_ratingimage">
-			<value condition="!String.IsEmpty(ListItem.Rating(tvdb))">flags/ratings/tvdb_color.png</value>
-			<value condition="!String.IsEmpty(ListItem.Rating(themoviedb))">flags/ratings/themoviedb_color.png</value>
-			<value condition="!String.IsEmpty(ListItem.Rating)">icons/star.png</value>
-			<value></value>
-		</variable>
-		
-		<variable name="503_ratingcolor">
-			<value condition="!String.IsEmpty(ListItem.Rating(tvdb))">FF388E3C</value>
-			<value condition="!String.IsEmpty(ListItem.Rating(themoviedb))">FF00FFFF</value>
-			<value condition="!String.IsEmpty(ListItem.Rating(imdb))">ffc1c127</value>
-			<value condition="!String.IsEmpty(ListItem.Rating)">FFFFFFFF</value>
-			<value>FFCE4421</value>
-		</variable>
-		
-		<variable name="503_ratinglabel">
-			<value condition="!String.IsEmpty(ListItem.Rating(tvdb))">$INFO[ListItem.Rating(tvdb)]</value>
-			<value condition="!String.IsEmpty(ListItem.Rating(themoviedb))">$INFO[ListItem.Rating(themoviedb)]</value>
-			<value condition="!String.IsEmpty(ListItem.Rating)">$INFO[listitem.rating]</value>
-			<value>empty</value>
-		</variable>
-		
-		
-		<include name="var_rating_workaraound">
-		
-		<definition>
-			<control type="image">
-				<description>tvdb</description>
-				<visible>!String.IsEmpty(ListItem.Rating($PARAM[rating]))</visible>
-				<bottom>15</bottom>
-				<right>60</right>
-				<width>100</width>
-				<height>25</height>
-				<texture>flags/ratings/$PARAM[rating_image]_color.png</texture>
-				<aspectratio align="right">keep</aspectratio>
-			</control>
-			<control type="textbox">
-				<description>wtf why does colors work correct that way</description>
-				<visible>!String.IsEmpty(ListItem.Rating)</visible>
-				<bottom>15</bottom>
-				<right>20</right>
-				<width>50</width>
-				<height>25</height>
-				<label>$INFO[ListItem.Rating]</label>
-				<font>debugtiny</font>
-				<align>right</align>
-				<textcolor>$VAR[503_ratingcolor]</textcolor>
-			</control>
-			
-		</definition>
-		</include>
+				<control type="panel" id="503">
+					<viewtype label="netflixposter">netflixposter panel</viewtype>
+					
+					<orientation>horizontal</orientation>
+					<preloaditems>4</preloaditems>
+					<scrolltime tween="quadratic">400</scrolltime>
+					
+					<left>100</left>
+					<right>0</right>
+					<bottom>0</bottom>
+					<height>450</height>
+					<include>Media_Values_ContainerNavigation</include>
+					
+					<itemlayout height="445" width="260" condition="true">
+						<control type="group">
+							<width>240</width>
+							<height>350</height>
+							<include content="UniversalLayout">
+								<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_nf]" />
+								<param name="artwork" value="poster" />
+								<param name="get_tags" value="true" />
+								<param name="get_tagbgpanel" value="true" />
+								<param name="autoscroll" value="false" />
+								<param name="bordersize_bg" value="6" />
+								<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_nf]" />
+								<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_nf]" />
+								<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_nf]" />
+							</include>
+						</control>
+					</itemlayout>
+					<focusedlayout height="445" width="260" condition="true">
+						<include content="SetPropOnFocus_HiddenButton" />
+						<control type="group">
+							<width>240</width>
+							<height>350</height>
+							<description>to avoid relaod skin on disable footer and avoid bottom offset fade out 3rd row of items</description>
+							<include>Animation_Item_Focus</include>
+							<control type="group">
+								<include content="UniversalLayout">
+									<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_fo]" />
+									<param name="artwork" value="poster" />
+									<param name="get_tags" value="true" />
+									<param name="get_tagbgpanel" value="true" />
+									<param name="autoscroll" value="true" />
+									<param name="bordersize_bg" value="4" />
+									<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_fo]" />
+									<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_fo]" />
+									<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_fo]" />
+								</include>
+								<control type="group">
+									<include condition="![String.StartsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),00) | String.EndsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),one)]" content="FocusOverlay">
+										<param name="diffusedimtext" value="artworkdiffuse/usebganel/poster.png" />
+									</include>
+									<include condition="[String.StartsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),00) | String.EndsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),one)]" content="FocusOverlay">
+										<param name="diffusedimtext" value="artworkdiffuse/poster.png" />
+									</include>
+								</control>
+							</control>
+						</control>
+					</focusedlayout>
+					<!-- <itemlayout height="365" width="260" condition="Skin.HasSetting(View_51_DisableTags)">
+						<control type="group">
+							<width>240</width>
+							<height>350</height>
+							<include content="UniversalLayout">
+								<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_nf]" />
+								<param name="artwork" value="poster" />
+								<param name="get_tags" value="false" />
+								<param name="get_tagbgpanel" value="false" />
+								<param name="autoscroll" value="false" />
+								<param name="bordersize_bg" value="6" />
+								<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_nf]" />
+								<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_nf]" />
+								<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_nf]" />
+								<param name="conditional_artworkdiffuse_themed" value="true" />
+								<param name="conditional_artworkdiffuse_override" value="false" />
+							</include>
+						</control>
+					</itemlayout>
+					<focusedlayout height="365" width="260" condition="Skin.HasSetting(View_51_DisableTags)">
+						<include content="SetPropOnFocus_HiddenButton" />
+						<control type="group">
+							<width>240</width>
+							<height>350</height>
+							<include>Animation_Item_Focus</include>
+							<control type="group">
+								<include content="UniversalLayout">
+									<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_fo]" />
+									<param name="artwork" value="poster" />
+									<param name="get_tags" value="false" />
+									<param name="get_tagbgpanel" value="false" />
+									<param name="autoscroll" value="true" />
+									<param name="bordersize_bg" value="4" />
+									<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_fo]" />
+									<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_fo]" />
+									<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_fo]" />
+									<param name="conditional_artworkdiffuse_themed" value="true" />
+									<param name="conditional_artworkdiffuse_override" value="false" />
+								</include>
+								<control type="group">
+									<include content="FocusOverlay">
+										<param name="diffusedimtext" value="artworkdiffuse/poster.png" />
+									</include>
+								</control>
+							</control>
+						</control>
+					</focusedlayout> -->
+				</control>
+		</control>
+		</control>
+	</include>
 </includes>
