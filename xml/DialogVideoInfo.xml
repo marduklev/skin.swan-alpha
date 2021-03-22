@@ -4,7 +4,7 @@
 	<onload>ClearProperty(AdditionalInfo)</onload>
 	<onload>RunScript(script.embuary.helper,action=resetposition,container=8601||8602||8603||8604||8605||8606||8607||8608||8609)</onload>
 	<onload>RunScript(script.embuary.helper,action=encode,string='"$VAR[EncodeTitle]"',prop=EncodedTitle)</onload>
-	<onload condition="!string.isempty(listitem.dbid) + [container.content(movies) | String.IsEqual(ListItem.DBTYPE,movie)]">RunScript(script.embuary.helper,action=lookforfile,file='"$VAR[extrasLocation]"',prop=bonuscontentavail)</onload>
+	<onload condition="!string.isempty(listitem.dbid) + [container.content(movies) | String.IsEqual(ListItem.DBTYPE,movie)]">RunScript(script.embuary.helper,action=lookforfile,file='"$VAR[extrasLocation_lookup]"',prop=bonuscontentavail)</onload>
 	
 	<onunload>ClearProperty(AdditionalInfo)</onunload>
 	<onunload>ClearProperty(EncodedTitle,home)</onunload>
@@ -629,6 +629,26 @@
 					<content>$VAR[EmbuaryCast]</content>
 				</include>
 				
+				<!-- CAST Fallback, no custom search -->
+				<include content="Universal_ContainerHeader">
+					<param name="groupid" value="8650" />
+					<param name="id" value="50" />
+					<param name="label" value="$LOCALIZE[344] $INFO[ListItem.Title,  &quot; , &quot;]" />
+					<visible>Control.IsVisible(50)</visible>
+				</include>
+				<include content="Universal_Container">
+					<param name="id" value="50" />
+					<param name="visible" value="[Integer.IsGreater(Container(50).NumItems,0) | Container(50).IsUpdating] + !Control.IsVisible(8603)" />
+					<param name="type_height" value="380" />
+					<param name="tags_visible" value="true" />
+					<param name="layout_height" value="380" />
+					<param name="layout_width" value="210" />
+					<param name="itemwidth" value="207" />
+					<param name="itemheight" value="310" />
+					<param name="layout" value="poster" />
+					<include>Action_CastMemberSearchForceOption</include>
+				</include>
+				
 				<!-- Items by CAST -->
 				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="8504" />
@@ -799,6 +819,13 @@
 					<param name="itemwidth" value="620" />
 					<param name="ls_overlay_visible" value="false" />
 					<param name="layout" value="fanart" />
+					
+					<param name="diffuse_art_topedges" value="false" />
+					<param name="diffuse_art_alledges" value="true" />
+					<param name="root_conditional_artworkdiffuse_themed" value="true" />
+					<param name="root_conditional_artworkdiffuse_override" value="false" />
+		
+					
 					<pagecontrol>89060</pagecontrol>
 					<!-- 
 					<onclick condition="!Skin.HasSetting(UseExtraFanartFolder)">SetProperty(FanartType,mixedfanart,home)</onclick>
@@ -832,6 +859,11 @@
 					<param name="itemwidth" value="620" />
 					<param name="ls_overlay_visible" value="false" />
 					<param name="layout" value="landscape" />
+					<param name="diffuse_art_topedges" value="false" />
+					<param name="diffuse_art_alledges" value="true" />
+					<param name="root_conditional_artworkdiffuse_themed" value="true" />
+					<param name="root_conditional_artworkdiffuse_override" value="false" />
+					
 					<pagecontrol>89060</pagecontrol>
 					<onclick>SetFocus(8902)</onclick>
 					<content>$VAR[extraThumbsLocation]</content>
@@ -842,11 +874,12 @@
 					<param name="groupid" value="8509" />
 					<param name="id" value="8609" />
 					<param name="label" value="Bonusmaterial" />
-					<visible>Control.IsVisible(8609)</visible>
+					<visible>!String.IsEmpty(Window(home).Property(bonuscontentavail))</visible>
 				</include>
 				<include content="Universal_Container">
 					<param name="type" value="panel" />
 					<param name="id" value="8609" />
+					<param name="visible" value="!String.IsEmpty(Window(home).Property(bonuscontentavail)) + [Integer.IsGreater(Container(8609).NumItems,0) | Container(8609).IsUpdating]" />
 					<param name="tagbottom" value="false" />
 					<param name="type_height" value="150" />
 					<param name="layout_height" value="150" />
@@ -855,10 +888,14 @@
 					<param name="itemwidth" value="440" />
 					<param name="banner_overlay_visible" value="true" />
 					<param name="layout" value="banner" />
-					<param name="visible" value="!String.IsEmpty(Window(home).Property(bonuscontentavail))" />
+					<param name="diffuse_art_topedges" value="false" />
+					<param name="diffuse_art_alledges" value="true" />
+					<param name="root_conditional_artworkdiffuse_themed" value="true" />
+					<param name="root_conditional_artworkdiffuse_override" value="false" />
+					
 					<onclick>Close</onclick>
 					<onclick>PlayMedia($INFO[ListItem.FilenameAndPath],noresume)</onclick>
-					<content>$VAR[extrasLocation]</content>
+					<content>$VAR[extrasLocation_contentpath]</content>
 				</include>
 			</control>
 			

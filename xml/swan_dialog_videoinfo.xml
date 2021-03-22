@@ -287,11 +287,19 @@
 		</definition>
 	</include>
 	
-	<variable name="extrasLocation">
+	<variable name="extrasLocation_lookup">
 		<value condition="String.Contains(listitem.filenameandpath,VIDEO_TS)">$INFO[listitem.path,,VIDEO_TS\extras/]</value>
 		<value condition="String.Contains(listitem.filenameandpath,BDMV)">$INFO[listitem.path,,BDMV\extras/]</value>
 		<value>$INFO[listitem.path,,extras/]</value>
 	</variable>
+	
+	<variable name="extrasLocation_contentpath">
+		<value condition="String.Contains(listitem.filenameandpath,VIDEO_TS) + !String.IsEmpty(Window(home).Property(bonuscontentavail))">$INFO[listitem.path,,VIDEO_TS\extras/]</value>
+		<value condition="String.Contains(listitem.filenameandpath,BDMV) + !String.IsEmpty(Window(home).Property(bonuscontentavail))">$INFO[listitem.path,,BDMV\extras/]</value>
+		<value condition="!String.IsEmpty(Window(home).Property(bonuscontentavail))">$INFO[listitem.path,,extras/]</value>
+		<value>-</value>
+	</variable>
+	
 	<include name="ExtrafanartFolderPath">
 		<content>$VAR[extraFanartLocation]</content>
 	</include>
