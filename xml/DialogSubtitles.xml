@@ -2,12 +2,145 @@
 <window>
 <!-- 	1.28 DialogSubtitles.xml
 ID 		Type 		Description
-100 	label 		Name of subtitle service
-110 	image 		Logo of subtitle service
-120 	container 	List of available subtitles
-130 	label 		Local subtitle available
-140 	label 		Number of available subtitles
-150 	container 	List of available subtitle services
-160 	button 		Manual search buttom  
+110 	image 		Logo of subtitle service - not in use seems not needed/usefull
+130 	label 		Local subtitle available - removed , as seems not needed/usefull
 -->
+	<defaultcontrol>150</defaultcontrol>
+	<include content="Animation_OpenClose_Slide">
+		<param name="slide_start" value="0,2000" />
+		<param name="slide_end" value="0,0" />
+	</include>
+	
+	<controls>
+		<control type="button" id="160">
+            <include content="HiddenObject" />
+        </control>
+		<control type="label" id="100">
+            <include content="HiddenObject" />
+        </control>
+		
+		<control type="group">
+			<visible>!Window.IsVisible(virtualkeyboard) + !Window.IsVisible(filebrowser) + !Window.IsVisible(networksetup)</visible>
+			<include>Animation_VisibleHidden_Zoom</include>
+			<bottom>0</bottom>
+			<centerleft>50%</centerleft>
+			
+			<include content="Dialog_Percent_BGPanel" />
+			
+			<control type="label">
+				<description>Name of subtitle service</description>
+				<bottom>49.5%</bottom>
+				<centerleft>50%</centerleft>
+				<width>60%</width>
+				<height>10%</height>
+				<font>font12</font>
+				<align>left</align>
+				<aligny>center</aligny>
+				<textcolor>$VAR[color_global_dialog_accent]</textcolor>
+				<label>$INFO[Control.GetLabel(100),Searching with : [B],[/B]][COLOR $VAR[color_global_button_text_nf]]$INFO[Player.Filenameandpath,[CR]          for  ,][/COLOR]</label>
+			</control>
+			
+			<include content="Dialog_Percent_ListBGPanel">
+				<param name="width" value="52%" />
+				<param name="height" value="43%" />
+			</include>
+						
+			<control type="label" id="140">
+				<description>Number of available subtitles</description>
+				<centerleft>50%</centerleft>
+				<width>50%</width>
+				<bottom>30%</bottom>
+				<height>10%</height>
+				<font>font12_lowline</font>
+				<align>left</align>
+				<aligny>bottom</aligny>
+				<textcolor>$VAR[color_global_button_text_nf]</textcolor>
+				<label />
+				<shadowcolor />
+			</control>
+			<include description="List of available subtitle services" content="Simple_container_IconLabel">
+				<param name="type" value="list" />
+				<param name="id" value="150" />
+				<param name="centerleft" value="36%" />
+				<param name="height" value="28%" />
+				<param name="width" value="400" />
+				<param name="onup" value="150" />
+				<onright condition="Control.IsVisible(120)">120</onright>
+				<onright condition="!Control.IsVisible(120)">9000</onright>
+				<onleft condition="Control.IsVisible($PARAM[id]60)">$PARAM[id]60</onleft>
+				<onleft condition="!Control.IsVisible($PARAM[id]60)">9000</onleft>
+			</include>
+			<control type="scrollbar" id="15060">
+				<visible>true</visible>
+				<bottom>4%</bottom>
+				<height>28%</height>
+				<left>24.5%</left>
+				<onleft>150</onleft>
+				<onright>150</onright>
+				<orientation>vertical</orientation>
+			</control>
+			
+			<include description="List of available subtitles" content="Simple_container_IconLabel">
+				<param name="type" value="list" />
+				<param name="id" value="120" />
+				<param name="centerleft" value="60%" />
+				<param name="height" value="28%" />
+				<param name="width" value="450" />
+				<param name="onup" value="120" />
+				
+				<onleft condition="Control.IsVisible(150)">150</onleft>
+				<onleft condition="!Control.IsVisible(150)">9000</onleft>
+				<onright condition="Control.IsVisible($PARAM[id]60)">$PARAM[id]60</onright>
+				<onright condition="!Control.IsVisible($PARAM[id]60)">9000</onright>
+			</include>
+			<control type="scrollbar" id="12060">
+				<visible>Control.IsVisible(120)</visible>
+				<bottom>4%</bottom>
+				<height>28%</height>
+				<right>25%</right>
+				<onup>120</onup>
+				<ondown>120</ondown>
+				<onleft>120</onleft>
+				<onright>9000</onright>
+				<orientation>vertical</orientation>
+			</control>
+			<include content="Dialog_Percent_Buttongrouplist">
+				<param name="bgpanel_height" value="43%" />
+				<param name="grouplist_height" value="38%" />
+				<param name="pos_right" value="5%" />
+				
+				<onup>150</onup>
+				<ondown>150</ondown>
+				<onleft condition="Control.IsVisible(120)">120</onleft>
+				<onleft condition="!Control.IsVisible(120)">150</onleft>
+				<onright>700</onright>
+				
+				<control description="manual search" type="radiobutton" id="700">
+					<include content="Dialog_RadioButton">
+						<param name="symbol" value="searchsource" />
+					</include>
+					<onclick>SendClick(160)</onclick>
+				</control>
+				
+				<control type="radiobutton" id="218">
+					<include content="Dialog_RadioButton">
+						<param name="symbol" value="enter" />
+					</include>
+					<onclick>close</onclick>
+				</control>
+				<control type="radiobutton" id="19">
+					<include content="Dialog_RadioButton">
+						<param name="symbol" value="cancel" />
+					</include>
+					<onclick>close</onclick>
+				</control>
+				<!-- <control type="radiobutton" id="99">
+					<include content="Dialog_RadioButton">
+						<param name="symbol" value="addsource" />
+					</include>
+					<onclick>ActivateWindow(addonbrowser,addons://repository.xbmc.org/,return)</onclick>
+				</control> -->
+			</include>
+		</control>
+	</controls>
 </window>
