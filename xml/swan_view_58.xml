@@ -10,7 +10,7 @@
 			<control type="list" id="58">
 				<visible>Container.Content(seasons)</visible>
 				<viewtype label="NetflixSeason1">Netflix Info</viewtype>
-				<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
+				<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
 				<onfocus>RunScript(script.embuary.helper,action=encode,string='"$INFO[ListItem.TVShowTitle]"',prop=EncodedTitle)</onfocus>
 				<onfocus condition="!String.IsEmpty(Window.Property(refreshtrailer))">RunScript(script.embuary.helper,action=lookforfile,file='"$INFO[container.listitem.path]$INFO[container.listitem.FolderName,,-trailer.mp4]"',prop=trailer_avail)</onfocus>
 				<onfocus condition="!String.IsEmpty(Window.Property(refreshtrailer))">SetProperty(listitemtrailer,$INFO[container.listitem.path]$INFO[container.listitem.FolderName,,-trailer.mp4],home)</onfocus>
@@ -28,9 +28,9 @@
 				<effect type="fade" start="100" end="0" time="240" />
 			</animation>
 			
-			<control type="group">	
+			<control type="group">
+				<description>hide if 58001 + string.isempty(window(home).property(menucontrol_active))</description>
 				<visible>Control.IsVisible(58)</visible>
-										
 				<visible>Skin.HasSetting(View58_EnableFanartBG)</visible>
 				<control type="image">
 					<visible>!Control.HasFocus(58001) + Skin.HasSetting(View58_EnableBottomPanel)</visible>
@@ -41,7 +41,7 @@
 					<animation effect="slide" start="0,1080" end="0,0" tween="quadratic" easing="in" time="400">VisibleChange</animation>
 				</control>
 				<control type="image">
-					<visible>!Skin.HasSetting(View58_EnableBottomPanel) + !Control.HasFocus(58001)</visible>
+					<visible>!Control.HasFocus(58001) + !Skin.HasSetting(View58_EnableBottomPanel)</visible>
 					<fadetime>350</fadetime>
 					<texture background="true" diffuse="colors/white10.png">$VAR[ArtworkThumb]</texture>
 					<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
@@ -61,7 +61,6 @@
 				
 				<control type="button" id="58001">
 					
-					<description>58001 in window 10025 has been asked to focus, but it can't - when using vis conds and onback</description>
 					<texturefocus />
 					<texturenofocus />
 					<onfocus condition="Control.IsVisible(58)">RunScript(script.embuary.helper,action=lookforfile,file='"$INFO[listitem.path]$INFO[listitem.FolderName,,-trailer.mp4]"',prop=trailer_avail)</onfocus>
@@ -71,8 +70,11 @@
 					<onup condition="Control.IsVisible(58)">58004</onup>
 					<ondown condition="Control.IsVisible(58)">58004</ondown>
 					
-					<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
-					
+					<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
+<!-- 
+					<onfocus condition="String.IsEmpty(Window(Home).Property(firstload),done) + Control.IsVisible(58) + Skin.HasSetting(View58_FirstFocus_NextUp)">SetFocus(58004)</onfocus>
+					<onfocus condition="String.IsEmpty(Window(Home).Property(firstload),done) + Control.IsVisible(58) + Skin.HasSetting(View58_FirstFocus_Seasons)">SetFocus(580051)</onfocus>
+				 -->	
 					<onfocus condition="!Control.IsVisible(58)">SetFocus(50)</onfocus>
 					<onright condition="!Control.IsVisible(58)">SetFocus(50)</onright>
 					<onleft condition="!Control.IsVisible(58)">SetFocus(50)</onleft>
@@ -80,6 +82,7 @@
 					<ondown condition="!Control.IsVisible(58)">SetFocus(50)</ondown>
 					<height>1</height>
 					<onback>SetFocus(50)</onback>
+					<onback>ClearProperty(firstload,home)</onback>
 				</control>
 			
 				<control type="group" id="58002">
@@ -194,7 +197,10 @@
 						<onback>SetFocus(50)</onback>
 						<onup>58001</onup>
 						<ondown>580051</ondown>
-						<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
+						
+						<!-- <onfocus condition="String.IsEmpty(Window(Home).Property(firstload),done)">SetProperty(firstload,done,home)</onfocus> -->
+						
+						<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
 						<content sortby="playcount" limit="1">$VAR[View58_Content_View58_Label_ResumeOrNext]</content>
 					</include>
 				</control>
@@ -232,7 +238,7 @@
 						<onup>58004</onup>
 						<ondown condition="Integer.IsGreater(Container(580052).NumItems,0)">Control.SetFocus(580052,0,absolute)</ondown>
 						<ondown condition="!Integer.IsGreater(Container(580052).NumItems,0)">580061</ondown>
-						<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
+						<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
 						<content target="videos" sortby="season">$VAR[View58_Content_Seasons]</content>
 					</include>
 					
@@ -249,7 +255,7 @@
 						<preloaditems>2</preloaditems>
 						<orientation>horizontal</orientation>
 						<scrolltime tween="quadratic" easing="in">400</scrolltime>
-						<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
+						<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
 				
 						<itemlayout height="430" width="460" condition="!Skin.HasSetting(View58_EpisodeInfoRight)">
 							<control type="group">
@@ -471,7 +477,7 @@
 						<onup>580052</onup>
 						<ondown condition="Control.IsVisible(580062)">580062</ondown>
 						<ondown condition="!Control.IsVisible(580062)">580071</ondown>
-						<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
+						<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
 				
 						<include>Action_CastMemberSearchForceOption</include>
 						<top>190</top>
@@ -535,7 +541,7 @@
 						
 						<onup>580061</onup>
 						<ondown>580071</ondown>
-						<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
+						<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
 						
 						<onclick condition="String.IsEqual(Container(580062).ListItem.Property(LocalTrailer),true)">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onclick>
 						<onclick condition="String.IsEmpty(Container(580062).ListItem.Property(LocalTrailer))">PlayMedia($INFO[Container(580062).ListItem.FilenameAndPath],1)</onclick>
@@ -594,7 +600,7 @@
 		
 						
 						<onback>SetFocus(50)</onback>
-						<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
+						<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
 						<onup condition="Control.IsVisible(580063)">580063</onup>
 						<onup condition="Control.IsVisible(580062)">580062</onup>
 						<onup condition="![Control.IsVisible(580062) + Control.IsVisible(580063)]">58006</onup>
@@ -617,6 +623,7 @@
 				<description>ClearLogo Overlay</description>
 				<visible>!Skin.HasSetting(View58_FanartLeftAlignment)</visible>
 				<left>40</left>
+				
 				<include content="View58_ClearLogo_or_Title">
 					<param name="align" value="left" />
 				</include>
@@ -624,6 +631,7 @@
 			</control>
 			
 			<control type="group">
+				
 				<description>ClearLogo Overlay, pretty ugly pos x for other than page 1</description>
 				<visible>Skin.HasSetting(View58_FanartLeftAlignment)</visible>
 				<right>45</right>
@@ -783,7 +791,10 @@
 	
 	<include name="View58_ClearLogo_or_Title">
 		<top>240</top>
-				
+		<!--
+		<animation effect="slide" start="0,0" end="600,0" time="100" tween="cubic" condition="!Skin.HasSetting(View58_FanartLeftAlignment) + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))">conditional</animation>
+		<animation effect="slide" start="0,0" end="-650,0" time="100" tween="cubic" condition="Skin.HasSetting(View58_FanartLeftAlignment) + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))">conditional</animation>
+		 -->		
 		<control type="image">
 			<visible>[!String.IsEmpty(ListItem.Art(tvshow.clearlogo)) | !String.IsEmpty(ListItem.Art(clearlogo)) | !String.IsEmpty(Container.Art(tvshow.clearlogo)]</visible>
 			<height>265</height>

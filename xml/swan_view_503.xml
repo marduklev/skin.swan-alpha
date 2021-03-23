@@ -1,160 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <includes>
-   <include name="503_test">
-		
+	<include name="503_test">
 		<control type="group">
-		<visible>Control.IsVisible(503)</visible>
-		
-		
-			<control type="group">
-				<description>S P O T L I G H T  A R T W O R K</description>
+			<visible>Control.IsVisible(503)</visible>
+			
+			<include content="Spotlight_Layout_Global">
 				
-				<include content="Fanart_Diffused">
-					<right>0</right>
-					<param name="width" value="1267" />
-					<param name="height" value="731" />
-					<param name="diffuse" value="diffuse/spotlightleftdiffuse.png" />
-					<param name="visible" value="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment) + String.IsEmpty(Window(Home).Property(MenucontrolHomeActive))" />
-				</include>
-				<include content="Fanart_Diffused">
-					<left>0</left>
-					<param name="width" value="1267" />
-					<param name="height" value="731" />
-					<param name="diffuse" value="diffuse/spotlightrightdiffuse.png" />
-					<param name="visible" value="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment) + String.IsEmpty(Window(Home).Property(MenucontrolHomeActive))" />
-				</include>
-				<include content="Fanart_Diffused">
-					<left>0</left>
-					<param name="width" value="1920" />
-					<param name="height" value="1080" />
-					<param name="diffuse" value="colors/gradienthorizontal.png" />
-					<param name="visible" value="!String.IsEmpty(Window(Home).Property(MenucontrolHomeActive))" />
-				</include>
-			</control>
-		
-			<!-- shhow current playing if not trailer ?? or conditional -->
-			<include condition="true">spotlight_trailer_overlay</include>
-		
-		
-		<control type="grouplist">
-			<description>S P O T L I G H T  M E T A D A T A 750w</description>
-			<animation effect="fade" start="100" end="0" time="250" condition="Window.IsActive(shutdownmenu)">conditional</animation>
-			<visible>String.IsEmpty(Window(Home).Property(MenucontrolHomeActive))</visible>
-			<width>39%</width>
-			<height>650</height>
-			<top>10</top>
-			<bottom>10</bottom>
-			<orientation>vertical</orientation>
-			<itemgap>10</itemgap>
-			<usecontrolcoords>true</usecontrolcoords>
 			
-			<include content="pos_left" condition="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)">
-				<param name="left" value="110" />
-			</include>
-			<include content="pos_right" condition="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)">
-				<param name="right" value="60" />
-			</include>
-			<include content="spacer_h">
-				<param name="gap" value="150" />
-				<param name="visible" value="Skin.HasSetting(home_spotlight_hideplot)" />
 			</include>
 			
-			<control type="image" id="1601">
-				<description>choose align for aspectratio respecting skinstring</description>
-				<description>clearlogo, didnt need respect alignment setting ?</description>
-				<visible>!String.IsEmpty(Control.GetLabel(1601))</visible>
-				<height>245</height>
-				<aspectratio align="center" aligny="bottom">keep</aspectratio>
-				<texture background="true">$VAR[ListItemClearLogo]</texture>
-			</control>
 			
-			<control type="label">
-				<description>Fallback Label - make expression home_menucontrol_focused as 3 id s</description>
-				<visible>![Control.HasFocus(9000) | Control.HasFocus(8888)] + String.IsEmpty(Control.GetLabel(1601))</visible>
-				<height>245</height>
-				<wrapmultiline>true</wrapmultiline>
-				<font>font_titlefallbackspotlight</font>
-				<include content="pos_alignx" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
-				<include content="pos_alignx" condition="Skin.HasSetting(home_spotlight_hideplot) | String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
-					<param name="align" value="center" />
-				</include>
-				<include content="pos_alignx" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
-					<param name="align" value="right" />
-				</include>
-				<include content="pos_right" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
-					<param name="right" value="30" />
-				</include>
-				<aligny>center</aligny>
-				<textcolor>$VAR[color_home_accent]</textcolor>
-				<label>$VAR[ClearLogo_FallbackHome]</label>
-			</control>
-			
-			<include>Meta_Uncommon_Top</include>
-			
-			<control type="grouplist" id="588688">
-				<visible>String.IsEqual(ListItem.DBTYPE,episode)</visible>
-				<orientation>vertical</orientation>
-				<height>125</height>
-				<fadetime>300</fadetime>
-				<itemgap>10</itemgap>
-				<include content="pos_right" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
-					<param name="right" value="40" />
-				</include>
-				<control type="label">
-					<height>70</height>
-					<font>InfoCommon</font>
-					<include content="pos_alignx" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
-					<include content="pos_alignx" condition="Skin.HasSetting(home_spotlight_hideplot) | String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
-						<param name="align" value="center" />
-					</include>
-					<include content="pos_alignx" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
-						<param name="align" value="right" />
-					</include>
-					
-					<aligny>center</aligny>
-					<textcolor>$VAR[color_home_text_main]</textcolor>
-					<label>[CAPITALIZE]$INFO[ListItem.Title,[B],[/B]][CR]$INFO[ListItem.Season,$LOCALIZE[36904] ,]$INFO[ListItem.Episode, $LOCALIZE[36906] ,][/CAPITALIZE]</label>
-				</control>
-				<include content="spacer_h" />
-			</control>
-			
-			<include content="Home_Plot">
-				<param name="visible" value="![$EXP[IsEpisode]]" />
-				<param name="maxheight" value="205" />
-				<param name="top" value="0" />
-			</include>
-			<include content="Home_Plot">
-				<param name="visible" value="$EXP[IsEpisode]" />
-				<param name="maxheight" value="160" />
-				<param name="top" value="0" />
-			</include>
-			
-			<include content="Meta_Genre_Bottom" />
-			
-			
-				<!-- 
-				<include content="footer">
-					<param name="view_id" value="503" />
-					<param name="offset_leftpanel" value="150" />
-					<param name="media_flagalign" value="center" />
-					<param name="media_flagwidth" value="30%" />
-					<param name="rating_flagalign" value="right" />
-				</include> -->
-			</control>
 			<control type="group">
 				
-				<control type="panel" id="503">
+				<control type="fixedlist" id="503">
 					<viewtype label="netflixposter">netflixposter panel</viewtype>
-					
+					<focusposition>1</focusposition>
 					<orientation>horizontal</orientation>
 					<preloaditems>4</preloaditems>
 					<scrolltime tween="quadratic">400</scrolltime>
-					
 					<left>100</left>
 					<right>0</right>
 					<bottom>0</bottom>
-					<height>450</height>
-					<include>Media_Values_ContainerNavigation</include>
+					<height>440</height>
+					
+					<onup condition="Control.IsVisible(19)">19</onup>
+					<onup condition="!Control.IsVisible(19) + Control.IsVisible(8999)">8999</onup>
+					
+					<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
+					
+					<onleft condition="Control.IsVisible(8999)">8999</onleft>
+					<onright condition="Control.IsVisible(60)">60</onright>
 					
 					<itemlayout height="445" width="260" condition="true">
 						<control type="group">

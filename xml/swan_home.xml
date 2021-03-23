@@ -12,7 +12,17 @@
 
 	<include name="Home_Layout_Spotlight">
 		
+		<include content="Spotlight_Layout_Global">
+				
+			
+		</include>
+		<include>Home_Widgets</include>
+				
+	</include>
+	<include name="Spotlight_Layout_Global">
+			
 		<control type="group">
+		
 			<description>S P O T L I G H T  A R T W O R K</description>
 			
 			<include content="Fanart_Diffused">
@@ -20,21 +30,21 @@
 				<param name="width" value="1267" />
 				<param name="height" value="731" />
 				<param name="diffuse" value="diffuse/spotlightleftdiffuse.png" />
-				<param name="visible" value="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment) + String.IsEmpty(Window(Home).Property(MenucontrolHomeActive))" />
+				<param name="visible" value="!Skin.HasSetting(spotlightlayout_home_fanartalignment) + String.IsEmpty(Window(Home).Property(menucontrol_active))" />
 			</include>
 			<include content="Fanart_Diffused">
 				<left>0</left>
 				<param name="width" value="1267" />
 				<param name="height" value="731" />
 				<param name="diffuse" value="diffuse/spotlightrightdiffuse.png" />
-				<param name="visible" value="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment) + String.IsEmpty(Window(Home).Property(MenucontrolHomeActive))" />
+				<param name="visible" value="Skin.HasSetting(spotlightlayout_home_fanartalignment) + String.IsEmpty(Window(Home).Property(menucontrol_active))" />
 			</include>
 			<include content="Fanart_Diffused">
 				<left>0</left>
 				<param name="width" value="1920" />
 				<param name="height" value="1080" />
 				<param name="diffuse" value="colors/gradienthorizontal.png" />
-				<param name="visible" value="!String.IsEmpty(Window(Home).Property(MenucontrolHomeActive))" />
+				<param name="visible" value="!String.IsEmpty(Window(Home).Property(menucontrol_active))" />
 			</include>
 		</control>
 		
@@ -55,7 +65,7 @@
 		<control type="grouplist">
 			<description>S P O T L I G H T  M E T A D A T A 750w</description>
 			<animation effect="fade" start="100" end="0" time="250" condition="Window.IsActive(shutdownmenu)">conditional</animation>
-			<visible>String.IsEmpty(Window(Home).Property(MenucontrolHomeActive))</visible>
+			<visible>String.IsEmpty(Window(Home).Property(menucontrol_active))</visible>
 			<width>39%</width>
 			<height>650</height>
 			<top>10</top>
@@ -64,10 +74,10 @@
 			<itemgap>10</itemgap>
 			<usecontrolcoords>true</usecontrolcoords>
 			
-			<include content="pos_left" condition="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)">
+			<include content="pos_left" condition="!Skin.HasSetting(spotlightlayout_home_fanartalignment)">
 				<param name="left" value="110" />
 			</include>
-			<include content="pos_right" condition="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)">
+			<include content="pos_right" condition="Skin.HasSetting(spotlightlayout_home_fanartalignment)">
 				<param name="right" value="60" />
 			</include>
 			<include content="spacer_h">
@@ -147,11 +157,7 @@
 			
 			<include content="Meta_Genre_Bottom" />
 		</control>
-			
-		<include>Home_Widgets</include>
-				
 	</include>
-
 	<include name="Home_WidgetPositioning">
 		<param name="height" default="98%" />
 		<param name="bottom" default="5" />
@@ -403,8 +409,8 @@
 			<visible>!$EXP[Infodialog_IsActive]</visible>
 			<visible>[Player.HasVideo + String.IsEmpty(Window(Home).Property(TrailerIsPlaying))] | [!Skin.HasSetting(home_trailer_showwidget) + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))]</visible>
 			<control type="videowindow">
-				<include content="pos_left" condition="Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
-				<include content="pos_right" condition="!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)" />
+				<include content="pos_left" condition="Skin.HasSetting(spotlightlayout_home_fanartalignment)" />
+				<include content="pos_right" condition="!Skin.HasSetting(spotlightlayout_home_fanartalignment)" />
 				<width>1267</width>
 				<height>731</height>
 				
@@ -421,14 +427,14 @@
 			
 			<control type="image">
 				<description>variable in diffuse tag not workin</description>
-				<visible>!Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)</visible>
+				<visible>!Skin.HasSetting(spotlightlayout_home_fanartalignment)</visible>
 				<bordertexture colordiffuse="$VAR[color_home_background_layer1]" diffuse="diffuse/spotlighttraileroverlayleft.png">colors/white.png</bordertexture>
 				<texture colordiffuse="$VAR[color_home_background_layer3]" diffuse="diffuse/spotlighttraileroverlayleft.png">$VAR[spotlight_trailer_layer3_overlayImage]</texture>
 				<right>0</right>
 			</control>
 			<control type="image">
 				<description>variable in diffuse tag not workin</description>
-				<visible>Skin.HasSetting(SpotlightLayout_FanartLeftAlignment)</visible>
+				<visible>Skin.HasSetting(spotlightlayout_home_fanartalignment)</visible>
 				<bordertexture colordiffuse="$VAR[color_home_background_layer1]" diffuse="diffuse/spotlighttraileroverlayright.png">colors/white.png</bordertexture>
 				<texture colordiffuse="$VAR[color_home_background_layer3]" diffuse="diffuse/spotlighttraileroverlayright.png">$VAR[spotlight_trailer_layer3_overlayImage]</texture>
 				<left>0</left>

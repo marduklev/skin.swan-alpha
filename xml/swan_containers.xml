@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
-	
+	<include name="Scrollbar_Lib_vertical">
+		<control type="scrollbar" id="60">
+			<description>vertical</description>
+			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
+			<visible>!$EXP[Scrollbar_Lib_Horizontal]</visible>
+			<right>45</right>
+			<top>160</top>
+			<height>74%</height>
+			<onup>60</onup>
+			<ondown>60</ondown>
+			<onleft>SetFocus(50)</onleft>
+			<onright>19</onright>
+		</control>
+	</include>
+	<include name="Scrollbar_Lib_horizontal">
+		<control type="scrollbar" id="60">
+			<description>horizontal</description>
+			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
+			<visible>$EXP[Scrollbar_Lib_Vertical]</visible>
+			<bottom>5</bottom>
+			<height>5</height>
+			<onleft>60</onleft>
+			<onright>60</onright>
+			<onup>SetFocus(50)</onup>
+			<ondown>SetFocus(50)</ondown>
+		</control>
+	</include>
 	<!-- use global in future - dialog vs common ?
 	also check https://kodi.wiki/view/List_of_built-in_functions#Weather_built-in.27s
 	<onload>Weather.Refresh</onload> 
@@ -72,7 +98,7 @@
 	
 	<include name="Media_Values_ContainerNavigation">
 		<pagecontrol>60</pagecontrol>
-		<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
+		<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
 		<onleft condition="Control.IsVisible(8999)">8999</onleft>
 		<onright condition="Control.IsVisible(60)">60</onright>
 	</include>
@@ -210,11 +236,11 @@
 			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
 			<description>touch mode workaround</description>
 			<animation effect="slide" start="0,0" end="90,0" time="250" tween="sine" condition="!ControlGroup(9000).HasFocus() + [!Skin.HasSetting(HideProfile_Header) + Control.IsVisible(97)]">Conditional</animation>
-			<visible>!String.IsEmpty(Window(home).Property(MenucontrolActive))</visible>
+			<visible>!String.IsEmpty(Window(home).Property(menucontrol_active))</visible>
 			<height>110</height>
 			<texturefocus  />	
 			<texturenofocus  />
-			<onfocus>ClearProperty(MenucontrolActive,Home)</onfocus>
+			<onfocus>ClearProperty(menucontrol_active,home)</onfocus>
 			<onfocus>SetFocus(19)</onfocus>
 		</control>
 		<control type="button" id="199">
@@ -234,7 +260,7 @@
 			<onright>50</onright>
 			<onleft>19</onleft>
 			<onclick>Filter</onclick>
-			<onfocus>ClearProperty(MenucontrolActive,Home)</onfocus>
+			<onfocus>ClearProperty(menucontrol_active,home)</onfocus>
 		</control>
 	</include>
 	
@@ -262,7 +288,7 @@
 			<onright>$PARAM[id]60</onright>
 			<onup condition="Control.IsVisible(8999)">8999</onup>
 			<onup condition="!Control.IsVisible(8999)">$PARAM[id]</onup>
-			<onfocus condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onfocus>
+			<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
 			<ondown>$PARAM[id]</ondown>
 			<pagecontrol>$PARAM[id]60</pagecontrol>
 			<scrolltime tween="cubic" easing="out">300</scrolltime>
@@ -1255,7 +1281,7 @@ top-->
 			<focusedlayout height="$PARAM[height]" width="$PARAM[width]">
 				<control type="button">
 					<visible allowhiddenfocus="true">false</visible>
-					<onfocus>ClearProperty(MenucontrolActive,Home)</onfocus>
+					<onfocus>ClearProperty(menucontrol_active,home)</onfocus>
 				</control>
 				<control type="group">
 					<height>$PARAM[height]</height>

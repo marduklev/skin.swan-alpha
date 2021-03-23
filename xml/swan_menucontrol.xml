@@ -29,7 +29,7 @@
 			</control>
 			<control type="group">
 				<description>current profile</description>
-				<visible>!Skin.HasSetting(menucontrol_home_hidecurrentprofile) + [Window.IsActive(home) + String.IsEqual(Window(Home).Property(MenucontrolHomeActive), true)]</visible>
+				<visible>!Skin.HasSetting(menucontrol_home_hidecurrentprofile) + [Window.IsActive(home) + String.IsEqual(Window(Home).Property(menucontrol_active), true)]</visible>
 				<top>5</top>
 				<control type="image">
 					<right>15</right>
@@ -222,8 +222,8 @@
 	<include name="menucontrol_background_layer">
 		<control type="image">
 			<animation effect="slide" start="0,0" end="450,0" time="300" tween="cubic" easing="inout">visible</animation>
-			<animation effect="fade" start="100" end="0" time="150" condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">conditional</animation>
-			<visible>String.IsEqual(Window(Home).Property(MenucontrolActive),true)</visible>
+			<animation effect="fade" start="100" end="0" time="150" condition="!String.IsEqual(Window(Home).Property(menucontrol_active),common)">conditional</animation>
+			<visible>String.IsEqual(Window(Home).Property(menucontrol_active),common)</visible>
 			<top>0</top>
 			<bottom>0</bottom>
 			<width>530</width>
@@ -240,7 +240,7 @@
 		
 		
 		<control type="grouplist" id="8999">
-			<animation effect="slide" start="0,0" end="450,0" time="300" tween="cubic" easing="inout" condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">conditional</animation>
+			<animation effect="slide" start="0,0" end="450,0" time="300" tween="cubic" easing="inout" condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">conditional</animation>
 			<visible>!Control.IsVisible(58)</visible>
 			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
 			<visible>!$EXP[Infodialog_IsActive]</visible>
@@ -256,22 +256,22 @@
 			<itemgap>10</itemgap>
 			<usecontrolcoords>true</usecontrolcoords>
 			
-			<onright>ClearProperty(MenucontrolActive,Home)</onright>
+			<onright>ClearProperty(menucontrol_active,home)</onright>
 			<onright>SetFocus(50)</onright>
 			
-			<onleft condition="!String.IsEmpty(Window(Home).Property(MenucontrolActive))">SetProperty(MenucontrolActive,true,Home)</onleft>
+			<onleft condition="!String.IsEmpty(Window(Home).Property(menucontrol_active))">SetProperty(menucontrol_active,common,Home)</onleft>
 			<onleft>SetFocus(9000)</onleft>
 			
 			<onup condition="Control.IsVisible(19)">19</onup>
 			<onup condition="!Control.IsVisible(19)">50</onup>
-			<onup>ClearProperty(MenucontrolActive,Home)</onup>
+			<onup>ClearProperty(menucontrol_active,home)</onup>
 			
 			<control type="radiobutton" id="8001">
 				<include content="PreMenucontrol_RadioButton">
 					<param name="radiotexture" value="back" />
 				</include>
 				<visible>!Skin.HasSetting(premenu_hide_back)</visible>
-				<visible>!String.IsEqual(Window(Home).Property(MenucontrolActive),true)</visible>
+				<visible>!String.IsEqual(Window(Home).Property(menucontrol_active),common)</visible>
 				<onclick>Dialog.Close(all,true)</onclick>
 				<onclick>Action(back)</onclick>
 			</control>
@@ -287,21 +287,21 @@
 				<include content="PreMenucontrol_RadioButton">
 					<param name="radiotexture" value="menucontrol" />
 				</include>
-				<onclick condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onclick>
-				<onclick condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">ClearProperty(MenucontrolActive,Home)</onclick>
-				<onclick condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetFocus(9000)</onclick>
+				<onclick condition="!String.IsEqual(Window(Home).Property(menucontrol_active),common)">SetProperty(menucontrol_active,common,Home)</onclick>
+				<onclick condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onclick>
+				<onclick condition="!String.IsEqual(Window(Home).Property(menucontrol_active),common)">SetFocus(9000)</onclick>
 			</control>
 			<control type="radiobutton" id="8004">
 				<visible>!Skin.HasSetting(premenu_hide_hideshutdown)</visible>
 				<include content="PreMenucontrol_RadioButton">
 					<param name="radiotexture" value="shutdownmenubutton" />
 				</include>
-				<onclick>ClearProperty(MenucontrolActive,Home)</onclick>
+				<onclick>ClearProperty(menucontrol_active,home)</onclick>
 				<onclick>ActivateWindow(shutdownmenu)</onclick>
 			</control>
 			
 			<control type="radiobutton" id="8006">
-				<visible>!String.IsEqual(Window(Home).Property(MenucontrolActive),true)</visible>
+				<visible>!String.IsEqual(Window(Home).Property(menucontrol_active),common)</visible>
 				<visible>String.IsEmpty(Window(home).Property(TrailerIsPlaying))</visible>
 				<visible>!String.IsEmpty(Window(home).Property(trailer_avail))</visible>
 				<visible>!Skin.HasSetting(premenu_hide_trailer)</visible>
@@ -313,7 +313,7 @@
 				<onclick>SetFocus(50)</onclick>
 			</control>
 			<control type="radiobutton" id="8007">
-				<visible>!String.IsEqual(Window(Home).Property(MenucontrolActive),true)</visible>
+				<visible>!String.IsEqual(Window(Home).Property(menucontrol_active),common)</visible>
 				<visible>!String.IsEmpty(Window(home).Property(TrailerIsPlaying))</visible>
 				<visible>!Skin.HasSetting(premenu_hide_trailer)</visible>
 				<include content="PreMenucontrol_RadioButton">
@@ -331,7 +331,7 @@
 				<onclick>Fullscreen</onclick>
 			</control>
 			<control type="radiobutton" id="8008">
-				<visible>!String.IsEqual(Window(Home).Property(MenucontrolActive),true)</visible>
+				<visible>!String.IsEqual(Window(Home).Property(menucontrol_active),common)</visible>
 				<visible>!Skin.HasSetting(premenu_hide_info)</visible>
 				<visible>
                     String.IsEqual(Container.ListItem.dbtype,movie) | String.IsEqual(Container.ListItem.dbtype,tvshow) | String.IsEqual(Container.ListItem.dbtype,season) | String.IsEqual(Container.ListItem.dbtype,episode) | 
@@ -344,7 +344,7 @@
 				<onclick>Action(info)</onclick>
 			</control>
 			<control type="radiobutton" id="8009">
-				<visible>!String.IsEqual(Window(Home).Property(MenucontrolActive),true)</visible>
+				<visible>!String.IsEqual(Window(Home).Property(menucontrol_active),common)</visible>
 				<visible>!Skin.HasSetting(premenu_hide_embuarytmdbinfo)</visible>
 				<visible>String.IsEqual(Container.ListItem.dbtype,movie) | String.IsEqual(Container.ListItem.dbtype,actor) | String.IsEqual(Container.ListItem.dbtype,tvshow) | String.IsEqual(Container.ListItem.dbtype,season) | String.IsEqual(Container.ListItem.dbtype,episode)</visible>
 				<include content="PreMenucontrol_RadioButton">
@@ -378,11 +378,11 @@
 		<selected />
 	</include>
 	<variable name="PreMenucontrol_button_fo">
-		<value condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">$VAR[color_lib_menu_item_fo]</value>
+		<value condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">$VAR[color_lib_menu_item_fo]</value>
 		<value>$VAR[color_lib_text_main]</value>
 	</variable>
 	<variable name="PreMenucontrol_button_nf">
-		<value condition="String.IsEqual(Window(Home).Property(MenucontrolActive),true)">$VAR[color_lib_menu_item_nf]</value>
+		<value condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">$VAR[color_lib_menu_item_nf]</value>
 		<value>$VAR[color_lib_text_secondary]</value>
 	</variable>
 
@@ -492,20 +492,20 @@ ID 	Type 					Description
 			<left>0</left>
 			<itemgap>0</itemgap>
 			
-			<onup>ClearProperty(MenucontrolActive,Home)</onup>
+			<onup>ClearProperty(menucontrol_active,home)</onup>
 			<onup condition="Control.IsVisible(19)">19</onup>
 			<onup condition="Control.IsVisible(7777)">7777</onup>
 			<onup condition="![Control.IsVisible(19) + Control.IsVisible(7777)]">$PARAM[menucontrol_id]</onup>
 			
-			<onback>ClearProperty(MenucontrolActive,Home)</onback>
+			<onback>ClearProperty(menucontrol_active,home)</onback>
 			<onback>SetFocus($PARAM[window_defaultcontrol_id])</onback>
 			
 			<onright condition="$PARAM[has_premenu]">SetFocus(8999)</onright>
-			<onright condition="$PARAM[has_no_premenu]">ClearProperty(MenucontrolActive,Home)</onright>
+			<onright condition="$PARAM[has_no_premenu]">ClearProperty(menucontrol_active,home)</onright>
 			<onright condition="$PARAM[has_no_premenu]">SetFocus($PARAM[window_defaultcontrol_id])</onright>
 			
 			<onleft>SetFocus(50)</onleft>
-			<onleft>ClearProperty(MenucontrolActive,Home)</onleft>
+			<onleft>ClearProperty(menucontrol_active,home)</onleft>
 			
 			<control type="image" id="4398768">
 				<visible>Window.IsActive(settings)</visible>
@@ -549,7 +549,7 @@ ID 	Type 					Description
 			
 			<control type="panel" id="911">
 				<visible>Window.IsMedia</visible>
-				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
+				<onfocus condition="!String.IsEqual(Window(Home).Property(menucontrol_active),common)">SetProperty(menucontrol_active,common,Home)</onfocus>
 				<scrolltime tween="quadratic">400</scrolltime>
 				<top>0</top>
 				<preloaditems>2</preloaditems>
@@ -864,7 +864,7 @@ msgstr "Video-Wiedergabelisten"
 				<usealttexture>!Player.Paused</usealttexture>
 				<onup>19</onup>
 				<ondown>911</ondown>
-				<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
+				<onfocus condition="!String.IsEqual(Window(Home).Property(menucontrol_active),common)">SetProperty(menucontrol_active,common,Home)</onfocus>
 				<onright>60493</onright>
 				<onleft>60491</onleft>
 				<onclick>PlayerControl(play)</onclick>
@@ -1404,7 +1404,7 @@ msgstr "Video-Wiedergabelisten"
 				<include condition="!Window.Is(home)" content="Menucontrol_Button"/>
 			<label>reloadskin</label>
 			<onclick>ReloadSkin()</onclick>
-			<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
+			<onfocus condition="!String.IsEqual(Window(Home).Property(menucontrol_active),common)">SetProperty(menucontrol_active,common,Home)</onfocus>
 		</control>
 	</include>
 	
@@ -1413,7 +1413,7 @@ msgstr "Video-Wiedergabelisten"
 	<include name="menucontrol_home_iconpanel_left">
 		<control type="group">
 			<description>info panel right</description>
-			<animation effect="slide" start="0" end="-400" easing="in" tween="quadratic" time="300" condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">conditional</animation>
+			<animation effect="slide" start="0" end="-400" easing="in" tween="quadratic" time="300" condition="String.IsEqual(Window(Home).Property(menucontrol_active),home)">conditional</animation>
 			<right>-400</right>
 			<width>400</width>
 			<height>100%</height>	
@@ -1424,7 +1424,7 @@ msgstr "Video-Wiedergabelisten"
 			<visible>![Skin.HasSetting(HideTimeDate_Header) + Skin.HasSetting(HideWeather_Header)]</visible>
 			
 			<control type="image">
-				<animation effect="fade" start="100" end="80" time="250" condition="String.IsEmpty(Window(Home).Property(MenucontrolHomeActive))">conditional</animation>
+				<animation effect="fade" start="100" end="80" time="250" condition="String.IsEmpty(Window(Home).Property(menucontrol_active))">conditional</animation>
 				<bordersize>2,0,0,0</bordersize>
 				<texture colordiffuse="$VAR[color_home_menu_backgroundpanel]">colors/white80.png</texture>
 				<bordertexture border="0,0,1,0" diffuse="colors/white80.png" colordiffuse="$VAR[color_home_menu_accent]">diffuse/gradientvertical.png</bordertexture>
@@ -1485,14 +1485,14 @@ msgstr "Video-Wiedergabelisten"
 		
 		<control type="group">
 			<description>menu panel left</description>
-			<animation effect="slide" start="0" end="455" easing="in" tween="quadratic" time="300" condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">conditional</animation>
+			<animation effect="slide" start="0" end="455" easing="in" tween="quadratic" time="300" condition="String.IsEqual(Window(Home).Property(menucontrol_active),home)">conditional</animation>
 			<left>-455</left>
 			<width>540</width>
 			<height>100%</height>
 			
 			<control type="image">
 				<description>backgroundpanel</description>
-				<animation effect="fade" start="100" end="80" time="250" condition="String.IsEmpty(Window(Home).Property(MenucontrolHomeActive))">conditional</animation>
+				<animation effect="fade" start="100" end="80" time="250" condition="String.IsEmpty(Window(Home).Property(menucontrol_active))">conditional</animation>
 				<bordersize>0,0,3,0</bordersize>
 				<texture colordiffuse="$VAR[color_home_menu_backgroundpanel]">colors/white.png</texture>
 				<bordertexture border="0,0,1,0" colordiffuse="$VAR[color_home_menu_accent]">diffuse/gradientvertical.png</bordertexture>
@@ -1507,20 +1507,20 @@ msgstr "Video-Wiedergabelisten"
 				<aligny>center</aligny>
 				<orientation>vertical</orientation>
 				
-				<onup condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true) + [Control.IsVisible(7777)]">7777</onup>
-				<onup condition="[String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true) + !Control.IsVisible(7777)] | !String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">9000</onup>
+				<onup condition="String.IsEqual(Window(Home).Property(menucontrol_active),home) + [Control.IsVisible(7777)]">7777</onup>
+				<onup condition="[String.IsEqual(Window(Home).Property(menucontrol_active),home) + !Control.IsVisible(7777)] | !String.IsEqual(Window(Home).Property(menucontrol_active),home)">9000</onup>
 				
-				<ondown condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true) + Control.IsVisible(8888)">8888</ondown>
-				<ondown condition="[String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true) + !Control.IsVisible(8888)] | !String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">9000</ondown> 
+				<ondown condition="String.IsEqual(Window(Home).Property(menucontrol_active),home) + Control.IsVisible(8888)">8888</ondown>
+				<ondown condition="[String.IsEqual(Window(Home).Property(menucontrol_active),home) + !Control.IsVisible(8888)] | !String.IsEqual(Window(Home).Property(menucontrol_active),home)">9000</ondown> 
 				
-				<onright condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">ClearProperty(MenucontrolHomeActive,home)</onright>
+				<onright condition="String.IsEqual(Window(Home).Property(menucontrol_active),home)">ClearProperty(menucontrol_active,home)</onright>
 				<onright>5555</onright>
 				
-				<onleft condition="!String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">SetProperty(MenucontrolHomeActive,true,home)</onleft>		
-				<onleft condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">8888</onleft>		
+				<onleft condition="!String.IsEqual(Window(Home).Property(menucontrol_active),home)">SetProperty(menucontrol_active,home,home)</onleft>		
+				<onleft condition="String.IsEqual(Window(Home).Property(menucontrol_active),home)">8888</onleft>		
 				
-				<onback condition="!String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">SetProperty(MenucontrolHomeActive,true,home)</onback>
-				<onback condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">ClearProperty(MenucontrolHomeActive,home)</onback>
+				<onback condition="!String.IsEqual(Window(Home).Property(menucontrol_active),home)">SetProperty(menucontrol_active,home,home)</onback>
+				<onback condition="String.IsEqual(Window(Home).Property(menucontrol_active),home)">ClearProperty(menucontrol_active,home)</onback>
 				
 				<itemlayout height="80">
 					<include content="home_mainmenu_layout_verticalpanel">
@@ -1553,7 +1553,7 @@ msgstr "Video-Wiedergabelisten"
 				<orientation>vertical</orientation>
 				<onup>9000</onup>
 				<ondown>9000</ondown>
-				<onright condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">ClearProperty(MenucontrolHomeActive,home)</onright>
+				<onright condition="String.IsEqual(Window(Home).Property(menucontrol_active),home)">ClearProperty(menucontrol_active,home)</onright>
 				<onright>5555</onright>
 				<onleft>9000</onleft>		
 				
@@ -1605,7 +1605,7 @@ msgstr "Video-Wiedergabelisten"
 			<onclick condition="!String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_executebuiltin))">$INFO[Skin.String(mainmenuitem$PARAM[nr]_executebuiltin)]</onclick>
 			<onclick condition="String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_path))">ActivateWindow($INFO[Skin.String(mainmenuitem$PARAM[nr]_target)],return)</onclick>
 			<onclick condition="!String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_path))">ActivateWindow($INFO[Skin.String(mainmenuitem$PARAM[nr]_target),,$COMMA]$INFO[Skin.String(mainmenuitem$PARAM[nr]_path)],return)</onclick>
-			<onclick condition="String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)">ClearProperty(MenucontrolHomeActive,home)</onclick>
+			<onclick condition="String.IsEqual(Window(Home).Property(menucontrol_active),home)">ClearProperty(menucontrol_active,home)</onclick>
 		</item>
 	</include>
 	
@@ -1950,7 +1950,7 @@ msgstr "Video-Wiedergabelisten"
 		<control type="group">
 			<control type="image">
 				<description>vis if prop slide true</description>
-				<visible>String.IsEqual(Window(Home).Property(MenucontrolHomeActive),true)</visible>
+				<visible>String.IsEqual(Window(Home).Property(menucontrol_active),home)</visible>
 				<height>100%</height>
 				<width>100%</width>
 				<texture colordiffuse="$PARAM[itempanelcolor]">colors/white.png</texture>
@@ -2220,7 +2220,7 @@ RadioSearch
 			<height>45</height>
 			<onup>19</onup>
 			<ondown>911</ondown>
-			<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
+			<onfocus condition="!String.IsEqual(Window(Home).Property(menucontrol_active),common)">SetProperty(menucontrol_active,common,Home)</onfocus>
 			<left>$PARAM[left]</left>
 			<onright>$PARAM[onright]</onright>
 			<onleft>$PARAM[onleft]</onleft>
@@ -2261,7 +2261,7 @@ RadioSearch
 		<definition>
 			<font>font10</font>
 			<height>40</height>
-			<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
+			<onfocus condition="!String.IsEqual(Window(Home).Property(menucontrol_active),common)">SetProperty(menucontrol_active,common,Home)</onfocus>
 			<texturefocus colordiffuse="$VAR[color_$PARAM[section]_menu_itempanel_fo]">colors/white.png</texturefocus>
 			<texturenofocus colordiffuse="$VAR[color_$PARAM[section]_menu_itempanel_nf]">colors/white.png</texturenofocus>
 			<focusedcolor>$VAR[color_$PARAM[section]_menu_item_fo]</focusedcolor>
@@ -2274,7 +2274,7 @@ RadioSearch
 		<definition>
 			<font>font10</font>
 			<height>40</height>
-			<onfocus condition="!String.IsEqual(Window(Home).Property(MenucontrolActive),true)">SetProperty(MenucontrolActive,true,Home)</onfocus>
+			<onfocus condition="!String.IsEqual(Window(Home).Property(menucontrol_active),common)">SetProperty(menucontrol_active,common,Home)</onfocus>
 			<texturefocus colordiffuse="$VAR[color_$PARAM[section]_menu_itempanel_fo]">colors/white.png</texturefocus>
 			<texturenofocus colordiffuse="$VAR[color_$PARAM[section]_menu_itempanel_nf]">colors/white.png</texturenofocus>
 			<focusedcolor>$VAR[color_$PARAM[section]_menu_item_fo]</focusedcolor>
