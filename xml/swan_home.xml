@@ -12,34 +12,71 @@
 
 	<include name="Home_Layout_Spotlight">
 		
-		<include content="Spotlight_Layout_Global">
-				
-			
-		</include>
-		<include>Home_Widgets</include>
-				
-	</include>
-	<include name="Spotlight_Layout_Global">
-			
-		<control type="group">
+		<include>Global_Layout_Spotlight</include>
 		
-			<description>S P O T L I G H T  A R T W O R K</description>
+		<include>Home_Widgets</include>
+		
+
+
+	
+	</include>
+	
+	
+	
+				<!-- 
+				String.IsEqual(Skin.String(spotlight_home_metadata_align),left) - no one will us that if artwork left - can therefore deleted - save string/setting
+				String.IsEqual(Skin.String(spotlight_home_metadata_align),right) - no one will us that if artwork right - can therefore deleted - save string/setting
+				String.IsEqual(Skin.String(spotlight_home_metadata_align),center)
+				
+				use global or per view?
+				String.IsEqual(Skin.String(spotlight_common_metadata_align),left)
+				String.IsEqual(Skin.String(spotlight_common_metadata_align),right)
+				String.IsEqual(Skin.String(spotlight_common_metadata_align),center)
+				
 			
+				
+				go over and reduce
+					metadata_align_left
+					metadata_align_center
+					metadata_align_right
+				 using
+				 
+						<param name="usecase"  /> home vs common not in use
+						<param name="info_alignment"  /> 
+				
+				
+				-->
+	
+	<include name="Global_Layout_Spotlight">
+		<param name="spotlight_artwork_visible_right" default="!Skin.HasSetting(spotlight_home_fanart_left) + String.IsEmpty(Window(Home).Property(menucontrol_active))" />	
+		<param name="spotlight_artwork_visible_left" default="Skin.HasSetting(spotlight_home_fanart_left) + String.IsEmpty(Window(Home).Property(menucontrol_active))" />	
+		
+		<param name="info_visible_left" default="!Skin.HasSetting(spotlight_home_fanart_left)" />
+		<param name="info_visible_right" default="Skin.HasSetting(spotlight_home_fanart_left)" />
+		<param name="info_plot_hidden" default="Skin.HasSetting(home_spotlight_hideplot)" />
+		
+		<param name="metadata_align_left" default="String.IsEqual(Skin.String(spotlight_home_metadata_align),left)" />
+		<param name="metadata_align_center" default="String.IsEqual(Skin.String(spotlight_home_metadata_align),center)" />
+		<param name="metadata_align_right" default="String.IsEqual(Skin.String(spotlight_home_metadata_align),right)" />
+		<definition>
+		<control type="group">
+			<description>S P O T L I G H T  A R T W O R K</description>
 			<include content="Fanart_Diffused">
 				<right>0</right>
 				<param name="width" value="1267" />
 				<param name="height" value="731" />
 				<param name="diffuse" value="diffuse/spotlightleftdiffuse.png" />
-				<param name="visible" value="!Skin.HasSetting(spotlightlayout_home_fanartalignment) + String.IsEmpty(Window(Home).Property(menucontrol_active))" />
+				<param name="visible" value="$PARAM[spotlight_artwork_visible_right]" />
 			</include>
 			<include content="Fanart_Diffused">
 				<left>0</left>
 				<param name="width" value="1267" />
 				<param name="height" value="731" />
 				<param name="diffuse" value="diffuse/spotlightrightdiffuse.png" />
-				<param name="visible" value="Skin.HasSetting(spotlightlayout_home_fanartalignment) + String.IsEmpty(Window(Home).Property(menucontrol_active))" />
+				<param name="visible" value="$PARAM[spotlight_artwork_visible_left]" />
 			</include>
-			<include content="Fanart_Diffused">
+			<include content="Fanart_Diffused" condition="Window.IsActive(home)">
+				<description>just load include for home, may delete also for home later</description>
 				<left>0</left>
 				<param name="width" value="1920" />
 				<param name="height" value="1080" />
@@ -48,12 +85,20 @@
 			</include>
 		</control>
 		
-		<!-- shhow current playing if not trailer ?? or conditional -->
-		<include condition="true">spotlight_trailer_overlay</include>
+		<include condition="$PARAM[info_visible_left]" content="spotlight_trailer_overlay">
+			<param name="trailer_visible_right" value="true" />
+			<param name="trailer_visible_left" value="false" />
+			<param name="diffusetexture" value="diffuse/spotlighttraileroverlayleft.png" />
+		</include>
+		<include condition="$PARAM[info_visible_right]" content="spotlight_trailer_overlay">
+			<param name="trailer_visible_right" value="false" />
+			<param name="trailer_visible_left" value="true" />
+			<param name="diffusetexture" value="diffuse/spotlighttraileroverlayright.png" />
+		</include>
 		
 		<control type="label">
-			<description>WIP HOME MENU LABELS CENTERED</description>
-			<visible>[Control.HasFocus(9000) | Control.HasFocus(8888)]</visible>
+			<description>JUST HOME and Maybe delete WIP MAYBE HOME MENU LABELS CENTERED</description>
+			<visible>Window.IsVisible(home) + [Control.HasFocus(9000) | Control.HasFocus(8888)]</visible>
 			<left>50%</left>
 			<label>$INFO[Container(9000).ListItem.Label]</label>
 			<textcolor>red</textcolor>
@@ -62,30 +107,33 @@
 			<font>font_SpotlightTitle_Large</font>
 		</control>
 	
+	
+	
 		<control type="grouplist">
 			<description>S P O T L I G H T  M E T A D A T A 750w</description>
 			<animation effect="fade" start="100" end="0" time="250" condition="Window.IsActive(shutdownmenu)">conditional</animation>
 			<visible>String.IsEmpty(Window(Home).Property(menucontrol_active))</visible>
+			
 			<width>39%</width>
 			<height>650</height>
 			<top>10</top>
 			<bottom>10</bottom>
-			<orientation>vertical</orientation>
 			<itemgap>10</itemgap>
-			<usecontrolcoords>true</usecontrolcoords>
 			
-			<include content="pos_left" condition="!Skin.HasSetting(spotlightlayout_home_fanartalignment)">
-				<param name="left" value="110" />
-			</include>
-			<include content="pos_right" condition="Skin.HasSetting(spotlightlayout_home_fanartalignment)">
-				<param name="right" value="60" />
-			</include>
-			<include content="spacer_h">
-				<param name="gap" value="150" />
-				<param name="visible" value="Skin.HasSetting(home_spotlight_hideplot)" />
-			</include>
 			
-			<control type="image" id="1601">
+				<include content="pos_left" condition="$PARAM[info_visible_left]">
+					<param name="left" value="110" />
+				</include>
+				<include content="pos_right" condition="$PARAM[info_visible_right]">
+					<param name="right" value="60" />
+				</include>
+				
+				<include content="spacer_h">
+					<param name="gap" value="150" />
+					<param name="visible" value="$PARAM[info_plot_hidden]" />
+				</include>
+			
+			<control type="image" id="1601"> <!-- PARAM CLEARLOGO CTRL ID -->
 				<description>choose align for aspectratio respecting skinstring</description>
 				<description>clearlogo, didnt need respect alignment setting ?</description>
 				<visible>!String.IsEmpty(Control.GetLabel(1601))</visible>
@@ -100,14 +148,15 @@
 				<height>245</height>
 				<wrapmultiline>true</wrapmultiline>
 				<font>font_titlefallbackspotlight</font>
-				<include content="pos_alignx" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
-				<include content="pos_alignx" condition="Skin.HasSetting(home_spotlight_hideplot) | String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
+				
+				<include content="pos_alignx" condition="!$PARAM[info_plot_hidden] + $PARAM[metadata_align_left]" />
+				<include content="pos_alignx" condition="$PARAM[info_plot_hidden] | $PARAM[metadata_align_center]">
 					<param name="align" value="center" />
 				</include>
-				<include content="pos_alignx" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+				<include content="pos_alignx" condition="!$PARAM[info_plot_hidden] + $PARAM[metadata_align_right]">
 					<param name="align" value="right" />
 				</include>
-				<include content="pos_right" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+				<include content="pos_right" condition="!$PARAM[info_plot_hidden] + $PARAM[metadata_align_right]">
 					<param name="right" value="30" />
 				</include>
 				<aligny>center</aligny>
@@ -115,25 +164,31 @@
 				<label>$VAR[ClearLogo_FallbackHome]</label>
 			</control>
 			
-			<include>Meta_Uncommon_Top</include>
+			<include content="Meta_Uncommon_Top">
+				<param name="Is_hiddenplot" value="$PARAM[info_plot_hidden]" />
+				<param name="Is_left" value="$PARAM[metadata_align_left]" />
+				<param name="Is_center" value="$PARAM[metadata_align_center]" />
+				<param name="Is_right" value="$PARAM[metadata_align_right]" />
+			</include>
 			
-			<control type="grouplist" id="588688">
+			<control type="grouplist">
 				<visible>String.IsEqual(ListItem.DBTYPE,episode)</visible>
 				<orientation>vertical</orientation>
 				<height>125</height>
 				<fadetime>300</fadetime>
 				<itemgap>10</itemgap>
-				<include content="pos_right" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+				<include content="pos_right" condition="!$PARAM[info_plot_hidden] + $PARAM[metadata_align_right]">
 					<param name="right" value="40" />
 				</include>
 				<control type="label">
 					<height>70</height>
 					<font>InfoCommon</font>
-					<include content="pos_alignx" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
-					<include content="pos_alignx" condition="Skin.HasSetting(home_spotlight_hideplot) | String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
+					
+					<include content="pos_alignx" condition="!$PARAM[info_plot_hidden] + $PARAM[metadata_align_left]" />
+					<include content="pos_alignx" condition="$PARAM[info_plot_hidden] | $PARAM[metadata_align_center]">
 						<param name="align" value="center" />
 					</include>
-					<include content="pos_alignx" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+					<include content="pos_alignx" condition="!$PARAM[info_plot_hidden] + $PARAM[metadata_align_right]">
 						<param name="align" value="right" />
 					</include>
 					
@@ -144,20 +199,32 @@
 				<include content="spacer_h" />
 			</control>
 			
-			<include content="Home_Plot">
+			<include condition="!$PARAM[info_plot_hidden]" content="Spotlight_Plot">
 				<param name="visible" value="![$EXP[IsEpisode]]" />
 				<param name="maxheight" value="205" />
-				<param name="top" value="0" />
+				<param name="Is_left" value="$PARAM[metadata_align_left]" />
+				<param name="Is_center" value="$PARAM[metadata_align_center]" />
+				<param name="Is_right" value="$PARAM[metadata_align_right]" />
 			</include>
-			<include content="Home_Plot">
+			<include condition="!$PARAM[info_plot_hidden]" content="Spotlight_Plot">
 				<param name="visible" value="$EXP[IsEpisode]" />
 				<param name="maxheight" value="160" />
-				<param name="top" value="0" />
+				<param name="Is_left" value="$PARAM[metadata_align_left]" />
+				<param name="Is_center" value="$PARAM[metadata_align_center]" />
+				<param name="Is_right" value="$PARAM[metadata_align_right]" />
 			</include>
 			
-			<include content="Meta_Genre_Bottom" />
+			<include content="Meta_Genre_Bottom">
+				<param name="Is_hiddenplot" value="$PARAM[info_plot_hidden]" />
+				<param name="Is_left" value="$PARAM[metadata_align_left]" />
+				<param name="Is_center" value="$PARAM[metadata_align_center]" />
+				<param name="Is_right" value="$PARAM[metadata_align_right]" />
+			</include>
 		</control>
+		</definition>
 	</include>
+	
+	
 	<include name="Home_WidgetPositioning">
 		<param name="height" default="98%" />
 		<param name="bottom" default="5" />
@@ -167,41 +234,22 @@
 		</definition>
 	</include>
 
-	<include name="Home_Plot">
-		<control type="textbox">
-			<width>95%</width>
-			<description>if align right, width doesnt affect alignment</description>
-			<visible>$PARAM[visible]</visible>
-			<visible>!Skin.HasSetting(home_spotlight_hideplot)</visible>
-			<top>$PARAM[top]</top>
-			<height min="80" max="$PARAM[maxheight]">auto</height>
-			<aligny>top</aligny>
-			<label>$VAR[plot]</label>
-			<textcolor>$VAR[color_home_text_secondary]</textcolor>
-			<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
-			<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
-				<param name="align" value="center" />
-			</include>
-			<include content="pos_alignx" condition="String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
-				<param name="align" value="right" />
-			</include>
-			<font>font_SpotlightPlot_RegMedium</font>
-		</control>
-	</include>
 
+	
 	<include name="Meta_Uncommon_Top">
 		<control type="grouplist">
 			<orientation>horizontal</orientation>
-			<usecontrolcoords>true</usecontrolcoords>
 			<height>50</height>
 			<itemgap>10</itemgap>
 			<right>25</right>
 			
-			<include content="pos_alignx" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
-			<include content="pos_alignx" condition="Skin.HasSetting(home_spotlight_hideplot) | String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
+			<nested />
+			
+			<include content="pos_alignx" condition="!$PARAM[Is_hiddenplot] + $PARAM[Is_left]" />
+			<include content="pos_alignx" condition="$PARAM[Is_hiddenplot] | $PARAM[Is_center]">
 				<param name="align" value="center" />
 			</include>
-			<include content="pos_alignx" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+			<include content="pos_alignx" condition="!$PARAM[Is_hiddenplot] + $PARAM[Is_right]">
 				<param name="align" value="right" />
 			</include>
 			
@@ -287,6 +335,27 @@
 			</control> -->
 		</control>
 	</include>
+	<include name="Spotlight_Plot">
+		<control type="textbox">
+			<width>95%</width>
+			<description>if align right, width doesnt affect alignment</description>
+			<visible>$PARAM[visible]</visible>
+			<top>0</top>
+			<height min="80" max="$PARAM[maxheight]">auto</height>
+			<aligny>top</aligny>
+			<label>$VAR[plot]</label>
+			<textcolor>$VAR[color_home_text_secondary]</textcolor>
+			<include content="pos_alignx" condition="$PARAM[Is_left]" />
+			<include content="pos_alignx" condition="$PARAM[Is_center]">
+				<param name="align" value="center" />
+			</include>
+			<include content="pos_alignx" condition="$PARAM[Is_right]">
+				<param name="align" value="right" />
+			</include>
+			<font>font_SpotlightPlot_RegMedium</font>
+		</control>
+	</include>
+
 
 	<include name="Meta_Genre_Bottom">
 		<control type="grouplist">
@@ -295,18 +364,16 @@
 			<height>60</height>
 			<orientation>horizontal</orientation>
 			<itemgap>10</itemgap>
-			<usecontrolcoords>true</usecontrolcoords>
 			
-			<include content="pos_alignx" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),left)" />
-			<include content="pos_alignx" condition="Skin.HasSetting(home_spotlight_hideplot) | String.IsEqual(Skin.String(SpotlightMetadataAlign),center)">
+			<include content="pos_alignx" condition="!$PARAM[Is_hiddenplot] + $PARAM[Is_left]" />
+			<include content="pos_alignx" condition="$PARAM[Is_hiddenplot] | $PARAM[Is_center]">
 				<param name="align" value="center" />
 			</include>
-			
-			<include content="pos_right" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
-				<param name="right" value="30" />
-			</include>
-			<include content="pos_alignx" condition="!Skin.HasSetting(home_spotlight_hideplot) + String.IsEqual(Skin.String(SpotlightMetadataAlign),right)">
+			<include content="pos_alignx" condition="!$PARAM[Is_hiddenplot] + $PARAM[Is_right]">
 				<param name="align" value="right" />
+			</include>
+			<include content="pos_right" condition="!$PARAM[Is_hiddenplot] + $PARAM[Is_right]">
+				<param name="right" value="30" />
 			</include>
 			
 			<control type="image">
@@ -409,15 +476,14 @@
 			<visible>!$EXP[Infodialog_IsActive]</visible>
 			<visible>[Player.HasVideo + String.IsEmpty(Window(Home).Property(TrailerIsPlaying))] | [!Skin.HasSetting(home_trailer_showwidget) + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))]</visible>
 			<control type="videowindow">
-				<include content="pos_left" condition="Skin.HasSetting(spotlightlayout_home_fanartalignment)" />
-				<include content="pos_right" condition="!Skin.HasSetting(spotlightlayout_home_fanartalignment)" />
+				<include content="pos_left" condition="$PARAM[trailer_visible_left]" />
+				<include content="pos_right" condition="$PARAM[trailer_visible_right]" />
 				<width>1267</width>
 				<height>731</height>
 				
 			</control>
 			
 			<control type="image">
-				<description>verstärker</description>
 				<visible>false</visible>
 				<texture colordiffuse="$VAR[color_home_background_layer1]" diffuse="diffuse/spotlighttoprightinverted.png">colors/white80.png</texture>
 				<right>0</right>
@@ -426,19 +492,12 @@
 			</control>
 			
 			<control type="image">
-				<description>variable in diffuse tag not workin</description>
-				<visible>!Skin.HasSetting(spotlightlayout_home_fanartalignment)</visible>
-				<bordertexture colordiffuse="$VAR[color_home_background_layer1]" diffuse="diffuse/spotlighttraileroverlayleft.png">colors/white.png</bordertexture>
-				<texture colordiffuse="$VAR[color_home_background_layer3]" diffuse="diffuse/spotlighttraileroverlayleft.png">$VAR[spotlight_trailer_layer3_overlayImage]</texture>
-				<right>0</right>
+				<bordertexture colordiffuse="$VAR[color_home_background_layer1]" diffuse="$PARAM[diffusetexture]">colors/white.png</bordertexture>
+				<texture colordiffuse="$VAR[color_home_background_layer3]" diffuse="$PARAM[diffusetexture]">$VAR[spotlight_trailer_layer3_overlayImage]</texture>
+				<include content="pos_left" condition="$PARAM[trailer_visible_left]" />
+				<include content="pos_right" condition="$PARAM[trailer_visible_right]" />
 			</control>
-			<control type="image">
-				<description>variable in diffuse tag not workin</description>
-				<visible>Skin.HasSetting(spotlightlayout_home_fanartalignment)</visible>
-				<bordertexture colordiffuse="$VAR[color_home_background_layer1]" diffuse="diffuse/spotlighttraileroverlayright.png">colors/white.png</bordertexture>
-				<texture colordiffuse="$VAR[color_home_background_layer3]" diffuse="diffuse/spotlighttraileroverlayright.png">$VAR[spotlight_trailer_layer3_overlayImage]</texture>
-				<left>0</left>
-			</control>
+			
 		</control>
 	</include>
 	

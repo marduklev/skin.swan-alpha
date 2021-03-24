@@ -1,132 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
 <includes>
+	
 	<include name="503_test">
+	
 		<control type="group">
 			<visible>Control.IsVisible(503)</visible>
-			
-			<include content="Spotlight_Layout_Global">
+				<description>decide if using global spotlight lib/common settings instead of write conditions for every viewtype</description>
 				
+				<include content="Global_Layout_Spotlight">
+					<param name="spotlight_artwork_visible_right" value="!Skin.HasSetting(View503_fanart_left) + Control.IsVisible(503)" />	
+					<param name="spotlight_artwork_visible_left" value="Skin.HasSetting(View503_fanart_left) + Control.IsVisible(503)" />	
+					<param name="info_visible_left" value="!Skin.HasSetting(View503_fanart_left)" />
+					<param name="info_visible_right" value="Skin.HasSetting(View503_fanart_left)" />
+					<param name="info_plot_hidden" value="Skin.HasSetting(View503_hideplot)" />
+					<param name="metadata_align_left" value="Skin.HasSetting(View503_metadata_align_left)" />
+					<param name="metadata_align_center" value="Skin.HasSetting(View503_metadata_align_center)" />
+					<param name="metadata_align_right" value="Skin.HasSetting(View503_metadata_align_right)" />
+				</include>
+		
+		</control>
 			
-			</include>
-			
-			
-			<control type="group">
+		<control type="group">
 				
-				<control type="fixedlist" id="503">
-					<viewtype label="netflixposter">netflixposter panel</viewtype>
-					<focusposition>1</focusposition>
-					<orientation>horizontal</orientation>
-					<preloaditems>4</preloaditems>
-					<scrolltime tween="quadratic">400</scrolltime>
-					<left>100</left>
-					<right>0</right>
-					<bottom>0</bottom>
-					<height>440</height>
-					
-					<onup condition="Control.IsVisible(19)">19</onup>
-					<onup condition="!Control.IsVisible(19) + Control.IsVisible(8999)">8999</onup>
-					
-					<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
-					
-					<onleft condition="Control.IsVisible(8999)">8999</onleft>
-					<onright condition="Control.IsVisible(60)">60</onright>
-					
-					<itemlayout height="445" width="260" condition="true">
+			<control type="fixedlist" id="503">
+				<viewtype label="netflixposter">netflixposter panel</viewtype>
+				<focusposition>1</focusposition>
+				<orientation>horizontal</orientation>
+				<preloaditems>4</preloaditems>
+				<scrolltime tween="quadratic">400</scrolltime>
+				<left>100</left>
+				<right>0</right>
+				<bottom>0</bottom>
+				<height>445</height>
+				
+				<!-- 
+				
+				include horizontal list offsets
+				include horizontal list nav
+
+				-->
+				
+				<!-- cant use onback to focus menubar - dont like to move to bottom -->
+				
+				
+				<!-- mööp on up supposed play trailer ? -->
+				<onup condition="Control.IsVisible(19)">19</onup> 
+				<onup condition="!Control.IsVisible(19) + Control.IsVisible(8999)">8999</onup>
+				
+				<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
+				
+				<onleft condition="Control.IsVisible(8999)">8999</onleft>
+				
+				
+				<onright condition="Control.IsVisible(60)">60</onright>
+				
+				<!-- ondown - cast ?, movieset items ?, scroll/alphabet bar , an icon button grouplist for such actions needed - onup or ondown ? -->
+				
+				
+				<itemlayout height="445" width="245" condition="!Skin.HasSetting(View_503_DisableTags)">
+					<control type="group">
+						<width>240</width>
+						<height>350</height>
+						<include content="UniversalLayout">
+							<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_nf]" />
+							<param name="artwork" value="poster" />
+							<param name="get_tags" value="true" />
+							<param name="get_tagbgpanel" value="true" />
+							<param name="autoscroll" value="false" />
+							<param name="bordersize_bg" value="6" />
+							<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_nf]" />
+							<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_nf]" />
+							<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_nf]" />
+						</include>
+					</control>
+				</itemlayout>
+				<focusedlayout height="445" width="245" condition="!Skin.HasSetting(View_503_DisableTags)">
+					<include content="SetPropOnFocus_HiddenButton" />
+					<control type="group">
+						<width>240</width>
+						<height>350</height>
+						<description>to avoid relaod skin on disable footer and avoid bottom offset fade out 3rd row of items</description>
+						<include>Animation_Item_Focus</include>
 						<control type="group">
-							<width>240</width>
-							<height>350</height>
 							<include content="UniversalLayout">
-								<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_nf]" />
+								<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_fo]" />
 								<param name="artwork" value="poster" />
 								<param name="get_tags" value="true" />
 								<param name="get_tagbgpanel" value="true" />
-								<param name="autoscroll" value="false" />
-								<param name="bordersize_bg" value="6" />
-								<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_nf]" />
-								<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_nf]" />
-								<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_nf]" />
+								<param name="autoscroll" value="true" />
+								<param name="bordersize_bg" value="4" />
+								<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_fo]" />
+								<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_fo]" />
+								<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_fo]" />
 							</include>
-						</control>
-					</itemlayout>
-					<focusedlayout height="445" width="260" condition="true">
-						<include content="SetPropOnFocus_HiddenButton" />
-						<control type="group">
-							<width>240</width>
-							<height>350</height>
-							<description>to avoid relaod skin on disable footer and avoid bottom offset fade out 3rd row of items</description>
-							<include>Animation_Item_Focus</include>
 							<control type="group">
-								<include content="UniversalLayout">
-									<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_fo]" />
-									<param name="artwork" value="poster" />
-									<param name="get_tags" value="true" />
-									<param name="get_tagbgpanel" value="true" />
-									<param name="autoscroll" value="true" />
-									<param name="bordersize_bg" value="4" />
-									<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_fo]" />
-									<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_fo]" />
-									<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_fo]" />
+								<include condition="![String.StartsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),00) | String.EndsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),one)]" content="FocusOverlay">
+									<param name="diffusedimtext" value="artworkdiffuse/usebganel/poster.png" />
 								</include>
-								<control type="group">
-									<include condition="![String.StartsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),00) | String.EndsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),one)]" content="FocusOverlay">
-										<param name="diffusedimtext" value="artworkdiffuse/usebganel/poster.png" />
-									</include>
-									<include condition="[String.StartsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),00) | String.EndsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),one)]" content="FocusOverlay">
-										<param name="diffusedimtext" value="artworkdiffuse/poster.png" />
-									</include>
-								</control>
+								<include condition="[String.StartsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),00) | String.EndsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),one)]" content="FocusOverlay">
+									<param name="diffusedimtext" value="artworkdiffuse/poster.png" />
+								</include>
 							</control>
 						</control>
-					</focusedlayout>
-					<!-- <itemlayout height="365" width="260" condition="Skin.HasSetting(View_51_DisableTags)">
+					</control>
+				</focusedlayout>
+				<itemlayout height="445" width="270" condition="Skin.HasSetting(View_503_DisableTags)">
+					<control type="group">
+						<width>264</width>
+						<height>385</height>
+						<include content="UniversalLayout">
+							<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_nf]" />
+							<param name="artwork" value="poster" />
+							<param name="get_tags" value="false" />
+							<param name="get_tagbgpanel" value="false" />
+							<param name="autoscroll" value="false" />
+							<param name="bordersize_bg" value="6" />
+							<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_nf]" />
+							<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_nf]" />
+							<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_nf]" />
+							<param name="conditional_artworkdiffuse_themed" value="true" />
+							<param name="conditional_artworkdiffuse_override" value="false" />
+						</include>
+					</control>
+				</itemlayout>
+				<focusedlayout height="445" width="270" condition="Skin.HasSetting(View_503_DisableTags)">
+					<include content="SetPropOnFocus_HiddenButton" />
+					<control type="group">
+						<width>264</width>
+						<height>385</height>
+						<include>Animation_Item_Focus</include>
 						<control type="group">
-							<width>240</width>
-							<height>350</height>
 							<include content="UniversalLayout">
-								<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_nf]" />
+								<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_fo]" />
 								<param name="artwork" value="poster" />
 								<param name="get_tags" value="false" />
 								<param name="get_tagbgpanel" value="false" />
-								<param name="autoscroll" value="false" />
-								<param name="bordersize_bg" value="6" />
-								<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_nf]" />
-								<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_nf]" />
-								<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_nf]" />
+								<param name="autoscroll" value="true" />
+								<param name="bordersize_bg" value="4" />
+								<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_fo]" />
+								<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_fo]" />
+								<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_fo]" />
 								<param name="conditional_artworkdiffuse_themed" value="true" />
 								<param name="conditional_artworkdiffuse_override" value="false" />
 							</include>
-						</control>
-					</itemlayout>
-					<focusedlayout height="365" width="260" condition="Skin.HasSetting(View_51_DisableTags)">
-						<include content="SetPropOnFocus_HiddenButton" />
-						<control type="group">
-							<width>240</width>
-							<height>350</height>
-							<include>Animation_Item_Focus</include>
 							<control type="group">
-								<include content="UniversalLayout">
-									<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_fo]" />
-									<param name="artwork" value="poster" />
-									<param name="get_tags" value="false" />
-									<param name="get_tagbgpanel" value="false" />
-									<param name="autoscroll" value="true" />
-									<param name="bordersize_bg" value="4" />
-									<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_fo]" />
-									<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_fo]" />
-									<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_fo]" />
-									<param name="conditional_artworkdiffuse_themed" value="true" />
-									<param name="conditional_artworkdiffuse_override" value="false" />
+								<include content="FocusOverlay">
+									<param name="diffusedimtext" value="artworkdiffuse/poster.png" />
 								</include>
-								<control type="group">
-									<include content="FocusOverlay">
-										<param name="diffusedimtext" value="artworkdiffuse/poster.png" />
-									</include>
-								</control>
 							</control>
 						</control>
-					</focusedlayout> -->
+					</control>
+				</focusedlayout>
+			</control>
+		</control>
+		
+		
+		<!-- unhappy but maybe needed and practcable for people without a menu button ?? -->
+		<control type="grouplist" id="$PARAM[id]01">
+			<visible>false</visible>
+			
+			<!-- <animation effect="fade" start="100" end="0" time="350" easing="inout" reversible="false" condition="Container.OnNext | Container.OnPrevious)">conditional</animation> -->
+			<!-- just if align left <left>110</left> -->
+			
+			<description>maybe move to - 100 and slide up easing inout when hit ondown</description>
+			<align>center</align>
+			<bottom>470</bottom>
+			<height>70</height>
+			<orientation>horizontal</orientation>
+			<itemgap>50</itemgap>
+				
+				<control type="radiobutton" id="$PARAM[id]02">
+					<include content="HUB_ContainerButtons">
+						<description>Window.Property($PARAM[id]_sortorder)</description>
+						<param name="texture" value="defaultmusicvideotitle.png" />
+					</include>
+				</control>
+				<control type="radiobutton" id="$PARAM[id]03">
+					<include content="HUB_ContainerButtons">
+						<param name="texture" value="defaultyear.png" />
+					</include>
+				</control>
+				<control type="radiobutton" id="04">
+					<include content="HUB_ContainerButtons">
+						<param name="texture" value="defaultaddoninfoprovider.png" />
+					</include>
+				</control>
+				<control type="radiobutton" id="05">
+					<include content="HUB_ContainerButtons">
+						<param name="texture" value="defaultmusicplaylists.png" />
+					</include>
 				</control>
 		</control>
-		</control>
+		
 	</include>
 </includes>

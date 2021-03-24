@@ -475,7 +475,9 @@ ID 	Type 					Description
 	</include>
 	
 	
-	
+	<!-- ERROR if changed to default menu control is premenu 
+	consider removed params has_premenu, has_no_premenu
+	-->
 	<!-- global Window.Is(media) , My[foo]Nav.xml -->
 	<include name="menucontrol_global">
 		<param name="menucontrol_id" default="9000" />
@@ -923,14 +925,17 @@ msgstr "Video-Wiedergabelisten"
 			<control type="radiobutton" id="4009">
 				<include>Menucontrol_RadioButton</include>
 				<label>Disable tags</label>
-				<visible>Control.IsVisible(51) | Control.IsVisible(53) | Control.IsVisible(54)</visible>
+				<visible>Control.IsVisible(51) | Control.IsVisible(53) | Control.IsVisible(54) | Control.IsVisible(503)</visible>
 				<onclick condition="Control.IsVisible(51)">Skin.ToggleSetting(View_51_DisableTags)</onclick>
 				<onclick condition="Control.IsVisible(53)">Skin.ToggleSetting(View_53_DisableTags)</onclick>
 				<onclick condition="Control.IsVisible(54)">Skin.ToggleSetting(View_54_DisableTags)</onclick>
+				
+				<onclick condition="Control.IsVisible(503)">Skin.ToggleSetting(View_503_DisableTags)</onclick>
 				<selected>
 				[Control.IsVisible(51) + Skin.HasSetting(View_51_DisableTags) | 
 				Control.IsVisible(53) + Skin.HasSetting(View_53_DisableTags) | 
-				Control.IsVisible(54) + Skin.HasSetting(View_54_DisableTags)]
+				Control.IsVisible(54) + Skin.HasSetting(View_54_DisableTags) | 
+				Control.IsVisible(503) + Skin.HasSetting(View_503_DisableTags)]
 				</selected>
 			</control>
 			
@@ -989,14 +994,16 @@ msgstr "Video-Wiedergabelisten"
 				<description>auto play trailer</description>
 				<include>Menucontrol_RadioButton</include>
 				<label>Auto Play Trailer</label>
-				<visible>Control.IsVisible(50) | Control.IsVisible(56) | Control.IsVisible(502)</visible>
+				<visible>Control.IsVisible(50) | Control.IsVisible(56) | Control.IsVisible(502) | Control.IsVisible(503)</visible>
 				<onclick condition="Control.IsVisible(50)">Skin.ToggleSetting(View_50_AutoPlayTrailer)</onclick>
 				<onclick condition="Control.IsVisible(56)">Skin.ToggleSetting(View_56_AutoPlayTrailer)</onclick>
 				<onclick condition="Control.IsVisible(502)">Skin.ToggleSetting(View_502_AutoPlayTrailer)</onclick>
+				<onclick condition="Control.IsVisible(503)">Skin.ToggleSetting(View_503_AutoPlayTrailer)</onclick>
 				<selected>
 				[Control.IsVisible(50) + Skin.HasSetting(View_50_AutoPlayTrailer) | 
                 Control.IsVisible(56) + Skin.HasSetting(View_56_AutoPlayTrailer) | 
-				Control.IsVisible(502) + Skin.HasSetting(View_502_AutoPlayTrailer)]
+				Control.IsVisible(502) + Skin.HasSetting(View_502_AutoPlayTrailer) | 
+				Control.IsVisible(503) + Skin.HasSetting(View_503_AutoPlayTrailer)]
 				</selected>
 			</control>
 			
@@ -1195,7 +1202,41 @@ msgstr "Video-Wiedergabelisten"
 				<selected>Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_CircleArt)</selected>
 			</control>
 			
+			<control type="radiobutton" id="4030">
+				<include>Menucontrol_RadioButton</include>
+				<label>Switch Artwotk and Info Position</label>
+				<visible>Control.IsVisible(503)</visible>
+				<onclick condition="Control.IsVisible(503)">Skin.ToggleSetting(View503_fanart_left)</onclick>
+				
+				<!-- 
+				also need set default bool on init load, skinupdate -->
+				
+				<onclick condition="Control.IsVisible(503) + [Skin.HasSetting(View503_metadata_align_left) + Skin.HasSetting(View503_fanart_left)]">Skin.ToggleSetting(View503_fanart_left)</onclick> -->
+				
+				
+				<onclick condition="Control.IsVisible(503)">ReloadSkin()</onclick>
+				
+				<selected>Control.IsVisible(503) + Skin.HasSetting(View503_fanart_left)</selected>
+			</control>
 			
+			<control type="button" id="4032">
+				<include>Menucontrol_RadioButton</include>
+				<label>Metadata Alignment</label>
+				<visible>Control.IsVisible(503)</visible>
+				
+				<onclick condition="Control.IsVisible(503)">Skin.SelectBool(31209, 31210|View503_metadata_align_left, 31211|View503_metadata_align_center, 31212|View503_metadata_align_right)</onclick>
+				<onclick condition="Control.IsVisible(503)">ReloadSkin()</onclick>
+			</control>
+			
+			<control type="radiobutton" id="4035">
+				<include>Menucontrol_RadioButton</include>
+				<label>Hide Plot</label>
+				<visible>Control.IsVisible(503)</visible>
+				<onclick condition="Control.IsVisible(503)">Skin.ToggleSetting(View503_hideplot)</onclick>
+				<selected>Control.IsVisible(503) + Skin.HasSetting(View503_hideplot)</selected>
+			</control>
+		
+		
 			<control type="radiobutton" id="4041">
 				<include>Menucontrol_RadioButton</include>
 				<label>Show Plot right</label>
