@@ -5,11 +5,12 @@
 	
 		503/504- overrdie default focus, use fixedframe
 		503/504- behaviour of spotlight icon bar , curr disabled, and unadjusted
+		503/504- show widget header (left,center,right)
 		
 		504 - multirow, single row
 	 -->
 	
-	<include name="503_test">
+	<include name="spotlight_layout_library">
 	
 		<control type="group">
 			<visible>Control.IsVisible(503)</visible>
@@ -41,24 +42,7 @@
 		-->
 		</control>
 		
-		<!-- temp solution is -->
 		
-		<control type="group">
-			
-			<visible>Control.IsVisible(504)</visible>
-				<description>decide if using global spotlight lib/common settings instead of write conditions for every viewtype - so use that gloably by make vis for correspondiong ids </description>
-				
-				<include content="spotlight_layout">
-					<param name="spotlight_artwork_visible_right" value="!Skin.HasSetting(View504_fanart_left) + Control.IsVisible(504)" />	
-					<param name="spotlight_artwork_visible_left" value="Skin.HasSetting(View504_fanart_left) + Control.IsVisible(504)" />	
-					<param name="info_visible_left" value="!Skin.HasSetting(View504_fanart_left)" />
-					<param name="info_visible_right" value="Skin.HasSetting(View504_fanart_left)" />
-					<param name="info_plot_hidden" value="Skin.HasSetting(View504_hideplot)" />
-					<param name="metadata_align_left" value="Skin.HasSetting(View504_metadata_align_left)" />
-					<param name="metadata_align_center" value="Skin.HasSetting(View504_metadata_align_center)" />
-					<param name="metadata_align_right" value="Skin.HasSetting(View504_metadata_align_right)" />
-				</include>	
-		</control>
 		
 		
 		<control type="group">
@@ -99,24 +83,26 @@
 				<!-- ondown - cast ?, movieset items ?, scroll/alphabet bar , an icon button grouplist for such actions needed - onup or ondown ? -->
 				
 				
-				<itemlayout height="445" width="245" condition="!Skin.HasSetting(View_503_DisableTags)">
+				<itemlayout height="445" width="245">
 					<control type="group">
 						<width>240</width>
 						<height>350</height>
 						<include content="UniversalLayout">
 							<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_nf]" />
 							<param name="artwork" value="poster" />
-							<param name="get_tags" value="true" />
-							<param name="get_tagbgpanel" value="true" />
+							<param name="get_tags" value="!Skin.HasSetting(View_503_DisableTags)" />
+							<param name="get_tagbgpanel" value="!Skin.HasSetting(View_503_DisableTags)" />
 							<param name="autoscroll" value="false" />
 							<param name="bordersize_bg" value="6" />
 							<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_nf]" />
 							<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_secondary]" />
 							<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_secondary]" />
+							<param name="conditional_artworkdiffuse_themed" value="!Skin.HasTheme(Roundedge) | Skin.HasSetting(View_503_DisableTags)" />
+							<param name="conditional_artworkdiffuse_override" value="Skin.HasTheme(Roundedge) + !Skin.HasSetting(View_503_DisableTags)" />
 						</include>
 					</control>
 				</itemlayout>
-				<focusedlayout height="445" width="245" condition="!Skin.HasSetting(View_503_DisableTags)">
+				<focusedlayout height="445" width="245">
 					<include content="SetPropOnFocus_HiddenButton" />
 					<control type="group">
 						<width>240</width>
@@ -127,65 +113,24 @@
 							<include content="UniversalLayout">
 								<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_fo]" />
 								<param name="artwork" value="poster" />
-								<param name="get_tags" value="true" />
-								<param name="get_tagbgpanel" value="true" />
+								<param name="get_tags" value="!Skin.HasSetting(View_503_DisableTags)" />
+								<param name="get_tagbgpanel" value="!Skin.HasSetting(View_503_DisableTags)" />
 								<param name="autoscroll" value="true" />
 								<param name="bordersize_bg" value="4" />
 								<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_fo]" />
 								<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_background_layer1]" />
 								<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_background_layer1]" />
+								<param name="conditional_artworkdiffuse_themed" value="!Skin.HasTheme(Roundedge) | Skin.HasSetting(View_503_DisableTags)" />
+								<param name="conditional_artworkdiffuse_override" value="Skin.HasTheme(Roundedge) + !Skin.HasSetting(View_503_DisableTags)" />
 							</include>
 							<control type="group">
-								<include condition="![String.StartsWith(Skin.String(color_spotlightlib_itemframe_fo),00) | String.EndsWith(Skin.String(color_spotlightlib_itemframe_fo),one)]" content="FocusOverlay">
+								<visible>!Skin.HasSetting(View_503_DisableTags)</visible>
+								<include content="FocusOverlay">
 									<param name="diffusedimtext" value="artworkdiffuse/usebganel/poster.png" />
 								</include>
-								<include condition="[String.StartsWith(Skin.String(color_spotlightlib_itemframe_fo),00) | String.EndsWith(Skin.String(color_spotlightlib_itemframe_fo),one)]" content="FocusOverlay">
-									<param name="diffusedimtext" value="artworkdiffuse/poster.png" />
-								</include>
 							</control>
-						</control>
-					</control>
-				</focusedlayout>
-				<itemlayout height="445" width="270" condition="Skin.HasSetting(View_503_DisableTags)">
-					<control type="group">
-						<width>264</width>
-						<height>385</height>
-						<include content="UniversalLayout">
-							<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_nf]" />
-							<param name="artwork" value="poster" />
-							<param name="get_tags" value="false" />
-							<param name="get_tagbgpanel" value="false" />
-							<param name="autoscroll" value="false" />
-							<param name="bordersize_bg" value="6" />
-							<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_nf]" />
-							<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_secondary]" />
-							<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_secondary]" />
-							<param name="conditional_artworkdiffuse_themed" value="true" />
-							<param name="conditional_artworkdiffuse_override" value="false" />
-						</include>
-					</control>
-				</itemlayout>
-				<focusedlayout height="445" width="270" condition="Skin.HasSetting(View_503_DisableTags)">
-					<include content="SetPropOnFocus_HiddenButton" />
-					<control type="group">
-						<width>264</width>
-						<height>385</height>
-						<include>Animation_Item_Focus</include>
-						<control type="group">
-							<include content="UniversalLayout">
-								<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_fo]" />
-								<param name="artwork" value="poster" />
-								<param name="get_tags" value="false" />
-								<param name="get_tagbgpanel" value="false" />
-								<param name="autoscroll" value="true" />
-								<param name="bordersize_bg" value="4" />
-								<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_fo]" />
-								<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_background_layer1]" />
-								<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_background_layer1]" />
-								<param name="conditional_artworkdiffuse_themed" value="true" />
-								<param name="conditional_artworkdiffuse_override" value="false" />
-							</include>
 							<control type="group">
+								<visible>Skin.HasSetting(View_503_DisableTags)</visible>
 								<include content="FocusOverlay">
 									<param name="diffusedimtext" value="artworkdiffuse/poster.png" />
 								</include>
@@ -195,8 +140,31 @@
 				</focusedlayout>
 			</control>
 		</control>
+		
+		
+		
+		<!-- temp solution is -->
+		
+		<control type="group">
+			
+			<visible>Control.IsVisible(504)</visible>
+				<description>decide if using global spotlight lib/common settings instead of write conditions for every viewtype - so use that gloably by make vis for correspondiong ids </description>
+				
+				<include content="spotlight_layout">
+					<param name="spotlight_artwork_visible_right" value="!Skin.HasSetting(View504_fanart_left) + Control.IsVisible(504)" />	
+					<param name="spotlight_artwork_visible_left" value="Skin.HasSetting(View504_fanart_left) + Control.IsVisible(504)" />	
+					<param name="info_visible_left" value="!Skin.HasSetting(View504_fanart_left)" />
+					<param name="info_visible_right" value="Skin.HasSetting(View504_fanart_left)" />
+					<param name="info_plot_hidden" value="Skin.HasSetting(View504_hideplot)" />
+					<param name="metadata_align_left" value="Skin.HasSetting(View504_metadata_align_left)" />
+					<param name="metadata_align_center" value="Skin.HasSetting(View504_metadata_align_center)" />
+					<param name="metadata_align_right" value="Skin.HasSetting(View504_metadata_align_right)" />
+				</include>	
+		</control>
 		<control type="group">
 			<visible>Control.IsVisible(504)</visible>
+				
+				
 				
 			<control type="panel" id="504">
 				<description>curr no include and relaod usage, just for testing later fixedlist vs panel</description>
@@ -205,34 +173,17 @@
 				<focusposition>0</focusposition>
 				
 				
-				<!-- default -->
-				<orientation>horizontal</orientation>
-				
-				
-													<!-- multi -->
-													<orientation>vertical</orientation>
-				
-				
-				
-				
+				<include condition="Skin.HasSetting(View504_multirow)" content="orientation"><param name="orientation" value="vertical" /></include>
+				<include condition="!Skin.HasSetting(View504_multirow)" content="orientation"><param name="orientation" value="horizontal" /></include>
 				
 				<preloaditems>4</preloaditems>
 				<scrolltime tween="quadratic">400</scrolltime>
 				<left>100</left>
 				<right>0</right>
 				<bottom>0</bottom>
-				<height>445</height>
-				
-				<!-- 
-				
-				include horizontal list offsets
-				include horizontal list nav
-
-				-->
+				<height>465</height>
 				
 				<!-- cant use onback to focus menubar - dont like to move to bottom -->
-				
-				
 				<!-- mööp on up supposed play trailer ? -->
 				<onup condition="Control.IsVisible(19)">19</onup> 
 				<onup condition="!Control.IsVisible(19) + Control.IsVisible(8999)">8999</onup>
@@ -246,103 +197,63 @@
 				
 				<!-- ondown - cast ?, movieset items ?, scroll/alphabet bar , an icon button grouplist for such actions needed - onup or ondown ? -->
 				
-				
-				<itemlayout height="450" width="530" condition="!Skin.HasSetting(View_504_DisableTags) + !Skin.HasSetting(View504_multirow)">
+				<!-- 4 items -->
+				<itemlayout height="450" width="460" condition="!Skin.HasSetting(View504_multirow)">
 					<control type="group">
-						<width>525</width>
-						<height>325</height>
+						<width>454</width>
+						<height>267</height>
+						<top>60</top>
 						<include content="UniversalLayout">
 							<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_nf]" />
 							<param name="artwork" value="landscape" />
-							<param name="get_tags" value="true" />
-							<param name="get_tagbgpanel" value="true" />
+							<param name="get_tags" value="!Skin.HasSetting(View_504_DisableTags)" />
+							<param name="get_tagbgpanel" value="!Skin.HasSetting(View_504_DisableTags)" />
 							<param name="autoscroll" value="false" />
 							<param name="bordersize_bg" value="6" />
 							<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_nf]" />
 							<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_secondary]" />
 							<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_secondary]" />
 							<param name="get_landscapelogo" value="![$EXP[IsEpisode]]" />
+							<param name="conditional_artworkdiffuse_themed" value="!Skin.HasTheme(Roundedge) | Skin.HasSetting(View_504_DisableTags)" />
+							<param name="conditional_artworkdiffuse_override" value="Skin.HasTheme(Roundedge) + !Skin.HasSetting(View_504_DisableTags)" />
 						</include>
 					</control>
 				</itemlayout>
-				<focusedlayout height="450" width="530" condition="!Skin.HasSetting(View_504_DisableTags) + !Skin.HasSetting(View504_multirow)">
+				<focusedlayout height="450" width="470" condition="!Skin.HasSetting(View504_multirow)">
 					<include content="SetPropOnFocus_HiddenButton" />
 					<control type="group">
-						<width>525</width>
-						<height>325</height>
+						<width>454</width>
+						<height>267</height>
+						<top>60</top>
 						<description>to avoid relaod skin on disable footer and avoid bottom offset fade out 3rd row of items</description>
-						<include>Animation_Item_Focus</include>
+						<!-- <include>Animation_Item_Focus</include> -->
 						<control type="group">
+						<animation type="Focus" reversible="false">
+							<effect type="zoom" end="103,103" time="200" tween="sine" easing="out" center="auto" />
+							<effect type="zoom" end="99,99" time="150" tween="sine" delay="200" easing="out" center="auto" />
+						</animation>
 							<include content="UniversalLayout">
 								<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_fo]" />
 								<param name="artwork" value="landscape" />
-								<param name="get_tags" value="true" />
-								<param name="get_tagbgpanel" value="true" />
+								<param name="get_tags" value="!Skin.HasSetting(View_504_DisableTags)" />
+								<param name="get_tagbgpanel" value="!Skin.HasSetting(View_504_DisableTags)" />
 								<param name="autoscroll" value="true" />
 								<param name="bordersize_bg" value="4" />
 								<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_fo]" />
 								<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_background_layer1]" />
 								<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_background_layer1]" />
 								<param name="get_landscapelogo" value="![$EXP[IsEpisode]]" />
+								<param name="conditional_artworkdiffuse_themed" value="!Skin.HasTheme(Roundedge) | Skin.HasSetting(View_504_DisableTags)" />
+								<param name="conditional_artworkdiffuse_override" value="Skin.HasTheme(Roundedge) + !Skin.HasSetting(View_504_DisableTags)" />
 							</include>
 							<control type="group">
-								<include condition="![String.StartsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),00) | String.EndsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),one)]" content="FocusOverlay">
+								<visible>!Skin.HasSetting(View_504_DisableTags)</visible>
+								<include content="FocusOverlay">
 									<param name="diffusedimtext" value="artworkdiffuse/usebganel/landscape.png" />
 								</include>
-								<include condition="[String.StartsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),00) | String.EndsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),one)]" content="FocusOverlay">
-									<param name="diffusedimtext" value="artworkdiffuse/landscape.png" />
-								</include>
 							</control>
-						</control>
-					</control>
-				</focusedlayout>
-				<itemlayout height="450" width="600" condition="Skin.HasSetting(View_504_DisableTags) + !Skin.HasSetting(View504_multirow)">
-					<control type="group">
-						<width>595</width>
-						<height>350</height>
-						<bottom>50</bottom>
-						
-						<include content="UniversalLayout">
-							<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_nf]" />
-							<param name="artwork" value="landscape" />
-							<param name="get_tags" value="false" />
-							<param name="get_tagbgpanel" value="false" />
-							<param name="autoscroll" value="false" />
-							<param name="bordersize_bg" value="6" />
-							<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_nf]" />
-							<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_secondary]" />
-							<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_secondary]" />
-							<param name="conditional_artworkdiffuse_themed" value="true" />
-							<param name="conditional_artworkdiffuse_override" value="false" />
-							<param name="get_landscapelogo" value="![$EXP[IsEpisode]]" />
-						</include>
-					</control>
-				</itemlayout>
-				<focusedlayout height="450" width="600" condition="Skin.HasSetting(View_504_DisableTags) + !Skin.HasSetting(View504_multirow)">
-					<include content="SetPropOnFocus_HiddenButton" />
-					
-					<control type="group">
-						<width>595</width>
-						<height>350</height>
-						<bottom>50</bottom>
-						
-						<include>Animation_Item_Focus</include>
-						<control type="group">
-							<include content="UniversalLayout">
-								<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_fo]" />
-								<param name="artwork" value="landscape" />
-								<param name="get_tags" value="false" />
-								<param name="get_tagbgpanel" value="false" />
-								<param name="autoscroll" value="true" />
-								<param name="bordersize_bg" value="4" />
-								<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_fo]" />
-								<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_background_layer1]" />
-								<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_background_layer1]" />
-								<param name="conditional_artworkdiffuse_themed" value="true" />
-								<param name="conditional_artworkdiffuse_override" value="false" />
-								<param name="get_landscapelogo" value="![$EXP[IsEpisode]]" />
-							</include>
 							<control type="group">
+								<visible>Skin.HasSetting(View_504_DisableTags)</visible>
 								<include content="FocusOverlay">
 									<param name="diffusedimtext" value="artworkdiffuse/landscape.png" />
 								</include>
@@ -358,18 +269,20 @@
 						<width>440</width>
 						<height>240</height>
 						<include content="UniversalLayout">
-							<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_nf]" />
+							<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_nf]" />
 							<param name="artwork" value="landscape" />
 							<param name="get_tags" value="false" />
 							<param name="get_tagbgpanel" value="false" />
 							<param name="autoscroll" value="false" />
 							<param name="bordersize_bg" value="6" />
-							<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_nf]" />
-							<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_nf]" />
-							<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_nf]" />
+							<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_nf]" />
+							<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_secondary]" />
+							<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_secondary]" />
 							<param name="conditional_artworkdiffuse_themed" value="true" />
 							<param name="conditional_artworkdiffuse_override" value="false" />
 							<param name="get_landscapelogo" value="![$EXP[IsEpisode]]" />
+							<param name="conditional_artworkdiffuse_themed" value="true" />
+							<param name="conditional_artworkdiffuse_override" value="false" />
 						</include>
 					</control>
 				</itemlayout>
@@ -378,18 +291,22 @@
 					<control type="group">
 						<width>440</width>
 						<height>240</height>
-						<include>Animation_Item_Focus</include>
+						<!-- <include>Animation_Item_Focus</include> -->
+						<animation type="Focus" reversible="false">
+							<effect type="zoom" end="103,103" time="200" tween="sine" easing="out" center="auto" />
+							<effect type="zoom" end="99,99" time="150" tween="sine" delay="200" easing="out" center="auto" />
+						</animation>
 						<control type="group">
 							<include content="UniversalLayout">
-								<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_fo]" />
+								<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_fo]" />
 								<param name="artwork" value="landscape" />
 								<param name="get_tags" value="false" />
 								<param name="get_tagbgpanel" value="false" />
 								<param name="autoscroll" value="true" />
 								<param name="bordersize_bg" value="4" />
-								<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_fo]" />
-								<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_fo]" />
-								<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_fo]" />
+								<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_fo]" />
+								<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_background_layer1]" />
+								<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_background_layer1]" />
 								<param name="conditional_artworkdiffuse_themed" value="true" />
 								<param name="conditional_artworkdiffuse_override" value="false" />
 								<param name="get_landscapelogo" value="![$EXP[IsEpisode]]" />
@@ -401,11 +318,11 @@
 							</control>
 						</control>
 					</control>
-				</focusedlayout> -->
+				</focusedlayout>
 			</control>
 		</control>
-		<!-- unhappy but maybe needed and practcable for people without a menu button ?? -->
-		<control type="grouplist" id="01">
+		<!-- unhappy but maybe needed and practicable for people without a menu button ?? -->
+		<control type="grouplist" id="7777">
 			<visible>false</visible>
 			
 			<animation effect="fade" start="100" end="0" time="350" easing="inout" reversible="false" condition="Container.OnNext | Container.OnPrevious">conditional</animation>
@@ -417,22 +334,22 @@
 			<orientation>horizontal</orientation>
 			<itemgap>50</itemgap>
 				
-				<control type="radiobutton" id="02">
+				<control type="radiobutton" id="77772">
 					<include content="HUB_ContainerButtons">
 						<param name="texture" value="defaultmusicvideotitle.png" />
 					</include>
 				</control>
-				<control type="radiobutton" id="03">
+				<control type="radiobutton" id="77773">
 					<include content="HUB_ContainerButtons">
 						<param name="texture" value="defaultyear.png" />
 					</include>
 				</control>
-				<control type="radiobutton" id="04">
+				<control type="radiobutton" id="77774">
 					<include content="HUB_ContainerButtons">
 						<param name="texture" value="defaultaddoninfoprovider.png" />
 					</include>
 				</control>
-				<control type="radiobutton" id="05">
+				<control type="radiobutton" id="77775">
 					<include content="HUB_ContainerButtons">
 						<param name="texture" value="defaultmusicplaylists.png" />
 					</include>
@@ -440,4 +357,8 @@
 		</control>
 		
 	</include>
+	<include name="orientation">
+		<orientation>$PARAM[orientation]</orientation>
+	</include>
+	
 </includes>
