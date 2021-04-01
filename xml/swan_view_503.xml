@@ -14,6 +14,17 @@
 	
 		<control type="group">
 			<visible>Control.IsVisible(503)</visible>
+			
+			<animation effect="slide" start="0,0" end="0,-100" time="200" easing="inout" reversible="true" condition="controlgroup(7777).hasfocus()">conditional</animation>
+			
+			<!-- 
+			kepp artwotk at pos, just slide metadata if focus on cast etc
+			
+			<animation effect="slide" start="0,0" end="0,-800" time="200" easing="inout" reversible="true" condition="!control.hasfocus(503)">conditional</animation>
+			-->
+			
+			
+			
 				<description>decide if using global spotlight lib/common settings instead of write conditions for every viewtype - so use that gloably by make vis for correspondiong ids </description>
 				
 				<include content="spotlight_layout">
@@ -26,7 +37,41 @@
 					<param name="metadata_align_center" value="Skin.HasSetting(View503_metadata_align_center)" />
 					<param name="metadata_align_right" value="Skin.HasSetting(View503_metadata_align_right)" />
 				</include>
-		
+				
+				
+				<!-- genre at other place ? 
+				
+				own panel color hardcoded - later use 1a ~ 10% alpha - color_spotlightlib_main - need var
+				own footer item(icon/label) color? media/rating - flag
+				
+				<param name="bottom" value="460" /> match genre line 
+				
+				-->
+				<include content="footer">
+					<param name="view_id" value="503" />
+					<param name="bottom" value="460" />
+					<param name="use_bgpanel" value="true" />
+					<param name="footer_bg_color" value="1affffff" />
+					
+					<param name="footer_mediaflag_offsetleft" value="100" />
+					<param name="footer_mediaflag_align" value="left" />
+					<param name="footer_mediaflag_width" value="50%" />
+					<param name="footer_rating_offsetright" value="70" />
+					<param name="footer_rating_align" value="right" />
+				</include>
+				
+				<control type="label">
+					<description>item heading</description>
+					<label>$INFO[Container.Content]</label>
+					<left>110</left>
+					<bottom>400</bottom>
+					<height>100</height>
+					<textcolor>$VAR[color_spotlightlib_main]</textcolor>
+					<align>left</align>
+					<font>Montserrat_ExtraBold_40</font>
+					<aligny>top</aligny>
+				</control>
+				
 		
 		<!-- goal is 
 				<include content="spotlight_layout">
@@ -58,7 +103,8 @@
 				<right>0</right>
 				<bottom>0</bottom>
 				<height>445</height>
-				
+				<animation effect="slide" start="0,0" end="0,-100" time="200" easing="inout" reversible="true" condition="controlgroup(7777).hasfocus()">conditional</animation>
+					
 				<!-- 
 				
 				include horizontal list offsets
@@ -70,9 +116,13 @@
 				
 				
 				<!-- mööp on up supposed play trailer ? -->
-				<onup condition="Control.IsVisible(19)">19</onup> 
-				<onup condition="!Control.IsVisible(19) + Control.IsVisible(8999)">8999</onup>
 				
+				<onup condition="!String.IsEmpty(Window(home).Property(listitemtrailer))">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onup>
+				<onup condition="!String.IsEmpty(Window(home).Property(listitemtrailer))">SetProperty(TrailerIsPlaying,true,home)</onup>
+				<ondown condition="!String.IsEmpty(Window(home).Property(TrailerIsPlaying))">PlayerControl(stop)</ondown>
+				
+				<!-- <onup condition="Control.IsVisible(19)">19</onup>  -->
+				<!-- <onup condition="!Control.IsVisible(19) + Control.IsVisible(8999)">8999</onup> -->
 				<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
 				
 				<onleft condition="Control.IsVisible(8999)">8999</onleft>
@@ -81,8 +131,8 @@
 				<onright condition="Control.IsVisible(60)">60</onright>
 				
 				<!-- ondown - cast ?, movieset items ?, scroll/alphabet bar , an icon button grouplist for such actions needed - onup or ondown ? -->
-				
-				
+				<!-- <ondown>89898989</ondown> -->
+				<!-- <ondown>7777</ondown> -->
 				<itemlayout height="445" width="245">
 					<control type="group">
 						<width>240</width>
@@ -139,6 +189,151 @@
 					</control>
 				</focusedlayout>
 			</control>
+		
+		
+		
+			<control type="grouplist" id="89898989">
+				<description>Item Containers</description>
+				<animation effect="slide" end="0,-910" time="1000" tween="cubic" reversible="false">focus</animation>
+				<animation effect="fade" start="100" end="0" time="250">focus</animation>
+				<visible>false</visible>
+				<top>1090</top>
+				<left>120</left>
+				<height>880</height>
+				<scrolltime tween="quadratic">400</scrolltime>
+				<onup>SetFocus(8006)</onup>
+				<ondown>8001</ondown>
+				<onleft>8001</onleft>
+				<orientation>vertical</orientation>
+				<itemgap>-50</itemgap>
+				<usecontrolcoords>true</usecontrolcoords>
+				
+				<include content="spacer_h">
+					<param name="id" value="8600" />
+					<param name="gap" value="-20" />
+				</include>
+				
+				<include content="Universal_ContainerHeader">
+					<param name="groupid" value="8501" />
+					<param name="id" value="8601" />
+					<param name="label" value="$INFO[ListItem.Set,&quot; , &quot;]" />
+					<visible>Control.IsVisible(8601)</visible>
+				</include>
+				<include condition="Skin.HasSetting(VideoInfo_Content_SetItems) + !String.IsEmpty(ListItem.SetId)" content="Universal_Container">
+					<param name="id" value="8601" />
+					<param name="visible" value="Integer.IsGreater(Container(8601).NumItems,0) | Container(8601).IsUpdating" />
+					<param name="type_height" value="380" />
+					<param name="tags_visible" value="true" />
+					<param name="layout_height" value="380" />
+					<param name="layout_width" value="210" />
+					<param name="itemwidth" value="207" />
+					<param name="itemheight" value="310" />
+					<param name="layout" value="poster" />
+					
+					<include condition="!Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceInfo"/>
+					<include condition="Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceSelect"/>
+					
+					<content sortby="year" target="videos">videodb://movies/sets/$INFO[ListItem.SetId]/?setid=$INFO[ListItem.SetId]</content>
+				</include>
+				<include content="Universal_ContainerHeader">
+					<param name="groupid" value="8502" />
+					<param name="id" value="8602" />
+					<param name="label" value="Nächste Episode" />
+					<visible>Control.IsVisible(8602)</visible>
+				</include>
+				<include condition="!Skin.HasSetting(VideoInfo_Content_NextUp) + [Integer.IsGreater(ListItem.Property(UnwatchedEpisodes),0) + !String.IsEmpty(ListItem.DBID)]" content="Universal_Container">
+					<param name="id" value="8602" />
+					<param name="visible" value="Integer.IsGreater(Container(8602).NumItems,0) | Container(8602).IsUpdating" />
+					<param name="type_height" value="370" />
+					<param name="tags_visible" value="false" />
+					<param name="layout_height" value="360" />
+					<param name="layout_width" value="612" />
+					<param name="itemheight" value="350" />
+					<param name="itemwidth" value="595" />
+					<param name="ls_overlay_visible" value="!String.IsEqual(ListItem.Art(thumb),OverlaySpoiler.png) | [String.IsEqual(ListItem.Art(thumb),OverlaySpoiler.png) + String.IsEmpty(ListItem.Art(tvshow.landscape))]" />
+					<param name="layout" value="landscape" />
+					<param name="is_infowidget" value="!String.IsEqual(ListItem.Plot,$LOCALIZE[20370])" />
+					<param name="diffuse_art_topedges" value="false" />
+					<param name="diffuse_art_alledges" value="true" />
+					<param name="root_conditional_artworkdiffuse_themed" value="true" />
+					<param name="root_conditional_artworkdiffuse_override" value="false" />
+					
+					<content limit="1" sortby="playcount" target="videos">videodb://inprogresstvshows/$INFO[ListItem.DBID]/-1/?tvshowid=$INFO[ListItem.DBID]</content>
+				</include>
+				<include content="Universal_ContainerHeader">
+					<param name="groupid" value="8503" />
+					<param name="id" value="8603" />
+					<param name="label" value="$LOCALIZE[344] $INFO[ListItem.Title,  &quot; , &quot;]" />
+					<visible>Control.IsVisible(8603)</visible>
+				</include>
+				<include content="Universal_Container">
+					<param name="id" value="8603" />
+					<param name="visible" value="Integer.IsGreater(Container(8603).NumItems,0) | Container(8603).IsUpdating" />
+					<param name="type_height" value="380" />
+					<param name="tags_visible" value="true" />
+					<param name="layout_height" value="380" />
+					<param name="layout_width" value="210" />
+					<param name="itemwidth" value="207" />
+					<param name="itemheight" value="310" />
+					<param name="layout" value="poster" />
+					<include>Action_CastMemberSearchForceOption</include>
+					<content>$VAR[EmbuaryCast]</content>
+				</include>
+				<include content="Universal_ContainerHeader">
+					<param name="groupid" value="8505" />
+					<param name="id" value="8605" />
+					<param name="label" value="$LOCALIZE[342] $LOCALIZE[19159] $LOCALIZE[20339] [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$INFO[ListItem.Director, &quot; , &quot;][/COLOR]" />
+					<visible>Control.IsVisible(8605)</visible>
+				</include>
+				<include condition="!Skin.HasSetting(VideoInfo_Content_Director)" content="Universal_Container">
+					<param name="id" value="8605" />
+					<param name="visible" value="Integer.IsGreater(Container(8605).NumItems,0) | Container(8605).IsUpdating" />
+					<param name="type_height" value="380" />
+					<param name="tags_visible" value="true" />
+					<param name="layout_height" value="380" />
+					<param name="layout_width" value="210" />
+					<param name="itemwidth" value="207" />
+					<param name="itemheight" value="310" />
+					<param name="layout" value="poster" />
+					
+					<include condition="!Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceInfo"/>
+					<include condition="Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceSelect"/>
+					
+					<content>
+						<item>
+							<visible>System.HasAddon(resource.images.moviedirectorthumbs)</visible>
+							<label>$INFO[ListItem.Director]</label>
+							<thumb fallback="defaultdirector.png">$INFO[ListItem.Director,resource.images.moviedirectorthumbs/,.png]</thumb>
+						</item>
+					</content>
+					<content target="videos">videodb://movies/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22director%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[ListItem.Director]%22%5D%7D%2C%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
+				</include>
+								
+				<include content="Universal_ContainerHeader">
+					<param name="groupid" value="8510" />
+					<param name="id" value="8610" />
+					<param name="label" value="Similiar [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$INFO[ListItem.Title,  &quot; , &quot;][/COLOR]" />
+					<visible>Control.IsVisible(8610)</visible>
+				</include>
+				<include condition="!Skin.HasSetting(VideoInfo_Content_Similiar) + [!String.IsEmpty(ListItem.DBType) + !String.IsEmpty(ListItem.DBID)]" content="Universal_Container">
+					<param name="id" value="8610" />
+					<param name="visible" value="Integer.IsGreater(Container(8610).NumItems,0) | Container(8610).IsUpdating" />
+					<param name="type_height" value="380" />
+					<param name="tags_visible" value="true" />
+					<param name="layout_height" value="380" />
+					<param name="layout_width" value="210" />
+					<param name="itemwidth" value="207" />
+					<param name="itemheight" value="310" />
+					<param name="layout" value="poster" />
+					
+					<include condition="!Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceInfo"/>
+					<include condition="Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceSelect"/>
+					
+					<content target="videos">plugin://script.embuary.helper/?info=getsimilar&amp;dbid=$INFO[ListItem.DBID]&amp;type=$INFO[ListItem.DBType]</content>
+				</include>
+				
+			</control>
+		
 		</control>
 		
 		
@@ -183,11 +378,24 @@
 				<bottom>0</bottom>
 				<height>465</height>
 				
-				<!-- cant use onback to focus menubar - dont like to move to bottom -->
-				<!-- mööp on up supposed play trailer ? -->
-				<onup condition="Control.IsVisible(19)">19</onup> 
-				<onup condition="!Control.IsVisible(19) + Control.IsVisible(8999)">8999</onup>
+				<!-- 
 				
+				include horizontal list offsets
+				include horizontal list nav
+
+				-->
+				
+				<!-- cant use onback to focus menubar - dont like to move to bottom -->
+				
+				
+				<!-- mööp on up supposed play trailer ? -->
+				
+				<onup condition="!String.IsEmpty(Window(home).Property(listitemtrailer))">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onup>
+				<onup condition="!String.IsEmpty(Window(home).Property(listitemtrailer))">SetProperty(TrailerIsPlaying,true,home)</onup>
+				
+				<!-- <onup condition="Control.IsVisible(19)">19</onup>  -->
+				<!-- <onup condition="!Control.IsVisible(19) + Control.IsVisible(8999)">8999</onup> -->
+				<ondown condition="!String.IsEmpty(Window(home).Property(TrailerIsPlaying))">PlayerControl(stop)</ondown>
 				<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
 				
 				<onleft condition="Control.IsVisible(8999)">8999</onleft>
@@ -196,8 +404,9 @@
 				<onright condition="Control.IsVisible(60)">60</onright>
 				
 				<!-- ondown - cast ?, movieset items ?, scroll/alphabet bar , an icon button grouplist for such actions needed - onup or ondown ? -->
+				<!-- <ondown>89898989</ondown> -->
+				<!-- <ondown>7777</ondown> -->
 				
-				<!-- 4 items -->
 				<itemlayout height="450" width="460" condition="!Skin.HasSetting(View504_multirow)">
 					<control type="group">
 						<width>454</width>
@@ -323,33 +532,61 @@
 		</control>
 		<!-- unhappy but maybe needed and practicable for people without a menu button ?? -->
 		<control type="grouplist" id="7777">
-			<visible>false</visible>
-			
+			<visible>Control.IsVisible(503) | Control.IsVisible(504)</visible>
+					<animation effect="slide" start="0,0" end="0,-100" time="200" easing="inout" reversible="true">Focus</animation>
+					<bottom>-100</bottom>
+					<height>70</height>
+					
+					<!-- <animation effect="fade" start="0,0" end="0,-100" time="200" easing="inout" reversible="true">Focus</animation> -->
+					<bottom>470</bottom>
+					<height>70</height>
+					
+					-->
+					
+					
+					
 			<animation effect="fade" start="100" end="0" time="350" easing="inout" reversible="false" condition="Container.OnNext | Container.OnPrevious">conditional</animation>
 			<!-- just if align left <left>110</left> -->
 			<description>maybe animation - 100h slide up easing inout when hit ondown</description>
 			<align>center</align>
-			<bottom>470</bottom>
-			<height>70</height>
+			
 			<orientation>horizontal</orientation>
 			<itemgap>50</itemgap>
-				
+				<onup>SetFocus(50)</onup>
+
+			
 				<control type="radiobutton" id="77772">
 					<include content="HUB_ContainerButtons">
+						<description>trailer</description>
 						<param name="texture" value="defaultmusicvideotitle.png" />
 					</include>
 				</control>
 				<control type="radiobutton" id="77773">
+					<description>cast</description>
 					<include content="HUB_ContainerButtons">
 						<param name="texture" value="defaultyear.png" />
 					</include>
 				</control>
 				<control type="radiobutton" id="77774">
+					<description>info</description>
 					<include content="HUB_ContainerButtons">
 						<param name="texture" value="defaultaddoninfoprovider.png" />
 					</include>
 				</control>
 				<control type="radiobutton" id="77775">
+					<description>sets</description>
+					<include content="HUB_ContainerButtons">
+						<param name="texture" value="defaultmusicplaylists.png" />
+					</include>
+				</control>
+				<control type="radiobutton" id="77775">
+					<description>similiar</description>
+					<include content="HUB_ContainerButtons">
+						<param name="texture" value="defaultmusicplaylists.png" />
+					</include>
+				</control>
+				<control type="radiobutton" id="77775">
+					<description>items from same director</description>
 					<include content="HUB_ContainerButtons">
 						<param name="texture" value="defaultmusicplaylists.png" />
 					</include>

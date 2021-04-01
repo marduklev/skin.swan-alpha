@@ -103,27 +103,49 @@
 		<onright condition="Control.IsVisible(60)">60</onright>
 	</include>
 	
+	
 	<include name="footer">
+		<param name="use_bgpanel" default="true" />
+		<param name="footer_bg_color" default="$VAR[color_footer_backgroundpanel]" />
+		<param name="bottom" default="0" />
+		
+		<param name="footer_mediaflag_offsetleft" default="50" />
+		<param name="footer_mediaflag_offsetleft" default="left" />
+		<param name="footer_mediaflag_width" default="70%" />
+		
+		
+		<!-- <param name="footer_rating_offsetleft" default="0" /> use media flag width, maybe spacer needed  -->
+		<param name="footer_rating_offsetright" default="100" />
+		<param name="footer_rating_align" default="right" />
+		<definition>
 		<control type="group">
+			
 			<animation effect="slide" start="0,90" end="0,0" time="350" tween="quadratic" easing="out" delay="100">VisibleChange</animation>
 			<visible>Control.IsVisible($PARAM[view_id]) + !Skin.HasSetting(View_$PARAM[view_id]_DisableFooter)</visible>
-			<bottom>0</bottom>
+			<bottom>$PARAM[bottom]</bottom>
 			<height>90</height>
 			<control description="bg panel" type="image">
-				<texture colordiffuse="$VAR[color_footer_backgroundpanel]">colors/white.png</texture>
+				<visible>$PARAM[use_bgpanel]</visible>
+				<texture colordiffuse="$PARAM[footer_bg_color]">colors/white.png</texture>
 			</control>
 			<include content="MediaFlagGroup_Footer">
-				<param name="offset_left" value="$PARAM[offset_leftpanel]" />
-				<param name="align" value="$PARAM[media_flagalign]" />
-				<param name="width" value="$PARAM[media_flagwidth]" />
+				<param name="mediaflag_offset_left" value="$PARAM[footer_mediaflag_offsetleft]" />
+				<param name="mediaflag_align" value="$PARAM[footer_mediaflag_align]" />
+				<param name="mediaflag_width" value="$PARAM[footer_mediaflag_width]" />
 			</include>
 			<include content="Ratings_Footer">
-				<param name="offset_left" value="$PARAM[offset_leftpanel]" />
-				<param name="align" value="$PARAM[rating_flagalign]" />
+				<param name="rating_offset_left" value="$PARAM[footer_mediaflag_width]" />
+				<param name="rating_offset_right" value="$PARAM[footer_rating_offsetright]" />
+				<param name="rating_align" value="$PARAM[footer_rating_align]" />
 			</include>
 		</control>
+		</definition>
 	</include>
-
+		<!-- 
+				<param name="rating_offset_right" default="100" />
+				<param name="rating_offset_left" default="0" />
+				<param name="rating_offset_right" default="100" /> 
+		-->
 	<include name="Oninfo_MovieSetInfo">
 		<oninfo condition="String.IsEqual(ListItem.dbtype,set)">ActivateWindow(movieinformation,return)</oninfo>
 	</include>
@@ -1371,7 +1393,6 @@ top-->
 		<definition>
 		<control type="image">
 			<visible>$PARAM[visible]</visible>
-				
 			<fadetime>350</fadetime>
 			<nested />
 			<top>0</top>
@@ -1381,7 +1402,7 @@ top-->
 			<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
 			<animation effect="zoom" start="110" end="130" center="auto" time="12000" tween="cubic" easing="inout" pulse="true" condition="Skin.HasSetting(BackgroundAnimation)">Conditional</animation>
 			<animation effect="slide" start="-10,-10" end="10,10" time="8000" tween="cubic" easing="inout" pulse="true" condition="Skin.HasSetting(BackgroundAnimation)">Conditional</animation>
-			<animation effect="fade" start="100" end="0" delay="200" time="1000" pulse="false" condition="[Player.HasVideo + String.IsEmpty(Window(Home).Property(TrailerIsPlaying))] | [!Skin.HasSetting(home_trailer_showwidget) + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))]">Conditional</animation>
+			<animation effect="fade" start="100" end="0" delay="200" time="800" pulse="false" condition="[Player.HasVideo + String.IsEmpty(Window(Home).Property(TrailerIsPlaying))] | [!Skin.HasSetting(home_trailer_showwidget) + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))]">Conditional</animation>
 		</control>
 		</definition>
 	</include>

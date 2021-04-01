@@ -54,6 +54,7 @@
 		<param name="metadata_align_center" default="String.IsEqual(Skin.String(spotlight_home_metadata_align),center)" />
 		<param name="metadata_align_right" default="String.IsEqual(Skin.String(spotlight_home_metadata_align),right)" />
 		<definition>
+		
 		<control type="group">
 			<description>S P O T L I G H T  A R T W O R K</description>
 			<include content="Fanart_Diffused">
@@ -80,104 +81,72 @@
 			</include>
 		</control>
 		
-		<include condition="$PARAM[info_visible_left]" content="spotlight_trailer_overlay">
-			<param name="trailer_visible_right" value="true" />
-			<param name="trailer_visible_left" value="false" />
-			<param name="diffusetexture" value="diffuse/spotlighttraileroverlayleft.png" />
-		</include>
-		<include condition="$PARAM[info_visible_right]" content="spotlight_trailer_overlay">
-			<param name="trailer_visible_right" value="false" />
-			<param name="trailer_visible_left" value="true" />
-			<param name="diffusetexture" value="diffuse/spotlighttraileroverlayright.png" />
-		</include>
+		<control type="group">
+			<description>animation effect="slide" start="0,0" end="0,-800" time="600" easing="inout" reversible="true" condition="Control.IsVisible(503) + !Control.hasfocus(503)</description>
 		
-		<control type="label">
-			<description>JUST HOME and Maybe delete WIP MAYBE HOME MENU LABELS CENTERED</description>
-			<visible>Window.IsVisible(home) + [Control.HasFocus(9000) | Control.HasFocus(8888)]</visible>
-			<left>50%</left>
-			<label>$INFO[Container(9000).ListItem.Label]</label>
-			<textcolor>red</textcolor>
-			<align>center</align>
-			<width>400</width>
-			<font>font_SpotlightTitle_Large</font>
-		</control>
-	
-	
-	
-		<control type="grouplist">
-			<description>S P O T L I G H T  M E T A D A T A 750w</description>
-			<animation effect="fade" start="100" end="0" time="250" condition="Window.IsActive(shutdownmenu)">conditional</animation>
-			<visible>String.IsEmpty(Window(Home).Property(menucontrol_active))</visible>
-			
-			<width>39%</width>
-			<height>650</height>
-			<top>10</top>
-			<bottom>10</bottom>
-			<itemgap>10</itemgap>
-			
-			
-				<include content="pos_left" condition="$PARAM[info_visible_left]">
-					<param name="left" value="110" />
-				</include>
-				<include content="pos_right" condition="$PARAM[info_visible_right]">
-					<param name="right" value="60" />
-				</include>
-				
-				<include content="spacer_h">
-					<param name="gap" value="150" />
-					<param name="visible" value="$PARAM[info_plot_hidden]" />
-				</include>
-			
-			<control type="image" id="1601"> <!-- PARAM CLEARLOGO CTRL ID -->
-				<description>choose align for aspectratio respecting skinstring</description>
-				<description>clearlogo, didnt need respect alignment setting ?</description>
-				<visible>!String.IsEmpty(Control.GetLabel(1601))</visible>
-				<height>245</height>
-				<aspectratio align="center" aligny="bottom">keep</aspectratio>
-				<texture background="true">$VAR[ListItemClearLogo]</texture>
-			</control>
-			
-			<control type="label">
-				<description>Fallback Label - make expression home_menucontrol_focused as 3 id s</description>
-				<visible>![Control.HasFocus(9000) | Control.HasFocus(8888)] + String.IsEmpty(Control.GetLabel(1601))</visible>
-				<height>245</height>
-				<wrapmultiline>true</wrapmultiline>
-				<font>font_titlefallbackspotlight</font>
-				
-				<include content="pos_alignx" condition="!$PARAM[info_plot_hidden] + $PARAM[metadata_align_left]" />
-				<include content="pos_alignx" condition="$PARAM[info_plot_hidden] | $PARAM[metadata_align_center]">
-					<param name="align" value="center" />
-				</include>
-				<include content="pos_alignx" condition="!$PARAM[info_plot_hidden] + $PARAM[metadata_align_right]">
-					<param name="align" value="right" />
-				</include>
-				<include content="pos_right" condition="!$PARAM[info_plot_hidden] + $PARAM[metadata_align_right]">
-					<param name="right" value="30" />
-				</include>
-				<aligny>center</aligny>
-				<textcolor>$VAR[color_global_spotlight_accent]</textcolor>
-				<label>$VAR[ClearLogo_FallbackHome]</label>
-			</control>
-			
-			<include content="Meta_Uncommon_Top">
-				<param name="Is_hiddenplot" value="$PARAM[info_plot_hidden]" />
-				<param name="Is_left" value="$PARAM[metadata_align_left]" />
-				<param name="Is_center" value="$PARAM[metadata_align_center]" />
-				<param name="Is_right" value="$PARAM[metadata_align_right]" />
+			<include condition="$PARAM[info_visible_left]" content="spotlight_trailer_overlay">
+				<param name="trailer_visible_right" value="true" />
+				<param name="trailer_visible_left" value="false" />
+				<param name="diffusetexture" value="diffuse/spotlighttraileroverlayleft.png" />
+			</include>
+			<include condition="$PARAM[info_visible_right]" content="spotlight_trailer_overlay">
+				<param name="trailer_visible_right" value="false" />
+				<param name="trailer_visible_left" value="true" />
+				<param name="diffusetexture" value="diffuse/spotlighttraileroverlayright.png" />
 			</include>
 			
+			<control type="label">
+				<description>JUST HOME and Maybe delete WIP MAYBE HOME MENU LABELS CENTERED</description>
+				<visible>Window.IsVisible(home) + [Control.HasFocus(9000) | Control.HasFocus(8888)]</visible>
+				<left>50%</left>
+				<label>$INFO[Container(9000).ListItem.Label]</label>
+				<textcolor>red</textcolor>
+				<align>center</align>
+				<width>400</width>
+				<font>font_SpotlightTitle_Large</font>
+			</control>
+		
+		
+		
 			<control type="grouplist">
-				<visible>String.IsEqual(ListItem.DBTYPE,episode)</visible>
-				<orientation>vertical</orientation>
-				<height>125</height>
-				<fadetime>300</fadetime>
+				<description>S P O T L I G H T  M E T A D A T A 750w</description>
+				<animation effect="fade" start="100" end="0" time="250" condition="Window.IsActive(shutdownmenu)">conditional</animation>
+				<visible>String.IsEmpty(Window(Home).Property(menucontrol_active))</visible>
+				
+				<width>39%</width>
+				<height>650</height>
+				<top>10</top>
+				<bottom>10</bottom>
 				<itemgap>10</itemgap>
-				<include content="pos_right" condition="!$PARAM[info_plot_hidden] + $PARAM[metadata_align_right]">
-					<param name="right" value="40" />
-				</include>
+				
+				
+					<include content="pos_left" condition="$PARAM[info_visible_left]">
+						<param name="left" value="110" />
+					</include>
+					<include content="pos_right" condition="$PARAM[info_visible_right]">
+						<param name="right" value="60" />
+					</include>
+					
+					<include content="spacer_h">
+						<param name="gap" value="150" />
+						<param name="visible" value="$PARAM[info_plot_hidden]" />
+					</include>
+				
+				<control type="image" id="1601"> <!-- PARAM CLEARLOGO CTRL ID -->
+					<description>choose align for aspectratio respecting skinstring</description>
+					<description>clearlogo, didnt need respect alignment setting ?</description>
+					<visible>!String.IsEmpty(Control.GetLabel(1601))</visible>
+					<height>245</height>
+					<aspectratio align="center" aligny="bottom">keep</aspectratio>
+					<texture background="true">$VAR[ListItemClearLogo]</texture>
+				</control>
+				
 				<control type="label">
-					<height>70</height>
-					<font>InfoCommon</font>
+					<description>Fallback Label - make expression home_menucontrol_focused as 3 id s</description>
+					<visible>![Control.HasFocus(9000) | Control.HasFocus(8888)] + String.IsEmpty(Control.GetLabel(1601))</visible>
+					<height>245</height>
+					<wrapmultiline>true</wrapmultiline>
+					<font>font_titlefallbackspotlight</font>
 					
 					<include content="pos_alignx" condition="!$PARAM[info_plot_hidden] + $PARAM[metadata_align_left]" />
 					<include content="pos_alignx" condition="$PARAM[info_plot_hidden] | $PARAM[metadata_align_center]">
@@ -186,35 +155,73 @@
 					<include content="pos_alignx" condition="!$PARAM[info_plot_hidden] + $PARAM[metadata_align_right]">
 						<param name="align" value="right" />
 					</include>
-					
+					<include content="pos_right" condition="!$PARAM[info_plot_hidden] + $PARAM[metadata_align_right]">
+						<param name="right" value="30" />
+					</include>
 					<aligny>center</aligny>
-					<textcolor>$VAR[color_global_spotlight_main]</textcolor>
-					<label>[CAPITALIZE]$INFO[ListItem.Title,[B],[/B]][CR]$INFO[ListItem.Season,$LOCALIZE[36904] ,]$INFO[ListItem.Episode, $LOCALIZE[36906] ,][/CAPITALIZE]</label>
+					<textcolor>$VAR[color_global_spotlight_accent]</textcolor>
+					<label>$VAR[ClearLogo_FallbackHome]</label>
 				</control>
-				<include content="spacer_h" />
+				
+				<include content="Meta_Uncommon_Top">
+					<param name="Is_hiddenplot" value="$PARAM[info_plot_hidden]" />
+					<param name="Is_left" value="$PARAM[metadata_align_left]" />
+					<param name="Is_center" value="$PARAM[metadata_align_center]" />
+					<param name="Is_right" value="$PARAM[metadata_align_right]" />
+				</include>
+				
+				<control type="grouplist">
+					<visible>String.IsEqual(ListItem.DBTYPE,episode)</visible>
+					<orientation>vertical</orientation>
+					<height>125</height>
+					<fadetime>300</fadetime>
+					<itemgap>10</itemgap>
+					<include content="pos_right" condition="!$PARAM[info_plot_hidden] + $PARAM[metadata_align_right]">
+						<param name="right" value="40" />
+					</include>
+					<control type="label">
+						<height>70</height>
+						<font>InfoCommon</font>
+						
+						<include content="pos_alignx" condition="!$PARAM[info_plot_hidden] + $PARAM[metadata_align_left]" />
+						<include content="pos_alignx" condition="$PARAM[info_plot_hidden] | $PARAM[metadata_align_center]">
+							<param name="align" value="center" />
+						</include>
+						<include content="pos_alignx" condition="!$PARAM[info_plot_hidden] + $PARAM[metadata_align_right]">
+							<param name="align" value="right" />
+						</include>
+						
+						<aligny>center</aligny>
+						<textcolor>$VAR[color_global_spotlight_main]</textcolor>
+						<label>[CAPITALIZE]$INFO[ListItem.Title,[B],[/B]][CR]$INFO[ListItem.Season,$LOCALIZE[36904] ,]$INFO[ListItem.Episode, $LOCALIZE[36906] ,][/CAPITALIZE]</label>
+					</control>
+					<include content="spacer_h" />
+				</control>
+				
+				<include condition="!$PARAM[info_plot_hidden]" content="Spotlight_Plot">
+					<param name="visible" value="![$EXP[IsEpisode]]" />
+					<param name="maxheight" value="205" />
+					<param name="Is_left" value="$PARAM[metadata_align_left]" />
+					<param name="Is_center" value="$PARAM[metadata_align_center]" />
+					<param name="Is_right" value="$PARAM[metadata_align_right]" />
+				</include>
+				<include condition="!$PARAM[info_plot_hidden]" content="Spotlight_Plot">
+					<param name="visible" value="$EXP[IsEpisode]" />
+					<param name="maxheight" value="160" />
+					<param name="Is_left" value="$PARAM[metadata_align_left]" />
+					<param name="Is_center" value="$PARAM[metadata_align_center]" />
+					<param name="Is_right" value="$PARAM[metadata_align_right]" />
+				</include>
+				
+				<include content="Meta_Genre_Bottom">
+					<param name="Is_hiddenplot" value="$PARAM[info_plot_hidden]" />
+					<param name="Is_left" value="$PARAM[metadata_align_left]" />
+					<param name="Is_center" value="$PARAM[metadata_align_center]" />
+					<param name="Is_right" value="$PARAM[metadata_align_right]" />
+				</include>
 			</control>
 			
-			<include condition="!$PARAM[info_plot_hidden]" content="Spotlight_Plot">
-				<param name="visible" value="![$EXP[IsEpisode]]" />
-				<param name="maxheight" value="205" />
-				<param name="Is_left" value="$PARAM[metadata_align_left]" />
-				<param name="Is_center" value="$PARAM[metadata_align_center]" />
-				<param name="Is_right" value="$PARAM[metadata_align_right]" />
-			</include>
-			<include condition="!$PARAM[info_plot_hidden]" content="Spotlight_Plot">
-				<param name="visible" value="$EXP[IsEpisode]" />
-				<param name="maxheight" value="160" />
-				<param name="Is_left" value="$PARAM[metadata_align_left]" />
-				<param name="Is_center" value="$PARAM[metadata_align_center]" />
-				<param name="Is_right" value="$PARAM[metadata_align_right]" />
-			</include>
-			
-			<include content="Meta_Genre_Bottom">
-				<param name="Is_hiddenplot" value="$PARAM[info_plot_hidden]" />
-				<param name="Is_left" value="$PARAM[metadata_align_left]" />
-				<param name="Is_center" value="$PARAM[metadata_align_center]" />
-				<param name="Is_right" value="$PARAM[metadata_align_right]" />
-			</include>
+				
 		</control>
 		</definition>
 	</include>
@@ -468,6 +475,7 @@
 	<include name="spotlight_trailer_overlay">
 		<control type="group">
 			<top>0</top>
+			
 			<visible>!$EXP[Infodialog_IsActive]</visible>
 			<visible>[Player.HasVideo + String.IsEmpty(Window(Home).Property(TrailerIsPlaying))] | [!Skin.HasSetting(home_trailer_showwidget) + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))]</visible>
 			<control type="videowindow">
@@ -475,29 +483,25 @@
 				<include content="pos_right" condition="$PARAM[trailer_visible_right]" />
 				<width>1267</width>
 				<height>731</height>
-				
 			</control>
-			
 			<control type="image">
-				<visible>false</visible>
-				<texture colordiffuse="$VAR[color_global_spotlight_background]" diffuse="diffuse/spotlighttoprightinverted.png">colors/white80.png</texture>
-				<right>0</right>
-				<width>1267</width>
-				<height>731</height>
-			</control>
-			
-			<control type="image">
-				<bordertexture colordiffuse="$VAR[color_global_spotlight_background]" diffuse="$PARAM[diffusetexture]">colors/white.png</bordertexture>
-				<texture colordiffuse="$VAR[color_global_spotlight_background_layer2]" diffuse="$PARAM[diffusetexture]">$VAR[spotlight_trailer_layer3_overlayImage]</texture>
 				<include content="pos_left" condition="$PARAM[trailer_visible_left]" />
 				<include content="pos_right" condition="$PARAM[trailer_visible_right]" />
+				<bordertexture colordiffuse="$VAR[color_global_spotlight_background]" diffuse="$PARAM[diffusetexture]">colors/white.png</bordertexture>
+				<texture colordiffuse="$VAR[color_global_spotlight_background_layer2]" diffuse="$PARAM[diffusetexture]">$VAR[spotlight_trailer_layer3_overlayImage]</texture>
 			</control>
-			
 		</control>
 	</include>
 	
+	
+	
+	home use texture_home_background_layer3 if exsist
+	lib use  texture_global_background_layer3 if exist - NOTE - temp - no custom spotligth overlay - check if need ?
+<!-- 	temp disabled layer3 spotligth, need custom overlay or let it be  -->
+		
 	<variable name="spotlight_trailer_layer3_overlayImage">
-		<value condition="!String.IsEmpty(Skin.String(texture_home_background_layer3))">$VAR[Global_Layer3_OverlayImage]</value>
+		<!-- <value condition="[Window.IsActive(home) + !String.IsEmpty(Skin.String(texture_home_background_layer3))] | [!Window.IsActive(home) + !String.IsEmpty(Skin.String(texture_global_background_layer3)]">$VAR[backgroundbuilding_layer3_texture]</value> -->
+		<value condition="[Window.IsActive(home) + !String.IsEmpty(Skin.String(texture_home_background_layer3))]">$VAR[backgroundbuilding_layer3_texture]</value>
 		<value>colors/none.png</value>	
 	</variable>
 	

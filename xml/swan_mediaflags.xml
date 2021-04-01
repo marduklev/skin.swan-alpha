@@ -4,20 +4,19 @@
 	
 	<!-- RATINGS -->
 	<include name="Ratings_Footer">
-		<param name="align" default="right" />
-		<param name="offset_left" default="0" />
-		<param name="right" default="100" />
+		<param name="rating_align" default="right" />
+		<param name="rating_offset_left" default="0" />
+		<param name="rating_offset_right" default="100" />
 		<param name="forcedcolor" default="$VAR[color_footer_items]" />
 		
 		<definition>
 			<control type="grouplist">
 				<nested />
 				<orientation>horizontal</orientation>
-				<usecontrolcoords>true</usecontrolcoords>
-				<align>$PARAM[align]</align>
-				<right>$PARAM[right]</right>
-				<left>$PARAM[offset_left]</left>
-				
+				<align>$PARAM[rating_align]</align>
+				<right>$PARAM[rating_offset_right]</right>
+				<left>$PARAM[rating_offset_left]</left>
+				<description>width omitted</description>
 				<itemgap>5</itemgap>
 				
 				<include content="studiologo_image">
@@ -27,14 +26,13 @@
 					<param name="height" value="90"/>
 					<param name="color" value="$PARAM[forcedcolor]" />
 					<visible>!Window.IsActive(movieinformation) + [Skin.HasSetting(show_studio_flag) + !String.IsEmpty(ListItem.Studio)]</visible>
+					<description>will us space due to misleading condition list</description>
 				</include>
-				
-				<control type="label">
-					<width>50</width>
-					<visible>!Window.IsActive(movieinformation) + !String.IsEmpty(Control.GetLabel(6767))</visible>
-					<height>90</height>
-					<label />
-				</control>
+				<include content="spacer_w">
+					<param name="id" value="6768"/>
+					<param name="gap" value="50"/>
+					<param name="visible" value="!Window.IsActive(movieinformation) + !String.IsEmpty(ListItem.Studio)"/>
+				</include>
 				
 				<include content="Rating_Footer">
 					<param name="id" value="50505"/>
@@ -116,7 +114,7 @@
 	
 	<include name="studiologo_image">
 		<param name="aligny" default="top"/>
-		<param name="alignx" default="right"/>
+		<param name="alignx" default="center"/>
 		<param name="width" default="430"/>
 		<param name="height" default="150"/>
 		<param name="colordiffuse" default="$VAR[color_footer_items]"/>
@@ -738,18 +736,19 @@
 	-->
 	
 	<include name="MediaFlagGroup_Footer">
-		<param name="align" default="left" />
-		<param name="width" default="70%" />
+		<param name="mediaflag_offset_align" default="left" />
+		<param name="mediaflag_offset_left" default="50" />
+		<param name="mediaflag_width" default="70%" />
 		<param name="forcedcolor" default="$VAR[color_footer_items]" />
 		<param name="top" default="5" />
 		<definition>
 		<control type="grouplist">
 			<orientation>horizontal</orientation>
 			<usecontrolcoords>true</usecontrolcoords>
-			<align>$PARAM[align]</align>
+			<align>$PARAM[mediaflag_offset_align]</align>
 			<top>$PARAM[top]</top>
-			<left>50</left>
-			<width>$PARAM[width]</width>
+			<left>$PARAM[mediaflag_offset_left]</left>
+			<width>$PARAM[mediaflag_width]</width>
 			<itemgap>10</itemgap>
 			<include content="MediaFlags_Footer">
 				<param name="id" value="70501"/>
