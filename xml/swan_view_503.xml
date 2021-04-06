@@ -45,12 +45,30 @@
 				own footer item(icon/label) color? media/rating - flag
 				
 				<param name="bottom" value="460" /> match genre line 
-				
 				-->
+			<!-- 
+				<param name="footer_bg_color" value="1affffff" />
+					<param name="footer_bg_color" value="white" />
+					
+				studio right instead left if spotlight -->
 				<include content="footer">
 					<param name="view_id" value="503" />
-					<param name="bottom" value="460" />
+					<param name="bottom" value="380" />
 					<param name="use_bgpanel" value="true" />
+					<param name="footer_bg_color" value="1affffff" />
+				
+					
+					<param name="footer_mediaflag_offsetleft" value="350" />
+					<param name="footer_mediaflag_align" value="center" />
+					<param name="footer_mediaflag_width" value="50%" />
+					<param name="footer_rating_offsetright" value="70" />
+					<param name="footer_rating_align" value="right" />
+					
+						
+				</include>
+				
+				<!-- <include content="footer">
+					<param name="view_id" value="503" />
 					<param name="footer_bg_color" value="1affffff" />
 					
 					<param name="footer_mediaflag_offsetleft" value="100" />
@@ -58,19 +76,12 @@
 					<param name="footer_mediaflag_width" value="50%" />
 					<param name="footer_rating_offsetright" value="70" />
 					<param name="footer_rating_align" value="right" />
+					
+						
 				</include>
 				
-				<control type="label">
-					<description>item heading</description>
-					<label>$INFO[Container.Content]</label>
-					<left>110</left>
-					<bottom>400</bottom>
-					<height>100</height>
-					<textcolor>$VAR[color_spotlightlib_main]</textcolor>
-					<align>left</align>
-					<font>Montserrat_ExtraBold_40</font>
-					<aligny>top</aligny>
-				</control>
+				 -->
+				
 				
 		
 		<!-- goal is 
@@ -92,7 +103,40 @@
 		
 		<control type="group">
 			<visible>Control.IsVisible(503)</visible>
+				<!-- <animation effect="slide" start="0,0" end="0,-90" time="350" tween="quadratic" easing="in" delay="100" condition="!Skin.HasSetting(View_503_DisableFooter)">conditional</animation> -->
 				
+				<control type="label">
+					<description>item heading</description>
+					<label>$INFO[Container.Content]</label>
+					<left>110</left>
+					<bottom>340</bottom>
+					<height>100</height>
+					<!-- <align>center</align> -->
+					<!-- <textcolor>$VAR[color_spotlightlib_main]</textcolor> -->
+					<!-- <textcolor>99777777</textcolor> -->
+					<textcolor>99181818</textcolor>
+					<align>left</align>
+					<font>Montserrat_ExtraBold_40</font>
+					<aligny>top</aligny>
+				</control>
+				
+				<control type="label">
+					<visible>!String.IsEmpty(Window.Property(Spotlight_Cast))</visible>
+					<description>item heading</description>
+					<label>$LOCALIZE[206]</label>
+					<left>450</left>
+					<bottom>340</bottom>
+					<height>100</height>
+					<!-- <align>center</align> -->
+					<!-- <textcolor>$VAR[color_spotlightlib_main]</textcolor> -->
+					<!-- <textcolor>99777777</textcolor> -->
+					<textcolor>99181818</textcolor>
+					<align>left</align>
+					<font>Montserrat_ExtraBold_40</font>
+					<aligny>top</aligny>
+				</control>
+			
+			
 			<control type="fixedlist" id="503">
 				<viewtype label="netflixposter">netflixposter list</viewtype>
 				<focusposition>1</focusposition>
@@ -102,9 +146,14 @@
 				<left>100</left>
 				<right>0</right>
 				<bottom>0</bottom>
-				<height>445</height>
-				<animation effect="slide" start="0,0" end="0,-100" time="200" easing="inout" reversible="true" condition="controlgroup(7777).hasfocus()">conditional</animation>
+				<height>370</height>
+				<!-- <height>450</height> -->
+				
+				
+				<animation effect="slide" start="0,0" end="-202,0" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Cast))">conditional</animation>
 					
+				<!-- <animation effect="slide" start="0,0" end="0,-100" time="200" easing="inout" reversible="true" condition="controlgroup(7777).hasfocus()">conditional</animation> -->
+				
 				<!-- 
 				
 				include horizontal list offsets
@@ -119,7 +168,15 @@
 				
 				<onup condition="!String.IsEmpty(Window(home).Property(listitemtrailer))">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onup>
 				<onup condition="!String.IsEmpty(Window(home).Property(listitemtrailer))">SetProperty(TrailerIsPlaying,true,home)</onup>
+				
+				<onup condition="!String.IsEmpty(Window(home).Property(listitemtrailer)) + String.IsEmpty(Window.Property(Spotlight_Cast))">SetProperty(Spotlight_Cast,visible)</onup>
+				
 				<ondown condition="!String.IsEmpty(Window(home).Property(TrailerIsPlaying))">PlayerControl(stop)</ondown>
+				
+				
+				<ondown condition="String.IsEmpty(Window.Property(Spotlight_Cast))">SetProperty(Spotlight_Cast,visible)</ondown>
+				<ondown condition="!String.IsEmpty(Window.Property(Spotlight_Cast))">ClearProperty(Spotlight_Cast)</ondown>
+				<!-- <onup condition="String.IsEmpty(Window(home).Property(TrailerIsPlaying))">ClearProperty(Spotlight_Cast)</onup> -->
 				
 				<!-- <onup condition="Control.IsVisible(19)">19</onup>  -->
 				<!-- <onup condition="!Control.IsVisible(19) + Control.IsVisible(8999)">8999</onup> -->
@@ -133,7 +190,7 @@
 				<!-- ondown - cast ?, movieset items ?, scroll/alphabet bar , an icon button grouplist for such actions needed - onup or ondown ? -->
 				<!-- <ondown>89898989</ondown> -->
 				<!-- <ondown>7777</ondown> -->
-				<itemlayout height="445" width="245">
+				<!-- <itemlayout height="445" width="245">
 					<control type="group">
 						<width>240</width>
 						<height>350</height>
@@ -187,6 +244,65 @@
 							</control>
 						</control>
 					</control>
+				</focusedlayout> -->
+				<itemlayout height="350" width="202">
+					<control type="group">
+					<animation effect="fade" start="100" end="0" time="350" condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) | !String.IsEmpty(Window(home).Property(TrailerIsPlaying))">conditional</animation>
+					
+						<width>200</width>
+						<height>282</height>
+						<include content="UniversalLayout">
+							<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_nf]" />
+							<param name="artwork" value="poster" />
+							<param name="get_tags" value="!Skin.HasSetting(View_503_DisableTags)" />
+							<param name="get_tagbgpanel" value="!Skin.HasSetting(View_503_DisableTags)" />
+							<param name="autoscroll" value="false" />
+							<param name="bordersize_bg" value="6" />
+							<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_nf]" />
+							<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_secondary]" />
+							<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_secondary]" />
+							<param name="conditional_artworkdiffuse_themed" value="!Skin.HasTheme(Roundedge) | Skin.HasSetting(View_503_DisableTags)" />
+							<param name="conditional_artworkdiffuse_override" value="Skin.HasTheme(Roundedge) + !Skin.HasSetting(View_503_DisableTags)" />
+						</include>
+					</control>
+				</itemlayout>
+				<focusedlayout height="350" width="202">
+					<include content="SetPropOnFocus_HiddenButton">
+						<onunfocus condition="!String.IsEmpty(Window.Property(Spotlight_Cast))">ClearProperty(Spotlight_Cast)</onunfocus>
+					</include>
+					<control type="group">
+						<width>200</width>
+						<height>282</height>
+						<description>to avoid relaod skin on disable footer and avoid bottom offset fade out 3rd row of items</description>
+						<include>Animation_Item_Focus</include>
+						<control type="group">
+							<include content="UniversalLayout">
+								<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_fo]" />
+								<param name="artwork" value="poster" />
+								<param name="get_tags" value="!Skin.HasSetting(View_503_DisableTags)" />
+								<param name="get_tagbgpanel" value="!Skin.HasSetting(View_503_DisableTags)" />
+								<param name="autoscroll" value="true" />
+								<param name="bordersize_bg" value="4" />
+								<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_fo]" />
+								<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_background_layer1]" />
+								<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_background_layer1]" />
+								<param name="conditional_artworkdiffuse_themed" value="!Skin.HasTheme(Roundedge) | Skin.HasSetting(View_503_DisableTags)" />
+								<param name="conditional_artworkdiffuse_override" value="Skin.HasTheme(Roundedge) + !Skin.HasSetting(View_503_DisableTags)" />
+							</include>
+							<control type="group">
+								<visible>!Skin.HasSetting(View_503_DisableTags)</visible>
+								<include content="FocusOverlay">
+									<param name="diffusedimtext" value="artworkdiffuse/usebganel/poster.png" />
+								</include>
+							</control>
+							<control type="group">
+								<visible>Skin.HasSetting(View_503_DisableTags)</visible>
+								<include content="FocusOverlay">
+									<param name="diffusedimtext" value="artworkdiffuse/poster.png" />
+								</include>
+							</control>
+						</control>
+					</control>
 				</focusedlayout>
 			</control>
 		
@@ -194,143 +310,74 @@
 		
 			<control type="grouplist" id="89898989">
 				<description>Item Containers</description>
-				<animation effect="slide" end="0,-910" time="1000" tween="cubic" reversible="false">focus</animation>
-				<animation effect="fade" start="100" end="0" time="250">focus</animation>
-				<visible>false</visible>
-				<top>1090</top>
-				<left>120</left>
-				<height>880</height>
+				<animation effect="slide" start="0,0" end="0,-350" time="350" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Cast))">conditional</animation>
+				<animation effect="fade" start="0" end="100" time="450" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Cast))">conditional</animation>
+				
+				<!-- <animation effect="slide" start="-400,0" end="0,0" time="1000" tween="cubic" reversible="false">unfocus</animation> -->
+				
+				<bottom>-400</bottom>
+				<left>400</left>
+				<height>400</height>
 				<scrolltime tween="quadratic">400</scrolltime>
-				<onup>SetFocus(8006)</onup>
-				<ondown>8001</ondown>
-				<onleft>8001</onleft>
+				
+				<onup>ClearProperty(Spotlight_Cast)</onup>
+				<ondown>ClearProperty(Spotlight_Cast)</ondown>
 				<orientation>vertical</orientation>
-				<itemgap>-50</itemgap>
 				<usecontrolcoords>true</usecontrolcoords>
 				
-				<include content="spacer_h">
-					<param name="id" value="8600" />
-					<param name="gap" value="-20" />
-				</include>
 				
-				<include content="Universal_ContainerHeader">
-					<param name="groupid" value="8501" />
-					<param name="id" value="8601" />
-					<param name="label" value="$INFO[ListItem.Set,&quot; , &quot;]" />
-					<visible>Control.IsVisible(8601)</visible>
-				</include>
-				<include condition="Skin.HasSetting(VideoInfo_Content_SetItems) + !String.IsEmpty(ListItem.SetId)" content="Universal_Container">
-					<param name="id" value="8601" />
-					<param name="visible" value="Integer.IsGreater(Container(8601).NumItems,0) | Container(8601).IsUpdating" />
+				<!-- <include content="Universal_Container">
+					<param name="id" value="50350" />
+					<param name="visible" value="Integer.IsGreater(Container(50350).NumItems,0) | Container(50350).IsUpdating" />
 					<param name="type_height" value="380" />
 					<param name="tags_visible" value="true" />
 					<param name="layout_height" value="380" />
-					<param name="layout_width" value="210" />
-					<param name="itemwidth" value="207" />
-					<param name="itemheight" value="310" />
-					<param name="layout" value="poster" />
-					
-					<include condition="!Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceInfo"/>
-					<include condition="Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceSelect"/>
-					
-					<content sortby="year" target="videos">videodb://movies/sets/$INFO[ListItem.SetId]/?setid=$INFO[ListItem.SetId]</content>
-				</include>
-				<include content="Universal_ContainerHeader">
-					<param name="groupid" value="8502" />
-					<param name="id" value="8602" />
-					<param name="label" value="Nächste Episode" />
-					<visible>Control.IsVisible(8602)</visible>
-				</include>
-				<include condition="!Skin.HasSetting(VideoInfo_Content_NextUp) + [Integer.IsGreater(ListItem.Property(UnwatchedEpisodes),0) + !String.IsEmpty(ListItem.DBID)]" content="Universal_Container">
-					<param name="id" value="8602" />
-					<param name="visible" value="Integer.IsGreater(Container(8602).NumItems,0) | Container(8602).IsUpdating" />
-					<param name="type_height" value="370" />
-					<param name="tags_visible" value="false" />
-					<param name="layout_height" value="360" />
-					<param name="layout_width" value="612" />
-					<param name="itemheight" value="350" />
-					<param name="itemwidth" value="595" />
-					<param name="ls_overlay_visible" value="!String.IsEqual(ListItem.Art(thumb),OverlaySpoiler.png) | [String.IsEqual(ListItem.Art(thumb),OverlaySpoiler.png) + String.IsEmpty(ListItem.Art(tvshow.landscape))]" />
-					<param name="layout" value="landscape" />
-					<param name="is_infowidget" value="!String.IsEqual(ListItem.Plot,$LOCALIZE[20370])" />
-					<param name="diffuse_art_topedges" value="false" />
-					<param name="diffuse_art_alledges" value="true" />
-					<param name="root_conditional_artworkdiffuse_themed" value="true" />
-					<param name="root_conditional_artworkdiffuse_override" value="false" />
-					
-					<content limit="1" sortby="playcount" target="videos">videodb://inprogresstvshows/$INFO[ListItem.DBID]/-1/?tvshowid=$INFO[ListItem.DBID]</content>
-				</include>
-				<include content="Universal_ContainerHeader">
-					<param name="groupid" value="8503" />
-					<param name="id" value="8603" />
-					<param name="label" value="$LOCALIZE[344] $INFO[ListItem.Title,  &quot; , &quot;]" />
-					<visible>Control.IsVisible(8603)</visible>
-				</include>
-				<include content="Universal_Container">
-					<param name="id" value="8603" />
-					<param name="visible" value="Integer.IsGreater(Container(8603).NumItems,0) | Container(8603).IsUpdating" />
-					<param name="type_height" value="380" />
-					<param name="tags_visible" value="true" />
-					<param name="layout_height" value="380" />
-					<param name="layout_width" value="210" />
-					<param name="itemwidth" value="207" />
-					<param name="itemheight" value="310" />
+					<param name="layout_width" value="180" />
+					<param name="itemwidth" value="180" />
+					<param name="itemheight" value="325" />
 					<param name="layout" value="poster" />
 					<include>Action_CastMemberSearchForceOption</include>
 					<content>$VAR[EmbuaryCast]</content>
-				</include>
-				<include content="Universal_ContainerHeader">
-					<param name="groupid" value="8505" />
-					<param name="id" value="8605" />
-					<param name="label" value="$LOCALIZE[342] $LOCALIZE[19159] $LOCALIZE[20339] [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$INFO[ListItem.Director, &quot; , &quot;][/COLOR]" />
-					<visible>Control.IsVisible(8605)</visible>
-				</include>
-				<include condition="!Skin.HasSetting(VideoInfo_Content_Director)" content="Universal_Container">
-					<param name="id" value="8605" />
-					<param name="visible" value="Integer.IsGreater(Container(8605).NumItems,0) | Container(8605).IsUpdating" />
-					<param name="type_height" value="380" />
-					<param name="tags_visible" value="true" />
-					<param name="layout_height" value="380" />
-					<param name="layout_width" value="210" />
-					<param name="itemwidth" value="207" />
-					<param name="itemheight" value="310" />
-					<param name="layout" value="poster" />
+				</include> -->
+				
+				<control type="panel" id="50350">
+						<include>Action_CastMemberSearchForceOption</include>
+						<width>1420</width>
+						<height>350</height>
+						<onback>SetFocus(50)</onback>
+						<preloaditems>2</preloaditems>
+						<orientation>horizontal</orientation>
+						<scrolltime tween="quadratic">400</scrolltime>
 					
-					<include condition="!Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceInfo"/>
-					<include condition="Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceSelect"/>
-					
-					<content>
-						<item>
-							<visible>System.HasAddon(resource.images.moviedirectorthumbs)</visible>
-							<label>$INFO[ListItem.Director]</label>
-							<thumb fallback="defaultdirector.png">$INFO[ListItem.Director,resource.images.moviedirectorthumbs/,.png]</thumb>
-						</item>
-					</content>
-					<content target="videos">videodb://movies/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22director%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[ListItem.Director]%22%5D%7D%2C%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
-				</include>
-								
-				<include content="Universal_ContainerHeader">
-					<param name="groupid" value="8510" />
-					<param name="id" value="8610" />
-					<param name="label" value="Similiar [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$INFO[ListItem.Title,  &quot; , &quot;][/COLOR]" />
-					<visible>Control.IsVisible(8610)</visible>
-				</include>
-				<include condition="!Skin.HasSetting(VideoInfo_Content_Similiar) + [!String.IsEmpty(ListItem.DBType) + !String.IsEmpty(ListItem.DBID)]" content="Universal_Container">
-					<param name="id" value="8610" />
-					<param name="visible" value="Integer.IsGreater(Container(8610).NumItems,0) | Container(8610).IsUpdating" />
-					<param name="type_height" value="380" />
-					<param name="tags_visible" value="true" />
-					<param name="layout_height" value="380" />
-					<param name="layout_width" value="210" />
-					<param name="itemwidth" value="207" />
-					<param name="itemheight" value="310" />
-					<param name="layout" value="poster" />
-					
-					<include condition="!Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceInfo"/>
-					<include condition="Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceSelect"/>
-					
-					<content target="videos">plugin://script.embuary.helper/?info=getsimilar&amp;dbid=$INFO[ListItem.DBID]&amp;type=$INFO[ListItem.DBType]</content>
-				</include>
+						<itemlayout height="380" width="230">
+							<control type="group">
+								<height>202</height>
+								<width>202</width>
+								<include content="Circle_CastWidget">
+									<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_nf]" />
+									<param name="autoscroll" value="false" />
+									<param name="bordersize_bg" value="6" />
+								</include>
+							</control>
+						</itemlayout>
+						<focusedlayout height="380" width="230">
+							<control type="group">
+								<height>220</height>
+								<width>220</width>
+								<include>Animation_Item_Focus</include>
+								<control type="group">
+									<include content="Circle_CastWidget">
+										<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_nf]" />
+										<param name="autoscroll" value="false" />
+										<param name="bordersize_bg" value="6" />
+									</include>
+								</control>
+							</control>
+						</focusedlayout>
+						<content>$VAR[EmbuaryCast]</content>
+					</control>
+				
+				
 				
 			</control>
 		
