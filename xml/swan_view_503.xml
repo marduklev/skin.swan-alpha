@@ -36,11 +36,11 @@
 	<include name="view503">
 		<control type="group">
 			<visible>Control.IsVisible(503)</visible>
-		just testing	<animation effect="fade" start="100" end="30" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) | !String.IsEmpty(Window.Property(Spotlight_Nextup))">conditional</animation>
+		<!-- just testing	<animation effect="fade" start="100" end="30" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) | !String.IsEmpty(Window.Property(Spotlight_Nextup))">conditional</animation> -->
 			
 		<!-- future	first fade	30	<animation effect="fade" start="100" end="30" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) | !String.IsEmpty(Window.Property(Spotlight_Nextup))">conditional</animation> -->
 		
-		<!-- future	second fade	10	<animation effect="fade" start="100" end="30" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) | !String.IsEmpty(Window.Property(Spotlight_Nextup))">conditional</animation> -->
+		future	second fade	10	<animation effect="fade" start="100" end="30" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) | !String.IsEmpty(Window.Property(Spotlight_Nextup))">conditional</animation>
 		<!-- future	third fade	0	<animation effect="fade" start="100" end="30" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) | !String.IsEmpty(Window.Property(Spotlight_Nextup))">conditional</animation> -->
 		
 		wished - slide info, fade just artwork
@@ -103,7 +103,7 @@
 				</control>
 				
 				<control type="label">
-					<visible>!String.IsEmpty(Window.Property(Spotlight_Sets))</visible>
+					<visible>!String.IsEmpty(Window.Property(Spotlight_Sets)) + !Container.Content(tvshows)</visible>
 					<description>item heading  + !String.IsEmpty(ListItem.SetId)</description>
 					<label>$INFO[Container(503).ListItem.Label]</label>
 					<left>100</left>
@@ -112,7 +112,7 @@
 					<!-- <align>center</align> -->
 					<!-- <textcolor>$VAR[color_spotlightlib_main]</textcolor> -->
 					<!-- <textcolor>99777777</textcolor> -->
-					<textcolor>red</textcolor>
+					<textcolor>99181818</textcolor>
 					<align>left</align>
 					<font>Montserrat_ExtraBold_40</font>
 					<aligny>top</aligny>
@@ -127,7 +127,7 @@
 					<!-- <align>center</align> -->
 					<!-- <textcolor>$VAR[color_spotlightlib_main]</textcolor> -->
 					<!-- <textcolor>99777777</textcolor> -->
-					<textcolor>red</textcolor>
+					<textcolor>99181818</textcolor>
 					<align>left</align>
 					<font>Montserrat_ExtraBold_40</font>
 					<aligny>top</aligny>
@@ -148,10 +148,9 @@
 				<visible>!Container.Content(episodes)</visible>
 				
 					<animation effect="slide" start="0,0" end="-200,0" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) + String.IsEmpty(Window.Property(Spotlight_Sets)">conditional</animation> -->
-					
 					<animation effect="fade" start="100" end="0" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
 				
-				
+				<!-- keep in layout instead of goin into folder ? -->
 				
 				<onup condition="!String.IsEmpty(Window(home).Property(listitemtrailer))">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onup>
 				<onup condition="!String.IsEmpty(Window(home).Property(listitemtrailer))">SetProperty(TrailerIsPlaying,true,home)</onup>
@@ -160,9 +159,25 @@
 				<ondown condition="!String.IsEmpty(Window(home).Property(TrailerIsPlaying))">PlayerControl(stop)</ondown>
 				
 				<onup condition="!String.IsEmpty(Window.Property(Spotlight_Cast))">ClearProperty(Spotlight_Cast)</onup>
-				<ondown condition="String.IsEmpty(Window.Property(Spotlight_Cast))">SetProperty(Spotlight_Cast,visible)</ondown>
+			
+
+				<ondown condition="String.IsEmpty(Window.Property(Spotlight_Cast)) + !String.IsEqual(ListItem.DBtype,set)">SetProperty(Spotlight_Cast,visible)</ondown>
+		<!-- 		
 				<ondown condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) + [!String.IsEqual(Container(503).ListItem.dbtype,tvshow) + String.IsEmpty(Container(503).ListItem.SetId)]">ClearProperty(Spotlight_Cast)</ondown>
-				<ondown condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) + [Container.Content(tvshows) | String.IsEqual(ListItem.dbtype,set)]">SetFocus(50352)</ondown>
+				<ondown condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) + Container.Content(tvshows)">SetFocus(50352)</ondown>
+		
+<ondown condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) + [!String.IsEqual(Container(503).ListItem.dbtype,tvshow) + !String.IsEmpty(Container(503).ListItem.SetId)]">SetFocus(50352)</ondown>
+				
+
+ -->
+				<!-- <ondown condition="String.IsEmpty(Window.Property(Spotlight_Cast)) + String.IsEqual(ListItem.dbtype,set)">SetFocus(50352)</ondown> -->
+				<ondown condition="String.IsEmpty(Window.Property(Spotlight_Cast)) + [!String.IsEmpty(ListItem.SetID) | String.IsEqual(ListItem.dbtype,set) | String.IsEqual(ListItem.dbtype,tvshow)]">SetProperty(Spotlight_Cast,visible)</ondown>
+				<ondown condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) + [!String.IsEmpty(ListItem.SetID) | String.IsEqual(ListItem.dbtype,set) | String.IsEqual(ListItem.dbtype,tvshow)]">SetFocus(50352)</ondown>
+				
+				
+				
+				<ondown condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) + [String.IsEmpty(ListItem.SetID) | !String.IsEqual(ListItem.dbtype,set) | !String.IsEqual(ListItem.dbtype,tvshow)]">ClearProperty(Spotlight_Cast)</ondown>
+				
 				
 				<!-- <onup condition="String.IsEmpty(Window(home).Property(TrailerIsPlaying))">ClearProperty(Spotlight_Cast)</onup> -->
 				
@@ -297,13 +312,16 @@
 		
 		
 			<control description="cast" type="panel" id="50350">
-				<animation effect="slide" start="0,0" end="0,-350" time="350" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Cast))">conditional</animation>
-				<animation effect="fade" start="0" end="100" time="450" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Cast))">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-350" time="350" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) | !String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
+				<animation effect="slide" start="0,0" end="-202,150" time="350" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
+				
+				<animation effect="fade" start="0" end="100" time="450" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) | !String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
 				<bottom>-400</bottom>
 				<left>400</left>
 				<height>400</height>
+				<width>200%</width>
 				<scrolltime tween="quadratic">400</scrolltime>
-				
+				<visible>!String.IsEqual(ListItem.DBtype,set)</visible>
 								<include>Action_CastMemberSearchForceOption</include>
 								<onback>SetFocus(50)</onback>
 				<preloaditems>2</preloaditems>
@@ -371,7 +389,7 @@
 			<control description="container folderpath" type="panel" id="50352">
 				<animation effect="slide" start="0,0" end="0,-300" time="350" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
 				
-				<bottom>-800</bottom>
+					<bottom>-830</bottom>
 					<left>100</left>
 					<onfocus>SetProperty(Spotlight_Sets,true)</onfocus>
 					<orientation>horizontal</orientation>
@@ -390,7 +408,7 @@
 					
 					<itemlayout height="350" width="202">
 					<control type="group">
-					<animation effect="fade" start="100" end="0" time="350" condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) | !String.IsEmpty(Window(home).Property(TrailerIsPlaying))">conditional</animation>
+					<!-- <animation effect="fade" start="100" end="0" time="350" condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) | !String.IsEmpty(Window(home).Property(TrailerIsPlaying))">conditional</animation> -->
 					
 						<width>200</width>
 						<height>282</height>
@@ -451,9 +469,10 @@
 							<item>
 								<thumb>$INFO[Container(503).ListItem.Art(thumb)]</thumb>
 							</item>
-						</content> -->
-						<content limit="1">$VAR[View503_NextUp]</content>
-						<content sortby="year">$INFO[Container.ListItem.FolderPath]</content>
+						</content> get static sending click -->
+						<content sortby="playcount" limit="1">$VAR[View503_NextUp]</content>
+						<content sortby="year" target="videos">$VAR[View_503_Folderpath]</content>
+						<!-- <content sortby="year">$INFO[Container.ListItem.FolderPath]</content> -->
 					</control>
 				
 				similiar
@@ -469,14 +488,17 @@
 	</include>
 	
 	<variable name="View503_NextUp">
-		 <value condition="[Control.IsVisible(503) + Container.Content(TVShows)] + !String.IsEmpty(Window(home).Property(dbid))">videodb://inprogresstvshows/$INFO[Container(503).ListItem.dbid]/-1/?tvshowid=$INFO[Container(503).ListItem.dbid]]</value>
-		 
-		<value condition="[Control.IsVisible(503) + Container.Content(Seasons)] + String.EndsWith(Container.Folderpath,/)">$INFO[Container.Folderpath]-1/</value>
-		 <value condition="[Control.IsVisible(503) + Container.Content(Seasons)] + !String.IsEmpty(Window(home).Property(dbid))">videodb://inprogresstvshows/$INFO[Window(home).Property(dbid)]/-1/?tvshowid=$INFO[Window(home).Property(dbid)]</value>
-		 <value condition="[Control.IsVisible(503) + Container.Content(Seasons)] + !String.IsEmpty(Window(home).Property(EncodedTitle))">videodb://inprogresstvshows/-1/-1/?xsp=%7B%22limit%22%3A1%2C%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22method%22%3A%22playcount%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22tvshow%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</value>
+		<value condition="[Control.IsVisible(503) + Container.Content(tvshows)] + !String.IsEmpty(Container(503).ListItem.dbid)">videodb://inprogresstvshows/$INFO[Container(503).ListItem.dbid]/-1/?tvshowid=$INFO[Container(503).ListItem.dbid]</value>
+		<value condition="[Control.IsVisible(503) + Container.Content(seasons)] + String.EndsWith(Container.Folderpath,/)">$INFO[Container.Folderpath]-1/</value>
+		<value condition="[Control.IsVisible(503) + Container.Content(seasons)] + !String.IsEmpty(Window(home).Property(dbid))">videodb://inprogresstvshows/$INFO[Window(home).Property(dbid)]/-1/?tvshowid=$INFO[Window(home).Property(dbid)]</value>
 		<value>-</value>
 	</variable>
-	
+	<variable name="View_503_Folderpath">
+		<value condition="Control.IsVisible(503) + Container.Content(tvshows)">videodb://tvshows/titles/$INFO[Container(503).ListItem.dbid]</value>
+		<value condition="Control.IsVisible(503) + [String.IsEqual(Container.ListItem.dbtype,set) + System.GetBool(videolibrary.groupmoviesets)]">$INFO[Container.ListItem.FolderPath]</value>
+		<value condition="Control.IsVisible(503) + [!String.IsEmpty(Container.ListItem.SetId) + !System.GetBool(videolibrary.groupmoviesets)]">videodb://movies/sets/$INFO[Container.ListItem.setid]/?setid=$INFO[Container.ListItem.setid]</value>
+		<value>-</value>
+	</variable>
 	
 		<!-- temp solution is -->
 	<include name="view504">
