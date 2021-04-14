@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <includes>
-	
+			<include name="temp_spotlight_infofade">
+				<animation effect="fade" start="100" end="10" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) + Container.Content(tvshows) + [Container(50350).IsUpdating  | Integer.IsGreater(Container(50350).NumItems,0)]">conditional</animation>
+			</include>
+		
 	<!-- skinsetting view_options in mind
 	
 		503/504- overrdie default focus, use fixedframe
@@ -39,12 +42,10 @@
 		<!-- just testing	<animation effect="fade" start="100" end="30" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) | !String.IsEmpty(Window.Property(Spotlight_Nextup))">conditional</animation> -->
 			
 		<!-- future	first fade	30	<animation effect="fade" start="100" end="30" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) | !String.IsEmpty(Window.Property(Spotlight_Nextup))">conditional</animation> -->
+	<!-- future	third fade	0	<animation effect="fade" start="100" end="30" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) | !String.IsEmpty(Window.Property(Spotlight_Nextup))">conditional</animation> -->
 		
-		future	second fade	10	<animation effect="fade" start="100" end="30" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) | !String.IsEmpty(Window.Property(Spotlight_Nextup))">conditional</animation>
-		<!-- future	third fade	0	<animation effect="fade" start="100" end="30" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) | !String.IsEmpty(Window.Property(Spotlight_Nextup))">conditional</animation> -->
-		
-		wished - slide info, fade just artwork
-
+		wished - slide info, fade just artwork if needed
+1affffff
 				<include content="spotlight_layout">
 					<param name="spotlight_artwork_visible_right" value="!Skin.HasSetting(View503_fanart_left) + Control.IsVisible(503)" />	
 					<param name="spotlight_artwork_visible_left" value="Skin.HasSetting(View503_fanart_left) + Control.IsVisible(503)" />	
@@ -107,7 +108,7 @@
 					<description>item heading  + !String.IsEmpty(ListItem.SetId)</description>
 					<label>$INFO[Container(503).ListItem.Label]</label>
 					<left>100</left>
-					<bottom>-130</bottom>
+					<bottom>-160</bottom>
 					<height>100</height>
 					<!-- <align>center</align> -->
 					<!-- <textcolor>$VAR[color_spotlightlib_main]</textcolor> -->
@@ -122,7 +123,7 @@
 					<description>item heading</description>
 					<label>$LOCALIZE[33054]</label>
 					<left>100</left>
-					<bottom>-130</bottom>
+					<bottom>-160</bottom>
 					<height>100</height>
 					<!-- <align>center</align> -->
 					<!-- <textcolor>$VAR[color_spotlightlib_main]</textcolor> -->
@@ -147,110 +148,32 @@
 				<height>370</height>
 				<visible>!Container.Content(episodes)</visible>
 				
-					<animation effect="slide" start="0,0" end="-200,0" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) + String.IsEmpty(Window.Property(Spotlight_Sets)">conditional</animation> -->
-					<animation effect="fade" start="100" end="0" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
+					<animation effect="slide" start="0,0" end="-200,0" time="250" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) + String.IsEmpty(Window.Property(Spotlight_Sets)">conditional</animation> -->
+					<animation effect="fade" start="100" end="0" time="250" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
 				
-				<!-- keep in layout instead of goin into folder ? -->
+				<!-- keep folder content in layout instead of goin into folder ? -->
+				
+				<!-- <onup condition="Control.IsVisible(19)">19</onup>  -->
+				<!-- <onup condition="!Control.IsVisible(19) + Control.IsVisible(8999)">8999</onup> -->
 				
 				<onup condition="!String.IsEmpty(Window(home).Property(listitemtrailer))">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onup>
 				<onup condition="!String.IsEmpty(Window(home).Property(listitemtrailer))">SetProperty(TrailerIsPlaying,true,home)</onup>
 				<onup condition="!String.IsEmpty(Window(home).Property(listitemtrailer)) + String.IsEmpty(Window.Property(Spotlight_Cast))">SetProperty(Spotlight_Cast,visible)</onup>
-				
-				<ondown condition="!String.IsEmpty(Window(home).Property(TrailerIsPlaying))">PlayerControl(stop)</ondown>
-				
 				<onup condition="!String.IsEmpty(Window.Property(Spotlight_Cast))">ClearProperty(Spotlight_Cast)</onup>
 			
-
-				<ondown condition="String.IsEmpty(Window.Property(Spotlight_Cast)) + !String.IsEqual(ListItem.DBtype,set)">SetProperty(Spotlight_Cast,visible)</ondown>
-		<!-- 		
-				<ondown condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) + [!String.IsEqual(Container(503).ListItem.dbtype,tvshow) + String.IsEmpty(Container(503).ListItem.SetId)]">ClearProperty(Spotlight_Cast)</ondown>
-				<ondown condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) + Container.Content(tvshows)">SetFocus(50352)</ondown>
-		
-<ondown condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) + [!String.IsEqual(Container(503).ListItem.dbtype,tvshow) + !String.IsEmpty(Container(503).ListItem.SetId)]">SetFocus(50352)</ondown>
+				<ondown condition="!Control.IsVisible(6000) + [!String.IsEmpty(Window.Property(Spotlight_Cast)) + [!String.IsEqual(ListItem.dbtype,set) | !String.IsEqual(ListItem.dbtype,tvshow)]]">ClearProperty(Spotlight_Cast)</ondown>
+				<ondown condition="!Control.IsVisible(6000) + [String.IsEmpty(Window.Property(Spotlight_Cast)) + !String.IsEqual(ListItem.DBtype,set)]">SetProperty(Spotlight_Cast,visible)</ondown>
+				<ondown condition="!Control.IsVisible(6000) + [[!String.IsEmpty(Window.Property(Spotlight_Cast)) + String.IsEqual(ListItem.dbtype,tvshow)] | String.IsEqual(ListItem.dbtype,set)]">SetFocus(50352)</ondown>
 				
-
- -->
-				<!-- <ondown condition="String.IsEmpty(Window.Property(Spotlight_Cast)) + String.IsEqual(ListItem.dbtype,set)">SetFocus(50352)</ondown> -->
-				<ondown condition="String.IsEmpty(Window.Property(Spotlight_Cast)) + [!String.IsEmpty(ListItem.SetID) | String.IsEqual(ListItem.dbtype,set) | String.IsEqual(ListItem.dbtype,tvshow)]">SetProperty(Spotlight_Cast,visible)</ondown>
-				<ondown condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) + [!String.IsEmpty(ListItem.SetID) | String.IsEqual(ListItem.dbtype,set) | String.IsEqual(ListItem.dbtype,tvshow)]">SetFocus(50352)</ondown>
-				
-				
-				
-				<ondown condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) + [String.IsEmpty(ListItem.SetID) | !String.IsEqual(ListItem.dbtype,set) | !String.IsEqual(ListItem.dbtype,tvshow)]">ClearProperty(Spotlight_Cast)</ondown>
-				
-				
-				<!-- <onup condition="String.IsEmpty(Window(home).Property(TrailerIsPlaying))">ClearProperty(Spotlight_Cast)</onup> -->
-				
-				<!-- <onup condition="Control.IsVisible(19)">19</onup>  -->
-				<!-- <onup condition="!Control.IsVisible(19) + Control.IsVisible(8999)">8999</onup> -->
 				<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
 				
 				<onleft condition="Control.IsVisible(8999)">8999</onleft>
 				
+				<ondown condition="Control.IsVisible(6000)">6000</ondown>
 				
-				<onright condition="Control.IsVisible(60)">60</onright>
-				
-				<!-- ondown - cast ?, movieset items ?, scroll/alphabet bar , an icon button grouplist for such actions needed - onup or ondown ? -->
-				<!-- <ondown>89898989</ondown> -->
-				<!-- <ondown>7777</ondown> -->
-				<!-- <itemlayout height="445" width="245">
-					<control type="group">
-						<width>240</width>
-						<height>350</height>
-						<include content="UniversalLayout">
-							<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_nf]" />
-							<param name="artwork" value="poster" />
-							<param name="get_tags" value="!Skin.HasSetting(View_503_DisableTags)" />
-							<param name="get_tagbgpanel" value="!Skin.HasSetting(View_503_DisableTags)" />
-							<param name="autoscroll" value="false" />
-							<param name="bordersize_bg" value="6" />
-							<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_nf]" />
-							<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_secondary]" />
-							<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_secondary]" />
-							<param name="conditional_artworkdiffuse_themed" value="!Skin.HasTheme(Roundedge) | Skin.HasSetting(View_503_DisableTags)" />
-							<param name="conditional_artworkdiffuse_override" value="Skin.HasTheme(Roundedge) + !Skin.HasSetting(View_503_DisableTags)" />
-						</include>
-					</control>
-				</itemlayout>
-				<focusedlayout height="445" width="245">
-					<include content="SetPropOnFocus_HiddenButton" />
-					<control type="group">
-						<width>240</width>
-						<height>350</height>
-						<description>to avoid relaod skin on disable footer and avoid bottom offset fade out 3rd row of items</description>
-						<include>Animation_Item_Focus</include>
-						<control type="group">
-							<include content="UniversalLayout">
-								<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_fo]" />
-								<param name="artwork" value="poster" />
-								<param name="get_tags" value="!Skin.HasSetting(View_503_DisableTags)" />
-								<param name="get_tagbgpanel" value="!Skin.HasSetting(View_503_DisableTags)" />
-								<param name="autoscroll" value="true" />
-								<param name="bordersize_bg" value="4" />
-								<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_fo]" />
-								<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_background_layer1]" />
-								<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_background_layer1]" />
-								<param name="conditional_artworkdiffuse_themed" value="!Skin.HasTheme(Roundedge) | Skin.HasSetting(View_503_DisableTags)" />
-								<param name="conditional_artworkdiffuse_override" value="Skin.HasTheme(Roundedge) + !Skin.HasSetting(View_503_DisableTags)" />
-							</include>
-							<control type="group">
-								<visible>!Skin.HasSetting(View_503_DisableTags)</visible>
-								<include content="FocusOverlay">
-									<param name="diffusedimtext" value="artworkdiffuse/usebganel/poster.png" />
-								</include>
-							</control>
-							<control type="group">
-								<visible>Skin.HasSetting(View_503_DisableTags)</visible>
-								<include content="FocusOverlay">
-									<param name="diffusedimtext" value="artworkdiffuse/poster.png" />
-								</include>
-							</control>
-						</control>
-					</control>
-				</focusedlayout> -->
 				<itemlayout height="350" width="202">
 					<control type="group">
-					<animation effect="fade" start="100" end="0" time="350" condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) | !String.IsEmpty(Window(home).Property(TrailerIsPlaying))">conditional</animation>
+					<animation effect="fade" start="100" end="0" time="250" condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) | !String.IsEmpty(Window(home).Property(TrailerIsPlaying))">conditional</animation>
 					
 						<width>200</width>
 						<height>282</height>
@@ -313,7 +236,7 @@
 		
 			<control description="cast" type="panel" id="50350">
 				<animation effect="slide" start="0,0" end="0,-350" time="350" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) | !String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
-				<animation effect="slide" start="0,0" end="-202,150" time="350" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
+				<animation effect="slide" start="0,0" end="-300,100" time="350" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
 				
 				<animation effect="fade" start="0" end="100" time="450" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) | !String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
 				<bottom>-400</bottom>
@@ -321,7 +244,7 @@
 				<height>400</height>
 				<width>200%</width>
 				<scrolltime tween="quadratic">400</scrolltime>
-				<visible>!String.IsEqual(ListItem.DBtype,set)</visible>
+					<visible>!String.IsEqual(ListItem.DBtype,set)</visible>
 								<include>Action_CastMemberSearchForceOption</include>
 								<onback>SetFocus(50)</onback>
 				<preloaditems>2</preloaditems>
@@ -363,6 +286,7 @@
 								</control>
 								
 								<control type="image">
+									<visible>!Window.IsActive(busydialog)</visible>
 									<visible>String.IsEqual(Container(503).ListItem.Art(thumb), Container(503).ListItem.Art(thumb))</visible>
 									<texture>$INFO[Container(503).ListItem.Art(thumb)]</texture>
 								</control>
@@ -394,14 +318,13 @@
 					<onfocus>SetProperty(Spotlight_Sets,true)</onfocus>
 					<orientation>horizontal</orientation>
 						
-						<height>400</height>
-						<onback>SetFocus(50)</onback>
-						<preloaditems>2</preloaditems>
-						<scrolltime tween="quadratic">400</scrolltime>
-					
+					<height>400</height>
+					<onback>SetFocus(50)</onback>
+					<preloaditems>2</preloaditems>
+					<scrolltime tween="quadratic">400</scrolltime>
+				
 					<onup>ClearProperty(Spotlight_Sets)</onup>
 					<onup>503</onup>
-					
 					
 					<ondown>ClearProperty(Spotlight_Sets)</ondown>
 					<ondown>503</ondown>
@@ -466,13 +389,12 @@
 					</control>
 				</focusedlayout>
 						<!-- <content>
-							<item>
+							<item> 2 static items first should never gain focus scnd is info
 								<thumb>$INFO[Container(503).ListItem.Art(thumb)]</thumb>
 							</item>
 						</content> get static sending click -->
 						<content sortby="playcount" limit="1">$VAR[View503_NextUp]</content>
 						<content sortby="year" target="videos">$VAR[View_503_Folderpath]</content>
-						<!-- <content sortby="year">$INFO[Container.ListItem.FolderPath]</content> -->
 					</control>
 				
 				similiar
@@ -481,7 +403,8 @@
 		
 		
 		
-		
+		<include content="spotight_buttongroup_hor" />
+		<!-- unhappy but maybe needed and practicable for people without a menu button ?? -->
 		
 		
 		
@@ -697,20 +620,35 @@
 		
 	<include name="spotight_buttongroup_hor">
 		<!-- unhappy but maybe needed and practicable for people without a menu button ?? -->
-		<control type="grouplist" id="7777">
+		
+		<control type="image">
+			<texture colordiffuse="cc000000">colors/white.png</texture>
 			<visible>Control.IsVisible(503) | Control.IsVisible(504)</visible>
-					<animation effect="slide" start="0,0" end="0,-100" time="200" easing="inout" reversible="true">Focus</animation>
-					<bottom>-100</bottom>
-					<height>70</height>
-					<visible>false</visible>
-					<!-- <animation effect="fade" start="0,0" end="0,-100" time="200" easing="inout" reversible="true">Focus</animation> -->
-					<bottom>470</bottom>
-					<height>70</height>
-					
-					
-					
-					
-					
+			<animation effect="slide" start="0,0" end="0,-100" time="200" easing="inout" reversible="true" condition="ControlGroup(6000).HasFocus()">conditional</animation>
+			<bottom>-100</bottom>
+			<height>100</height>
+		</control>
+		
+		<control type="grouplist" id="6000">
+			<visible>false</visible>
+			<visible>Control.IsVisible(503) | Control.IsVisible(504)</visible>
+			<!-- 
+			at bottom
+			-->
+			<animation effect="slide" start="0,0" end="0,-100" time="200" easing="inout" reversible="true">Focus</animation>
+			<bottom>-100</bottom>
+			<height>70</height>
+			
+			<!-- <animation effect="fade" start="0" end="100" time="200" easing="inout" reversible="true">Focus</animation>
+			 at top
+			<bottom>470</bottom>
+			<height>70</height>
+			-->
+			<ondown condition="!String.IsEmpty(Window.Property(Spotlight_Cast))">50</ondown>
+			<ondown condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) + [!String.IsEqual(ListItem.dbtype,set) | !String.IsEqual(ListItem.dbtype,tvshow)]">ClearProperty(Spotlight_Cast)</ondown>
+			<ondown condition="String.IsEmpty(Window.Property(Spotlight_Cast)) + !String.IsEqual(ListItem.DBtype,set)">SetProperty(Spotlight_Cast,visible)</ondown>
+			<ondown condition="[!String.IsEmpty(Window.Property(Spotlight_Cast)) + String.IsEqual(ListItem.dbtype,tvshow)] | String.IsEqual(ListItem.dbtype,set)">SetFocus(50352)</ondown>
+				
 			<animation effect="fade" start="100" end="0" time="350" easing="inout" reversible="false" condition="Container.OnNext | Container.OnPrevious">conditional</animation>
 			<!-- just if align left <left>110</left> -->
 			<description>maybe animation - 100h slide up easing inout when hit ondown</description>
@@ -718,45 +656,45 @@
 			
 			<orientation>horizontal</orientation>
 			<itemgap>50</itemgap>
-				<onup>SetFocus(50)</onup>
+			<onup>SetFocus(50)</onup>
 
-			
-				<control type="radiobutton" id="77772">
-					<include content="HUB_ContainerButtons">
-						<description>trailer</description>
-						<param name="texture" value="defaultmusicvideotitle.png" />
-					</include>
-				</control>
-				<control type="radiobutton" id="77773">
-					<description>cast</description>
-					<include content="HUB_ContainerButtons">
-						<param name="texture" value="defaultyear.png" />
-					</include>
-				</control>
-				<control type="radiobutton" id="77774">
-					<description>info</description>
-					<include content="HUB_ContainerButtons">
-						<param name="texture" value="defaultaddoninfoprovider.png" />
-					</include>
-				</control>
-				<control type="radiobutton" id="77775">
-					<description>sets</description>
-					<include content="HUB_ContainerButtons">
-						<param name="texture" value="defaultmusicplaylists.png" />
-					</include>
-				</control>
-				<control type="radiobutton" id="77775">
-					<description>similiar</description>
-					<include content="HUB_ContainerButtons">
-						<param name="texture" value="defaultmusicplaylists.png" />
-					</include>
-				</control>
-				<control type="radiobutton" id="77775">
-					<description>items from same director</description>
-					<include content="HUB_ContainerButtons">
-						<param name="texture" value="defaultmusicplaylists.png" />
-					</include>
-				</control>
+		
+			<control type="radiobutton" id="77772">
+				<include content="HUB_ContainerButtons">
+					<description>filter</description>
+					<param name="texture" value="defaultmusicvideotitle.png" />
+				</include>
+			</control>
+			<control type="radiobutton" id="77773">
+				<description>trailaer</description>
+				<include content="HUB_ContainerButtons">
+					<param name="texture" value="defaultyear.png" />
+				</include>
+			</control>
+			<control type="radiobutton" id="77774">
+				<description>cast</description>
+				<include content="HUB_ContainerButtons">
+					<param name="texture" value="defaultaddoninfoprovider.png" />
+				</include>
+			</control>
+			<control type="radiobutton" id="77775">
+				<description>scrollbar - alphabet bar</description>
+				<include content="HUB_ContainerButtons">
+					<param name="texture" value="defaultmusicplaylists.png" />
+				</include>
+			</control>
+			<control type="radiobutton" id="77776">
+				<description>filter?</description>
+				<include content="HUB_ContainerButtons">
+					<param name="texture" value="defaultmusicplaylists.png" />
+				</include>
+			</control>
+			<control type="radiobutton" id="77777">
+				<description>order ?</description>
+				<include content="HUB_ContainerButtons">
+					<param name="texture" value="defaultmusicplaylists.png" />
+				</include>
+			</control>
 		</control>
 		
 	</include>

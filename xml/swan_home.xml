@@ -56,6 +56,7 @@
 		<definition>
 		
 		<control type="group">
+			<include>temp_spotlight_infofade</include>
 			<description>S P O T L I G H T  A R T W O R K</description>
 			<include content="Fanart_Diffused">
 				<right>0</right>
@@ -82,7 +83,7 @@
 		</control>
 		
 		<control type="group">
-			<description>animation effect="slide" start="0,0" end="0,-800" time="600" easing="inout" reversible="true" condition="Control.IsVisible(503) + !Control.hasfocus(503)</description>
+			<description>effect="slide" start="0,0" end="0,-720" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) | !String.IsEmpty(Window.Property(Spotlight_Nextup)) | !String.IsEmpty(Window.Property(Spotlight_Cast))">conditional</description>
 		
 			<include condition="$PARAM[info_visible_left]" content="spotlight_trailer_overlay">
 				<param name="trailer_visible_right" value="true" />
@@ -160,7 +161,7 @@
 					</include>
 					<aligny>center</aligny>
 					<textcolor>$VAR[color_global_spotlight_accent]</textcolor>
-					<label>$VAR[ClearLogo_FallbackHome]</label>
+					<label>$VAR[clearLogo_fallback]</label>
 				</control>
 				
 				<include content="Meta_Uncommon_Top">
@@ -195,7 +196,9 @@
 						<textcolor>$VAR[color_global_spotlight_main]</textcolor>
 						<label>[CAPITALIZE]$INFO[ListItem.Title,[B],[/B]][CR]$INFO[ListItem.Season,$LOCALIZE[36904] ,]$INFO[ListItem.Episode, $LOCALIZE[36906] ,][/CAPITALIZE]</label>
 					</control>
-					<include content="spacer_h" />
+					<include content="spacer_h">
+						<param name="gap" value="5" />
+					</include>
 				</control>
 				
 				<include condition="!$PARAM[info_plot_hidden]" content="Spotlight_Plot">
@@ -339,6 +342,9 @@
 	</include>
 	<include name="Spotlight_Plot">
 		<control type="textbox">
+			
+			<include>temp_spotlight_infofade</include>
+			
 			<width>95%</width>
 			<description>if align right, width doesnt affect alignment</description>
 			<visible>$PARAM[visible]</visible>
@@ -366,6 +372,7 @@
 			<height>60</height>
 			<orientation>horizontal</orientation>
 			<itemgap>10</itemgap>
+			<include>temp_spotlight_infofade</include>
 			
 			<include content="pos_alignx" condition="!$PARAM[Is_hiddenplot] + $PARAM[Is_left]" />
 			<include content="pos_alignx" condition="$PARAM[Is_hiddenplot] | $PARAM[Is_center]">
@@ -379,8 +386,9 @@
 			</include>
 			
 			<control type="image">
-				<height>60</height>
-				<width>60</width>
+				<top>5</top>
+				<height>50</height>
+				<width>50</width>
 				<bordertexture colordiffuse="$VAR[color_global_spotlight_accent]" aligny="center" align="center">diffuse/circle.png</bordertexture>
 				<texture colordiffuse="$VAR[color_home_background_layer1]" aligny="center" align="center">flags/genre.png</texture>
 			</control>
@@ -465,7 +473,7 @@
 		<value>$INFO[ListItem.Label2]</value>
 	</variable>
 
-	<variable name="ClearLogo_FallbackHome">
+	<variable name="clearLogo_fallback">
 		<value condition="$EXP[IsSong]">$INFO[ListItem.AlbumArtist,[B],[/B]][CR]$INFO[ListItem.title]</value>
 		<value condition="$EXP[IsAlbum]">$INFO[ListItem.AlbumArtist,[B],[/B]]</value>
 		<value condition="$EXP[IsEpisode]">$INFO[ListItem.tvshowtitle]</value>		
