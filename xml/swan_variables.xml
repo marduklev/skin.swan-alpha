@@ -93,9 +93,13 @@
 	</variable>	
 	
 	<variable name="plot">
+		
+		<value condition="Control.HasFocus(50352) + !String.IsEmpty(Container(50352).ListItem.Plot)">$INFO[Container(50352).ListItem.Plot]</value>
+		
 		<value condition="String.IsEqual(ListItem.Label,..) | [String.StartsWith(ListItem.Label,*) + String.IsEmpty(Container.ShowPlot)] | Control.HasFocus(7600) | [Window.IsActive(home) + ControlGroup(9000).HasFocus()] | String.IsEqual(ListItem.DBTYPE,genre) | String.IsEqual(ListItem.DBTYPE,studio) | String.IsEqual(ListItem.DBTYPE,actor) | String.IsEqual(ListItem.DBTYPE,year) | String.IsEqual(ListItem.DBTYPE,director) | String.IsEqual(ListItem.DBTYPE,country) | String.IsEqual(ListItem.DBTYPE,tag)"></value>
 		<value condition="String.StartsWith(ListItem.Label,*) + !String.IsEmpty(Container.ShowPlot)">$INFO[Container.ShowPlot]</value>
 		<value condition="!String.IsEmpty(ListItem.Plot)">$INFO[ListItem.Plot]</value>
+		
 		<value condition="!String.IsEmpty(ListItem.Property(Album_Description))">$INFO[ListItem.Property(Album_Description)]$INFO[ListItem.ContributorAndRole,[CR],]</value>
 		<value condition="!String.IsEmpty(ListItem.Property(Artist_Description))">$INFO[ListItem.Property(Artist_Description)]$INFO[ListItem.ContributorAndRole,[CR],]</value>
 		<value condition="String.IsEqual(ListItem.DBTYPE,musicvideo)">$INFO[ListItem.Artist]$INFO[ListItem.Title,[CR],]</value>
@@ -149,6 +153,9 @@
 	
 	just videoinfo
 	<variable name="EmbuaryCast">
+		<value condition="String.IsEqual(ListItem.DBType,set)">plugin://script.embuary.helper?info=getsetcast&amp;type=movie&amp;dbid=$INFO[ListItem.DBID]</value>
+		
+		
 		<value condition="String.IsEqual(ListItem.DBType,movie) + [!String.IsEmpty(ListItem.DBID) + !String.IsEqual(ListItem.DBID,0)]">plugin://script.embuary.helper?info=getcast&amp;type=movie&amp;dbid=$INFO[ListItem.DBID]</value>
 		<value condition="String.IsEqual(ListItem.DBType,movie) + String.IsEqual(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=movie&amp;title='$ESCINFO[ListItem.Title]'</value>
 		<value condition="String.IsEqual(ListItem.DBType,tvshow) + [!String.IsEmpty(ListItem.DBID) + !String.IsEqual(ListItem.DBID,0)]">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[ListItem.DBID]</value>

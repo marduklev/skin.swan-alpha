@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <includes>
 	<include name="temp_spotlight_infofade">
-		<animation effect="fade" start="100" end="10" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) + Container.Content(tvshows) + [Container(50350).IsUpdating  | Integer.IsGreater(Container(50350).NumItems,0)]">conditional</animation>
+		<animation effect="fade" start="100" end="0" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) + [Container(50350).IsUpdating  | Integer.IsGreater(Container(50350).NumItems,0)]">conditional</animation>
 	</include>
 		
 	<!-- skinsetting view_options in mind / to do
@@ -71,7 +71,7 @@
 					<param name="view_id" value="503" />
 					<param name="bottom" value="380" />
 					<param name="use_bgpanel" value="true" />
-					<param name="footer_bg_color" value="ccffffff" />
+					<param name="footer_bg_color" value="2affffff" />
 					<param name="footer_mediaflag_offsetleft" value="350" />
 					<param name="footer_rating_offsetright" value="70" />
 				</include>
@@ -80,7 +80,7 @@
 		<control type="group">
 			<visible>Control.IsVisible(503)</visible>
 			
-				<animation effect="slide" start="0,0" end="0,-510" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) | !String.IsEmpty(Window.Property(Spotlight_Nextup))">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-500" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) | !String.IsEmpty(Window.Property(Spotlight_Nextup))">conditional</animation>
 				
 				<control type="label">
 					<description>item heading</description>
@@ -196,15 +196,13 @@
 				<onup condition="!String.IsEmpty(Window(home).Property(listitemtrailer)) + String.IsEmpty(Window.Property(Spotlight_Cast))">SetProperty(Spotlight_Cast,visible)</onup>
 				<onup condition="!String.IsEmpty(Window.Property(Spotlight_Cast))">ClearProperty(Spotlight_Cast)</onup>
 			
-				<ondown condition="!Control.IsVisible(6000) + [!String.IsEmpty(Window.Property(Spotlight_Cast)) + [!String.IsEqual(ListItem.dbtype,set) | !String.IsEqual(ListItem.dbtype,tvshow)]]">ClearProperty(Spotlight_Cast)</ondown>
-				<ondown condition="!Control.IsVisible(6000) + [String.IsEmpty(Window.Property(Spotlight_Cast)) + !String.IsEqual(ListItem.DBtype,set)]">SetProperty(Spotlight_Cast,visible)</ondown>
-				<ondown condition="!Control.IsVisible(6000) + [[!String.IsEmpty(Window.Property(Spotlight_Cast)) + String.IsEqual(ListItem.dbtype,tvshow)] | String.IsEqual(ListItem.dbtype,set)]">SetFocus(50352,0,absolute)</ondown>
-				0 absolute if movie set
-				1 absolute if season for focus nextup
+				<ondown condition="!Control.IsVisible(6000) + [!String.StartsWith(container.folderpath,plugin) + !String.IsEmpty(Window.Property(Spotlight_Cast)) + [!String.IsEqual(ListItem.dbtype,set) | !String.IsEqual(ListItem.dbtype,tvshow)]]">ClearProperty(Spotlight_Cast)</ondown>
+				<ondown condition="!Control.IsVisible(6000) + [!String.StartsWith(container.folderpath,plugin) + String.IsEmpty(Window.Property(Spotlight_Cast))]">SetProperty(Spotlight_Cast,visible)</ondown>
+				<ondown condition="!Control.IsVisible(6000) + [!String.StartsWith(container.folderpath,plugin) + !String.IsEmpty(Window.Property(Spotlight_Cast))] + [String.IsEqual(ListItem.dbtype,tvshow) | String.IsEqual(ListItem.dbtype,set)]">SetFocus(50352,0,absolute)</ondown>
+				
 				<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
 				
 				<onleft condition="Control.IsVisible(8999)">8999</onleft>
-				
 				<ondown condition="Control.IsVisible(6000)">6000</ondown>
 				
 				<itemlayout height="350" width="202">
@@ -273,97 +271,89 @@
 			<control description="cast" type="panel" id="50350">
 				<animation effect="slide" start="0,0" end="0,-350" time="350" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) | !String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
 				<animation effect="slide" start="0,0" end="-300,100" time="350" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
-				
 				<animation effect="fade" start="0" end="100" time="450" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) | !String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
+				
 				<bottom>-400</bottom>
 				<left>400</left>
 				<height>400</height>
 				<width>200%</width>
 				<scrolltime tween="quadratic">400</scrolltime>
-					<visible>!String.IsEqual(ListItem.DBtype,set)</visible>
-								<include>Action_CastMemberSearchForceOption</include>
-								<onback>SetFocus(50)</onback>
+				<include>Action_CastMemberSearchForceOption</include>
+				<onback>SetFocus(50)</onback>
+				<onback>ClearProperty(Spotlight_Sets)</onback>
+				<onback>ClearProperty(Spotlight_Cast)</onback>
 				<preloaditems>2</preloaditems>
 				<orientation>horizontal</orientation>
 				
 				<itemlayout height="380" width="230">
-							<control type="group">
-								<height>202</height>
-								<width>202</width>
-								<control type="group">
-									<visible>!String.IsEqual(Container(503).ListItem.Art(thumb), Container(503).ListItem.Art(thumb))</visible>
-								
-									<include content="Circle_CastWidget">
-										<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_nf]" />
-										<param name="autoscroll" value="false" />
-										<param name="bordersize_bg" value="6" />
-									</include>
-								</control>
-								
-								<control type="image">
-									<visible>String.IsEqual(Container(503).ListItem.Art(thumb), Container(503).ListItem.Art(thumb))</visible>
-									<texture>$INFO[ListItem.thumb]</texture>
-								</control>
-							</control>
-						</itemlayout>
-						<focusedlayout height="380" width="230">
-							<control type="group">
-								<height>220</height>
-								<width>220</width>
-								<include>Animation_Item_Focus</include>
-								<control type="group">
-									<visible>!String.IsEqual(Container(503).ListItem.Art(thumb), Container(503).ListItem.Art(thumb))</visible>
-								
-									<include content="Circle_CastWidget">
-										<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_nf]" />
-										<param name="autoscroll" value="false" />
-										<param name="bordersize_bg" value="6" />
-									</include>
-								</control>
-								
-								<!-- 
-								<control type="image">
-									<description>use poster layout template</description>
-									<visible>!Window.IsActive(busydialog)</visible>
-									<visible>String.IsEqual(Container(503).ListItem.Art(thumb), Container(503).ListItem.Art(thumb))</visible>
-									<texture>$INFO[Container(503).ListItem.Art(thumb)]</texture>
-								</control>
-								-->
-							</control>
-						</focusedlayout>
+					<control type="group">
+						<height>202</height>
+						<width>202</width>
+						<control type="group">
+							<visible>!String.IsEqual(Container(503).ListItem.Art(thumb), Container(503).ListItem.Art(thumb))</visible>
+						
+							<include content="Circle_CastWidget">
+								<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_nf]" />
+								<param name="autoscroll" value="false" />
+								<param name="bordersize_bg" value="6" />
+							</include>
+						</control>
+						
+						<control type="image">
+							<visible>String.IsEqual(Container(503).ListItem.Art(thumb), Container(503).ListItem.Art(thumb))</visible>
+							<texture>$INFO[ListItem.thumb]</texture>
+						</control>
+					</control>
+				</itemlayout>
+				<focusedlayout height="380" width="230">
+					<control type="group">
+						<height>220</height>
+						<width>220</width>
+						<include>Animation_Item_Focus</include>
+						<control type="group">
+							<visible>!String.IsEqual(Container(503).ListItem.Art(thumb), Container(503).ListItem.Art(thumb))</visible>
+						
+							<include content="Circle_CastWidget">
+								<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_nf]" />
+								<param name="autoscroll" value="false" />
+								<param name="bordersize_bg" value="6" />
+							</include>
+						</control>
+						
 						<!-- 
-						<content>
-							<item>
-								<thumb>$INFO[Container(503).ListItem.Art(thumb)]</thumb>
-							</item>
-						</content>
+						<control type="image">
+							<description>use poster layout template</description>
+							<visible>!Window.IsActive(busydialog)</visible>
+							<visible>String.IsEqual(Container(503).ListItem.Art(thumb), Container(503).ListItem.Art(thumb))</visible>
+							<texture>$INFO[Container(503).ListItem.Art(thumb)]</texture>
+						</control>
 						-->
-						<content>$VAR[EmbuaryCast]</content>
+					</control>
+				</focusedlayout>
+				<!-- use when focus enabled
+				<content>
+					<item>
+						<thumb>$INFO[Container(503).ListItem.Art(thumb)]</thumb>
+					</item>
+				</content>
+				-->
+				<content>$VAR[EmbuaryCast]</content>
 			</control>
 			
-				if tvshow/season use 
-				group
-					group left 
-						nextup container
-					group right 
-						container folderpath
-						(con layout if '504 | season use fanart/ls thumb', if 'tvshow + 503' use poster)
-						else
-						
-						container folderpath
-			<control description="next" type="panel" id="50352">
+			<control description="nextup | movie sets" type="panel" id="50352">
 				<animation effect="slide" start="0,0" end="0,-300" time="350" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
-				
 				<bottom>-830</bottom>
 				<left>100</left>
 				<onfocus>SetProperty(Spotlight_Sets,true)</onfocus>
 				<orientation>horizontal</orientation>
-				
 				<height>400</height>
-				<onback>SetFocus(50)</onback>
 				<preloaditems>2</preloaditems>
 				<scrolltime tween="quadratic">400</scrolltime>
-			
+				
+				<onback>SetFocus(50)</onback>
+				<onback>ClearProperty(Spotlight_Sets)</onback>
+				<onback>ClearProperty(Spotlight_Cast)</onback>
+				
 				<onup>ClearProperty(Spotlight_Sets)</onup>
 				<onup>503</onup>
 				
@@ -463,7 +453,7 @@
 				
 			</control>
 			
-			<control description="container folderpath" type="panel" id="50353">
+			<control description="seasons" type="panel" id="50353">
 				<animation effect="slide" start="0,0" end="0,-300" time="350" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
 				<visible>Container.Content(tvshows)</visible>
 				<bottom>-830</bottom>
@@ -877,6 +867,13 @@
 						<top>0</top>
 						<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
 						<visible>$PARAM[is_focused]</visible>
+					</control>
+					<control type="image">
+						<description>focus frame bad if item bg match global bg</description>
+						<texture colordiffuse="$PARAM[tc]">colors/white20.png</texture>
+						<top>0</top>
+						<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
+						<visible>!$PARAM[is_focused]</visible>
 					</control>
 					<control type="image">
 						<description>tile bg</description>
