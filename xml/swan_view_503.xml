@@ -3,7 +3,13 @@
 	<include name="temp_spotlight_infofade">
 		<animation effect="fade" start="100" end="0" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) + [Container(50350).IsUpdating  | Integer.IsGreater(Container(50350).NumItems,0)]">conditional</animation>
 	</include>
-		
+	
+	<variable name="SetLabel">
+		<value condition="!String.IsEmpty(ListItem.Set)">$INFO[ListItem.Set]</value>
+		<value>$INFO[Container(503).ListItem.Label]</value>
+	</variable>
+		<!-- <label>$INFO[Container(503).ListItem.Label]</label> -->
+					
 	<!-- skinsetting view_options in mind / to do
 	
 		503/504 - overrdie default focus, use fixedframe - low prio, may not do it
@@ -126,7 +132,8 @@
 				<control type="label">
 					<visible>!String.IsEmpty(Window.Property(Spotlight_Sets)) + !Container.Content(tvshows)</visible>
 					<description>item heading  + !String.IsEmpty(ListItem.SetId)</description>
-					<label>$INFO[Container(503).ListItem.Label]</label>
+					<!-- <label>$INFO[Container(503).ListItem.Label]</label> -->
+					<label>$VAR[SetLabel]</label>
 					<left>100</left>
 					<bottom>-160</bottom>
 					<height>100</height>
@@ -183,7 +190,7 @@
 				<height>370</height>
 				<visible>!Container.Content(episodes)</visible>
 				
-					<animation effect="slide" start="0,0" end="-200,0" time="250" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) + String.IsEmpty(Window.Property(Spotlight_Sets)">conditional</animation> -->
+					<animation effect="slide" start="0,0" end="-200,0" time="250" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) + String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
 					<animation effect="fade" start="100" end="0" time="250" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
 				
 				<!-- keep folder content in layout instead of goin into folder ? -->
@@ -199,9 +206,13 @@
 				<ondown condition="!Control.IsVisible(6000) + [!String.StartsWith(container.folderpath,plugin) + !String.IsEmpty(Window.Property(Spotlight_Cast)) + [!String.IsEqual(ListItem.dbtype,set) | !String.IsEqual(ListItem.dbtype,tvshow)]]">ClearProperty(Spotlight_Cast)</ondown>
 				<ondown condition="!Control.IsVisible(6000) + [!String.StartsWith(container.folderpath,plugin) + String.IsEmpty(Window.Property(Spotlight_Cast))]">SetProperty(Spotlight_Cast,visible)</ondown>
 				
+				focus container
 				<ondown condition="!Control.IsVisible(6000) + [!String.StartsWith(container.folderpath,plugin) + String.IsEqual(ListItem.dbtype,tvshow)]">SetFocus(50352,0,absolute)</ondown>
+				show cast before
+				<ondown condition="!Control.IsVisible(6000) + [!String.StartsWith(container.folderpath,plugin) + !String.IsEmpty(Window.Property(Spotlight_Cast)) + [String.IsEqual(ListItem.dbtype,set) | !String.IsEmpty(ListItem.SetId)]]">SetFocus(50352,0,absolute)</ondown>
+				<!-- <ondown condition="!Control.IsVisible(6000) + [!String.StartsWith(container.folderpath,plugin) + !String.IsEmpty(Window.Property(Spotlight_Cast)) + [String.IsEqual(ListItem.dbtype,set) | [!String.IsEmpty(ListItem.SetId) + Integer.IsGreater(Container(50352).NumItems,1)]]">SetFocus(50352,0,absolute)</ondown> -->
 				
-				<ondown condition="!Control.IsVisible(6000) + [!String.StartsWith(container.folderpath,plugin) + !String.IsEmpty(Window.Property(Spotlight_Cast)) + String.IsEqual(ListItem.dbtype,set)]">SetFocus(50352,0,absolute)</ondown>
+				
 				
 				<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
 				

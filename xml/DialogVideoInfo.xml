@@ -6,6 +6,8 @@
 	<onload>RunScript(script.embuary.helper,action=encode,string='"$VAR[EncodeTitle]"',prop=EncodedTitle)</onload>
 	<onload condition="!string.isempty(listitem.dbid) + [container.content(movies) | String.IsEqual(ListItem.DBTYPE,movie)]">RunScript(script.embuary.helper,action=lookforfile,file='"$VAR[extrasLocation_lookup]"',prop=bonuscontentavail)</onload>
 	
+	<!-- maybe auto close dialog and open embuary.info window() if not media from lib ? -->
+	
 	<onunload>ClearProperty(AdditionalInfo)</onunload>
 	<onunload>ClearProperty(EncodedTitle,home)</onunload>
 	<onunload condition="!String.IsEmpty(Window(home).Property(bonuscontentavail))">ClearProperty(bonuscontentavail,home)</onunload>	
@@ -28,6 +30,20 @@
 			<visible>!Skin.HasSetting(VideoInfo_Content_Library_OST) + [Integer.IsGreater(Container(8699).NumItems,0) | Container(8699).IsUpdating]</visible>
 			<content limit="1">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22album%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%2C%7B%22field%22%3A%22type%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22soundtrack%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</content>
 		</control>
+		<!-- native cast force action button -->
+		
+		<!-- 
+		<control type="button" id="8698">
+			<description>ctrl + action native cast</description>
+			
+			
+			<include>Action_CastMemberSearchForceOption</include>
+			
+		- need fetch labels
+			<onleft>Control.Move(50,-1)</onleft>
+			<onright>Control.Move(50,1)</onright>
+			<include content="HiddenObject" />
+		</control> -->
 		
 		<control type="image">
 			<description>temp ? trailer overlay</description>
@@ -432,11 +448,11 @@
 				
 				<control type="togglebutton" id="21">
 					<description>Play Trailer</description>
-					<visible>!Skin.HasSetting(VideoInfo_Button_Trailer) + [!String.IsEmpty(Window(home).Property(trailer_avail)) | !String.IsEmpty(ListItem.Trailer) | Integer.IsGreater(Container(8605).NumItems,0)]</visible>
+					<visible>!Skin.HasSetting(VideoInfo_Button_Trailer) + $EXP[Has_Trailer]</visible>
 					<include>Button_VideoInfo</include>
 					<label>20410</label>
-					<onclick condition="String.IsEmpty(Window(home).Property(trailer_avail)) + !String.IsEmpty(ListItem.Trailer)">PlayMedia($INFO[ListItem.Trailer],1)</onclick>
-					<onclick condition="!String.IsEmpty(Window(home).Property(listitemtrailer)) + !String.IsEmpty(Window(home).Property(trailer_avail))">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onclick>
+					<onclick condition="!String.IsEmpty(ListItem.Trailer)">PlayMedia($INFO[ListItem.Trailer],1)</onclick>
+					<onclick condition="String.IsEmpty(ListItem.Trailer) + [!String.IsEmpty(Window(home).Property(listitemtrailer)) + !String.IsEmpty(Window(home).Property(trailer_avail))]">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onclick>
 					<onclick>SetProperty(TrailerIsPlaying,true,home)</onclick>
 					<usealttexture>!String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</usealttexture>
 					<altlabel>244</altlabel>
@@ -652,7 +668,10 @@
 					<param name="itemwidth" value="207" />
 					<param name="itemheight" value="310" />
 					<param name="layout" value="poster" />
-					<include>Action_CastMemberSearchForceOption</include>
+					
+					
+					<!-- <onfocus>SetFocus(8698)</onfocus> -->
+					
 				</include>
 				
 				<!-- Items by CAST -->
@@ -691,7 +710,7 @@
 					<param name="label" value="$LOCALIZE[342] $LOCALIZE[19159] $LOCALIZE[20339] [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$INFO[ListItem.Director, &quot; , &quot;][/COLOR]" />
 					<visible>Control.IsVisible(8605)</visible>
 				</include>
-				<include condition="!Skin.HasSetting(VideoInfo_Content_Director)" content="Universal_Container">
+				<include condition="!Skin.HasSetting(VideoInfo_Content_Director) + !String.IsEmpty(ListItem.Director)" content="Universal_Container">
 					<param name="id" value="8605" />
 					<param name="visible" value="Integer.IsGreater(Container(8605).NumItems,0) | Container(8605).IsUpdating" />
 					<param name="type_height" value="380" />
@@ -714,7 +733,9 @@
 					</content>
 					<content target="videos">videodb://movies/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22director%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[ListItem.Director]%22%5D%7D%2C%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
 				</include>
-								
+				
+				
+						
 				<!-- similiar -->
 				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="8510" />
@@ -789,7 +810,6 @@
 					<param name="label" value="YouTube Results for [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$VAR[Title,  &quot; , &quot;][/COLOR]" />
 					<visible>Control.IsVisible(8611)</visible>
 				</include>
-				
 				<include condition="!$EXP[IsOfflineMode] + [System.HasAddon(plugin.video.youtube) + !Skin.HasSetting(VideoInfo_Content_Youtube)]" content="Universal_Container">
 					<param name="id" value="8611" />
 					<param name="visible" value="Integer.IsGreater(Container(8611).NumItems,0) | Container(8611).IsUpdating" />
@@ -853,9 +873,9 @@
 					<param name="label" value="EXTRA THUMBS" />
 					<visible>Control.IsVisible(8607)</visible>
 				</include>
-				<include content="Universal_Container">
+				<include condition="Skin.HasSetting(UseExtraFanartFolder)" content="Universal_Container">
 					<param name="id" value="8607" />
-					<param name="visible" value="Skin.HasSetting(UseExtraFanartFolder) + [Integer.IsGreater(Container(8607).NumItems,0) | Container(8607).IsUpdating]" />
+					<param name="visible" value="[Integer.IsGreater(Container(8607).NumItems,0) | Container(8607).IsUpdating]" />
 					<param name="type_height" value="370" />
 					<param name="tags_visible" value="false" />
 					<param name="layout_height" value="370" />
@@ -897,6 +917,9 @@
 					<param name="diffuse_art_alledges" value="true" />
 					<param name="root_conditional_artworkdiffuse_themed" value="true" />
 					<param name="root_conditional_artworkdiffuse_override" value="false" />
+					
+					
+					<!--need  play media windowed - fake fullscreen -->
 					
 					<onclick>Close</onclick>
 					<onclick>PlayMedia($INFO[ListItem.FilenameAndPath],noresume)</onclick>

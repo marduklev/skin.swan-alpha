@@ -153,9 +153,8 @@
 	
 	just videoinfo
 	<variable name="EmbuaryCast">
+		<value condition="Window.IsActive(movieinformation) + [String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow)] + [System.HasAddon(plugin.video.themoviedb.helper) + String.Contains(listitem.path,plugin.video.themoviedb.helper)]">plugin://plugin.video.themoviedb.helper/?info=cast&amp;$VAR[Info_Param_Type]&amp;$VAR[Info_Param_IMDB_or_QUERY]</value>
 		<value condition="String.IsEqual(ListItem.DBType,set)">plugin://script.embuary.helper?info=getsetcast&amp;type=movie&amp;dbid=$INFO[ListItem.DBID]</value>
-		
-		
 		<value condition="String.IsEqual(ListItem.DBType,movie) + [!String.IsEmpty(ListItem.DBID) + !String.IsEqual(ListItem.DBID,0)]">plugin://script.embuary.helper?info=getcast&amp;type=movie&amp;dbid=$INFO[ListItem.DBID]</value>
 		<value condition="String.IsEqual(ListItem.DBType,movie) + String.IsEqual(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=movie&amp;title='$ESCINFO[ListItem.Title]'</value>
 		<value condition="String.IsEqual(ListItem.DBType,tvshow) + [!String.IsEmpty(ListItem.DBID) + !String.IsEqual(ListItem.DBID,0)]">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[ListItem.DBID]</value>
@@ -165,6 +164,22 @@
 		<value>-</value>
 	</variable>
 	
+	
+	<!-- crew 
+		<value condition="Window.IsActive(movieinformation) + [String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow)] + [System.HasAddon(plugin.video.themoviedb.helper) + String.Contains(listitem.path,plugin.video.themoviedb.helper)]">plugin://plugin.video.themoviedb.helper/?info=crew&amp;$VAR[Info_Param_Type]&amp;$VAR[Info_Param_IMDB_or_QUERY]</value> -->
+	
+	<variable name="Info_Param_Type">
+		<value condition="String.IsEqual(ListItem.DBType,movie) | ListItem.IsCollection | String.IsEqual(ListItem.DBType,set)">type=movie</value>
+		<value condition="String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,episode)">type=tv</value>
+	</variable>
+	<variable name="Info_Param_IMDB_or_QUERY">
+		<value condition="String.IsEqual(ListItem.DBType,movie) + !String.IsEmpty(ListItem.Property(imdb_id))">imdb_id=$INFO[ListItem.Property(imdb_id)]</value>
+		<value condition="String.IsEqual(ListItem.DBType,movie) + !String.IsEmpty(ListItem.IMDBNumber) + !String.StartsWith(ListItem.IMDBNumber,xx)">imdb_id=$INFO[ListItem.IMDBNumber]</value>
+		<value condition="[String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,episode)] + !String.IsEmpty(ListItem.TvShowTitle)">query=$INFO[ListItem.TvShowTitle]</value>
+		<value condition="!String.IsEmpty(ListItem.Title) + !String.IsEmpty(ListItem.Year)">query=$INFO[ListItem.Title]&amp;year=$INFO[ListItem.Year]</value>
+		<value condition="!String.IsEmpty(ListItem.Title)">query=$INFO[ListItem.Title]</value>
+		<value>query=$INFO[ListItem.Label]</value>
+	</variable>
 	
 	<!-- MOVE ME END -->
 	
