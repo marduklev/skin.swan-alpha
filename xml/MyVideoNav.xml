@@ -131,8 +131,79 @@
 			
 			<include>Scrollbar_Lib_vertical</include>
 			<include>Scrollbar_Lib_horizontal</include>
+			
+			<!-- onfocus slide footer if spotlight -->
+				<!-- onfocus fade in -->
+					<!-- <bottom>-100</bottom> -->
+					<!-- <animation effect="slide" start="0,0" end="0,-100" time="200" easing="inout" reversible="true" condition="Control.HasFocus(600)">conditional</animation> -->
+					
+			<control type="group">
+				<description>alphabet bar horizontal and bg</description>
+				<animation effect="fade" start="100" end="0" time="200" easing="inout" reversible="true" condition="!Control.HasFocus(600)">conditional</animation>
+				<bottom>380</bottom>
+				<height>90</height>
+				<visible>[Control.IsVisible(503) | Control.IsVisible(504)] + Control.IsVisible(600)</visible>
+					
+					
+					
+				<control type="image">
+					<texture colordiffuse="ff131313">colors/white.png</texture>
+					<visible>false</visible>
+				</control>
+				<control type="panel" id="600">
+					<top>15</top>	
+					<height>75</height>
+					<width>1720</width>
+					<left>100</left>
+					<right>100</right>
+					<visible>[[Container.HasNext | Container.HasPrevious] + [[Container.Content(movies) | Container.Content(sets) | Container.Content(tvshows) | Container.Content(artists) | Container.Content(albums) | Container.Content(addons)] + [String.IsEqual(Container.SortMethod,$LOCALIZE[551]) | String.IsEqual(Container.SortMethod,$LOCALIZE[561]) | String.IsEqual(Container.SortMethod,$LOCALIZE[558]) | String.IsEqual(Container.SortMethod,$LOCALIZE[557]) | String.IsEqual(Container.SortMethod,$LOCALIZE[556])]]]</visible>
+					
+					
+						<onup condition="$EXP[Has_Trailer] + Control.IsVisible(503)">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onup>
+						<onup condition="$EXP[Has_Trailer] + Control.IsVisible(503)">SetProperty(TrailerIsPlaying,true,home)</onup>
+						<onup condition="$EXP[Has_Trailer] + String.IsEmpty(Window.Property(Spotlight_Cast)) + Control.IsVisible(503)">SetProperty(Spotlight_Cast,visible)</onup>
+						<onup condition="$EXP[Has_Trailer] + Control.IsVisible(503)">50</onup>
+					
+					
+					<ondown>50</ondown>
+					<onleft>6000</onleft>
+					<onright>61</onright>
+					<scrolltime />
+					<orientation>horizontal</orientation>
+					<defaultcontrol>0</defaultcontrol>
+					<focusedlayout height="60" width="50">
+						<control type="group">
+							<control type="image">
+								<texture colordiffuse="white">colors/white.png</texture>
+							</control>
+							<control type="textbox">
+								<font>font_Montserrat_16_semibold</font>
+								<align>center</align>
+								<aligny>center</aligny>
+								<textcolor>ff131313</textcolor>
+								<label>$INFO[ListItem.Label]</label>
+							</control>
+						</control>
+					</focusedlayout>
+					<itemlayout height="60" width="50">
+						<control type="group">
+							<control type="image">
+								<texture colordiffuse="ff131313">colors/white.png</texture>
+							</control>
+							<control type="textbox">
+								<font>font_Montserrat_16_extrabold</font>
+								<align>center</align>
+								<aligny>center</aligny>
+								<textcolor>white</textcolor>
+								<label>$INFO[ListItem.Label]</label>
+							</control>
+						</control>
+					</itemlayout>
+				
+					<content>plugin://script.embuary.helper/?info=jumptoletter&amp;showall=false&amp;reload=$INFO[Container.NumItems]</content>
+				</control>
+			</control>
 		</control>
-		
 		<include content="HeaderBar">
 			<param name="HasBGPanel" value="Skin.HasSetting(MediaWindow_UseHeaderBG)" />
 		</include>

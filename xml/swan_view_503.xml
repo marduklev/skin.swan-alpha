@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <includes>
 	<include name="temp_spotlight_infofade">
-		<animation effect="fade" start="100" end="0" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) + [Container(50350).IsUpdating  | Integer.IsGreater(Container(50350).NumItems,0)]">conditional</animation>
+		<param name="fade_end" default="0" />
+		<definition>
+			<animation effect="fade" start="100" end="$PARAM[fade_end]" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) + [Container(50350).IsUpdating  | Integer.IsGreater(Container(50350).NumItems,0)]">conditional</animation>
+		</definition>
 	</include>
 	
 	<variable name="SetLabel">
@@ -80,6 +83,10 @@
 					<param name="footer_bg_color" value="2affffff" />
 					<param name="footer_mediaflag_offsetleft" value="350" />
 					<param name="footer_rating_offsetright" value="70" />
+					
+					temp solution
+					<!-- <animation effect="fade" start="100" end="0" time="250" easing="inout" reversible="true" condition="Control.HasFocus(600)">conditional</animation> -->
+				
 				</include>
 				
 		</control>
@@ -179,11 +186,17 @@
 			
 			
 			<control type="fixedlist" id="503">
+				
+		<!-- test		<animation effect="slide" start="0,0" end="0,-80" time="250" easing="inout" reversible="true" condition="Control.HasFocus(600)">conditional</animation> -->
+				<!-- <animation effect="zoom" start="75" end="100" time="250" center="10%,200%" condition="!Control.HasFocus(600)">Conditional</animation> -->
+					
+				
 				<viewtype label="netflixposter">netflixposter list</viewtype>
 				<focusposition>1</focusposition>
 				<orientation>horizontal</orientation>
 				<preloaditems>4</preloaditems>
 				<scrolltime tween="quadratic">400</scrolltime>
+				<pagecontrol>61</pagecontrol>
 				<left>100</left>
 				<right>0</right>
 				<bottom>0</bottom>
@@ -193,30 +206,50 @@
 					<animation effect="slide" start="0,0" end="-200,0" time="250" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) + String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
 					<animation effect="fade" start="100" end="0" time="250" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
 				
-				<!-- keep folder content in layout instead of goin into folder ? -->
-				
-				<!-- <onup condition="Control.IsVisible(19)">19</onup>  -->
-				<!-- <onup condition="!Control.IsVisible(19) + Control.IsVisible(8999)">8999</onup> -->
-				
-				<onup condition="!String.IsEmpty(Window(home).Property(listitemtrailer))">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onup>
-				<onup condition="!String.IsEmpty(Window(home).Property(listitemtrailer))">SetProperty(TrailerIsPlaying,true,home)</onup>
-				<onup condition="!String.IsEmpty(Window(home).Property(listitemtrailer)) + String.IsEmpty(Window.Property(Spotlight_Cast))">SetProperty(Spotlight_Cast,visible)</onup>
-				<onup condition="!String.IsEmpty(Window.Property(Spotlight_Cast))">ClearProperty(Spotlight_Cast)</onup>
-			
-				<ondown condition="!Control.IsVisible(6000) + [!String.StartsWith(container.folderpath,plugin) + !String.IsEmpty(Window.Property(Spotlight_Cast)) + [!String.IsEqual(ListItem.dbtype,set) | !String.IsEqual(ListItem.dbtype,tvshow)]]">ClearProperty(Spotlight_Cast)</ondown>
-				<ondown condition="!Control.IsVisible(6000) + [!String.StartsWith(container.folderpath,plugin) + String.IsEmpty(Window.Property(Spotlight_Cast))]">SetProperty(Spotlight_Cast,visible)</ondown>
-				
-				focus container
-				<ondown condition="!Control.IsVisible(6000) + [!String.StartsWith(container.folderpath,plugin) + String.IsEqual(ListItem.dbtype,tvshow)]">SetFocus(50352,0,absolute)</ondown>
-				show cast before
-				<ondown condition="!Control.IsVisible(6000) + [!String.StartsWith(container.folderpath,plugin) + !String.IsEmpty(Window.Property(Spotlight_Cast)) + [String.IsEqual(ListItem.dbtype,set) | !String.IsEmpty(ListItem.SetId)]]">SetFocus(50352,0,absolute)</ondown>
-				<!-- <ondown condition="!Control.IsVisible(6000) + [!String.StartsWith(container.folderpath,plugin) + !String.IsEmpty(Window.Property(Spotlight_Cast)) + [String.IsEqual(ListItem.dbtype,set) | [!String.IsEmpty(ListItem.SetId) + Integer.IsGreater(Container(50352).NumItems,1)]]">SetFocus(50352,0,absolute)</ondown> -->
-				
-				
+						<!-- keep folder content in layout instead of goin into folder ? -->
+						
+						<!-- <onup condition="Control.IsVisible(19)">19</onup>  -->
+						<!-- <onup condition="!Control.IsVisible(19) + Control.IsVisible(8999)">8999</onup> -->
+					
+defaults
+
+	media/movie item
+		- ondown show cast
+		- ondown if exist show set items
+
+	folder/season/set item
+		- if tvshow focus nextup/resume item 
+			+ show folderpath items right 
+			+ show cast top* 
+		
+		
+		
+		*option to disable needed
+
+					
+					<!-- 	onup actions moved to alphabet bar
+						<onup condition="$EXP[Has_Trailer] + ">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onup>
+						<onup condition="$EXP[Has_Trailer] + ">SetProperty(TrailerIsPlaying,true,home)</onup>
+						<onup condition="$EXP[Has_Trailer] + String.IsEmpty(Window.Property(Spotlight_Cast))">SetProperty(Spotlight_Cast,visible)</onup>
+						
+					 -->
+						<onup condition="Control.IsVisible(600)">600</onup>
+					
+					
+						<ondown condition="!Control.IsVisible(6000) + [!String.IsEmpty(Window.Property(Spotlight_Cast)) + [!String.IsEqual(ListItem.dbtype,set) | !String.IsEqual(ListItem.dbtype,tvshow)]]">ClearProperty(Spotlight_Cast)</ondown>
+						
+						<ondown condition="!Control.IsVisible(6000) + String.IsEmpty(Window.Property(Spotlight_Cast))">SetProperty(Spotlight_Cast,visible)</ondown>
+						
+						focus container
+						<ondown condition="!Control.IsVisible(6000) + [!String.StartsWith(container.folderpath,plugin) + String.IsEqual(ListItem.dbtype,tvshow)]">SetFocus(50352,0,absolute)</ondown>
+						show cast before
+						<ondown condition="!Control.IsVisible(6000) + [!String.StartsWith(container.folderpath,plugin) + !String.IsEmpty(Window.Property(Spotlight_Cast)) + [String.IsEqual(ListItem.dbtype,set) | !String.IsEmpty(ListItem.SetId)]]">SetFocus(50352,0,absolute)</ondown>
+						
 				
 				<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
 				
 				<onleft condition="Control.IsVisible(8999)">8999</onleft>
+				
 				<ondown condition="Control.IsVisible(6000)">6000</ondown>
 				
 				<itemlayout height="350" width="202">
@@ -351,7 +384,7 @@
 					</item>
 				</content>
 				-->
-				<content>$VAR[EmbuaryCast]</content>
+				<content>$VAR[content_cast]</content>
 			</control>
 			
 			<control description="nextup | movie sets" type="panel" id="50352">
@@ -551,7 +584,29 @@
 				<content sortby="year" target="videos">$VAR[View_503_Folderpath]</content>
 			</control>
 				
-				similiar
+			<!-- 	
+				stay at footer if use onop
+				pos or bottom if use ondown
+			https://github.com/sualfred/script.embuary.helper/wiki/Widgets:-Special-content#jump-to-letter
+			 -->
+			
+			
+			
+			<!-- <control type="scrollbar" id="61">
+				<description>horizontal</description>
+				<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
+				<orientation>horizontal</orientation>
+				<bottom>380</bottom>
+				<height>90</height>
+				<width>1920</width>
+				<onleft>61</onleft>
+				<onright>61</onright>
+				
+				
+				<onup>SetFocus(50)</onup>
+				
+				
+			</control> -->
 		</control>
 		
 		
@@ -570,13 +625,11 @@
 		<value condition="[Control.IsVisible(503) + Container.Content(tvshows)] + !String.IsEmpty(Container(503).ListItem.dbid)">videodb://inprogresstvshows/$INFO[Container(503).ListItem.dbid]/-1/?tvshowid=$INFO[Container(503).ListItem.dbid]</value>
 		<value condition="[Control.IsVisible(503) + Container.Content(seasons)] + String.EndsWith(Container.Folderpath,/)">$INFO[Container.Folderpath]-1/</value>
 		<value condition="[Control.IsVisible(503) + Container.Content(seasons)] + !String.IsEmpty(Window(home).Property(dbid))">videodb://inprogresstvshows/$INFO[Window(home).Property(dbid)]/-1/?tvshowid=$INFO[Window(home).Property(dbid)]</value>
-		<value>-</value>
 	</variable>
 	<variable name="View_503_Folderpath">
 		<value condition="Control.IsVisible(503) + Container.Content(tvshows)">videodb://tvshows/titles/$INFO[Container(503).ListItem.dbid]</value>
 		<value condition="Control.IsVisible(503) + [String.IsEqual(Container.ListItem.dbtype,set) + System.GetBool(videolibrary.groupmoviesets)]">$INFO[Container.ListItem.FolderPath]</value>
 		<value condition="Control.IsVisible(503) + [!String.IsEmpty(Container.ListItem.SetId) + !System.GetBool(videolibrary.groupmoviesets)]">videodb://movies/sets/$INFO[Container.ListItem.setid]/?setid=$INFO[Container.ListItem.setid]</value>
-		<value>-</value>
 	</variable>
 	
 		<!-- temp solution is -->
@@ -794,13 +847,16 @@
 		</control>
 		
 		<control type="grouplist" id="6000">
+			<description>may bound with alphabet scroll bar</description>
 			<visible>false</visible>
+			<!-- <visible>Control.HasFocus(600)</visible> -->
 			<visible>Control.IsVisible(503) | Control.IsVisible(504)</visible>
 			<!-- 
 			at bottom
 			-->
-			<animation effect="slide" start="0,0" end="0,-100" time="200" easing="inout" reversible="true">Focus</animation>
-			<bottom>-100</bottom>
+			<!-- <animation effect="slide" start="0,0" end="0,-100" time="200" easing="inout" reversible="true">Focus</animation> -->
+			<!-- <bottom>-100</bottom> -->
+			<bottom>380</bottom>
 			<height>70</height>
 			
 			<!-- <animation effect="fade" start="0" end="100" time="200" easing="inout" reversible="true">Focus</animation>

@@ -2,15 +2,16 @@
 <window>
 	<defaultcontrol always="true">8000</defaultcontrol>
 	<onload>ClearProperty(AdditionalInfo)</onload>
-	<onload>RunScript(script.embuary.helper,action=resetposition,container=8601||8602||8603||8604||8605||8606||8607||8608||8609)</onload>
+	<onload>RunScript(script.embuary.helper,action=resetposition,container=8601||8602||8603||8604||8605||8606||8607||8608||8609||8622)</onload>
 	<onload>RunScript(script.embuary.helper,action=encode,string='"$VAR[EncodeTitle]"',prop=EncodedTitle)</onload>
 	<onload condition="!string.isempty(listitem.dbid) + [container.content(movies) | String.IsEqual(ListItem.DBTYPE,movie)]">RunScript(script.embuary.helper,action=lookforfile,file='"$VAR[extrasLocation_lookup]"',prop=bonuscontentavail)</onload>
-	
 	<!-- maybe auto close dialog and open embuary.info window() if not media from lib ? -->
 	
 	<onunload>ClearProperty(AdditionalInfo)</onunload>
 	<onunload>ClearProperty(EncodedTitle,home)</onunload>
 	<onunload condition="!String.IsEmpty(Window(home).Property(bonuscontentavail))">ClearProperty(bonuscontentavail,home)</onunload>	
+	<onunload condition="!String.IsEmpty(Window(home).Property(cast_storedpath))">ClearProperty(cast_storedpath,home)</onunload>
+	
 	
 	<animation type="WindowOpen">
 		<effect type="fade" start="0" end="100" time="300" tween="sine" easing="in" />
@@ -23,30 +24,26 @@
    
     <controls>
 		
-		<!-- fetch soundtrack -->
-		<control type="list" id="8699">
-			<description></description>
+		<control type="list" id="8999">
+			<description>soundtrack variable videoinfo_ost_lookup</description>
 			<include>HiddenContainer</include>
-			<visible>!Skin.HasSetting(VideoInfo_Content_Library_OST) + [Integer.IsGreater(Container(8699).NumItems,0) | Container(8699).IsUpdating]</visible>
+			<visible>!Skin.HasSetting(VideoInfo_Content_Library_OST) + [Integer.IsGreater(Container(8999).NumItems,0) | Container(8999).IsUpdating]</visible>
 			<content limit="1">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22album%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%2C%7B%22field%22%3A%22type%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22soundtrack%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</content>
 		</control>
-		<!-- native cast force action button -->
-		
-		<!-- 
-		<control type="button" id="8698">
-			<description>ctrl + action native cast</description>
-			
-			
-			<include>Action_CastMemberSearchForceOption</include>
-			
-		- need fetch labels
-			<onleft>Control.Move(50,-1)</onleft>
-			<onright>Control.Move(50,1)</onright>
-			<include content="HiddenObject" />
-		</control> -->
+			<!-- native cast force action button -->
+			<!-- 
+			<control type="button" id="8698">
+				<description>ctrl + action native cast</description>
+				adjsut <include>Action_CastMemberSearchForceOption</include>
+				- need fetch labels
+				<onleft>Control.Move(50,-1)</onleft>
+				<onright>Control.Move(50,1)</onright>
+				<include content="HiddenObject" />
+			</control>
+			-->
 		
 		<control type="image">
-			<description>temp ? trailer overlay</description>
+			<description>trailer dimmedbg</description>
 			<animation effect="fade" start="0" end="100" time="600">VisibleChange</animation>
 			<visible>$EXP[TrailerIsPlaying]</visible>
 			<texture colordiffuse="$VAR[color_lib_backgroundlayer4]">colors/white50.png</texture>
@@ -66,28 +63,17 @@
 				<animation effect="fade" end="30" time="0" condition="true">conditional</animation>
 				<animation effect="fade" start="0" end="100" time="450">VisibleChange</animation>
 				<include content="studiologo_image">
-					<visible>String.IsEmpty(Control.GetLabel(887767))</visible>
+					<visible>$EXP[ListItemClearLogo_IsEmpty]</visible>
 					<param name="colordiffuse" value="$VAR[color_lib_text_main]"/>
 					<bottom>20</bottom>
 					<right>50</right>
 				</include>
 				<include content="studiologo_image">
-					<visible>!String.IsEmpty(Control.GetLabel(887767))</visible>
+					<visible>![$EXP[ListItemClearLogo_IsEmpty]]</visible>
 					<param name="colordiffuse" value="$VAR[color_lib_text_main]"/>
 					<top>140</top>
 					<left>470</left>
 				</include>
-				<!-- <control type="label">
-					<align>right</align>
-					<right>100</right>
-					<bottom>2</bottom>
-					<width>95%</width>
-					<height>40</height>
-					<font>font20_title</font>
-					<textcolor>$VAR[color_lib_text_secondary]</textcolor>
-					<label>$INFO[ListItem.Folderpath,[B]$LOCALIZE[573]:[/B]    ,]</label>
-					<visible>!String.IsEmpty(ListItem.Folderpath)</visible>
-				</control> -->
 				<control type="label">
 					<align>left</align>
 					<left>150</left>
@@ -194,7 +180,8 @@
 				<animation effect="slide" end="0,-120" time="600" condition="String.IsEqual(Window.Property(AdditionalInfo),infocontainer)">Conditional</animation>
 				<left>150</left>
 				<top>140</top>
-				<control type="image" id="887767">
+				<control type="image">
+					<visible>![$EXP[ListItemClearLogo_IsEmpty]]</visible>
 					<width>495</width>
 					<height>143</height>
 					<fadetime>600</fadetime>
@@ -202,7 +189,7 @@
 					<texture background="true">$VAR[ListItemClearLogo]</texture>
 				</control>
 				<control type="label">
-					<visible>String.IsEmpty(Control.GetLabel(887767))</visible>
+					<visible>$EXP[ListItemClearLogo_IsEmpty]</visible>
 					<top>50</top>
 					<height>80</height>
 					<right>600</right>
@@ -261,7 +248,6 @@
 					<itemgap>25</itemgap>
 					<height>90</height>
 					
-					<!-- 
 					<include content="framedflag">
 						<param name="id" />
 						<param name="color" value="$VAR[color_lib_text_main]" />
@@ -272,20 +258,19 @@
 						<font>font20_title</font>
 						<label>$INFO[ListItem.Status]</label>
 					</include>
-					-->
 					
 					<include content="studiologo_image">
 						<visible>!String.IsEmpty(Control.GetLabel(7999)) + !String.IsEmpty(ListItem.Studio)</visible>
+						<param name="id" value="7999"/>
 						<param name="aligny" value="center"/>
 						<param name="alignx" value="left"/>
 						<param name="width" value="130"/>
 						<param name="height" value="90"/>
 						<param name="colordiffuse" value="$VAR[color_lib_text_main]"/>
-						<param name="id" value="7999"/>
 					</include>
 						
 					<include content="framedflag">
-						<param name="id" value="7998" />
+						<param name="id" />
 						<param name="color" value="$VAR[color_lib_text_main]" />
 						<visible>String.IsEmpty(Control.GetLabel(7999)) + !String.IsEmpty(ListItem.Studio)</visible>
 						<width max="200">auto</width>
@@ -303,7 +288,6 @@
 					</control>
 					
 					<include content="framedflag">
-						<param name="id" />
 						<param name="color" value="$VAR[color_lib_text_main]" />
 						<visible>!String.IsEmpty(ListItem.MPAA)</visible>
 						<top>25</top>
@@ -313,15 +297,6 @@
 						<label>$INFO[ListItem.mpaa]</label>
 					</include>
 					
-					<!-- 
-					<control type="image">
-						<top>20</top>
-						<width>50</width>
-						<height>50</height>
-						<colordiffuse>$VAR[color_lib_text_main]</colordiffuse>
-						<texture>buttons/trailer.png</texture>
-					</control>
-					-->
 					<control type="label">
 						<width min="32">auto</width>
 						<font>SearchControl</font>
@@ -329,6 +304,7 @@
 						<textcolor>$VAR[color_lib_text_main]</textcolor>
 						<visible>String.IsEmpty(ListItem.Property(TotalEpisodes))</visible>
 					</control>
+					
 					<control type="label">
 						<width min="32">auto</width>
 						<font>SearchControl</font>
@@ -337,7 +313,6 @@
 						<visible>!String.IsEmpty(ListItem.Property(TotalEpisodes))</visible>
 					</control>
 					<include content="framedflag">
-						<param name="id" />
 						<param name="color" value="$VAR[color_lib_text_main]" />
 						<visible>!String.IsEmpty(ListItem.genre)</visible>
 						<top>25</top>
@@ -524,7 +499,7 @@
 					<texturenofocus />
 					
 					<!-- Main Info goto Info List -->
-					<onfocus condition="String.IsEmpty(Window.Property(AdditionalInfo))">SetProperty(AdditionalInfo, infolist)</onfocus>
+					<onfocus condition="String.IsEmpty(Window.Property(AdditionalInfo))">SetProperty(AdditionalInfo,infolist)</onfocus>
 					<onfocus condition="String.IsEmpty(Window.Property(AdditionalInfo))">SetFocus(8003)</onfocus>
 					
 					<!-- Info Containers goto Main Info -->
@@ -546,7 +521,7 @@
 					<texturenofocus />
 					
 					<!-- main page goto Itemcontainers -->
-					<onfocus condition="String.IsEmpty(Window.Property(AdditionalInfo))">SetProperty(AdditionalInfo, infocontainer)</onfocus>
+					<onfocus condition="String.IsEmpty(Window.Property(AdditionalInfo))">SetProperty(AdditionalInfo,infocontainer)</onfocus>
 					<onfocus condition="String.IsEmpty(Window.Property(AdditionalInfo))">SetFocus(8001)</onfocus>
 					
 					<!-- Info List goto Main Info -->
@@ -578,7 +553,6 @@
 					<param name="gap" value="-20" />
 				</include>
 				
-				<!-- MovieSet -->
 				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="8501" />
 					<param name="id" value="8601" />
@@ -595,14 +569,11 @@
 					<param name="itemwidth" value="207" />
 					<param name="itemheight" value="310" />
 					<param name="layout" value="poster" />
-					
 					<include condition="!Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceInfo"/>
 					<include condition="Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceSelect"/>
-					
 					<content sortby="year" target="videos">videodb://movies/sets/$INFO[ListItem.SetId]/?setid=$INFO[ListItem.SetId]</content>
 				</include>
 				
-				<!-- NextUp -->
 				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="8502" />
 					<param name="id" value="8602" />
@@ -629,7 +600,7 @@
 					<content limit="1" sortby="playcount" target="videos">videodb://inprogresstvshows/$INFO[ListItem.DBID]/-1/?tvshowid=$INFO[ListItem.DBID]</content>
 				</include>
 				
-				<!-- CAST -->
+				<!-- error - will be empty/visible=false if coming back from embuary.info dialogs dont refresh , labels remain empty if tmdbhelper-->
 				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="8503" />
 					<param name="id" value="8603" />
@@ -647,10 +618,14 @@
 					<param name="itemheight" value="310" />
 					<param name="layout" value="poster" />
 					<include>Action_CastMemberSearchForceOption</include>
-					<content>$VAR[EmbuaryCast]</content>
+					
+					<!-- <onfocus>SetProperty(cast_storedpath,$INFO[Container(8603).ListItem.Folderpath],home)</onfocus> -->
+					<!--
+						<include condition="!String.IsEmpty(Window(home).Property(cast_storedpath))" content="stored_castpath" />
+						<include condition="String.IsEmpty(Window(home).Property(cast_storedpath))" content="castpath" />
+					 -->
+					<include content="castpath" />
 				</include>
-				
-				<!-- CAST Fallback, no custom search -->
 				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="8650" />
 					<param name="id" value="50" />
@@ -658,9 +633,9 @@
 					<visible>Control.IsVisible(50)</visible>
 				</include>
 				<include content="Universal_Container">
-					<description>may use workaround set hidden fosu to button which do control moves</description>
+					<description>may use workaround set hidden focus to button which do control moves</description>
 					<param name="id" value="50" />
-					<param name="visible" value="[Integer.IsGreater(Container(50).NumItems,0) | Container(50).IsUpdating] + !Control.IsVisible(8603)" />
+					<param name="visible" value="!Control.IsVisible(8603) + [Integer.IsGreater(Container(50).NumItems,0) | Container(50).IsUpdating]" />
 					<param name="type_height" value="380" />
 					<param name="tags_visible" value="true" />
 					<param name="layout_height" value="380" />
@@ -668,13 +643,9 @@
 					<param name="itemwidth" value="207" />
 					<param name="itemheight" value="310" />
 					<param name="layout" value="poster" />
-					
-					
 					<!-- <onfocus>SetFocus(8698)</onfocus> -->
-					
 				</include>
 				
-				<!-- Items by CAST -->
 				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="8504" />
 					<param name="id" value="8604" />
@@ -683,7 +654,7 @@
 				</include>
 				<include condition="!Skin.HasSetting(VideoInfo_Content_ItemsByCastMember)" content="Universal_Container">
 					<param name="id" value="8604" />
-					<param name="visible" value="Integer.IsGreater(Container(8603).NumItems,0) | Container(8603).IsUpdating" />
+					<param name="visible" value="[Control.IsVisible(8603) + [Integer.IsGreater(Container(8603).NumItems,0) | Container(8603).IsUpdating]] | [!Control.IsVisible(8603) + Control.IsVisible(50)]" />
 					<param name="type_height" value="380" />
 					<param name="tags_visible" value="true" />
 					<param name="layout_height" value="380" />
@@ -694,15 +665,10 @@
 					
 					<include condition="!Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceInfo"/>
 					<include condition="Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceSelect"/>
-										
-					<content target="videos">videodb://movies/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22actor%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Container(8603).ListItem.Label]%22%5D%7D%2C%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
-					<content target="videos">videodb://tvshows/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22actor%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Container(8603).ListItem.Label]%22%5D%7D%2C%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D</content>
+									
+					<content target="videos">videodb://movies/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22actor%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$VAR[videoinfo_cast_container_id]%22%5D%7D%2C%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
+					<content target="videos">videodb://tvshows/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22actor%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$VAR[videoinfo_cast_container_id]%22%5D%7D%2C%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D</content>
 				</include>
-				
-				<!-- MOVIE and TV SHOW by Directors -->
-				
-				<!-- xsp for shows support director, but missing listitem as info label 
-				<content target="videos">videodb://tvshows/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22director%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[ListItem.Director]%22%5D%7D%2C%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D</content> -->
 				
 				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="8505" />
@@ -728,14 +694,35 @@
 						<item>
 							<visible>System.HasAddon(resource.images.moviedirectorthumbs)</visible>
 							<label>$INFO[ListItem.Director]</label>
+							<description>may add custom onclick open search prop director items</description>
 							<thumb fallback="defaultdirector.png">$INFO[ListItem.Director,resource.images.moviedirectorthumbs/,.png]</thumb>
 						</item>
 					</content>
 					<content target="videos">videodb://movies/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22director%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[ListItem.Director]%22%5D%7D%2C%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
 				</include>
 				
-				
-						
+				<include content="Universal_ContainerHeader">
+					<param name="groupid" value="8522" />
+					<param name="id" value="8622" />
+					<param name="label" value="Crew [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$INFO[ListItem.Title,  &quot; , &quot;][/COLOR]" />
+					<visible>Control.IsVisible(8622)</visible>
+				</include>
+				<include condition="[!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.themoviedb.helper)] + !Skin.HasSetting(VideoInfo_Content_tmdbhelper_crew)" content="Universal_Container">
+					<param name="id" value="8622" />
+					<param name="visible" value="Integer.IsGreater(Container(8622).NumItems,0) | Container(8622).IsUpdating" />
+					<param name="type_height" value="380" />
+					<param name="tags_visible" value="true" />
+					<param name="layout_height" value="380" />
+					<param name="layout_width" value="210" />
+					<param name="itemwidth" value="207" />
+					<param name="itemheight" value="310" />
+					<param name="layout" value="poster" />
+					
+					<include condition="!Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceInfo"/>
+					<include condition="Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceSelect"/>
+					
+					<content limit="15" target="videos">plugin://plugin.video.themoviedb.helper/?info=crew&amp;$VAR[videoinfo_tmdb_helper_type]&amp;$VAR[videoinfo_tmdb_helper_query]</content>
+				</include>
 				<!-- similiar -->
 				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="8510" />
@@ -769,7 +756,7 @@
 				</include>
 				<include condition="!Skin.HasSetting(VideoInfo_Content_Library_OST)" content="Universal_Container">
 					<param name="id" value="8620" />
-					<param name="visible" value="Integer.IsGreater(Container(8699).NumItems,0) + !Container(8699).IsUpdating" />
+					<param name="visible" value="Integer.IsGreater(Container(8999).NumItems,0) + !Container(8999).IsUpdating" />
 					<param name="type_height" value="365" />
 					<param name="tags_visible" value="true" />
 					<param name="layout_height" value="355" />
@@ -778,7 +765,7 @@
 					<param name="itemwidth" value="280" />
 					<param name="ls_overlay_visible" value="true" />
 					<param name="layout" value="square" />
-					<content target="music" sortby="tracknumber">$INFO[Container(8699).ListItem.Folderpath]</content>
+					<content target="music" sortby="tracknumber">$INFO[Container(8999).ListItem.Folderpath]</content>
 				</include>
 				
 				<include content="Universal_ContainerHeader">
@@ -790,7 +777,7 @@
 				
 				<include condition="!$EXP[IsOfflineMode] + [System.HasAddon(plugin.video.youtube) + !Skin.HasSetting(VideoInfo_Content_Youtube_OST)]" content="Universal_Container">
 					<param name="id" value="8621" />
-					<param name="visible" value="!Integer.IsGreater(Container(8699).NumItems,0) + [Integer.IsGreater(Container(8621).NumItems,0) | Container(8621).IsUpdating]" />
+					<param name="visible" value="!Integer.IsGreater(Container(8999).NumItems,0) + [Integer.IsGreater(Container(8621).NumItems,0) | Container(8621).IsUpdating]" />
 					<param name="type_height" value="365" />
 					<param name="tags_visible" value="true" />
 					<param name="layout_height" value="355" />
@@ -875,6 +862,7 @@
 				</include>
 				<include condition="Skin.HasSetting(UseExtraFanartFolder)" content="Universal_Container">
 					<param name="id" value="8607" />
+					<param name="type" value="fixedlist" />
 					<param name="visible" value="[Integer.IsGreater(Container(8607).NumItems,0) | Container(8607).IsUpdating]" />
 					<param name="type_height" value="370" />
 					<param name="tags_visible" value="false" />
@@ -889,6 +877,7 @@
 					<param name="root_conditional_artworkdiffuse_themed" value="true" />
 					<param name="root_conditional_artworkdiffuse_override" value="false" />
 					
+					<focusposition>1</focusposition>
 					<pagecontrol>89060</pagecontrol>
 					<onclick>SetFocus(8902)</onclick>
 					<content>$VAR[extraThumbsLocation]</content>
@@ -899,7 +888,7 @@
 					<param name="groupid" value="8509" />
 					<param name="id" value="8609" />
 					<param name="label" value="Bonusmaterial" />
-					<visible>!String.IsEmpty(Window(home).Property(bonuscontentavail))</visible>
+					<visible>Control.IsVisible(8609)</visible>
 				</include>
 				<include content="Universal_Container">
 					<param name="type" value="panel" />

@@ -3,7 +3,6 @@
 	<!-- 
 	<onclick condition="[!System.GetBool(videolibrary.groupmoviesets) | String.IsEqual(Container($PARAM[id]).ListItem.dbtype,tvshow)] + Skin.HasSetting(DialogItemsForceInfo)">ReplaceWindow(Videos,$INFO[Container($PARAM[id]).ListItem.folderpath])</onclick>
 	-->
-	
 	<include name="Action_ItemForceInfo">
 		<onclick>Dialog.Close(movieinformation)</onclick>
 		<onclick condition="String.IsEqual(Container($PARAM[id]).ListItem.dbtype,movie) + [!System.GetBool(videolibrary.groupmoviesets) | [System.GetBool(videolibrary.groupmoviesets) + String.IsEmpty(Container($PARAM[id]).ListItem.SetId)]]">ReplaceWindow(Videos,videodb://movies/titles/$INFO[Container($PARAM[id]).ListItem.dbid])</onclick>
@@ -19,7 +18,6 @@
 	</include>
 		<!-- <onclick condition="String.IsEqual(Container($PARAM[id]).ListItem.dbtype,movie)">ReplaceWindow(Videos,$INFO[Container($PARAM[id]).ListItem.folderpath])</onclick> -->
 	
-
 	<!-- test avoid call via visible condition fail, use variable instead -->
 	<variable name="content_youtube_videoinfo">
 		<value condition="!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.youtube)">plugin://plugin.video.youtube/search/?q=$VAR[Title]</value>
@@ -293,11 +291,11 @@
 		<value>$INFO[listitem.path,,extras/]</value>
 	</variable>
 	
+	<!-- disablefor plugin ? -->
 	<variable name="extrasLocation_contentpath">
 		<value condition="String.Contains(listitem.filenameandpath,VIDEO_TS) + !String.IsEmpty(Window(home).Property(bonuscontentavail))">$INFO[listitem.path,,VIDEO_TS\extras/]</value>
 		<value condition="String.Contains(listitem.filenameandpath,BDMV) + !String.IsEmpty(Window(home).Property(bonuscontentavail))">$INFO[listitem.path,,BDMV\extras/]</value>
 		<value condition="!String.IsEmpty(Window(home).Property(bonuscontentavail))">$INFO[listitem.path,,extras/]</value>
-		<value>-</value>
 	</variable>
 	
 	<include name="ExtrafanartFolderPath">
@@ -1082,4 +1080,20 @@
 			</control>
 		</definition>
 	</include>
+	
+	<variable name="videoinfo_cast_container_id">
+		<value condition="Control.IsVisible(8603)">$INFO[Container(8603).ListItem.Label]</value>
+		<value condition="!Control.IsVisible(8603) + Control.IsVisible(50)">$INFO[Container(50).ListItem.Label]</value>
+	</variable>
+	
+	<variable name="videoinfo_ost_lookup">
+		<value condition="Library.HasContent(music)">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22album%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%2C%7B%22field%22%3A%22type%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22soundtrack%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</value>
+	</variable>
+	
+	<variable name="videoinfo_cast_container_id">
+		<value condition="Control.IsVisible(8603)">$INFO[Container(8603).ListItem.Label]</value>
+		<value condition="!Control.IsVisible(8603) + Control.IsVisible(50)">$INFO[Container(50).ListItem.Label]</value>
+	</variable>
+	
+	
 </includes>
