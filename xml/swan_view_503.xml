@@ -3,7 +3,7 @@
 	<include name="temp_spotlight_infofade">
 		<param name="fade_end" default="0" />
 		<definition>
-			<animation effect="fade" start="100" end="$PARAM[fade_end]" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) + [Container(50350).IsUpdating  | Integer.IsGreater(Container(50350).NumItems,0)]">conditional</animation>
+			<animation effect="fade" start="100" end="$PARAM[fade_end]" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) + [Container(50350).IsUpdating | Integer.IsGreater(Container(50350).NumItems,0)]">conditional</animation>
 		</definition>
 	</include>
 	
@@ -52,7 +52,9 @@
 				
 				<param name="footer_bg_color" value="1affffff" />
 					<param name="footer_bg_color" value="white" />
-					
+				1affffff
+				2affffff	
+						vs $VAR[color_spotlightlib_main], like to avoid another custom color
 	-->
 	
 	<include name="view503">
@@ -80,12 +82,13 @@
 					<param name="view_id" value="503" />
 					<param name="bottom" value="380" />
 					<param name="use_bgpanel" value="true" />
+					<!-- <param name="footer_bg_image" value="diffuse/gradientleft.png" /> -->
 					<param name="footer_bg_color" value="2affffff" />
 					<param name="footer_mediaflag_offsetleft" value="350" />
 					<param name="footer_rating_offsetright" value="70" />
 					
 					temp solution
-					<!-- <animation effect="fade" start="100" end="0" time="250" easing="inout" reversible="true" condition="Control.HasFocus(600)">conditional</animation> -->
+					<!-- <animation effect="fade" start="100" end="0" time="250" easing="inout" reversible="true" condition="Control.HasFocus(610)">conditional</animation> -->
 				
 				</include>
 				
@@ -137,7 +140,7 @@
 				</control>
 				
 				<control type="label">
-					<visible>!String.IsEmpty(Window.Property(Spotlight_Sets)) + !Container.Content(tvshows)</visible>
+					<visible>!String.IsEmpty(Window.Property(Spotlight_Sets)) + ![Container.Content(tvshows) | Container.Content(seasons)]</visible>
 					<description>item heading  + !String.IsEmpty(ListItem.SetId)</description>
 					<!-- <label>$INFO[Container(503).ListItem.Label]</label> -->
 					<label>$VAR[SetLabel]</label>
@@ -169,7 +172,7 @@
 					<aligny>top</aligny>
 				</control>
 				<control type="label">
-					<visible>!String.IsEmpty(Window.Property(Spotlight_Sets)) + Container.Content(tvshows)</visible>
+					<visible>!String.IsEmpty(Window.Property(Spotlight_Sets)) + [Container.Content(tvshows) | Container.Content(seasons)]</visible>
 					<description>item heading</description>
 					<label>Weiterschauen</label>
 					<left>100</left>
@@ -187,8 +190,8 @@
 			
 			<control type="fixedlist" id="503">
 				
-		<!-- test		<animation effect="slide" start="0,0" end="0,-80" time="250" easing="inout" reversible="true" condition="Control.HasFocus(600)">conditional</animation> -->
-				<!-- <animation effect="zoom" start="75" end="100" time="250" center="10%,200%" condition="!Control.HasFocus(600)">Conditional</animation> -->
+		<!-- test		<animation effect="slide" start="0,0" end="0,-80" time="250" easing="inout" reversible="true" condition="Control.HasFocus(610)">conditional</animation> -->
+				<!-- <animation effect="zoom" start="75" end="100" time="250" center="10%,200%" condition="!Control.HasFocus(610)">Conditional</animation> -->
 					
 				
 				<viewtype label="netflixposter">netflixposter list</viewtype>
@@ -206,50 +209,46 @@
 					<animation effect="slide" start="0,0" end="-200,0" time="250" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) + String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
 					<animation effect="fade" start="100" end="0" time="250" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
 				
-						<!-- keep folder content in layout instead of goin into folder ? -->
-						
-						<!-- <onup condition="Control.IsVisible(19)">19</onup>  -->
-						<!-- <onup condition="!Control.IsVisible(19) + Control.IsVisible(8999)">8999</onup> -->
 					
-defaults
-
-	media/movie item
-		- ondown show cast
-		- ondown if exist show set items
-
-	folder/season/set item
-		- if tvshow focus nextup/resume item 
-			+ show folderpath items right 
-			+ show cast top* 
-		
-		
-		
-		*option to disable needed
-
+				list all onup up shit
+				<!-- scrollbars -->
+						<onup condition="Control.IsVisible(61)">61</onup>
+						<onup condition="!Control.IsVisible(61) + Control.IsVisible(610)">610</onup>
 					
-					<!-- 	onup actions moved to alphabet bar
-						<onup condition="$EXP[Has_Trailer] + ">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onup>
-						<onup condition="$EXP[Has_Trailer] + ">SetProperty(TrailerIsPlaying,true,home)</onup>
-						<onup condition="$EXP[Has_Trailer] + String.IsEmpty(Window.Property(Spotlight_Cast))">SetProperty(Spotlight_Cast,visible)</onup>
-						
-					 -->
-						<onup condition="Control.IsVisible(600)">600</onup>
+				<!-- trailer if no scrollbars -->
+						<onup condition="$EXP[Has_Trailer] + [!Control.IsVisible(61) + !Control.IsVisible(610)]">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onup>
+						<onup condition="$EXP[Has_Trailer] + [!Control.IsVisible(61) + !Control.IsVisible(610)]">SetProperty(TrailerIsPlaying,true,home)</onup>
+						<onup condition="$EXP[Has_Trailer] + [!Control.IsVisible(61) + !Control.IsVisible(610)] + String.IsEmpty(Window.Property(Spotlight_Cast))">SetProperty(Spotlight_Cast,visible)</onup>
+					 
+				<!-- filter if no scrollbars + no trilers-->
+						<onup condition="!$EXP[Has_Trailer] + [!Control.IsVisible(610) + !Control.IsVisible(61)] + Control.IsVisible(19)">19</onup>
+					 
+				list all ondown up shit		
 					
-					
-						<ondown condition="!Control.IsVisible(6000) + [!String.IsEmpty(Window.Property(Spotlight_Cast)) + [!String.IsEqual(ListItem.dbtype,set) | !String.IsEqual(ListItem.dbtype,tvshow)]]">ClearProperty(Spotlight_Cast)</ondown>
-						
-						<ondown condition="!Control.IsVisible(6000) + String.IsEmpty(Window.Property(Spotlight_Cast))">SetProperty(Spotlight_Cast,visible)</ondown>
-						
-						focus container
-						<ondown condition="!Control.IsVisible(6000) + [!String.StartsWith(container.folderpath,plugin) + String.IsEqual(ListItem.dbtype,tvshow)]">SetFocus(50352,0,absolute)</ondown>
-						show cast before
-						<ondown condition="!Control.IsVisible(6000) + [!String.StartsWith(container.folderpath,plugin) + !String.IsEmpty(Window.Property(Spotlight_Cast)) + [String.IsEqual(ListItem.dbtype,set) | !String.IsEmpty(ListItem.SetId)]]">SetFocus(50352,0,absolute)</ondown>
-						
+				<!-- show cast if disabled-->
+					<ondown condition="!Control.IsVisible(6000) + String.IsEmpty(Window.Property(Spotlight_Cast))">SetProperty(Spotlight_Cast,visible)</ondown>
+				<!-- disable cast if not folder item + cast showing-->
+					<ondown condition="!Control.IsVisible(6000) + [!String.IsEmpty(Window.Property(Spotlight_Cast)) + [!String.IsEqual(ListItem.dbtype,set) | !String.IsEqual(ListItem.dbtype,tvshow)]]">ClearProperty(Spotlight_Cast)</ondown>
+							
+							<!-- 
+								focus container if season + not plugin
+										<ondown condition="!Control.IsVisible(6000) + [!String.StartsWith(container.folderpath,plugin) + String.IsEqual(ListItem.dbtype,tvshow)]">SetFocus(50352,0,absolute)</ondown>
+								
+								if set enable cast before focus folder items
+										<ondown condition="!Control.IsVisible(6000) + [!String.StartsWith(container.folderpath,plugin) + !String.IsEmpty(Window.Property(Spotlight_Cast)) + [String.IsEqual(ListItem.dbtype,set) | !String.IsEmpty(ListItem.SetId)]]">SetFocus(50352,0,absolute)</ondown>
+							 -->
+					 
+					 
+				<!-- focus folder content if show,set(item) -->
+				<ondown condition="!Control.IsVisible(6000) + Control.IsVisible(50352) + !String.StartsWith(container.folderpath,plugin) + [String.IsEqual(ListItem.dbtype,tvshow) | String.IsEqual(ListItem.dbtype,season) | String.IsEqual(ListItem.dbtype,set) | !String.IsEmpty(ListItem.SetId)]">SetFocus(50352,0,absolute)</ondown>
 				
+				
+				
+				<!-- slide menu out of window -->
 				<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
-				
+				<!-- focus premnu icon bar -->
 				<onleft condition="Control.IsVisible(8999)">8999</onleft>
-				
+				<!-- focus view option indicator bar ? or remove entirely -->
 				<ondown condition="Control.IsVisible(6000)">6000</ondown>
 				
 				<itemlayout height="350" width="202">
@@ -315,10 +314,11 @@ defaults
 		
 		
 		
-			<control description="cast" type="panel" id="50350">
+			<control type="panel" id="50350">
 				<animation effect="slide" start="0,0" end="0,-350" time="350" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) | !String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
 				<animation effect="slide" start="0,0" end="-300,100" time="350" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
 				<animation effect="fade" start="0" end="100" time="450" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) | !String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
+				
 				
 				<bottom>-400</bottom>
 				<left>400</left>
@@ -332,6 +332,7 @@ defaults
 				<preloaditems>2</preloaditems>
 				<orientation>horizontal</orientation>
 				
+				<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
 				<itemlayout height="380" width="230">
 					<control type="group">
 						<height>202</height>
@@ -387,8 +388,9 @@ defaults
 				<content>$VAR[content_cast]</content>
 			</control>
 			
-			<control description="nextup | movie sets" type="panel" id="50352">
+			<control type="panel" id="50352">
 				<animation effect="slide" start="0,0" end="0,-300" time="350" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
+				<!-- <visible>Container(50352).IsUpdating | Integer.IsGreater(Container(50352).NumItems,0)</visible> -->
 				<bottom>-830</bottom>
 				<left>100</left>
 				<onfocus>SetProperty(Spotlight_Sets,true)</onfocus>
@@ -402,11 +404,15 @@ defaults
 				<onback>ClearProperty(Spotlight_Cast)</onback>
 				
 				<onup>ClearProperty(Spotlight_Sets)</onup>
+				<onup>ClearProperty(Spotlight_Cast)</onup>
 				<onup>503</onup>
 				
 				<ondown>ClearProperty(Spotlight_Sets)</ondown>
 				<ondown>ClearProperty(Spotlight_Cast)</ondown>
 				<ondown>503</ondown>
+				
+				<onleft condition="Control.IsVisible(50353)">50353</onleft>
+				<onleft condition="Control.IsVisible(8999)">8999</onleft>
 				
 				<onright contition="Control.IsVisible(50353)">50353</onright>
 				<onright contition="!Control.IsVisible(50353)">50352</onright>
@@ -415,15 +421,22 @@ defaults
 				w600 vs w500
 				-->
 				<!-- may use template5077 in generel - just adjust labels n size -->
-				<itemlayout height="350" width="600" condition="String.Contains(Container.FolderPath,/tvshows)">
+				<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
+				<itemlayout height="355" width="600" condition="String.Contains(Container.FolderPath,/tvshows)">
 					<include content="template5077">
 						<param name="is_focused" value="false" />
 					</include>
 				</itemlayout>
-				<focusedlayout height="350" width="600" condition="String.Contains(Container.FolderPath,/tvshows)">
+				<focusedlayout height="355" width="600" condition="String.Contains(Container.FolderPath,/tvshows)">
+					
+					<!-- <control type="button">
+						
+						<onfocus condition="String.IsEmpty(Window.Property(autoplayepisode))">PlayMedia($INFO[Container(50352).ListItem.FilenameAndPath],1,resume)</onfocus>
+						<onfocus condition="String.IsEmpty(Window.Property(autoplayepisode))">SetProperty(autoplayepisode,1)</onfocus>
+					
+					</control> -->
 					<include content="template5077">
 						<param name="is_focused" value="true" />
-						<include>SetPropOnFocus_HiddenButton</include>
 					</include>
 				</focusedlayout>
 				<itemlayout height="350" width="202" condition="!String.Contains(Container.FolderPath,/tvshows)">
@@ -435,8 +448,8 @@ defaults
 						<include content="UniversalLayout">
 							<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_nf]" />
 							<param name="artwork" value="poster" />
-							<param name="get_tags" value="!Skin.HasSetting(View_503_DisableTags)" />
-							<param name="get_tagbgpanel" value="!Skin.HasSetting(View_503_DisableTags)" />
+							<param name="get_tags" value="true" />
+							<param name="get_tagbgpanel" value="true" />
 							<param name="autoscroll" value="false" />
 							<param name="bordersize_bg" value="6" />
 							<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_nf]" />
@@ -462,8 +475,8 @@ defaults
 							<include content="UniversalLayout">
 								<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_fo]" />
 								<param name="artwork" value="poster" />
-								<param name="get_tags" value="!Skin.HasSetting(View_503_DisableTags)" />
-								<param name="get_tagbgpanel" value="!Skin.HasSetting(View_503_DisableTags)" />
+								<param name="get_tags" value="true" />
+								<param name="get_tagbgpanel" value="true" />
 								<param name="autoscroll" value="true" />
 								<param name="bordersize_bg" value="4" />
 								<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_fo]" />
@@ -472,18 +485,9 @@ defaults
 								<param name="conditional_artworkdiffuse_themed" value="!Skin.HasTheme(Roundedge) | Skin.HasSetting(View_503_DisableTags)" />
 								<param name="conditional_artworkdiffuse_override" value="Skin.HasTheme(Roundedge) + !Skin.HasSetting(View_503_DisableTags)" />
 							</include>
-							<control type="group">
-								<visible>!Skin.HasSetting(View_503_DisableTags)</visible>
-								<include content="FocusOverlay">
-									<param name="diffusedimtext" value="artworkdiffuse/usebganel/poster.png" />
-								</include>
-							</control>
-							<control type="group">
-								<visible>Skin.HasSetting(View_503_DisableTags)</visible>
-								<include content="FocusOverlay">
-									<param name="diffusedimtext" value="artworkdiffuse/poster.png" />
-								</include>
-							</control>
+							<include content="FocusOverlay">
+								<param name="diffusedimtext" value="artworkdiffuse/usebganel/poster.png" />
+							</include>
 						</control>
 					</control>
 				</focusedlayout>
@@ -522,6 +526,7 @@ defaults
 				
 				<onleft>50352</onleft>
 				<onright>50352</onright>
+				<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
 				<itemlayout height="350" width="202">
 					<control type="group">
 					<!-- <animation effect="fade" start="100" end="0" time="350" condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) | !String.IsEmpty(Window(home).Property(TrailerIsPlaying))">conditional</animation> -->
@@ -531,8 +536,8 @@ defaults
 						<include content="UniversalLayout">
 							<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_nf]" />
 							<param name="artwork" value="poster" />
-							<param name="get_tags" value="!Skin.HasSetting(View_503_DisableTags)" />
-							<param name="get_tagbgpanel" value="!Skin.HasSetting(View_503_DisableTags)" />
+							<param name="get_tags" value="true" />
+							<param name="get_tagbgpanel" value="true" />
 							<param name="autoscroll" value="false" />
 							<param name="bordersize_bg" value="6" />
 							<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_nf]" />
@@ -556,8 +561,8 @@ defaults
 							<include content="UniversalLayout">
 								<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_fo]" />
 								<param name="artwork" value="poster" />
-								<param name="get_tags" value="!Skin.HasSetting(View_503_DisableTags)" />
-								<param name="get_tagbgpanel" value="!Skin.HasSetting(View_503_DisableTags)" />
+								<param name="get_tags" value="true" />
+								<param name="get_tagbgpanel" value="true" />
 								<param name="autoscroll" value="true" />
 								<param name="bordersize_bg" value="4" />
 								<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_fo]" />
@@ -566,53 +571,21 @@ defaults
 								<param name="conditional_artworkdiffuse_themed" value="!Skin.HasTheme(Roundedge) | Skin.HasSetting(View_503_DisableTags)" />
 								<param name="conditional_artworkdiffuse_override" value="Skin.HasTheme(Roundedge) + !Skin.HasSetting(View_503_DisableTags)" />
 							</include>
-							<control type="group">
-								<visible>!Skin.HasSetting(View_503_DisableTags)</visible>
-								<include content="FocusOverlay">
-									<param name="diffusedimtext" value="artworkdiffuse/usebganel/poster.png" />
-								</include>
-							</control>
-							<control type="group">
-								<visible>Skin.HasSetting(View_503_DisableTags)</visible>
-								<include content="FocusOverlay">
-									<param name="diffusedimtext" value="artworkdiffuse/poster.png" />
-								</include>
-							</control>
+							<include content="FocusOverlay">
+								<param name="diffusedimtext" value="artworkdiffuse/usebganel/poster.png" />
+							</include>
 						</control>
 					</control>
 				</focusedlayout>
 				<content sortby="year" target="videos">$VAR[View_503_Folderpath]</content>
 			</control>
 				
-			<!-- 	
-				stay at footer if use onop
-				pos or bottom if use ondown
-			https://github.com/sualfred/script.embuary.helper/wiki/Widgets:-Special-content#jump-to-letter
-			 -->
-			
-			
-			
-			<!-- <control type="scrollbar" id="61">
-				<description>horizontal</description>
-				<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
-				<orientation>horizontal</orientation>
-				<bottom>380</bottom>
-				<height>90</height>
-				<width>1920</width>
-				<onleft>61</onleft>
-				<onright>61</onright>
-				
-				
-				<onup>SetFocus(50)</onup>
-				
-				
-			</control> -->
 		</control>
 		
 		
 		
 		
-		<include content="spotight_buttongroup_hor" />
+		<include content="spotlight_buttongroup_hor" />
 		<!-- unhappy but maybe needed and practicable for people without a menu button ?? -->
 		
 		
@@ -835,7 +808,7 @@ defaults
 		
 	</include>
 		
-	<include name="spotight_buttongroup_hor">
+	<include name="spotlight_buttongroup_hor">
 		<!-- unhappy but maybe needed and practicable for people without a menu button ?? -->
 		
 		<control type="image">
@@ -849,14 +822,14 @@ defaults
 		<control type="grouplist" id="6000">
 			<description>may bound with alphabet scroll bar</description>
 			<visible>false</visible>
-			<!-- <visible>Control.HasFocus(600)</visible> -->
+			<!-- <visible>Control.HasFocus(610)</visible> -->
 			<visible>Control.IsVisible(503) | Control.IsVisible(504)</visible>
 			<!-- 
 			at bottom
 			-->
-			<!-- <animation effect="slide" start="0,0" end="0,-100" time="200" easing="inout" reversible="true">Focus</animation> -->
-			<!-- <bottom>-100</bottom> -->
-			<bottom>380</bottom>
+			<animation effect="slide" start="0,0" end="0,-100" time="200" easing="inout" reversible="true">Focus</animation>
+			<bottom>-100</bottom>
+			<!-- <bottom>380</bottom> -->
 			<height>70</height>
 			
 			<!-- <animation effect="fade" start="0" end="100" time="200" easing="inout" reversible="true">Focus</animation>
@@ -930,7 +903,7 @@ defaults
 			
 			<definition>
 				<control type="group">
-				<top>20</top>
+				<top>5</top>
 					<nested />
 					<control type="image">
 						<description>focus frame bad if item bg match global bg</description>
@@ -1045,32 +1018,21 @@ defaults
 						<label>$INFO[ListItem.Title,[B],[/B]]</label>
 					</control>
 					
-					<control type="group">
-						<description>progress bar maybe use for playable media , folder use just icon as indicator ??</description>
-							
-						<visible>![Container.Content(tvshows) | Container.Content(Seasons) | Container.Content(sets)]</visible>
-							
-						<top>280</top>
-						<left>20</left>
-						<width>480</width>
-						<control type="progress">
-							<visible>Integer.IsGreater(ListItem.PercentPlayed,0) + ListItem.IsResumable</visible>
-							<top>30</top>
-							<height>2</height>
-							<align>left</align>
-							<!-- $VAR[color_lib_watchedoverlay_progressbar_progress] -->
-							<info>ListItem.PercentPlayed</info>
-						</control>
-						<control type="image">
-							<visible>[Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable]</visible>
-							<texture colordiffuse="$VAR[color_lib_watchedoverlay_progressbar_progress]">colors/white.png</texture>
-							<top>30</top>
-							<height>2</height>
-							<align>left</align>
-							<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
-						</control>
+					<control type="progress">
+						<visible>Integer.IsGreater(ListItem.PercentPlayed,0) + ListItem.IsResumable</visible>
+						<visible>!Container.Content(sets)</visible>
+						<bottom>47</bottom>
+						<left>13</left>
+						<width>460</width>
+						<height>2</height>
+						<align>left</align>
+						<!-- 
+						<texturebg colordiffuse="$VAR[color_spotlightlib_background_layer1]">colors/white.png</texturebg>
+						<midtexture colordiffuse="$VAR[color_spotlightlib_accent]">colors/white.png</midtexture>
+						-->
+						<info>ListItem.PercentPlayed</info>
 					</control>
-					
+					<control type="videowindow" />
 				</control>
 				
 				

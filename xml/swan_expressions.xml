@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 
-	<expression name="Has_Trailer">[!String.IsEmpty(ListItem.Trailer) | [!String.IsEmpty(Window(home).Property(listitemtrailer)) + !String.IsEmpty(Window(home).Property(trailer_avail))]]</expression>
+	<!-- expresion autoset parenthesis 
+	e.g. $EXP[Has_Trailer] = [!String.IsEmpty(ListItem.Trailer) | [!String.IsEmpty(Window(home).Property(listitemtrailer)) + !String.IsEmpty(Window(home).Property(trailer_avail))]]
+	-->
+
+	<expression name="Has_Trailer">!String.IsEmpty(ListItem.Trailer) | [!String.IsEmpty(Window(home).Property(listitemtrailer)) + !String.IsEmpty(Window(home).Property(trailer_avail))]</expression>
 	<!-- BG -->
 	<expression name="IsNetflixLayout">![Window.IsActive(musicinformation) | Window.IsActive(songinformation) | Window.IsActive(movieinformation) | Window.IsActive(addoninformation) | Window.IsActive(pvrguideinfo) | Window.IsActive(pvrrecordinginfo) | Window.IsActive(pictureinfo) | Window.IsVisible(script-embuary-video.xml) | Window.IsVisible(script-embuary-person.xml)] + 
         [[Window.IsActive(home) + String.IsEqual(Skin.String(HomeLayout),Spotlight)] |
         [!Window.IsActive(home) + [Control.IsVisible(58) | Control.IsVisible(503) | Control.IsVisible(504)]]]
 	</expression>
 	
-	<expression name="Scrollbar_Lib_Horizontal">[Control.IsVisible(58) | Control.IsVisible(503) | Control.IsVisible(504)</expression>
+	<expression name="Scrollbar_Lib_Horizontal">Control.IsVisible(58) | Control.IsVisible(503) | Control.IsVisible(504)</expression>
 	
 	<expression name="IsSpotlight_View">[Window.Is(videos) | Window.Is(music)] + [Control.IsVisible(58) | Control.IsVisible(59) | Control.IsVisible(503)| Control.IsVisible(504)]</expression>
 	
@@ -38,18 +42,14 @@
 	
 	<expression name="sidebar_visible">ControlGroup(9000).HasFocus | Control.HasFocus(6130) | Control.HasFocus(6131) | Window.IsActive(MyPlaylist.xml)</expression>
 	
-	<expression name="forceTags_visible">[control.IsVisible(52) + SkinHasSettings(52_useTag)]</expression>
-	<!-- Playing video content-->
-	<expression name="PlayerHasVideo">[Player.HasVideo | Player.HasGame]</expression>
-	
 	<expression name="ListView_UseItemOverlay">
-		[[control.isvisible(50) + skin.hassetting(View_50_UseItemIndicatorOverlay)] | [control.isvisible(56) + skin.hassetting(View_56_UseItemIndicatorOverlay)]]
+		[control.isvisible(50) + skin.hassetting(View_50_UseItemIndicatorOverlay)] | [control.isvisible(56) + skin.hassetting(View_56_UseItemIndicatorOverlay)]
 	</expression>
 	<expression name="Is_MediaFolderItem">
-		[String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,artist) | String.IsEqual(ListItem.DBType,album)]
+		String.IsEqual(ListItem.DBType,set) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,artist) | String.IsEqual(ListItem.DBType,album)
 	</expression>
 	<expression name="Is_MediaFileItem">
-		[!String.IsEmpty(ListItem.Property(LocalTrailer)) | ListItem.IsPlaybable | String.IsEqual(ListItem.DBType,video) | String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,episode) | String.IsEqual(ListItem.DBType,song)]
+		!String.IsEmpty(ListItem.Property(LocalTrailer)) | ListItem.IsPlaybable | String.IsEqual(ListItem.DBType,video) | String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,episode) | String.IsEqual(ListItem.DBType,song)
 	</expression>
 			
 	<!-- trailer playing -->

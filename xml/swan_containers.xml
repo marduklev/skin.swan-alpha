@@ -2,8 +2,8 @@
 <includes>
 	<include name="Scrollbar_Lib_vertical">
 		<control type="scrollbar" id="60">
+			<animation effect="fade" start="100" end="0" time="250" condition="Control.HasFocus(600)">conditional</animation>
 			<description>vertical</description>
-			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
 			<visible>!$EXP[Scrollbar_Lib_Horizontal]</visible>
 			<right>45</right>
 			<top>160</top>
@@ -11,27 +11,118 @@
 			<onup>60</onup>
 			<ondown>60</ondown>
 			<onleft>SetFocus(50)</onleft>
-			<onright>19</onright>
+			<onright condition="Control.IsVisible(600)">600</onright>
+			<onright condition="!Control.IsVisible(600)">19</onright>
 		</control>
 	</include>
 	<include name="Scrollbar_Lib_horizontal">
 		<control type="scrollbar" id="61">
-			<description>horizontal</description>
-			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
-			<visible>$EXP[Scrollbar_Lib_Horizontal]</visible>
-			<bottom>15</bottom>
-			<height>55</height>
-			<onleft>61</onleft>
-			<onright>61</onright>
+				<animation effect="fade" start="100" end="0" time="200" easing="inout" reversible="true" condition="!Control.HasFocus(61)">conditional</animation>
+				<orientation>horizontal</orientation>
+				<texturesliderbackground colordiffuse="$VAR[color_global_scrollbar_panel]">colors/white.png</texturesliderbackground>
+				<texturesliderbar colordiffuse="$VAR[color_global_scrollbar_slider_nf]">colors/white.png</texturesliderbar>
+				<texturesliderbarfocus colordiffuse="$VAR[color_global_scrollbar_slider_fo]">colors/white.png</texturesliderbarfocus>
+				<visible>$EXP[Scrollbar_Lib_Horizontal]</visible>
+				<bottom>380</bottom>
+				<height>5</height>
+				<left>110</left>	match alphabet
+				<!-- <width>1350</width> match full alphabet -->
+				<width>1810</width> match alphabet
+				
+				<onleft>61</onleft>
+				<onright>61</onright>
 			
-			
-			<onup>SetFocus(50)</onup>
-			
-			<nested />
-			<!-- <ondown>SetFocus(50)</ondown> -->
+				<nested />
+				
+				<onup condition="Control.IsVisible(610)">610</onup>
+				<onup condition="!Control.IsVisible(600)">50</onup>
+				
+				
+				<ondown>50</ondown>
 			
 		</control>
 	</include>
+	
+	<include name="ScrollBar_Alphabet">
+		<control type="group">
+			
+			<nested /> 
+			<height>$PARAM[height]</height>
+			
+			<control type="image">
+				<description>may just use as nested element for hor bar</description>
+				<texture colordiffuse="ff131313">colors/white.png</texture>
+				<visible>$PARAM[bg_texture_visible]</visible>
+			</control>
+			
+			<control type="panel" id="$PARAM[id]">
+				<visible>[[Container.HasNext | Container.HasPrevious] + [[Container.Content(movies) | Container.Content(sets) | Container.Content(tvshows) | Container.Content(artists) | Container.Content(albums) | Container.Content(addons)] + [String.IsEqual(Container.SortMethod,$LOCALIZE[551]) | String.IsEqual(Container.SortMethod,$LOCALIZE[561]) | String.IsEqual(Container.SortMethod,$LOCALIZE[558]) | String.IsEqual(Container.SortMethod,$LOCALIZE[557]) | String.IsEqual(Container.SortMethod,$LOCALIZE[556])]]]</visible>
+				<orientation>$PARAM[orientation]</orientation>
+				<defaultcontrol>0</defaultcontrol>
+				<scrolltime />
+				<width>$PARAM[panel_width]</width>
+				
+				<include condition="$PARAM[is_vertical]">ScrollBar_Alphabet_ver</include>
+				<include condition="!$PARAM[is_vertical]">ScrollBar_Alphabet_hor</include>
+				
+				<focusedlayout height="$PARAM[item_hw]" width="$PARAM[item_hw]">
+					<control type="group">
+						<control type="image">
+							<texture colordiffuse="white">colors/white.png</texture>
+						</control>
+						<control type="textbox">
+							<font>font_Montserrat_16_semibold</font>
+							<align>center</align>
+							<aligny>center</aligny>
+							<textcolor>ff131313</textcolor>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+					</control>
+				</focusedlayout>
+				<itemlayout height="$PARAM[item_hw]" width="$PARAM[item_hw]">
+					<control type="group">
+						<control type="image">
+							<texture colordiffuse="ff131313">colors/white.png</texture>
+						</control>
+						<control type="textbox">
+							<font>font_Montserrat_16_extrabold</font>
+							<align>center</align>
+							<aligny>center</aligny>
+							<textcolor>white</textcolor>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+					</control>
+				</itemlayout>
+				<content>plugin://script.embuary.helper/?info=jumptoletter&amp;showall=true&amp;reload=$INFO[Container.NumItems]</content>
+			</control>
+		</control>
+	</include>
+
+	<include name="ScrollBar_Alphabet_ver">
+		<width>60</width>																																   
+		<left>36</left>
+					
+		<onup>600</onup>
+		<ondown>600</ondown>
+		<onleft>50</onleft>
+		<onright>60</onright>
+		
+		
+	</include>
+	<include name="ScrollBar_Alphabet_hor">
+		<left>110</left>
+		<top>15</top>	
+		<height>75</height>
+		<onup condition="$EXP[Has_Trailer] + Control.IsVisible(503)">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onup>
+		<onup condition="$EXP[Has_Trailer] + Control.IsVisible(503)">SetProperty(TrailerIsPlaying,true,home)</onup>
+		<onup condition="$EXP[Has_Trailer] + String.IsEmpty(Window.Property(Spotlight_Cast)) + Control.IsVisible(503)">SetProperty(Spotlight_Cast,visible)</onup>
+		<onup condition="$EXP[Has_Trailer] + Control.IsVisible(503)">50</onup>
+		<ondown>50</ondown>
+		<onleft>6000</onleft>
+		<onright>61</onright>
+	</include>
+		
+		
 	<!-- use global in future - dialog vs common ?
 	also check https://kodi.wiki/view/List_of_built-in_functions#Weather_built-in.27s
 	<onload>Weather.Refresh</onload> 
@@ -125,12 +216,14 @@
 	<include name="footer">
 		<param name="use_bgpanel" default="true" />
 		<param name="footer_bg_color" default="$VAR[color_footer_backgroundpanel]" />
+		<param name="footer_bg_image" default="colors/white.png" />
 		<param name="bottom" default="0" />
 		<param name="footer_mediaflag_width" default="30%" />
 		<param name="footer_mediaflag_offsetleft" default="100" />
 		<param name="footer_mediaflag_align" default="left" />
 		<param name="footer_rating_offsetright" default="100" />
 		<param name="footer_rating_align" default="right" />
+		
 		<definition>
 		<control type="group">
 			<animation effect="slide" start="0,90" end="0,0" time="350" tween="quadratic" easing="out" delay="100">VisibleChange</animation>
@@ -139,7 +232,7 @@
 			<height>90</height>
 			<control description="bg panel" type="image">
 				<visible>$PARAM[use_bgpanel]</visible>
-				<texture colordiffuse="$PARAM[footer_bg_color]">colors/white.png</texture>
+				<texture flipx="true" colordiffuse="$PARAM[footer_bg_color]">$PARAM[footer_bg_image]</texture>
 			</control>
 			<include content="MediaFlagGroup_Footer">
 				<param name="mediaflag_offset_left" value="$PARAM[footer_mediaflag_offsetleft]" />
@@ -1072,7 +1165,7 @@
 			<left>10</left>
 			<right>10</right>
 			<animation type="conditional" condition="$PARAM[conditional_artworkdiffuse_themed]" reversible="false">
-				<effect type="zoom" start="100,100" end="70,100" center="50%,100%" time="350" />
+				<effect type="zoom" start="100,100" end="70,100" center="50%,100%" time="0" />
 			</animation>
 			<include content="ProgressBarOverlay" />
 		</control>
