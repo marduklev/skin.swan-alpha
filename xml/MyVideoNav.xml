@@ -105,18 +105,16 @@
 			<description>viewtypes</description>
 			<include content="Animation_Close_MediaContainer" condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))" />
 			
-			<animation type="Conditional" condition="$EXP[Infodialog_IsActive] | Window.IsActive(mediasource) | [Window.IsActive(shutdownmenu) + !Control.IsVisible(58)]">
+			<animation type="Conditional" condition="$EXP[Infodialog_IsActive] | Window.IsActive(mediasource) | [Window.IsActive(shutdownmenu) + !$EXP[IsSpotlight_View]]">
 				<effect type="fade" start="100" end="0" time="250" tween="sine" easing="out" />
 				<effect type="zoom" center="50%,50%" start="100" end="0" time="300" tween="cubic" easing="out" />
 			</animation>
 			
-			<include content="SwanShortcuts_Container" condition="!string.isempty(window(home).property(shortcutitem_nr))" />
+			<include condition="!string.isempty(window(home).property(shortcutitem_nr))" content="SwanShortcuts_Container"  />
 				
 			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view50</include>
 			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">Simple_Panels</include>
 			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view56</include>
-			
-			
 			
 			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view58</include>
 			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view502</include>
@@ -126,7 +124,6 @@
 			
 			
 			<include content="ScrollBar_Alphabet">
-				<animation effect="fade" start="100" end="0" time="200" easing="inout" reversible="true" condition="!Control.HasFocus(600)">conditional</animation>
 				<right>0</right>
 				<width>100</width>
 				<top>105</top>
@@ -141,9 +138,9 @@
 				<param name="is_vertical" value="true" />
 			</include>
 			<include content="ScrollBar_Alphabet">
-				<animation effect="fade" start="100" end="0" time="200" easing="inout" reversible="true" condition="!Control.HasFocus(610)">conditional</animation>
-				<visible>[Control.IsVisible(503) | Control.IsVisible(504)] + Control.IsVisible(600)</visible>
+				<visible>[Control.IsVisible(503) | Control.IsVisible(504)] + Control.IsVisible(610)</visible>
 				<bottom>380</bottom>
+				
 				<param name="id" value="610" />
 				<param name="orientation" value="horizontal" />
 				<param name="panel_width" value="1720" />
@@ -153,10 +150,8 @@
 				<param name="is_vertical" value="false" />
 			</include>
 			
-			
-			
-				<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">Scrollbar_Lib_vertical</include> 60
-				<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">Scrollbar_Lib_horizontal</include> 61
+			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">Scrollbar_Lib_vertical</include>
+			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">Scrollbar_Lib_horizontal</include>
 			
 		</control>
 		<include content="HeaderBar">
@@ -169,7 +164,6 @@
 			<animation effect="slide" start="-450,0" end="0,0" time="300" tween="cubic" easing="inout">VisibleHidden</animation>
 			<visible>String.IsEqual(Window(Home).Property(menucontrol_active),common)</visible>
 			<include content="menucontrol_global" condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))" />
-				
 		</control>
 		
 		<!-- <include content="ViewSelection" /> -->
