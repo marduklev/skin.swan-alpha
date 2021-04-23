@@ -1,38 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
 	<include content="media_window_attributes">
-		<param name="view_ids" value="50,51,52,53,54,502" />
+		<param name="view_ids" value="50,51,52,53,54,502,56,503,504" />
 	</include>
 	<controls>
 		
+		<control type="group">
+			<visible>!Skin.HasSetting(BlurEnabled)</visible>
+			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
+			<include>global_background</include>
+		</control>
+		<control type="group">
+			<visible>Skin.HasSetting(BlurEnabled)</visible>
+			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
+			<include>GlobalBlurredBackground</include>
+		</control>			
 		<control type="group" id="70">
 			<description>viewtypes</description>
 			<include content="Animation_Close_MediaContainer" condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))" />
-			<centerleft>50%</centerleft>
 			
-			<!-- 
-			<include content="Animation_TransitionFadeOut">
-				<param name="condition" value="$EXP[Infodialog_IsActive] | Window.IsActive(mediasource)" />
-			</include> 
-			-->
-			<animation type="Conditional" condition="$EXP[Infodialog_IsActive] | Window.IsActive(mediasource) | [Window.IsActive(shutdownmenu) + !Control.IsVisible(58)]">
+			<animation type="Conditional" condition="$EXP[Infodialog_IsActive] | Window.IsActive(mediasource) | [Window.IsActive(shutdownmenu) + !$EXP[IsSpotlight_View]]">
 				<effect type="fade" start="100" end="0" time="250" tween="sine" easing="out" />
 				<effect type="zoom" center="50%,50%" start="100" end="0" time="300" tween="cubic" easing="out" />
 			</animation>
 			
-			<!-- Shortcut -->
-			<include content="SwanShortcuts_Container" condition="!string.isempty(window(home).property(shortcutitem_nr))" />
+			<include condition="!string.isempty(window(home).property(shortcutitem_nr))" content="SwanShortcuts_Container"  />
 				
-			<!-- Regular -->
+			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view_layer4</include>
+			
+			<include condition="!string.isempty(window(home).property(shortcutitem_nr))" content="SwanShortcuts_Container" />
+				
 			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view50</include>
-			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">Simple_Panels</include>
+			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view_51</include>
+			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view_52</include>
+			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view_53</include>
+			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view_54</include>
 			
 			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view502</include>
 			
-			<include>Scrollbar_Lib_vertical</include>
-			<include>Scrollbar_Lib_horizontal</include>
+			<include  condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))" content="ScrollBar_Alphabet">
+				<right>0</right>
+				<width>100</width>
+				<top>105</top>
+				
+				<param name="id" value="600" />
+				<param name="visible" value="[Control.IsVisible(50) | Control.IsVisible(51) | Control.IsVisible(52) | Control.IsVisible(53) | Control.IsVisible(54) | Control.IsVisible(56) | Control.IsVisible(502)]" />
+				<param name="orientation" value="vertical" />
+				<param name="panel_width" value="60" />
+				<param name="height" value="885" />
+				<param name="item_hw" value="32.5" />
+				<param name="bg_texture_visible" value="true" />
+				<param name="is_vertical" value="true" />
+			</include>
+			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))" content="ScrollBar_Alphabet">
+				<bottom>380</bottom>
+				
+				<param name="id" value="610" />
+				<param name="visible" value="[Control.IsVisible(503) | Control.IsVisible(504)]" />
+				<param name="orientation" value="horizontal" />
+				<param name="panel_width" value="1720" />
+				<param name="height" value="90" />
+				<param name="item_hw" value="50" />
+				<param name="bg_texture_visible" value="Control.IsVisible(503) + !Skin.HasSetting(View_503_DisableFooter)" />
+				<param name="is_vertical" value="false" />
+			</include>
+			
+			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">Scrollbar_Lib_vertical</include>
+			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">Scrollbar_Lib_horizontal</include>
 		</control>
-		
 		<include content="HeaderBar">
 			<param name="HasBGPanel" value="Skin.HasSetting(MediaWindow_UseHeaderBG)" />
 		</include>
@@ -42,29 +77,7 @@
 		<control type="group">
 			<animation effect="slide" start="-450,0" end="0,0" time="300" tween="cubic" easing="inout">VisibleHidden</animation>
 			<visible>String.IsEqual(Window(Home).Property(menucontrol_active),common)</visible>
-			<include content="menucontrol_global" condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">
-				<param name="has_premenu" value="!Control.IsVisible(58)" />
-				<param name="has_no_premenu" value="Control.IsVisible(58)" />
-			</include>
-		</control>
-		
-		<!-- <include content="ViewSelection" /> -->
-		<control type="group">
-			<right>0</right>
-			<width>1375</width>
-			<visible>String.IsEqual(Window(Home).Property(view_selection),visible)</visible>
-			<animation effect="slide" start="1375,0" end="0,0" time="300" tween="cubic" easing="inout">VisibleHidden</animation>
-		
-			<control type="image">
-				<texture>colors/white20.png</texture>
-			</control>
-			
-			<control type="button" id="100">
-				<texturefocus>colors/white.png</texturefocus>
-				<onclick>ClearProperty(view_selection,home)</onclick>
-				<onclick>SetFocus(9000)</onclick>
-			</control>
-		
+			<include content="menucontrol_global" condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))" />
 		</control>
 
 		<include content="NativeString_Filter" />

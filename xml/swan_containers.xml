@@ -153,7 +153,7 @@
 			</control>
 			
 			<control type="panel" id="$PARAM[id]">
-				<visible>[[Container.HasNext | Container.HasPrevious] + [[Container.Content(movies) | Container.Content(sets) | Container.Content(tvshows) | Container.Content(artists) | Container.Content(albums) | Container.Content(addons)] + [String.IsEqual(Container.SortMethod,$LOCALIZE[551]) | String.IsEqual(Container.SortMethod,$LOCALIZE[561]) | String.IsEqual(Container.SortMethod,$LOCALIZE[558]) | String.IsEqual(Container.SortMethod,$LOCALIZE[557]) | String.IsEqual(Container.SortMethod,$LOCALIZE[556])]]]</visible>
+				<visible>[$PARAM[visible] + [Container.HasNext | Container.HasPrevious] + [[Container.Content(movies) | Container.Content(sets) | Container.Content(tvshows) | Container.Content(seasons) | Container.Content(episodes) | Container.Content(artists) | Container.Content(albums) | Container.Content(songs)] + [String.IsEqual(Container.SortMethod,$LOCALIZE[551]) | String.IsEqual(Container.SortMethod,$LOCALIZE[561]) | String.IsEqual(Container.SortMethod,$LOCALIZE[558]) | String.IsEqual(Container.SortMethod,$LOCALIZE[557]) | String.IsEqual(Container.SortMethod,$LOCALIZE[556])]]]</visible>
 				<orientation>$PARAM[orientation]</orientation>
 				<scrolltime />
 				<width>$PARAM[panel_width]</width>
@@ -178,6 +178,7 @@
 				<itemlayout height="$PARAM[item_hw]" width="$PARAM[item_hw]">
 					<control type="group">
 						<control type="image">
+							<visible>$PARAM[is_vertical]</visible>
 							<texture colordiffuse="ff131313">colors/white.png</texture>
 						</control>
 						<control type="textbox">
@@ -226,7 +227,7 @@
 	<include name="Circle_CastWidget">
 		<control type="image">
 			<description>Fallback aspect keep</description>
-			<bordertexture colordiffuse="$PARAM[colordiffuse]">artworkdiffuse/circle.png</bordertexture>
+			<bordertexture colordiffuse="$PARAM[colordiffuse]">artworkdiffuse/circleborder.png</bordertexture>
 			<texture background="true" diffuse="artworkdiffuse/circle.png" fallback="defaultactor.png">$INFO[ListItem.Thumb]</texture>
 			<aspectratio scalediffuse="false" aligny="top" align="center">scale</aspectratio>
 			<bordersize>$PARAM[bordersize_bg]</bordersize>
@@ -244,7 +245,7 @@
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>$VAR[color_spotlightlib_main]</textcolor>
-				<selectedcolor>white</selectedcolor>
+				<selectedcolor>$VAR[color_spotlightlib_accent]</selectedcolor>
 				<label>$VAR[Tag_label1][CR][COLOR $VAR[color_spotlightlib_secondary]]$VAR[Tag_label2][/COLOR]</label>
 			</control>
 		</control>
