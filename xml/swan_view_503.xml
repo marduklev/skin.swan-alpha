@@ -15,16 +15,28 @@
 					
 	<!-- skinsetting view_options in mind / to do
 	
-		503/504 - overrdie default focus, use fixedframe - low prio, may not do it
-		503/504 - behaviour of spotlight icon bar , curr disabled, and unadjusted - need for touch device
+		504 - overrdie default focus, use fixedframe - low prio, may not do it
+		503/504 - behaviour of spotlight icon bar , curr disabled, and unadjusted - need for touch device, show if alphabet bar focused ?
 		503/504 - adjust anim / header usage
-				- add similiar content ?
-				- resolve navigation onup trailer vs focus filter ctrl
+				- resolve navigation onup trailer (onup for trailer is currently useless, as alphabet bar/scrollbar onup) vs focus filter ctrl
 				- ondown options 
 					- 1st focus scollbar/alphabet bar, before going to custom containers / show cast
 					- ondown - a) focus  nextup/folderpath/*similiar instead just show cast
 							   b) just show cast first, click down again to focus containers (current default behaviour)
 							   c) go to nextup/folderpath/*similiar content without show cast
+
+
+					  filter
+						|
+			menu -   alphabet   - ?
+						|
+			menu - 	main content
+						|
+					  cast
+						|
+				 nextup & folderitems
+
+
 
 
    - NEED RESOLVE NAV/CONTAINER CONDS ISSUES UF USING PLUGIN, ESPECIALLY  IF MIXED CONTENT 
@@ -133,6 +145,7 @@
 					<!-- <textcolor>$VAR[color_spotlightlib_main]</textcolor> -->
 					<!-- <textcolor>99777777</textcolor> -->
 					<textcolor>99181818</textcolor>
+					
 					<align>left</align>
 					<font>Montserrat_ExtraBold_40</font>
 					<aligny>top</aligny>
@@ -333,7 +346,7 @@
 				<!-- <visible>Container(50352).IsUpdating | Integer.IsGreater(Container(50352).NumItems,0)</visible> -->
 				<bottom>-830</bottom>
 				<left>100</left>
-				
+				<visible>!String.StartsWith(listitem.path,plugin)</visible>
 				<orientation>horizontal</orientation>
 				<height>400</height>
 				<preloaditems>2</preloaditems>
@@ -504,9 +517,10 @@
 		<value condition="[Control.IsVisible(503) + Container.Content(seasons)] + !String.IsEmpty(Window(home).Property(dbid))">videodb://inprogresstvshows/$INFO[Window(home).Property(dbid)]/-1/?tvshowid=$INFO[Window(home).Property(dbid)]</value>
 	</variable>
 	<variable name="View_503_Folderpath">
-		<value condition="Control.IsVisible(503) + Container.Content(tvshows)">videodb://tvshows/titles/$INFO[Container(503).ListItem.dbid]</value>
-		<value condition="Control.IsVisible(503) + [String.IsEqual(Container.ListItem.dbtype,set) + System.GetBool(videolibrary.groupmoviesets)]">$INFO[Container.ListItem.FolderPath]</value>
-		<value condition="Control.IsVisible(503) + [!String.IsEmpty(Container.ListItem.SetId) + !System.GetBool(videolibrary.groupmoviesets)]">videodb://movies/sets/$INFO[Container.ListItem.setid]/?setid=$INFO[Container.ListItem.setid]</value>
+		<value condition="Control.IsVisible(503) + [!String.StartsWith(listitem.path,plugin) + Container.Content(tvshows)]">videodb://tvshows/titles/$INFO[Container(503).ListItem.dbid]</value>
+		<value condition="Control.IsVisible(503) + [!String.StartsWith(listitem.path,plugin) + String.IsEqual(Container.ListItem.dbtype,set)]">$INFO[Container.ListItem.FolderPath]</value>
+		<value condition="Control.IsVisible(503) + [!String.StartsWith(listitem.path,plugin) + !String.IsEmpty(Container.ListItem.SetId)]">videodb://movies/sets/$INFO[Container.ListItem.setid]/?setid=$INFO[Container.ListItem.setid]</value>
+		<value condition="String.StartsWith(listitem.path,plugin) + String.IsEqual(Container.ListItem.dbtype,tvshow)">$INFO[Container.ListItem.FolderPath]</value>
 	</variable>
 	
 		<!-- temp solution is -->
