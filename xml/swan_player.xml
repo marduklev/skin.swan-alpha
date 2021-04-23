@@ -446,7 +446,8 @@
 					<onleft condition="Control.IsVisible(608)">608</onleft>
 					<onleft condition="!Control.IsVisible(608)">606</onleft>
 					<onup>6096</onup><ondown>6096</ondown>
-					<onright>6011</onright>
+					<onright condition="Control.IsVisible(6701)">6701</onright>
+					<onright condition="!Control.IsVisible(6701)">6011</onright>
 					<onclick>PlayerControl(Repeat)</onclick>
 					<onclick condition="!Playlist.IsRepeatOne + !Playlist.IsRepeat">Notification(Repeat,[B]A l l[/B],10,buttons/osd/repeatall.png)</onclick>
 					<onclick condition="Playlist.IsRepeat">Notification(Repeat,[B]T i t l e[/B],10,buttons/osd/repeatone.png)</onclick>
@@ -464,8 +465,9 @@
 					<onleft condition="Control.IsVisible(608)">608</onleft>
 					<onleft condition="!Control.IsVisible(608)">606</onleft>
 					<onup>6092</onup><ondown>6092</ondown>
-					<onright condition="Control.IsVisible(6012)">6012</onright>
-					<onright condition="!Control.IsVisible(6012)">6011</onright>
+					<onright condition="Control.IsVisible(6701)">6701</onright>
+					<onright condition="!Control.IsVisible(6701) + Control.IsVisible(6012)">6012</onright>
+					<onright condition="!Control.IsVisible(6701) + !Control.IsVisible(6012)">6011</onright>
 					<onclick>PlayerControl(Random)</onclick>
 					<onclick condition="!Playlist.IsRandom">Notification(Random,[B]O n[/B],10,buttons/osd/random.png)</onclick>
 					<onclick condition="Playlist.IsRandom">Notification(Random,[B]O f f[/B],10,buttons/osd/randomoff.png)</onclick>
@@ -473,8 +475,24 @@
 			</control>
 		</control>
 	</include>
-
-
+	
+	<!-- 
+	<variable name="color_musciplayer_info_scrollbar_bg">
+		<value>$VAR[color_global_scrollbar_panel]</value>
+	</variable>
+	-->
+	<variable name="color_musciplayer_info_scrollbar_slider">
+		<value condition="String.IsEmpty(Window(musicosd).property(Scrollbar_ctrl))">$VAR[color_osdmusic_secondary]</value>
+		<value condition="!String.IsEmpty(Window(musicosd).property(Scrollbar_ctrl))">$VAR[color_osdmusic_accent]</value>
+	</variable>
+	<variable name="MusicPlayer_Plot_textview">
+		<value condition="!String.IsEmpty(MusicPlayer.Property(Album_Description))">$ESCINFO[MusicPlayer.Property(Album_Description)]</value>
+		<value condition="!String.IsEmpty(MusicPlayer.Property(Artist_Description))">$ESCINFO[MusicPlayer.Property(Artist_Description)]</value>
+		<value condition="!String.IsEmpty(VideoPlayer.Plot)">$ESCINFO[VideoPlayer.Plot]</value>
+	</variable>
+	
+	
+	
 	<!-- ################### -->
 	<!-- #### V I D E O #### -->
 	<!-- ################### -->
