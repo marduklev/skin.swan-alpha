@@ -1,18 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <includes>
-	<include name="temp_spotlight_infofade">
-		<param name="fade_end" default="0" />
-		<definition>
-			<animation effect="fade" start="100" end="$PARAM[fade_end]" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) + [Container(50350).IsUpdating | Integer.IsGreater(Container(50350).NumItems,0)]">conditional</animation>
-		</definition>
-	</include>
-	
-	<variable name="SetLabel">
-		<value condition="!String.IsEmpty(ListItem.Set)">$INFO[ListItem.Set]</value>
-		<value>$INFO[Container(503).ListItem.Label]</value>
-	</variable>
-		<!-- <label>$INFO[Container(503).ListItem.Label]</label> -->
-					
 	<!-- skinsetting view_options in mind / to do
 	
 		504 - overrdie default focus, use fixedframe - low prio, may not do it
@@ -35,13 +22,6 @@
 					  cast
 						|
 				 nextup & folderitems
-
-
-
-
-   - NEED RESOLVE NAV/CONTAINER CONDS ISSUES UF USING PLUGIN, ESPECIALLY  IF MIXED CONTENT 
-
-		504 - multirow, single row
 	-->
 	<!-- goal is use just one include - for spotlight views
 		<include content="spotlight_layout">
@@ -55,30 +35,10 @@
 			<param name="metadata_align_right" value="[Skin.HasSetting(View503_metadata_align_right) + Control.IsVisible(503)] | [Skin.HasSetting(View504_metadata_align_right) + Control.IsVisible(504)]" />
 		</include>
 	-->
-	<!-- footer - diff color and image 
-				
-				own panel color hardcoded - later use 1a ~ 10% alpha - color_spotlightlib_main - need var
-				own footer item(icon/label) color? media/rating - flag
-				
-				<param name="bottom" value="460" /> match genre line 
-				
-				<param name="footer_bg_color" value="1affffff" />
-					<param name="footer_bg_color" value="white" />
-				1affffff
-				2affffff	
-						vs $VAR[color_spotlightlib_main], like to avoid another custom color
-	-->
 	
 	<include name="view503">
 		<control type="group">
 			<visible>Control.IsVisible(503)</visible>
-		<!-- just testing	<animation effect="fade" start="100" end="30" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) | !String.IsEmpty(Window.Property(Spotlight_Nextup))">conditional</animation> -->
-			
-		<!-- future	first fade	30	<animation effect="fade" start="100" end="30" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) | !String.IsEmpty(Window.Property(Spotlight_Nextup))">conditional</animation> -->
-	<!-- future	third fade	0	<animation effect="fade" start="100" end="30" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) | !String.IsEmpty(Window.Property(Spotlight_Nextup))">conditional</animation> -->
-		
-		wished - slide info, fade just artwork if needed
-1affffff
 				<include content="spotlight_layout">
 					<param name="spotlight_artwork_visible_right" value="!Skin.HasSetting(View503_fanart_left) + Control.IsVisible(503)" />	
 					<param name="spotlight_artwork_visible_left" value="Skin.HasSetting(View503_fanart_left) + Control.IsVisible(503)" />	
@@ -89,20 +49,14 @@
 					<param name="metadata_align_center" value="Skin.HasSetting(View503_metadata_align_center)" />
 					<param name="metadata_align_right" value="Skin.HasSetting(View503_metadata_align_right)" />
 				</include>
-				
 				<include content="footer">
 					<param name="view_id" value="503" />
 					<param name="bottom" value="380" />
-					<param name="use_bgpanel" value="true" />
-					<!-- <param name="footer_bg_image" value="diffuse/gradientleft.png" /> -->
-					<param name="footer_bg_color" value="2affffff" />
 					<param name="footer_mediaflag_offsetleft" value="350" />
 					<param name="footer_rating_offsetright" value="70" />
-					
-					
-				</include>
-				
+				</include>			
 		</control>
+		
 		<control type="group">
 			<visible>Control.IsVisible(503)</visible>
 			
@@ -115,55 +69,38 @@
 					<left>110</left>
 					<bottom>340</bottom>
 					<height>100</height>
-					<!-- <align>center</align> -->
-					<!-- <textcolor>$VAR[color_spotlightlib_main]</textcolor> -->
-					<!-- <textcolor>99777777</textcolor> -->
-					<textcolor>99181818</textcolor>
-					<align>left</align>
+					<textcolor>$VAR[color_spotlightlib_contentheading]</textcolor>
 					<font>Montserrat_ExtraBold_40</font>
 					<aligny>top</aligny>
 				</control>
-				<control type="image">
-					<visible>false</visible>
-					<visible>Control.HasFocus(50352) | Control.HasFocus(50353)</visible>
-					<bottom>300</bottom>
-					<height>100</height>
-					<width>65%</width>
-					<colordiffuse>2affffff</colordiffuse>
-					<!-- <texture>colors/white.png</texture> -->
-					<texture>diffuse/gradientleft.png</texture>
-				</control>
-				<control type="label">
-					<!-- <visible>!String.IsEmpty(Window.Property(Spotlight_Cast)) | [Control.HasFocus(50352) | Control.HasFocus(50353)]</visible> -->
-					<visible>!String.IsEmpty(Window.Property(Spotlight_Cast))</visible>
-					<label>$LOCALIZE[206]</label>
-					<description>item heading</description>
-					<left>400</left>
-					<bottom>340</bottom>
-					<height>100</height>
-					<!-- <align>center</align> -->
-					<!-- <textcolor>$VAR[color_spotlightlib_main]</textcolor> -->
-					<!-- <textcolor>99777777</textcolor> -->
-					<textcolor>99181818</textcolor>
+					<control type="image">
+						<visible>Control.HasFocus(50352) | Control.HasFocus(50353)</visible>
+						<bottom>300</bottom>
+						<height>100</height>
+						<width>65%</width>
+						<colordiffuse>$VAR[color_spotlightlib_flags_backgroundpanel]</colordiffuse>
+						<texture flipx="true" diffuse="colors/white20.png">diffuse/gradienthorizontal.png</texture>
+					</control>
+					<control type="label">
+						<visible>String.IsEmpty(Window(home).Property(TrailerIsPlaying)) + [!String.IsEmpty(Window.Property(Spotlight_Cast)) + String.IsEmpty(Window.Property(Spotlight_Sets))]</visible>
+						<label>$LOCALIZE[206]</label>
+						<description>item heading</description>
+						<left>400</left>
+						<bottom>340</bottom>
+						<height>100</height>
+						<textcolor>$VAR[color_spotlightlib_contentheading]</textcolor>
+						<font>Montserrat_ExtraBold_40</font>
+						<aligny>top</aligny>
+					</control>
 					
-					<align>left</align>
-					<font>Montserrat_ExtraBold_40</font>
-					<aligny>top</aligny>
-				</control>
-				
 				<control type="label">
 					<visible>!String.IsEmpty(Window.Property(Spotlight_Sets)) + ![Container.Content(tvshows) | Container.Content(seasons)]</visible>
 					<description>item heading  + !String.IsEmpty(ListItem.SetId)</description>
-					<!-- <label>$INFO[Container(503).ListItem.Label]</label> -->
 					<label>$VAR[SetLabel]</label>
 					<left>100</left>
 					<bottom>-160</bottom>
 					<height>100</height>
-					<!-- <align>center</align> -->
-					<!-- <textcolor>$VAR[color_spotlightlib_main]</textcolor> -->
-					<!-- <textcolor>99777777</textcolor> -->
-					<textcolor>99181818</textcolor>
-					<align>left</align>
+					<textcolor>$VAR[color_spotlightlib_contentheading]</textcolor>
 					<font>Montserrat_ExtraBold_40</font>
 					<aligny>top</aligny>
 				</control>
@@ -171,15 +108,10 @@
 					<visible>!String.IsEmpty(Window.Property(Spotlight_Sets)) + Container.Content(tvshows)</visible>
 					<description>item heading</description>
 					<label>$LOCALIZE[33054]</label>
-					<!-- <left>100</left> -->
 					<left>800</left>
 					<bottom>-160</bottom>
 					<height>100</height>
-					<!-- <align>center</align> -->
-					<!-- <textcolor>$VAR[color_spotlightlib_main]</textcolor> -->
-					<!-- <textcolor>99777777</textcolor> -->
-					<textcolor>99181818</textcolor>
-					<align>left</align>
+					<textcolor>$VAR[color_spotlightlib_contentheading]</textcolor>
 					<font>Montserrat_ExtraBold_40</font>
 					<aligny>top</aligny>
 				</control>
@@ -190,11 +122,7 @@
 					<left>100</left>
 					<bottom>-160</bottom>
 					<height>100</height>
-					<!-- <align>center</align> -->
-					<!-- <textcolor>$VAR[color_spotlightlib_main]</textcolor> -->
-					<!-- <textcolor>99777777</textcolor> -->
-					<textcolor>99181818</textcolor>
-					<align>left</align>
+					<textcolor>$VAR[color_spotlightlib_contentheading]</textcolor>
 					<font>Montserrat_ExtraBold_40</font>
 					<aligny>top</aligny>
 				</control>
@@ -231,8 +159,8 @@
 							<param name="autoscroll" value="false" />
 							<param name="bordersize_bg" value="6" />
 							<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_nf]" />
-							<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_secondary]" />
-							<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_secondary]" />
+							<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_bottomtag_nf]" />
+							<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_bottomtag_nf]" />
 							<param name="conditional_artworkdiffuse_themed" value="!Skin.HasTheme(Roundedge) | Skin.HasSetting(View_503_DisableTags)" />
 							<param name="conditional_artworkdiffuse_override" value="Skin.HasTheme(Roundedge) + !Skin.HasSetting(View_503_DisableTags)" />
 						</include>
@@ -255,8 +183,8 @@
 								<param name="autoscroll" value="true" />
 								<param name="bordersize_bg" value="4" />
 								<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_fo]" />
-								<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_background_layer1]" />
-								<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_background_layer1]" />
+								<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_bottomtag_fo]" />
+								<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_bottomtag_fo]" />
 								<param name="conditional_artworkdiffuse_themed" value="!Skin.HasTheme(Roundedge) | Skin.HasSetting(View_503_DisableTags)" />
 								<param name="conditional_artworkdiffuse_override" value="Skin.HasTheme(Roundedge) + !Skin.HasSetting(View_503_DisableTags)" />
 							</include>
@@ -276,7 +204,18 @@
 					</control>
 				</focusedlayout>
 			</control>
-		
+			<!--
+			<control type="image">
+				<visible>false</visible>
+				<right>0</right>
+				<width>200</width>
+				<bottom>0</bottom>
+				<height>365</height>
+				<decscription>better use hardcoded or inverted ?</decscription>
+				<scalediffuse>true</scalediffuse>
+				<texture flipx="true" diffuse="diffuse/gradientleft.png" colordiffuse="$VAR[color_spotlightlib_background_layer1]">colors/white90.png</texture>
+			</control>
+			-->
 		
 		
 			<control type="panel" id="50350">
@@ -344,9 +283,10 @@
 			<control type="panel" id="50352">
 				<animation effect="slide" start="0,0" end="0,-300" time="350" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
 				<!-- <visible>Container(50352).IsUpdating | Integer.IsGreater(Container(50352).NumItems,0)</visible> -->
+				<visible>!String.StartsWith(listitem.path,plugin)</visible>
+				
 				<bottom>-830</bottom>
 				<left>100</left>
-				<visible>!String.StartsWith(listitem.path,plugin)</visible>
 				<orientation>horizontal</orientation>
 				<height>400</height>
 				<preloaditems>2</preloaditems>
@@ -363,11 +303,10 @@
 					<include content="template5077">
 						<param name="is_focused" value="true" />
 					</include>
+					
 				</focusedlayout>
 				<itemlayout height="350" width="202" condition="!String.Contains(Container.FolderPath,/tvshows)">
 					<control type="group">
-					<!-- <animation effect="fade" start="100" end="0" time="350" condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) | !String.IsEmpty(Window(home).Property(TrailerIsPlaying))">conditional</animation> -->
-					
 						<width>200</width>
 						<height>282</height>
 						<include content="UniversalLayout">
@@ -378,14 +317,13 @@
 							<param name="autoscroll" value="false" />
 							<param name="bordersize_bg" value="6" />
 							<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_nf]" />
-							<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_secondary]" />
-							<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_secondary]" />
+							<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_bottomtag_nf]" />
+							<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_bottomtag_nf]" />
 							<param name="conditional_artworkdiffuse_themed" value="!Skin.HasTheme(Roundedge) | Skin.HasSetting(View_503_DisableTags)" />
 							<param name="conditional_artworkdiffuse_override" value="Skin.HasTheme(Roundedge) + !Skin.HasSetting(View_503_DisableTags)" />
 						</include>
 					</control>
 				</itemlayout>
-				
 				
 				<focusedlayout height="350" width="202" condition="!String.Contains(Container.FolderPath,/tvshows)">
 					<include content="SetPropOnFocus_HiddenButton">
@@ -394,7 +332,6 @@
 					<control type="group">
 						<width>200</width>
 						<height>282</height>
-						<description>to avoid relaod skin on disable footer and avoid bottom offset fade out 3rd row of items</description>
 						<include>Animation_Item_Focus</include>
 						<control type="group">
 							<include content="UniversalLayout">
@@ -405,8 +342,8 @@
 								<param name="autoscroll" value="true" />
 								<param name="bordersize_bg" value="4" />
 								<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_fo]" />
-								<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_background_layer1]" />
-								<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_background_layer1]" />
+								<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_bottomtag_fo]" />
+								<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_bottomtag_fo]" />
 								<param name="conditional_artworkdiffuse_themed" value="!Skin.HasTheme(Roundedge) | Skin.HasSetting(View_503_DisableTags)" />
 								<param name="conditional_artworkdiffuse_override" value="Skin.HasTheme(Roundedge) + !Skin.HasSetting(View_503_DisableTags)" />
 							</include>
@@ -431,9 +368,10 @@
 			</control>
 			
 			<control description="seasons" type="panel" id="50353">
+				<animation effect="slide" start="0,0" end="0,-300" time="350" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
+				
 				<visible>Container.Content(tvshows)</visible>
 				
-				<animation effect="slide" start="0,0" end="0,-300" time="350" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
 				<bottom>-830</bottom>
 				<height>400</height>
 				
@@ -446,8 +384,6 @@
 				
 				<itemlayout height="350" width="202">
 					<control type="group">
-					<!-- <animation effect="fade" start="100" end="0" time="350" condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) | !String.IsEmpty(Window(home).Property(TrailerIsPlaying))">conditional</animation> -->
-					
 						<width>200</width>
 						<height>282</height>
 						<include content="UniversalLayout">
@@ -458,21 +394,17 @@
 							<param name="autoscroll" value="false" />
 							<param name="bordersize_bg" value="6" />
 							<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_nf]" />
-							<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_secondary]" />
-							<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_secondary]" />
+							<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_bottomtag_nf]" />
+							<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_bottomtag_nf]" />
 							<param name="conditional_artworkdiffuse_themed" value="!Skin.HasTheme(Roundedge) | Skin.HasSetting(View_503_DisableTags)" />
 							<param name="conditional_artworkdiffuse_override" value="Skin.HasTheme(Roundedge) + !Skin.HasSetting(View_503_DisableTags)" />
 						</include>
 					</control>
 				</itemlayout>
 				<focusedlayout height="350" width="202">
-					<include content="SetPropOnFocus_HiddenButton">
-						<onunfocus condition="!String.IsEmpty(Window.Property(Spotlight_Cast))">ClearProperty(Spotlight_Cast)</onunfocus>
-					</include>
 					<control type="group">
 						<width>200</width>
 						<height>282</height>
-						<description>to avoid relaod skin on disable footer and avoid bottom offset fade out 3rd row of items</description>
 						<include>Animation_Item_Focus</include>
 						<control type="group">
 							<include content="UniversalLayout">
@@ -483,8 +415,8 @@
 								<param name="autoscroll" value="true" />
 								<param name="bordersize_bg" value="4" />
 								<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_fo]" />
-								<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_background_layer1]" />
-								<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_background_layer1]" />
+								<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_bottomtag_fo]" />
+								<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_bottomtag_fo]" />
 								<param name="conditional_artworkdiffuse_themed" value="!Skin.HasTheme(Roundedge) | Skin.HasSetting(View_503_DisableTags)" />
 								<param name="conditional_artworkdiffuse_override" value="Skin.HasTheme(Roundedge) + !Skin.HasSetting(View_503_DisableTags)" />
 							</include>
@@ -499,31 +431,10 @@
 				
 		</control>
 		
-		
-		
-		
 		<include content="spotlight_buttongroup_hor" />
-		<!-- unhappy but maybe needed and practicable for people without a menu button ?? -->
-		
-		
-		
 	</include>
-	<include name="50352_content">
-		<content sortby="$PARAM[sortby]" limit="$PARAM[limit]">$PARAM[content]</content>
-	</include>
-	<variable name="View503_NextUp">
-		<value condition="[Control.IsVisible(503) + Container.Content(tvshows)] + !String.IsEmpty(Container(503).ListItem.dbid)">videodb://inprogresstvshows/$INFO[Container(503).ListItem.dbid]/-1/?tvshowid=$INFO[Container(503).ListItem.dbid]</value>
-		<value condition="[Control.IsVisible(503) + Container.Content(seasons)] + String.EndsWith(Container.Folderpath,/)">$INFO[Container.Folderpath]-1/</value>
-		<value condition="[Control.IsVisible(503) + Container.Content(seasons)] + !String.IsEmpty(Window(home).Property(dbid))">videodb://inprogresstvshows/$INFO[Window(home).Property(dbid)]/-1/?tvshowid=$INFO[Window(home).Property(dbid)]</value>
-	</variable>
-	<variable name="View_503_Folderpath">
-		<value condition="Control.IsVisible(503) + [!String.StartsWith(listitem.path,plugin) + Container.Content(tvshows)]">videodb://tvshows/titles/$INFO[Container(503).ListItem.dbid]</value>
-		<value condition="Control.IsVisible(503) + [!String.StartsWith(listitem.path,plugin) + String.IsEqual(Container.ListItem.dbtype,set)]">$INFO[Container.ListItem.FolderPath]</value>
-		<value condition="Control.IsVisible(503) + [!String.StartsWith(listitem.path,plugin) + !String.IsEmpty(Container.ListItem.SetId)]">videodb://movies/sets/$INFO[Container.ListItem.setid]/?setid=$INFO[Container.ListItem.setid]</value>
-		<value condition="String.StartsWith(listitem.path,plugin) + String.IsEqual(Container.ListItem.dbtype,tvshow)">$INFO[Container.ListItem.FolderPath]</value>
-	</variable>
 	
-		<!-- temp solution is -->
+	
 	<include name="view504">
 		<control type="group">
 			
@@ -543,8 +454,6 @@
 				<include content="footer">
 					<param name="view_id" value="504" />
 					<param name="bottom" value="380" />
-					<param name="use_bgpanel" value="true" />
-					<param name="footer_bg_color" value="1affffff" />
 					<param name="footer_mediaflag_offsetleft" value="350" />
 					<param name="footer_rating_offsetright" value="70" />
 				</include>
@@ -613,8 +522,8 @@
 							<param name="autoscroll" value="false" />
 							<param name="bordersize_bg" value="6" />
 							<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_nf]" />
-							<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_secondary]" />
-							<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_secondary]" />
+							<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_bottomtag_nf]" />
+							<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_bottomtag_nf]" />
 							<param name="get_landscapelogo" value="![$EXP[IsEpisode]]" />
 							<param name="conditional_artworkdiffuse_themed" value="!Skin.HasTheme(Roundedge) | Skin.HasSetting(View_504_DisableTags)" />
 							<param name="conditional_artworkdiffuse_override" value="Skin.HasTheme(Roundedge) + !Skin.HasSetting(View_504_DisableTags)" />
@@ -642,8 +551,8 @@
 								<param name="autoscroll" value="true" />
 								<param name="bordersize_bg" value="4" />
 								<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_fo]" />
-								<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_background_layer1]" />
-								<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_background_layer1]" />
+								<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_bottomtag_fo]" />
+								<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_bottomtag_fo]" />
 								<param name="get_landscapelogo" value="![$EXP[IsEpisode]]" />
 								<param name="conditional_artworkdiffuse_themed" value="!Skin.HasTheme(Roundedge) | Skin.HasSetting(View_504_DisableTags)" />
 								<param name="conditional_artworkdiffuse_override" value="Skin.HasTheme(Roundedge) + !Skin.HasSetting(View_504_DisableTags)" />
@@ -678,8 +587,8 @@
 							<param name="autoscroll" value="false" />
 							<param name="bordersize_bg" value="6" />
 							<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_nf]" />
-							<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_secondary]" />
-							<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_secondary]" />
+							<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_bottomtag_nf]" />
+							<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_bottomtag_nf]" />
 							<param name="conditional_artworkdiffuse_themed" value="true" />
 							<param name="conditional_artworkdiffuse_override" value="false" />
 							<param name="get_landscapelogo" value="![$EXP[IsEpisode]]" />
@@ -707,8 +616,8 @@
 								<param name="autoscroll" value="true" />
 								<param name="bordersize_bg" value="4" />
 								<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_fo]" />
-								<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_background_layer1]" />
-								<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_background_layer1]" />
+								<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_bottomtag_fo]" />
+								<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_bottomtag_fo]" />
 								<param name="conditional_artworkdiffuse_themed" value="true" />
 								<param name="conditional_artworkdiffuse_override" value="false" />
 								<param name="get_landscapelogo" value="![$EXP[IsEpisode]]" />
@@ -725,7 +634,32 @@
 		</control>
 		
 	</include>
-		
+	
+	<include name="50352_content">
+		<content sortby="$PARAM[sortby]" limit="$PARAM[limit]">$PARAM[content]</content>
+	</include>
+	<variable name="View503_NextUp">
+		<value condition="[Control.IsVisible(503) + Container.Content(tvshows)] + !String.IsEmpty(Container(503).ListItem.dbid)">videodb://inprogresstvshows/$INFO[Container(503).ListItem.dbid]/-1/?tvshowid=$INFO[Container(503).ListItem.dbid]</value>
+		<value condition="[Control.IsVisible(503) + Container.Content(seasons)] + String.EndsWith(Container.Folderpath,/)">$INFO[Container.Folderpath]-1/</value>
+		<value condition="[Control.IsVisible(503) + Container.Content(seasons)] + !String.IsEmpty(Window(home).Property(dbid))">videodb://inprogresstvshows/$INFO[Window(home).Property(dbid)]/-1/?tvshowid=$INFO[Window(home).Property(dbid)]</value>
+	</variable>
+	<variable name="View_503_Folderpath">
+		<value condition="Control.IsVisible(503) + [!String.StartsWith(listitem.path,plugin) + Container.Content(tvshows)]">videodb://tvshows/titles/$INFO[Container(503).ListItem.dbid]</value>
+		<value condition="Control.IsVisible(503) + [!String.StartsWith(listitem.path,plugin) + String.IsEqual(Container.ListItem.dbtype,set)]">$INFO[Container.ListItem.FolderPath]</value>
+		<value condition="Control.IsVisible(503) + [!String.StartsWith(listitem.path,plugin) + !String.IsEmpty(Container.ListItem.SetId)]">videodb://movies/sets/$INFO[Container.ListItem.setid]/?setid=$INFO[Container.ListItem.setid]</value>
+		<value condition="String.StartsWith(listitem.path,plugin) + String.IsEqual(Container.ListItem.dbtype,tvshow)">$INFO[Container.ListItem.FolderPath]</value>
+	</variable>
+	<include name="temp_spotlight_infofade">
+		<param name="fade_end" default="0" />
+		<definition>
+			<animation effect="fade" start="100" end="$PARAM[fade_end]" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) + [Container(50350).IsUpdating | Integer.IsGreater(Container(50350).NumItems,0)]">conditional</animation>
+		</definition>
+	</include>
+	
+	<variable name="SetLabel">
+		<value condition="!String.IsEmpty(ListItem.Set)">$INFO[ListItem.Set]</value>
+		<value>$INFO[Container(503).ListItem.Label]</value>
+	</variable>
 	<include name="spotlight_buttongroup_hor">
 		<!-- unhappy but maybe needed and practicable for people without a menu button ?? -->
 		
@@ -814,15 +748,15 @@
 	</include>
 		
 		<include name="template5077">
-			<param name="color" default="ff101010" />
-			<param name="tc" default="white" />
-			<param name="tc_2" default="ffcccccc" />
+			<param name="color" default="$VAR[color_spotlightlib_background_layer1]" />
+			<param name="tc" default="$VAR[color_spotlightlib_main]" />
 			<param name="is_focused" default="true" />
 			
 			<definition>
 				<control type="group">
 				<top>5</top>
 					<nested />
+					
 					<control type="image">
 						<description>focus frame bad if item bg match global bg</description>
 						<texture colordiffuse="$PARAM[tc]">colors/white.png</texture>
@@ -844,30 +778,37 @@
 						<bordersize>5</bordersize>
 						<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
 					</control>
-					<control type="image">
-						<description>diffused fanart</description>
+					
+					<control type="group">
+						<animation type="focus">
+							<effect type="zoom" center="50%,50%" start="100" end="101.3,102.5" time="150" easing="inout" />
+						</animation>
+						<animation type="unfocus">
+							<effect type="zoom" center="50%,50%" start="101.3,102.5" end="100" time="150" easing="inout" />
+						</animation>
 						<top>10</top>
 						<left>10</left>
-						<texture background="true" diffuse="diffuse/spotlightrightdiffuse.png">$VAR[ImageLayout_fanart]</texture>
-						<aspectratio scalediffuse="false" align="left" aligny="top">scale</aspectratio>
+						<bottom>10</bottom>
+						<right>10</right>
+						<control type="image">
+							<texture background="true">$VAR[ImageLayout_fanart]</texture>
+						</control>
+						<control type="image">
+							<visible>false</visible>
+							<decscription>better use hardcoded or inverted ?</decscription>
+							<top>45%</top>
+							<texture colordiffuse="$PARAM[color]">diffuse/episodeinfogradient.png</texture>
+						</control>
+						<control type="image">
+							<decscription>better use hardcoded or inverted ?</decscription>
+							<top>45%</top>
+							<texture colordiffuse="ff131313">diffuse/episodeinfogradient.png</texture>
+						</control>
+						
+						
 					</control>
-					<control type="textbox">
-						<description>use outside, slide/fade just vis on focus</description>
-						<visible>false</visible>
-						<top>130</top>
-						<right>20</right>
-						<left>510</left>
-						<width>20%</width> 
-						<bottom>70</bottom>
-						<label>$VAR[Plots]</label>
-						<font>font20_title</font>
-						<textcolor>$PARAM[tc_2]</textcolor>
-						<align>center</align>
-						<aligny>center</aligny>
-						<autoscroll delay="5000" time="4000" repeat="10000">$PARAM[is_focused]</autoscroll>
-					</control>
+						
 					<control type="group">
-						<description>visible condition usage</description>
 						<include content="var_rating_workaraound">
 							<param name="rating" value="tvdb" />
 							<param name="rating_image" value="tvdb" />
@@ -904,14 +845,19 @@
 					<control type="button">
 						<visible>!String.IsEmpty(Container(50352).ListItem(0).Genre)</visible>
 						<align>center</align>
-						<textcolor>$PARAM[tc]</textcolor>
 						<textoffsetx>10</textoffsetx>
+						
+						<!-- <textcolor>$PARAM[tc]</textcolor>
 						<disabledcolor>$PARAM[tc]</disabledcolor>
 						<texturefocus border="2" colordiffuse="$PARAM[tc]">frames/frame.png</texturefocus>
-						<texturenofocus border="2" colordiffuse="$PARAM[tc]">frames/frame.png</texturenofocus>
+						<texturenofocus border="2" colordiffuse="$PARAM[tc]">frames/frame.png</texturenofocus> -->
+						<textcolor>white</textcolor>
+						<disabledcolor>white</disabledcolor>
+						<texturefocus border="2" colordiffuse="white">frames/frame.png</texturefocus>
+						<texturenofocus border="2" colordiffuse="white">frames/frame.png</texturenofocus>
 						<enable>false</enable>
-						<bottom>10</bottom>
-						<left>10</left>
+						<bottom>15</bottom>
+						<left>15</left>
 						<width min="32">auto</width>
 						<height>30</height>
 						<font>debugtiny</font>
@@ -923,7 +869,8 @@
 						<width>auto</width>
 						<height>30</height>
 						<font>MenucontrolItem</font>
-						<textcolor>$PARAM[tc]</textcolor>
+						<!-- <textcolor>$PARAM[tc]</textcolor> -->
+						<textcolor>white</textcolor>
 						<label>Nächste Folge : $INFO[ListItem.Season,Staffel  [B],[/B]]$INFO[ListItem.Episode,   Folge  [B],[/B]]</label>
 					</control>
 					<control type="label">
@@ -932,10 +879,10 @@
 						<width>auto</width>
 						<height>30</height>
 						<font>MenucontrolItem</font>
-						<textcolor>$PARAM[tc]</textcolor>
+						<!-- <textcolor>$PARAM[tc]</textcolor> -->
+						<textcolor>white</textcolor>
 						<label>$INFO[ListItem.Title,[B],[/B]]</label>
 					</control>
-					
 					<control type="progress">
 						<visible>Integer.IsGreater(ListItem.PercentPlayed,0) + ListItem.IsResumable</visible>
 						<visible>!Container.Content(sets)</visible>
@@ -950,9 +897,12 @@
 						-->
 						<info>ListItem.PercentPlayed</info>
 					</control>
-					<control type="videowindow" />
+					<include condition="$PARAM[is_focused] + false" content="FocusOverlay">
+						<param name="diffusedimtext" value="artworkdiffuse/landscape.png" />
+						<param name="bordersize" value="5" />
+					</include>
 				</control>
-				
+					
 				
 			</definition>
 		</include>

@@ -1,8 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
-	<!-- temp test pos in footer -->
 	
-	<!-- RATINGS -->
+	<include name="footer">
+		<param name="bottom" default="0" />
+		<param name="footer_mediaflag_width" default="30%" />
+		<param name="footer_mediaflag_offsetleft" default="100" />
+		<param name="footer_mediaflag_align" default="left" />
+		<param name="footer_rating_offsetright" default="100" />
+		<param name="footer_rating_align" default="right" />
+		<definition>
+		<control type="group">
+			<animation effect="slide" start="0,90" end="0,0" time="350" tween="quadratic" easing="out" delay="100">VisibleChange</animation>
+			<visible>Control.IsVisible($PARAM[view_id]) + !Skin.HasSetting(View_$PARAM[view_id]_DisableFooter)</visible>
+			<bottom>$PARAM[bottom]</bottom>
+			<height>90</height>
+			<control type="image">
+				<texture flipx="true" colordiffuse="$VAR[color_footer_backgroundpanel]">$VAR[image_footer_bg]</texture>
+				<animation effect="fade" start="100" end="0" time="250" easing="inout" reversible="true" condition="[Control.IsVisible(503) |Control.IsVisible(504) ] + !String.IsEmpty(Window(home).Property(TrailerIsPlaying))">conditional</animation>
+			</control>
+			<include content="MediaFlagGroup_Footer">
+				<param name="mediaflag_offset_left" value="$PARAM[footer_mediaflag_offsetleft]" />
+				<param name="mediaflag_offset_align" value="$PARAM[footer_mediaflag_align]" />
+				<param name="mediaflag_width" value="$PARAM[footer_mediaflag_width]" />
+			</include>
+			<include content="Ratings_Footer">
+				<param name="rating_offset_left" value="$PARAM[footer_mediaflag_width]" />
+				<param name="rating_offset_right" value="$PARAM[footer_rating_offsetright]" />
+				<param name="rating_align" value="$PARAM[footer_rating_align]" />
+			</include>
+			
+			<nested />
+		</control>
+		</definition>
+	</include>
+	
+	<variable name="image_footer_bg">
+		<value condition="![Control.IsVisible(503) | Control.IsVisible(503)]">colors/white.png</value>
+		<value condition="[Control.IsVisible(503) | Control.IsVisible(503)]">diffuse/gradientleft.png</value> 
+	</variable>
+	
 	<include name="Ratings_Footer">
 		<param name="rating_align" default="right" />
 		<param name="rating_offset_left" default="0" />
@@ -26,7 +62,6 @@
 					<param name="height" value="90"/>
 					<param name="color" value="$PARAM[forcedcolor]" />
 					<visible>!Window.IsActive(movieinformation) + [Skin.HasSetting(show_studio_flag) + !String.IsEmpty(ListItem.Studio)]</visible>
-					<description>will us space due to misleading condition list</description>
 				</include>
 				<include content="spacer_w">
 					<param name="id" value="6768"/>
@@ -34,38 +69,38 @@
 					<param name="visible" value="!Window.IsActive(movieinformation) + !String.IsEmpty(ListItem.Studio)"/>
 				</include>
 				
-				<include content="Rating_Footer">
+				<include content="rating_footer_template">
 					<param name="id" value="50505"/>
 					<param name="rating" value="metacritic"/>
 					<param name="color" value="$PARAM[forcedcolor]" />
 				</include>
-				<include content="Rating_Footer">
+				<include content="rating_footer_template">
 					<param name="id" value="50503"/>
 					<param name="rating" value="tomatometerallaudience"/>
 					<param name="color" value="$PARAM[forcedcolor]" />
 				</include>
-				<include content="Rating_Footer">
+				<include content="rating_footer_template">
 					<param name="id" value="50504"/>
 					<param name="rating" value="tomatometerallcritics"/>
 					<param name="color" value="$PARAM[forcedcolor]" />
 				</include>
-				<include content="Rating_Footer">
+				<include content="rating_footer_template">
 					<param name="id" value="50501"/>
 					<param name="rating" value="themoviedb"/>
 					<param name="color" value="$PARAM[forcedcolor]" />
 				</include>
-				<include content="Rating_Footer">
+				<include content="rating_footer_template">
 					<param name="id" value="50500"/>
 					<param name="rating" value="tvdb"/>
 					<param name="color" value="$PARAM[forcedcolor]" />
 					<visible>[[Container.Content(tvshows) | String.IsEqual(ListItem.DBTYPE,tvshow)] | [Container.Content(episodes) | String.IsEqual(ListItem.DBTYPE,episode)] | [Container.Content(seasons) | String.IsEqual(ListItem.DBTYPE,season)]]</visible>
 				</include>
-				<include content="Rating_Footer">
+				<include content="rating_footer_template">
 					<param name="id" value="50502"/>
 					<param name="rating" value="imdb"/>
 					<param name="color" value="$PARAM[forcedcolor]" />
 				</include>
-				<include content="Rating_Footer">
+				<include content="rating_footer_template">
 					<param name="id" value="50506"/>
 					<param name="rating" value="imdbtop250"/>
 					<param name="color" value="$PARAM[forcedcolor]" />
@@ -74,7 +109,7 @@
 		</definition>		
     </include>
 	
-	<include name="Rating_Footer">
+	<include name="rating_footer_template">
 		<definition>
 		<control type="grouplist">
 			<visible>Window.IsActive(videos) + Skin.HasSetting(Show_$PARAM[rating]_Rating) + !String.IsEmpty(Control.GetLabel($PARAM[id]))</visible>
@@ -89,18 +124,12 @@
 				<height>40</height>
                 <bordersize>2</bordersize>
 				<aspectratio align="center" aligny="bottom">keep</aspectratio>
-                <texture>$VAR[image_$PARAM[rating]]</texture>
-				<visible>!Skin.HasSetting(use_monochrome_ratingflags)</visible>
-            </control>
-			 <control type="image">
-				<width>60</width>
-				<height>40</height>
-                <bordersize>2</bordersize>
-				<aspectratio align="center" aligny="bottom">keep</aspectratio>
-                <texture colordiffuse="$PARAM[color]">$VAR[image_$PARAM[rating]]</texture>
-				<visible>Skin.HasSetting(use_monochrome_ratingflags)</visible>
+				<include condition="Skin.HasSetting(use_monochrome_ratingflags)" content="colordiffuse">
+					<param name="colordiffuse" value="$PARAM[color]"/>
+				</include>
+				<texture>$VAR[image_$PARAM[rating]]</texture>
 			</control>
-            <control type="label" id="$PARAM[id]">
+			<control type="label" id="$PARAM[id]">
 				<height>25</height>
                 <width>60</width>
 				<align>center</align>
@@ -117,7 +146,7 @@
 		<param name="alignx" default="center"/>
 		<param name="width" default="430"/>
 		<param name="height" default="150"/>
-		<param name="colordiffuse" default="$VAR[color_footer_items]"/>
+		<param name="color" default="$PARAM[forcedcolor]"/>
 		<param name="id" />
 		<definition>
 			<control type="image" id="$PARAM[id]">
@@ -127,10 +156,16 @@
 				<aspectratio aligny="$PARAM[aligny]" align="$PARAM[alignx]">keep</aspectratio>
 				<fadetime>300</fadetime>
 				<texture background="true">$VAR[image_StudioLogo]</texture>
-				<colordiffuse condition="Skin.HasSetting(use_monochrome_studioflags)">$PARAM[colordiffuse]</colordiffuse>
+				<include condition="Skin.HasSetting(use_monochrome_studioflags)" content="colordiffuse">
+					<param name="colordiffuse" value="$PARAM[color]"/>
+				</include>
 				<bordersize>5</bordersize>
 			</control>
 		</definition>
+	</include>
+	
+	<include name="colordiffuse">
+		<colordiffuse>$PARAM[colordiffuse]</colordiffuse>
 	</include>
 	
 	<include name="StarsRating_Image">
@@ -735,8 +770,10 @@
 	<!-- MEDIA FLAGS
 - use template image filled with listitemlabel - aspectratio,resolution,mpaa?,
 	-->
-	<!-- <animation effect="fade" start="100" end="0" time="300" condition="Control.HasFocus(50350)">conditional</animation> -->
-		
+	<!--
+			<animation effect="slide" end="400,0" time="200" easing="inout" reversible="true" condition="[!String.IsEmpty(Window.Property(Spotlight_Cast)) + String.IsEmpty(Window.Property(Spotlight_Sets))]">conditional</animation>
+			<animation effect="fade" start="100" end="0" time="200" easing="inout" reversible="true" condition="[!String.IsEmpty(Window.Property(Spotlight_Cast)) + !String.IsEmpty(Window.Property(Spotlight_Sets))] + [Container(50350).IsUpdating | Integer.IsGreater(Container(50350).NumItems,0)]">conditional</animation>
+	-->	
 	<include name="MediaFlagGroup_Footer">
 		<param name="mediaflag_offset_align" default="left" />
 		<param name="mediaflag_offset_left" default="50" />
@@ -746,7 +783,7 @@
 		<definition>
 		<control type="grouplist">
 				
-			<include>temp_spotlight_infofade</include>
+			<animation effect="fade" start="100" end="0" time="200" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) | !String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
 			<orientation>horizontal</orientation>
 			<usecontrolcoords>true</usecontrolcoords>
 			<align>$PARAM[mediaflag_offset_align]</align>

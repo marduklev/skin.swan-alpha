@@ -199,13 +199,30 @@
 	
 	<!-- Footer -->
 	<variable name="color_footer_backgroundpanel">
-		<value condition="!String.IsEmpty(Skin.String(color_footer_backgroundpanel))">$INFO[Skin.String(color_footer_backgroundpanel)]</value>
-		<value>color_footer_backgroundpanel</value>
+		<value condition="![Control.IsVisible(58) | Control.IsVisible(503) | Control.IsVisible(503)] + !String.IsEmpty(Skin.String(color_footer_backgroundpanel))">$INFO[Skin.String(color_footer_backgroundpanel)]</value>
+		<value condition="![Control.IsVisible(58) | Control.IsVisible(503) | Control.IsVisible(503)]">color_footer_backgroundpanel</value>
+		<value condition="[Control.IsVisible(58) | Control.IsVisible(503) | Control.IsVisible(503)]">$VAR[color_spotlightlib_flags_backgroundpanel]</value>
 	</variable>
+		<!-- currently home hasnt flags $VAR[color_home_flags]-->
 	<variable name="color_footer_items">
-		<value condition="!String.IsEmpty(Skin.String(color_footer_items))">$INFO[Skin.String(color_footer_items)]</value>
-		<value>color_footer_items</value>
+		<value condition="![Control.IsVisible(58) | Control.IsVisible(503) | Control.IsVisible(503)] + !String.IsEmpty(Skin.String(color_footer_items))">$INFO[Skin.String(color_footer_items)]</value>
+		<value condition="![Control.IsVisible(58) | Control.IsVisible(503) | Control.IsVisible(503)]">color_footer_items</value>
+		<value condition="[Control.IsVisible(58) | Control.IsVisible(503) | Control.IsVisible(503)] + !String.IsEmpty(Skin.String(color_spotlightlib_flags))">$INFO[Skin.String(color_spotlightlib_flags)]</value>
+		<value condition="[Control.IsVisible(58) | Control.IsVisible(503) | Control.IsVisible(503)]">color_spotlightlib_flags</value>
 	</variable>
+	<!-- var is used in need to show color in skinsettings -->
+		<variable name="color_spotlightlib_flags_backgroundpanel">
+			<value condition="!String.IsEmpty(Skin.String(color_spotlightlib_flags_backgroundpanel))">$INFO[Skin.String(color_spotlightlib_flags_backgroundpanel)]</value>
+			<value>color_spotlightlib_flags_backgroundpanel</value>
+		</variable>
+		<variable name="color_spotlightlib_flags">
+			<value condition="!String.IsEmpty(Skin.String(color_spotlightlib_flags))">$INFO[Skin.String(color_spotlightlib_flags)]</value>
+			<value>color_spotlightlib_flags</value>
+		</variable>
+	<variable name="color_spotlightlib_contentheading">
+			<value condition="!String.IsEmpty(Skin.String(color_spotlightlib_contentheading))">$INFO[Skin.String(color_spotlightlib_contentheading)]</value>
+			<value>color_spotlightlib_contentheading</value>
+		</variable>
 	
 	<variable name="color_home_text_main">
 		<value condition="!String.IsEmpty(Skin.String(color_home_text_main))">$INFO[Skin.String(color_home_text_main)]</value>
@@ -248,10 +265,6 @@
 							<value condition="Window.IsActive(home)">$VAR[color_home_accent]</value>
 							<value>$VAR[color_spotlightlib_accent]</value>
 						</variable>
-						<variable name="color_global_spotlight_flags">
-							<value condition="Window.IsActive(home)">$VAR[color_home_flags]</value>
-							<value>$VAR[color_spotlightlib_flags]</value>
-						</variable>
 						
 	
 	<variable name="color_spotlightlib_background_layer2">
@@ -272,10 +285,6 @@
 		<value condition="!String.IsEmpty(Skin.String(color_spotlightlib_accent))">$INFO[Skin.String(color_spotlightlib_accent)]</value>
 		<value>color_spotlightlib_accent</value>
 	</variable>
-	<variable name="color_spotlightlib_flags">
-		<value condition="!String.IsEmpty(Skin.String(color_spotlightlib_flags))">$INFO[Skin.String(color_spotlightlib_flags)]</value>
-		<value>color_spotlightlib_flags</value>
-	</variable>
 	<variable name="color_spotlightlib_itemframe_fo">
 		<value condition="!String.IsEmpty(Skin.String(color_spotlightlib_itemframe_fo))">$INFO[Skin.String(color_spotlightlib_itemframe_fo)]</value>
 		<value>color_spotlightlib_itemframe_fo</value>
@@ -284,27 +293,15 @@
 		<value condition="!String.IsEmpty(Skin.String(color_spotlightlib_itemframe_nf))">$INFO[Skin.String(color_spotlightlib_itemframe_nf)]</value>
 		<value>color_spotlightlib_itemframe_nf</value>
 	</variable>
+	<variable name="color_spotlightlib_bottomtag_fo">
+		<value condition="!String.IsEmpty(Skin.String(color_spotlightlib_bottomtag_fo))">$INFO[Skin.String(color_spotlightlib_bottomtag_fo)]</value>
+		<value>color_spotlightlib_bottomtag_fo</value>
+	</variable>
+	<variable name="color_spotlightlib_bottomtag_nf">
+		<value condition="!String.IsEmpty(Skin.String(color_spotlightlib_bottomtag_nf))">$INFO[Skin.String(color_spotlightlib_bottomtag_nf)]</value>
+		<value>color_spotlightlib_bottomtag_nf</value>
+	</variable>
 	
-	
-	<!-- need 2 new colors
-		- color_spotlightlib_bottomtag_fo
-		- color_spotlightlib_bottomtag_nf
-		
-		currently 
-			- used in itemlayout
-				<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_nf]" /> exist
-				<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_nf]" /> exist
-				<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_secondary]" /> not good if eqaul color_spotlightlib_itemframe_nf
-				<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_secondary]" /> not good if eqaul color_spotlightlib_itemframe_nf
-			- used in itemlayout
-				<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_fo]" /> exist
-				<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_fo]" /> exist
-				<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_background_layer1]" /> shouldnt be issue, but inconsistent and irritating for users
-				<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_background_layer1]" /> shouldnt be issue, but inconsistent and irritating for users
-	
-
-		 -->
-		
 	<!-- ############################### -->
 	<!-- ######### SPECIAL USAGE ####### -->
 	<!-- ############################### -->
@@ -536,9 +533,6 @@
 		<value condition="!String.IsEmpty(Skin.String(color_lib_backgroundlayer4))">$INFO[Skin.String(color_lib_watchedoverlay_resumeable)]</value>
 		<value>color_lib_watchedoverlay_resumeable</value>
 	</variable>
-	
-	
-	
 	
 	<!-- BUTTONS -->
 	<variable name="color_global_button_text_fo">
@@ -898,6 +892,8 @@
 		<onclick>Skin.Reset(color_spotlightlib_itemframe_fo.name)</onclick>
 		<onclick>Skin.Reset(color_spotlightlib_itemframe_nf)</onclick>
 		<onclick>Skin.Reset(color_spotlightlib_itemframe_nf.name)</onclick>
+		<onclick>Skin.Reset(color_spotlightlib_flags_backgroundpanel)</onclick>
+		<onclick>Skin.Reset(color_spotlightlib_flags_backgroundpanel.name)</onclick>
 		<onclick>Skin.Reset(color_spotlightlib_flags)</onclick>
 		<onclick>Skin.Reset(color_spotlightlib_flags.name)</onclick>
 		<onclick>Notification([I]Library[/I] [B]Spotlight Layout Colors[/B],Colors are recessed Now)</onclick>
