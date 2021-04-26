@@ -75,6 +75,7 @@
 				</control>
 					<control type="image">
 						<visible>Control.HasFocus(50352) | Control.HasFocus(50353)</visible>
+						<visible>false</visible>
 						<bottom>300</bottom>
 						<height>100</height>
 						<width>65%</width>
@@ -82,6 +83,7 @@
 						<texture flipx="true" diffuse="colors/white20.png">diffuse/gradienthorizontal.png</texture>
 					</control>
 					<control type="label">
+						
 						<visible>String.IsEmpty(Window(home).Property(TrailerIsPlaying)) + [!String.IsEmpty(Window.Property(Spotlight_Cast)) + String.IsEmpty(Window.Property(Spotlight_Sets))]</visible>
 						<label>$LOCALIZE[206]</label>
 						<description>item heading</description>
@@ -381,6 +383,9 @@
 				<scrolltime tween="quadratic">400</scrolltime>
 			
 				<include>spotlight_hor_list_navigation_folderpath</include>
+				<onclick condition="!String.IsEmpty(Window(videos).Property(Spotlight_Sets))">ClearProperty(Spotlight_Sets,videos)</onclick>
+				<onclick condition="!String.IsEmpty(Window(videos).Property(Spotlight_Cast))">ClearProperty(Spotlight_Cast,videos)</onclick>
+				<onclick>ActivateWindow(videos,$INFO[Container(50353).ListItem.Folderpath])</onclick>
 				
 				<itemlayout height="350" width="202">
 					<control type="group">
@@ -754,19 +759,19 @@
 			
 			<definition>
 				<control type="group">
-				<top>5</top>
+				<top>3</top>
 					<nested />
 					
 					<control type="image">
 						<description>focus frame bad if item bg match global bg</description>
-						<texture colordiffuse="$PARAM[tc]">colors/white.png</texture>
+						<texture colordiffuse="$VAR[color_spotlightlib_itemframe_fo]">colors/white.png</texture>
 						<top>0</top>
 						<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
 						<visible>$PARAM[is_focused]</visible>
 					</control>
 					<control type="image">
 						<description>focus frame bad if item bg match global bg</description>
-						<texture colordiffuse="$PARAM[tc]">colors/white20.png</texture>
+						<texture colordiffuse="$VAR[color_spotlightlib_itemframe_nf]">colors/white.png</texture>
 						<top>0</top>
 						<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
 						<visible>!$PARAM[is_focused]</visible>
@@ -794,13 +799,7 @@
 							<texture background="true">$VAR[ImageLayout_fanart]</texture>
 						</control>
 						<control type="image">
-							<visible>false</visible>
-							<decscription>better use hardcoded or inverted ?</decscription>
-							<top>45%</top>
-							<texture colordiffuse="$PARAM[color]">diffuse/episodeinfogradient.png</texture>
-						</control>
-						<control type="image">
-							<decscription>better use hardcoded or inverted ?</decscription>
+							<decscription>better use hardcoded</decscription>
 							<top>45%</top>
 							<texture colordiffuse="ff131313">diffuse/episodeinfogradient.png</texture>
 						</control>
@@ -809,6 +808,7 @@
 					</control>
 						
 					<control type="group">
+						<bottom>3</bottom>
 						<include content="var_rating_workaraound">
 							<param name="rating" value="tvdb" />
 							<param name="rating_image" value="tvdb" />
@@ -864,7 +864,7 @@
 						<label>$INFO[ListItem.Genre]</label>
 					</control>
 					<control type="label">
-						<bottom>75</bottom>
+						<bottom>80</bottom>
 						<left>15</left>
 						<width>auto</width>
 						<height>30</height>
@@ -874,7 +874,7 @@
 						<label>Nächste Folge : $INFO[ListItem.Season,Staffel  [B],[/B]]$INFO[ListItem.Episode,   Folge  [B],[/B]]</label>
 					</control>
 					<control type="label">
-						<bottom>50</bottom>
+						<bottom>55</bottom>
 						<left>15</left>
 						<width>auto</width>
 						<height>30</height>
@@ -886,7 +886,7 @@
 					<control type="progress">
 						<visible>Integer.IsGreater(ListItem.PercentPlayed,0) + ListItem.IsResumable</visible>
 						<visible>!Container.Content(sets)</visible>
-						<bottom>47</bottom>
+						<bottom>52</bottom>
 						<left>13</left>
 						<width>460</width>
 						<height>2</height>
