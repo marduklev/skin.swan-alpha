@@ -2,8 +2,8 @@
 <includes>
 	<!-- skinsetting view_options in mind / to do
 	
-		504 - overrdie default focus, use fixedframe - low prio, may not do it
-		503/504 - behaviour of spotlight icon bar , curr disabled, and unadjusted - need for touch device, show if alphabet bar focused ?
+		504 	- overrdie default focus, use fixedframe - low prio, may not do it
+		503/504 - behaviour of spotlight icon bar , curr disabled, and unadjusted - need for touch device, show if alphabet bar focused ? or move to left menucotnrol bar with extended visability
 		503/504 - adjust anim / header usage
 				- resolve navigation onup trailer (onup for trailer is currently useless, as alphabet bar/scrollbar onup) vs focus filter ctrl
 				- ondown options 
@@ -35,6 +35,22 @@
 			<param name="metadata_align_right" value="[Skin.HasSetting(View503_metadata_align_right) + Control.IsVisible(503)] | [Skin.HasSetting(View504_metadata_align_right) + Control.IsVisible(504)]" />
 		</include>
 	-->
+	<include name="content_header_bold">
+		<param name="left" default="110" />
+		<param name="bottom" default="340" />
+		<definition>
+			<control type="label">
+				<visible>$PARAM[visible]</visible>
+				<left>$PARAM[left]</left>
+				<bottom>$PARAM[bottom]</bottom>
+				<label>$PARAM[label]</label>
+				<height>100</height>
+				<textcolor>$VAR[color_spotlightlib_contentheading]</textcolor>
+				<font>Montserrat_ExtraBold_40</font>
+				<aligny>top</aligny>
+			</control>
+		</definition>
+	</include>
 	
 	<include name="view503">
 		<control type="group">
@@ -57,81 +73,37 @@
 				</include>			
 		</control>
 		
+		
 		<control type="group">
 			<visible>Control.IsVisible(503)</visible>
 			
-				<animation effect="slide" start="0,0" end="0,-500" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) | !String.IsEmpty(Window.Property(Spotlight_Nextup))">conditional</animation>
-				
-				<control type="label">
-					<description>item heading</description>
-					<visible>String.IsEmpty(Window.Property(Spotlight_Sets))</visible>
-					<label>$VAR[Header_InfoTop]</label>
-					<left>110</left>
-					<bottom>340</bottom>
-					<height>100</height>
-					<textcolor>$VAR[color_spotlightlib_contentheading]</textcolor>
-					<font>Montserrat_ExtraBold_40</font>
-					<aligny>top</aligny>
-				</control>
-					<control type="image">
-						<visible>Control.HasFocus(50352) | Control.HasFocus(50353)</visible>
-						<visible>false</visible>
-						<bottom>300</bottom>
-						<height>100</height>
-						<width>65%</width>
-						<colordiffuse>$VAR[color_spotlightlib_flags_backgroundpanel]</colordiffuse>
-						<texture flipx="true" diffuse="colors/white20.png">diffuse/gradienthorizontal.png</texture>
-					</control>
-					<control type="label">
-						
-						<visible>String.IsEmpty(Window(home).Property(TrailerIsPlaying)) + [!String.IsEmpty(Window.Property(Spotlight_Cast)) + String.IsEmpty(Window.Property(Spotlight_Sets))]</visible>
-						<label>$LOCALIZE[206]</label>
-						<description>item heading</description>
-						<left>400</left>
-						<bottom>340</bottom>
-						<height>100</height>
-						<textcolor>$VAR[color_spotlightlib_contentheading]</textcolor>
-						<font>Montserrat_ExtraBold_40</font>
-						<aligny>top</aligny>
-					</control>
-					
-				<control type="label">
-					<visible>!String.IsEmpty(Window.Property(Spotlight_Sets)) + ![Container.Content(tvshows) | Container.Content(seasons)]</visible>
-					<description>item heading  + !String.IsEmpty(ListItem.SetId)</description>
-					<label>$VAR[SetLabel]</label>
-					<left>100</left>
-					<bottom>-160</bottom>
-					<height>100</height>
-					<textcolor>$VAR[color_spotlightlib_contentheading]</textcolor>
-					<font>Montserrat_ExtraBold_40</font>
-					<aligny>top</aligny>
-				</control>
-				<control type="label">
-					<visible>!String.IsEmpty(Window.Property(Spotlight_Sets)) + Container.Content(tvshows)</visible>
-					<description>item heading</description>
-					<label>$LOCALIZE[33054]</label>
-					<left>800</left>
-					<bottom>-160</bottom>
-					<height>100</height>
-					<textcolor>$VAR[color_spotlightlib_contentheading]</textcolor>
-					<font>Montserrat_ExtraBold_40</font>
-					<aligny>top</aligny>
-				</control>
-				<control type="label">
-					<visible>!String.IsEmpty(Window.Property(Spotlight_Sets)) + [Container.Content(tvshows) | Container.Content(seasons)]</visible>
-					<description>item heading</description>
-					<label>Weiterschauen</label>
-					<left>100</left>
-					<bottom>-160</bottom>
-					<height>100</height>
-					<textcolor>$VAR[color_spotlightlib_contentheading]</textcolor>
-					<font>Montserrat_ExtraBold_40</font>
-					<aligny>top</aligny>
-				</control>
+			<animation effect="slide" start="0,0" end="0,-500" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) | !String.IsEmpty(Window.Property(Spotlight_Nextup))">conditional</animation>
+			
+			<include content="content_header_bold">
+				<param name="visible" value="String.IsEmpty(Window.Property(Spotlight_Sets))" />
+				<param name="label" value="$VAR[Header_InfoTop]" />
+			</include>
+			<include content="content_header_bold">
+				<param name="visible" value="String.IsEmpty(Window(home).Property(TrailerIsPlaying)) + [!String.IsEmpty(Window.Property(Spotlight_Cast)) + String.IsEmpty(Window.Property(Spotlight_Sets))]" />
+				<param name="label" value="206" />
+				<param name="left" value="400" />
+			</include>
+			<include content="content_header_bold">
+				<param name="visible" value="!String.IsEmpty(Window.Property(Spotlight_Sets))" />
+				<param name="label" value="$VAR[SetLabel]" />
+				<param name="left" value="100" />
+				<param name="bottom" value="-160" />
+			</include>
+			<include content="content_header_bold">
+				<param name="visible" value="!String.IsEmpty(Window.Property(Spotlight_Sets)) + Container.Content(tvshows)" />
+				<param name="label" value="33054" />
+				<param name="left" value="800" />
+				<param name="bottom" value="-160" />
+			</include>
 			
 			<control type="fixedlist" id="503">
 				<visible>!Container.Content(episodes) | !Container.Content(sources)</visible>
-				<viewtype label="netflixposter">netflixposter list</viewtype>
+				<viewtype label="$LOCALIZE[31261]">spotlight poster</viewtype>
 				<focusposition>1</focusposition>
 				<orientation>horizontal</orientation>
 				<preloaditems>4</preloaditems>
@@ -206,20 +178,8 @@
 					</control>
 				</focusedlayout>
 			</control>
-			<!--
-			<control type="image">
-				<visible>false</visible>
-				<right>0</right>
-				<width>200</width>
-				<bottom>0</bottom>
-				<height>365</height>
-				<decscription>better use hardcoded or inverted ?</decscription>
-				<scalediffuse>true</scalediffuse>
-				<texture flipx="true" diffuse="diffuse/gradientleft.png" colordiffuse="$VAR[color_spotlightlib_background_layer1]">colors/white90.png</texture>
-			</control>
-			-->
-		
-		
+			
+			
 			<control type="panel" id="50350">
 				<animation effect="slide" start="0,0" end="0,-350" time="350" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) | !String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
 				<animation effect="slide" start="0,0" end="-300,100" time="350" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
@@ -435,7 +395,16 @@
 			</control>
 				
 		</control>
-		
+		<control type="image">
+			<visible>false</visible>
+			<right>0</right>
+			<width>200</width>
+			<bottom>0</bottom>
+			<height>365</height>
+			<decscription>better use hardcoded or inverted ?</decscription>
+			<scalediffuse>true</scalediffuse>
+			<texture flipx="true" diffuse="diffuse/gradientleft.png" colordiffuse="$VAR[color_spotlightlib_background_layer1]">colors/white90.png</texture>
+		</control>
 		<include content="spotlight_buttongroup_hor" />
 	</include>
 	
@@ -471,7 +440,7 @@
 			<control type="panel" id="504">
 				<description>curr no include and relaod usage, just for testing later fixedlist vs panel</description>
 			
-				<viewtype label="netflixfanart">netflixfanart list</viewtype>
+				<viewtype label="$LOCALIZE[31262]">spotlight landscape</viewtype>
 				<focusposition>0</focusposition>
 				
 				
@@ -661,7 +630,10 @@
 		</definition>
 	</include>
 	
+	
+	
 	<variable name="SetLabel">
+		<value condition="[Container.Content(tvshows) | Container.Content(seasons)] + String.IsEqual(Container(50352).ListItem.dbtype,episode)">$LOCALIZE[31230]</value>
 		<value condition="!String.IsEmpty(ListItem.Set)">$INFO[ListItem.Set]</value>
 		<value>$INFO[Container(503).ListItem.Label]</value>
 	</variable>
