@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<includes>
+	<include name="view504">
+		<control type="group">
+			<visible>Control.IsVisible(504)</visible>
+				<include content="spotlight_layout">
+					<param name="spotlight_artwork_visible_right" value="!Skin.HasSetting(View504_fanart_left) + Control.IsVisible(504)" />	
+					<param name="spotlight_artwork_visible_left" value="Skin.HasSetting(View504_fanart_left) + Control.IsVisible(504)" />	
+					<param name="info_visible_left" value="!Skin.HasSetting(View504_fanart_left)" />
+					<param name="info_visible_right" value="Skin.HasSetting(View504_fanart_left)" />
+					<param name="info_plot_hidden" value="Skin.HasSetting(View504_hideplot)" />
+					<param name="metadata_align_left" value="Skin.HasSetting(View504_metadata_align_left)" />
+					<param name="metadata_align_center" value="Skin.HasSetting(View504_metadata_align_center)" />
+					<param name="metadata_align_right" value="Skin.HasSetting(View504_metadata_align_right)" />
+				</include>
+				<include content="footer">
+					<param name="view_id" value="504" />
+					<param name="bottom" value="380" />
+					<param name="footer_mediaflag_offsetleft" value="350" />
+					<param name="footer_rating_offsetright" value="70" />
+				</include>			
+		</control>
+		
+		
+		<control type="group">
+			<visible>Control.IsVisible(504)</visible>
+			
+			<animation effect="slide" start="0,0" end="0,-500" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) | !String.IsEmpty(Window.Property(Spotlight_Nextup))">conditional</animation>
+			
+			<include content="content_header_bold">
+				<param name="visible" value="String.IsEmpty(Window.Property(Spotlight_Sets))" />
+				<param name="label" value="$VAR[Header_InfoTop]" />
+			</include>
+			<include content="content_header_bold">
+				<param name="visible" value="String.IsEmpty(Window(home).Property(TrailerIsPlaying)) + [!String.IsEmpty(Window.Property(Spotlight_Cast)) + String.IsEmpty(Window.Property(Spotlight_Sets))]" />
+				<param name="label" value="206" />
+				<param name="left" value="400" />
+			</include>
+			<include content="content_header_bold">
+				<param name="visible" value="!String.IsEmpty(Window.Property(Spotlight_Sets))" />
+				<param name="label" value="$VAR[SetLabel]" />
+				<param name="left" value="100" />
+				<param name="bottom" value="-160" />
+			</include>
+			<include content="content_header_bold">
+				<param name="visible" value="!String.IsEmpty(Window.Property(Spotlight_Sets)) + Container.Content(tvshows)" />
+				<param name="label" value="33054" />
+				<param name="left" value="800" />
+				<param name="bottom" value="-160" />
+			</include>
+			
+			<control type="fixedlist" id="504">
+				<visible>!Container.Content(sources)</visible>
+				<viewtype label="$LOCALIZE[31261]">spotlight landscape</viewtype>
+				<focusposition>0</focusposition>
+				<orientation>horizontal</orientation>
+				<preloaditems>4</preloaditems>
+				<scrolltime tween="quadratic">400</scrolltime>
+				<pagecontrol>61</pagecontrol>
+				<left>100</left>
+				<right>0</right>
+				<bottom>0</bottom>
+				<height>370</height>
+				
+				<animation effect="fade" start="100" end="0" time="250" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
+				
+				<include content="spotlight_hor_list_navigation_common"><param name="viewid" value="504"/></include>
+				
+				<itemlayout height="350" width="447">
+					<control type="group">
+						<width>450</width>
+						<height>250</height>
+						<animation effect="fade" start="100" end="0" time="250" condition="!String.IsEmpty(Window(videos).Property(Spotlight_Cast))">conditional</animation>
+					
+						<include content="UniversalLayout">
+							<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_nf]" />
+							<param name="artwork" value="landscape" />
+							<param name="get_tags" value="!Skin.HasSetting(View_504_DisableTags)" />
+							<param name="get_tagbgpanel" value="!Skin.HasSetting(View_504_DisableTags)" />
+							<param name="autoscroll" value="false" />
+							<param name="bordersize_bg" value="6" />
+							<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_nf]" />
+							<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_bottomtag_nf]" />
+							<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_bottomtag_nf]" />
+							<param name="get_landscapelogo" value="![$EXP[IsEpisode]]" />
+							<param name="conditional_artworkdiffuse_themed" value="!Skin.HasTheme(Roundedge) | Skin.HasSetting(View_504_DisableTags)" />
+							<param name="conditional_artworkdiffuse_override" value="Skin.HasTheme(Roundedge) + !Skin.HasSetting(View_504_DisableTags)" />
+						</include>
+					</control>
+				</itemlayout>
+				<focusedlayout height="350" width="460">
+					<include content="SetPropOnFocus_HiddenButton" />
+					<control type="group">
+						<width>450</width>
+						<height>250</height>
+						<animation effect="zoom" start="100" end="60" time="250" condition="!String.IsEmpty(Window(videos).Property(Spotlight_Cast))">conditional</animation>
+					
+						<description>to avoid relaod skin on disable footer and avoid bottom offset fade out 3rd row of items</description>
+						<!-- <include>Animation_Item_Focus</include> -->
+						<control type="group">
+						<animation type="Focus" reversible="false">
+							<effect type="zoom" end="103,103" time="200" tween="sine" easing="out" center="auto" />
+							<effect type="zoom" end="99,99" time="150" tween="sine" delay="200" easing="out" center="auto" />
+						</animation>
+							<include content="UniversalLayout">
+								<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_fo]" />
+								<param name="artwork" value="landscape" />
+								<param name="get_tags" value="!Skin.HasSetting(View_504_DisableTags)" />
+								<param name="get_tagbgpanel" value="!Skin.HasSetting(View_504_DisableTags)" />
+								<param name="autoscroll" value="true" />
+								<param name="bordersize_bg" value="4" />
+								<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_fo]" />
+								<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_bottomtag_fo]" />
+								<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_bottomtag_fo]" />
+								<param name="get_landscapelogo" value="![$EXP[IsEpisode]]" />
+								<param name="conditional_artworkdiffuse_themed" value="!Skin.HasTheme(Roundedge) | Skin.HasSetting(View_504_DisableTags)" />
+								<param name="conditional_artworkdiffuse_override" value="Skin.HasTheme(Roundedge) + !Skin.HasSetting(View_504_DisableTags)" />
+							</include>
+							<control type="group">
+								<visible>!Skin.HasSetting(View_504_DisableTags)</visible>
+								<include content="FocusOverlay">
+									<param name="diffusedimtext" value="artworkdiffuse/usebganel/landscape.png" />
+								</include>
+							</control>
+							<control type="group">
+								<visible>Skin.HasSetting(View_504_DisableTags)</visible>
+								<include content="FocusOverlay">
+									<param name="diffusedimtext" value="artworkdiffuse/landscape.png" />
+								</include>
+							</control>
+						</control>
+					</control>
+				</focusedlayout>
+			</control>
+			
+			
+			<control type="panel" id="50450">
+				<animation effect="slide" start="0,0" end="0,-350" time="350" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) | !String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
+				<animation effect="slide" start="0,0" end="-300,100" time="350" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
+				<animation effect="fade" start="0" end="100" time="450" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) | !String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
+				<!-- keep always visible for trailers <visible>$EXP[spotlight_view_show_cast]</visible> -->
+				
+				<!-- <visible>Container(50450).IsUpdating | Integer.IsGreater(Container(50450).NumItems,0)</visible> -->
+				<description>hate to need for fixedlist</description>
+				<bottom>-400</bottom>
+				<left>400</left>
+				<height>400</height>
+				<right>-65</right>
+				<scrolltime tween="quadratic">400</scrolltime>
+				<preloaditems>2</preloaditems>
+				<orientation>horizontal</orientation>
+				
+				<include content="spotlight_hor_list_navigation_cast"><param name="viewid" value="504"/></include>
+				
+				<itemlayout height="380" width="230">
+					<control type="group">
+						<height>202</height>
+						<width>202</width>
+						<control type="group">
+							<include content="Circle_CastWidget">
+								<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_nf]" />
+								<param name="autoscroll" value="false" />
+								<param name="bordersize_bg" value="6" />
+							</include>
+						</control>
+					</control>
+				</itemlayout>
+				<focusedlayout height="380" width="230">
+					<control type="group">
+						<height>202</height>
+						<width>202</width>
+						<include>Animation_Item_Focus</include>
+						<control type="group">
+							<visible>!Control.HasFocus(50450)</visible>
+							<include content="Circle_CastWidget">
+								<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_nf]" />
+								<param name="autoscroll" value="false" />
+								<param name="bordersize_bg" value="6" />
+							</include>
+						</control>
+						<control type="group">
+							<visible>Control.HasFocus(50450)</visible>
+							<include content="Circle_CastWidget">
+								<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_fo]" />
+								<param name="autoscroll" value="false" />
+								<param name="bordersize_bg" value="4" />
+							</include>
+						</control>
+					</control>
+				</focusedlayout>
+				<content>$VAR[content_cast]</content>
+			</control>
+			
+			<control type="panel" id="50452">
+				<animation effect="slide" start="0,0" end="0,-300" time="350" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
+				<!-- <visible>Container(50452).IsUpdating | Integer.IsGreater(Container(50452).NumItems,0)</visible> -->
+				<visible>!String.StartsWith(listitem.path,plugin)</visible>
+				
+				<bottom>-830</bottom>
+				<left>100</left>
+				<orientation>horizontal</orientation>
+				<height>400</height>
+				<preloaditems>2</preloaditems>
+				<scrolltime tween="quadratic">400</scrolltime>
+				
+				<include content="spotlight_hor_list_navigation_nextup"><param name="viewid" value="504"/></include>
+				
+				<itemlayout height="355" width="600" condition="String.Contains(Container.FolderPath,/tvshows)">
+					<include content="template5077">
+						<param name="is_focused" value="false" />
+					</include>
+				</itemlayout>
+				<focusedlayout height="355" width="600" condition="String.Contains(Container.FolderPath,/tvshows)">
+					<include content="template5077">
+						<param name="is_focused" value="true" />
+					</include>
+					
+				</focusedlayout>
+				<itemlayout height="350" width="202" condition="!String.Contains(Container.FolderPath,/tvshows)">
+					<control type="group">
+						<width>200</width>
+						<height>282</height>
+						<include content="UniversalLayout">
+							<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_nf]" />
+							<param name="artwork" value="poster" />
+							<param name="get_tags" value="true" />
+							<param name="get_tagbgpanel" value="true" />
+							<param name="autoscroll" value="false" />
+							<param name="bordersize_bg" value="6" />
+							<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_nf]" />
+							<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_bottomtag_nf]" />
+							<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_bottomtag_nf]" />
+							<param name="conditional_artworkdiffuse_themed" value="!Skin.HasTheme(Roundedge) | Skin.HasSetting(View_504_DisableTags)" />
+							<param name="conditional_artworkdiffuse_override" value="Skin.HasTheme(Roundedge) + !Skin.HasSetting(View_504_DisableTags)" />
+						</include>
+					</control>
+				</itemlayout>
+				
+				<focusedlayout height="350" width="202" condition="!String.Contains(Container.FolderPath,/tvshows)">
+					<include content="SetPropOnFocus_HiddenButton">
+						<onunfocus condition="!String.IsEmpty(Window.Property(Spotlight_Cast))">ClearProperty(Spotlight_Cast)</onunfocus>
+					</include>
+					<control type="group">
+						<width>200</width>
+						<height>282</height>
+						<include>Animation_Item_Focus</include>
+						<control type="group">
+							<include content="UniversalLayout">
+								<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_fo]" />
+								<param name="artwork" value="poster" />
+								<param name="get_tags" value="true" />
+								<param name="get_tagbgpanel" value="true" />
+								<param name="autoscroll" value="true" />
+								<param name="bordersize_bg" value="4" />
+								<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_fo]" />
+								<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_bottomtag_fo]" />
+								<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_bottomtag_fo]" />
+								<param name="conditional_artworkdiffuse_themed" value="!Skin.HasTheme(Roundedge) | Skin.HasSetting(View_504_DisableTags)" />
+								<param name="conditional_artworkdiffuse_override" value="Skin.HasTheme(Roundedge) + !Skin.HasSetting(View_504_DisableTags)" />
+							</include>
+							<include content="FocusOverlay">
+								<param name="diffusedimtext" value="artworkdiffuse/usebganel/landscape.png" />
+							</include>
+						</control>
+					</control>
+				</focusedlayout>
+				
+				<include condition="String.Contains(Container.FolderPath,/tvshows)" content="50352_content">
+					<param name="sortby" value="playcount" />
+					<param name="content" value="$VAR[View504_NextUp]" />
+					<param name="limit" value="1" />
+				</include>
+				<include condition="!String.Contains(Container.FolderPath,/tvshows)" content="50352_content">
+					<param name="sortby" value="year" />
+					<param name="content" value="$VAR[View_504_Folderpath]" />
+					<param name="limit" value="" />
+				</include>
+				
+			</control>
+			
+			<control type="panel" id="50453">
+				<animation effect="slide" start="0,0" end="0,-300" time="350" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
+				<visible>Container.Content(tvshows)</visible>
+				
+				<bottom>-830</bottom>
+				<height>400</height>
+				
+				<left>800</left>
+				<orientation>horizontal</orientation>
+				<preloaditems>2</preloaditems>
+				<scrolltime tween="quadratic">400</scrolltime>
+			
+				<include content="spotlight_hor_list_navigation_folderpath"><param name="viewid" value="504"/></include>
+				
+				<onclick condition="!String.IsEmpty(Window(videos).Property(Spotlight_Sets))">ClearProperty(Spotlight_Sets,videos)</onclick>
+				<onclick condition="!String.IsEmpty(Window(videos).Property(Spotlight_Cast))">ClearProperty(Spotlight_Cast,videos)</onclick>
+				<onclick>ActivateWindow(videos,$INFO[Container(50453).ListItem.Folderpath],return)</onclick>
+				
+				<itemlayout height="350" width="202">
+					<control type="group">
+						<width>200</width>
+						<height>282</height>
+						<include content="UniversalLayout">
+							<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_nf]" />
+							<param name="artwork" value="poster" />
+							<param name="get_tags" value="true" />
+							<param name="get_tagbgpanel" value="true" />
+							<param name="autoscroll" value="false" />
+							<param name="bordersize_bg" value="6" />
+							<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_nf]" />
+							<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_bottomtag_nf]" />
+							<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_bottomtag_nf]" />
+							<param name="conditional_artworkdiffuse_themed" value="!Skin.HasTheme(Roundedge) | Skin.HasSetting(View_504_DisableTags)" />
+							<param name="conditional_artworkdiffuse_override" value="Skin.HasTheme(Roundedge) + !Skin.HasSetting(View_504_DisableTags)" />
+						</include>
+					</control>
+				</itemlayout>
+				<focusedlayout height="350" width="202">
+					<control type="group">
+						<width>200</width>
+						<height>282</height>
+						<include>Animation_Item_Focus</include>
+						<control type="group">
+							<include content="UniversalLayout">
+								<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_fo]" />
+								<param name="artwork" value="poster" />
+								<param name="get_tags" value="true" />
+								<param name="get_tagbgpanel" value="true" />
+								<param name="autoscroll" value="true" />
+								<param name="bordersize_bg" value="4" />
+								<param name="bottompanelcolor" value="$VAR[color_spotlightlib_itemframe_fo]" />
+								<param name="bottomtaglabelcolor" value="$VAR[color_spotlightlib_bottomtag_fo]" />
+								<param name="bottomtaglabel2color" value="$VAR[color_spotlightlib_bottomtag_fo]" />
+								<param name="conditional_artworkdiffuse_themed" value="!Skin.HasTheme(Roundedge) | Skin.HasSetting(View_504_DisableTags)" />
+								<param name="conditional_artworkdiffuse_override" value="Skin.HasTheme(Roundedge) + !Skin.HasSetting(View_504_DisableTags)" />
+							</include>
+							<include content="FocusOverlay">
+								<param name="diffusedimtext" value="artworkdiffuse/usebganel/landscape.png" />
+							</include>
+						</control>
+					</control>
+				</focusedlayout>
+				<content sortby="year" target="videos">$VAR[View_504_Folderpath]</content>
+			</control>
+				
+		</control>
+		
+		<include content="spotlight_buttongroup_hor" />
+	</include>
+</includes>

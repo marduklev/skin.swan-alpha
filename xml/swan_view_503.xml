@@ -117,7 +117,7 @@
 				<animation effect="slide" start="0,0" end="-200,0" time="250" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Cast)) + String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
 				<animation effect="fade" start="100" end="0" time="250" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
 				
-				<include>spotlight_hor_list_navigation_common</include>
+				<include content="spotlight_hor_list_navigation_common"><param name="viewid" value="503"/></include>
 				
 				<itemlayout height="350" width="202">
 					<control type="group">
@@ -195,13 +195,8 @@
 				<scrolltime tween="quadratic">400</scrolltime>
 				<preloaditems>2</preloaditems>
 				<orientation>horizontal</orientation>
-				<!-- 
-				just if fixedlist
-				<focusposition>0</focusposition>
-				<movement>5</movement>
-				-->
 				
-				<include>spotlight_hor_list_navigation_cast</include>
+				<include content="spotlight_hor_list_navigation_cast"><param name="viewid" value="503"/></include>
 				
 				<itemlayout height="380" width="230">
 					<control type="group">
@@ -254,7 +249,7 @@
 				<preloaditems>2</preloaditems>
 				<scrolltime tween="quadratic">400</scrolltime>
 				
-				<include>spotlight_hor_list_navigation_nextup</include>
+				<include content="spotlight_hor_list_navigation_nextup"><param name="viewid" value="503"/></include>
 				
 				<itemlayout height="355" width="600" condition="String.Contains(Container.FolderPath,/tvshows)">
 					<include content="template5077">
@@ -329,9 +324,8 @@
 				
 			</control>
 			
-			<control description="seasons" type="panel" id="50353">
+			<control type="panel" id="50353">
 				<animation effect="slide" start="0,0" end="0,-300" time="350" tween="cubic" condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
-				
 				<visible>Container.Content(tvshows)</visible>
 				
 				<bottom>-830</bottom>
@@ -342,7 +336,7 @@
 				<preloaditems>2</preloaditems>
 				<scrolltime tween="quadratic">400</scrolltime>
 			
-				<include>spotlight_hor_list_navigation_folderpath</include>
+				<include content="spotlight_hor_list_navigation_folderpath"><param name="viewid" value="503"/></include>
 				<onclick condition="!String.IsEmpty(Window(videos).Property(Spotlight_Sets))">ClearProperty(Spotlight_Sets,videos)</onclick>
 				<onclick condition="!String.IsEmpty(Window(videos).Property(Spotlight_Cast))">ClearProperty(Spotlight_Cast,videos)</onclick>
 				<onclick>ActivateWindow(videos,$INFO[Container(50353).ListItem.Folderpath],return)</onclick>
@@ -409,12 +403,9 @@
 	</include>
 	
 	
-	<include name="view504">
+	<include name="view504_old">
 		<control type="group">
-			
 			<visible>Control.IsVisible(504)</visible>
-				<description>decide if using global spotlight lib/common settings instead of write conditions for every viewtype - so use that gloably by make vis for correspondiong ids </description>
-				
 				<include content="spotlight_layout">
 					<param name="spotlight_artwork_visible_right" value="!Skin.HasSetting(View504_fanart_left) + Control.IsVisible(504)" />	
 					<param name="spotlight_artwork_visible_left" value="Skin.HasSetting(View504_fanart_left) + Control.IsVisible(504)" />	
@@ -430,58 +421,56 @@
 					<param name="bottom" value="380" />
 					<param name="footer_mediaflag_offsetleft" value="350" />
 					<param name="footer_rating_offsetright" value="70" />
-				</include>
+				</include>			
 		</control>
 		<control type="group">
 			<visible>Control.IsVisible(504)</visible>
-				
-				
-				
-			<control type="panel" id="504">
+			<animation effect="slide" start="0,0" end="0,-500" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) | !String.IsEmpty(Window.Property(Spotlight_Nextup))">conditional</animation>
+			
+			<include content="content_header_bold">
+				<param name="visible" value="String.IsEmpty(Window.Property(Spotlight_Sets))" />
+				<param name="label" value="$VAR[Header_InfoTop]" />
+			</include>
+			<include content="content_header_bold">
+				<param name="visible" value="String.IsEmpty(Window(home).Property(TrailerIsPlaying)) + [!String.IsEmpty(Window.Property(Spotlight_Cast)) + String.IsEmpty(Window.Property(Spotlight_Sets))]" />
+				<param name="label" value="206" />
+				<param name="left" value="400" />
+			</include>
+			<include content="content_header_bold">
+				<param name="visible" value="!String.IsEmpty(Window.Property(Spotlight_Sets))" />
+				<param name="label" value="$VAR[SetLabel]" />
+				<param name="left" value="100" />
+				<param name="bottom" value="-160" />
+			</include>
+			<include content="content_header_bold">
+				<param name="visible" value="!String.IsEmpty(Window.Property(Spotlight_Sets)) + Container.Content(tvshows)" />
+				<param name="label" value="33054" />
+				<param name="left" value="800" />
+				<param name="bottom" value="-160" />
+			</include>
+			
+			<control type="fixedlist" id="504">
 				<description>curr no include and relaod usage, just for testing later fixedlist vs panel</description>
 			
 				<viewtype label="$LOCALIZE[31262]">spotlight landscape</viewtype>
+				
+				
+				<!-- panel <include condition="Skin.HasSetting(View504_multirow)" content="orientation"><param name="orientation" value="vertical" /></include> -->
+				<!-- <include condition="!Skin.HasSetting(View504_multirow)" content="orientation"><param name="orientation" value="horizontal" /></include> -->
+				
 				<focusposition>0</focusposition>
-				
-				
-				<include condition="Skin.HasSetting(View504_multirow)" content="orientation"><param name="orientation" value="vertical" /></include>
-				<include condition="!Skin.HasSetting(View504_multirow)" content="orientation"><param name="orientation" value="horizontal" /></include>
-				
+				<orientation>horizontal</orientation>
 				<preloaditems>4</preloaditems>
 				<scrolltime tween="quadratic">400</scrolltime>
+				<pagecontrol>61</pagecontrol>
 				<left>100</left>
 				<right>0</right>
 				<bottom>0</bottom>
-				<height>465</height>
+				<height>420</height>
 				
-				<!-- 
+				<animation effect="fade" start="100" end="0" time="250" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">conditional</animation>
 				
-				include horizontal list offsets
-				include horizontal list nav
-
-				-->
-				
-				<!-- cant use onback to focus menubar - dont like to move to bottom -->
-				
-				
-				<!-- mööp on up supposed play trailer ? -->
-				
-				<onup condition="!String.IsEmpty(Window(home).Property(listitemtrailer))">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onup>
-				<onup condition="!String.IsEmpty(Window(home).Property(listitemtrailer))">SetProperty(TrailerIsPlaying,true,home)</onup>
-				
-				<!-- <onup condition="Control.IsVisible(19)">19</onup>  -->
-				<!-- <onup condition="!Control.IsVisible(19) + Control.IsVisible(8999)">8999</onup> -->
-				<ondown condition="!String.IsEmpty(Window(home).Property(TrailerIsPlaying))">PlayerControl(stop)</ondown>
-				<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
-				
-				<onleft condition="Control.IsVisible(8999)">8999</onleft>
-				
-				
-				<onright condition="Control.IsVisible(60)">60</onright>
-				
-				<!-- ondown - cast ?, movieset items ?, scroll/alphabet bar , an icon button grouplist for such actions needed - onup or ondown ? -->
-				<!-- <ondown>89898989</ondown> -->
-				<!-- <ondown>7777</ondown> -->
+				<include>spotlight_hor_list_navigation_common</include>
 				
 				<itemlayout height="450" width="460" condition="!Skin.HasSetting(View504_multirow)">
 					<control type="group">
@@ -511,7 +500,7 @@
 						<height>267</height>
 						<top>60</top>
 						<description>to avoid relaod skin on disable footer and avoid bottom offset fade out 3rd row of items</description>
-						<!-- <include>Animation_Item_Focus</include> -->
+						<include>Animation_Item_Focus</include>
 						<control type="group">
 						<animation type="Focus" reversible="false">
 							<effect type="zoom" end="103,103" time="200" tween="sine" easing="out" center="auto" />
@@ -547,7 +536,7 @@
 					</control>
 				</focusedlayout>
 				
-				<!-- multirow -->
+				<!-- multirow
 				
 				<itemlayout height="235" width="435" condition="Skin.HasSetting(View504_multirow)">
 					<control type="group">
@@ -576,7 +565,6 @@
 					<control type="group">
 						<width>440</width>
 						<height>240</height>
-						<!-- <include>Animation_Item_Focus</include> -->
 						<animation type="Focus" reversible="false">
 							<effect type="zoom" end="103,103" time="200" tween="sine" easing="out" center="auto" />
 							<effect type="zoom" end="99,99" time="150" tween="sine" delay="200" easing="out" center="auto" />
@@ -604,6 +592,7 @@
 						</control>
 					</control>
 				</focusedlayout>
+				-->
 			</control>
 		</control>
 		
@@ -623,10 +612,21 @@
 		<value condition="Control.IsVisible(503) + [!String.StartsWith(listitem.path,plugin) + !String.IsEmpty(Container.ListItem.SetId)]">videodb://movies/sets/$INFO[Container.ListItem.setid]/?setid=$INFO[Container.ListItem.setid]</value>
 		<value condition="String.StartsWith(listitem.path,plugin) + String.IsEqual(Container.ListItem.dbtype,tvshow)">$INFO[Container.ListItem.FolderPath]</value>
 	</variable>
+	<variable name="View504_NextUp">
+		<value condition="[Control.IsVisible(504) + Container.Content(tvshows)] + !String.IsEmpty(Container(504).ListItem.dbid)">videodb://inprogresstvshows/$INFO[Container(504).ListItem.dbid]/-1/?tvshowid=$INFO[Container(504).ListItem.dbid]</value>
+		<value condition="[Control.IsVisible(504) + Container.Content(seasons)] + String.EndsWith(Container.Folderpath,/)">$INFO[Container.Folderpath]-1/</value>
+		<value condition="[Control.IsVisible(504) + Container.Content(seasons)] + !String.IsEmpty(Window(home).Property(dbid))">videodb://inprogresstvshows/$INFO[Window(home).Property(dbid)]/-1/?tvshowid=$INFO[Window(home).Property(dbid)]</value>
+	</variable>
+	<variable name="View_504_Folderpath">
+		<value condition="Control.IsVisible(504) + [!String.StartsWith(listitem.path,plugin) + Container.Content(tvshows)]">videodb://tvshows/titles/$INFO[Container(504).ListItem.dbid]</value>
+		<value condition="Control.IsVisible(504) + [!String.StartsWith(listitem.path,plugin) + String.IsEqual(Container.ListItem.dbtype,set)]">$INFO[Container.ListItem.FolderPath]</value>
+		<value condition="Control.IsVisible(504) + [!String.StartsWith(listitem.path,plugin) + !String.IsEmpty(Container.ListItem.SetId)]">videodb://movies/sets/$INFO[Container.ListItem.setid]/?setid=$INFO[Container.ListItem.setid]</value>
+		<value condition="String.StartsWith(listitem.path,plugin) + String.IsEqual(Container.ListItem.dbtype,tvshow)">$INFO[Container.ListItem.FolderPath]</value>
+	</variable>
 	<include name="temp_spotlight_infofade">
 		<param name="fade_end" default="0" />
 		<definition>
-			<animation effect="fade" start="100" end="$PARAM[fade_end]" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) + [Container(50350).IsUpdating | Integer.IsGreater(Container(50350).NumItems,0)]">conditional</animation>
+			<animation effect="fade" start="100" end="$PARAM[fade_end]" time="350" easing="inout" reversible="true" condition="!String.IsEmpty(Window.Property(Spotlight_Sets)) + [[Container(50350).IsUpdating | Integer.IsGreater(Container(50350).NumItems,0)] | [Container(50450).IsUpdating | Integer.IsGreater(Container(50450).NumItems,0)]]">conditional</animation>
 		</definition>
 	</include>
 	
