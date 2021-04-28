@@ -45,7 +45,8 @@
 		<ondown condition="![Control.IsVisible(50352) + [String.IsEqual(ListItem.dbtype,tvshow) | String.IsEqual(ListItem.dbtype,season) | String.IsEqual(ListItem.dbtype,set) | !String.IsEmpty(ListItem.SetId)]]">ClearProperty(Spotlight_Cast)</ondown>
 		<ondown condition="![Control.IsVisible(50352) + [String.IsEqual(ListItem.dbtype,tvshow) | String.IsEqual(ListItem.dbtype,season) | String.IsEqual(ListItem.dbtype,set) | !String.IsEmpty(ListItem.SetId)]]">50</ondown>
 		
-		<onleft>50</onleft>
+		<onleft condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">50350</onleft>
+		<onleft condition="String.IsEmpty(Window.Property(Spotlight_Sets))">50</onleft>
 	
 	</include>
 	
@@ -70,10 +71,10 @@
 		<ondown>50</ondown>
 		
 		<onleft condition="Control.IsVisible(50353)">50353</onleft>
-		<onleft condition="!Control.IsVisible(50353) + Control.IsVisible(8999)">8999</onleft>
+		<onleft condition="!Control.IsVisible(50353)">50352</onleft>
 		
-		<onright contition="Control.IsVisible(50353)">50353</onright>
-		<onright contition="!Control.IsVisible(50353)">50352</onright>
+		<onright condition="Control.IsVisible(50353)">50353</onright>
+		<onright condition="!Control.IsVisible(50353)">50352</onright>
 		
 		
 	</include>
@@ -147,7 +148,10 @@
 			<ondown>50</ondown>
 		</control>
 	</include>
-	
+	<variable name="texture_alphbaetbar_bg">
+		<value condition="[Control.IsVisible(503) + Skin.HasSetting(View_503_DisableFooter)] | [Control.IsVisible(504) + Skin.HasSetting(View_504_DisableFooter)]">diffuse/gradientright.png</value>
+		<value>colors/white.png</value>
+	</variable>
 	<include name="ScrollBar_Alphabet">
 		<control type="group">
 			
@@ -158,7 +162,7 @@
 			
 			<control type="image">
 				<description>may just use as nested element for hor bar</description>
-				<texture colordiffuse="ff131313">colors/white.png</texture>
+				<texture colordiffuse="ff131313">$VAR[texture_alphbaetbar_bg]</texture>
 				<visible>$PARAM[bg_texture_visible]</visible>
 			</control>
 			
