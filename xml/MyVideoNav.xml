@@ -17,24 +17,15 @@
 			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
 			<content limit="1">$VAR[EmbuaryHelper_GetInfo_dbid]</content>
 		</control>
-		<!-- 
-		<control type="list" id="2001">
-			<include>HiddenContainer</include>
-			<content sortby="year">$INFO[ListItem.FolderPath]</content>
-			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
-			<visible>String.IsEqual(ListItem.DBtype,set)</visible>
-		</control>
-		-->
-		<!-- 
-		<control type="list" id="2002">
-			<visible>Container.Content(seasons)</visible>
-			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
-			<include>HiddenContainer</include>
-			<content limit="1">$VAR[EmbuaryHelper_NextUp]</content>
-		</control>
-		-->
 		
 		<!-- native GUI Ctrls -->
+		<!--
+			8	button	<label>$LOCALIZE[137]</label>	Search for a string anywhere in the Kodi video database
+			12	label	Number of items in the list
+			15	label	Filter label
+			18	label	Warning to the user to turn off library mode when no scanned media is found
+		-->
+		
 		<control type="button" id="2">
 			<description>Select viewtype</description>
 			<include content="HiddenObject" />
@@ -90,12 +81,6 @@
 			<description>Update library</description>
 			<include content="HiddenObject" />
 		</control>
-<!--
-8	button	<label>$LOCALIZE[137]</label>	Search for a string anywhere in the Kodi video database
-12	label	Number of items in the list
-15	label	Filter label
-18	label	Warning to the user to turn off library mode when no scanned media is found
--->
 		
 		<control type="group">
 			<visible>!Skin.HasSetting(BlurEnabled)</visible>
@@ -106,7 +91,8 @@
 			<visible>Skin.HasSetting(BlurEnabled)</visible>
 			<visible>String.IsEmpty(Window(home).Property(SetShortcutInProgress))</visible>
 			<include>GlobalBlurredBackground</include>
-		</control>			
+		</control>
+		
 		<control type="group" id="70">
 			<description>viewtypes</description>
 			<include content="Animation_Close_MediaContainer" condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))" />
@@ -117,7 +103,9 @@
 			</animation>
 			
 			<include condition="!string.isempty(window(home).property(shortcutitem_nr))" content="SwanShortcuts_Container"  />
-				
+			
+			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view_layer4</include>
+			
 			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view_50</include>
 			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view_51</include>
 			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view_52</include>
@@ -127,24 +115,24 @@
 			
 			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view_58</include>
 			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view_502</include>
-			
 			<!-- special case for shared include still load if one of booth disabled -->
 			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view_503_504</include>
 			
-			
-			<include  condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))" content="ScrollBar_Alphabet">
+			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))" content="ScrollBar_Alphabet">
 				<right>0</right>
 				<width>100</width>
-				<top>105</top>
+				<top>110</top>
 				
 				<param name="id" value="600" />
 				<param name="visible" value="[Control.IsVisible(50) | Control.IsVisible(51) | Control.IsVisible(52) | Control.IsVisible(53) | Control.IsVisible(54) | Control.IsVisible(56) | Control.IsVisible(502)]" />
 				<param name="orientation" value="vertical" />
 				<param name="panel_width" value="60" />
-				<param name="height" value="885" />
+				<param name="height" value="880" />
 				<param name="item_hw" value="32.5" />
 				<param name="bg_texture_visible" value="true" />
 				<param name="is_vertical" value="true" />
+				<param name="color_1" value="ff131313" />
+				<param name="color_2" value="ffffffff" />
 			</include>
 			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))" content="ScrollBar_Alphabet">
 				<bottom>380</bottom>
@@ -158,12 +146,15 @@
 				<param name="item_hw" value="50" />
 				<param name="bg_texture_visible" value="true" />
 				<param name="is_vertical" value="false" />
+				<param name="color_1" value="ff131313" />
+				<param name="color_2" value="ffffffff" />
 			</include>
 			
 			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">Scrollbar_Lib_vertical</include>
 			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">Scrollbar_Lib_horizontal</include>
 			
 		</control>
+		
 		<include content="HeaderBar">
 			<param name="HasBGPanel" value="Skin.HasSetting(MediaWindow_UseHeaderBG)" />
 		</include>

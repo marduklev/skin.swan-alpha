@@ -17,27 +17,36 @@
 			<include>global_background</include>
 		</control>
 		
+		
 		<control type="group" id="70">
 			<description>viewtypes</description>
-			
-			<include content="Animation_TransitionFadeOut">
-				<param name="condition" value="$EXP[Infodialog_IsActive] | Window.IsActive(mediasource)" />
-			</include>
-			
+			<include content="Animation_Close_MediaContainer" condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))" />
 			<centerleft>50%</centerleft>
 			
-			<!-- Shortcut -->
-			<include content="SwanShortcuts_Container" condition="!string.isempty(window(home).property(shortcutitem_nr))" />
+			<!-- 
+			<include content="Animation_TransitionFadeOut">
+				<param name="condition" value="$EXP[Infodialog_IsActive] | Window.IsActive(mediasource)" />
+			</include> 
+			-->
+			<animation type="Conditional" condition="$EXP[Infodialog_IsActive] | Window.IsActive(mediasource)">
+				<effect type="fade" start="100" end="0" time="250" tween="sine" easing="out" />
+				<effect type="zoom" center="50%,50%" start="100" end="0" time="300" tween="cubic" easing="out" />
+			</animation>
+			
+			<include condition="!string.isempty(window(home).property(shortcutitem_nr))" content="SwanShortcuts_Container"  />
+			
+			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view_layer4</include>
 				
-			
-			<!-- Regular -->
 			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view_50</include>
-			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">Simple_Panels</include>
-			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view_58</include>
+			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view_51</include>
+			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view_52</include>
+			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view_53</include>
+			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">view_54</include>
 			
+			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">Scrollbar_Lib_vertical</include>
+			<include condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">Scrollbar_Lib_horizontal</include>
 			
 		</control>
-		
 		<control type="group">
 			<!-- may rework ,or move to include itself -->
 			<visible type="fade">!$EXP[Infodialog_IsActive]</visible>
