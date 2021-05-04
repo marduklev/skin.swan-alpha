@@ -791,7 +791,7 @@
 			<top>$PARAM[top]</top>
 			<left>$PARAM[mediaflag_offset_left]</left>
 			<width>$PARAM[mediaflag_width]</width>
-			
+			<description>put includes into ctrl types</description>
 			<include content="MediaFlags_Footer">
 				<param name="width" value="90" />
 				<param name="flagtype" value="audio" />
@@ -803,10 +803,13 @@
 				<param name="flag" value="AudioChannels" />
 				<param name="color" value="$PARAM[forcedcolor]" />
 			</include>
-			<include condition="true" content="MediaFlags_Footer_resolution">
+			<include content="MediaFlags_Footer">
+				<param name="width" value="70" />
+				<param name="flagtype" value="resolution" />
+				<param name="flag" value="VideoResolution" />
 				<param name="color" value="$PARAM[forcedcolor]" />
 			</include>
-			<include condition="false" content="MediaFlags_Footer_resolution2">
+			<include condition="false" content="MediaFlags_Footer_resolution">
 				<param name="color" value="$PARAM[forcedcolor]" />
 			</include>
 			<include content="MediaFlags_Footer">
@@ -822,16 +825,9 @@
 			</include>
 		</control>
 		</definition>
-	</include>		
+	</include>
 	
-	$INFO[ListItem.VideoResolution]
-	Shows the resolution of the currently selected video (possible values: 480, 576, 540, 720, 1080, 4K, 8K [Note: v18 addition]). 
-	Note  that 		540 usually means a widescreen format (around 960x540) 
-	     while 		576 means PAL resolutions (normally 720x576), 
-		 therefore  540 is actually better resolution than 576.
-		 
-		 just a bit to large - test with zoom, adjust later
-		 
+	<!-- 
 	<include name="MediaFlags_Footer_resolution">
 		<control type="group">
 			<visible>!String.IsEmpty(ListItem.VideoResolution)</visible>
@@ -862,45 +858,22 @@
 				<align>center</align>
 				<font>font_Montserrat_6_extrabold</font>
 				<label>$VAR[Flagging_Resolution_bottom]</label>
-				<textcolor>$VAR[color_footer_backgroundpanel]</textcolor>
-				<animation effect="fade" end="80" condition="control.isvisible(503) | control.isvisible(504)">conditional</animation>
-			</control>
-		</control>
-	</include>
-	<include name="MediaFlags_Footer_resolution2">
-		<control type="group">
-			<visible>!String.IsEmpty(ListItem.VideoResolution)</visible>
-			<width>85</width>
-			<height>75</height>
-			<centertop>50%</centertop>
-			<control type="image">
-				<width>95</width>
-				<height>75</height>
-				<bordersize>15</bordersize>
-				<aspectratio>keep</aspectratio>
-				<texture colordiffuse="$PARAM[color]">flags/flagsmedia/resolution/templates/template_transtop.png</texture>
+				<textcolor>$VAR[color_spotlightlib_background_layer1]</textcolor>
+				<animation effect="fade" end="70" condition="control.isvisible(503) | control.isvisible(504)">conditional</animation>
 			</control>
 			<control type="label">
 				<width>95</width>
 				<height>36</height>
-				<top>12</top>
-				<align>center</align>
-				<font>font_Montserrat_14_extrabold</font>
-				<label>$VAR[Flagging_Resolution_top]</label>
-				<textcolor>$VAR[color_footer_backgroundpanel]</textcolor>
-				<animation effect="fade" end="60" condition="control.isvisible(503) | control.isvisible(504)">conditional</animation>
-			</control>
-			<control type="label">
-				<width>95</width>
-				<height>36</height>
-				<top>32</top>
+				<top>33</top>
 				<align>center</align>
 				<font>font_Montserrat_6_extrabold</font>
 				<label>$VAR[Flagging_Resolution_bottom]</label>
-				<textcolor>$PARAM[color]</textcolor>
+				
+				<textcolor>$VAR[color_footer_backgroundpanel]</textcolor>
 			</control>
 		</control>
 	</include>
+	
 	
 	<variable name="Flagging_Resolution_top">
 		<value condition="ListItem.IsStereoscopic">3D</value>
@@ -908,39 +881,13 @@
 		<value condition="!String.IsEmpty(ListItem.VideoResolution)">$INFO[ListItem.VideoResolution,[B],p[/B]]</value>
 	</variable>
 	<variable name="Flagging_Resolution_bottom">
-		<value condition="ListItem.IsStereoscopic">3D</value>
-		<value condition="Integer.IsGreater(ListItem.VideoResolution,1080) | String.IsEqual(ListItem.VideoResolution,4K)">Ultra [B]HD[/B]</value>
-		<value condition="Integer.IsGreater(ListItem.VideoResolution,720) | String.IsEqual(ListItem.VideoResolution,1080)">Full [B]HD[/B]</value>
+		<value condition="Integer.IsGreater(ListItem.VideoResolution,1080) | String.IsEqual(ListItem.VideoResolution,4K)">Ultra   [B]HD[/B]</value>
+		<value condition="Integer.IsGreater(ListItem.VideoResolution,720) | String.IsEqual(ListItem.VideoResolution,1080)">Full   [B]HD[/B]</value>
 		<value condition="Integer.IsGreater(ListItem.VideoResolution,576) | String.IsEqual(ListItem.VideoResolution,1080) | String.IsEqual(ListItem.VideoResolution,540)">[B]HD[/B]</value>
 		<value>[B]SD[/B]</value>
 	</variable>
-	<!--
-	<include name="MediaFlags_Footer_aspect">
-		<control type="group">
-			<visible>!String.IsEmpty(ListItem.VideoAspect)</visible>
-			<width>75</width>
-			<height>75</height>
-				
-			<control type="image">
-				<width>75</width>
-				<height>75</height>
-				<bordersize>1</bordersize>
-				<aspectratio align="center" aligny="center">keep</aspectratio>
-				<texture colordiffuse="$PARAM[color]">flags/flagsmedia/aspectratio/aspect.png</texture>
-			</control>
-			<control type="label">
-				<width>75</width>
-				<height>36</height>
-				<top>14</top>
-				<left>27</left>
-				<align>left</align>
-				<font>font_Montserrat_14_extrabold</font>
-				<info>ListItem.VideoAspect</info>
-				<textcolor>$PARAM[color]</textcolor>
-			</control>
-		</control>
-	</include>
 	-->
+	
 	<include name="MediaFlags_Footer">
 		<param name="width" default="75" />
 		<param name="height" default="75" />

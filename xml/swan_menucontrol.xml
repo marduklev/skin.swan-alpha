@@ -251,7 +251,7 @@
 			<aligny>center</aligny>
 			<left>12</left>
 			<width>110</width>
-			<height>620</height>
+			<height>90%</height>
 			<orientation>vertical</orientation>
 			<itemgap>10</itemgap>
 			<usecontrolcoords>true</usecontrolcoords>
@@ -268,7 +268,7 @@
 			
 			<control type="radiobutton" id="8001">
 				<include content="PreMenucontrol_RadioButton">
-					<param name="radiotexture" value="back" />
+					<param name="radiotexture" value="buttons/back" />
 				</include>
 				<visible>!Skin.HasSetting(premenu_hide_back)</visible>
 				<visible>!String.IsEqual(Window(Home).Property(menucontrol_active),common)</visible>
@@ -277,7 +277,7 @@
 			</control>
 			<control type="radiobutton" id="8002">
 				<include content="PreMenucontrol_RadioButton">
-					<param name="radiotexture" value="search" />
+					<param name="radiotexture" value="buttons/search" />
 				</include>
 				<onclick condition="!String.IsEmpty(Skin.String(SearchTerm))">Skin.Reset(SearchTerm)</onclick>
 				<onclick>Skin.SetString(SearchTerm)</onclick>
@@ -285,7 +285,7 @@
 			</control>
 			<control type="radiobutton" id="8003">
 				<include content="PreMenucontrol_RadioButton">
-					<param name="radiotexture" value="menucontrol" />
+					<param name="radiotexture" value="buttons/menucontrol" />
 				</include>
 				<onclick condition="!String.IsEqual(Window(Home).Property(menucontrol_active),common)">SetProperty(menucontrol_active,common,Home)</onclick>
 				<onclick condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onclick>
@@ -294,7 +294,7 @@
 			<control type="radiobutton" id="8004">
 				<visible>!Skin.HasSetting(premenu_hide_hideshutdown)</visible>
 				<include content="PreMenucontrol_RadioButton">
-					<param name="radiotexture" value="shutdownmenubutton" />
+					<param name="radiotexture" value="buttons/shutdownmenubutton" />
 				</include>
 				<onclick>ClearProperty(menucontrol_active,home)</onclick>
 				<onclick>ActivateWindow(shutdownmenu)</onclick>
@@ -306,7 +306,7 @@
 				<visible>$EXP[Has_Trailer]</visible>
 				<visible>!Skin.HasSetting(premenu_hide_trailer)</visible>
 				<include content="PreMenucontrol_RadioButton">
-					<param name="radiotexture" value="trailer" />
+					<param name="radiotexture" value="buttons/trailer" />
 				</include>
 				<onclick>PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onclick>
 				<onclick>SetProperty(TrailerIsPlaying,true,home)</onclick>
@@ -317,7 +317,7 @@
 				<visible>!String.IsEmpty(Window(home).Property(TrailerIsPlaying))</visible>
 				<visible>!Skin.HasSetting(premenu_hide_trailer)</visible>
 				<include content="PreMenucontrol_RadioButton">
-					<param name="radiotexture" value="stop" />
+					<param name="radiotexture" value="buttons/stop" />
 				</include>
 				<onclick>ClearProperty(TrailerIsPlaying,home)</onclick>
 				<onclick>Action(stop)</onclick>
@@ -326,7 +326,7 @@
 			<control type="radiobutton" id="8005">
 				<visible>Player.HasMedia</visible>
 				<include content="PreMenucontrol_RadioButton">
-					<param name="radiotexture" value="togglefullscreen" />
+					<param name="radiotexture" value="buttons/togglefullscreen" />
 				</include>
 				<onclick>Fullscreen</onclick>
 			</control>
@@ -338,7 +338,7 @@
                     String.IsEqual(Container.ListItem.dbtype,artist) | String.IsEqual(Container.ListItem.dbtype,album) | String.IsEqual(Container.ListItem.dbtype,song)
                 </visible>
 				<include content="PreMenucontrol_RadioButton">
-					<param name="radiotexture" value="info" />
+					<param name="radiotexture" value="buttons/info" />
 				</include>
 				<onclick>SetFocus(50)</onclick>
 				<onclick>Action(info)</onclick>
@@ -348,21 +348,49 @@
 				<visible>!Skin.HasSetting(premenu_hide_embuarytmdbinfo)</visible>
 				<visible>String.IsEqual(Container.ListItem.dbtype,movie) | String.IsEqual(Container.ListItem.dbtype,actor) | String.IsEqual(Container.ListItem.dbtype,tvshow) | String.IsEqual(Container.ListItem.dbtype,season) | String.IsEqual(Container.ListItem.dbtype,episode)</visible>
 				<include content="PreMenucontrol_RadioButton">
-					<param name="radiotexture" value="tmdbembuaryinfo" />
+					<param name="radiotexture" value="buttons/tmdbembuaryinfo" />
 				</include>
 				<onclick>RunScript(script.embuary.info,call=$VAR[embtmdbinfocall],query='"$VAR[embtmdbinfoquery]'")</onclick>
 			</control>
 			
+			<!-- 
+			<control type="radiobutton" id="8020">
+				<visible>!String.IsEqual(Window(Home).Property(menucontrol_active),common)</visible>
+				<visible>[control.isvisible(503) | control.isvisible(504)] + [control.isvisible(50350)]</visible>
+				<include content="PreMenucontrol_RadioButton">
+					<param name="radiotexture" value="icons/actor" />
+				</include>
+				
+				<onclick condition="String.IsEmpty(Window.Property(Spotlight_Cast))">SetFocus(50350,0,absolute)</onclick>
+				<onclick condition="!String.IsEmpty(Window.Property(Spotlight_Cast))">ClearProperty(Spotlight_Cast)</onclick>
+				<onclick condition="!String.IsEmpty(Window.Property(Spotlight_Cast))">SetFocus(50)</onclick>
+			</control>
+			<control type="radiobutton" id="8021">
+				<visible>!String.IsEqual(Window(Home).Property(menucontrol_active),common)</visible>
+				<visible>[control.isvisible(503) | control.isvisible(504)] + [control.isvisible(50352) + Integer.IsGreater(container(50352).NumItems,0)]</visible>
+				<include content="PreMenucontrol_RadioButton">
+					<param name="radiotexture" value="defaultsets" />
+				</include>
+				<onclick condition="String.IsEmpty(Window.Property(Spotlight_Sets))">SetFocus(50352,absolute)</onclick>
+				
+				<onclick condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">ClearProperty(Spotlight_Sets)</onclick>
+				<onclick condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">SetFocus(50)</onclick>
+			</control> 
+			-->
+			
 			
 		</control>
 	</include>
-	
+		<!-- 8020 8021
+			vis cond here or in container
+			eg	!string.isempty(container(503).listitem.dbtype) | !string.isempty(container(504).listitem.dbtype) 
+		-->
 	<include name="PreMenucontrol_RadioButton">
 		<include content="Animation_Item_Focus" />
-		<textureradioonfocus colordiffuse="$VAR[PreMenucontrol_button_fo]">buttons/$PARAM[radiotexture].png</textureradioonfocus>
-		<textureradioonnofocus colordiffuse="$VAR[PreMenucontrol_button_nf]">buttons/$PARAM[radiotexture].png</textureradioonnofocus>
-		<textureradioofffocus colordiffuse="$VAR[PreMenucontrol_button_fo]">buttons/$PARAM[radiotexture].png</textureradioofffocus>
-		<textureradiooffnofocus colordiffuse="$VAR[PreMenucontrol_button_nf]">buttons/$PARAM[radiotexture].png</textureradiooffnofocus>
+		<textureradioonfocus colordiffuse="$VAR[PreMenucontrol_button_fo]">$PARAM[radiotexture].png</textureradioonfocus>
+		<textureradioonnofocus colordiffuse="$VAR[PreMenucontrol_button_nf]">$PARAM[radiotexture].png</textureradioonnofocus>
+		<textureradioofffocus colordiffuse="$VAR[PreMenucontrol_button_fo]">$PARAM[radiotexture].png</textureradioofffocus>
+		<textureradiooffnofocus colordiffuse="$VAR[PreMenucontrol_button_nf]">$PARAM[radiotexture].png</textureradiooffnofocus>
 		<textoffsetx />
 		<radiowidth>60</radiowidth>
 		<radioheight>60</radioheight>
