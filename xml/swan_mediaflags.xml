@@ -175,15 +175,17 @@
 		<param name="height" default="45" />
 		<param name="alignx" default="left" />
 		<param name="colordiffuse" default="red" />
+		<param name="stringprefix" default="" />
+		
 		<definition>
 		<control type="image">
 			<nested />
-			<visible>!String.IsEmpty(ListItem.UserRating) | !String.IsEmpty(ListItem.Rating) | [Control.IsVisible(58) + !String.IsEmpty(Window(home).Property(rating))]</visible>
+			<visible>!String.IsEmpty(ListItem.UserRating) | !String.IsEmpty(ListItem.Rating) | [Control.IsVisible(58) + !String.IsEmpty(Window(home).Property(rating))] | [Window.IsActive(visualisation) + [!String.IsEmpty(MusicPlayer.UserRating) | !String.IsEmpty(MusicPlayer.Rating)]]</visible>
 			<width>$PARAM[width]</width>
 			<height>$PARAM[height]</height>
 			<aspectratio align="$PARAM[alignx]" aligny="center">keep</aspectratio>
 			<colordiffuse>$PARAM[colordiffuse]</colordiffuse>
-			<texture background="true">$VAR[StarsRating_ImageVariable]</texture>
+			<texture background="true">$VAR[StarsRating_$PARAM[stringprefix]ImageVariable]</texture>
 		</control>
 		</definition>
 	</include>
@@ -231,6 +233,10 @@
 		<value condition="Container.Content(seasons) + !String.IsEmpty(Window(home).Property(rating))">$INFO[Window(home).Property(rating),flags/rating/stars/,.png]</value>
         <value condition="!String.IsEmpty(ListItem.UserRating)">$INFO[ListItem.UserRating,flags/rating/stars/,.png]</value>
         <value condition="!String.IsEmpty(ListItem.Rating)">$INFO[ListItem.Rating,flags/rating/stars/,.png]</value>
+    </variable>
+	<variable name="StarsRating_musicplayer_ImageVariable">
+		<value condition="!String.IsEmpty(MusicPlayer.UserRating)">$INFO[MusicPlayer.UserRating,flags/rating/stars/,.png]</value>
+        <value condition="!String.IsEmpty(MusicPlayer.Rating)">$INFO[MusicPlayer.Rating,flags/rating/stars/,.png]</value>
     </variable>
 	
 	<variable name="image_imdb">
@@ -826,7 +832,13 @@
 		</control>
 		</definition>
 	</include>
-	
+	<!-- ListItem.SubtitleLanguage
+			ListItem.Property(SubtitleLanguage.[n])
+										 $INFO[ListItem.SubtitleLanguage,resource://resource.images.languageflags.colour/,.png]</icon>
+						<property name="Icon2">$INFO[ListItem.Property(SubtitleLanguage.2),resource://resource.images.languageflags.colour/,.png]</property>
+						<property name="Icon3">$INFO[ListItem.Property(SubtitleLanguage.3),resource://resource.images.languageflags.colour/,.png]</property>
+						<property name="Icon4">$INFO[ListItem.Property(SubtitleLanguage.4),resource://resource.images.languageflags.colour/,.png]</property>
+					 -->
 	<!-- 
 	<include name="MediaFlags_Footer_resolution">
 		<control type="group">

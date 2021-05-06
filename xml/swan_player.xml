@@ -255,6 +255,20 @@
 		<value condition="!String.IsEmpty(MusicPlayer.Property(Artist_Formed)) | !String.IsEmpty(MusicPlayer.Property(Artist_Disbanded))">$INFO[MusicPlayer.Property(Artist_Formed),$LOCALIZE[21894]: ,]$INFO[MusicPlayer.Property(Artist_Disbanded), - $LOCALIZE[21896]: ,]</value>
 	</variable>
 	<include name="MusicPlayerOSDButtons">
+		<control type="button" id="6008">
+			<texturefocus />
+			<texturenofocus />
+			<onclick>ClearProperty(userratingbutton)</onclick>
+			<onclick>SetFocus(6009)</onclick>
+			<onfocus>SetProperty(userratingbutton,hasfocus)</onfocus>
+			<onunfocus>ClearProperty(userratingbutton)</onunfocus>
+			<onleft>DecreaseRating</onleft>
+			<onright>IncreaseRating</onright>
+			<onup>IncreaseRating</onup>
+			<ondown>DecreaseRating</ondown>
+			<onback>6009</onback>
+		</control>
+		
 		<control type="grouplist" id="600">
 			<top>78%</top>
 			<left>60</left>
@@ -278,17 +292,14 @@
 			<onclick>Addon.Default.OpenSettings(xbmc.player.musicviz)</onclick>
 			<visible>Visualisation.Enabled</visible>
 			-->
+			
 			<control type="button" id="6009">
 				<texturefocus colordiffuse="$VAR[color_osdmusic_accent]">buttons/osd/userrating_fo.png</texturefocus>
 				<texturenofocus colordiffuse="$VAR[color_osdmusic_secondary]">buttons/osd/userrating_fo.png</texturenofocus>
-				<description>temp position ? SetRating 	kodi.wiki/view/Keymap - For use when playing music. Will pop-up a 1-10 userrating select dialog, to rate the currently playing song. (v17 Krypton addition)
-IncreaseRating 	Used to increase track rating in full screen playback (press info on track and use pageplus on keyboard/remote
-DecreaseRating 	Used to decrease track rating in full screen playback (press info on track and use pageminus on keyboard/remote
-</description>
 				<onup>699</onup>
 				<onleft>6092</onleft>
 				<onright>6011</onright>
-				<onclick>SetRating</onclick>
+				<onclick>SetFocus(6008)</onclick>
 				<centertop>50%</centertop>
 				<width>45</width>
 				<height>45</height>
