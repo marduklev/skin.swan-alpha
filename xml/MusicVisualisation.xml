@@ -59,31 +59,6 @@ Visualisation.Locked	Returns true if the current visualisation preset is locked 
 					<texture colordiffuse="$VAR[color_osdmusic_bgpanelseperator]">colors/white70.png</texture>
 				</control>
 				
-				<control type="label">
-					<wrapmultiline>true</wrapmultiline>
-					<!-- <visible>!Skin.HasSetting(musicplayer_hideclock)</visible> -->
-					<visible>false</visible>
-					<left>60</left>
-					<height>100</height>
-					<width>100%</width>
-					<aligny>bottom</aligny>
-					<align>left</align>
-					<textcolor>$VAR[color_osdmusic_accent]</textcolor>
-					<font>font_robotobold</font>
-					<label>$INFO[System.Time]</label>
-				</control>
-				
-					<include content="StarsRating_Image">
-						<param name="colordiffuse" value="$VAR[color_osdmusic_accent]" />
-						<param name="stringprefix" value="musicplayer_" />
-						<param name="width" value="200" />
-						<param name="height" value="80" />
-						
-						<visible>String.IsEqual(Window(musicosd).Property(userratingbutton),hasfocus)</visible>
-						<left>230</left>
-						<top>850</top>
-					</include>
-				
 				<control type="image">
 					<visible>Skin.HasSetting(MusicPlayer_PreferDisc)</visible>
 					<left>60</left>
@@ -98,8 +73,33 @@ Visualisation.Locked	Returns true if the current visualisation preset is locked 
 					<animation effect="slide" start="-320,0" end="0,0" time="300" reversible="false">WindowOpen</animation>
 				</control>
 				
+				
 				<control type="image">
-					<visible>[Skin.HasSetting(MusicPlayer_PreferDisc) + String.IsEmpty(Player.Art(discart)) + String.IsEmpty(Player.Art(album.discart))] | !Skin.HasSetting(MusicPlayer_PreferDisc)</visible>
+					<visible>Skin.HasSetting(MusicPlayer_PreferAlbumandDisc) + [!String.IsEmpty(Player.Art(discart)) | !String.IsEmpty(Player.Art(album.discart))]</visible>
+					<left>320</left>
+					<centertop>25%</centertop>
+					<height>300</height>
+					<width>300</width>
+					<bordersize>2</bordersize>
+					<bordertexture /> 
+					<aspectratio scalediffuse="true" align="center" aligny="bottom">keep</aspectratio>
+					<texture diffuse="diffuse/compactdisk.png">$VAR[PlayerDisc]</texture>
+					<animation effect="rotate" end="-360" center="auto" time="4800" loop="true" reversible="false" condition="!Player.Paused">Conditional</animation>
+					<animation effect="slide" start="-320,0" end="0,0" time="300" reversible="false">WindowOpen</animation>
+				</control>
+				<control type="image">
+					<visible>Skin.HasSetting(MusicPlayer_PreferAlbumandDisc) + [!String.IsEmpty(Player.Art(discart)) | !String.IsEmpty(Player.Art(album.discart))]</visible>
+					<left>60</left>
+					<centertop>25%</centertop>
+					<height>300</height>
+					<width>300</width>
+					<bordersize>2</bordersize>
+					<bordertexture border="2" colordiffuse="$VAR[color_osdmusic_main]">frames/frame.png</bordertexture> 
+					<texture>$VAR[PlayerThumb]</texture>
+				</control>
+				
+				<control type="image">
+					<visible>[!Skin.HasSetting(MusicPlayer_PreferDisc) + !Skin.HasSetting(MusicPlayer_PreferAlbumandDisc)] | [[Skin.HasSetting(MusicPlayer_PreferDisc) | Skin.HasSetting(MusicPlayer_PreferAlbumandDisc)] + [String.IsEmpty(Player.Art(discart)) + String.IsEmpty(Player.Art(album.discart))]]</visible>
 					<description>optional diffuse texture as some art will not fit</description>
 					<left>60</left>
 					<centertop>25%</centertop>
@@ -111,6 +111,16 @@ Visualisation.Locked	Returns true if the current visualisation preset is locked 
 					<aspectratio scalediffuse="false" align="left" aligny="bottom">keep</aspectratio>
 				</control>
 				
+				<include content="stars_rating">
+					<param name="colordiffuse" value="$VAR[color_osdmusic_accent]" />
+					<param name="infolabel_prefix" value="musicplayer" />
+					<param name="width" value="200" />
+					<param name="height" value="80" />
+					<param name="visible" value="String.IsEqual(Window(musicosd).Property(userratingbutton),hasfocus)" />
+					
+					<left>230</left>
+					<top>850</top>
+				</include>
 				
 				<control type="grouplist">
 					<top>45%</top>
