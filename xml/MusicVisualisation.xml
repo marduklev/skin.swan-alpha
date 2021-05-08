@@ -3,32 +3,12 @@
 	<defaultcontrol />
 	<animation effect="fade" start="60" end="100" time="150">WindowOpen</animation>
 	<animation effect="fade" start="100" end="60" time="150">WindowClose</animation>
-	<!-- still need additional click if not prop isnt cleared, but chance is low 
-	that info is clicked before timeout as can be user defined
-	kodi.wiki/view/Advancedsettings.xml#songinfoduration-->
-	
-	<!-- make it optional behaviour -->
 	<onload>SetProperty(PlayerShowInfo,true,home)</onload>
 	<onload>ActivateWindow(musicosd)</onload>
 	
-		
-		
 	<onunload condition="!String.IsEmpty(Window(home).Property(PlayerShowInfo))">ClearProperty(PlayerShowInfo,home)</onunload>
 	<onunload condition="!String.IsEmpty(Window(home).Property(MusicPlayer_EncodedArtist))">ClearProperty(MusicPlayer_EncodedArtist,home)</onunload>
-<!--
-bools
-
-MusicPlayer.HasNext	Returns true if the music player has a next song queued in the Playlist.	
-MusicPlayer.HasPrevious	Returns true if the music player has a a Previous Song in the Playlist .	
-MusicPlayer.Offset(number).Exists	Returns true if the music players playlist has a song queued in position (number).	
-MusicPlayer.Content(parameter)	Returns true if the current audio you are playing matches the specified content. The following values are accepted: files, livetv	
-MusicPartyMode.Enabled	Returns true if Party Mode is enabled
-
-Visualisation.Enabled	Returns true if any visualisation has been set in settings (so not None).	
-Visualisation.HasPresets	Returns true if the visualisation has built in presets.	
-Visualisation.Locked	Returns true if the current visualisation preset is locked (eg in Milkdrop.)
--->
-
+	<onunload condition="!String.IsEmpty(Window(musicosd).Property(Scrollbar_ctrl))">ClearProperty(Scrollbar_ctrl,musicosd)</onunload>
 	<controls>
 	
 		<control type="visualisation" id="2">
@@ -45,7 +25,6 @@ Visualisation.Locked	Returns true if the current visualisation preset is locked 
 			<animation effect="slide" start="-900,0" end="0,0" time="250">VisibleChange</animation>
 			<animation effect="slide" start="-900,0" end="0,0" time="250">WindowOpen</animation>
 			<animation effect="slide" start="0,0" end="-900,0" time="250">WindowClose</animation>
-			
 			<visible>!Window.IsActive(textviewer) + [Window.IsActive(MusicOSD) | Player.ShowInfo | String.IsEqual(Window(home).Property(PlayerShowInfo),true) | [Window.IsActive(script-cu-lrclyrics-main.xml) + Player.ShowInfo]]</visible>
 			
 			<control type="group">
@@ -72,7 +51,6 @@ Visualisation.Locked	Returns true if the current visualisation preset is locked 
 					<animation effect="rotate" end="-360" center="auto" time="4800" loop="true" reversible="false" condition="!Player.Paused">Conditional</animation>
 					<animation effect="slide" start="-320,0" end="0,0" time="300" reversible="false">WindowOpen</animation>
 				</control>
-				
 				
 				<control type="image">
 					<visible>Skin.HasSetting(MusicPlayer_PreferAlbumandDisc) + [!String.IsEmpty(Player.Art(discart)) | !String.IsEmpty(Player.Art(album.discart))]</visible>
@@ -117,9 +95,9 @@ Visualisation.Locked	Returns true if the current visualisation preset is locked 
 					<param name="width" value="200" />
 					<param name="height" value="80" />
 					<param name="visible" value="String.IsEqual(Window(musicosd).Property(userratingbutton),hasfocus)" />
-					
 					<left>230</left>
 					<top>850</top>
+					<description>Set rating and show rating is WIP - ALSO NO TOUCH SOPPORT YET</description>
 				</include>
 				
 				<control type="grouplist">
@@ -127,11 +105,8 @@ Visualisation.Locked	Returns true if the current visualisation preset is locked 
 					<left>60</left>
 					<right>50</right>
 					<height>50%</height>
-					
-					<orientation>vertical</orientation>
 					<itemgap>10</itemgap>
-					<usecontrolcoords>true</usecontrolcoords>
-			
+					
 					<control type="label">
 						<wrapmultiline>true</wrapmultiline>
 						<height>200</height>
@@ -157,7 +132,6 @@ Visualisation.Locked	Returns true if the current visualisation preset is locked 
 						<!-- <label>$INFO[Player.Title,[B],[/B]]</label> -->
 						<!-- <label>[COLOR=$VAR[color_osdmusic_secondary]]$INFO[MusicPlayer.PlaylistPosition,[B],[/B]   ][/COLOR]$INFO[Player.Title,[B],[/B]]</label> -->
 						<!-- <label>$INFO[Player.Title,[B],[/B]][COLOR grey]$INFO[MusicPlayer.PlaylistPosition, [B]( ,[/B]]$INFO[MusicPlayer.PlaylistPosition, von [B],[/B])][/COLOR]</label> -->
-						
 					</control>
 				
 					<!-- ( $INFO[MusicPlayer.PlaylistPosition]/$INFO[MusicPlayer.PlaylistLength] )-->
@@ -205,6 +179,7 @@ Visualisation.Locked	Returns true if the current visualisation preset is locked 
 			<animation effect="slide" start="500,0" end="0,0" time="250" reversible="false">VisibleChange</animation>
 			<animation effect="slide" start="500,0" end="0,0" time="250" reversible="false">WindowOpen</animation>
 			<animation effect="slide" start="0,0" end="500,0" time="250">WindowClose</animation>
+				
 			
 			<right>0</right>
 			<height>100%</height>
@@ -215,6 +190,17 @@ Visualisation.Locked	Returns true if the current visualisation preset is locked 
 				<bordertexture flipx="true" border="2" colordiffuse="$VAR[color_osdmusic_accent]">frames/lefttrans.png</bordertexture> 
 				<texture colordiffuse="$VAR[color_osdmusic_bgpanelseperator]">colors/white70.png</texture>
 			</control>
+			<control type="image">
+				<animation type="conditional" condition="!String.IsEmpty(Window(musicosd).property(Scrollbar_ctrl))" reversible="false">
+					<effect type="fade" start="0" end="100" time="50" reversible="false" />
+					<effect type="zoom" start="0,0" end="110,110" time="150" tween="sine" easing="out" center="auto" />
+					<effect type="zoom" end="99,99" time="100" tween="sine" delay="150" easing="out" center="auto" />
+				</animation>
+				<animation effect="fade" start="100" end="40" time="1250" pulse="true" reversible="false" condition="!String.IsEmpty(Window(musicosd).property(Scrollbar_ctrl))">Conditional</animation>
+				<visible>!String.IsEmpty(Window(musicosd).property(Scrollbar_ctrl))</visible>
+				<bordersize>25,210,25,100</bordersize>
+				<texture colordiffuse="$VAR[color_osdmusic_accent]" border="25">frames/bordercircler25.png</texture>
+			</control>
 			
 			<control type="grouplist">
 				<top>100</top>
@@ -223,9 +209,7 @@ Visualisation.Locked	Returns true if the current visualisation preset is locked 
 				<bottom>100</bottom>
 				<aligny>center</aligny>
 				<align>top</align>
-				<orientation>vertical</orientation>
 				<itemgap>20</itemgap>
-				<usecontrolcoords>true</usecontrolcoords>
 				
 				<control type="image">
 					<centerright>50%</centerright>
@@ -252,8 +236,7 @@ Visualisation.Locked	Returns true if the current visualisation preset is locked 
 					<font>CommonTag</font>
 					<label>$VAR[MusicPlayerArtistSubInfo]</label>
 				</control>
-				<control type="textbox" id="6700">
-					<wrapmultiline>true</wrapmultiline>
+				<control type="textbox">
 					<autoscroll delay="3000" time="3500" repeat="10000">String.IsEmpty(Window(musicosd).property(Scrollbar_ctrl))</autoscroll>
 					<pagecontrol>6755</pagecontrol>
 					<height>570</height>
@@ -266,23 +249,22 @@ Visualisation.Locked	Returns true if the current visualisation preset is locked 
 			</control>
 			
 			<control type="scrollbar" id="6755">
-				<right>5</right>
-				<top>400</top>
-				<height>600</height>
+				<animation effect="fade" start="0" end="100" time="250" reversible="false" condition="!String.IsEmpty(Window(musicosd).property(Scrollbar_ctrl))">Conditional</animation>
+				<visible>!String.IsEmpty(Window(musicosd).property(Scrollbar_ctrl))</visible>
+				<right>20</right>
+				<top>385</top>
+				<height>580</height>
 				<texturesliderbar colordiffuse="$VAR[color_musciplayer_info_scrollbar_slider]">colors/white.png</texturesliderbar>
 				<texturesliderbarfocus />
 			</control>
 		</control>
 		
 		<include content="swan_debug_overlay">
-			<param name="textleft" value="$VAR[debugPlayerShowInfo] $INFO[Player.Time(ss)]
-$INFO[Window(home).Property(PlayerShowInfo),Property PlayerShowInfo  :,]
-
+			<param name="textleft" value="$VAR[debugPlayerShowInfo]
+$INFO[Player.Time(ss),Player.Time(ss)  ,]
+$INFO[Window(home).Property(PlayerShowInfo),home Property PlayerShowInfo  :,]
+$INFO[Window(musicosd).Property(Scrollbar_ctrl),musicosd Property Scrollbar_ctrl  :,]
 "/>
 </include>
-		
 	</controls>
 </window>
-
-
-	
