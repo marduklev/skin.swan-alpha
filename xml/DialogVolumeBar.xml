@@ -1,50 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <window>
-	<zorder>4</zorder>
 	<controls>
+		<!--
+		volumebar 	WINDOW_DIALOG_VOLUME_BAR 	10104 	DialogVolumeBar.xml 
+		gamevolume 	WINDOW_DIALOG_GAME_VOLUME 	10825 	DialogVolumeBar.xml 
+		-->
+		<control type="progress" id="99">
+			<include>HiddenObject</include>
+			<info>Player.Volume</info>
+		</control>
 		<control type="group">
-			<visible>!Window.IsActive(startup) + !Window.IsActive(GameVolume)</visible>
-			<centerleft>50%</centerleft>
-			<width>112</width>
-			<top>0</top>
+			<right>15</right>
+			<top>10</top>
+			<width>150</width>
+			<height>175</height>
 			<animation effect="fade" start="100" end="0" time="200" delay="1000" condition="Player.Muted">Conditional</animation>
 			<animation effect="fade" start="0" end="100" time="150">WindowOpen</animation>
 			<animation effect="fade" start="100" end="0" time="150">WindowClose</animation>
-			<control type="progress" id="29999">
-				<include>HiddenObject</include>
-				<info>Player.Volume</info>
+			
+			<control type="image">
+				<texture>colors/black.png</texture>
+				<width>50</width>
 			</control>
 			<control type="image">
-				<left>12</left>
-				<top>5</top>
-				<width>88</width>
-				<height>88</height>
-				<texture>osd/buffer-bg.png</texture>
-				<visible>Window.IsActive(fullscreenvideo) | Window.IsActive(FullscreenGame) | Window.IsActive(slideshow)</visible>
+				<left>13</left>
+				<top>7</top>
+				<texture>$VAR[volume_image]</texture>
+				<height>22</height>
+				<width>22</width>
 			</control>
-			<control type="image">
-				<left>22</left>
-				<top>15</top>
-				<width>68</width>
-				<height>68</height>
-				<texture>dialogs/extendedprogress/loading-back.png</texture>
-				<animation effect="fade" start="100" end="0" delay="300" time="500" tween="sine" condition="Player.Muted">Conditional</animation>
+			<control type="grouplist">
+				<top>40</top>
+				<width>50</width>
+				<control type="slider">
+					<description>return percent - use hidden progress for label without percent</description>
+					<texturesliderbar colordiffuse="red">colors/white40.png</texturesliderbar>
+					<textureslidernib colordiffuse="white">colors/white80.png</textureslidernib>
+					<textureslidernibfocus colordiffuse="white">colors/white80.png</textureslidernibfocus>
+					<left>18</left>
+					<width>12</width>
+					<height>100</height>
+					<info>Player.Volume</info>
+					<orientation>vertical</orientation>
+				</control>
+				<control type="label">
+					<width>46</width>
+					<align>center</align>
+					<info>control.getlabel(99)</info>
+					<height>38</height>
+					<font>NotoSans_bold16</font>
+				</control>
 			</control>
-			<control type="image">
-				<left>22</left>
-				<top>15</top>
-				<width>68</width>
-				<height>68</height>
-				<texture>$INFO[Control.GetLabel(29999),dialogs/volume/progress/p,.png]</texture>
-				<animation effect="fade" start="100" end="0" delay="300" time="500" tween="sine" condition="Player.Muted">Conditional</animation>
-			</control>
-			<!-- <control type="image">
-				<left>36</left>
-				<top>29</top>
-				<width>40</width>
-				<height>40</height>
-				<texture colordiffuse="white">$VAR[VolumeIconVar]</texture>
-			</control> -->
 		</control>
 	</controls>
 </window>
