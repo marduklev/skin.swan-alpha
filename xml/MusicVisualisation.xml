@@ -18,7 +18,31 @@
 		<control type="group">
 			<animation effect="fade" start="100" end="40" time="325" condition="Visualisation.Enabled">conditional</animation>
 			
-			<include>PlayerBackground</include>
+			<control type="group">
+				<include>HiddenObject</include>
+				<control type="image" id="77706">
+					<texture background="true">$VAR[MusicPlayerBackgroundVar]</texture>
+					<visible>Window.IsActive(visualisation)</visible>
+					<visible>!Skin.HasSetting(Rotating_MusicPlayerFanart)</visible>
+				</control>
+				<include condition="Skin.HasSetting(Rotating_MusicPlayerFanart)">Rotating_MusicPlayerFanartBackground</include>
+			</control>
+		
+			<control type="group">
+				<control type="image" id="77704">
+					<texture diffuse="colors/white.png" background="true">$VAR[MusicPlayerBackground]</texture>
+					<aspectratio align="center" aligny="center">scale</aspectratio>
+					<fadetime>600</fadetime>
+					<animation effect="zoom" start="110" end="130" center="auto" time="9000" tween="cubic" easing="inout" pulse="true" condition="Skin.HasSetting(MusicPlayer_BackgroundAnimation)">Conditional</animation>
+					<animation effect="slide" start="-10,-10" end="50,65" time="8000" tween="cubic" easing="inout" pulse="true" condition="Skin.HasSetting(MusicPlayer_BackgroundAnimation)">Conditional</animation>
+				</control>
+				<control type="image">
+					<depth>DepthBackground</depth>
+					<animation effect="fade" start="100" end="0" time="325" condition="!Player.ShowInfo + !window.isactive(musicosd) + !Window.IsActive(script-cu-lrclyrics-main.xml)">conditional</animation>
+					<colordiffuse>$VAR[color_osdmusic_bgpanel]</colordiffuse>
+					<texture>colors/white50.png</texture>
+				</control>
+			</control>
 		</control>
 		
 		<control type="group">
@@ -31,8 +55,8 @@
 			<control type="group">
 				<left>0</left>
 				<height>100%</height>
-				<width>35%</width>
-				
+				<!-- <width>35%</width> -->
+				<width>672</width>
 				<control type="image">
 					<bordersize>0,0,1,0</bordersize>
 					<bordertexture border="2" colordiffuse="$VAR[color_osdmusic_accent]">frames/lefttrans.png</bordertexture> 
@@ -185,6 +209,7 @@
 			<right>0</right>
 			<height>100%</height>
 			<width>20%</width>
+			<width>384</width>
 			
 			<control type="image">
 				<bordersize>1,0,0,0</bordersize>

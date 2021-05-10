@@ -5,22 +5,6 @@
 	<animation effect="fade" start="0" end="100" time="300">WindowOpen</animation>
 	<animation effect="fade" start="100" end="0" time="200">WindowClose</animation>
 	<controls>
-	<!-- 
-	playerprocessinfo 	WINDOW_DIALOG_PLAYER_PROCESS_INFO 	10116 	DialogPlayerProcessInfo.xml 
-	https kodi.wiki/view/Player_process_info
-	https kodi.wiki/view/InfoLabels
-Player.Process(AudioBitsPerSample) 	Bits per sample of the currently playing item 	
-Player.Process(AudioChannels) 	Number of audiochannels of the currently playing item 	
-Player.Process(AudioDecoder) 	Audiodecoder name of the currently playing item 	
-Player.Process(AudioSamplerate) 	Samplerate f the currently playing item 	
-Player.Process(DeintMethod) 	Deinterlace method of the currently playing video 	
-Player.Process(PixFormat) 	Pixel format of the currently playing video 	
-Player.Process(VideoDAR) 	Display aspect ratio of the currently playing video 	
-Player.Process(VideoFPS) 	Video framerate of the currently playing video 	
-Player.Process(VideoHeight) 	Height of the currently playing video 	
-Player.Process(VideoDecoder) 	Videodecoder name of the currently playing video 	
-Player.Process(VideoWidth) 	Width of the currently playing video 
-	-->
 	<control type="image">
 		<bordersize>0,0,0,210</bordersize>
 		<bordertexture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white80.png</bordertexture>
@@ -38,12 +22,14 @@ Player.Process(VideoWidth) 	Width of the currently playing video
 		<texturefocus />
 		<texturenofocus />
 		<font>debugtiny</font>
+		<disabledcolor>$VAR[color_osdvideo_secondary]</disabledcolor>
+		<enable>false</enable>
 	</control>
 		
 	<control type="group">
-			<top>60</top>
+			<top>50</top>
 			<left>50</left>
-			<height>180</height>
+			<height>200</height>
 			
 			<control type="grouplist">
 				<visible>VideoPlayer.Content(livetv)</visible>
@@ -170,7 +156,7 @@ Player.Process(VideoWidth) 	Width of the currently playing video
 					<height>30</height>
 					<aligny>bottom</aligny>
 					<textcolor>$VAR[color_osdvideo_main]</textcolor>
-					<label>$INFO[Player.Process(pixformat),$LOCALIZE[217]: ,]</label>
+					<label>$INFO[Player.Process(pixformat),Pixel format: ,]</label>
 					<font>debugtiny</font>
 					<visible>Player.HasVideo</visible>
 				</control>
@@ -200,22 +186,58 @@ Player.Process(VideoWidth) 	Width of the currently playing video
 					<label>$INFO[Player.Process(audiochannels),$LOCALIZE[460]: ,]$INFO[Player.Process(audiodecoder),     |     $LOCALIZE[201]: ,]$INFO[Player.Process(audiobitspersample),     |     $LOCALIZE[612]: , bits]$INFO[Player.Process(audiosamplerate),     |     $LOCALIZE[613]: @, Hz]</label>
 					<font>debugtiny</font>
 				</control>
-				<control type="label">
+				
+				
+				<control type="group">
 					<width>1600</width>
-					<height>30</height>
-					<aligny>bottom</aligny>
-					<textcolor>$VAR[color_osdvideo_main]</textcolor>
-					<label>$INFO[System.Memory(used.percent),$LOCALIZE[31030]: , ]$INFO[System.CpuUsage,    |    $LOCALIZE[13271] :,]</label>
-					<font>debugtiny</font>
+					<height>40</height>
+					
+					<control type="label">
+						<width>450</width>
+						<height>30</height>
+						<aligny>bottom</aligny>
+						<textcolor>$VAR[color_osdvideo_main]</textcolor>
+						<label>$INFO[System.Memory(used.percent),$LOCALIZE[31030]: , ]</label>
+						<font>debugtiny</font>
+					</control>
+					<control type="progress">
+						<width>400</width>
+						<top>30</top>
+						<height>2</height>
+						<width>600</width>
+						<info>System.Memory(used.percent)</info>
+						<texturebg colordiffuse="$VAR[color_osdvideo_main]">colors/white20.png</texturebg>
+						<midtexture colordiffuse="$VAR[color_osdvideo_secondary]">colors/white.png</midtexture>
+					</control>
+				
+					<control type="label">
+						<width>450</width>
+						<height>30</height>
+						<left>450</left>
+						<aligny>bottom</aligny>
+						<textcolor>$VAR[color_osdvideo_main]</textcolor>
+						<label>$INFO[System.CpuUsage,$LOCALIZE[13271] ,]</label>
+						<font>debugtiny</font>
+					</control>
+					<control type="progress">
+						<width>400</width>
+						<top>30</top>
+						<height>2</height>
+						<left>450</left>
+						<width>600</width>
+						<info>System.CpuUsage</info>
+						<texturebg colordiffuse="$VAR[color_osdvideo_main]">colors/white20.png</texturebg>
+						<midtexture colordiffuse="$VAR[color_osdvideo_secondary]">colors/white.png</midtexture>
+					</control>
 				</control>
-				<control type="label">
-					<width>1600</width>
-					<height>30</height>
-					<aligny>bottom</aligny>
-					<textcolor>$VAR[color_osdvideo_main]</textcolor>
-					<label>last</label>
-					<font>debugtiny</font>
+					
+				<!-- <control type="progress">
+					<info>System.CpuUsage</info>
 				</control>
+				<control type="slider">
+					<info>System.CpuUsage</info>
+				</control> -->
+				
 			</control>
 		</control>
 	</controls>
