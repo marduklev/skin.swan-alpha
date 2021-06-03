@@ -604,6 +604,7 @@
 	</variable>
 	<!-- $INFO[VideoPlayer.Premiered] -->
 	<variable name="PlayerPlot">
+		<value condition="String.IsEmpty(Game.Overview)">$INFO[Game.Overview]</value>
 		<value>$INFO[VideoPlayer.Plot]</value>
 	</variable>
 	
@@ -619,7 +620,7 @@
 		<!-- get includes -->
 		<!-- OSD -->
 		<control type="group" id="99">
-			<visible>!Player.HasGame + [Window.IsVisible(videoosd) | Window.IsVisible(seekbar) | Player.Paused | Player.ShowTime | $EXP[IsSeek] | !String.IsEmpty(Window(home).Property(ShowOSD))]</visible>
+			<visible>Window.IsVisible(videoosd) | Window.IsVisible(seekbar) | Player.Paused | Player.ShowTime | $EXP[IsSeek] | !String.IsEmpty(Window(home).Property(ShowOSD))</visible>
 			
 			<animation effect="fade" start="100" end="0" time="400" condition="[Player.Paused + System.IdleTime(5) + !Window.IsActive(videoosd)] | [[Window.IsActive(osdvideosettings) | Window.IsActive(osdaudiosettings) | Window.IsActive(osdsubtitlesettings)] + Window.IsTopMost(sliderdialog)]">conditional</animation>
 			<animation effect="fade" start="0" end="100" time="0">Visible</animation>
@@ -713,7 +714,10 @@
 					<label>$VAR[PlayerPlot]</label>
 					<visible>!Player.ShowInfo</visible>
 				</control>
+				
+				
 				<control type="progress" id="99">
+					<visible>!Window.Is(fullscreengame)</visible>
 					<bottom>149</bottom>
 					<left>320</left>
 					<right>0</right>
@@ -723,14 +727,18 @@
 					<lefttexture />
 					<righttexture />
 					<overlaytexture />
+					
 					<description>use include of info instead whole group</description>
 					<info>Player.Progress</info>
 				</control>
-				<control type="slider" id="44">
+				<control type="slider" id="99">
+					<visible>!Window.Is(fullscreengame)</visible>
 					<include content="OSD_Slider_Seek" />
 					<info>Player.Progress</info>
 					<visible>!VideoPlayer.Content(LiveTV)</visible>
 				</control>
+				
+				
 			</control>
 			
 			<control type="group" id="99">

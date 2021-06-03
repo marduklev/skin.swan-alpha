@@ -1,14 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
 <window>
-	<defaultcontrol always="true">1103</defaultcontrol>
-<!-- 	1.34 GameOSD.xml
+<!-- 	
+1.34 GameOSD.xml
 ID 	Type 	Description
 1101 	label 	Help text
 1102 	gamecontroller 	Controller layout  
 
 1103 		??
 https://kodi.wiki/view/Game_playback_controls
-
-
 -->
+	<defaultcontrol always="true">1103</defaultcontrol>
+	<depth>DepthOSD</depth>
+	<controls>
+		<!-- <include>global_background</include>
+		<include>HeaderBar</include> -->
+		
+		<control type="image">
+			<texture colordiffuse="ff000000">colors/white90.png</texture>
+		</control>
+		
+		<control type="group">
+			<visible>!Window.IsActive(GameVideoFilter) + !Window.IsActive(GameStretchMode) + !Window.IsActive(GameControllers) + !Window.IsActive(GameVideoRotation)</visible>
+			<animation effect="fade" time="200">VisibleChange</animation>
+			
+			<control type="grouplist">
+				<visible>System.GetBool(gamesgeneral.showosdhelp)</visible>
+				<width>960</width>
+				<height>100%</height>
+				<align>center</align>
+				<centerleft>50%</centerleft>
+				<control type="label" id="1101">
+					<description>Help text</description>
+					<height>130</height>
+					<align>center</align>
+					<font>debugtiny</font>
+				</control>
+				<control type="gamecontroller" id="1102">
+					<height>400</height>
+					<width>400</width>
+					<centerleft>50%</centerleft>
+				</control>
+				<control type="textbox">
+					<description>Additional help text. This will be removed in future versions.</description>
+					<height>130</height>
+					<font>debugtiny</font>
+					<align>center</align>
+					<label>$LOCALIZE[35236]</label>
+				</control>
+			</control>
+			
+			<control type="button" id="99">
+				<description>Button to close the dialog</description>
+				<texturefocus />
+				<texturenofocus />
+				<onclick>Dialog.Close(all,true)</onclick>
+				<onback>Dialog.Close(all,true)</onback>
+				
+				<include>FullScreenDimensions></include>
+				<onup>1103</onup>
+				<ondown>1103</ondown>
+			</control>
+			
+			<control type="grouplist" id="1103">
+				<visible>!System.GetBool(gamesgeneral.showosdhelp)</visible>
+				<width>50%</width>
+				<centerleft>50%</centerleft>
+				<top>500</top>
+				<height>65%</height>
+				<onup>99</onup>
+				
+				<control type="button" id="11201">
+					<description>Pause / Resume button</description>
+					<label>$LOCALIZE[35224]</label>
+					<label2>Select + X</label2>
+					<onclick>Dialog.Close(all,true)</onclick>
+					<onclick>Play</onclick>
+				</control>
+				<control type="button" id="11202">
+					<description>Reset button</description>
+					<label>$LOCALIZE[13007]</label>
+					<onclick>Dialog.Close(all,true)</onclick>
+					<onclick>PlayerControl(Reset)</onclick>
+				</control>
+				<control type="button" id="11203">
+					<label>$LOCALIZE[35222]</label>
+					<label2>Select + Start</label2>
+					<onclick>Dialog.Close(all,true)</onclick>
+					<onclick>Stop</onclick>
+				</control>
+				<control type="button" id="11204">
+					<description>Video filter button</description>
+					<include>DialogSettingButton</include>
+					<label>$LOCALIZE[35225]</label>
+					<onclick>ActivateWindow(GameVideoFilter)</onclick>
+				</control>
+				<control type="button" id="11205">
+					<description>Stretch mode button</description>
+					<include>DialogSettingButton</include>
+					<label>$LOCALIZE[35233]</label>
+					<onclick>ActivateWindow(GameStretchMode)</onclick>
+				</control>
+				<control type="button" id="11206">
+					<description>Video rotation button</description>
+					<include>DialogSettingButton</include>
+					<label>$LOCALIZE[35227]</label>
+					<onclick>ActivateWindow(GameVideoRotation)</onclick>
+				</control>
+				<control type="button" id="11207">
+					<description>Volume button</description>
+					<include>DialogSettingButton</include>
+					<label>$LOCALIZE[13376]</label>
+					<label2>[COLOR grey]Select + Right Stick[/COLOR]</label2>
+					<onclick>ActivateWindow(GameVolume)</onclick>
+				</control>
+				<control type="button" id="11208">
+					<description>Controller settings button</description>
+					<include>DialogSettingButton</include>
+					<label>$LOCALIZE[35234]</label>
+					<onclick>ActivateWindow(GameControllers)</onclick>
+				</control>
+				<control type="button" id="11209">
+					<description>Advanced settings</description>
+					<include>DialogSettingButton</include>
+					<label>$LOCALIZE[35226]</label>
+					<onclick>ActivateWindow(GameAdvancedSettings)</onclick>
+				</control>
+			
+						
+			</control>
+			
+			</control>
+		
+	</controls>
 </window>

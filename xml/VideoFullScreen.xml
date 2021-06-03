@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <window>
 <!-- 	1.58 VideoFullScreen.xml
+
+fullscreenvideo 	WINDOW_FULLSCREEN_VIDEO 	12005 	VideoFullScreen.xml 
+fullscreengame	 	WINDOW_FULLSCREEN_GAME 		?? 		VideoFullScreen.xml 
+
 ID 	Type 	Description
 1 	label 	Numpad seek label
 10 	label 	Line 1
 11 	label 	Line 2
 12 	label 	Line 3  -->
 	<defaultcontrol />
-	<onload condition="Skin.HasSetting(DisableSubtitles) + VideoPlayer.SubtitlesEnabled">ShowSubtitles</onload>
+	<onload condition="!Player.HasGame + [Skin.HasSetting(DisableSubtitles) + VideoPlayer.SubtitlesEnabled]">ShowSubtitles</onload>
     
 	
 	<!-- embuary
@@ -18,8 +22,8 @@ ID 	Type 	Description
 		
 	-->
 	
-	<onload condition="Skin.HasSetting(ShowOSD_OnStart)">SetProperty(ShowOSD,true,home)</onload>
-	<onload condition="Skin.HasSetting(ShowOSD_OnStart)">AlarmClock(ShowOSD,ClearProperty(ShowOSD,home),00:04,silent)</onload>
+	<onload condition="Skin.HasSetting(ShowOSD_OnStart) + !Player.HasGame">SetProperty(ShowOSD,true,home)</onload>
+	<onload condition="Skin.HasSetting(ShowOSD_OnStart) + !Player.HasGame">AlarmClock(ShowOSD,ClearProperty(ShowOSD,home),00:04,silent)</onload>
 	
 	<!-- <onunload condition="Prop + $EXP[TrailerIsPlaying]">AlarmClock(info,Action(info),00:00)</onunload> -->
 	
@@ -119,7 +123,44 @@ ID 	Type 	Description
 		</control>
 	</control>
 	
-	<include content="OSD_VideoSimple" />
+	<include content="OSD_VideoSimple" condition="!Player.HasGame" />
+	
+	
+	<!-- <include content="OSD_VideoSimple" condition="Player.HasGame" /> -->
+			
+	<control type="textbox" id="99">
+		<visible>Skin.HasSetting(SwanDebug)</visible>
+		<font>font20_title</font>
+		<aligny>top</aligny>
+		<align>right</align>
+		<top>10</top>
+		<right>15</right>
+		<textcolor>red</textcolor>
+		<label>System.BuildVersion:     $VAR[KodiBuildVersion,[B],[/B]]
+System.BuildDate:     $INFO[System.BuildDate]
+
+
+$LOCALIZE[31030] :     $INFO[system.memory(used)] [B]/[/B] $INFO[system.memory(total)]       $INFO[system.memory(used.percent)]
+$LOCALIZE[13271]      $INFO[System.CPUUsage]
+$INFO[System.GPUTemperature,System.GPUTemperature :     ,]
+Property(xmlfile) :     $INFO[Window.Property(xmlfile)]
+System.CurrentWindow :     $INFO[System.CurrentWindow]
+System.CurrentControl :     $INFO[System.CurrentControl]
+System.CurrentControlID :     $INFO[System.CurrentControlID]
+$INFO[System.Progressbar,System.Progressbar :     ,]
+System.InternetState :     $INFO[System.InternetState]
+Network.IPAddress :     $INFO[Network.IPAddress]
+
+$INFO[Game.Title,Game.Title                     ,]
+$INFO[Game.Platform,Game.Platform                  ,]
+$INFO[Game.Genres,Game.Genres                    ,]
+$INFO[Game.Publisher,Game.Publisher                 ,]
+$INFO[Game.Developer,Game.Developer                 ,]
+$INFO[Game.Overview,Game.Overview                  ,]
+$INFO[Game.Year,Game.Year                      ,]
+$INFO[Game.GameClient,Game.GameClient                ,]
+</label>
+</control>
 			
 	</controls>
 </window>
