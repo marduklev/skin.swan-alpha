@@ -6,25 +6,40 @@ ID 	Type 	Description
 1101 	label 	Help text
 1102 	gamecontroller 	Controller layout  
 
-1103 		??
+
 https://kodi.wiki/view/Game_playback_controls
 -->
-	<defaultcontrol always="true">1103</defaultcontrol>
+	<defaultcontrol always="true">98</defaultcontrol>
 	<depth>DepthOSD</depth>
 	<controls>
-		<!-- <include>global_background</include>
-		<include>HeaderBar</include> -->
+		
+		<control type="button" id="98">
+			<include>FullScreenDimensions</include>
+			<texturefocus />
+			<texturenofocus />
+			<onfocus condition="!System.GetBool(gamesgeneral.showosdhelp)">SetFocus(1103)</onfocus>
+			<onclick>back</onclick>
+			<onclick>SetFocus(1103)</onclick>
+			<onback>back</onback>
+			<onback>SetFocus(1103)</onback>
+			<onup>back</onup>
+			<onup>SetFocus(1103)</onup>
+			<ondown>back</ondown>
+			<ondown>SetFocus(1103)</ondown>
+		</control>
 		
 		<control type="image">
+			<description>background</description>
 			<texture colordiffuse="ff000000">colors/white90.png</texture>
 		</control>
 		
-		<control type="group">
-			<visible>!Window.IsActive(GameVideoFilter) + !Window.IsActive(GameStretchMode) + !Window.IsActive(GameControllers) + !Window.IsActive(GameVideoRotation)</visible>
+		<control type="group" id="1100">
+			<visible>!Window.IsActive(GameVideoFilter) | !Window.IsActive(GameStretchMode) | !Window.IsActive(GameControllers) | !Window.IsActive(GameVideoRotation) | !Window.IsActive(GameVolume)</visible>
 			<animation effect="fade" time="200">VisibleChange</animation>
 			
 			<control type="grouplist">
-				<visible>System.GetBool(gamesgeneral.showosdhelp)</visible>
+				<description>help overlay</description>
+				<animation effect="fade" start="100" end="0" time="350" condition="!System.GetBool(gamesgeneral.showosdhelp)">conditional</animation>
 				<width>960</width>
 				<height>100%</height>
 				<align>center</align>
@@ -33,46 +48,35 @@ https://kodi.wiki/view/Game_playback_controls
 					<description>Help text</description>
 					<height>130</height>
 					<align>center</align>
-					<font>debugtiny</font>
+					<font>font20_title</font>
 				</control>
 				<control type="gamecontroller" id="1102">
+					<description>native id for controller img</description>
 					<height>400</height>
 					<width>400</width>
 					<centerleft>50%</centerleft>
 				</control>
 				<control type="textbox">
-					<description>Additional help text. This will be removed in future versions.</description>
+					<description>Additional help text. This will be removed in future versions</description>
 					<height>130</height>
-					<font>debugtiny</font>
+					<font>font20_title</font>
 					<align>center</align>
 					<label>$LOCALIZE[35236]</label>
 				</control>
 			</control>
 			
-			<control type="button" id="99">
-				<description>Button to close the dialog</description>
-				<texturefocus />
-				<texturenofocus />
-				<onclick>Dialog.Close(all,true)</onclick>
-				<onback>Dialog.Close(all,true)</onback>
-				
-				<include>FullScreenDimensions></include>
-				<onup>1103</onup>
-				<ondown>1103</ondown>
-			</control>
-			
 			<control type="grouplist" id="1103">
-				<visible>!System.GetBool(gamesgeneral.showosdhelp)</visible>
+				<animation effect="fade" start="100" end="0" time="350" condition="System.GetBool(gamesgeneral.showosdhelp)">conditional</animation>
+				<animation effect="fade" start="100" end="0" time="350" condition="Window.IsTopMost(gamevolume)">conditional</animation>
 				<width>50%</width>
 				<centerleft>50%</centerleft>
 				<top>500</top>
 				<height>65%</height>
-				<onup>99</onup>
 				
 				<control type="button" id="11201">
 					<description>Pause / Resume button</description>
 					<label>$LOCALIZE[35224]</label>
-					<label2>Select + X</label2>
+					<label2>Select + X | Hold Start</label2>
 					<onclick>Dialog.Close(all,true)</onclick>
 					<onclick>Play</onclick>
 				</control>
@@ -88,48 +92,64 @@ https://kodi.wiki/view/Game_playback_controls
 					<onclick>Dialog.Close(all,true)</onclick>
 					<onclick>Stop</onclick>
 				</control>
+				<!-- 
 				<control type="button" id="11204">
-					<description>Video filter button</description>
-					<include>DialogSettingButton</include>
+					<label>Rewind</label>
+					<label2>Select + Left trigger</label2>
+					<onclick>Dialog.Close(all,true)</onclick>
+					<onclick>Rewind</onclick>
+				</control>
+				<control type="button" id="11205">
+					<label>Fast-forward</label>
+					<label2>Select + Right trigger</label2>
+					<onclick>Dialog.Close(all,true)</onclick>
+					<onclick>Fast-forward</onclick>
+				</control>
+				-->
+				<control type="button" id="11210">
+					<description>Video filter button - use dialogselect - acceptable layout</description>
 					<label>$LOCALIZE[35225]</label>
 					<onclick>ActivateWindow(GameVideoFilter)</onclick>
 				</control>
-				<control type="button" id="11205">
-					<description>Stretch mode button</description>
-					<include>DialogSettingButton</include>
+				<control type="button" id="11211">
+					<description>Stretch mode button - use dialogselect - acceptable layout</description>
 					<label>$LOCALIZE[35233]</label>
 					<onclick>ActivateWindow(GameStretchMode)</onclick>
 				</control>
-				<control type="button" id="11206">
-					<description>Video rotation button</description>
-					<include>DialogSettingButton</include>
+				<control type="button" id="11212">
+					<description>Video rotation button - use dialogselect - acceptable layout</description>
 					<label>$LOCALIZE[35227]</label>
 					<onclick>ActivateWindow(GameVideoRotation)</onclick>
 				</control>
-				<control type="button" id="11207">
-					<description>Volume button</description>
-					<include>DialogSettingButton</include>
+				<control type="button" id="11213">
+					<description>Volume button - use dialogsslider - acceptable layout</description>
 					<label>$LOCALIZE[13376]</label>
 					<label2>[COLOR grey]Select + Right Stick[/COLOR]</label2>
 					<onclick>ActivateWindow(GameVolume)</onclick>
 				</control>
-				<control type="button" id="11208">
-					<description>Controller settings button</description>
-					<include>DialogSettingButton</include>
+				<control type="button" id="11214">
+					<description>Controller settings button - use dialoggamecontrollers</description>
 					<label>$LOCALIZE[35234]</label>
 					<onclick>ActivateWindow(GameControllers)</onclick>
 				</control>
-				<control type="button" id="11209">
+				<control type="button" id="11216">
 					<description>Advanced settings</description>
-					<include>DialogSettingButton</include>
 					<label>$LOCALIZE[35226]</label>
 					<onclick>ActivateWindow(GameAdvancedSettings)</onclick>
 				</control>
-			
-						
 			</control>
+		</control>
 			
-			</control>
-		
+		<control type="button" id="99">
+			<description>Touch - Button to close the dialog</description>
+			<include>FullScreenDimensions</include>
+			<texturefocus />
+			<texturenofocus />
+			<onclick>Dialog.Close(all,true)</onclick>
+			<onback>Dialog.Close(all,true)</onback>
+			<onup>1100</onup>
+			<ondown>1100</ondown>
+		</control>
+			
 	</controls>
 </window>
