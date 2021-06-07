@@ -6,6 +6,15 @@ ID 	Type 	Description
 1101 	label 	Help text
 1102 	gamecontroller 	Controller layout  
 
+InfoLabels 	Definition 	Version
+Game.Title 	Name of the game 	v18
+Game.Platform 	Platform the game runs on (eg. Atari 2600) 	v18
+Game.Genres 	Gerne of the game (eg. Action) 	v18
+Game.Publisher 	Publishing company of the game (eg. Nintendo) 	v18
+Game.Developer 	Developer of the game 	v18
+Game.Overview 	Game description 	v18
+Game.Year 	Year the game was released 	v18
+Game.GameClient 	Name of the used emulator 	v18 
 
 https://kodi.wiki/view/Game_playback_controls
 -->
@@ -30,13 +39,28 @@ https://kodi.wiki/view/Game_playback_controls
 		
 		<control type="image">
 			<description>background</description>
-			<texture colordiffuse="ff000000">colors/white90.png</texture>
+			<texture colordiffuse="ff000000">colors/white80.png</texture>
+		</control>
+		
+		<control type="image">
+			<description>background</description>
+			<!-- <bordersize>475,250,475,250</bordersize> -->
+			<bordersize>475,0,475,0</bordersize>
+			<texture colordiffuse="black">colors/white50.png</texture>
 		</control>
 		
 		<control type="group" id="1100">
 			<visible>!Window.IsActive(GameVideoFilter) | !Window.IsActive(GameStretchMode) | !Window.IsActive(GameControllers) | !Window.IsActive(GameVideoRotation) | !Window.IsActive(GameVolume)</visible>
 			<animation effect="fade" time="200">VisibleChange</animation>
-			
+				
+			<control type="label">
+				<visible>!System.GetBool(gamesgeneral.showosdhelp)</visible>
+				<top>75</top>
+				<height>200</height>
+				<align>center</align>
+				<font>Montserrat_ExtraBold_40</font>
+				<label>| P A U S E D |</label>
+			</control>
 			<control type="grouplist">
 				<description>help overlay</description>
 				<animation effect="fade" start="100" end="0" time="350" condition="!System.GetBool(gamesgeneral.showosdhelp)">conditional</animation>
@@ -75,7 +99,7 @@ https://kodi.wiki/view/Game_playback_controls
 				
 				<control type="radiobutton" id="11201">
 					<include content="IconButton_games">
-						<param name="radiobutton_texture" value="buttons/osd/play" />
+						<param name="radiobutton_texture" value="icons/play" />
 					</include>
 					<description>Pause / Resume button</description>
 					<label>$LOCALIZE[35224]</label>
@@ -94,7 +118,7 @@ https://kodi.wiki/view/Game_playback_controls
 				</control>
 				<control type="radiobutton" id="11203">
 					<include content="IconButton_games">
-						<param name="radiobutton_texture" value="buttons/osd/stop" />
+						<param name="radiobutton_texture" value="icons/stop" />
 					</include>
 					<label>$LOCALIZE[13009]</label>
 					<label2>Select + Start</label2>
@@ -123,7 +147,7 @@ https://kodi.wiki/view/Game_playback_controls
 				-->
 				<control type="radiobutton" id="11210">
 					<include content="IconButton_games">
-						<param name="radiobutton_texture" value="buttons/menucontrol" />
+						<param name="radiobutton_texture" value="icons/filter" />
 					</include>
 					<description>Video filter button - use dialogselect - acceptable layout</description>
 					<label>$LOCALIZE[35225]</label>
@@ -131,7 +155,7 @@ https://kodi.wiki/view/Game_playback_controls
 				</control>
 				<control type="radiobutton" id="11211">
 					<include content="IconButton_games">
-						<param name="radiobutton_texture" value="icons/settinggcalibration" />
+						<param name="radiobutton_texture" value="icons/aspectratio" />
 					</include>
 					<description>Stretch mode button - use dialogselect - acceptable layout</description>
 					<label>$LOCALIZE[35233]</label>
@@ -139,7 +163,7 @@ https://kodi.wiki/view/Game_playback_controls
 				</control>
 				<control type="radiobutton" id="11212">
 					<include content="IconButton_games">
-						<param name="radiobutton_texture" value="buttons/flipx" />
+						<param name="radiobutton_texture" value="icons/rotate" />
 					</include>
 					<description>Video rotation button - use dialogselect - acceptable layout</description>
 					<label>$LOCALIZE[35227]</label>
@@ -156,7 +180,7 @@ https://kodi.wiki/view/Game_playback_controls
 				</control>
 				<control type="radiobutton" id="11214">
 					<include content="IconButton_games">
-						<param name="radiobutton_texture" value="defaultaddongame" />
+						<param name="radiobutton_texture" value="icons/controller" />
 					</include>
 					<description>Controller settings button - use dialoggamecontrollers</description>
 					<label>$LOCALIZE[35234]</label>
