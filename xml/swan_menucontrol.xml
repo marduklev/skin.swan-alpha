@@ -1,6 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
-
+	
+	<include name="1105_viewselect_template">
+				
+					<control type="group">
+						<height>350</height>
+						
+						<control type="image">
+							<description>template bg</description>
+							<texture>colors/white20.png</texture>
+						</control>
+						
+						<control type="grouplist">
+							<height>300</height>
+							<top>25</top>
+							<itemgap>20</itemgap>
+							<description>template contents</description>
+							<orientation>horizontal</orientation>
+								<control type="image">
+									<description>preview image</description>
+									<width>543</width>
+									<height>300</height>
+									<bordersize>2</bordersize>
+									<texture>special://skin/extras/views/$PARAM[choosable_view_id].png</texture>
+								</control>
+								
+								<include content="spacer_w">
+									<param name="gap" value="50" />
+								</include>
+								
+								
+								<control type="button">
+									<width>100</width>
+									<height>100</height>
+								</control>
+								
+								<control type="button">
+									<width>100</width>
+									<height>100</height>
+								</control>
+								
+								<control type="button">
+									<width>100</width>
+									<height>100</height>
+								</control>
+								
+								<control type="button">
+									<width>100</width>
+									<height>100</height>
+								</control>
+								
+						</control>
+							
+					</control>
+				</include>
+	
 
 	<variable name="menucontrol_profiles_fovsnf">
 		<value condition="Control.HasFocus(7777)">$VAR[color_home_menu_item_fo]</value>
@@ -724,6 +778,20 @@ msgstr "Video-Wiedergabelisten"
 						<label2>$INFO[Container.Viewmode]</label2>
 						<onclick>SendClick(2)</onclick>
 						<visible>Control.IsVisible(2)</visible>
+						<property name="icon">default</property>
+					</item>
+					<item>
+						<icon>buttons/viewswitch.png</icon>
+						<label>ViewMode Select</label>
+						<label2>$INFO[Container.Viewmode]</label2>
+						
+						<onclick condition="!String.IsEmpty(Container.Content)">SetProperty(view_select_content,$INFO[Container.Content],home)</onclick>
+						<onclick condition="String.IsEmpty(Container.Content)">SetProperty(view_select_content,listing,home)</onclick>
+						
+						<onclick>ActivateWindow(1105)</onclick>
+						
+						
+						<description>set prop to indicate container content for the new dialog and lock specific views depending on the content=prop, can fail if empty - eg- root folders, files</description>
 						<property name="icon">default</property>
 					</item>
 					<item>
