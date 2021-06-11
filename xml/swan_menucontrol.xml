@@ -3,57 +3,130 @@
 	
 	<include name="1105_viewselect_template">
 				
-					<control type="group">
-						<height>350</height>
-						
-						<control type="image">
-							<description>template bg</description>
-							<texture>colors/white20.png</texture>
-						</control>
-						
-						<control type="grouplist">
-							<height>300</height>
-							<top>25</top>
-							<itemgap>20</itemgap>
-							<description>template contents</description>
-							<orientation>horizontal</orientation>
-								<control type="image">
-									<description>preview image</description>
-									<width>543</width>
-									<height>300</height>
-									<bordersize>2</bordersize>
-									<texture>special://skin/extras/views/$PARAM[choosable_view_id].png</texture>
-								</control>
-								
-								<include content="spacer_w">
-									<param name="gap" value="50" />
-								</include>
-								
-								
-								<control type="button">
-									<width>100</width>
-									<height>100</height>
-								</control>
-								
-								<control type="button">
-									<width>100</width>
-									<height>100</height>
-								</control>
-								
-								<control type="button">
-									<width>100</width>
-									<height>100</height>
-								</control>
-								
-								<control type="button">
-									<width>100</width>
-									<height>100</height>
-								</control>
-								
-						</control>
-							
+		<control type="group" id="$PARAM[group_id]001">
+			<height>275</height>
+			
+			<control type="image">
+				<description>focus frame - reminder : template bg error in generell for color usage menucontrol ; use common button fo/nf</description>
+				<visible>ControlGroup($PARAM[group_id]).HasFocus()</visible>
+				<bordersize>1</bordersize>
+				<bordertexture border="2" colordiffuse="$VAR[color_lib_menu_item_fo]">frames/frame.png</bordertexture>
+				<visible>ControlGroup($PARAM[group_id]).HasFocus()</visible>
+				<texture colordiffuse="$VAR[color_global_button_panel_nf]">colors/white.png</texture>
+			</control>
+			
+			<control type="label" id="$PARAM[group_id]002">
+				<description>view label</description>
+				<left>485</left>
+				<top>50</top>
+				<height>50</height>
+				<font>menucontrol_heading</font>
+				<textcolor>$VAR[menucontrol_profiles_fovsnf]</textcolor>
+				<label>[B]PARAM VIEW NAME [/B]</label>
+			</control>
+			
+			<control type="grouplist" id="$PARAM[group_id]">
+				
+				<height>250</height>
+				<left>20</left>
+				<top>25</top>
+				<itemgap>20</itemgap>
+				<onleft>110560</onleft>
+				<onright>$PARAM[group_id]005</onright>
+				
+				<onup condition="String.StartsWith(System.CurrentControlID,1001)">1010</onup>
+				<onup condition="String.StartsWith(System.CurrentControlID,1002)">1001</onup>
+				<onup condition="String.StartsWith(System.CurrentControlID,1003)">1002</onup>
+				<onup condition="String.StartsWith(System.CurrentControlID,1004)">1003</onup>
+				<onup condition="String.StartsWith(System.CurrentControlID,1005)">1004</onup>
+				<onup condition="String.StartsWith(System.CurrentControlID,1006)">1005</onup>
+				<onup condition="String.StartsWith(System.CurrentControlID,1007)">1006</onup>
+				<onup condition="String.StartsWith(System.CurrentControlID,1008)">1007</onup>
+				<onup condition="String.StartsWith(System.CurrentControlID,1009)">1008</onup>
+				<onup condition="String.StartsWith(System.CurrentControlID,1010)">1009</onup>
+				
+				
+				
+				<ondown condition="String.StartsWith(System.CurrentControlID,1001)">1002</ondown>
+				<ondown condition="String.StartsWith(System.CurrentControlID,1002)">1003</ondown>
+				<ondown condition="String.StartsWith(System.CurrentControlID,1003)">1004</ondown>
+				<ondown condition="String.StartsWith(System.CurrentControlID,1004)">1005</ondown>
+				<ondown condition="String.StartsWith(System.CurrentControlID,1005)">1006</ondown>
+				<ondown condition="String.StartsWith(System.CurrentControlID,1006)">1007</ondown>
+				<ondown condition="String.StartsWith(System.CurrentControlID,1007)">1008</ondown>
+				<ondown condition="String.StartsWith(System.CurrentControlID,1008)">1009</ondown>
+				<ondown condition="String.StartsWith(System.CurrentControlID,1009)">1010</ondown>
+				<ondown condition="String.StartsWith(System.CurrentControlID,1010)">1001</ondown>
+				
+				
+				<description>template contents</description>
+				<orientation>horizontal</orientation>
+					
+					<control type="image" id="003">
+						<description>preview image</description>
+						<width>382</width>
+						<height>225</height>
+						<bordersize>3</bordersize>
+						<bordertexture colordiffuse="$VAR[color_lib_menu_item_fo]">colors/white.png</bordertexture>
+						<texture>special://skin/extras/views/$PARAM[view_id].png</texture>
 					</control>
-				</include>
+					
+					<include content="spacer_w">
+						<param name="gap" value="50" />
+						<param name="id" value="$PARAM[group_id]004" />
+					</include>
+					
+					
+					<control type="button" id="$PARAM[group_id]005">
+						<description>choose view id</description>
+					
+						<top>100</top>
+						<width>75</width>
+						<height>75</height>
+						
+						<texturefocus colordiffuse="$VAR[color_lib_menu_item_fo]">defaultpicture.png</texturefocus>
+						<texturenofocus colordiffuse="$VAR[color_lib_menu_item_nf]">defaultpicture.png</texturenofocus>
+
+						<onclick>Action(close)</onclick>
+						<onclick>Container.SetViewMode($PARAM[view_id])</onclick>
+						<onclick>ClearProperty(menucontrol_active,home)</onclick>
+					</control>
+					
+					<control type="button" id="$PARAM[group_id]006">
+						<description>force/lock view id  for content foo</description>
+						<top>100</top>
+						<width>75</width>
+						<height>75</height>
+						
+						<texturefocus colordiffuse="$VAR[color_lib_menu_item_fo]">overlaylocked.png</texturefocus>
+						<texturenofocus colordiffuse="$VAR[color_lib_menu_item_nf]">overlaylocked.png</texturenofocus>
+						
+						
+						<onclick condition="true">Skin.SetString(view_locked_$PARAM[view_locked_content],$PARAM[view_id])</onclick>
+						
+					</control>
+					
+					
+					
+					<control type="button" id="$PARAM[group_id]007">
+						<!-- <visible>false multiple control to differenciate between videos , music , pictures, games , pvr </visible> -->
+						<description>use for include condition call in my*foo*nav.xml s
+disable view in generell  usage at other condition ?? use dialog select to lock content instead of property ? - movies,tvshows,seasons etc...</description>
+						<top>100</top>
+						<width>75</width>
+						<height>75</height>
+						<texturefocus colordiffuse="$VAR[color_lib_menu_item_fo]">defaulticonerror.png</texturefocus>
+						<texturenofocus colordiffuse="$VAR[color_lib_menu_item_nf]">defaulticonerror.png</texturenofocus>
+						
+						<onclick condition="true">Skin.SetString(view_disabled,$PARAM[view_id])</onclick>
+						
+					
+					</control>
+					
+			</control>
+				
+		</control>
+	</include>
 	
 
 	<variable name="menucontrol_profiles_fovsnf">
