@@ -4,10 +4,10 @@
 	<include content="Animation_OpenClose_Slide">
 		<param name="slide_start" value="1390,0" />
 	</include>
-	onunload clear props
-	 - view_select_content
-	<controls>
 	
+	<onunload>ClearProperty(view_disable_mediawindow,home)</onunload>
+	
+	<controls>
 		<control type="group">
 			<width>1390</width>
 			<height>100%</height>
@@ -36,7 +36,7 @@
 					<align>center</align>
 					<font>Tagline</font>
 					<textcolor>$VAR[color_lib_menu_item_fo]</textcolor>
-					<label>$INFO[Window(home).Property(view_select_content),Choose Viewtype and Set Attributes for : [B],[/B]]</label>
+					<label>$INFO[Window(home).Property(view_disable_mediawindow),[B] Viewtype Management for   [I][UPPERCASE],[/I][/UPPERCASE][/B]]</label>
 				</control>
 				
 				
@@ -52,47 +52,56 @@
 				
 				<include content="1105_viewselect_template">
 					<param name="group_id" value="1001" />
+					<param name="no_locking" value="false" />
 					<param name="view_id" value="50" />
+					<param name="view_label" value="List" />
 				</include>
 				<include content="1105_viewselect_template">
 					<param name="group_id" value="1002" />
 					<param name="view_id" value="51" />
+					<param name="view_label" value="Poster Panel" />
 				</include>
 				<include content="1105_viewselect_template">
 					<param name="group_id" value="1003" />
 					<param name="view_id" value="52" />
+					<param name="view_label" value="Circle Panel" />
 				</include>
 				<include content="1105_viewselect_template">
 					<param name="group_id" value="1004" />
 					<param name="view_id" value="53" />
+					<param name="view_label" value="Landscape Panel" />
 				</include>
 				<include content="1105_viewselect_template">
 					<param name="group_id" value="1005" />
 					<param name="view_id" value="54" />
+					<param name="view_label" value="Square Panel" />
 				</include>
 				<include content="1105_viewselect_template">
 					<param name="group_id" value="1006" />
 					<param name="view_id" value="56" />
+					<param name="view_label" value="Info List" />
 				</include>
-				<include content="1105_viewselect_template">
+				<include content="1105_viewselect_template" condition="Window.IsActive(videos)">
 					<param name="group_id" value="1007" />
 					<param name="view_id" value="58" />
+					<param name="view_label" value="Season Info (experimental)" />
 				</include>
 				<include content="1105_viewselect_template">
 					<param name="group_id" value="1008" />
 					<param name="view_id" value="502" />
+					<param name="view_label" value="Info Cards" />
 				</include>
 				<include content="1105_viewselect_template">
 					<param name="group_id" value="1009" />
 					<param name="view_id" value="503" />
+					<param name="view_label" value="Spotlight Poster" />
 				</include>
 				<include content="1105_viewselect_template">
 					<param name="group_id" value="1010" />
 					<param name="view_id" value="504" />
+					<param name="view_label" value="Spotlight Fanart" />
 				</include>
-			
-			
-			</control>
+		</control>
 			
 			<control type="image">
 				<description>bottom offset overlay</description>
@@ -120,5 +129,78 @@
 			</control>
 			
 		</control>
+
+  <!-- 						
+						if came from settings - have an additional button group to set which to disable a view
+						files, ?
+videos
+music
+pictures
+games
+
+playlist ?? - videos,music?
+
+livetv/pvr?
+addonbrowser  - currently no views to offer
+programs  - currently no views to offer
+
+
+[COLOR red]*custom if container.content empty = view_locked_listing $INFO[skin.string(view_locked_listing)][/COLOR]
+
+view_locked_songs $INFO[skin.string(view_locked_songs)]
+view_locked_artists $INFO[skin.string(view_locked_artists)]
+view_locked_albums $INFO[skin.string(view_locked_albums)]
+
+view_locked_movies $INFO[skin.string(view_locked_movies)]
+view_locked_sets $INFO[skin.string(view_locked_sets)]
+
+view_locked_tvshows $INFO[skin.string(view_locked_tvshows)]
+view_locked_seasons $INFO[skin.string(view_locked_seasons)]
+view_locked_episodes $INFO[skin.string(view_locked_episodes)]
+view_locked_musicvideos $INFO[skin.string(view_locked_musicvideos)]
+
+view_locked_images $INFO[skin.string(view_locked_images)]
+
+view_locked_tags $INFO[skin.string(view_locked_tags)]
+view_locked_countries $INFO[skin.string(view_locked_countries)]
+view_locked_roles $INFO[skin.string(view_locked_roles)]
+
+view_locked_genres $INFO[skin.string(view_locked_genres)]
+view_locked_years $INFO[skin.string(view_locked_years)]
+view_locked_directors $INFO[skin.string(view_locked_directors)]
+view_locked_studios $INFO[skin.string(view_locked_studios)]
+view_locked_plugins $INFO[skin.string(view_locked_plugins)]
+view_locked_playlists $INFO[skin.string(view_locked_playlists)]
+
+view_locked_Addons $INFO[skin.string(view_locked_Addons)]
+view_locked_LiveTV $INFO[skin.string(view_locked_LiveTV)]
+  -->
+  
+  
+				<include content="swan_debug_overlay">
+			<param name="textleft" value="[B]disabled views[/B]
+    $INFO[Skin.String(videos_disabled_view_50),videos_disabled_view_50  ,]
+	$INFO[Skin.String(videos_disabled_view_51),videos_disabled_view_51  ,]
+    $INFO[Skin.String(videos_disabled_view_52),videos_disabled_view_52  ,]
+    $INFO[Skin.String(videos_disabled_view_53),videos_disabled_view_53  ,]
+    $INFO[Skin.String(videos_disabled_view_54),videos_disabled_view_54  ,]
+    $INFO[Skin.String(videos_disabled_view_56),videos_disabled_view_56  ,]
+    $INFO[Skin.String(videos_disabled_view_58),videos_disabled_view_58  ,]
+    $INFO[Skin.String(videos_disabled_view_502),videos_disabled_view_502  ,]
+    $INFO[Skin.String(videos_disabled_view_503),videos_disabled_view_503  ,]
+    $INFO[Skin.String(videos_disabled_view_504),videos_disabled_view_504  ,]
+    
+    $INFO[Skin.String(music_disabled_view_50),music_disabled_view_50  ,]
+	$INFO[Skin.String(music_disabled_view_51),music_disabled_view_51  ,]
+    $INFO[Skin.String(music_disabled_view_52),music_disabled_view_52  ,]
+    $INFO[Skin.String(music_disabled_view_53),music_disabled_view_53  ,]
+    $INFO[Skin.String(music_disabled_view_54),music_disabled_view_54  ,]
+    $INFO[Skin.String(music_disabled_view_56),music_disabled_view_56  ,]
+    $INFO[Skin.String(music_disabled_view_502),music_disabled_view_502  ,]
+    $INFO[Skin.String(music_disabled_view_503),music_disabled_view_503  ,]
+    $INFO[Skin.String(music_disabled_view_504),music_disabled_view_504  ,]
+"/>
+</include>
+		
 	</controls>
 </window>
