@@ -83,12 +83,12 @@ view_container_id = $PARAM[view_id]
 			<control type="label" id="$PARAM[group_id]0099">
 				<description>view label</description>
 				<left>485</left>
-				<top>210</top>
+				<top>190</top>
 				<height>50</height>
 				<font>menucontrol_heading</font>
 				<textcolor>$VAR[color_lib_menu_item_fo]</textcolor>
 				<visible>ControlGroup($PARAM[group_id]).HasFocus() + [String.EndsWith(System.CurrentControlID,005) | String.EndsWith(System.CurrentControlID,006) | String.EndsWith(System.CurrentControlID,007)]</visible>
-				<label>[B]$INFO[System.CurrentControl][/B]</label>
+				<label>$INFO[System.CurrentControl]</label>
 			</control>
 			
 			
@@ -146,7 +146,7 @@ view_container_id = $PARAM[view_id]
 				<control type="button" id="$PARAM[group_id]005">
 					<description>choose view id if window.ismedia</description>
 					<visible>Window.IsMedia</visible>
-					<top>90</top>
+					<top>80</top>
 					<width>75</width>
 					<height>75</height>
 					<texturefocus colordiffuse="$VAR[color_lib_menu_item_fo]">icons/checkbox.png</texturefocus>
@@ -162,7 +162,7 @@ view_container_id = $PARAM[view_id]
 				</control>
 				
 				<control type="togglebutton" id="$PARAM[group_id]006">
-					<top>90</top>
+					<top>80</top>
 					<width>75</width>
 					<height>75</height>
 					<usealttexture>
@@ -183,8 +183,12 @@ view_container_id = $PARAM[view_id]
 					<texturenofocus colordiffuse="$VAR[color_lib_menu_item_nf]">icons/unlocked.png</texturenofocus>
 					<alttexturefocus colordiffuse="$VAR[color_lib_menu_item_fo]">icons/locked.png</alttexturefocus>
 					<alttexturenofocus colordiffuse="$VAR[color_lib_menu_item_nf]">icons/locked.png</alttexturenofocus>
-					<label>Lock View $PARAM[view_id] for $INFO[Container.Content]</label>
-					<altlabel>Change Locking of View Types for $INFO[Container.Content]</altlabel>
+					<!-- 
+					<label>[COLOR $VAR[color_lib_menu_accent]]Lock View $PARAM[view_id] [/COLOR] for [B][I]Content Containers[/I][/B]</label>
+					<altlabel>[COLOR $VAR[color_lib_menu_accent]]Change Locking of View $PARAM[view_id] [/COLOR] for [B][I]Media Content Containers[/I][/B]</altlabel>
+					-->
+					<label>Lock View [B]$PARAM[view_id][/B] for [B][I]Content Containers[/I][/B]</label>
+					<altlabel>Change Locking of View [B]$PARAM[view_id][/B] for [B][I]Media Content Containers[/I][/B]</altlabel>
 					<focusedcolor />
 					<textcolor />
 					<onclick>SetFocus($PARAM[group_id]1234)</onclick>
@@ -203,11 +207,11 @@ if a view is locked it shouldnt be possible to disable a view ,
 </description>
 					<focusedcolor />
 					<textcolor />
-					<top>90</top>
+					<top>80</top>
 					<width>75</width>
 					<height>75</height>
-					<label>Disable View $PARAM[view_id] for $INFO[Window(home).Property(view_disable_mediawindow),[I],[/I]]</label>
-					<altlabel>Enable View $PARAM[view_id] for $INFO[Window(home).Property(view_disable_mediawindow),[I],[/I]]</altlabel>
+					<label>$INFO[Window(home).Property(view_disable_mediawindow),Disable View [B]$PARAM[view_id][/B] for [I],[/I]]</label>
+					<altlabel>$INFO[Window(home).Property(view_disable_mediawindow),Enable View [B]$PARAM[view_id][/B] for [I],[/I]]</altlabel>
 					<texturefocus colordiffuse="$VAR[color_lib_menu_item_fo]">icons/viewenable.png</texturefocus>
 					<texturenofocus colordiffuse="$VAR[color_lib_menu_item_nf]">icons/viewenable.png</texturenofocus>
 					
@@ -227,7 +231,7 @@ if a view is locked it shouldnt be possible to disable a view ,
 			
 			<control type="panel" id="$PARAM[group_id]1234">
 				<left>485</left>
-				<top>190</top>
+				<top>200</top>
 				<height>50</height>
 				<onfocus>SetProperty($PARAM[group_id]1234,fade,home)</onfocus>
 				<onup>$PARAM[group_id]006</onup>
