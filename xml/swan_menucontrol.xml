@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
-
+	<variable name="view_select_window_image">
+		<value condition="String.IsEqual(Window(home).Property(view_disable_mediawindow),videos)">defaultvideo.png</value>
+		<value condition="String.IsEqual(Window(home).Property(view_disable_mediawindow),music)">music.png</value>
+		<value condition="String.IsEqual(Window(home).Property(view_disable_mediawindow),pictures)">defaultpicture.png</value>
+		<value condition="String.IsEqual(Window(home).Property(view_disable_mediawindow),games)">defaultaddongame.png</value>
+	</variable>
+	<variable name="view_select_window_label">
+		<value condition="String.IsEqual(Window(home).Property(view_disable_mediawindow),videos)">$LOCALIZE[10025]</value>
+		<value condition="String.IsEqual(Window(home).Property(view_disable_mediawindow),music)">$LOCALIZE[10502]</value>
+		<value condition="String.IsEqual(Window(home).Property(view_disable_mediawindow),pictures)">$LOCALIZE[10002]</value>
+		<value condition="String.IsEqual(Window(home).Property(view_disable_mediawindow),games)">$LOCALIZE[10821]</value>
+	</variable>
+	
 	<!-- may later as menu item to avoid open view management , butlock a view for current visible content.container-->
 	<include name="locking_containercontent_OLD_for_">
 		<usealttexture>String.IsEqual(skin.string(view_locked_$PARAM[lock_containercontent]),$PARAM[lock_containercontent_view_id])</usealttexture>
@@ -34,51 +46,49 @@
 				<texture colordiffuse="$VAR[color_global_button_panel_nf]">colors/white.png</texture>
 			</control>
 			
-			<control type="label" id="$PARAM[group_id]002">
+			<control type="label">
 				<description>view label</description>
 				<left>485</left>
 				<top>20</top>
 				<height>50</height>
-				<font>Tagline</font>
+				<font>WidgetHeading</font>
 				<textcolor>$VAR[color_lib_menu_item_fo]</textcolor>
 				<label>[B]$PARAM[view_label][/B]</label>
 			</control>
-			
-			<control type="label" id="$PARAM[group_id]1202">
-				<description>view label - vs 0F</description>
+			<control type="group">
+				<animation effect="fade" start="100" end="10" time="0" condition="true">conditional</animation>
 				<left>1090</left>
-				<align>center</align>
-				<top>70</top>
-				<height>100</height>
-				<width>50</width>
-				<font>PlotMedium</font>
-				<textcolor>1Affffff</textcolor>
-				<label>[B]id[/B]</label>
-			</control>
-			<control type="label" id="$PARAM[group_id]1203">
-				<description>view label - vs 0F</description>
-				<left>1125</left>
-				<align>left</align>
-				<top>85</top>
-				<height>100</height>
+				<top>50</top>
 				<width>200</width>
-				<font>font_Montserrat_90_bold</font>
-				<textcolor>1Affffff</textcolor>
-				<label>[B]$NUMBER[$PARAM[view_id]][/B]</label>
+				<height>100</height>
+				<control type="label">
+					<align>center</align>
+					<width>50</width>
+					<font>PlotMedium</font>
+					<textcolor>$VAR[color_lib_menu_item_fo]</textcolor>
+					<label>[B]id[/B]</label>
+				</control>
+				<control type="label">
+					<left>35</left>
+					<align>left</align>
+					<top>30</top>
+					<font>font_Montserrat_90_bold</font>
+					<textcolor>$VAR[color_lib_menu_item_fo]</textcolor>
+					<label>[B]$NUMBER[$PARAM[view_id]][/B]</label>
+				</control>
 			</control>
 			
-			
-			<control type="label" id="$PARAM[group_id]0099">
+			<control type="label">
 				<description>view label</description>
 				<left>485</left>
 				<top>190</top>
 				<height>50</height>
 				<font>menucontrol_heading</font>
+				<textcolor>$VAR[color_lib_menu_accent]</textcolor>
 				<textcolor>$VAR[color_lib_menu_item_fo]</textcolor>
 				<visible>ControlGroup($PARAM[group_id]).HasFocus() + [String.EndsWith(System.CurrentControlID,005) | String.EndsWith(System.CurrentControlID,006) | String.EndsWith(System.CurrentControlID,007)]</visible>
 				<label>$INFO[System.CurrentControl]</label>
 			</control>
-			
 			
 			<control type="grouplist" id="$PARAM[group_id]">
 				<description>template contents</description>
@@ -88,7 +98,7 @@
 				<left>20</left>
 				<top>20</top>
 				<itemgap>20</itemgap>
-				<onleft>110560</onleft>
+				<onleft>100060</onleft>
 				<onright>$PARAM[group_id]005</onright>
 				
 				<onup condition="String.StartsWith(System.CurrentControlID,1001)">1010</onup>
@@ -116,7 +126,7 @@
 				<ondown condition="String.StartsWith(System.CurrentControlID,1010)">1001</ondown>
 				
 					
-				<control type="image" id="003">
+				<control type="image" id="$PARAM[group_id]002">
 					<description>preview image</description>
 					<width>382</width>
 					<height>225</height>
@@ -128,11 +138,11 @@
 				
 				<include content="spacer_w">
 					<param name="gap" value="50" />
-					<param name="id" value="$PARAM[group_id]004" />
+					<param name="id" value="$PARAM[group_id]003" />
 				</include>
 				
 				<control type="button" id="$PARAM[group_id]005">
-					<description>choose view id if window.ismedia, need bypass animation if using as dialog
+					<description>choose view id if window.ismedia, need bypass animation on close if using as dialog
 to much delay AlarmClock(view set focus,setfocus($PARAM[view_id]),00:01,silent)
 </description>
 					<visible>Window.IsMedia</visible>
@@ -141,7 +151,7 @@ to much delay AlarmClock(view set focus,setfocus($PARAM[view_id]),00:01,silent)
 					<height>75</height>
 					<texturefocus colordiffuse="$VAR[color_lib_menu_item_fo]">icons/checkbox.png</texturefocus>
 					<texturenofocus colordiffuse="$VAR[color_lib_menu_item_nf]">icons/checkbox.png</texturenofocus>
-					<label>Use View $PARAM[view_id]</label>
+					<label>Use This View $PARAM[view_id]</label>
 					<focusedcolor />
 					<textcolor />
 					<disabledcolor />
@@ -174,23 +184,50 @@ to much delay AlarmClock(view set focus,setfocus($PARAM[view_id]),00:01,silent)
 					<texturenofocus colordiffuse="$VAR[color_lib_menu_item_nf]">icons/unlocked.png</texturenofocus>
 					<alttexturefocus colordiffuse="$VAR[color_lib_menu_item_fo]">icons/locked.png</alttexturefocus>
 					<alttexturenofocus colordiffuse="$VAR[color_lib_menu_item_nf]">icons/locked.png</alttexturenofocus>
-					<label>Lock View [B]$PARAM[view_id][/B] for [B][I]Content Containers[/I][/B]</label>
+					<label>Lock View [B]$PARAM[view_id][/B] in [B][I]Content Containers[/I][/B]</label>
 					<altlabel>Change Locking of View [B]$PARAM[view_id][/B] for [B][I]Media Content Containers[/I][/B]</altlabel>
 					<focusedcolor />
 					<textcolor />
-					<onclick>SetFocus($PARAM[group_id]1234)</onclick>
+					<onclick condition="String.IsEmpty(window(home).property($PARAM[group_id]008))">SetFocus($PARAM[group_id]008)</onclick>
+					<onclick condition="!String.IsEmpty(window(home).property($PARAM[group_id]008))">ClearProperty($PARAM[group_id]008,home)</onclick>
 				</control>
 				
 				<control type="togglebutton" id="$PARAM[group_id]007">
-					<visible>$PARAM[can_lock]</visible>
-					<description>current just videos,music</description>
+					<visible>$PARAM[disableable]</visible>
+					<description>current just videos,music;
+videos 					WINDOW_VIDEO_NAV 	10025 	MyVideoNav.xml
+music 					WINDOW_MUSIC_NAV 	10502 	MyMusicNav.xml
+pictures 				WINDOW_PICTURES 	10002 	MyPics.xml
+games 					WINDOW_GAMES 	10821 	MyGames.xml
+
+musicplaylisteditor 	WINDOW_MUSIC_PLAYLIST_EDITOR 	10503 	MyMusicPlaylistEditor.xml
+videoplaylist 			WINDOW_VIDEO_PLAYLIST 	10028 	MyPlaylist.xml
+musicplaylist 			WINDOW_MUSIC_PLAYLIST 	10500 	MyPlaylist.xml
+
+programs 				WINDOW_PROGRAMS 	10001 	MyPrograms.xml
+
+tvchannels 				WINDOW_TV_CHANNELS 	10700 	MyPVRChannels.xml
+radiochannels 			WINDOW_RADIO_CHANNELS 	10705 	MyPVRChannels.xml
+tvguide 				WINDOW_TV_GUIDE 	10702 	MyPVRGuide.xml
+radioguide 				WINDOW_RADIO_GUIDE 	10707 	MyPVRGuide.xml
+tvrecordings 			WINDOW_TV_RECORDINGS 	10701 	MyPVRRecordings.xml
+radiorecordings 		WINDOW_RADIO_RECORDINGS 	10706 	MyPVRRecordings.xml
+tvsearch 				WINDOW_TV_SEARCH 	10704 	MyPVRSearch.xml
+radiosearch 			WINDOW_RADIO_SEARCH 	10709 	MyPVRSearch.xml
+tvtimers 				WINDOW_TV_TIMERS 	10703 	MyPVRTimers.xml
+radiotimers 			WINDOW_RADIO_TIMERS 	10708 	MyPVRTimers.xml
+tvtimerrules 			WINDOW_TV_TIMER_RULES 	10710 	MyPVRTimers.xml
+radiotimerrules 		WINDOW_RADIO_TIMER_RULES 	10711 	MyPVRTimers.xml
+
+weather 				WINDOW_WEATHER 	12600 	MyWeather.xml 
+</description>
 					<focusedcolor />
 					<textcolor />
 					<top>80</top>
 					<width>75</width>
 					<height>75</height>
-					<label>$INFO[Window(home).Property(view_disable_mediawindow),Disable View [B]$PARAM[view_id][/B] for [UPPERCASE][B][I],[/I][/B][/UPPERCASE]]</label>
-					<altlabel>$INFO[Window(home).Property(view_disable_mediawindow),Enable View [B]$PARAM[view_id][/B] for [UPPERCASE][B][I],[/I][/B][/UPPERCASE]]</altlabel>
+					<label>$INFO[Window(home).Property(view_disable_mediawindow),Disable View [B]$PARAM[view_id][/B] for [UPPERCASE][B][I],[/I][/B][/UPPERCASE]]  windows</label>
+					<altlabel>$INFO[Window(home).Property(view_disable_mediawindow),Enable View [B]$PARAM[view_id][/B] for [UPPERCASE][B][I],[/I][/B][/UPPERCASE]]  windows</altlabel>
 					<texturefocus colordiffuse="$VAR[color_lib_menu_item_fo]">icons/viewenable.png</texturefocus>
 					<texturenofocus colordiffuse="$VAR[color_lib_menu_item_nf]">icons/viewenable.png</texturenofocus>
 					
@@ -206,63 +243,72 @@ to much delay AlarmClock(view set focus,setfocus($PARAM[view_id]),00:01,silent)
 						<param name="view_container_id" value="$PARAM[view_id]" />
 					</include>
 					
+					<!-- <onclick condition="window.ismedia">force reload and set focus a availabel id - prevent disable of current visible view id when window unload</onclick> -->
 				</control>
 			</control>
 			
-			<control type="panel" id="$PARAM[group_id]1234">
+			<control type="list" id="$PARAM[group_id]008">
 				<left>485</left>
-				<top>200</top>
+				<top>190</top>
 				<height>50</height>
-				<onfocus>SetProperty($PARAM[group_id]1234,fade,home)</onfocus>
+				<onfocus>SetProperty($PARAM[group_id]008,fade,home)</onfocus>
 				<onup>$PARAM[group_id]006</onup>
-				<onup>ClearProperty($PARAM[group_id]1234,home)</onup>
-				<ondown>$PARAM[group_id]006</ondown>pulse="true" 
-				<ondown>ClearProperty($PARAM[group_id]1234,home)</ondown>
-				
+				<onup>ClearProperty($PARAM[group_id]008,home)</onup>
+				<ondown>$PARAM[group_id]006</ondown>
+				<ondown>ClearProperty($PARAM[group_id]008,home)</ondown>		
 				<onback>$PARAM[group_id]006</onback>
-				<onback>ClearProperty($PARAM[group_id]1234,home)</onback>
+				<onback>ClearProperty($PARAM[group_id]008,home)</onback>
 				
-				<!-- <onback>close...??</onback> -->
-				<animation effect="fade" start="0" end="100" time="250" condition="String.IsEqual(Window(home).Property($PARAM[group_id]1234),fade)">conditional</animation>
-				<animation effect="fade" start="100" end="0" time="250" condition="!String.IsEqual(Window(home).Property($PARAM[group_id]1234),fade)">conditional</animation>
+				<animation effect="fade" start="0" end="100" time="250" condition="String.IsEqual(Window(home).Property($PARAM[group_id]008),fade)">conditional</animation>
+				<animation effect="fade" start="100" end="0" time="250" condition="!String.IsEqual(Window(home).Property($PARAM[group_id]008),fade)">conditional</animation>
 				<description>
-movies 
-sets 
-tvshows 
-seasons
-episodes
-musicvideos
+mostly a locking (linked content to view id) will be "stored in .db file, therefore just a few basics to force a view as it can fail in some cases , some addons provide addon settings to force a view id also anyway
 
-artists
-albums
-songs
-
+videos 	
+		movies done
+		sets done
+		tvshows done
+		seasons done
+		episodes done
+		musicvideos done
+		
+		sources
+		
+		countries
+		roles
+		directors
+		studios
+		
+music
+		artists done
+		albums done
+		songs done
+		
+		
 images
+		?
 
-tags
-countries
-roles
-genres
-years
-directors
-studios
+mixed (videos;music)
+		sources
+		files (can also be folders)
+
+		tags
+		genres
+		years
 
 playlists
-
 plugins
-
 Addons
 LiveTV
 </description>
 				<orientation>horizontal</orientation>
 				
-				<itemlayout height="50" width="120">
+				<itemlayout width="130">
 					<control type="group">
 						<centerleft>50%</centerleft>
 						<centertop>50%</centertop>
-						<width>110</width>
+						<width>117</width>
 						<height>40</height>
-						
 						<control type="image">
 							<visible>!String.IsEqual(listitem.label2,$PARAM[view_id])</visible>
 							<texture colordiffuse="$VAR[color_lib_menu_item_fo]">colors/white20.png</texture>
@@ -271,26 +317,17 @@ LiveTV
 							<visible>String.IsEqual(listitem.label2,$PARAM[view_id])</visible>
 							<texture colordiffuse="$VAR[color_lib_menu_accent]">colors/white.png</texture>
 						</control>
-						
-						<control type="image">
-							<width>20</width>
-							<width>20</width>
-							<centertop>50%</centertop>
-							<left>5</left>
-							<texture colordiffuse="$VAR[color_lib_menu_item_fo]">$INFO[ListItem.Icon]</texture>
-						</control>
-						
 						<control type="textbox">
-							<align>center</align>
 							<font>debugtiny</font>
+							<align>center</align>
 							<textcolor>$VAR[color_lib_menu_backgroundpanel]</textcolor>
 							<label>$INFO[ListItem.Label]</label>
 						</control>
 					</control>
 				</itemlayout>
-				<focusedlayout height="50" width="120">
+				<focusedlayout width="130">
 					<control type="image">
-						<width>120</width>
+						<width>130</width>
 						<height>50</height>
 						<texture colordiffuse="$VAR[color_lib_menu_item_fo]">artworkdiffuse_unthemed/thumbborder.png</texture>
 						<centerleft>50%</centerleft>
@@ -298,7 +335,7 @@ LiveTV
 					<control type="group">
 						<centerleft>50%</centerleft>
 						<centertop>50%</centertop>
-						<width>110</width>
+						<width>117</width>
 						<height>40</height>
 						<control type="image">
 							<visible>!String.IsEqual(listitem.label2,$PARAM[view_id])</visible>
@@ -307,13 +344,6 @@ LiveTV
 						<control type="image">
 							<visible>String.IsEqual(listitem.label2,$PARAM[view_id])</visible>
 							<texture colordiffuse="$VAR[color_lib_menu_accent]">colors/white.png</texture>
-						</control>
-						<control type="image">
-							<width>20</width>
-							<width>20</width>
-							<centertop>50%</centertop>
-							<left>5</left>
-							<texture colordiffuse="black">$INFO[ListItem.Icon]</texture>
 						</control>
 						<control type="textbox">
 							<font>debugtiny</font>
@@ -326,91 +356,75 @@ LiveTV
 				<content>
 					<item>
 						<visible>string.isequal(window(home).property(view_disable_mediawindow),videos) | window.isactive(videos)</visible>
-						<label>Movies</label>
+						<label>20342</label>
 						<label2>$INFO[skin.string(view_locked_movies)]</label2>
-						<icon>defaultdefaultmovies.png</icon>
 						<onclick condition="String.IsEmpty(skin.string(view_locked_movies)) | [!String.IsEqual(skin.string(view_locked_movies),$PARAM[view_id]) + !String.IsEmpty(skin.string(view_locked_movies))]">Skin.SetString(view_locked_movies,$PARAM[view_id])</onclick>
 						<onclick condition="String.IsEqual(skin.string(view_locked_movies),$PARAM[view_id])">Skin.Reset(view_locked_movies)</onclick>
 					</item>
 					<item>
 						<visible>string.isequal(window(home).property(view_disable_mediawindow),videos) | window.isactive(videos)</visible>
-						<label>Sets</label>
+						<label>20434</label>
 						<label2>$INFO[skin.string(view_locked_sets)]</label2>
-						<icon>defaultdefaultmovies.png</icon>
-						
 						<onclick condition="String.IsEmpty(skin.string(view_locked_sets)) | [!String.IsEqual(skin.string(view_locked_sets),$PARAM[view_id]) + !String.IsEmpty(skin.string(view_locked_sets))]">Skin.SetString(view_locked_sets,$PARAM[view_id])</onclick>
 						<onclick condition="String.IsEqual(skin.string(view_locked_sets),$PARAM[view_id])">Skin.Reset(view_locked_sets)</onclick>
 					</item>
 					<item>
 						<visible>string.isequal(window(home).property(view_disable_mediawindow),videos) | window.isactive(videos)</visible>
-						<label>TV Shows</label>
+						<label>20343</label>
 						<label2>$INFO[skin.string(view_locked_tvshows)]</label2>
-						<icon>defaultdefaulttvshows.png</icon>
-						
 						<onclick condition="String.IsEmpty(skin.string(view_locked_tvshows)) | [!String.IsEqual(skin.string(view_locked_tvshows),$PARAM[view_id]) + !String.IsEmpty(skin.string(view_locked_tvshows))]">Skin.SetString(view_locked_tvshows,$PARAM[view_id])</onclick>
 						<onclick condition="String.IsEqual(skin.string(view_locked_tvshows),$PARAM[view_id])">Skin.Reset(view_locked_tvshows)</onclick>
 					</item>
 					<item>
 						<visible>string.isequal(window(home).property(view_disable_mediawindow),videos) | window.isactive(videos)</visible>
-						<label>Seasons</label>
+						<label>36905</label>
 						<label2>$INFO[skin.string(view_locked_seasons)]</label2>
-						<icon>defaultdefaulttvshows.png</icon>
-						
 						<onclick condition="String.IsEmpty(skin.string(view_locked_seasons)) | [!String.IsEqual(skin.string(view_locked_seasons),$PARAM[view_id]) + !String.IsEmpty(skin.string(view_locked_seasons))]">Skin.SetString(view_locked_seasons,$PARAM[view_id])</onclick>
 						<onclick condition="String.IsEqual(skin.string(view_locked_seasons),$PARAM[view_id])">Skin.Reset(view_locked_seasons)</onclick>
 					</item>
 					<item>
 						<visible>string.isequal(window(home).property(view_disable_mediawindow),videos) | window.isactive(videos)</visible>
-						<label>Episodes</label>
+						<label>20360</label>
 						<label2>$INFO[skin.string(view_locked_episodes)]</label2>
-						<icon>defaultdefaulttvshows.png</icon>
-						
 						<onclick condition="String.IsEmpty(skin.string(view_locked_episodes)) | [!String.IsEqual(skin.string(view_locked_episodes),$PARAM[view_id]) + !String.IsEmpty(skin.string(view_locked_episodes))]">Skin.SetString(view_locked_episodes,$PARAM[view_id])</onclick>
 						<onclick condition="String.IsEqual(skin.string(view_locked_episodes),$PARAM[view_id])">Skin.Reset(view_locked_episodes)</onclick>
 					</item>
 					<item>
 						<visible>string.isequal(window(home).property(view_disable_mediawindow),videos) | window.isactive(videos)</visible>
-						<label>Musicvideos</label>
+						<label>20389</label>
 						<label2>$INFO[skin.string(view_locked_musicvideos)]</label2>
-						<icon>defaultdefaulttvshows.png</icon>
-						
 						<onclick condition="String.IsEmpty(skin.string(view_locked_musicvideos)) | [!String.IsEqual(skin.string(view_locked_musicvideos),$PARAM[view_id]) + !String.IsEmpty(skin.string(view_locked_musicvideos))]">Skin.SetString(view_locked_musicvideos,$PARAM[view_id])</onclick>
 						<onclick condition="String.IsEqual(skin.string(view_locked_musicvideos),$PARAM[view_id])">Skin.Reset(view_locked_musicvideos)</onclick>
 					</item>
 					<item>
 						<visible>string.isequal(window(home).property(view_disable_mediawindow),music) | window.isactive(music)</visible>
-						<label>Artists</label>
+						<label>133</label>
 						<label2>$INFO[skin.string(view_locked_artists)]</label2>
-						<icon>defaultdefaultmovies.png</icon>
-						
 						<onclick condition="String.IsEmpty(skin.string(view_locked_artists)) | [!String.IsEqual(skin.string(view_locked_artists),$PARAM[view_id]) + !String.IsEmpty(skin.string(view_locked_artists))]">Skin.SetString(view_locked_artists,$PARAM[view_id])</onclick>
 						<onclick condition="String.IsEqual(skin.string(view_locked_artists),$PARAM[view_id])">Skin.Reset(view_locked_artists)</onclick>
 					</item>
 					<item>
 						<visible>string.isequal(window(home).property(view_disable_mediawindow),music) | window.isactive(music)</visible>
-						<label>Albums</label>
+						<label>132</label>
 						<label2>$INFO[skin.string(view_locked_albums)]</label2>
-						<icon>defaultdefaultmovies.png</icon>
-						
 						<onclick condition="String.IsEmpty(skin.string(view_locked_albums)) | [!String.IsEqual(skin.string(view_locked_albums),$PARAM[view_id]) + !String.IsEmpty(skin.string(view_locked_albums))]">Skin.SetString(view_locked_albums,$PARAM[view_id])</onclick>
 						<onclick condition="String.IsEqual(skin.string(view_locked_albums),$PARAM[view_id])">Skin.Reset(view_locked_albums)</onclick>
 					</item>
 					<item>
 						<visible>string.isequal(window(home).property(view_disable_mediawindow),music) | window.isactive(music)</visible>
-						<label>Songs</label>
+						<label>134</label>
 						<label2>$INFO[skin.string(view_locked_songs)]</label2>
-						<icon>defaultdefaulttvshows.png</icon>
-						
 						<onclick condition="String.IsEmpty(skin.string(view_locked_songs)) | [!String.IsEqual(skin.string(view_locked_songs),$PARAM[view_id]) + !String.IsEmpty(skin.string(view_locked_songs))]">Skin.SetString(view_locked_songs,$PARAM[view_id])</onclick>
 						<onclick condition="String.IsEqual(skin.string(view_locked_songs),$PARAM[view_id])">Skin.Reset(view_locked_songs)</onclick>
 					</item>
-				</content>	
-				
+				</content>
 			</control>
 		</control>
 	</include>
 	
-
+	
+	<!-- ############## PROFILES - may delete implemented stuff ############## -->
+	
 	<variable name="menucontrol_profiles_fovsnf">
 		<value condition="Control.HasFocus(7777)">$VAR[color_home_menu_item_fo]</value>
 		<value>$VAR[color_home_menu_item_nf]</value>

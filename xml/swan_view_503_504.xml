@@ -122,14 +122,14 @@
 			</include>
 			
 			
-			
-			<include content="view_503" condition="String.IsEmpty(Skin.String(videos_disabled_view_503))" />
-			<include content="view_504" condition="String.IsEmpty(Skin.String(videos_disabled_view_504))" />
-			
 			<!-- 
-			later on something like that
-			<include condition="!String.IsEmpty(Skin.String(view_503_disabled)) + !String.IsEmpty(Skin.String(view_504_disabled))">spotlight_extra_content_containers</include> -->
-			<include condition="Window.IsActive(videos)" content="spotlight_extra_content_containers" />
+			refer include  mediawindow_layout
+				VERY BAD SOLUTION special case for shared include still load if one of booth disabled condition is used inside include 
+			-->
+			<include content="view_503" condition="[Window.IsActive(videos) + String.IsEmpty(Skin.String(videos_disabled_view_503))] | [Window.IsActive(music) + String.IsEmpty(Skin.String(music_disabled_view_503))]" />
+			<include content="view_504" condition="[Window.IsActive(videos) + String.IsEmpty(Skin.String(videos_disabled_view_504))] | [Window.IsActive(music) + String.IsEmpty(Skin.String(music_disabled_view_504))]" />
+			
+			<include condition="Window.IsActive(videos) + [String.IsEmpty(Skin.String(videos_disabled_view_503)) | String.IsEmpty(Skin.String(videos_disabled_view_504)]" content="spotlight_extra_content_containers" />
 			
 		
 		</control>
