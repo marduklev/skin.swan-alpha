@@ -8,8 +8,11 @@
 			<visible>Control.IsVisible(58)</visible>
 			
 			<control type="list" id="58">
-				<!-- no locking intented ,locked to seasons only anyway -->
-				<visible>Container.Content(seasons)</visible>
+				<include content="view_locking" condition="!$EXP[content_not_locked]">
+					<param name="view_id" value="58" />
+				</include>
+				<include content="view_58_noLocking" condition="$EXP[content_not_locked]" />
+				
 				<viewtype label="$LOCALIZE[31260]">spotlight season info</viewtype>
 				<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
 				<onfocus>RunScript(script.embuary.helper,action=encode,string='"$INFO[ListItem.TVShowTitle]"',prop=EncodedTitle)</onfocus>

@@ -95,19 +95,46 @@ Container.Content() = String.IsEmpty(Container.Content)
 	
 	<include name="view_locking">
 				<visible>
-		 Container.Content() | 
+				Container.Content() | 
 		[Container.Content(movies) + [String.IsEmpty(skin.string(view_locked_movies)) | String.IsEqual(skin.string(view_locked_movies),$PARAM[view_id])]] | 
 		[Container.Content(sets) + [String.IsEmpty(skin.string(view_locked_sets)) | String.IsEqual(skin.string(view_locked_sets),$PARAM[view_id])]] | 
 		[Container.Content(tvshows) + [String.IsEmpty(skin.string(view_locked_tvshows)) | String.IsEqual(skin.string(view_locked_tvshows),$PARAM[view_id])]] | 
 		[Container.Content(seasons) + [String.IsEmpty(skin.string(view_locked_seasons)) | String.IsEqual(skin.string(view_locked_seasons),$PARAM[view_id])]] | 
 		[Container.Content(episodes) + [String.IsEmpty(skin.string(view_locked_episodes)) | String.IsEqual(skin.string(view_locked_episodes),$PARAM[view_id])]] | 
 		[Container.Content(musicvideos) + [String.IsEmpty(skin.string(view_locked_musicvideos)) | String.IsEqual(skin.string(view_locked_musicvideos),$PARAM[view_id])]] |
-		[!Container.Content(movies) + !Container.Content(sets) + !Container.Content(tvshows) + !Container.Content(seasons) + !Container.Content(episodes) + 
-		 !Container.Content(musicvideos) + !Container.Content(artists) + !Container.Content(albums) + 
-		 !Container.Content(songs)]
+		[Container.Content(artists) + [String.IsEmpty(skin.string(view_locked_artists)) | String.IsEqual(skin.string(view_locked_artists),$PARAM[view_id])]] | 
+		[Container.Content(albums) + [String.IsEmpty(skin.string(view_locked_albums)) | String.IsEqual(skin.string(view_locked_albums),$PARAM[view_id])]] | 
+		[Container.Content(songs) + [String.IsEmpty(skin.string(view_locked_songs)) | String.IsEqual(skin.string(view_locked_songs),$PARAM[view_id])]] | 
+		[Container.Content(files) + [String.IsEmpty(skin.string(view_locked_files)) | String.IsEqual(skin.string(view_locked_files),$PARAM[view_id])]] | 
+		[Container.Content(sources) + [String.IsEmpty(skin.string(view_locked_sources)) | String.IsEqual(skin.string(view_locked_sources),$PARAM[view_id])]] | 
+		[Container.Content(actors) + [String.IsEmpty(skin.string(view_locked_actors)) | String.IsEqual(skin.string(view_locked_actors),$PARAM[view_id])]] |
+		[Container.Content(roles) + [String.IsEmpty(skin.string(view_locked_roles)) | String.IsEqual(skin.string(view_locked_roles),$PARAM[view_id])]] | 
+		[Container.Content(directors) + [String.IsEmpty(skin.string(view_locked_directors)) | String.IsEqual(skin.string(view_locked_directors),$PARAM[view_id])]] | 
+		[Container.Content(tags) + [String.IsEmpty(skin.string(view_locked_tags)) | String.IsEqual(skin.string(view_locked_tags),$PARAM[view_id])]] | 
+		[Container.Content(genres) + [String.IsEmpty(skin.string(view_locked_genres)) | String.IsEqual(skin.string(view_locked_genres),$PARAM[view_id])]] | 
+		[Container.Content(years) + [String.IsEmpty(skin.string(view_locked_years)) | String.IsEqual(skin.string(view_locked_years),$PARAM[view_id])]] | 
+		[Container.Content(studios) + [String.IsEmpty(skin.string(view_locked_studios)) | String.IsEqual(skin.string(view_locked_studios),$PARAM[view_id])]] |
+		[Container.Content(countries) + [String.IsEmpty(skin.string(view_locked_countries)) | String.IsEqual(skin.string(view_locked_countries),$PARAM[view_id])]] | 
+		[Container.Content(playlists) + [String.IsEmpty(skin.string(view_locked_playlists)) | String.IsEqual(skin.string(view_locked_playlists),$PARAM[view_id])]] | 
+		[Container.Content(images) + [String.IsEmpty(skin.string(view_locked_images)) | String.IsEqual(skin.string(view_locked_images),$PARAM[view_id])]] | 
+		[Container.Content(addons) + [String.IsEmpty(skin.string(view_locked_addons)) | String.IsEqual(skin.string(view_locked_addons),$PARAM[view_id])]] | 
+		[Container.Content(livetv) + [String.IsEmpty(skin.string(view_locked_livetv)) | String.IsEqual(skin.string(view_locked_livetv),$PARAM[view_id])]] | 
+		[Container.Content(mixed) + [String.IsEmpty(skin.string(view_locked_mixed)) | String.IsEqual(skin.string(view_locked_mixed),$PARAM[view_id])]] |
+		[Container.Content(unknown) + [String.IsEmpty(skin.string(view_locked_unknown)) | String.IsEqual(skin.string(view_locked_unknown),$PARAM[view_id])]] | 
+		[Container.Content(plugins) + [String.IsEmpty(skin.string(view_locked_plugins)) | String.IsEqual(skin.string(view_locked_plugins),$PARAM[view_id])]] |
+		
+		[
+		 !Container.Content(movies) + !Container.Content(sets) + !Container.Content(tvshows) + !Container.Content(seasons) + !Container.Content(episodes) + 
+		 !Container.Content(musicvideos) + !Container.Content(artists) + !Container.Content(albums) + !Container.Content(songs) + 
+		 !Container.Content(files) + !Container.Content(sources) + !Container.Content(actors) + !Container.Content(roles) + !Container.Content(directors) + 
+		 !Container.Content(tags) + !Container.Content(genres) + !Container.Content(years) + !Container.Content(studios) + !Container.Content(countries) + 
+		 !Container.Content(playlists) + !Container.Content(images) + 
+		 !Container.Content(addons) + !Container.Content(livetv) + !Container.Content(mixed) + !Container.Content(unknown) + !Container.Content(plugins)
+		]
 		</visible>
 	</include>
-	<expression name="content_not_locked">[
+	<expression name="content_not_locked">
+	[
 	 String.IsEmpty(skin.string(view_locked_movies)) + 
 	 String.IsEmpty(skin.string(view_locked_sets)) + 
 	 String.IsEmpty(skin.string(view_locked_tvshows)) + 
@@ -116,13 +143,33 @@ Container.Content() = String.IsEmpty(Container.Content)
 	 String.IsEmpty(skin.string(view_locked_musicvideos)) + 
 	 String.IsEmpty(skin.string(view_locked_artists)) + 
 	 String.IsEmpty(skin.string(view_locked_albums)) + 
-	 String.IsEmpty(skin.string(view_locked_songs))]
+	 String.IsEmpty(skin.string(view_locked_songs)) + 
+	 String.IsEmpty(skin.string(view_locked_files)) + 
+	 String.IsEmpty(skin.string(view_locked_sources)) + 
+	 String.IsEmpty(skin.string(view_locked_actors)) + 
+	 String.IsEmpty(skin.string(view_locked_roles)) + 
+	 String.IsEmpty(skin.string(view_locked_directors)) + 
+	 String.IsEmpty(skin.string(view_locked_tags)) + 
+	 String.IsEmpty(skin.string(view_locked_genres)) + 
+	 String.IsEmpty(skin.string(view_locked_years)) + 
+	 String.IsEmpty(skin.string(view_locked_studios)) + 
+	 String.IsEmpty(skin.string(view_locked_countries)) + 
+	 String.IsEmpty(skin.string(view_locked_playlists)) + 
+	 String.IsEmpty(skin.string(view_locked_images)) + 
+	 String.IsEmpty(skin.string(view_locked_addons)) + 
+	 String.IsEmpty(skin.string(view_locked_livetv)) + 
+	 String.IsEmpty(skin.string(view_locked_mixed)) + 
+	 String.IsEmpty(skin.string(view_locked_unknown)) + 
+	 String.IsEmpty(skin.string(view_locked_plugins))
+	]
 	 </expression>
 
 	<include name="view_56_noLocking">
 		<visible>Container.Content(movies) | Container.Content(sets) | Container.Content(tvshows) | Container.Content(episodes) | Container.Content(artists) | Container.Content(albums)</visible>
 	</include>
-	
+	<include name="view_58_noLocking">
+		<visible>Container.Content(seasons)</visible>
+	</include>
 	<include name="view_503_noLocking">
 		<visible>!Container.Content(episodes) | !Container.Content(sources)</visible>
 	</include>
