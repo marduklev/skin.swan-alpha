@@ -20,7 +20,7 @@
 			</control>
 			
 			<control type="grouplist">
-				<height>350</height>
+				<height>400</height>
 				<width>100%</width>
 				<aligny>center</aligny>
 				<centertop>45%</centertop>
@@ -43,6 +43,7 @@
 				</control>
 				<control type="label">
 					<width>100%</width>
+					<top>-10</top>
 					<height>30</height>
 					<align>center</align>
 					<font>Tagline</font>
@@ -50,16 +51,15 @@
 					<label>$VAR[view_select_window_label,[B][UPPERCASE],[/UPPERCASE][/B]]</label>
 				</control>
 				<control type="label">
+					<description>need variable for container.content(**)</description>
 					<width>100%</width>
 					<top>10</top>
-					<height>40</height>
+					<height>45</height>
 					<align>center</align>
 					<font>debugtiny</font>
 					<textcolor>$VAR[color_lib_menu_item_nf]</textcolor>
-					<label>$INFO[Container.Content, the current content is named [CR][B],[/B]]</label>
-					<visible>!Container.Content()</visible>
+					<label fallback="the current content is[CR][B]'undefined'[/B]">$INFO[Container.Content, the current content is named [CR][B],[/B]]</label>
 				</control>
-			
 			</control>
 			
 		</control>
@@ -197,12 +197,10 @@
 			
 		</control>
 		<include content="swan_debug_overlay">
-			<param name="textleft" value="$INFO[Container.ViewMode]
+			<param name="textleft" value="$VAR[has_locked_content]
 
-$VAR[has_locked_content]
 [B]locked views for content container[/B]
-  - [COLOR red]*custom if container.content empty = view_locked_listing $INFO[skin.string(view_locked_listing)][/COLOR]
-  - [COLOR green]*custom if container.content and some (plugin) path ? = view_locked_listing $INFO[skin.string(view_locked_nodiea)][/COLOR]
+- [COLOR green2]view_locked_listing = *custom if container.content empty $INFO[skin.string(view_locked_listing),[/COLOR][COLOR orange],[/COLOR]]
 view_locked_movies $INFO[skin.string(view_locked_movies),[COLOR orange],[/COLOR]]
 view_locked_sets $INFO[skin.string(view_locked_sets),[COLOR orange],[/COLOR]]
 view_locked_tvshows $INFO[skin.string(view_locked_tvshows),[COLOR orange],[/COLOR]]
