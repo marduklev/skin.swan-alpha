@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
-	
+	!String.IsEqual(Container.ViewMode,$PARAM[view_label]) | Window.IsActive(skinsettings)
 	<include name="1105_viewselect_template">
-				
+		<param name="view_disableable" default="" />
+	
+		<definition>
 		<control type="group" id="$PARAM[group_id]001">
 			<height>275</height>
 			
@@ -115,14 +117,14 @@
 				</include>
 				
 				<control type="button" id="$PARAM[group_id]005">
-					<description>set viewmode</description>
+					<description>set viewmode $LOCALICE[21480]</description>
 					<visible>Window.IsMedia</visible>
 					<top>70</top>
 					<width>75</width>
 					<height>75</height>
 					<texturefocus colordiffuse="$VAR[color_lib_menu_item_fo]">icons/checkbox.png</texturefocus>
 					<texturenofocus colordiffuse="$VAR[color_lib_menu_item_nf]">icons/checkbox.png</texturenofocus>
-					<label>Use This View $PARAM[view_id]</label>
+					<label>Use View Type $PARAM[view_id]</label>
 					<focusedcolor />
 					<textcolor />
 					<disabledcolor />
@@ -134,16 +136,6 @@
 				</control>
 				
 				<control type="togglebutton" id="$PARAM[group_id]006">
-					<description>lock content for view id 
-if window.ismedia  need bypass animation on close if using as dialog ,when using AlarmClock(view set focus,setfocus($PARAM[view_id]),00:01,silent) its too much delay 
-bool
-Container.Content(parameter) 	
-	files, songs, artists, albums, movies, tvshows, seasons, episodes, musicvideos, genres, years, actors, playlists, plugins, studios, directors, sets, tags, countries, roles, images 
-	(Note: these currently only work in the Video and Music Library or unless a Plugin has set the value) 
-	also available are 
-		Addons true when a list of add-ons is shown
-		LiveTV true when a htsp (tvheadend) directory is shown 
-</description>
 					<top>70</top>
 					<width>75</width>
 					<height>75</height>
@@ -156,7 +148,7 @@ Container.Content(parameter)
 							String.IsEqual(skin.string(view_locked_episodes),$PARAM[view_id]) | 
 							String.IsEqual(skin.string(view_locked_musicvideos),$PARAM[view_id]) |
 							String.IsEqual(skin.string(view_locked_artists),$PARAM[view_id]) | 
-							String.IsEqual(skin.string(view_locked_albums),$PARAM[view_id])) | 
+							String.IsEqual(skin.string(view_locked_albums),$PARAM[view_id]) | 
 							String.IsEqual(skin.string(view_locked_actors),$PARAM[view_id]) | 
 							String.IsEqual(skin.string(view_locked_directors),$PARAM[view_id]) | 
 							String.IsEqual(skin.string(view_locked_files),$PARAM[view_id]) | 
@@ -178,7 +170,7 @@ Container.Content(parameter)
 						   [String.IsEqual(skin.string(view_locked_musicvideos),$PARAM[view_id]) | 
 							String.IsEqual(skin.string(view_locked_artists),$PARAM[view_id]) | 
 							String.IsEqual(skin.string(view_locked_albums),$PARAM[view_id]) | 
-							String.IsEqual(skin.string(view_locked_songs),$PARAM[view_id])) | 
+							String.IsEqual(skin.string(view_locked_songs),$PARAM[view_id]) | 
 							String.IsEqual(skin.string(view_locked_roles),$PARAM[view_id]) | 
 							String.IsEqual(skin.string(view_locked_directors),$PARAM[view_id]) | 
 							String.IsEqual(skin.string(view_locked_files),$PARAM[view_id]) | 
@@ -223,20 +215,24 @@ Container.Content(parameter)
 				</control>
 				
 				<control type="togglebutton" id="$PARAM[group_id]007">
-					<description>disable a view type for media windows ,current in use for : videos,music,pictures,games</description>
 					<visible>$PARAM[view_disableable]</visible>
+					<visible>!String.Contains(Control.GetLabel($PARAM[group_id]006),Change Locking of View)</visible>
+					
 					<focusedcolor />
 					<textcolor />
+					<disabledcolor />
+					
 					<top>70</top>
 					<width>75</width>
 					<height>75</height>
+					<enable>!String.Contains(Control.GetLabel($PARAM[group_id]006),Change Locking of View)</enable>
 					<label>$INFO[Window(home).Property(view_disable_mediawindow),Disable View [B]$PARAM[view_id][/B] for [UPPERCASE][B][I],[/I][/B][/UPPERCASE]]  windows</label>
 					<altlabel>$INFO[Window(home).Property(view_disable_mediawindow),Enable View [B]$PARAM[view_id][/B] for [UPPERCASE][B][I],[/I][/B][/UPPERCASE]]  windows</altlabel>
+					
 					<texturefocus colordiffuse="$VAR[color_lib_menu_item_fo]">icons/viewenable.png</texturefocus>
 					<texturenofocus colordiffuse="$VAR[color_lib_menu_item_nf]">icons/viewenable.png</texturenofocus>
 					<alttexturefocus colordiffuse="$VAR[color_lib_menu_item_fo]">icons/viewdisable.png</alttexturefocus>
 					<alttexturenofocus colordiffuse="$VAR[color_lib_menu_item_nf]">icons/viewdisable.png</alttexturenofocus>
-					<!-- disable if current view is either active or has locks <enable>foobar</enable> -->
 					<include condition="String.IsEqual(Window(home).Property(view_disable_mediawindow),videos)" content="viewselect_disable_mediacontent">
 						<param name="view_window" value="videos" />
 						<param name="view_container_id" value="$PARAM[view_id]" />
@@ -253,12 +249,8 @@ Container.Content(parameter)
 						<param name="view_window" value="games" />
 						<param name="view_container_id" value="$PARAM[view_id]" />
 					</include>
-					<!-- <onclick condition="window.ismedia">force reload and set focus a availabel id - prevent disable of current visible view id when window unload</onclick> -->
 				</control>
 			</control>
-			
-			need image if integer is greater 12
-			
 			<control type="panel" id="$PARAM[group_id]008">
 				<left>485</left>
 				<right>90</right>
@@ -334,6 +326,7 @@ Container.Content(parameter)
 						</control>
 					</control>
 				</focusedlayout>
+				
 				<content>
 					<item>
 						<visible>string.isequal(window(home).property(view_disable_mediawindow),videos)</visible>
@@ -551,9 +544,18 @@ Container.Content(parameter)
 						<onclick condition="String.IsEmpty(skin.string(view_locked_images)) | [!String.IsEqual(skin.string(view_locked_images),$PARAM[view_id]) + !String.IsEmpty(skin.string(view_locked_images))]">Skin.SetString(view_locked_images,$PARAM[view_id])</onclick>
 						<onclick condition="String.IsEqual(skin.string(view_locked_images),$PARAM[view_id])">Skin.Reset(view_locked_images)</onclick>
 					</item>
+					<item>
+						<visible>!String.StartsWith(System.CurrentControlID,1006) + !String.StartsWith(System.CurrentControlID,1007)</visible>
+						<label>undefined content (e.g. root listings)</label>
+						<label2>$INFO[skin.string(view_locked_listing)]</label2>
+						<onclick condition="String.IsEmpty(skin.string(view_locked_listing)) | [!String.IsEqual(skin.string(view_locked_listing),$PARAM[view_id]) + !String.IsEmpty(skin.string(view_locked_listing))]">Skin.SetString(view_locked_listing,$PARAM[view_id])</onclick>
+						<onclick condition="String.IsEqual(skin.string(view_locked_listing),$PARAM[view_id])">Skin.Reset(view_locked_listing)</onclick>
+					</item>
+					
 				</content>
 			</control>
 		</control>
+		</definition>
 	</include>
 					
 					
@@ -579,8 +581,8 @@ Container.Content(parameter)
 	<!-- may later as menu item to avoid open view management , butlock a view for current visible content.container-->
 	<include name="locking_containercontent_OLD_for_">
 		<usealttexture>String.IsEqual(skin.string(view_locked_$PARAM[lock_containercontent]),$PARAM[lock_containercontent_view_id])</usealttexture>
-		<onclick condition="[String.IsEmpty(skin.string(view_locked_$PARAM[lock_containercontent])) | !String.IsEqual(skin.string(view_locked_$PARAM[lock_containercontent]),$PARAM[lock_containercontent_view_id])] + !String.IsEmpty(container.content)">Skin.SetString(view_locked_$PARAM[lock_containercontent],$PARAM[lock_containercontent_view_id])</onclick>
-		<onclick condition="[String.IsEmpty(skin.string(view_locked_$PARAM[lock_containercontent])) | !String.IsEqual(skin.string(view_locked_$PARAM[lock_containercontent]),$PARAM[lock_containercontent_view_id])] + String.IsEmpty(container.content)">Skin.SetString(view_locked_listing,$PARAM[lock_containercontent_view_id])</onclick>
+		<onclick condition="[String.IsEmpty(skin.string(view_locked_$PARAM[lock_containercontent])) | !String.IsEqual(skin.string(view_locked_$PARAM[lock_containercontent]),$PARAM[lock_containercontent_view_id])] + !Container.Content()">Skin.SetString(view_locked_$PARAM[lock_containercontent],$PARAM[lock_containercontent_view_id])</onclick>
+		<onclick condition="[String.IsEmpty(skin.string(view_locked_$PARAM[lock_containercontent])) | !String.IsEqual(skin.string(view_locked_$PARAM[lock_containercontent]),$PARAM[lock_containercontent_view_id])] + Container.Content()">Skin.SetString(view_locked_listing,$PARAM[lock_containercontent_view_id])</onclick>
 		<altclick>Skin.Reset(view_locked_$PARAM[lock_containercontent])</altclick>
 	</include>
 	

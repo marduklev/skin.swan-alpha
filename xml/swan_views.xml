@@ -7,7 +7,11 @@
 						$PARAM[mediawindow eg*viedo]view_locked_movies when set the strings ?
 					if so than later
 					 
-					 
+					msgctxt "#583"
+msgid "Remember views for different folders"
+msgstr "Ansicht für verschiedene Ordner beibehalten" kodi setting?
+
+ 
 visiblecondition  [not content X | [content is X + [X has no locks | X is locked for id]]]
 
 window			visiblecondition	
@@ -70,7 +74,7 @@ music					 		!Container.Content(songs) + !Container.Content(sources) +
 -->
 	<include name="view_locking">
 				<visible>
-				Container.Content() | 
+		[Container.Content() + [String.IsEmpty(skin.string(view_locked_listing)) | String.IsEqual(skin.string(view_locked_listing),$PARAM[view_id])]] | 
 		[Container.Content(movies) + [String.IsEmpty(skin.string(view_locked_movies)) | String.IsEqual(skin.string(view_locked_movies),$PARAM[view_id])]] | 
 		[Container.Content(sets) + [String.IsEmpty(skin.string(view_locked_sets)) | String.IsEqual(skin.string(view_locked_sets),$PARAM[view_id])]] | 
 		[Container.Content(tvshows) + [String.IsEmpty(skin.string(view_locked_tvshows)) | String.IsEqual(skin.string(view_locked_tvshows),$PARAM[view_id])]] | 
@@ -98,7 +102,7 @@ music					 		!Container.Content(songs) + !Container.Content(sources) +
 		[Container.Content(mixed) + [String.IsEmpty(skin.string(view_locked_mixed)) | String.IsEqual(skin.string(view_locked_mixed),$PARAM[view_id])]] |
 		[Container.Content(unknown) + [String.IsEmpty(skin.string(view_locked_unknown)) | String.IsEqual(skin.string(view_locked_unknown),$PARAM[view_id])]] | 
 		[Container.Content(plugins) + [String.IsEmpty(skin.string(view_locked_plugins)) | String.IsEqual(skin.string(view_locked_plugins),$PARAM[view_id])]] |
-		[
+		[!Container.Content() + 
 		 !Container.Content(movies) + !Container.Content(sets) + !Container.Content(tvshows) + !Container.Content(seasons) + !Container.Content(episodes) + 
 		 !Container.Content(musicvideos) + !Container.Content(artists) + !Container.Content(albums) + !Container.Content(songs) + 
 		 !Container.Content(files) + !Container.Content(sources) + !Container.Content(actors) + !Container.Content(roles) + !Container.Content(directors) + 
@@ -109,7 +113,7 @@ music					 		!Container.Content(songs) + !Container.Content(sources) +
 		</visible>
 	</include>
 	<expression name="content_not_locked">
-	[
+	[String.IsEmpty(skin.string(view_locked_listing)) + 
 	 String.IsEmpty(skin.string(view_locked_movies)) + 
 	 String.IsEmpty(skin.string(view_locked_sets)) + 
 	 String.IsEmpty(skin.string(view_locked_tvshows)) + 

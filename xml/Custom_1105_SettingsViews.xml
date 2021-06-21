@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <window type="dialog" id="1105">
 	<defaultcontrol always="true">1000</defaultcontrol>
-	
 	<onunload>ClearProperty(view_disable_mediawindow,home)</onunload>
-	<onunload>ClearProperty(view_current_container,home)</onunload>
-	
-	<description>maybe i am part of a slideable control instead of a dialog</description>
 	<controls>
 		
 		<control type="group">
@@ -98,7 +94,6 @@
 					<align>center</align>
 					<font>Tagline</font>
 					<textcolor>$VAR[color_lib_menu_item_fo]</textcolor>
-					<!-- <label>Make your Choice</label> -->
 					<label>$VAR[view_select_window_label,$LOCALIZE[31040]  :  [B][UPPERCASE],[/UPPERCASE][/B] ]</label>
 				</control>
 			</control>
@@ -120,46 +115,56 @@
 				</include>
 				<include content="1105_viewselect_template">
 					<param name="group_id" value="1002" />
+					<param name="view_disableable" value="!String.IsEqual(Container.ViewMode,$LOCALIZE[31240]) | Window.IsActive(skinsettings)" />
 					<param name="view_id" value="51" />
+					<param name="view_disableable" value="true" />
 					<param name="view_label" value="$LOCALIZE[31240]" />
 				</include>
 				<include content="1105_viewselect_template">
 					<param name="group_id" value="1003" />
+					<param name="view_disableable" value="!String.IsEqual(Container.ViewMode,$LOCALIZE[31241]) | Window.IsActive(skinsettings)" />
 					<param name="view_id" value="52" />
 					<param name="view_label" value="$LOCALIZE[31241]" />
 				</include>
 				<include content="1105_viewselect_template">
 					<param name="group_id" value="1004" />
+					<param name="view_disableable" value="!String.IsEqual(Container.ViewMode,$LOCALIZE[31242]) | Window.IsActive(skinsettings)" />
 					<param name="view_id" value="53" />
 					<param name="view_label" value="$LOCALIZE[31242]" />
 				</include>
 				<include content="1105_viewselect_template">
 					<param name="group_id" value="1005" />
+					<param name="view_disableable" value="!String.IsEqual(Container.ViewMode,$LOCALIZE[31243]) | Window.IsActive(skinsettings)" />
 					<param name="view_id" value="54" />
 					<param name="view_label" value="$LOCALIZE[31243]" />
 				</include>
 				<include content="1105_viewselect_template">
 					<param name="group_id" value="1006" />
+					<param name="view_disableable" value="!String.IsEqual(Container.ViewMode,$LOCALIZE[31250]) | Window.IsActive(skinsettings)" />
 					<param name="view_id" value="56" />
 					<param name="view_label" value="$LOCALIZE[31250]" />
 				</include>
-				<include content="1105_viewselect_template" condition="Window.IsActive(videos)">
+				<include content="1105_viewselect_template" condition="String.IsEqual(Window(home).Property(view_disable_mediawindow),videos)">
 					<param name="group_id" value="1007" />
+					<param name="view_disableable" value="!String.IsEqual(Container.ViewMode,$LOCALIZE[31260]) | Window.IsActive(skinsettings)" />
 					<param name="view_id" value="58" />
-					<param name="view_label" value="$LOCALIZE[31260] (experimental)" />
+					<param name="view_label" value="$LOCALIZE[31260]" />
 				</include>
 				<include content="1105_viewselect_template">
 					<param name="group_id" value="1008" />
+					<param name="view_disableable" value="!String.IsEqual(Container.ViewMode,$LOCALIZE[31259]) | Window.IsActive(skinsettings)" />
 					<param name="view_id" value="502" />
 					<param name="view_label" value="$LOCALIZE[31259]" />
 				</include>
 				<include content="1105_viewselect_template">
 					<param name="group_id" value="1009" />
+					<param name="view_disableable" value="!String.IsEqual(Container.ViewMode,$LOCALIZE[31261]) | Window.IsActive(skinsettings)" />
 					<param name="view_id" value="503" />
 					<param name="view_label" value="$LOCALIZE[31261]" />
 				</include>
 				<include content="1105_viewselect_template">
 					<param name="group_id" value="1010" />
+					<param name="view_disableable" value="!String.IsEqual(Container.ViewMode,$LOCALIZE[31262]) | Window.IsActive(skinsettings)" />
 					<param name="view_id" value="504" />
 					<param name="view_label" value="$LOCALIZE[31262]" />
 				</include>
@@ -192,7 +197,9 @@
 			
 		</control>
 		<include content="swan_debug_overlay">
-			<param name="textleft" value="$VAR[has_locked_content]
+			<param name="textleft" value="$INFO[Container.ViewMode]
+
+$VAR[has_locked_content]
 [B]locked views for content container[/B]
   - [COLOR red]*custom if container.content empty = view_locked_listing $INFO[skin.string(view_locked_listing)][/COLOR]
   - [COLOR green]*custom if container.content and some (plugin) path ? = view_locked_listing $INFO[skin.string(view_locked_nodiea)][/COLOR]
