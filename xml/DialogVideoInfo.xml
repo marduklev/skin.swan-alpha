@@ -23,25 +23,10 @@
 	</animation>
    
     <controls>
+	
+	<include content="videoinfo_fetch_OST_local" condition="!Skin.HasSetting(VideoInfo_Content_Library_OST)" />
 		
-		<control type="list" id="8999">
-			<description>soundtrack variable videoinfo_ost_lookup</description>
-			<include>HiddenContainer</include>
-			<visible>!Skin.HasSetting(VideoInfo_Content_Library_OST) + [Integer.IsGreater(Container(8999).NumItems,0) | Container(8999).IsUpdating]</visible>
-			<content limit="1">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22album%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%2C%7B%22field%22%3A%22type%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22soundtrack%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</content>
-		</control>
-			<!-- native cast force action button -->
-			<!-- 
-			<control type="button" id="8698">
-				<description>ctrl + action native cast</description>
-				adjsut <include>Action_CastMemberSearchForceOption</include>
-				- need fetch labels
-				<onleft>Control.Move(50,-1)</onleft>
-				<onright>Control.Move(50,1)</onright>
-				<include content="HiddenObject" />
-			</control>
-			-->
-		
+	
 		<control type="image">
 			<description>trailer dimmedbg</description>
 			<animation effect="fade" start="0" end="100" time="600">VisibleChange</animation>
@@ -719,7 +704,7 @@
 					
 					<include condition="!Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceInfo"/>
 					<include condition="Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceSelect"/>
-					
+					<include>Action_CastMemberSearchForceOption</include>
 					<content limit="15" target="videos">plugin://plugin.video.themoviedb.helper/?info=crew&amp;$VAR[videoinfo_tmdb_helper_type]&amp;$VAR[videoinfo_tmdb_helper_query]</content>
 				</include>
 				<!-- similiar -->

@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
-	<!-- 
-	<onclick condition="[!System.GetBool(videolibrary.groupmoviesets) | String.IsEqual(Container($PARAM[id]).ListItem.dbtype,tvshow)] + Skin.HasSetting(DialogItemsForceInfo)">ReplaceWindow(Videos,$INFO[Container($PARAM[id]).ListItem.folderpath])</onclick>
-	-->
+	
+	<include name="videoinfo_fetch_OST_local">
+		<control type="list" id="8999">
+			<description>soundtrack variable videoinfo_ost_lookup</description>
+			<include>HiddenContainer</include>
+			<visible>Integer.IsGreater(Container(8999).NumItems,0) | Container(8999).IsUpdating</visible>
+			<content limit="1">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22album%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%2C%7B%22field%22%3A%22type%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22soundtrack%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</content>
+		</control>
+	</include>
 	<include name="Action_ItemForceInfo">
 		<onclick>Dialog.Close(movieinformation)</onclick>
 		<onclick condition="String.IsEqual(Container($PARAM[id]).ListItem.dbtype,movie) + [!System.GetBool(videolibrary.groupmoviesets) | [System.GetBool(videolibrary.groupmoviesets) + String.IsEmpty(Container($PARAM[id]).ListItem.SetId)]]">ReplaceWindow(Videos,videodb://movies/titles/$INFO[Container($PARAM[id]).ListItem.dbid])</onclick>
@@ -16,7 +22,6 @@
 		<onclick>Dialog.Close(movieinformation)</onclick>
 		<onclick condition="String.IsEqual(Container($PARAM[id]).ListItem.dbtype,tvshow)">ReplaceWindow(Videos,videodb://tvshows/titles/$INFO[Container($PARAM[id]).ListItem.dbid]/)</onclick> 
 	</include>
-		<!-- <onclick condition="String.IsEqual(Container($PARAM[id]).ListItem.dbtype,movie)">ReplaceWindow(Videos,$INFO[Container($PARAM[id]).ListItem.folderpath])</onclick> -->
 	
 	<!-- test avoid call via visible condition fail, use variable instead -->
 	<variable name="content_youtube_videoinfo">

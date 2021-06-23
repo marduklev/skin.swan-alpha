@@ -2,6 +2,11 @@
 <includes>
 
 	<!-- expresion autoset parenthesis 
+	REVISIT
+	because !(A + B) = !A | !B
+			!(A | B) = !A + !B 
+	
+	
 	e.g. $EXP[Has_Trailer] = [!String.IsEmpty(ListItem.Trailer) | [!String.IsEmpty(Window(home).Property(listitemtrailer)) + !String.IsEmpty(Window(home).Property(trailer_avail))]]
 	-->
 
@@ -63,7 +68,7 @@
 	!String.IsEmpty(Network.IPAddress)
 	!String.EndsWith(Network.LinkState,$LOCALIZE[15208]] not connected
 	-->
-	<expression name="IsOfflineMode">[String.EndsWith(Network.LinkState,$LOCALIZE[15208]) + String.IsEmpty(Network.IPAddress)]</expression>
+	<expression name="IsOfflineMode">String.EndsWith(Network.LinkState,$LOCALIZE[15208]) + String.IsEmpty(Network.IPAddress)</expression>
 	
 	<expression name="ListItemClearLogo_IsEmpty">
         String.IsEmpty(ListItem.Art(albumartist.clearlogo)) + 

@@ -8,6 +8,7 @@
     <onunload>Skin.Reset(SearchTerm)</onunload>
 	<controls>
         
+		<!-- really need get menu to get cond visablility video vs music vs plugun lib items -->
 		
 		<!-- id s -->
 	<!-- 	https://kodi.wiki/view/List_of_built-in_functions#List_of_sort_methods
@@ -84,7 +85,7 @@
 		<!-- spotlight info WIP -->
 		<control type="group">
 			<visible>Skin.HasSetting(search_info_spotlight)</visible>
-			<control type="image">
+			<!-- <control type="image">
 				<fadetime>350</fadetime>
 				<width>1152</width>
 				<height>693</height>
@@ -92,7 +93,7 @@
 				<top>0</top>
 				<texture background="true" diffuse="diffuse/spotlightwidetopleftdiffuse.png">$VAR[netflixThumb]</texture>
 				<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
-			</control>
+			</control> -->
 			<control type="grouplist">
 				<orientation>vertical</orientation>
 				<itemgap>10</itemgap>
@@ -185,7 +186,7 @@
 				<scrolltime tween="quadratic">400</scrolltime>
                 <onup>300</onup>
                 <ondown>6000</ondown>
-				<!-- <onleft>ActivateWindow()</onleft> -->
+				<!-- <onleft>menu</onleft> -->
 				<orientation>vertical</orientation>
                 <itemgap>-45</itemgap>
                 <usecontrolcoords>true</usecontrolcoords>
@@ -194,14 +195,13 @@
 					<height>-20</height>
 				</control>
 				
-				<!-- MOVIES TITLES contains SearchString 21400 1411 $INFO[Skin.String(SearchTerm),$LOCALIZE[20338]-$LOCALIZE[369] $LOCALIZE[21400]  &quot; , &quot; ] $INFO[Container(5001).NumItems, (,)]  -->
-				<include content="Universal_ContainerHeader">
+				<include condition="!Skin.HasSetting(SkinSearch_Content_titles_in_movie)" content="Universal_ContainerHeader">
                     <param name="groupid" value="7501" />
                     <param name="id" value="5001" />
                     <param name="label" value="$INFO[Skin.String(SearchTerm),$LOCALIZE[342]  $LOCALIZE[1411]  &quot; , &quot;]" />
                     <visible>Control.IsVisible(5001)</visible>
                 </include>
-				<include content="Universal_Container">
+				<include condition="!Skin.HasSetting(SkinSearch_Content_titles_in_movie)" content="Universal_Container">
 					<param name="id" value="5001" />
 					<param name="visible" value="Integer.IsGreater(Container(5001).NumItems,0) | Container(5001).IsUpdating" />
 					<param name="type_height" value="365" />
@@ -214,14 +214,13 @@
 					<content target="videos">videodb://movies/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
 				</include>
 				
-				<!-- TV shows TITLES contains SearchString-->
-				<include content="Universal_ContainerHeader">
+				<include condition="!Skin.HasSetting(SkinSearch_Content_titles_in_tvshows)" content="Universal_ContainerHeader">
                     <param name="groupid" value="7502" />
                     <param name="id" value="5002" />
                     <param name="label" value="$INFO[Skin.String(SearchTerm),$LOCALIZE[20343]  $LOCALIZE[1411]  &quot; , &quot;]" />
                     <visible>Control.IsVisible(5002)</visible>
                 </include>
-                <include content="Universal_Container">
+                <include condition="!Skin.HasSetting(SkinSearch_Content_titles_in_tvshows)" content="Universal_Container">
 					<param name="id" value="5002" />
 					<param name="visible" value="Integer.IsGreater(Container(5002).NumItems,0) | Container(5002).IsUpdating" />
 					<param name="type_height" value="365" />
@@ -234,15 +233,13 @@
 					<content target="videos">videodb://tvshows/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D</content>
                 </include>
 				
-				<!-- Episodes TITLES contains SearchString-->
-                <include content="Universal_ContainerHeader">
+				<include condition="!Skin.HasSetting(SkinSearch_Content_titles_in_episodes)" content="Universal_ContainerHeader">
                     <param name="groupid" value="7503" />
                     <param name="id" value="5003" />
                     <param name="label" value="$INFO[Skin.String(SearchTerm),$LOCALIZE[20360]  $LOCALIZE[1411]  &quot; , &quot;]" />
                     <visible>Control.IsVisible(5003)</visible>
                 </include>
-				
-				<include content="Universal_Container">
+				<include condition="!Skin.HasSetting(SkinSearch_Content_titles_in_episodes)"  content="Universal_Container">
 					<param name="id" value="5003" />
 					<param name="visible" value="Integer.IsGreater(Container(5003).NumItems,0) | Container(5003).IsUpdating" />
 					<param name="type_height" value="365" />
@@ -259,13 +256,13 @@
 				msgctxt "#344"
 				msgid "Actors" 
 				-->
-                <include content="Universal_ContainerHeader">
+                <include condition="!Skin.HasSetting(SkinSearch_Content_actors_in_movie_tvshows)" content="Universal_ContainerHeader">
                     <param name="groupid" value="7508" />
                     <param name="id" value="5008" />
                     <param name="label" value="$INFO[Skin.String(SearchTerm),$LOCALIZE[342] &amp; $LOCALIZE[20343] - $LOCALIZE[1411] $LOCALIZE[344]  &quot; , &quot;]" />
 					<visible>Control.IsVisible(5008)</visible>
                 </include>
-                <include content="Universal_Container">
+                <include condition="!Skin.HasSetting(SkinSearch_Content_actors_in_movie_tvshows)" content="Universal_Container">
 					<param name="id" value="5008" />
 					<param name="visible" value="Integer.IsGreater(Container(5008).NumItems,0) | Container(5008).IsUpdating" />
 					<param name="type_height" value="365" />
@@ -283,13 +280,13 @@
 				msgctxt "#20348"
 				msgid "Directors"
 				msgstr "Regisseure" -->
-                <include content="Universal_ContainerHeader">
+                <include condition="!Skin.HasSetting(SkinSearch_Content_directors_in_movie_tvshows)" content="Universal_ContainerHeader">
                     <param name="groupid" value="7513" />
                     <param name="id" value="5013" />
                     <param name="label" value="$INFO[Skin.String(SearchTerm),$LOCALIZE[342] $LOCALIZE[31071] $LOCALIZE[20339]  &quot;,&quot;]" />
                     <visible>Control.IsVisible(5013)</visible>
                 </include>
-				<include content="Universal_Container">
+				<include condition="!Skin.HasSetting(SkinSearch_Content_directors_in_movie_tvshows)" content="Universal_Container">
 					<param name="id" value="5013" />
 					<param name="visible" value="Integer.IsGreater(Container(5013).NumItems,0) | Container(5013).IsUpdating" />
 					<param name="type_height" value="365" />
@@ -302,14 +299,13 @@
 					<content target="videos">videodb://movies/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22year%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22director%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
                     <content target="videos">videodb://tvshows/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22year%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22director%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D</content>
                 </include>
-				<!-- Episodes - ACTOR - contains SearchString-->
-                <include content="Universal_ContainerHeader">
+				<include condition="!Skin.HasSetting(SkinSearch_Content_actors_in_episodes)" content="Universal_ContainerHeader">
                     <param name="groupid" value="7517" />
                     <param name="id" value="5017" />
                     <param name="label" value="$INFO[Skin.String(SearchTerm),$LOCALIZE[20360] - $LOCALIZE[1411] $LOCALIZE[344]  &quot; , &quot;]" />
 					<visible>Control.IsVisible(5017)</visible>
                 </include>
-				<include content="Universal_Container">
+				<include condition="!Skin.HasSetting(SkinSearch_Content_actors_in_episodes)" content="Universal_Container">
 					<param name="id" value="5017" />
 					<param name="visible" value="Integer.IsGreater(Container(5017).NumItems,0) | Container(5017).IsUpdating" />
 					<param name="type_height" value="365" />
@@ -323,14 +319,13 @@
 					<content target="videos">videodb://tvshows/titles/-1/-1/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22actor%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</content>
                 </include>
 				
-				<!-- MOVIE and TV SHOW - GENRE - contains SearchString $LOCALIZE[515]-->
-                <include content="Universal_ContainerHeader">
+				<include condition="!Skin.HasSetting(SkinSearch_Content_genres_in_movies_tvshows)" content="Universal_ContainerHeader">
                     <param name="groupid" value="7507" />
                     <param name="id" value="5007" />
 					<param name="label" value="$INFO[Skin.String(SearchTerm),$LOCALIZE[135] $LOCALIZE[1411]  &quot; , &quot;]" />
                    <visible>Control.IsVisible(5007)</visible>
                 </include>
-				<include content="Universal_Container">
+				<include condition="!Skin.HasSetting(SkinSearch_Content_genres_in_movies_tvshows)"  content="Universal_Container">
 					<param name="id" value="5007" />
 					<param name="visible" value="Integer.IsGreater(Container(5007).NumItems,0) | Container(5007).IsUpdating" />
 					<param name="type_height" value="365" />
@@ -343,14 +338,14 @@
 					<content target="videos">videodb://movies/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22genre%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
                     <content target="videos">videodb://tvshows/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22genre%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D</content>
                 </include>
-				<!-- MOVIE and TV SHOW - YEAR - contains SearchString -->
-                <include content="Universal_ContainerHeader">
+				
+				<include condition="!Skin.HasSetting(SkinSearch_Content_years_in_movies_tvshows)"  content="Universal_ContainerHeader">
                     <param name="groupid" value="7510" />
                     <param name="id" value="5010" />
                     <param name="label" value="$INFO[Skin.String(SearchTerm),$LOCALIZE[562]  &quot; , &quot;  ]" />
                     <visible>Control.IsVisible(5010)</visible>
                 </include>
-				<include content="Universal_Container">
+				<include condition="!Skin.HasSetting(SkinSearch_Content_years_in_movies_tvshows)"  content="Universal_Container">
 					<param name="id" value="5010" />
 					<param name="visible" value="Integer.IsGreater(Container(5010).NumItems,0) | Container(5010).IsUpdating" />
 					<param name="type_height" value="365" />
@@ -363,14 +358,14 @@
 					<content target="videos">videodb://movies/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22year%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
                     <content target="videos">videodb://tvshows/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22year%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D</content>
                 </include>
-				<!-- MOVIE and TV SHOW - STUDIO - contains SearchString -->
-                <include content="Universal_ContainerHeader">
+				
+				<include condition="!Skin.HasSetting(SkinSearch_Content_studios_in_movies_tvshows)" content="Universal_ContainerHeader">
                     <param name="groupid" value="7511" />
                     <param name="id" value="5011" />
                     <param name="label" value="$INFO[Skin.String(SearchTerm),$LOCALIZE[20388] $LOCALIZE[1411]  &quot; , &quot;]" />
                     <visible>Control.IsVisible(5011)</visible>
                 </include>
-                <include content="Universal_Container">
+                <include condition="!Skin.HasSetting(SkinSearch_Content_studios_in_movies_tvshows)" content="Universal_Container">
 					<param name="id" value="5011" />
 					<param name="visible" value="Integer.IsGreater(Container(5011).NumItems,0) | Container(5011).IsUpdating" />
 					<param name="type_height" value="365" />
@@ -384,14 +379,13 @@
                     <content target="videos">videodb://tvshows/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22studio%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D</content>
                 </include>
 				
-				<!-- MOVIE and TV SHOW - COUNTRY - contains SearchString -->
-                <include content="Universal_ContainerHeader">
+				<include condition="!Skin.HasSetting(SkinSearch_Content_countries_in_movies_tvshows)" content="Universal_ContainerHeader">
                     <param name="groupid" value="7512" />
                     <param name="id" value="5012" />
                     <param name="label" value="$INFO[Skin.String(SearchTerm),$LOCALIZE[574] $LOCALIZE[1411]  &quot; , &quot;]" />
                     <visible>Control.IsVisible(5012)</visible>
                 </include>
-				<include content="Universal_Container">
+				<include condition="!Skin.HasSetting(SkinSearch_Content_countries_in_movies_tvshows)" content="Universal_Container">
 					<param name="id" value="5012" />
 					<param name="visible" value="Integer.IsGreater(Container(5012).NumItems,0) | Container(5012).IsUpdating" />
 					<param name="type_height" value="365" />
@@ -405,14 +399,13 @@
                    <!--  <content target="videos">videodb://tvshows/titles/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22country%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D</content> -->
 				</include>
 				
-				<!-- Albums -->
-                <include content="Universal_ContainerHeader">
+				<include condition="!Skin.HasSetting(SkinSearch_Content_title_in_albums)" content="Universal_ContainerHeader">
                     <param name="groupid" value="7504" />
                     <param name="id" value="5004" />
                     <param name="label" value="$INFO[Skin.String(SearchTerm),$LOCALIZE[132]  $LOCALIZE[1411]  &quot; , &quot;]" />
                     <visible>Control.IsVisible(5004)</visible>
                 </include>
-				<include content="Universal_Container">
+				<include condition="!Skin.HasSetting(SkinSearch_Content_title_in_albums)" content="Universal_Container">
 					<param name="id" value="5004" />
 					<param name="visible" value="Integer.IsGreater(Container(5004).NumItems,0) | Container(5004).IsUpdating" />
 					<param name="type_height" value="365" />
@@ -425,14 +418,13 @@
 					<content target="music">musicdb://albums/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22album%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</content>
 				</include>
                 
-				<!-- Artists -->
-                <include content="Universal_ContainerHeader">
+				<include condition="!Skin.HasSetting(SkinSearch_Content_title_in_artists)" content="Universal_ContainerHeader">
                     <param name="groupid" value="7505" />
                     <param name="id" value="5005" />
                     <param name="label" value="$INFO[Skin.String(SearchTerm),$LOCALIZE[133]  $LOCALIZE[1411]  &quot; , &quot;]" />
                     <visible>Control.IsVisible(5005)</visible>
                 </include>
-				<include content="Universal_Container">
+				<include condition="!Skin.HasSetting(SkinSearch_Content_title_in_artists)" content="Universal_Container">
 					<param name="id" value="5005" />
 					<param name="visible" value="Integer.IsGreater(Container(5005).NumItems,0) | Container(5005).IsUpdating" />
 					<param name="type_height" value="365" />
@@ -445,15 +437,13 @@
 					<param name="ls_overlay_visible" value="true" />
 					<content target="music">musicdb://artists/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22artists%22%7D</content>
                 </include>
-				
-				<!-- Albums by Artist focused befor/above -->
-                <include content="Universal_ContainerHeader">
+				<include condition="!Skin.HasSetting(SkinSearch_Content_albums_by_focused_artists)" content="Universal_ContainerHeader">
                     <param name="groupid" value="7506" />
                     <param name="id" value="5006" />
                     <param name="label" value="$INFO[Container(5005).ListItem.Label,$LOCALIZE[132] $LOCALIZE[31071] ,]" />
                     <visible>Control.IsVisible(5006)</visible>
                 </include>
-				<include content="Universal_Container">
+				<include condition="!Skin.HasSetting(SkinSearch_Content_albums_by_focused_artists)" content="Universal_Container">
 					<param name="id" value="5006" />
 					<param name="visible" value="!String.IsEmpty(Container(5005).ListItem.Label) + [Integer.IsGreater(Container(5006).NumItems,0) | Container(5006).IsUpdating]" />
 					<param name="type_height" value="365" />
@@ -466,14 +456,13 @@
 					<content target="music">musicdb://albums/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Container(5005).ListItem.Label]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</content>
                 </include>
 				
-				<!-- Song Title -->
-				<include content="Universal_ContainerHeader">
+				<include condition="Skin.HasSetting(SkinSearch_Content_title_in_songs)" content="Universal_ContainerHeader">
                     <param name="groupid" value="7577" />
                     <param name="id" value="5077" />
                     <param name="label" value="$INFO[Skin.String(SearchTerm),$LOCALIZE[134]  $LOCALIZE[1411]  &quot; , &quot;]"/>
                     <visible>Control.IsVisible(5077)</visible>
                 </include>
-				<include content="Universal_Container">
+				<include condition="Skin.HasSetting(SkinSearch_Content_title_in_songs)" content="Universal_Container">
 					<param name="id" value="5077" />
 					<param name="visible" value="Integer.IsGreater(Container(5077).NumItems,0) | Container(5077).IsUpdating" />
 					<param name="type_height" value="365" />
@@ -487,14 +476,13 @@
 					<content target="music">musicdb://songs/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22songs%22%7D</content>
                 </include>
 		
-				<!-- MUSICVIDEOS is SearchString in Title -->
-                <include content="Universal_ContainerHeader">
+				<include condition="Skin.HasSetting(SkinSearch_Content_title_in_musicvideos)" content="Universal_ContainerHeader">
                     <param name="groupid" value="7515" />
                     <param name="id" value="5015" />
                     <param name="label" value="$INFO[Skin.String(SearchTerm),[CAPITALIZE]$LOCALIZE[36909][/CAPITALIZE]  $LOCALIZE[1411]  &quot; , &quot;]" />
                    <visible>Control.IsVisible(5015)</visible>
                 </include>
-				<include content="Universal_Container">
+				<include condition="Skin.HasSetting(SkinSearch_Content_title_in_musicvideos)" content="Universal_Container">
 					<param name="id" value="5015" />
 					<param name="visible" value="Integer.IsGreater(Container(5015).NumItems,0) | Container(5015).IsUpdating" />
 					<param name="type_height" value="365" />
@@ -508,14 +496,13 @@
 					<content target="videos">videodb://musicvideos/titles/?xsp=%7b%22order%22%3a%7b%22direction%22%3a%22ascending%22%2c%22ignorefolders%22%3a0%2c%22method%22%3a%22sorttitle%22%7d%2c%22rules%22%3a%7b%22and%22%3a%5b%7b%22field%22%3a%22title%22%2c%22operator%22%3a%22contains%22%2c%22value%22%3a%5b%22$INFO[Skin.String(SearchTerm)]%22%5d%7d%5d%7d%2c%22type%22%3a%22musicvideos%22%7d</content>
                 </include>
 		
-				<!-- MUSICVIDEOS is SearchString in Artist -->
-                <include content="Universal_ContainerHeader">
+				<include condition="!Skin.HasSetting(SkinSearch_Content_artist_in_musicvideos)" content="Universal_ContainerHeader">
                     <param name="groupid" value="7516" />
                     <param name="id" value="5016" />
                     <param name="label" value="$INFO[Skin.String(SearchTerm),[CAPITALIZE]$LOCALIZE[36909][/CAPITALIZE] - $LOCALIZE[19159] $LOCALIZE[133]  &quot; , &quot; ]" />
                 <visible>Control.IsVisible(5016)</visible>
                 </include>
-				<include content="Universal_Container">
+				<include condition="!Skin.HasSetting(SkinSearch_Content_artist_in_musicvideos)" content="Universal_Container">
 					<param name="id" value="5016" />
 					<param name="visible" value="Integer.IsGreater(Container(5016).NumItems,0) | Container(5016).IsUpdating" />
 					<param name="type_height" value="365" />
@@ -529,14 +516,13 @@
 					<content target="videos">videodb://musicvideos/titles/?xsp=%7b%22order%22%3a%7b%22direction%22%3a%22ascending%22%2c%22ignorefolders%22%3a0%2c%22method%22%3a%22sorttitle%22%7d%2c%22rules%22%3a%7b%22and%22%3a%5b%7b%22field%22%3a%22artist%22%2c%22operator%22%3a%22contains%22%2c%22value%22%3a%5b%22$INFO[Skin.String(SearchTerm)]%22%5d%7d%5d%7d%2c%22type%22%3a%22musicvideos%22%7d</content>
                 </include>
 				
-				<!-- youtube -->
-                <include content="Universal_ContainerHeader">
+				<include condition="!Skin.HasSetting(SkinSearch_Content_youtube) + [!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.youtube)]" content="Universal_ContainerHeader">
                     <param name="groupid" value="7509" />
                     <param name="id" value="5009" />
                     <param name="label" value="$INFO[Skin.String(SearchTerm),$LOCALIZE[31180] [CAPITALIZE]$LOCALIZE[36913][/CAPITALIZE]  $LOCALIZE[1411]  &quot; , &quot;]" />
                     <visible>Control.IsVisible(5009)</visible>
                 </include>
-                <include condition="!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.youtube)" content="Universal_Container">
+                <include condition="!Skin.HasSetting(SkinSearch_Content_youtube) + [!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.youtube)]" content="Universal_Container">
 					<param name="id" value="5009" />
 					<param name="visible" value="Integer.IsGreater(Container(5009).NumItems,0) | Container(5009).IsUpdating" />
 					<param name="type_height" value="365" />
@@ -549,6 +535,31 @@
 					<content target="videos" sortby="file" limit="25">plugin://plugin.video.youtube/search/?q=$INFO[Skin.String(SearchTerm)]</content>
                     <visible>!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.youtube)</visible>
                 </include>
+				
+				
+				<include condition="!Skin.HasSetting(SkinSearch_Content_amazonVOD) + [!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.amazon-test)]" content="Universal_ContainerHeader">
+                    <param name="groupid" value="7530" />
+                    <param name="id" value="5030" />
+                    <param name="label" value="$INFO[Skin.String(SearchTerm),$LOCALIZE[31180] [CAPITALIZE]$LOCALIZE[36913][/CAPITALIZE]  $ADDON[plugin.video.amazon-test 30050]  &quot; , &quot;]" />
+                    <visible>Control.IsVisible(5030)</visible>
+                </include>
+                <include condition="!Skin.HasSetting(SkinSearch_Content_amazonVOD) + [!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.amazon-test)]" content="Universal_Container">
+					<param name="id" value="5030" />
+					<param name="visible" value="Integer.IsGreater(Container(5030).NumItems,0) | Container(5030).IsUpdating" />
+					<param name="type_height" value="365" />
+					<param name="tags_visible" value="true" />
+					<param name="layout_height" value="355" />
+					<param name="layout_width" value="490" />
+					<param name="itemheight" value="280" />
+					<param name="itemwidth" value="476" />
+					<param name="layout" value="landscape" />
+					<content target="videos" sortby="file" limit="10">plugin://plugin.video.amazon-test/?mode=Search&amp;searchstring=$INFO[Skin.String(SearchTerm)]</content>
+                    <visible>!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.amazon-test)</visible>
+                </include>
+				
+				<!-- netflix -->
+				<!-- <content target="videos" sortby="file" limit="25">plugin://plugin.video.netflix/directory/search/</content> -->
+					
 		
 				<!-- Addons -->
                 <include content="Universal_ContainerHeader">

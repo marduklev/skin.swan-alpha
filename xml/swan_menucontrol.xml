@@ -874,6 +874,7 @@
 				<include content="PreMenucontrol_RadioButton">
 					<param name="radiotexture" value="buttons/search" />
 				</include>
+				<onclick>ClearProperty(menucontrol_active,home)</onclick>
 				<onclick condition="!String.IsEmpty(Skin.String(SearchTerm))">Skin.Reset(SearchTerm)</onclick>
 				<onclick>Skin.SetString(SearchTerm)</onclick>
 				<onclick>ActivateWindow(1120,return)</onclick>
@@ -1908,7 +1909,13 @@ msgstr "Video-Wiedergabelisten"
 				<selected>[Control.IsVisible(503) + Skin.HasSetting(view_503_hide_cast)] | [Control.IsVisible(504) + Skin.HasSetting(view_504_hide_cast)]</selected>
 			</control>
 		
-		
+			<control type="radiobutton" id="4040">
+				<include>Menucontrol_RadioButton</include>
+				<label>View_58_DisableOnlineTrailers</label>
+				<visible>Control.IsVisible(58)</visible>
+				<onclick>Skin.ToggleSetting(View_58_DisableOnlineTrailers)</onclick>
+				<selected>Skin.HasSetting(View_58_DisableOnlineTrailers)</selected>
+			</control>
 			<control type="radiobutton" id="4041">
 				<include>Menucontrol_RadioButton</include>
 				<label>Show Plot right</label>
@@ -2320,7 +2327,7 @@ msgstr "Video-Wiedergabelisten"
 			<icon>$INFO[Skin.String(mainmenuitem$PARAM[nr]_thumb)]</icon>
 			<property name="fanart">$INFO[Skin.String(mainmenuitem$PARAM[nr]_fanart)]</property>
 			<property name="containerpath">$INFO[Skin.String(mainmenuitem$PARAM[nr]_path)]</property>
-			<onclick condition="String.IsEqual(Skin.String(mainmenuitem$PARAM[nr]_path),1120)">Skin.SetString(SearchTerm)</onclick>   
+			<onclick condition="String.IsEqual(Skin.String(mainmenuitem$PARAM[nr]_target),1120)">Skin.SetString(SearchTerm)</onclick>   
 			<onclick condition="!String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_executebuiltin))">$INFO[Skin.String(mainmenuitem$PARAM[nr]_executebuiltin)]</onclick>
 			<onclick condition="String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_path))">ActivateWindow($INFO[Skin.String(mainmenuitem$PARAM[nr]_target)],return)</onclick>
 			<onclick condition="!String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_path))">ActivateWindow($INFO[Skin.String(mainmenuitem$PARAM[nr]_target),,$COMMA]$INFO[Skin.String(mainmenuitem$PARAM[nr]_path)],return)</onclick>
