@@ -540,7 +540,7 @@
 				<include condition="!Skin.HasSetting(SkinSearch_Content_amazonVOD) + [!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.amazon-test)]" content="Universal_ContainerHeader">
                     <param name="groupid" value="7530" />
                     <param name="id" value="5030" />
-                    <param name="label" value="$INFO[Skin.String(SearchTerm),$LOCALIZE[31180] [CAPITALIZE]$LOCALIZE[36913][/CAPITALIZE]  $ADDON[plugin.video.amazon-test 30050]  &quot; , &quot;]" />
+                    <param name="label" value="$INFO[Skin.String(SearchTerm),$ADDON[plugin.video.amazon-test 30050] $LOCALIZE[36913] $LOCALIZE[1411] &quot; , &quot;]" />
                     <visible>Control.IsVisible(5030)</visible>
                 </include>
                 <include condition="!Skin.HasSetting(SkinSearch_Content_amazonVOD) + [!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.amazon-test)]" content="Universal_Container">
@@ -553,8 +553,18 @@
 					<param name="itemheight" value="280" />
 					<param name="itemwidth" value="476" />
 					<param name="layout" value="landscape" />
-					<content target="videos" sortby="file" limit="10">plugin://plugin.video.amazon-test/?mode=Search&amp;searchstring=$INFO[Skin.String(SearchTerm)]</content>
+					<content target="videos" sortby="file" limit="25">plugin://plugin.video.amazon-test/?mode=Search&amp;searchstring=$INFO[Skin.String(SearchTerm)]</content>
                     <visible>!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.amazon-test)</visible>
+					<content>
+						<item>
+							<visible>!Container(5030).IsUpdating</visible>
+							<label>More Results for $INFO[Skin.String(SearchTerm),&quot; , &quot;] on</label>
+							<label2>$ADDON[plugin.video.amazon-test 30050]</label2>
+							<icon>$INFO[System.AddonIcon(plugin.video.amazon-test)]</icon>
+							<thumb>$INFO[Window(home).Property(CastMemberThumb)]</thumb>
+							<onclick>ReplaceWindow(videos,plugin://plugin.video.amazon-test/?mode=Search&amp;searchstring=$INFO[Skin.String(SearchTerm)])</onclick>
+						</item>
+					</content>
                 </include>
 				
 				<!-- netflix -->
