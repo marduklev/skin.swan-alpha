@@ -12,7 +12,7 @@
 
 	<expression name="Has_Trailer">!String.IsEmpty(ListItem.Trailer) | [!String.IsEmpty(Window(home).Property(listitemtrailer)) + !String.IsEmpty(Window(home).Property(trailer_avail))]</expression>
 	<!-- BG -->
-	<expression name="IsNetflixLayout">![Window.IsActive(musicinformation) | Window.IsActive(songinformation) | Window.IsActive(movieinformation) | Window.IsActive(addoninformation) | Window.IsActive(pvrguideinfo) | Window.IsActive(pvrrecordinginfo) | Window.IsActive(pictureinfo) | Window.IsVisible(script-embuary-video.xml) | Window.IsVisible(script-embuary-person.xml)] + 
+	<expression name="Spotlight_Layout">![Window.IsActive(musicinformation) | Window.IsActive(songinformation) | Window.IsActive(movieinformation) | Window.IsActive(addoninformation) | Window.IsActive(pvrguideinfo) | Window.IsActive(pvrrecordinginfo) | Window.IsActive(pictureinfo) | Window.IsVisible(script-embuary-video.xml) | Window.IsVisible(script-embuary-person.xml)] + 
         [[Window.IsActive(home) + String.IsEqual(Skin.String(HomeLayout),Spotlight)] |
         [!Window.IsActive(home) + [Control.IsVisible(58) | Control.IsVisible(503) | Control.IsVisible(504)]]]
 	</expression>
@@ -23,7 +23,7 @@
 	
 	<expression name="Scrollbar_Lib_Horizontal">Control.IsVisible(58) | Control.IsVisible(503) | Control.IsVisible(504)</expression>
 	
-	<expression name="IsSpotlight_View">[Window.Is(videos) | Window.Is(music)] + [Control.IsVisible(58) | Control.IsVisible(59) | Control.IsVisible(503)| Control.IsVisible(504)]</expression>
+	<expression name="Spotlight_ViewType">[Window.Is(videos) | Window.Is(music)] + [Control.IsVisible(58) | Control.IsVisible(59) | Control.IsVisible(503)| Control.IsVisible(504)]</expression>
 	
 	<expression name="IsHome">
 		Window.IsActive(home) + ![Window.IsActive(musicinformation) | Window.IsActive(songinformation) | Window.IsActive(movieinformation) | Window.IsActive(addoninformation) | Window.IsActive(pvrguideinfo) | Window.IsActive(pvrrecordinginfo) | Window.IsActive(pictureinfo) | Window.IsVisible(script-embuary-video.xml) | Window.IsVisible(script-embuary-person.xml) | Window.IsVisible(script-embuary-image.xml)]
@@ -34,7 +34,7 @@
 	[[Window.IsActive(home) + !String.IsEqual(Skin.String(HomeLayout),Spotlight)] |
 	[!Window.IsActive(home) + !Control.IsVisible(58)]]
 	</expression>
-	<!-- Content Container.Content(foos) | -->
+	
 	<expression name="IsTVShow">String.IsEqual(ListItem.DBTYPE,tvshow) | String.IsEqual(ListItem.Property(DBTYPE),tvshow) | String.IsEqual(Window(Home).Property(ListItem.DBTYPE,tvshow)) | String.IsEqual(Window(Home).Property(ListItem.Property(DBTYPE)),tvshow)</expression>
 	<expression name="IsSeason">String.IsEqual(ListItem.DBTYPE,season) | String.IsEqual(ListItem.Property(DBTYPE),season) | String.IsEqual(Window(Home).Property(ListItem.DBTYPE,season)) | String.IsEqual(Window(Home).Property(ListItem.Property(DBTYPE)),season)</expression>
 	<expression name="IsEpisode">String.IsEqual(ListItem.DBTYPE,episode) | String.IsEqual(ListItem.Property(DBTYPE),episode) | String.IsEqual(Window(Home).Property(ListItem.DBTYPE,episode))</expression>
@@ -42,14 +42,11 @@
 	<expression name="IsArtist">String.IsEqual(ListItem.DBTYPE,artist) | String.IsEqual(ListItem.Property(DBTYPE),artist) | String.IsEqual(Window(Home).Property(ListItem.DBTYPE,artist)) | String.IsEqual(Window(Home).Property(ListItem.Property(DBTYPE)),artist)</expression>
 	<expression name="IsAlbum">String.IsEqual(ListItem.DBTYPE,album) | String.IsEqual(ListItem.Property(DBTYPE),album) | String.IsEqual(Window(Home).Property(ListItem.DBTYPE,album)) | String.IsEqual(Window(Home).Property(ListItem.Property(DBTYPE)),album)</expression>
 	<expression name="IsMovieSet">Container.Content(sets) | String.IsEqual(ListItem.DBTYPE,set) | String.IsEqual(ListItem.Property(DBTYPE),set) | String.IsEqual(Window(Home).Property(ListItem.DBTYPE,set)) | String.IsEqual(Window(Home).Property(ListItem.Property(DBTYPE)),set)</expression>
-	
 	<expression name="IsSong">String.IsEqual(ListItem.DBTYPE,song) | String.IsEqual(ListItem.Property(DBTYPE),song) | String.IsEqual(Window(Home).Property(ListItem.DBTYPE,song)) | String.IsEqual(Window(Home).Property(ListItem.Property(DBTYPE)),song)</expression>
 	<expression name="IsMusicVideo">String.IsEqual(ListItem.dbtype,musicvideo) | String.IsEqual(ListItem.Property(dbtype),musicvideo) | String.IsEqual(Window(Home).Property(ListItem.dbtype,musicvideo))</expression>
 	
 	<expression name="Infodialog_IsActive">Window.IsActive(musicinformation) | Window.IsActive(songinformation) | Window.IsActive(movieinformation) | Window.IsActive(addoninformation) | Window.IsActive(pvrguideinfo) | Window.IsActive(pvrrecordinginfo) | Window.IsActive(pictureinfo) | Window.IsVisible(script-embuary-video.xml) | Window.IsVisible(script-embuary-person.xml) | Window.IsVisible(script-embuary-image.xml)</expression>
 	<expression name="embinfodialogactive">Window.IsVisible(script-embuary-video.xml) | Window.IsVisible(script-embuary-person.xml) | Window.IsVisible(script-embuary-image.xml)</expression>
-	
-	<expression name="sidebar_visible">ControlGroup(9000).HasFocus | Control.HasFocus(6130) | Control.HasFocus(6131) | Window.IsActive(MyPlaylist.xml)</expression>
 	
 	<expression name="ListView_UseItemOverlay">
 		[control.isvisible(50) + skin.hassetting(View_50_UseItemIndicatorOverlay)] | [control.isvisible(56) + skin.hassetting(View_56_UseItemIndicatorOverlay)]
@@ -62,7 +59,7 @@
 	</expression>
 			
 	<!-- trailer playing -->
-	<expression name="TrailerIsPlaying">[Player.HasVideo + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))]</expression>
+	<expression name="TrailerIsPlaying">Player.HasVideo + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</expression>
 	
 	<!-- avoid online lookups if offline , 
 	!String.IsEmpty(Network.IPAddress)
@@ -79,7 +76,7 @@
 	</expression>
 	
 	<!-- Player -->
-	<expression name="IsSeek">[Player.Seeking | Player.DisplayAfterSeek | !String.IsEmpty(Player.SeekNumeric)]</expression>
+	<expression name="IsSeek">Player.Seeking | Player.DisplayAfterSeek | !String.IsEmpty(Player.SeekNumeric)</expression>
 	
 	<expression name="PlayerClearLogo_IsEmpty">
         String.IsEmpty(Player.Art(albumartist.clearlogo)) + 
@@ -88,9 +85,5 @@
         String.IsEmpty(Player.Art(clearlogo))
 	</expression>
 	
-	
-	<expression name="HiddentagPanel">[[Window.Is(home) + [String.StartsWith(Skin.String(color_home_widgetitem_itemtag_bgpanel_fo),00) | String.EndsWith(Skin.String(color_home_widgetitem_itemtag_bgpanel_fo),one)]] | [!Window.Is(home) + [String.StartsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),00) | String.EndsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),one)]]]</expression>
-	
-	
-	
+	<expression name="HiddentagPanel">[Window.Is(home) + [String.StartsWith(Skin.String(color_home_widgetitem_itemtag_bgpanel_fo),00) | String.EndsWith(Skin.String(color_home_widgetitem_itemtag_bgpanel_fo),one)]] | [!Window.Is(home) + [String.StartsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),00) | String.EndsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),one)]]</expression>	
 </includes>

@@ -385,7 +385,7 @@ LatestAlbum.[1-10].Title, LatestAlbum.[1-10].Artist, LatestAlbum.[1-10].Year, La
 			<include>HiddenObject</include>
 			<control type="image" id="99006">
 				<texture background="true">$VAR[FanartBackground]</texture>
-				<visible>Skin.HasSetting(ShowFanartBackground) | $EXP[IsNetflixLayout] | Window.IsActive(filebrowser)</visible>
+				<visible>Skin.HasSetting(ShowFanartBackground) | $EXP[Spotlight_Layout] | Window.IsActive(filebrowser)</visible>
 			</control>
 			<include condition="Skin.HasSetting(ShowFanartBackground) + Skin.HasSetting(EnableRotatingExtraFanart)">backgroundbuilding_rotating_mutliplefanart</include>
 		</control>
@@ -401,7 +401,7 @@ LatestAlbum.[1-10].Title, LatestAlbum.[1-10].Artist, LatestAlbum.[1-10].Year, La
 				<aspectratio align="center" aligny="center">scale</aspectratio>
 				<fadetime>600</fadetime>
 				<include condition="!Skin.HasSetting(bg_use_coloredglass)" content="colordiffuse_layer2_tint" />
-				<visible>!$EXP[IsNetflixLayout]</visible>
+				<visible>!$EXP[Spotlight_Layout]</visible>
 				<animation effect="zoom" start="110" end="130" center="auto" time="10000" tween="cubic" easing="inout" pulse="true" condition="Skin.HasSetting(BackgroundAnimation) | Window.Is(settings)">Conditional</animation>
 				<animation effect="slide" start="-10,-10" end="10,10" time="8000" tween="cubic" easing="inout" pulse="true" condition="Skin.HasSetting(BackgroundAnimation) | Window.Is(settings)">Conditional</animation>
 			</control>
@@ -409,7 +409,7 @@ LatestAlbum.[1-10].Title, LatestAlbum.[1-10].Artist, LatestAlbum.[1-10].Year, La
 				<description>Layer2 pellucidoverlay - if artwork tint is unwished</description>
 				<depth>DepthBackground</depth>
 				<visible>Skin.HasSetting(bg_use_coloredglass)</visible>
-				<visible>!$EXP[IsNetflixLayout]</visible>
+				<visible>!$EXP[Spotlight_Layout]</visible>
 				<colordiffuse>$VAR[color_universal_background_layer2]</colordiffuse>
 				<texture>$VAR[texture_layer2_coloredglassoverlay]</texture>
 			</control>
@@ -445,7 +445,7 @@ use this include pr add variable fpr diffuse textures
 			
 			<control type="group">
 				<include>VideoFullscreenBG</include>
-				
+				<visible>[$EXP[Spotlight_Layout] + Skin.HasSetting(spotlight_blur)] | !$EXP[Spotlight_Layout]</visible>
 				<control type="image">
 				<animation effect="fade" end="40" condition="Control.IsVisible(503) | Control.IsVisible(504)">conditional</animation>
 					<description>conditional diffuse - blurred bg overlay img</description>
@@ -457,7 +457,7 @@ use this include pr add variable fpr diffuse textures
 					<description>Layer2 Artwork Overlay - if artwork tint is unwished</description>
 					<depth>DepthBackground</depth>
 					<visible>Skin.HasSetting(bg_use_coloredglass)</visible>
-					<visible>!$EXP[IsNetflixLayout]</visible>
+					<visible>!$EXP[Spotlight_Layout]</visible>
 					<colordiffuse>$VAR[color_global_background_layer2]</colordiffuse>
 					<texture>colors/white70.png</texture>
 				</control>
@@ -475,18 +475,25 @@ use this include pr add variable fpr diffuse textures
 					<value></value>
 				</variable>
 	
+	<!-- 
+	<visible>!$EXP[Spotlight_ViewType] | $EXP[Infodialog_IsActive]</visible>
+	=
+	<visible>!$EXP[Spotlight_Layout]</visible>
+	-->
+			
+	
 	<include name="backgroundbuilding_layer3">
 		<control type="image">
 			<description>temp disabled for spotligth views, else share same image, maybe just optional share or disable in lib</description>
-			<visible>![$EXP[IsSpotlight_View]] | $EXP[Infodialog_IsActive]</visible>
+			<visible>!$EXP[Spotlight_Layout]</visible>
 			<depth>DepthBackground2</depth>
 			<texture>$VAR[backgroundbuilding_layer3_texture]</texture>
 			<colordiffuse>$VAR[backgroundbuilding_layer3_color]</colordiffuse>
 		</control>
 	</include>
 	<!-- 
-	backgroundbuilding_layer3 unerheblich <animation effect="fade" start="100" end="0" time="300" condition="[Window.IsActive(home) + String.IsEqual(Skin.String(HomeLayout),Spotlight) + Player.HasVideo] | [!Window.IsActive(home) + $EXP[IsNetflixLayout] + Player.HasVideo]">Conditional</animation>
-	backgroundbuilding_layer3 temp enabled - also check traileroverlayspotlight img var <visible>![$EXP[IsSpotlight_View]]</visible>
+	backgroundbuilding_layer3 unerheblich <animation effect="fade" start="100" end="0" time="300" condition="[Window.IsActive(home) + String.IsEqual(Skin.String(HomeLayout),Spotlight) + Player.HasVideo] | [!Window.IsActive(home) + $EXP[Spotlight_Layout] + Player.HasVideo]">Conditional</animation>
+	backgroundbuilding_layer3 temp enabled - also check traileroverlayspotlight img var <visible>![$EXP[Spotlight_ViewType]]</visible>
 	-->
 				
 	
@@ -651,8 +658,8 @@ use this include pr add variable fpr diffuse textures
 	</include>
 	
 	<variable name="layer2_image">
-		<value condition="[$EXP[IsCurrentyPlayingCommon]] + !Skin.HasSetting(bg_use_coloredglass)">colors/white70.png</value>
-		<value condition="[$EXP[IsCurrentyPlayingCommon]] + Skin.HasSetting(bg_use_coloredglass)">colors/none.png</value>
+		<value condition="$EXP[IsCurrentyPlayingCommon] + !Skin.HasSetting(bg_use_coloredglass)">colors/white70.png</value>
+		<value condition="$EXP[IsCurrentyPlayingCommon] + Skin.HasSetting(bg_use_coloredglass)">colors/none.png</value>
 		<value condition="!String.IsEmpty(ListItem.Art(animatedfanart)) + Skin.HasSetting(animatedfanart)">$INFO[ListItem.Art(animatedfanart)]</value>
 		<value condition="Control.IsVisible(99007) + !String.IsEmpty(Control.GetLabel(99007))">$INFO[Control.GetLabel(99007)]</value>
 		<value condition="Control.IsVisible(99006) + !String.IsEmpty(Control.GetLabel(99006)) + !Skin.HasSetting(BlurEnabled)">$INFO[Control.GetLabel(99006)]</value>
