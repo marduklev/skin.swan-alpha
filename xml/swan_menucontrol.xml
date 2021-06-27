@@ -2327,6 +2327,7 @@ msgstr "Video-Wiedergabelisten"
 			<icon>$INFO[Skin.String(mainmenuitem$PARAM[nr]_thumb)]</icon>
 			<property name="fanart">$INFO[Skin.String(mainmenuitem$PARAM[nr]_fanart)]</property>
 			<property name="containerpath">$INFO[Skin.String(mainmenuitem$PARAM[nr]_path)]</property>
+			<property name="target">$INFO[Skin.String(mainmenuitem$PARAM[nr]_target)]</property>
 			<onclick condition="String.IsEqual(Skin.String(mainmenuitem$PARAM[nr]_target),1120)">Skin.SetString(SearchTerm)</onclick>   
 			<onclick condition="!String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_executebuiltin))">$INFO[Skin.String(mainmenuitem$PARAM[nr]_executebuiltin)]</onclick>
 			<onclick condition="String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_path))">ActivateWindow($INFO[Skin.String(mainmenuitem$PARAM[nr]_target)],return)</onclick>
@@ -2342,16 +2343,65 @@ msgstr "Video-Wiedergabelisten"
 	
 	<include name="Menucontrol_Home_MenuTiles">
 			
+		
+		<control type="group">
+			<!-- option a|b using big window
+			<width>1800</width>
+			<height>700</height>
+			<centerleft>50%</centerleft>
+			<centertop>50%</centertop>
+			-->
+			<visible>false</visible>
+			<control type="videowindow" />
+			<control type="image">
+				option b overlay common if big window
+			</control>
+		</control>
+		
+		
+		
+		
 		<control type="multiimage">
+			<!-- 
+			option a if using big window
+			<animation effect="fade" start="100" end="30" time="250" condition="$EXP[IsCurrentyPlayingCommon]">conditional</animation>
+			-->
+			option b hide if using big window and use static image overlay instead
+			
+			<!-- <visible>!$EXP[IsCurrentyPlayingCommon] + Skin.HasSetting(use gadget)</visible> -->
+			 
+			
+			<!-- <animation effect="fade" start="100" end="10" time="250" condition="$EXP[IsCurrentyPlayingCommon]">conditional</animation> -->
 			<depth>DepthBackground</depth>
 			<fadetime>3000</fadetime>
 			<imagepath>$VAR[home_tiles_background]</imagepath>
 		</control>
+		
+		<control type="group">
+			<!--gadget -->
+			<visible>$EXP[IsCurrentyPlayingCommon]</visible>
+			<bottom>0</bottom>
+			<height>215</height>
+			<width>100%</width>
+			<centerleft>50%</centerleft>
+			<control type="image">
+				<texture colordiffuse="dd131313">colors/white.png</texture>
+			</control>
+			<control type="videowindow">
+				<top>15</top>
+				<height>190</height>
+			</control>
 			
+			<control type="">
+			</control>
+			
+			
+		</control>
+		
 		<control type="group">
 		<animation effect="fade" start="100" end="0" time="350" condition="Window.IsActive(shutdownmenu)">conditional</animation>
 	
-			--- copy from ? - make include -->
+			--- copy from bg building xml? - make include -->
 			<control type="group">
 				<description>time and date weather</description>
 				<centerleft>50%</centerleft>
@@ -2443,13 +2493,30 @@ msgstr "Video-Wiedergabelisten"
 				<orientation>vertical</orientation>
 				<preloaditems>4</preloaditems>
 				<scrolltime tween="quadratic">400</scrolltime>
-				<centertop>55%</centertop>
+				<centertop>52%</centertop>
 				<centerleft>50%</centerleft>
-				<width>840</width>
-				<height>710</height>
-			get content as container on focus ?
-			suggested movies,shows etc ? big tile fade vis?
+				<!-- <include content="width" condition="Integer.IsGreater(Container(5555).NumItems,12)">
+					<param name="width" value="1470" />
+				</include>
+				<include content="width" condition="Integer.IsGreater(Container(5555).NumItems,10) + Integer.IsLessOrEqual(Container(5555).NumItems,12)">
+					<param name="width" value="1260" />
+				</include>
+				<include content="width" condition="Integer.IsGreater(Container(5555).NumItems,8) + Integer.IsLessOrEqual(Container(5555).NumItems,10)">
+					<param name="width" value="1050" />
+				</include>
+				<include content="width" condition="Integer.IsLessOrEqual(Container(5555).NumItems,8)">
+					<param name="width" value="840" />
+				</include> -->
+				<!-- <width>1680</width> 8 per row  greater 12 -->
 				
+				<!-- <width>1470</width> 7 per row  greater 12 -->
+				<width>1260</width> 6 per row - greater 10 equal 12
+				<!-- <width>1050</width> 5 per row - greater 8 equal 10 -->
+				<!-- <width>840</width> 4 per row - equal 8 or less -->
+				<height>680</height>
+			<!-- get content as container on focus ?
+			suggested movies,shows etc ? big tile fade vis?
+				 -->
 				<ondown>9000</ondown>
 				<itemlayout height="340" width="210">
 					
@@ -2538,53 +2605,44 @@ msgstr "Video-Wiedergabelisten"
 				<include content="home_mainmenu_content" />
 			</control>
 			
-			<!-- 
-			<control type="panel" id="5556">
-				<orientation>vertical</orientation>
-				<preloaditems>4</preloaditems>
-				<scrolltime tween="quadratic">400</scrolltime>
-				<bottom>150</bottom>
-				<centertop>85%</centertop>
-				<right>500</right>
-				<left>500</left>
-				<centerleft>50%</centerleft>
-				<height>720</height>
-			get content as container on focus ?
-			suggested movies,shows etc ? big tile fade vis?
-				
-				<ondown>9000</ondown>
-				<itemlayout height="340" width="210">
-					
-					<control type="group">
-						
-						<control type="textbox">
-							<top>190</top>
-							<align>center</align>
-							<aligny>center</aligny>
-							<height>90</height>
-							<label>$INFO[ListItem.Label]</label>
-							<textcolor>ff252525</textcolor>
-						</control>
-					</control>
-					
-				</itemlayout>
 			
-				<focusedlayout height="340" width="210">
-					<control type="group">
-						
-						<control type="textbox">
-							<top>190</top>
-							<align>center</align>
-							<aligny>center</aligny>
-							<height>90</height>
-							<label>$INFO[ListItem.Label]</label>
-							<textcolor>ff252525</textcolor>
-						</control>
-					</control>
-				</focusedlayout>
-				<content>$INFO[Container(5555).ListItem.Property(containerpath)]</content>
+			<!-- auto submenu 
+			wher to place and how to gain focus?
+			
+			<include content="Universal_Container">
+				<param name="type" value="panel" />
+				<param name="id" value="5556" />
+				<param name="type_height" value="150" />
+				<param name="layout_height" value="100" />
+				<param name="layout_width" value="120" />
+				<param name="itemheight" value="110" />
+				<param name="itemwidth" value="110" />
+				<param name="tags_visible" value="false" />
+				<param name="tagbgpanel_visible" value="false" />
+				<param name="layout" value="circle" />
+				<param name="visible" value="!String.IsEmpty(Container(5555).ListItem.Property(containerpath))" />
+				<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(5556).NumItems,0) | Container(5556).IsUpdating">Conditional</animation>
+				
+				<centerleft>50%</centerleft>
+				<centertop>80%</centertop>
+				<onback>5555</onback>
+				<ondown>5555</ondown>
+				<onup>5555</onup>
+				<content target="$INFO[Container(5555).ListItem.Property(target)]">$INFO[Container(5555).ListItem.Property(containerpath)]</content>
+			</include>
+			<control type="label">
+				<visible>Control.HasFocus(5556)</visible>
+				<align>center</align>
+				<centertop>80%</centertop>
+				<label>$INFO[Container(5556).ListItem.Label]   $INFO[Container(5556).ListItem.Label2]</label>
+				<width>1900</width>
+				<height>50</height>
+				<font>Montserrat_ExtraBold_40</font>
 			</control>
-			 -->
+			-->
+			
+			
+			
 		</control>		
 				
 			
