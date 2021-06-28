@@ -2398,6 +2398,17 @@ msgstr "Video-Wiedergabelisten"
 				<bordersize>1</bordersize>
 				<aspectratio align="center" aligny="center">keep</aspectratio>
 			</control>
+			<!-- <control type="image">
+				<decription>thumb artist n album centered</decription>
+				<visible>player.hasaudio</visible>
+				<top>15</top>
+				<height>190</height>
+				<width>342</width>
+				<centerleft>50%</centerleft>
+				<aspectratio scalediffuse="true" align="center" aligny="center">keep</aspectratio>
+				<texture diffuse="diffuse/compactdisk.png">$VAR[PlayerDisc]</texture>
+				<animation effect="rotate" end="-360" center="auto" time="4800" loop="true" reversible="false" condition="!Player.Paused">Conditional</animation>
+			</control> -->
 				
 			<control type="image">
 				<include content="left_width" condition="player.hasaudio">
@@ -2414,6 +2425,9 @@ msgstr "Video-Wiedergabelisten"
 				<bottom>10</bottom>
 				<aspectratio align="center" aligny="center">keep</aspectratio>
 			</control>
+			
+			
+			<!-- grouplist vertical -->
 			<control type="image">
 				<include content="left_width" condition="player.hasaudio">
 					<param name="width" value="775" />
@@ -2423,12 +2437,43 @@ msgstr "Video-Wiedergabelisten"
 					<param name="width" value="625" />
 					<param name="left" value="50" />
 				</include>
-				<texture diffuse="colors/white10.png" fallback="">$VAR[PlayerClearlogo]</texture>
+				<texture diffuse="colors/white.png" fallback="">$VAR[PlayerClearlogo]</texture>
 				<bordertexture>colors/none.png</bordertexture>
-				<top>15</top>
-				<bottom>10</bottom>
+				<top>0</top>
+				<bottom>60</bottom>
 				<aspectratio align="center" aligny="center">keep</aspectratio>
-			</control>	
+			</control>
+			<control type="label">
+				<visible>false</visible>
+				<height>240</height>
+				<include content="left_width" condition="player.hasaudio">
+					<param name="width" value="775" />
+					<param name="left" value="50" />
+				</include>
+				<include content="left_width" condition="!player.hasaudio">
+					<param name="width" value="625" />
+					<param name="left" value="50" />
+				</include>
+				<label>$INFO[Player.Title,[B],[/B]]</label>
+				<font>debugtiny</font>
+				<align>center</align>
+				<textcolor>cyan</textcolor>
+			</control>
+			<control type="label">
+				<visible>false</visible>
+				<height>50</height>
+				<include content="left_width" condition="player.hasaudio">
+					<param name="width" value="775" />
+					<param name="left" value="50" />
+				</include>
+				<include content="left_width" condition="!player.hasaudio">
+					<param name="width" value="625" />
+					<param name="left" value="50" />
+				</include>
+				<label>currently playing</label>
+				<align>center</align>
+				<textcolor>red</textcolor>
+			</control>
 			
 				<control type="grouplist" id="600">
 					<description>onback is handled by kodi itsel and cant used for override action - buttons mostly copy paste from mplayer include - define colors</description>
@@ -2437,16 +2482,21 @@ meeh
 <animation effect="slide" start="0,0" end="0,-100" time="300">Focus</animation>
 <bottom>-100</bottom>					-->
 					<!-- <left>-50</left> -->
-					<include content="width" condition="player.hasaudio">
+					<include content="left_width" condition="!player.hasaudio">
 						<param name="width" value="750" />
+						<param name="left" value="0" />
+						<bottom>-10</bottom>
 					</include>
-					<include content="width" condition="!player.hasaudio">
+					<include content="left_width" condition="player.hasaudio">
 						<param name="width" value="700" />
+						<param name="left" value="80" />
+						<bottom>-10</bottom>
 					</include>
 					<animation effect="fade" start="100" end="0" condition="window.isvisible(1140)">conditional</animation>
-					<bottom>50</bottom>
 					<height>100</height>
-					<align>right</align>
+					<bottom>50</bottom>
+					
+					<align>center</align>
 					<orientation>horizontal</orientation>
 					<itemgap>15</itemgap>
 					<usecontrolcoords>true</usecontrolcoords>
@@ -2487,10 +2537,10 @@ meeh
 						<onclick>ActivateWindow(1140,return)</onclick>
 					</control>
 					
-					<control type="button" id="500">
+					<control type="button" id="6013">
 						<centertop>50%</centertop>
-						<width>45</width>
-						<height>45</height>
+						<width>50</width>
+						<height>50</height>
 						<label />
 						<texturefocus colordiffuse="$VAR[color_osdmusic_accent]">buttons/osd/fullscreen.png</texturefocus>
 						<texturenofocus colordiffuse="$VAR[color_osdmusic_secondary]">buttons/osd/fullscreen.png</texturenofocus>
@@ -2498,7 +2548,7 @@ meeh
 					</control>
 					
 					<include content="spacer_w">
-						<param name="visible" value="true"/>
+						<param name="visible" value="Player.HasAudio"/>
 						<param name="id" value="603"/>
 						<param name="gap" value="5"/>
 					</include>
@@ -2635,7 +2685,6 @@ meeh
 						<textcolor>$VAR[color_osdmusic_secondary]</textcolor>
 					</control>
 					<control type="progress">
-						<height>auto</height>
 						<centerleft>50%</centerleft>
 						<width>600</width>
 						<texturebg colordiffuse="$VAR[color_hub_menu_text_nf]">colors/white50.png</texturebg>
@@ -2646,6 +2695,8 @@ meeh
 						<info>Player.Progress</info>
 					</control>
 					<control type="label">
+						<visible>player.hasaudio + !string.isempty(musicplayer.artist)</visible>
+						
 						<height>auto</height>
 						<align>center</align>
 						<info>musicplayer.artist</info>
@@ -2653,9 +2704,20 @@ meeh
 						<textcolor>$VAR[color_osdmusic_secondary]</textcolor>
 					</control>
 					<control type="label">
+						<visible>player.hasaudio + !string.isempty(musicplayer.album)</visible>
+						
 						<height>auto</height>
 						<align>center</align>
 						<info>musicplayer.album</info>
+						<font>debugtiny</font>
+						<textcolor>$VAR[color_osdmusic_secondary]</textcolor>
+					</control>
+					<control type="label">
+						<visible>player.hasvideo + !string.isempty(Player.FinishTime)</visible>
+						
+						<height>auto</height>
+						<align>center</align>
+						<label>ENDS AT : $INFO[Player.FinishTime]</label>
 						<font>debugtiny</font>
 						<textcolor>$VAR[color_osdmusic_secondary]</textcolor>
 					</control>
