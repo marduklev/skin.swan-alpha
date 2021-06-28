@@ -155,20 +155,21 @@
 	</include>
 	<include name="MusicOSD_SmallPlaylist">
 		<control type="group">
-			<visible>Skin.HasSetting(MusicOSD_SmallPlaylist)</visible>
+			<visible>Skin.HasSetting(MusicOSD_SmallPlaylist) | [Window.IsActive(home) + String.IsEqual(Skin.String(HomeLayout),MenuTiles)]</visible>
 			
 			<animation effect="slide" start="0,120" end="0,0" time="250">WindowOpen</animation>
-			
 			<animation effect="slide" start="0,0" end="0,120" time="250">WindowClose</animation>
 						
-			
 			<description>put me left bottom cond slide up or roght fade in</description>
 			<left>0</left>
+			
 			<height>100%</height>
+			
+			
 			<width>34%</width>
 			
 			<control type="label" id="498">
-				<visible>true</visible>
+				<visible>[!Window.IsActive(home) + String.IsEqual(Skin.String(HomeLayout),MenuTiles)]</visible>
 				<bottom>230</bottom>
 				<left>60</left>
 				<height>25</height>
@@ -179,7 +180,11 @@
 			</control>
 			
 			<control type="panel" id="499">
-			
+				
+				<include content="height" condition="Window.IsActive(home) + String.IsEqual(Skin.String(HomeLayout),MenuTiles)">
+					<param name="height" value="170" />
+				</include>
+				
 				<bottom>20</bottom>
 				<left>60</left>
 				<height>200</height>
@@ -590,6 +595,7 @@
 	
 	
 	<variable name="PlayerClearlogo">
+		
 		<value condition="!String.IsEmpty(Player.Art(albumartist.clearlogo))">$INFO[Player.Art(albumartist.clearlogo)]</value>
 		<value condition="!String.IsEmpty(Player.Art(artist.clearlogo))">$INFO[Player.Art(artist.clearlogo)]</value>
 	
