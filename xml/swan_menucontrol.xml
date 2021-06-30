@@ -2316,6 +2316,13 @@ msgstr "Video-Wiedergabelisten"
 		</control>
 	</include>
 	
+
+<!-- 
+optional onclick focus fade submenu	
+include condition  vs onclick condition 
+<onlick>setfocus(5556)</onlick>
+autosubmenu is mostly dynamic, even favourites when use a variable in 5556 content -
+-->
 	
 	<!-- custom build ins could be interesting _executebuiltin-->
 	<include name="mainmenu_item">
@@ -2377,9 +2384,9 @@ msgstr "Video-Wiedergabelisten"
 			-->
 			<visible>false</visible>
 			<control type="videowindow" />
-			<control type="image">
+			<!-- <control type="image">
 				option b overlay common if big window
-			</control>
+			</control> -->
 		</control>
 		
 		<control type="multiimage">
@@ -2388,7 +2395,10 @@ msgstr "Video-Wiedergabelisten"
 			<imagepath>$VAR[home_tiles_background]</imagepath>
 		</control>
 		
+		
+		
 		<control type="group">
+			<description>in future template for currently playing bar - ref musci_hub n skinsetting for use it at top</description>
 			<visible>$EXP[IsCurrentyPlayingCommon]</visible>
 			<bottom>0</bottom>
 			<height>215</height>
@@ -2726,7 +2736,7 @@ msgstr "Video-Wiedergabelisten"
 		<control type="group">
 			<animation effect="fade" start="100" end="0" time="350" condition="Window.IsActive(shutdownmenu)">conditional</animation>
 	
-			--- copy from bg building xml? - make include -->
+			<!-- copy from bg building xml? - make include - usage headerbar,shutdownmenu,profiles -->
 			<control type="group">
 				<description>time and date weather</description>
 				<centerleft>50%</centerleft>
@@ -2776,7 +2786,7 @@ msgstr "Video-Wiedergabelisten"
 			</control>
 			
 			
-			----copy from loginscreen.xml - make include --
+			<!-- copy from loginscreen.xml - make include- usage ,profile, -->
 			<control type="radiobutton" id="9000">
 				<include content="Animation_Item_Focus" />
 				<top>86%</top>
@@ -2814,8 +2824,6 @@ msgstr "Video-Wiedergabelisten"
 				<onright>5555</onright>
 				<onclick>ActivateWindow(shutdownmenu)</onclick>
 			</control>
-			-----
-			
 			
 			<control type="panel" id="5555">
 				<orientation>vertical</orientation>
@@ -2939,10 +2947,24 @@ msgstr "Video-Wiedergabelisten"
 			<!-- auto submenu 
 			wher to place and how to gain focus?
 			
+			no other way than split main menu into pieces 
+			a)best
+			main numitems,1-6
+				sub
+			main numitems,7-12
+				sub
+			main numitems,13-18
+				sub
+			main numitems,19-20(or change hardcoded from 20 to 25)
+				sub
+				
+			b) if click focus and fade submenu in (may get issues with onback)
+			
 			<include content="Universal_Container">
 				<param name="type" value="panel" />
 				<param name="id" value="5556" />
 				<param name="type_height" value="150" />
+				<param name="type_pos_top" value="45%" />
 				<param name="layout_height" value="100" />
 				<param name="layout_width" value="120" />
 				<param name="itemheight" value="110" />
@@ -2953,8 +2975,9 @@ msgstr "Video-Wiedergabelisten"
 				<param name="visible" value="!String.IsEmpty(Container(5555).ListItem.Property(containerpath))" />
 				<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(5556).NumItems,0) | Container(5556).IsUpdating">Conditional</animation>
 				
+				<left>121</left>
+				<right>121</right>
 				<centerleft>50%</centerleft>
-				<centertop>80%</centertop>
 				<onback>5555</onback>
 				<ondown>5555</ondown>
 				<onup>5555</onup>
@@ -2970,9 +2993,6 @@ msgstr "Video-Wiedergabelisten"
 				<font>Montserrat_ExtraBold_40</font>
 			</control>
 			-->
-			
-			
-			
 		</control>		
 				
 			
