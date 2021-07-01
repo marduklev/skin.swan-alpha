@@ -2335,11 +2335,19 @@ autosubmenu is mostly dynamic, even favourites when use a variable in 5556 conte
 			<property name="fanart">$INFO[Skin.String(mainmenuitem$PARAM[nr]_fanart)]</property>
 			<property name="containerpath">$INFO[Skin.String(mainmenuitem$PARAM[nr]_path)]</property>
 			<property name="target">$INFO[Skin.String(mainmenuitem$PARAM[nr]_target)]</property>
+			<property name="row_temp_test">$NUMBER[$PARAM[row]]</property>
+			
+			
+			<onclick condition="Skin.HasSetting(home_tile_focus_submenu) + string.isequal(Skin.String(HomeLayout),MenuTiles)">SetFocus(5556)</onclick>   
+			
+			no sub menu
 			<onclick condition="String.IsEqual(Skin.String(mainmenuitem$PARAM[nr]_target),1120)">Skin.SetString(SearchTerm)</onclick>   
 			<onclick condition="!String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_executebuiltin))">$INFO[Skin.String(mainmenuitem$PARAM[nr]_executebuiltin)]</onclick>
 			<onclick condition="String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_path))">ActivateWindow($INFO[Skin.String(mainmenuitem$PARAM[nr]_target)],return)</onclick>
-			<onclick condition="!String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_path))">ActivateWindow($INFO[Skin.String(mainmenuitem$PARAM[nr]_target),,$COMMA]$INFO[Skin.String(mainmenuitem$PARAM[nr]_path)],return)</onclick>
-			<onclick condition="String.IsEqual(Window(Home).Property(menucontrol_active),home)">ClearProperty(menucontrol_active,home)</onclick>
+			
+			
+			<onclick condition="[[!Skin.HasSetting(home_tile_focus_submenu) + string.isequal(Skin.String(HomeLayout),MenuTiles)] | !string.isequal(Skin.String(HomeLayout),MenuTiles] + !String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_path))">ActivateWindow($INFO[Skin.String(mainmenuitem$PARAM[nr]_target),,$COMMA]$INFO[Skin.String(mainmenuitem$PARAM[nr]_path)],return)</onclick>
+			<onclick condition="[[!Skin.HasSetting(home_tile_focus_submenu) + string.isequal(Skin.String(HomeLayout),MenuTiles)] | !string.isequal(Skin.String(HomeLayout),MenuTiles] + String.IsEqual(Window(Home).Property(menucontrol_active),home)">ClearProperty(menucontrol_active,home)</onclick>
 		</item>
 	</include>
 	
@@ -2859,6 +2867,44 @@ autosubmenu is mostly dynamic, even favourites when use a variable in 5556 conte
 				<itemlayout height="340" width="210">
 					
 					<control type="group">
+						<visible>integer.isequal(Container(5555).ListItem.Property(row_temp_test),1)</visible>
+						<animation effect="fade" start="100" end="0" time="300" condition="integer.isgreater(Container(5555).CurrentItem,6) + Control.HasFocus(5556)">conditional</animation>
+						
+						<width>200</width>
+						<height>200</height>
+						<control type="image">
+							<texture colordiffuse="ff131313">colors/white80.png</texture>
+							<top>0</top>
+							<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
+						</control>
+						<control type="image">
+							<bordersize>30</bordersize>
+							<left>10</left>
+							<width>190</width>
+							<height>190</height>
+							<texture background="true" colordiffuse="white">$INFO[ListItem.Art(thumb)]</texture>
+							<aspectratio scalediffuse="true" align="left" aligny="top">scale</aspectratio>
+						</control>
+						<control type="image">
+							<texture colordiffuse="ff252525">colors/white80.png</texture>
+							<top>205</top>
+							<height>90</height>
+							<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
+						</control>
+						<control type="textbox">
+							<top>205</top>
+							<align>center</align>
+							<aligny>center</aligny>
+							<height>90</height>
+							<label>$INFO[ListItem.Label]</label>
+							<textcolor>white</textcolor>
+						</control>
+						
+					</control>
+					<control type="group">
+						<visible>integer.isequal(Container(5555).ListItem.Property(row_temp_test),2)</visible>
+						<animation effect="fade" start="100" end="0" time="300" condition="integer.islessorequal(Container(5555).CurrentItem,6) + Control.HasFocus(5556)">conditional</animation>
+						
 						<width>200</width>
 						<height>200</height>
 						<control type="image">
@@ -2959,12 +3005,12 @@ autosubmenu is mostly dynamic, even favourites when use a variable in 5556 conte
 				sub
 				
 			b) if click focus and fade submenu in (may get issues with onback)
-			
+			-->
 			<include content="Universal_Container">
 				<param name="type" value="panel" />
 				<param name="id" value="5556" />
 				<param name="type_height" value="150" />
-				<param name="type_pos_top" value="45%" />
+				<param name="type_pos_top" value="300" />
 				<param name="layout_height" value="100" />
 				<param name="layout_width" value="120" />
 				<param name="itemheight" value="110" />
@@ -2973,8 +3019,29 @@ autosubmenu is mostly dynamic, even favourites when use a variable in 5556 conte
 				<param name="tagbgpanel_visible" value="false" />
 				<param name="layout" value="circle" />
 				<param name="visible" value="!String.IsEmpty(Container(5555).ListItem.Property(containerpath))" />
-				<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(5556).NumItems,0) | Container(5556).IsUpdating">Conditional</animation>
 				
+				<animation effect="fade" start="100" end="0" condition="[!Integer.IsGreater(Container(5556).NumItems,0) | Container(5556).IsUpdating] | Control.HasFocus(5555)">Conditional</animation>
+						
+						
+				<description>width 14 items centered current default is 6 per row - later on use skinstring conditions - also static item need set prop hassubmenu by default in shortcut select window</description>
+				
+				
+				<!-- slide x -->
+				<animation effect="slide" start="0,0" end="60,0" time="0" condition="integer.isequal(Container(5556).NumItems,13)">conditional</animation>
+				<animation effect="slide" start="0,0" end="120,0" time="0" condition="integer.isequal(Container(5556).NumItems,12)">conditional</animation>
+				<animation effect="slide" start="0,0" end="180,0" time="0" condition="integer.isequal(Container(5556).NumItems,11)">conditional</animation>
+				<animation effect="slide" start="0,0" end="240,0" time="0" condition="integer.isequal(Container(5556).NumItems,10)">conditional</animation>
+				<animation effect="slide" start="0,0" end="300,0" time="0" condition="integer.isequal(Container(5556).NumItems,9)">conditional</animation>
+				<animation effect="slide" start="0,0" end="360,0" time="0" condition="integer.isequal(Container(5556).NumItems,8)">conditional</animation>
+				<animation effect="slide" start="0,0" end="420,0" time="0" condition="integer.isequal(Container(5556).NumItems,7)">conditional</animation>
+				<animation effect="slide" start="0,0" end="480,0" time="0" condition="integer.isequal(Container(5556).NumItems,6)">conditional</animation>
+				<animation effect="slide" start="0,0" end="540,0" time="0" condition="integer.isequal(Container(5556).NumItems,5)">conditional</animation>
+				<animation effect="slide" start="0,0" end="600,0" time="0" condition="integer.isequal(Container(5556).NumItems,4)">conditional</animation>
+				<animation effect="slide" start="0,0" end="660,0" time="0" condition="integer.isequal(Container(5556).NumItems,3)">conditional</animation>
+				
+				<!-- slide y assuming 6 per row -->
+				<animation effect="slide" start="0,0" end="0,350" time="0" condition="integer.islessorequal(Container(5555).CurrentItem,6)">conditional</animation>
+						
 				<left>121</left>
 				<right>121</right>
 				<centerleft>50%</centerleft>
@@ -2983,55 +3050,84 @@ autosubmenu is mostly dynamic, even favourites when use a variable in 5556 conte
 				<onup>5555</onup>
 				<content target="$INFO[Container(5555).ListItem.Property(target)]">$INFO[Container(5555).ListItem.Property(containerpath)]</content>
 			</include>
-			<control type="label">
+			
+			<control type="group">
+				<animation effect="slide" start="0,0" end="0,350" time="0" condition="integer.islessorequal(Container(5555).CurrentItem,6)">conditional</animation>
 				<visible>Control.HasFocus(5556)</visible>
-				<align>center</align>
-				<centertop>80%</centertop>
-				<label>$INFO[Container(5556).ListItem.Label]   $INFO[Container(5556).ListItem.Label2]</label>
-				<width>1900</width>
-				<height>50</height>
-				<font>Montserrat_ExtraBold_40</font>
+				<control type="label">
+					<align>center</align>
+					<top>220</top>
+					<label>$INFO[Container(5555).ListItem.Label]</label>
+					<width>1900</width>
+					<height>50</height>
+					<font>Montserrat_ExtraBold_40</font>
+					<textcolor>grey</textcolor>
+				</control>
+				<control type="image">
+					<top>425</top>
+					<width>1900</width>
+					<height>60</height>
+					<texture colordiffuse="ff000000">colors/white50.png</texture>
+				</control>
+				<control type="label">
+					<align>center</align>
+					<top>430</top>
+					<label>$INFO[Container(5556).ListItem.Label]</label>
+					<width>1900</width>
+					<height>50</height>
+					<font>Montserrat_ExtraBold_40</font>
+					<textcolor>white</textcolor>
+				</control>
 			</control>
-			-->
 		</control>		
 				
 			
 	</include>
 	
+	
+	<!-- WIP submenu if mainmenu tiles - current default is 6 per row - later on use skinstring conditions -->
 	<include name="home_mainmenu_content">
 		<content>
 			<nested />
 			<include content="mainmenu_item">
 				<param name="id" value="01" />
 				<param name="nr" value="1" />
+				<param name="row" value="1" />
 			</include>
 			<include content="mainmenu_item">
 				<param name="id" value="02" />
 				<param name="nr" value="2" />
+				<param name="row" value="1" />
 			</include>
 			<include content="mainmenu_item">
 				<param name="id" value="03" />
 				<param name="nr" value="3" />
+				<param name="row" value="1" />
 			</include>
 			<include content="mainmenu_item">
 				<param name="id" value="04" />
 				<param name="nr" value="4" />
+				<param name="row" value="1" />
 			</include>
 			<include content="mainmenu_item">
 				<param name="id" value="05" />
 				<param name="nr" value="5" />
+				<param name="row" value="1" />
 			</include>
 			<include content="mainmenu_item">
 				<param name="id" value="06" />
 				<param name="nr" value="6" />
+				<param name="row" value="1" />
 			</include>
 			<include content="mainmenu_item">
 				<param name="id" value="07" />
 				<param name="nr" value="7" />
+				<param name="row" value="1" />
 			</include>
 			<include content="mainmenu_item">
 				<param name="id" value="08" />
 				<param name="nr" value="8" />
+				<param name="row" value="2" />
 			</include>
 			<include content="mainmenu_item">
 				<param name="id" value="09" />
@@ -3040,46 +3136,57 @@ autosubmenu is mostly dynamic, even favourites when use a variable in 5556 conte
 			<include content="mainmenu_item">
 				<param name="id" value="10" />
 				<param name="nr" value="10" />
+				<param name="row" value="2" />
 			</include>
 			<include content="mainmenu_item">
 				<param name="id" value="11" />
 				<param name="nr" value="11" />
+				<param name="row" value="2" />
 			</include>
 			<include content="mainmenu_item">
 				<param name="id" value="12" />
 				<param name="nr" value="12" />
+				<param name="row" value="2" />
 			</include>
 			<include content="mainmenu_item">
 				<param name="id" value="13" />
 				<param name="nr" value="13" />
+				<param name="row" value="2" />
 			</include>
 			<include content="mainmenu_item">
 				<param name="id" value="14" />
 				<param name="nr" value="14" />
+				<param name="row" value="2" />
 			</include>
 			<include content="mainmenu_item">
 				<param name="id" value="15" />
 				<param name="nr" value="15" />
+				<param name="row" value="3" />
 			</include>
 			<include content="mainmenu_item">
 				<param name="id" value="16" />
 				<param name="nr" value="16" />
+				<param name="row" value="3" />
 			</include>
 			<include content="mainmenu_item">
 				<param name="id" value="17" />
 				<param name="nr" value="17" />
+				<param name="row" value="3" />
 			</include>
 			<include content="mainmenu_item">
 				<param name="id" value="18" />
 				<param name="nr" value="18" />
+				<param name="row" value="3" />
 			</include>
 			<include content="mainmenu_item">
 				<param name="id" value="19" />
 				<param name="nr" value="19" />
+				<param name="row" value="4" />
 			</include>
 			<include content="mainmenu_item">
 				<param name="id" value="20" />
 				<param name="nr" value="20" />
+				<param name="row" value="4" />
 			</include>
 		</content>
 	</include>
