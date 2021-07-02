@@ -2335,12 +2335,11 @@ autosubmenu is mostly dynamic, even favourites when use a variable in 5556 conte
 			<property name="fanart">$INFO[Skin.String(mainmenuitem$PARAM[nr]_fanart)]</property>
 			<property name="containerpath">$INFO[Skin.String(mainmenuitem$PARAM[nr]_path)]</property>
 			<property name="target">$INFO[Skin.String(mainmenuitem$PARAM[nr]_target)]</property>
-			<property name="row_temp_test">$NUMBER[$PARAM[row]]</property>
 			
+			<property name="row_temp_test">$NUMBER[$PARAM[row]]</property>
 			
 			<onclick condition="Skin.HasSetting(home_tile_focus_submenu) + string.isequal(Skin.String(HomeLayout),MenuTiles)">SetFocus(5556)</onclick>   
 			
-			no sub menu
 			<onclick condition="String.IsEqual(Skin.String(mainmenuitem$PARAM[nr]_target),1120)">Skin.SetString(SearchTerm)</onclick>   
 			<onclick condition="!String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_executebuiltin))">$INFO[Skin.String(mainmenuitem$PARAM[nr]_executebuiltin)]</onclick>
 			<onclick condition="String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_path))">ActivateWindow($INFO[Skin.String(mainmenuitem$PARAM[nr]_target)],return)</onclick>
@@ -2867,50 +2866,36 @@ autosubmenu is mostly dynamic, even favourites when use a variable in 5556 conte
 				<itemlayout height="340" width="210">
 					
 					<control type="group">
+						<description>NEED A FIXED NUMBER - NOT LISTITEM BASED</description>
 						<visible>integer.isequal(Container(5555).ListItem.Property(row_temp_test),1)</visible>
-						<animation effect="fade" start="100" end="0" time="300" condition="integer.isgreater(Container(5555).CurrentItem,6) + Control.HasFocus(5556)">conditional</animation>
-						
+						<animation effect="fade" start="100" end="0" time="150" condition="integer.isgreater(Container(5555).CurrentItem,6) + Control.HasFocus(5556)">conditional</animation>
 						<include content="home_mainmenutiles_layout">
 							<param name="color1" value="ff131313" />
 							<param name="color2" value="ffffffff" />
 							<param name="color3" value="ff252525" />
 						</include>
-						
 					</control>
 					<control type="group">
 						<visible>integer.isequal(Container(5555).ListItem.Property(row_temp_test),2)</visible>
-						<animation effect="fade" start="100" end="0" time="300" condition="integer.islessorequal(Container(5555).CurrentItem,6) + Control.HasFocus(5556)">conditional</animation>
-						
+						<animation effect="fade" start="100" end="0" time="150" condition="integer.islessorequal(Container(5555).CurrentItem,6) + Control.HasFocus(5556)">conditional</animation>
 						<include content="home_mainmenutiles_layout">
 							<param name="color1" value="ff131313" />
 							<param name="color2" value="ffffffff" />
 							<param name="color3" value="ff252525" />
 						</include>
-						
 					</control>
-					
 				</itemlayout>
 			
 				<focusedlayout height="340" width="210">
 				
 					<control type="group">
-						<!-- <include>Animation_Item_Focus</include> -->
-						
-						 <!-- 
-						 <animation type="focus" loop="false" reversible="false">
-							<effect type="fade" time="500"/>
-							<effect type="rotatey" end="360" center="0" tween="back" easing="out" time="1000"/>
-						</animation>
-						-->
-						
-						<!-- on select -->
 						<animation type="focus" loop="false" reversible="false">
 							<effect type="rotatey" end="360" center="100" time="500"/>
 						</animation>
 				
 						<control type="group">
 							<visible>integer.isequal(Container(5555).ListItem.Property(row_temp_test),1)</visible>
-							<animation effect="fade" start="100" end="0" time="300" condition="integer.isgreater(Container(5555).CurrentItem,6) + Control.HasFocus(5556)">conditional</animation>
+							<animation effect="fade" start="100" end="0" time="150" condition="integer.isgreater(Container(5555).CurrentItem,6) + Control.HasFocus(5556)">conditional</animation>
 							
 							<include content="home_mainmenutiles_layout">
 								<param name="color1" value="ffffffff" />
@@ -2921,7 +2906,7 @@ autosubmenu is mostly dynamic, even favourites when use a variable in 5556 conte
 						</control>
 						<control type="group">
 							<visible>integer.isequal(Container(5555).ListItem.Property(row_temp_test),2)</visible>
-							<animation effect="fade" start="100" end="0" time="300" condition="integer.islessorequal(Container(5555).CurrentItem,6) + Control.HasFocus(5556)">conditional</animation>
+							<animation effect="fade" start="100" end="0" time="150" condition="integer.islessorequal(Container(5555).CurrentItem,6) + Control.HasFocus(5556)">conditional</animation>
 							
 							<include content="home_mainmenutiles_layout">
 								<param name="color1" value="ffffffff" />
@@ -3067,69 +3052,6 @@ autosubmenu is mostly dynamic, even favourites when use a variable in 5556 conte
 	
 	</include>
 	
-	unfocused
-	
-		<width>200</width>
-		<height>200</height>
-		<control type="image">
-			<texture colordiffuse="ff131313">colors/white80.png</texture>
-			<top>0</top>
-			<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
-		</control>
-		<control type="image">
-			<bordersize>30</bordersize>
-			<left>10</left>
-			<width>190</width>
-			<height>190</height>
-			<texture background="true" colordiffuse="white">$INFO[ListItem.Art(thumb)]</texture>
-			<aspectratio scalediffuse="true" align="left" aligny="top">scale</aspectratio>
-		</control>
-		<control type="image">
-			<texture colordiffuse="ff252525">colors/white80.png</texture>
-			<top>205</top>
-			<height>90</height>
-			<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
-		</control>
-		<control type="textbox">
-			<top>205</top>
-			<align>center</align>
-			<aligny>center</aligny>
-			<height>90</height>
-			<label>$INFO[ListItem.Label]</label>
-			<textcolor>white</textcolor>
-		</control>
-		
-		-focused
-		<width>200</width>
-		<height>200</height>
-		<control type="image">
-			<texture colordiffuse="white">colors/white80.png</texture>
-			<top>0</top>
-			<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
-		</control>
-		<control type="image">
-			<bordersize>30</bordersize>
-			<left>10</left>
-			<width>190</width>
-			<height>190</height>
-			<texture background="true" colordiffuse="ff131313" diffuse="colors/white.png">$INFO[ListItem.Art(thumb)]</texture>
-			<aspectratio scalediffuse="true" align="left" aligny="top">scale</aspectratio>
-		</control>
-		<control type="image">
-			<texture colordiffuse="white">colors/white.png</texture>
-			<top>205</top>
-			<height>90</height>
-			<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
-		</control>
-		<control type="textbox">
-			<top>205</top>
-			<align>center</align>
-			<aligny>center</aligny>
-			<height>90</height>
-			<label>$INFO[ListItem.Label]</label>
-			<textcolor>ff252525</textcolor>
-		</control>
-	
 	<!-- WIP submenu if mainmenu tiles - current default is 6 per row - later on use skinstring conditions -->
 	<include name="home_mainmenu_content">
 		<content>
@@ -3137,7 +3059,7 @@ autosubmenu is mostly dynamic, even favourites when use a variable in 5556 conte
 			<include content="mainmenu_item">
 				<param name="id" value="01" />
 				<param name="nr" value="1" />
-				<param name="row" value="1" />
+				<param name="row" value="1" /> 
 			</include>
 			<include content="mainmenu_item">
 				<param name="id" value="02" />
@@ -3167,7 +3089,7 @@ autosubmenu is mostly dynamic, even favourites when use a variable in 5556 conte
 			<include content="mainmenu_item">
 				<param name="id" value="07" />
 				<param name="nr" value="7" />
-				<param name="row" value="1" />
+				<param name="row" value="2" />
 			</include>
 			<include content="mainmenu_item">
 				<param name="id" value="08" />
@@ -3177,6 +3099,7 @@ autosubmenu is mostly dynamic, even favourites when use a variable in 5556 conte
 			<include content="mainmenu_item">
 				<param name="id" value="09" />
 				<param name="nr" value="9" />
+				<param name="row" value="2" />
 			</include>
 			<include content="mainmenu_item">
 				<param name="id" value="10" />
@@ -3196,12 +3119,12 @@ autosubmenu is mostly dynamic, even favourites when use a variable in 5556 conte
 			<include content="mainmenu_item">
 				<param name="id" value="13" />
 				<param name="nr" value="13" />
-				<param name="row" value="2" />
+				<param name="row" value="3" />
 			</include>
 			<include content="mainmenu_item">
 				<param name="id" value="14" />
 				<param name="nr" value="14" />
-				<param name="row" value="2" />
+				<param name="row" value="3" />
 			</include>
 			<include content="mainmenu_item">
 				<param name="id" value="15" />
@@ -3235,6 +3158,13 @@ autosubmenu is mostly dynamic, even favourites when use a variable in 5556 conte
 			</include>
 		</content>
 	</include>
+	<variable name="menu_tile_row">
+		<value condition="Integer.IsEqual(Container(5555).Row,0)">$NUMBER[1]</value>
+		<value condition="Integer.IsEqual(Container(5555).Row,1)">$NUMBER[2]</value>
+		<value condition="Integer.IsEqual(Container(5555).Row,2)">$NUMBER[3]</value>
+		<value condition="Integer.IsEqual(Container(5555).Row,3)">$NUMBER[4]</value>
+	</variable>
+	
 	
 	<include name="home_mainmenu_layout_verticalpanel">
 		<control type="group">
