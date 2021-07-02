@@ -1396,6 +1396,43 @@ container.setsortmethod()
 			<onclick condition="String.IsEmpty(Skin.String(texturepath_userdefined))">Skin.SetImage(mainmenuitem$PARAM[nr]_fanart,resource://resource.images.skin.swan/backgroundimages)</onclick>
 			<onclick condition="!String.IsEmpty(Skin.String(texturepath_userdefined))">Skin.SetImage(mainmenuitem$PARAM[nr]_fanart,$INFO[Skin.String(texturepath_userdefined)])</onclick>
 		</control>
+		
+		
+			change item nr value +/-1 (fuuuuck need copy/re-set all string_nr_(*value*) , mainmenu =3 labels , widgets="10")
+			
+			string = mainmenuitem | userwidget | *shutdownitem
+			
+			
+				fetch 
+					- get string_prev_nr ,  string_current_nr , string_next_nr
+					
+				
+				hold_cache
+					# copy strings to hold , restricted to just bumb prev|next_nr -/+1 nr till refetch
+					
+					- copy string_current_nr 					to 			property_base_nr
+					- copy string_prev_nr , string_next_nr      to			property_hold_prev_nr , set property_hold_next_nr 
+				
+
+				bump- if string_current_nr not 1
+					# switch position-
+					- for string_current_nr  set   string_prev_nr
+					- for property_hold_prev_nr set string_new_current_nr
+					- clear propertys
+					
+					goto fetch
+					
+					
+				bump+ if string_current_nr not 20
+					# switch position+
+					- for string_current_nr  set   string_next_nr
+					- for property_hold_next_nr set string_current_nr
+					- clear propertys
+					
+					goto fetch
+		
+		
+		
 	</include>
 		<!-- <texture fallback="special://skin/extras/selectdialog/widgetlayout_nolayout.png">$INFO[Skin.String(userwidget$PARAM[nr]_layout),artworkdiffuse/,.png]</texture> -->
 		<!-- SkinSettings.xml widget script.embuary helper - set attributes - call custom window 1103 -->
