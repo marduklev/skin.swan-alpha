@@ -1204,11 +1204,10 @@ container.setsortmethod()
 			<textureradiooffnofocus colordiffuse="$VAR[color_global_button_text_nf]">icons/settings.png</textureradiooffnofocus>
 			<textureradioondisabled colordiffuse="disabled">icons/settings.png</textureradioondisabled>
 			<textureradiooffdisabled colordiffuse="disabled">icons/settings.png</textureradiooffdisabled>
-			
+			<onclick>SetProperty(refocus_shortcut_id,$PARAM[id]1)</onclick>
 			<onclick>SetProperty(shortcutitem_nr,$PARAM[nr],home)</onclick>
 			<onclick>SetProperty(SettingSection,SwanWidgetShortcuts,home)</onclick>
 			<onclick>SetProperty(SetShortcutInProgress,widget,home)</onclick>
-			
 			<onclick>ActivateWindow(1103,return)</onclick>
 			<label>                             Set Widget Path</label>
 			<label2>$INFO[Skin.String(userwidget$PARAM[nr]_path)]</label2>
@@ -1227,7 +1226,7 @@ container.setsortmethod()
 			<textureradiooffnofocus colordiffuse="$VAR[color_global_button_text_nf]">icons/settings.png</textureradiooffnofocus>
 			<textureradioondisabled colordiffuse="disabled">icons/settings.png</textureradioondisabled>
 			<textureradiooffdisabled colordiffuse="disabled">icons/settings.png</textureradiooffdisabled>
-			<visible>!String.IsEmpty(Skin.String(userwidget$PARAM[nr]_path))</visible>
+			<visible>Skin.String(userwidget$PARAM[nr]_path)</visible>
 			<onclick>SetProperty(shortcutitem_nr,$PARAM[nr],home)</onclick>
 			<onclick>SetProperty(SettingSection,WidgetAttributes,home)</onclick>
 			<onclick>ActivateWindow(1103)</onclick>
@@ -1235,19 +1234,20 @@ container.setsortmethod()
 			<label2>$INFO[Skin.String(userwidget$PARAM[nr]_layout.label),[B]$LOCALIZE[21858][/B]: ,]$INFO[Skin.String(userwidget$PARAM[nr]_target),  [B]$LOCALIZE[467][/B]: ,]$INFO[Skin.String(userwidget$PARAM[nr]_sortby.label),   [B]$LOCALIZE[581][/B]: ',']$INFO[Skin.String(userwidget$PARAM[nr]_sortorder.label),   [B]$LOCALIZE[21429][/B]: ',']$INFO[Skin.String(userwidget$PARAM[nr]_limit),   [B]$LOCALIZE[21427][/B]: (,)]</label2>
 		</control>
 		<control type="button" id="$PARAM[id]4">
-			<description>RESET</description>
-			<visible>!String.IsEmpty(Skin.String(userwidget$PARAM[nr]_path))</visible>
+			<description>RESET , also untoggle settings??</description>
+			<visible>Skin.String(userwidget$PARAM[nr]_target) | Skin.String(userwidget$PARAM[nr]_path)</visible>
 			<height>25</height>
-			<onclick>Skin.Reset(userwidget$PARAM[nr]_name)</onclick>
-			<onclick>Skin.Reset(userwidget$PARAM[nr]_target)</onclick>
-			<onclick>Skin.Reset(userwidget$PARAM[nr]_path)</onclick>
-			<onclick>Skin.Reset(userwidget$PARAM[nr]_limit)</onclick>
-			<onclick>Skin.Reset(userwidget$PARAM[nr]_sortby)</onclick>
-			<onclick>Skin.Reset(userwidget$PARAM[nr]_sortby.label)</onclick>
-			<onclick>Skin.Reset(userwidget$PARAM[nr]_sortorder)</onclick>
-			<onclick>Skin.Reset(userwidget$PARAM[nr]_sortorder.label)</onclick>
-			<onclick>Skin.Reset(userwidget$PARAM[nr]_layout)</onclick>
-			<onclick>Skin.Reset(userwidget$PARAM[nr]_layout.label)</onclick>
+			<onclick>SetFocus($PARAM[id]1)</onclick>
+			<onclick condition="skin.string(userwidget$PARAM[nr]_name)">Skin.Reset(userwidget$PARAM[nr]_name)</onclick>
+			<onclick condition="skin.string(userwidget$PARAM[nr]_target)">Skin.Reset(userwidget$PARAM[nr]_target)</onclick>
+			<onclick condition="skin.string(userwidget$PARAM[nr]_path)">Skin.Reset(userwidget$PARAM[nr]_path)</onclick>
+			<onclick condition="skin.string(userwidget$PARAM[nr]_limit)">Skin.Reset(userwidget$PARAM[nr]_limit)</onclick>
+			<onclick condition="skin.string(userwidget$PARAM[nr]_sortby)">Skin.Reset(userwidget$PARAM[nr]_sortby)</onclick>
+			<onclick condition="skin.string(userwidget$PARAM[nr]_sortby.label)">Skin.Reset(userwidget$PARAM[nr]_sortby.label)</onclick>
+			<onclick condition="skin.string(userwidget$PARAM[nr]_sortorder)">Skin.Reset(userwidget$PARAM[nr]_sortorder)</onclick>
+			<onclick condition="skin.string(userwidget$PARAM[nr]_sortorder.label)">Skin.Reset(userwidget$PARAM[nr]_sortorder.label)</onclick>
+			<onclick condition="skin.string(userwidget$PARAM[nr]_layout)">Skin.Reset(userwidget$PARAM[nr]_layout)</onclick>
+			<onclick condition="skin.string(userwidget$PARAM[nr]_layout.label)">Skin.Reset(userwidget$PARAM[nr]_layout.label)</onclick>
 			<label>                        Remove/Reset</label>
 			<label2 />
 		</control>
@@ -1289,11 +1289,10 @@ container.setsortmethod()
 			<textureradioondisabled colordiffuse="disabled">icons/settings.png</textureradioondisabled>
 			<textureradiooffdisabled colordiffuse="disabled">icons/settings.png</textureradiooffdisabled>
 			
+			<onclick>SetProperty(refocus_shortcut_id,$PARAM[id]1)</onclick>
 			<onclick>SetProperty(shortcutitem_nr,$PARAM[nr],home)</onclick>
-			
 			<onclick>SetProperty(SettingSection,SwanWidgetShortcuts,home)</onclick>
 			<onclick>SetProperty(SetShortcutInProgress,mainmenu,home)</onclick>
-			
 			<onclick>ActivateWindow(1103,return)</onclick>
 			<label>                             Set Entry</label>
 			<label2>ActivateWindow($INFO[Skin.String(mainmenuitem$PARAM[nr]_target)]$INFO[Skin.String(mainmenuitem$PARAM[nr]_path)]$COMMAreturn)$INFO[Skin.String(mainmenuitem$PARAM[nr]_executebuiltin)]</label2>
@@ -1318,28 +1317,28 @@ container.setsortmethod()
 			<label>                             Change Attributes</label>
 			<label2 />
 		</control>
+		
+		
 		<control type="group" id="$PARAM[id]3">
-			
-			<height>80</height>
-			<visible>!String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_target)) | !String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_path)) | !String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_executebuiltin))</visible>
-				
-				<control type="radiobutton" id="$PARAM[id]301">
+			<visible allowhiddenfocus="false">Skin.String(mainmenuitem$PARAM[nr]_target) | Skin.String(mainmenuitem$PARAM[nr]_path) | Skin.String(mainmenuitem$PARAM[nr]_executebuiltin)</visible>
+			<height>50</height>
+				<control type="button" id="$PARAM[id]301">
+					<description>hold -1</description>
+					<left>250</left>
 					<height>40</height>
 					<width>150</width>
 					<onup>$PARAM[id]2</onup>
 					<ondown>$PARAM[id]4</ondown>
 					<onleft>$PARAM[id]302</onleft>
 					<onright>$PARAM[id]302</onright>
-					
-						<description>
-fetch results - done
-						
-bump- if string_current_nr not 1 
-# switch position-
-- for string_current_nr  set   string_prev_nr
-- for property_hold_prev_nr set string_current_nr
-- clear propertys
-						</description>
+					<description>on touch need click twice - just missing set strings?</description>
+						<onclick condition="[
+						!Skin.string(mainmenuitem$PARAM[prev_nr]_name) + 
+						!Skin.string(mainmenuitem$PARAM[prev_nr]_path) + 
+						!Skin.string(mainmenuitem$PARAM[prev_nr]_target) + 
+						!Skin.string(mainmenuitem$PARAM[prev_nr]_executebuiltin) + 
+						!Skin.string(mainmenuitem$PARAM[prev_nr]_thumb) + 
+						!Skin.string(mainmenuitem$PARAM[prev_nr]_fanart)]">SetProperty(mainmenuitem_no_switch,prev)</onclick>
 						
 						<onclick condition="Skin.string(mainmenuitem$PARAM[prev_nr]_name)">SetProperty(hold_prev_mainmenuitem_name,$INFO[Skin.String(mainmenuitem$PARAM[prev_nr]_name)])</onclick>
 						<onclick condition="Skin.string(mainmenuitem$PARAM[prev_nr]_path)">SetProperty(hold_prev_mainmenuitem_path,$INFO[Skin.String(mainmenuitem$PARAM[prev_nr]_path)])</onclick>
@@ -1347,98 +1346,157 @@ bump- if string_current_nr not 1
 						<onclick condition="Skin.string(mainmenuitem$PARAM[prev_nr]_executebuiltin)">SetProperty(hold_prev_mainmenuitem_executebuiltin,$INFO[Skin.String(mainmenuitem$PARAM[prev_nr]_executebuiltin)])</onclick>
 						<onclick condition="Skin.string(mainmenuitem$PARAM[prev_nr]_thumb)">SetProperty(hold_prev_mainmenuitem_thumb,$INFO[Skin.String(mainmenuitem$PARAM[prev_nr]_thumb)])</onclick>
 						<onclick condition="Skin.string(mainmenuitem$PARAM[prev_nr]_fanart)">SetProperty(hold_prev_mainmenuitem_fanart,$INFO[Skin.String(mainmenuitem$PARAM[prev_nr]_fanart)])</onclick>
-						
 						<onclick condition="Skin.string(mainmenuitem$PARAM[nr]_name)">SetProperty(hold_current_mainmenuitem_name,$INFO[Skin.String(mainmenuitem$PARAM[nr]_name)])</onclick>
 						<onclick condition="Skin.string(mainmenuitem$PARAM[nr]_path)">SetProperty(hold_current_mainmenuitem_path,$INFO[Skin.String(mainmenuitem$PARAM[nr]_path)])</onclick>
 						<onclick condition="Skin.string(mainmenuitem$PARAM[nr]_target)">SetProperty(hold_current_mainmenuitem_target,$INFO[Skin.String(mainmenuitem$PARAM[nr]_target)])</onclick>
 						<onclick condition="Skin.string(mainmenuitem$PARAM[nr]_executebuiltin)">SetProperty(hold_current_mainmenuitem_executebuiltin,$INFO[Skin.String(mainmenuitem$PARAM[nr]_executebuiltin)])</onclick>
 						<onclick condition="Skin.string(mainmenuitem$PARAM[nr]_thumb)">SetProperty(hold_current_mainmenuitem_thumb,$INFO[Skin.String(mainmenuitem$PARAM[nr]_thumb)])</onclick>
 						<onclick condition="Skin.string(mainmenuitem$PARAM[nr]_fanart)">SetProperty(hold_current_mainmenuitem_fanart,$INFO[Skin.String(mainmenuitem$PARAM[nr]_fanart)])</onclick>
-						
-						
-						<onclick condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_name))">Skin.SetString(mainmenuitem$PARAM[prev_nr]_name,$INFO[Window.Property(hold_current_mainmenuitem_name)])</onclick>
-						<onclick condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_path))">Skin.SetString(mainmenuitem$PARAM[prev_nr]_path,$INFO[Window.Property(hold_current_mainmenuitem_path)])</onclick>
-						<onclick condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_target))">Skin.SetString(mainmenuitem$PARAM[prev_nr]_target,$INFO[Window.Property(hold_current_mainmenuitem_target)])</onclick>
-						<onclick condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_executebuiltin))">Skin.SetString(mainmenuitem$PARAM[prev_nr]_executebuiltin,$INFO[Window.Property(hold_current_mainmenuitem_executebuiltin)])</onclick>
-						<onclick condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_thumb))">Skin.SetString(mainmenuitem$PARAM[prev_nr]_thumb,$INFO[Window.Property(hold_current_mainmenuitem_thumb)])</onclick>
-						<onclick condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_fanart))">Skin.SetString(mainmenuitem$PARAM[prev_nr]_fanart,$INFO[Window.Property(hold_current_mainmenuitem_fanart)])</onclick>
-						
-						<onclick condition="!String.IsEmpty(Window.Property(hold_prev_mainmenuitem_name))">Skin.SetString(mainmenuitem$PARAM[nr]_name,$INFO[Window.Property(hold_prev_mainmenuitem_name)])</onclick>
-						<onclick condition="!String.IsEmpty(Window.Property(hold_prev_mainmenuitem_path))">Skin.SetString(mainmenuitem$PARAM[nr]_path,$INFO[Window.Property(hold_prev_mainmenuitem_path)])</onclick>
-						<onclick condition="!String.IsEmpty(Window.Property(hold_prev_mainmenuitem_target))">Skin.SetString(mainmenuitem$PARAM[nr]_target,$INFO[Window.Property(hold_prev_mainmenuitem_target)])</onclick>
-						<onclick condition="!String.IsEmpty(Window.Property(hold_prev_mainmenuitem_executebuiltin))">Skin.SetString(mainmenuitem$PARAM[nr]_executebuiltin,$INFO[Window.Property(hold_prev_mainmenuitem_executebuiltin)])</onclick>
-						<onclick condition="!String.IsEmpty(Window.Property(hold_prev_mainmenuitem_thumb))">Skin.SetString(mainmenuitem$PARAM[nr]_thumb,$INFO[Window.Property(hold_prev_mainmenuitem_thumb)])</onclick>
-						<onclick condition="!String.IsEmpty(Window.Property(hold_prev_mainmenuitem_fanart))">Skin.SetString(mainmenuitem$PARAM[nr]_fanart,$INFO[Window.Property(hold_prev_mainmenuitem_fanart)])</onclick>
-						
-						
-						<onclick condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_name))">ClearProperty(hold_current_mainmenuitem_name)</onclick>
-						<onclick condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_path))">ClearProperty(hold_current_mainmenuitem_path)</onclick>
-						<onclick condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_target))">ClearProperty(hold_current_mainmenuitem_target)</onclick>
-						<onclick condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_executebuiltin))">ClearProperty(hold_current_mainmenuitem_executebuiltin)</onclick>
-						<onclick condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_thumb))">ClearProperty(hold_current_mainmenuitem_thumb)</onclick>
-						<onclick condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_fanart))">ClearProperty(hold_current_mainmenuitem_fanart)</onclick>
-						<onclick condition="!String.IsEmpty(Window.Property(hold_prev_mainmenuitem_name))">ClearPropertyhold_prev_mainmenuitem_name)</onclick>
-						<onclick condition="!String.IsEmpty(Window.Property(hold_prev_mainmenuitem_path))">ClearPropertyhold_prev_mainmenuitem_path)</onclick>
-						<onclick condition="!String.IsEmpty(Window.Property(hold_prev_mainmenuitem_target))">ClearPropertyhold_prev_mainmenuitem_target)</onclick>
-						<onclick condition="!String.IsEmpty(Window.Property(hold_prev_mainmenuitem_executebuiltin))">ClearPropertyhold_prev_mainmenuitem_executebuiltin)</onclick>
-						<onclick condition="!String.IsEmpty(Window.Property(hold_prev_mainmenuitem_thumb))">ClearPropertyhold_prev_mainmenuitem_thumb)</onclick>
-						<onclick condition="!String.IsEmpty(Window.Property(hold_prev_mainmenuitem_fanart))">ClearPropertyhold_prev_mainmenuitem_fanart)</onclick>
-						
-						<!-- 
-						resolve new focus id
-						<onclick>SetFocus($INFO[Window.Property(hold_next_nr_)])</onclick> -->
-						<!-- 
-						<onclick>ClearProperty(hold_prev_nr_)</onclick>
-						<onclick>ClearProperty(hold_current_nr_)</onclick>
-						
-						<onclick>SetFocus(string_prev_nr)</onclick>
-						-->
+						<onclick>setfocus($PARAM[id]396)</onclick>
 					<label>UP</label>
 					<label2 />
 				</control>
 				
-				
-				<control type="radiobutton" id="$PARAM[id]302">
-					<left>250</left>
+				<control type="button" id="$PARAM[id]302">
+					<description>hold +1</description>
+					<left>550</left>
 					<height>40</height>
 					<width>150</width>
 					<onup>$PARAM[id]2</onup>
 					<ondown>$PARAM[id]4</ondown>
 					<onleft>$PARAM[id]301</onleft>
 					<onright>$PARAM[id]301</onright>
-					<onclick>SetProperty(hold_next_nr_,$PARAM[next_nr])</onclick>
-						bump+ if string_current_nr not 20
-						# switch position+
-						- for string_current_nr  set   string_next_nr
-						- for property_hold_next_nr set string_current_nr
-						- clear propertys
-						
-						goto fetch
-					
-					<onclick>SetFocus(new_target_nur)</onclick>
+					<selected>true</selected>
 					<label>DOWN</label>
 					<label2 />
+					<onclick condition="[
+						!Skin.string(mainmenuitem$PARAM[next_nr]_name) + 
+						!Skin.string(mainmenuitem$PARAM[next_nr]_path) + 
+						!Skin.string(mainmenuitem$PARAM[next_nr]_target) + 
+						!Skin.string(mainmenuitem$PARAM[next_nr]_executebuiltin) + 
+						!Skin.string(mainmenuitem$PARAM[next_nr]_thumb) + 
+						!Skin.string(mainmenuitem$PARAM[next_nr]_fanart)]">SetProperty(mainmenuitem_no_switch,next)</onclick>
+						
+						<onclick condition="Skin.string(mainmenuitem$PARAM[next_nr]_name)">SetProperty(hold_next_mainmenuitem_name,$INFO[Skin.String(mainmenuitem$PARAM[next_nr]_name)])</onclick>
+						<onclick condition="Skin.string(mainmenuitem$PARAM[next_nr]_path)">SetProperty(hold_next_mainmenuitem_path,$INFO[Skin.String(mainmenuitem$PARAM[next_nr]_path)])</onclick>
+						<onclick condition="Skin.string(mainmenuitem$PARAM[next_nr]_target)">SetProperty(hold_next_mainmenuitem_target,$INFO[Skin.String(mainmenuitem$PARAM[next_nr]_target)])</onclick>
+						<onclick condition="Skin.string(mainmenuitem$PARAM[next_nr]_executebuiltin)">SetProperty(hold_next_mainmenuitem_executebuiltin,$INFO[Skin.String(mainmenuitem$PARAM[next_nr]_executebuiltin)])</onclick>
+						<onclick condition="Skin.string(mainmenuitem$PARAM[next_nr]_thumb)">SetProperty(hold_next_mainmenuitem_thumb,$INFO[Skin.String(mainmenuitem$PARAM[next_nr]_thumb)])</onclick>
+						<onclick condition="Skin.string(mainmenuitem$PARAM[next_nr]_fanart)">SetProperty(hold_next_mainmenuitem_fanart,$INFO[Skin.String(mainmenuitem$PARAM[next_nr]_fanart)])</onclick>
+						<onclick condition="Skin.string(mainmenuitem$PARAM[nr]_name)">SetProperty(hold_current_mainmenuitem_name,$INFO[Skin.String(mainmenuitem$PARAM[nr]_name)])</onclick>
+						<onclick condition="Skin.string(mainmenuitem$PARAM[nr]_path)">SetProperty(hold_current_mainmenuitem_path,$INFO[Skin.String(mainmenuitem$PARAM[nr]_path)])</onclick>
+						<onclick condition="Skin.string(mainmenuitem$PARAM[nr]_target)">SetProperty(hold_current_mainmenuitem_target,$INFO[Skin.String(mainmenuitem$PARAM[nr]_target)])</onclick>
+						<onclick condition="Skin.string(mainmenuitem$PARAM[nr]_executebuiltin)">SetProperty(hold_current_mainmenuitem_executebuiltin,$INFO[Skin.String(mainmenuitem$PARAM[nr]_executebuiltin)])</onclick>
+						<onclick condition="Skin.string(mainmenuitem$PARAM[nr]_thumb)">SetProperty(hold_current_mainmenuitem_thumb,$INFO[Skin.String(mainmenuitem$PARAM[nr]_thumb)])</onclick>
+						<onclick condition="Skin.string(mainmenuitem$PARAM[nr]_fanart)">SetProperty(hold_current_mainmenuitem_fanart,$INFO[Skin.String(mainmenuitem$PARAM[nr]_fanart)])</onclick>
+						<onclick>setfocus($PARAM[id]397)</onclick>
+				</control>
+				
+				<control type="button" id="$PARAM[id]396">
+						<description>bump or switch -</description>
+						<include>HiddenObject</include>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_name))">Skin.SetString(mainmenuitem$PARAM[prev_nr]_name,$INFO[Window.Property(hold_current_mainmenuitem_name)])</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_path))">Skin.SetString(mainmenuitem$PARAM[prev_nr]_path,$INFO[Window.Property(hold_current_mainmenuitem_path)])</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_target))">Skin.SetString(mainmenuitem$PARAM[prev_nr]_target,$INFO[Window.Property(hold_current_mainmenuitem_target)])</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_executebuiltin))">Skin.SetString(mainmenuitem$PARAM[prev_nr]_executebuiltin,$INFO[Window.Property(hold_current_mainmenuitem_executebuiltin)])</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_thumb))">Skin.SetString(mainmenuitem$PARAM[prev_nr]_thumb,$INFO[Window.Property(hold_current_mainmenuitem_thumb)])</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_fanart))">Skin.SetString(mainmenuitem$PARAM[prev_nr]_fanart,$INFO[Window.Property(hold_current_mainmenuitem_fanart)])</onfocus>
+						
+						<onfocus condition="!String.IsEmpty(Window.Property(mainmenuitem_no_switch)) + !String.IsEmpty(Window.Property(hold_current_mainmenuitem_name))">Skin.Reset(mainmenuitem$PARAM[nr]_name)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(mainmenuitem_no_switch)) + !String.IsEmpty(Window.Property(hold_current_mainmenuitem_path))">Skin.Reset(mainmenuitem$PARAM[nr]_path)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(mainmenuitem_no_switch)) + !String.IsEmpty(Window.Property(hold_current_mainmenuitem_target))">Skin.Reset(mainmenuitem$PARAM[nr]_target)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(mainmenuitem_no_switch)) + !String.IsEmpty(Window.Property(hold_current_mainmenuitem_executebuiltin))">Skin.Reset(mainmenuitem$PARAM[nr]_executebuiltin)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(mainmenuitem_no_switch)) + !String.IsEmpty(Window.Property(hold_current_mainmenuitem_thumb))">Skin.Reset(mainmenuitem$PARAM[nr]_thumb)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(mainmenuitem_no_switch)) + !String.IsEmpty(Window.Property(hold_current_mainmenuitem_fanart))">Skin.Reset(mainmenuitem$PARAM[nr]_fanart)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_prev_mainmenuitem_name))">Skin.SetString(mainmenuitem$PARAM[nr]_name,$INFO[Window.Property(hold_prev_mainmenuitem_name)])</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_prev_mainmenuitem_path))">Skin.SetString(mainmenuitem$PARAM[nr]_path,$INFO[Window.Property(hold_prev_mainmenuitem_path)])</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_prev_mainmenuitem_target))">Skin.SetString(mainmenuitem$PARAM[nr]_target,$INFO[Window.Property(hold_prev_mainmenuitem_target)])</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_prev_mainmenuitem_executebuiltin))">Skin.SetString(mainmenuitem$PARAM[nr]_executebuiltin,$INFO[Window.Property(hold_prev_mainmenuitem_executebuiltin)])</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_prev_mainmenuitem_thumb))">Skin.SetString(mainmenuitem$PARAM[nr]_thumb,$INFO[Window.Property(hold_prev_mainmenuitem_thumb)])</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_prev_mainmenuitem_fanart))">Skin.SetString(mainmenuitem$PARAM[nr]_fanart,$INFO[Window.Property(hold_prev_mainmenuitem_fanart)])</onfocus>
+						<onfocus>setfocus($PARAM[id]398)</onfocus>
+				</control>
+				<control type="button" id="$PARAM[id]397">
+						<description>bump or switch +</description>
+						<include>HiddenObject</include>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_name))">Skin.SetString(mainmenuitem$PARAM[next_nr]_name,$INFO[Window.Property(hold_current_mainmenuitem_name)])</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_path))">Skin.SetString(mainmenuitem$PARAM[next_nr]_path,$INFO[Window.Property(hold_current_mainmenuitem_path)])</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_target))">Skin.SetString(mainmenuitem$PARAM[next_nr]_target,$INFO[Window.Property(hold_current_mainmenuitem_target)])</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_executebuiltin))">Skin.SetString(mainmenuitem$PARAM[next_nr]_executebuiltin,$INFO[Window.Property(hold_current_mainmenuitem_executebuiltin)])</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_thumb))">Skin.SetString(mainmenuitem$PARAM[next_nr]_thumb,$INFO[Window.Property(hold_current_mainmenuitem_thumb)])</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_fanart))">Skin.SetString(mainmenuitem$PARAM[next_nr]_fanart,$INFO[Window.Property(hold_current_mainmenuitem_fanart)])</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(mainmenuitem_no_switch)) + !String.IsEmpty(Window.Property(hold_current_mainmenuitem_name))">Skin.Reset(mainmenuitem$PARAM[nr]_name)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(mainmenuitem_no_switch)) + !String.IsEmpty(Window.Property(hold_current_mainmenuitem_path))">Skin.Reset(mainmenuitem$PARAM[nr]_path)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(mainmenuitem_no_switch)) + !String.IsEmpty(Window.Property(hold_current_mainmenuitem_target))">Skin.Reset(mainmenuitem$PARAM[nr]_target)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(mainmenuitem_no_switch)) + !String.IsEmpty(Window.Property(hold_current_mainmenuitem_executebuiltin))">Skin.Reset(mainmenuitem$PARAM[nr]_executebuiltin)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(mainmenuitem_no_switch)) + !String.IsEmpty(Window.Property(hold_current_mainmenuitem_thumb))">Skin.Reset(mainmenuitem$PARAM[nr]_thumb)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(mainmenuitem_no_switch)) + !String.IsEmpty(Window.Property(hold_current_mainmenuitem_fanart))">Skin.Reset(mainmenuitem$PARAM[nr]_fanart)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_next_mainmenuitem_name))">Skin.SetString(mainmenuitem$PARAM[nr]_name,$INFO[Window.Property(hold_next_mainmenuitem_name)])</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_next_mainmenuitem_path))">Skin.SetString(mainmenuitem$PARAM[nr]_path,$INFO[Window.Property(hold_next_mainmenuitem_path)])</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_next_mainmenuitem_target))">Skin.SetString(mainmenuitem$PARAM[nr]_target,$INFO[Window.Property(hold_next_mainmenuitem_target)])</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_next_mainmenuitem_executebuiltin))">Skin.SetString(mainmenuitem$PARAM[nr]_executebuiltin,$INFO[Window.Property(hold_next_mainmenuitem_executebuiltin)])</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_next_mainmenuitem_thumb))">Skin.SetString(mainmenuitem$PARAM[nr]_thumb,$INFO[Window.Property(hold_next_mainmenuitem_thumb)])</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_next_mainmenuitem_fanart))">Skin.SetString(mainmenuitem$PARAM[nr]_fanart,$INFO[Window.Property(hold_next_mainmenuitem_fanart)])</onfocus>
+						<onfocus>setfocus($PARAM[id]399)</onfocus>
+				</control>
+				<control type="button" id="$PARAM[id]398">
+						<include>HiddenObject</include>
+						<onfocus condition="!String.IsEmpty(Window.Property(mainmenuitem_no_switch))">ClearProperty(mainmenuitem_no_switch)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_name))">ClearProperty(hold_current_mainmenuitem_name)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_path))">ClearProperty(hold_current_mainmenuitem_path)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_target))">ClearProperty(hold_current_mainmenuitem_target)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_executebuiltin))">ClearProperty(hold_current_mainmenuitem_executebuiltin)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_thumb))">ClearProperty(hold_current_mainmenuitem_thumb)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_fanart))">ClearProperty(hold_current_mainmenuitem_fanart)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_prev_mainmenuitem_name))">ClearProperty(hold_prev_mainmenuitem_name)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_prev_mainmenuitem_path))">ClearProperty(hold_prev_mainmenuitem_path)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_prev_mainmenuitem_target))">ClearProperty(hold_prev_mainmenuitem_target)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_prev_mainmenuitem_executebuiltin))">ClearProperty(hold_prev_mainmenuitem_executebuiltin)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_prev_mainmenuitem_thumb))">ClearProperty(hold_prev_mainmenuitem_thumb)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_prev_mainmenuitem_fanart))">ClearProperty(hold_prev_mainmenuitem_fanart)</onfocus>
+						<onfocus>SetFocus($PARAM[prev_id])</onfocus>
+						<onfocus>action(up)</onfocus> 
+						<onfocus>SetFocus($PARAM[prev_id])</onfocus> 
+				</control>
+				<control type="button" id="$PARAM[id]399">
+						<description>clear holds n focus</description>
+						<include>HiddenObject</include>
+						<onfocus condition="!String.IsEmpty(Window.Property(mainmenuitem_no_switch))">ClearProperty(mainmenuitem_no_switch)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_name))">ClearProperty(hold_current_mainmenuitem_name)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_path))">ClearProperty(hold_current_mainmenuitem_path)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_target))">ClearProperty(hold_current_mainmenuitem_target)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_executebuiltin))">ClearProperty(hold_current_mainmenuitem_executebuiltin)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_thumb))">ClearProperty(hold_current_mainmenuitem_thumb)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_current_mainmenuitem_fanart))">ClearProperty(hold_current_mainmenuitem_fanart)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_next_mainmenuitem_name))">ClearProperty(hold_next_mainmenuitem_name)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_next_mainmenuitem_path))">ClearProperty(hold_next_mainmenuitem_path)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_next_mainmenuitem_target))">ClearProperty(hold_next_mainmenuitem_target)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_next_mainmenuitem_executebuiltin))">ClearProperty(hold_next_mainmenuitem_executebuiltin)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_next_mainmenuitem_thumb))">ClearProperty(hold_next_mainmenuitem_thumb)</onfocus>
+						<onfocus condition="!String.IsEmpty(Window.Property(hold_next_mainmenuitem_fanart))">ClearProperty(hold_next_mainmenuitem_fanart)</onfocus>
+						<onfocus>SetFocus($PARAM[next_id])</onfocus> 
 				</control>
 		</control>
 		<control type="button" id="$PARAM[id]4">
 			<description>RESET</description>
-			<visible>!String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_target)) | !String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_path)) | !String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_executebuiltin))</visible>
+			<visible>Skin.String(mainmenuitem$PARAM[nr]_name) | Skin.String(mainmenuitem$PARAM[nr]_target) | Skin.String(mainmenuitem$PARAM[nr]_path) | Skin.String(mainmenuitem$PARAM[nr]_executebuiltin) | Skin.String(mainmenuitem$PARAM[nr]_thumb) | Skin.String(mainmenuitem$PARAM[nr]_fanart)</visible>
 			<height>25</height>
-			<onclick>Skin.Reset(mainmenuitem$PARAM[nr]_executebuiltin)</onclick>
-			<onclick>Skin.Reset(mainmenuitem$PARAM[nr]_target)</onclick>
-			<onclick>Skin.Reset(mainmenuitem$PARAM[nr]_path)</onclick>
-			<onclick>Skin.Reset(mainmenuitem$PARAM[nr]_name)</onclick>
-			<onclick>Skin.Reset(mainmenuitem$PARAM[nr]_thumb)</onclick>
-			<onclick>Skin.Reset(mainmenuitem$PARAM[nr]_fanart)</onclick>
+			<onclick conditio="Skin.String(mainmenuitem$PARAM[nr]_name)">Skin.Reset(mainmenuitem$PARAM[nr]_name)</onclick>
+			<onclick conditio="Skin.String(mainmenuitem$PARAM[nr]_target)">Skin.Reset(mainmenuitem$PARAM[nr]_target)</onclick>
+			<onclick conditio="Skin.String(mainmenuitem$PARAM[nr]_path)">Skin.Reset(mainmenuitem$PARAM[nr]_path)</onclick>
+			<onclick conditio="Skin.String(mainmenuitem$PARAM[nr]_executebuiltin)">Skin.Reset(mainmenuitem$PARAM[nr]_executebuiltin)</onclick>
+			<onclick conditio="Skin.String(mainmenuitem$PARAM[nr]_thumb)">Skin.Reset(mainmenuitem$PARAM[nr]_thumb)</onclick>
+			<onclick conditio="Skin.String(mainmenuitem$PARAM[nr]_fanart)">Skin.Reset(mainmenuitem$PARAM[nr]_fanart)</onclick>
 			<label>                        Remove/Reset</label>
 			<label2 />
+			<onclick>SetFocus($PARAM[id]1)</onclick>
 		</control>
 		<control type="group" id="$PARAM[id]6">
 			<description>DONT remove group control</description>
 			<control type="image">
 				<visible>!String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_thumb))</visible>
 				<description>Image extras WidgetLayout</description>
-				<top>-111</top>
+				<top>-200</top>
 				<left>30</left>
 				<height>80</height>
 				<width>70</width>
@@ -1450,13 +1508,22 @@ bump- if string_current_nr not 1
 			<control type="image">
 				<visible>!String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_fanart))</visible>
 				<description>Image extras WidgetLayout</description>
-				<top>-111</top>
+				<top>-200</top>
 				<right>30</right>
 				<height>80</height>
 				<width>200</width>
 				<bordersize>2</bordersize>
 				<texture fallback="">$INFO[Skin.String(mainmenuitem$PARAM[nr]_fanart)]</texture>
 				<aspectratio>keep</aspectratio>
+			</control>
+			<control type="image">
+				<!-- frame shrink if item emtpy -->
+					
+				<visible>String.StartsWith(System.CurrentControlid,$PARAM[id]) + control.isvisible($PARAM[id]2)</visible>
+				<top>-280</top>
+				<height>290</height>
+				<width>100%</width>
+				<texture border="2">frames/frame.png</texture>
 			</control>
 		</control>
 		
