@@ -1,4 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
-	<controls />
+	<defaultcontrol always="true">200</defaultcontrol>
+	<onload>ClearProperty(AdditionalInfo)</onload>
+	<onload>RunScript(script.embuary.helper,action=resetposition,container=8601||8602||8603||8604||8605||8606||8607||8608||8609||8622)</onload>
+	<onload>RunScript(script.embuary.helper,action=encode,string='"$VAR[EncodeTitle]"',prop=EncodedTitle)</onload>
+	<onload condition="!string.isempty(listitem.dbid) + [container.content(movies) | String.IsEqual(ListItem.DBTYPE,movie)]">RunScript(script.embuary.helper,action=lookforfile,file='"$VAR[extrasLocation_lookup]"',prop=bonuscontentavail)</onload>
+	<!-- maybe auto close dialog and open embuary.info window() if not media from lib ? -->
+	
+	<onunload>ClearProperty(AdditionalInfo)</onunload>
+	<onunload>ClearProperty(EncodedTitle,home)</onunload>
+	<onunload condition="!String.IsEmpty(Window(home).Property(bonuscontentavail))">ClearProperty(bonuscontentavail,home)</onunload>	
+	<onunload condition="!String.IsEmpty(Window(home).Property(cast_storedpath))">ClearProperty(cast_storedpath,home)</onunload>
+	
+	
+	<animation type="WindowOpen">
+		<effect type="fade" start="0" end="100" time="300" tween="sine" easing="in" />
+		<effect type="zoom" center="50%,50%" start="0" end="100" time="300" tween="cubic" easing="out" />
+	</animation>
+	<animation type="WindowClose">
+		<effect type="fade" start="100" end="0" time="300" tween="sine" easing="out" />
+		<effect type="zoom" center="50%,50%" start="100" end="0" time="300" tween="cubic" easing="out" />
+	</animation>
+   
+    
+    <controls>
+		<control type="group" id="100">
+			<width>100%</width>
+			<height>100%</height>
+			<control type="image">
+			
+				<texture colordiffuse="ff000000">colors/white.png</texture>
+			</control>
+			
+			<control type="textbox">
+			<label>
+$INFO[VideoPlayer.DBID]                DBID             The database id of the currently playing video. (supports .offset() and .position())v17 Addition
+$INFO[VideoPlayer.UniqueID() ]         UniqueID        Returns the UniqueID of the currently playing video            v19
+$INFO[VideoPlayer.TvShowDBID]           TvShowDBID      Returns the tv show DBID of the currently playing episode         v19		
+			</label>
+			
+			</control>
+
+			
+			<control type="grouplist" id="200">
+				<description>Item Containers</description>
+				
+				<top>0</top>
+				<left>120</left>
+				<height>880</height>
+				<scrolltime tween="quadratic">400</scrolltime>
+			
+				<orientation>vertical</orientation>
+				<itemgap>-50</itemgap>
+				<usecontrolcoords>true</usecontrolcoords>
+				
+				<include content="spacer_h">
+					<param name="id" value="8600" />
+					<param name="gap" value="-20" />
+				</include>
+				
+				
+								
+				<include content="Universal_ContainerHeader">
+					<param name="groupid" value="8502" />
+					<param name="id" value="8602" />
+					<param name="label" value="$INFO[VideoPlayer.DBID] $INFO[VideoPlayer.Title]" />
+				</include>
+				<include content="Universal_Container">
+					<param name="id" value="8602" />
+					<param name="visible" value="Integer.IsGreater(Container(8602).NumItems,0) | Container(8602).IsUpdating" />
+					<param name="type_height" value="380" />
+					<param name="tags_visible" value="true" />
+					<param name="layout_height" value="380" />
+					<param name="layout_width" value="210" />
+					<param name="itemwidth" value="207" />
+					<param name="itemheight" value="310" />
+					<param name="layout" value="poster" />
+					<include condition="!Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceInfo"/>
+					<include condition="Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceSelect"/>
+					<content>
+						<item>
+							<label>test</label>
+							<icon>defaultaddonaudiodecoder.png</icon>
+						</item>
+					</content>
+					<content>$VAR[content_cast_video]</content>
+	
+				</include>
+				
+			</control>
+			
+		</control>
+	</controls>
 </window>

@@ -2355,24 +2355,17 @@ autosubmenu is mostly dynamic, even favourites when use a variable in 5556 conte
 		<value>resource://resource.images.skin.swan/backgroundimages/</value>
 	</variable>
 	
-	
-	album equal musiplayer.album + song equal.musicplayer
-	player.filenameandpath
-	Playlist.Position(media) 
-		<!-- <value condition="player.hasaudio">musicdb://songs/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(encoded_playertitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22songs%22%7D</value> -->
-		<!-- <value condition="player.hasaudio">musicdb://songs/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[Player.Title]%22%5D%7D%5D%7D%2C%22type%22%3A%22songs%22%7D</value> -->
-	
 	<variable name="CurrentlyPlayingItem">
-		<value condition="player.hasaudio">musicdb://songs/?songid=$INFO[musicplayer.dbid]</value>
-		</variable>
+		<value condition="player.hasaudio + !String.IsEmpty(musicplayer.dbid)">musicdb://songs/?songid=$INFO[musicplayer.dbid]</value>
+		<value condition="player.hasvideo + videoplayer.content(movies)">videodb://movies/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[Player.Title]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</value>
+		<value condition="player.hasvideo + videoplayer.content(episodes)">videodb://tvshows/titles/-1/-1/-1/-1/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[videoplayer.title]%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</value>
+	</variable>
 	
 	<include name="Menucontrol_Home_MenuTiles">
 
 			<control type="list" id="699">
 				<description>getinfo</description>
 				<include>HiddenContainer</include>
-				<!-- fail <onfocus condition="Window.Previous(songinformation)">600</onfocus> dialog vs window ?-->
-				 <!-- <onunfocus condition="Window.Previous(songinformation)">SetFocus(600)</onunfocus> -->
 				<onup>600</onup>
 				<ondown>600</ondown>
 				<onleft>600</onleft>
@@ -2406,7 +2399,7 @@ autosubmenu is mostly dynamic, even favourites when use a variable in 5556 conte
 		
 		<control type="group">
 			<description>in future template for currently playing bar - ref musci_hub n skinsetting for use it at top</description>
-			<visible>$EXP[IsCurrentyPlayingCommon]</visible>
+			<visible>$EXP[IsCurrentyPlayingCommon] + !$EXP[Infodialog_IsActive]</visible>
 			<bottom>0</bottom>
 			<height>215</height>
 			<width>100%</width>
@@ -2525,7 +2518,7 @@ autosubmenu is mostly dynamic, even favourites when use a variable in 5556 conte
 					</control>
 					
 					<control type="button" id="6011">
-						<visible>true</visible>
+						<visible>!Container(699).IsUpdating + Integer.IsEqual(Container(699).NumItems,1)</visible>
 						<centertop>50%</centertop>
 						<width>45</width>
 						<height>45</height>
@@ -2534,8 +2527,8 @@ autosubmenu is mostly dynamic, even favourites when use a variable in 5556 conte
 						<texturenofocus colordiffuse="$VAR[color_osdmusic_secondary]">buttons/osd/infonoborder.png</texturenofocus>
 						<!-- <onclick condition="player.hasvideo">ActivateWindow(fullscreeninfo)</onclick> -->
 						<!-- not done <onclick condition="player.hasaudio">ActivateWindow(songinformation)</onclick> -->
-						<onclick condition="player.hasaudio">setfocus(699)</onclick>
-						<onclick condition="player.hasaudio">action(info)</onclick>
+						<onclick condition="true">setfocus(699)</onclick>
+						<onclick condition="true">action(info)</onclick>
 					</control>
 					
 					<control type="button" id="6012">

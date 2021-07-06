@@ -165,6 +165,7 @@
 		<value condition="[!$EXP[IsOfflineMode] + [Window.IsActive(movieinformation) | Control.IsVisible(503)] + System.HasAddon(plugin.video.themoviedb.helper)] + [String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow)]">plugin://plugin.video.themoviedb.helper/?info=cast&amp;$VAR[videoinfo_tmdb_helper_type]&amp;$VAR[videoinfo_tmdb_helper_query]</value>
 	</variable>
 	
+	
 		<include name="stored_castpath"><content>$INFO[Window(home).Property(cast_storedpath)]</content></include>
 		<include name="castpath"><content>$VAR[content_cast]</content></include>
 	<!-- crew 
@@ -182,6 +183,29 @@
 		<value condition="!String.IsEmpty(ListItem.Title)">query=$INFO[ListItem.Title]</value>
 		<value condition="Window.IsTopMost(movieinformation)">query=$INFO[ListItem.Label]</value> 
 	</variable>
+	
+	
+	<variable name="content_cast_video">
+		<value condition="VideoPlayer.Content(movies)">plugin://script.embuary.helper?info=getcast&amp;type=movie&amp;dbid=$INFO[videoplayer.DBID]</value>
+		<value condition="VideoPlayer.Content(episodes)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[VideoPlayer.DBID]&amp;idtype=episode</value>
+		<value condition="String.StartsWith(System.BuildVersion,19.) + VideoPlayer.Content(episodes) + !String.IsEmpty(VideoPlayer.TvShowDBID)]">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[VideoPlayer.TvShowDBID]</value>
+		<value>plugin://plugin.video.themoviedb.helper/?info=cast&amp;$VAR[videofullscreeninfo_tmdb_helper_type]&amp;$VAR[videofullscreeninfo_tmdb_helper_query]</value>
+	</variable>
+	
+	<variable name="videofullscreeninfo_tmdb_helper_type">
+		<value condition="VideoPlayer.Content(movies)">type=movie</value>
+		<value condition="VideoPlayer.Content(episodes)">type=tv</value>
+	</variable>
+	<variable name="videofullscreeninfo_tmdb_helper_query">
+		<value condition="VideoPlayer.Content(movies) + !String.IsEmpty(VideoPlayer.Property(tmdb_id))">tmdb_id=$INFO[VideoPlayer.Property(tmdb_id)]</value>
+		<value condition="VideoPlayer.Content(movies) + !String.IsEmpty(VideoPlayer.Property(imdb_id))">imdb_id=$INFO[VideoPlayer.Property(imdb_id)]</value>
+		<value condition="VideoPlayer.Content(movies) + !String.IsEmpty(VideoPlayer.IMDBNumber) + !String.StartsWith(VideoPlayer.IMDBNumber,xx)">imdb_id=$INFO[VideoPlayer.IMDBNumber]</value>
+		<value condition="VideoPlayer.Content(episodes) + !String.IsEmpty(VideoPlayer.TvShowTitle)">query=$INFO[VideoPlayer.TvShowTitle]</value>
+		<value condition="!String.IsEmpty(VideoPlayer.Title) + !String.IsEmpty(VideoPlayer.Year)">query=$INFO[VideoPlayer.Title]&amp;year=$INFO[VideoPlayer.Year]</value>
+		<value condition="!String.IsEmpty(VideoPlayer.Title)">query=$INFO[VideoPlayer.Title]</value>
+		<value>query=$INFO[VideoPlayer.Label]</value> 
+	</variable>
+	
 			<!-- if using
 					<value>query=$INFO[ListItem.Label]</value> label get false fetched if coming back from tmdb.info.xml -  $INFO[ListItem.Label] will be equal $LOCALIZE[210] 
 			-->
