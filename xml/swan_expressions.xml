@@ -3,13 +3,21 @@
 
 	<!-- expresion autoset parenthesis 
 	REVISIT
-	because !(A + B) = !A | !B
-			!(A | B) = !A + !B 
-	
+	because 
+!(A + B) = !A | !B
+!(A | B) = !A + !B 
+
+test
+![!a | !b] = a + b 
+
 	
 	e.g. $EXP[Has_Trailer] = [!String.IsEmpty(ListItem.Trailer) | [!String.IsEmpty(Window(home).Property(listitemtrailer)) + !String.IsEmpty(Window(home).Property(trailer_avail))]]
 	-->
-
+intended false positive Player.ShowInfo
+- onloaf its always false
+- if using action(info) as onload it'll force dialog which is unwished
+	<expression name="osd_video_noinfo">String.IsEmpty(VideoPlayer.Plot) | [!String.IsEmpty(VideoPlayer.Plot) + Player.ShowInfo]</expression>
+	
 	<expression name="Has_Trailer">!String.IsEmpty(ListItem.Trailer) | [!String.IsEmpty(Window(home).Property(listitemtrailer)) + !String.IsEmpty(Window(home).Property(trailer_avail))]</expression>
 	<!-- BG -->
 	<expression name="Spotlight_Layout">![Window.IsActive(musicinformation) | Window.IsActive(songinformation) | Window.IsActive(movieinformation) | Window.IsActive(addoninformation) | Window.IsActive(pvrguideinfo) | Window.IsActive(pvrrecordinginfo) | Window.IsActive(pictureinfo) | Window.IsVisible(script-embuary-video.xml) | Window.IsVisible(script-embuary-person.xml)] + 

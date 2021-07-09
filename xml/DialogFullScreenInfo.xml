@@ -1,89 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
-	<defaultcontrol always="true">200</defaultcontrol>
-	<onload>ClearProperty(AdditionalInfo)</onload>
-	<onload>RunScript(script.embuary.helper,action=resetposition,container=8601||8602||8603||8604||8605||8606||8607||8608||8609||8622)</onload>
-	<onload>RunScript(script.embuary.helper,action=encode,string='"$VAR[EncodeTitle]"',prop=EncodedTitle)</onload>
-	<onload condition="!string.isempty(listitem.dbid) + [container.content(movies) | String.IsEqual(ListItem.DBTYPE,movie)]">RunScript(script.embuary.helper,action=lookforfile,file='"$VAR[extrasLocation_lookup]"',prop=bonuscontentavail)</onload>
-	<!-- maybe auto close dialog and open embuary.info window() if not media from lib ? -->
-	
-	<onunload>ClearProperty(AdditionalInfo)</onunload>
-	<onunload>ClearProperty(EncodedTitle,home)</onunload>
-	<onunload condition="!String.IsEmpty(Window(home).Property(bonuscontentavail))">ClearProperty(bonuscontentavail,home)</onunload>	
-	<onunload condition="!String.IsEmpty(Window(home).Property(cast_storedpath))">ClearProperty(cast_storedpath,home)</onunload>
+	<defaultcontrol>799</defaultcontrol>
+	<!-- <onunload>ActivateWindow(videoosd)</onunload> -->
+	<onload condition="!player.paused">PlayerControl(play)</onload>
 	
 	
+   <controls>
+	
+	<control type="button" id="799">
+		<include>HiddenObject</include>
+		<onup>Close</onup>
+		<ondown>Close</ondown>
+		<onleft>Close</onleft>
+		<onright>Close</onright>
+	</control>
 	<animation type="WindowOpen">
 		<effect type="fade" start="0" end="100" time="300" tween="sine" easing="in" />
-		<effect type="zoom" center="50%,50%" start="0" end="100" time="300" tween="cubic" easing="out" />
+		<effect type="slide" start="0,1920" end="0" time="350" tween="cubic" easing="out" />
 	</animation>
 	<animation type="WindowClose">
 		<effect type="fade" start="100" end="0" time="300" tween="sine" easing="out" />
-		<effect type="zoom" center="50%,50%" start="100" end="0" time="300" tween="cubic" easing="out" />
+		<effect type="slide" start="0" end="0,1920" time="350" tween="cubic" easing="out" />
 	</animation>
-   
-    
-    <controls>
-		<control type="group" id="100">
-			<width>100%</width>
-			<height>100%</height>
-			<control type="image">
+	<control type="group">
+		<animation effect="fade" start="100" end="0" time="400" condition="[Player.Paused + System.IdleTime(5) + !Window.IsActive(videoosd)] | [[Window.IsActive(osdvideosettings) | Window.IsActive(osdaudiosettings) | Window.IsActive(osdsubtitlesettings)] + Window.IsTopMost(sliderdialog)]">conditional</animation>
 			
-				<texture colordiffuse="ff000000">colors/white.png</texture>
+		<width>100%</width>
+		<height>100%</height>
+		<description> temp ? - show together with osd </description>
+		<control type="list" id="699">
+			<description>getinfo - json provide propertys Library.Id = **episodeid ** seasonid **tvshowid **movieid ...
+https kodi.wiki/view/JSON-RPC_API/v8#VideoLibrary_2
+</description>
+			<include>HiddenContainer</include>
+			<onup>600</onup>
+			<ondown>600</ondown>
+			<onleft>600</onleft>
+			<onright>600</onright>
+			<ondown>600</ondown>
+			<content limit="1">$VAR[CurrentlyPlayingItem]</content>
+		</control>
+		
+		<control type="group">
+			<width>100%</width>
+			<height>310</height>
+			<bottom>0</bottom>
+			<control type="image">
+				<texture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white.png</texture>
 			</control>
 			
-			<control type="textbox">
+		<!-- 	<control type="textbox">
 			<label>
 $INFO[VideoPlayer.DBID]                DBID             The database id of the currently playing video. (supports .offset() and .position())v17 Addition
 $INFO[VideoPlayer.UniqueID() ]         UniqueID        Returns the UniqueID of the currently playing video            v19
 $INFO[VideoPlayer.TvShowDBID]           TvShowDBID      Returns the tv show DBID of the currently playing episode         v19		
 			</label>
 			
-			</control>
+			</control> -->
 
-			
-			<control type="grouplist" id="200">
-				<description>Item Containers</description>
-				
-				<top>0</top>
-				<left>120</left>
-				<height>880</height>
+			<control type="grouplist" id="700">
+				<description>cast Container</description>
+				<top>10</top>
+				<left>50</left>
+				<height>300</height>
 				<scrolltime tween="quadratic">400</scrolltime>
-			
 				<orientation>vertical</orientation>
-				<itemgap>-50</itemgap>
 				<usecontrolcoords>true</usecontrolcoords>
-				
-				<include content="spacer_h">
-					<param name="id" value="8600" />
-					<param name="gap" value="-20" />
-				</include>
+					<onup>Action(back)</onup>
+					<ondown>Action(back)</ondown>
 				
 				
-								
 				<include content="Universal_ContainerHeader">
-					<param name="groupid" value="8502" />
-					<param name="id" value="8602" />
-					<param name="label" value="$INFO[VideoPlayer.DBID] $INFO[VideoPlayer.Title]" />
+					<param name="groupid" value="7101" />
+					<param name="top" value="0" />
+					<param name="id" value="7102" />
+					<param name="label" value="$LOCALIZE[344]" />
+					<left>-15</left>
+					<visible>Control.IsVisible(7102)</visible>
 				</include>
 				<include content="Universal_Container">
-					<param name="id" value="8602" />
-					<param name="visible" value="Integer.IsGreater(Container(8602).NumItems,0) | Container(8602).IsUpdating" />
-					<param name="type_height" value="380" />
+					<param name="id" value="7102" />
+					<param name="visible" value="Integer.IsGreater(Container(7102).NumItems,0) | Container(7102).IsUpdating" />
+					<param name="type_height" value="220" />
+					<param name="type_pos_top" value="0" />
 					<param name="tags_visible" value="true" />
-					<param name="layout_height" value="380" />
-					<param name="layout_width" value="210" />
-					<param name="itemwidth" value="207" />
-					<param name="itemheight" value="310" />
+					<param name="layout_height" value="185" />
+					<param name="layout_width" value="118" />
+					<param name="itemwidth" value="115" />
+					<param name="itemheight" value="155" />
 					<param name="layout" value="poster" />
+					
+					<param name="layout" value="poster" />
+					<!--
+
+every onclick fail ,just auto close 
+					<onclick>dialog.close(fullscreeninfo,true)</onclick>
 					<include condition="!Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceInfo"/>
 					<include condition="Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceSelect"/>
+					<onclick>playercontrol(pause)</onclick> -->
 					<content>
-						<item>
-							<label>test</label>
-							<icon>defaultaddonaudiodecoder.png</icon>
+						<item id="109">
+							<label />
+							<icon>buttons/osd/infonoborder.png</icon>
+							<visible>!Container(699).IsUpdating + Integer.IsEqual(Container(699).NumItems,1)</visible>
+							
 						</item>
 					</content>
+					
 					<content>$VAR[content_cast_video]</content>
 	
 				</include>
@@ -91,5 +114,6 @@ $INFO[VideoPlayer.TvShowDBID]           TvShowDBID      Returns the tv show DBID
 			</control>
 			
 		</control>
+	</control>
 	</controls>
 </window>

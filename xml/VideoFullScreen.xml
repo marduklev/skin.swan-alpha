@@ -11,33 +11,22 @@ ID 	Type 	Description
 11 	label 	Line 2
 12 	label 	Line 3  -->
 	<defaultcontrol />
-	<onload condition="!Player.HasGame + [Skin.HasSetting(DisableSubtitles) + VideoPlayer.SubtitlesEnabled]">ShowSubtitles</onload>
-    
-	
-	<!-- embuary
-	
-	
-	<onunload condition="String.IsEqual(Window(Home).Property(BaseWindow),InfoDialog)">AlarmClock(loadinfo,Action(Info),00:00,silent)</onunload>
-	<onunload condition="String.IsEqual(Window(Home).Property(BaseWindow),InfoDialog)">AlarmClock(loadinfo,PlayerControl(Stop),00:00,silent)</onunload>   																																				
-		
-	-->
-	
-	<onload condition="Skin.HasSetting(ShowOSD_OnStart) + !Player.HasGame">SetProperty(ShowOSD,true,home)</onload>
-	<onload condition="Skin.HasSetting(ShowOSD_OnStart) + !Player.HasGame">AlarmClock(ShowOSD,ClearProperty(ShowOSD,home),00:04,silent)</onload>
-	
-	<!-- <onunload condition="Prop + $EXP[TrailerIsPlaying]">AlarmClock(info,Action(info),00:00)</onunload> -->
+	<onload condition="!Player.HasGame + [Skin.HasSetting(DisableSubtitles) + [VideoPlayer.SubtitlesEnabled + VideoPlayer.HasSubtitles]]">ShowSubtitles</onload>
+	<onload condition="Skin.HasSetting(ShowOSD_OnStart)">activatewindow(videoosd)</onload>
+	<onload condition="Skin.HasSetting(ShowPlot_OnStart) + !Player.HasGame">SetProperty(ShowOSD_Plot,true,home)</onload>
+	<onload condition="Skin.HasSetting(ShowPlot_OnStart) + !Player.HasGame">AlarmClock(ShowOSD_Plot,ClearProperty(ShowOSD_Plot,home),00:04,silent)</onload>
 	
 	<controls>
 		
-	<!-- skin helping stuff -->
 	<control type="list" id="2000">
+		<description>skin helping stuff  not in use</description>
 		<include>HiddenObject</include>
 		<content limit="1">$VAR[EmbuaryHelper_GetPlayerInfo_dbid]</content>
 	</control>
 	
-	<!-- cond dim screen -->
 	<control type="image" id="99">
-		<visible>Player.Caching | !String.IsEmpty(PVR.ChannelNumberInput) | !String.IsEmpty(Player.SeekNumeric)</visible>
+		<description>cond dim screen,may add option to dimm on idle time pause  - ' | [Player.Paused + System.IdleTime(60)] '</description>
+		<visible>[Player.Caching | !String.IsEmpty(PVR.ChannelNumberInput) | !String.IsEmpty(Player.SeekNumeric)]</visible>
 		<animation effect="fade" end="100" time="200">WindowOpen</animation>
 		<animation effect="fade" start="100" end="0" time="200">WindowClose</animation>
 		<animation effect="fade" end="100" time="200">Visible</animation>
@@ -45,9 +34,8 @@ ID 	Type 	Description
 		<texture colordiffuse="color_osdvideo_dimmedbg">colors/white70.png</texture>
 	</control>
 	
-	<!-- busy spinner -->
 	<control type="group" id="99">
-		<description>Hide Optional</description>
+		<description> busy spinner Hide Optional</description>
 		<visible>!Skin.HasSetting(HideBusyOSD) + Player.Caching + !Window.IsVisible(busydialog)</visible>
 		<control type="image" id="99">
 			<centerleft>50%</centerleft>
@@ -68,11 +56,10 @@ ID 	Type 	Description
 			<align>center</align>
 			<aligny>center</aligny>
 		</control>
-		
 	</control>
 	
-	<!-- numeric Input -->
-	<control type="label" id="99">
+	<control type="label" id="99">	
+		<description>numeric Input</description>
 		<top>0</top>
 		<bottom>0</bottom>
 		<left>0</left>
@@ -82,9 +69,9 @@ ID 	Type 	Description
 		<align>center</align>
 		<aligny>center</aligny>
 	</control>
-		
-	<!-- native gui infos -->
+
 	<control type="group" id="99">
+		<description>native gui infos</description>
 		<left>0</left>
 		<visible>Control.IsVisible(10) | Control.IsVisible(11) | Control.IsVisible(12)</visible>
 		<control type="image">
@@ -123,11 +110,8 @@ ID 	Type 	Description
 		</control>
 	</control>
 	
-	<include content="OSD_VideoSimple" condition="!Player.HasGame" />
+	<include content="VideoFullscreen_OSD" condition="!Player.HasGame" />
 	
-	
-	<!-- <include content="OSD_VideoSimple" condition="Player.HasGame" /> -->
-			
 	<control type="textbox" id="99">
 		<visible>Skin.HasSetting(SwanDebug)</visible>
 		<font>font20_title</font>
@@ -138,7 +122,6 @@ ID 	Type 	Description
 		<textcolor>red</textcolor>
 		<label>System.BuildVersion:     $VAR[KodiBuildVersion,[B],[/B]]
 System.BuildDate:     $INFO[System.BuildDate]
-
 
 $LOCALIZE[31030] :     $INFO[system.memory(used)] [B]/[/B] $INFO[system.memory(total)]       $INFO[system.memory(used.percent)]
 $LOCALIZE[13271]      $INFO[System.CPUUsage]

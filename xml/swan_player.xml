@@ -545,7 +545,8 @@
 		<ondown>6101</ondown>
 	</include>
 	
-	<include name="Video_OSD_Slider_BGTEST">
+	<include name="VideoOSD_ProgressSlider">
+		
 		<control type="progress">
 			<bottom>149</bottom>
 			<left>320</left>
@@ -558,6 +559,12 @@
 			<overlaytexture />
 			<info>$PARAM[info]</info>
 		</control>
+		<control type="slider" id="6001">
+			<include content="OSD_Slider_Seek" />
+			<info>$PARAM[info]</info>
+			<action>$PARAM[slider_action]</action>
+		</control>
+		
 	</include>
 					
 	<variable name="EmbuaryHelper_GetPlayerInfo_dbid">
@@ -622,23 +629,25 @@
 	</variable>
 	
 	
-	<include name="OSD_VideoSimple">
-		<!-- get includes -->
-		<!-- OSD -->
-		<control type="group" id="99">
-			<visible>Window.IsVisible(videoosd) | Window.IsVisible(seekbar) | Player.Paused | Player.ShowTime | $EXP[IsSeek] | !String.IsEmpty(Window(home).Property(ShowOSD))</visible>
+	<include name="VideoFullscreen_OSD">
+		<description>keep id 99 if possible - otherwise issues come - as like prefer used in videofullscreen</description>
+			<control type="group" id="99">
+			<visible>Window.IsVisible(videoosd) | Window.IsVisible(seekbar) | Player.Paused | Player.ShowTime | $EXP[IsSeek] | !String.IsEmpty(Window(home).Property(ShowOSD_Plot)) | Window.IsActive(fullscreeninfo)</visible>
 			
-			<animation effect="fade" start="100" end="0" time="400" condition="[Player.Paused + System.IdleTime(5) + !Window.IsActive(videoosd)] | [[Window.IsActive(osdvideosettings) | Window.IsActive(osdaudiosettings) | Window.IsActive(osdsubtitlesettings)] + Window.IsTopMost(sliderdialog)]">conditional</animation>
-			<animation effect="fade" start="0" end="100" time="0">Visible</animation>
+			<animation effect="fade" start="0" end="100" time="150">Visible</animation>
 			<animation effect="fade" start="100" end="0" time="200" delay="1500">Hidden</animation>
-			<!-- <animation effect="fade" start="100" end="0" time="0" condition="Window.IsVisible(playerprocessinfo) | Window.IsVisible(pvrosdchannels) | Window.IsVisible(Teletext) | Window.IsVisible(sliderdialog) | Window.IsVisible(shutdownmenu) | Window.IsVisible(videobookmarks) | !String.IsEmpty(Window(home).Property(service.upnext.dialog)) | [$EXP[HideVideoOSD] + !$EXP[PlayerSeek] + !Window.IsVisible(videoosd)]">Conditional</animation> -->
+			<animation effect="fade" start="100" end="0" time="400" condition="[Player.Paused + System.IdleTime(5) + !Window.IsActive(videoosd)] | [[Window.IsActive(osdvideosettings) | Window.IsActive(osdaudiosettings) | Window.IsActive(osdsubtitlesettings)] + Window.IsTopMost(sliderdialog)]">conditional</animation>
+			<animation effect="fade" start="100" end="0" time="0" condition="Window.IsVisible(playerprocessinfo) | Window.IsVisible(pvrosdchannels) | Window.IsVisible(Teletext) | Window.IsVisible(sliderdialog) | Window.IsVisible(shutdownmenu) | Window.IsVisible(videobookmarks) | !String.IsEmpty(Window(home).Property(service.upnext.dialog))">Conditional</animation>
 			
 			<control type="group" id="99">
 				<bottom>0</bottom>
 				<width>100%</width>
 				<height>400</height>
 				<animation effect="slide" start="0,0" end="0,-100" time="250" condition="Window.IsActive(videoosd)">conditional</animation>
-				<animation effect="slide" start="0,0" end="0,150" time="250" condition="String.IsEmpty(VideoPlayer.Plot) | Player.ShowInfo">conditional</animation>
+					
+					<animation effect="slide" start="0,0" end="0,-410" time="250" condition="Window.IsActive(fullscreeninfo)">conditional</animation>
+				
+				<animation effect="slide" start="0,0" end="0,150" time="250" condition="$EXP[osd_video_noinfo]">conditional</animation>
 				<control type="image" id="99">
 					<description>bottom offset neg as osd button bg</description>
 					<bottom>-100</bottom>
@@ -706,7 +715,7 @@
 				</control>
 				
 				<control type="textbox" id="99">
-					<description>q: false positive boolean ?</description>
+					<description>intended show info on false</description>
 					<animation effect="fade" start="0" end="100" time="250">Visible</animation>
 					<animation effect="fade" start="100" end="0" time="250">Hidden</animation>
 					<bottom>10</bottom>
@@ -718,36 +727,13 @@
 					<textcolor>$VAR[color_osdvideo_secondary]</textcolor>
 					<font>DialogListItem</font>
 					<label>$VAR[PlayerPlot]</label>
-					<visible>!Player.ShowInfo</visible>
+					<visible>!String.IsEmpty(VideoPlayer.Plot) + !Player.ShowInfo</visible>
 				</control>
-				
-				
-				<control type="progress" id="99">
-					<visible>!Window.Is(fullscreengame)</visible>
-					<bottom>149</bottom>
-					<left>320</left>
-					<right>0</right>
-					<height>4</height>
-					<texturebg colordiffuse="$VAR[color_osdvideo_remain]">diffuse/sliderbackground.png</texturebg>
-					<midtexture flipx="true" colordiffuse="$VAR[color_osdvideo_progress]">diffuse/gradientleft.png</midtexture>
-					<lefttexture />
-					<righttexture />
-					<overlaytexture />
-					
-					<description>use include of info instead whole group</description>
-					<info>Player.Progress</info>
-				</control>
-				<control type="slider" id="99">
-					<visible>!Window.Is(fullscreengame)</visible>
-					<include content="OSD_Slider_Seek" />
-					<info>Player.Progress</info>
-					<visible>!VideoPlayer.Content(LiveTV)</visible>
-				</control>
-				
-				
 			</control>
 			
 			<control type="group" id="99">
+				<animation effect="slide" start="0,0" end="0,-310" time="250" condition="Window.IsActive(fullscreeninfo)">conditional</animation>
+				
 				<bottom>0</bottom>
 				<width>100%</width>
 				<control type="image" id="99">
