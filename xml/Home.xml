@@ -5,73 +5,25 @@
 	<menucontrol>9000</menucontrol>
 	<onload condition="!Skin.HasSetting(initial_startup_done)">ReplaceWindow(1101)</onload>
 	<onload condition="!Control.Group(5555).HasFocus()">SetFocus(5555)</onload>
-	
-	<!-- <onload condition="!String.IsEmpty(Window(home).property(myvideos.selectaction)">RunScript(script.embuary.helper,action=getkodisetting,setting=myvideos.selectaction)</onload> -->
-	
 	<onload condition="!String.IsEmpty(Window(Home).Property(menucontrol_active))">ClearProperty(menucontrol_active,home)</onload>
-	<!-- ids
-	window - (1)0000
-	widget grouplist - 5555
-	menucontrol/main menu - 9000
-	-->
-	
 	<controls>
-		<!-- weather retrival ,check need -->
+		
 		<control type="label">
-			<info>Weather.FanartCode</info>
+			<info>Weather.ConditionsIcon</info>
 			<include>HiddenObject</include>
 		</control>
 		
 		<include condition="!String.IsEqual(Skin.String(HomeLayout),MenuTiles)" content="global_background" />
 	
-		<!-- keep idea
-main menu - restricted? custom items
-submenu - restricted depending on custom skinstring mainmenu item - use/show submenu container where static items lead to window,and dynamic show content - slide top?, hide/slide common main widgets
-
-- e.g. template
-		param name="content" value="videodb://movies/years/"
-		param name="target" value="videodb://movies/years/"
-		
-		<focusedlayout>
-			- use circe?-layout for static
-			- use ?-layout for dynamic content
-		</focusedlayout>
-		<content>
-			<item id="1$PARAM[id]">
-				<label>Movies Year</label>
-				<label2 />
-				<onclick>ActivateWindow($PARAM[target],$PARAM[content],return)</onclick>
-				<icon>default[foo].png/Skin.String(foo1)</icon>
-				<thumb>default[foo].png/Skin.String(foo1)</thumb>
-			</item>
-		</content>
-		<content target="$PARAM[target]">$PARAM[content]</content>
-
-		-->
 		<control type="group">
-			<description>initial no lib</description>
-			<visible>![Library.HasContent(video) + Library.HasContent(movies) + Library.HasContent(tvshows) + Library.HasContent(musicvideos) + Library.HasContent(music) + Library.HasContent(musicvideos)]</visible>
-			
-			
-			
-		</control>
-		<control type="group">
-		
 			<include content="Animation_TransitionFadeOut">
 				<param name="condition" value="Window.IsActive(1122) | $EXP[Infodialog_IsActive] | Window.IsActive(mediasource) | Window.IsActive(shutdownmenu)" />
-			
-				<control type="button">
-					<description>go to settings</description>
-					<onclick>ActivateWindow(settings)</onclick>
-				</control>
-				
 			</include>
 			
-			<!-- menucontrol -->
 			<control type="group">
 				<description>home layouts</description>
-			<!-- TEMP SLIDE non custom menu -->
-			<animation effect="zoom" start="70" end="100" time="250" center="85%,25%" condition="!ControlGroup(9000).HasFocus()">Conditional</animation>
+							<!-- TEMP SLIDE non custom menu -->
+							<animation effect="zoom" start="70" end="100" time="250" center="85%,25%" condition="!ControlGroup(9000).HasFocus()">Conditional</animation>
 				
 				<include condition="String.IsEqual(Skin.String(HomeLayout),Spotlight)">Home_Layout_Spotlight</include>
 				<include condition="String.IsEmpty(Skin.String(HomeLayout)) | String.IsEqual(Skin.String(HomeLayout),WidgetsOnly)">Home_Layout_WidgetOnly</include>

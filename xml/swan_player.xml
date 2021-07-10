@@ -636,7 +636,7 @@
 			
 			<animation effect="fade" start="0" end="100" time="150">Visible</animation>
 			<animation effect="fade" start="100" end="0" time="200" delay="1500">Hidden</animation>
-			<animation effect="fade" start="100" end="0" time="400" condition="[Player.Paused + System.IdleTime(5) + !Window.IsActive(videoosd)] | [[Window.IsActive(osdvideosettings) | Window.IsActive(osdaudiosettings) | Window.IsActive(osdsubtitlesettings)] + Window.IsTopMost(sliderdialog)]">conditional</animation>
+			<animation effect="fade" start="100" end="0" time="400" condition="[Player.Paused + System.IdleTime(5) + [!Window.IsActive(videoosd) + !Window.IsActive(fullscreeninfo)]] | [[Window.IsActive(osdvideosettings) | Window.IsActive(osdaudiosettings) | Window.IsActive(osdsubtitlesettings)] + Window.IsTopMost(sliderdialog) | $EXP[embinfodialogactive] | Window.IsActive(1104)]">conditional</animation>
 			<animation effect="fade" start="100" end="0" time="0" condition="Window.IsVisible(playerprocessinfo) | Window.IsVisible(pvrosdchannels) | Window.IsVisible(Teletext) | Window.IsVisible(sliderdialog) | Window.IsVisible(shutdownmenu) | Window.IsVisible(videobookmarks) | !String.IsEmpty(Window(home).Property(service.upnext.dialog))">Conditional</animation>
 			
 			<control type="group" id="99">
@@ -693,6 +693,7 @@
 					<label>Ends at[CR][B]$INFO[Player.Finishtime][/B]</label>
 				</control>
 				<control type="image" id="99">
+					<visible>!Window.IsActive(fullscreeninfo)</visible>
 					<visible>[[!String.IsEqual(Weather.fanartcode,na) | !String.IsEmpty(Weather.fanartcode)] + Weather.IsFetched]</visible>
 					<bottom>70</bottom>
 					<right>25</right>
@@ -702,6 +703,8 @@
 					<aspectratio align="left">keep</aspectratio>
 				</control>
 				<control type="label" id="99">
+					<visible>!Window.IsActive(fullscreeninfo)</visible>
+					<visible>[[!String.IsEqual(Weather.fanartcode,na) | !String.IsEmpty(Weather.fanartcode)] + Weather.IsFetched]</visible>
 					<bottom>70</bottom>
 					<right>2</right>
 					<font>font23_title</font>
@@ -710,7 +713,6 @@
 					<align>left</align>
 					<label>$INFO[Weather.Temperature]</label>
 					<font>font12</font>
-					<visible>[[!String.IsEqual(Weather.fanartcode,na) | !String.IsEmpty(Weather.fanartcode)] + Weather.IsFetched]</visible>
 					<textcolor>$VAR[color_osdvideo_main]</textcolor>
 				</control>
 				
@@ -728,6 +730,21 @@
 					<font>DialogListItem</font>
 					<label>$VAR[PlayerPlot]</label>
 					<visible>!String.IsEmpty(VideoPlayer.Plot) + !Player.ShowInfo</visible>
+				</control>
+			</control>
+			
+			<control type="group" id="99">
+				<animation effect="slide" start="0,0" end="0,-310" time="250" condition="Window.IsActive(fullscreeninfo)">conditional</animation>
+				
+				<bottom>0</bottom>
+				<width>100%</width>
+				<control type="image" id="99">
+					<left>0</left>
+					<bottom>0</bottom>
+					<width>320</width>
+					<height>440</height>
+					<texture>$VAR[PlayerThumb]</texture>
+					<aspectratio scalediffuse="false" align="left" aligny="bottom">keep</aspectratio>
 				</control>
 			</control>
 			

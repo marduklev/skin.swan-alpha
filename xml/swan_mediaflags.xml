@@ -11,11 +11,11 @@
 		<definition>
 		<control type="group">
 			<animation effect="slide" start="0,90" end="0,0" time="350" tween="quadratic" easing="out" delay="100">VisibleChange</animation>
-			<visible>Control.IsVisible($PARAM[view_id]) + !Skin.HasSetting(View_$PARAM[view_id]_DisableFooter)</visible>
+			<visible>[Window.IsActive(videos) + [Control.IsVisible($PARAM[view_id]) + !Skin.HasSetting(View_$PARAM[view_id]_DisableFooter)]] | Window.IsActive(fullscreenvideo)</visible>
 			<bottom>$PARAM[bottom]</bottom>
 			<height>90</height>
 			<control type="image">
-				
+				<visible>!Window.IsActive(fullscreenvideo)</visible>
 				<texture colordiffuse="$VAR[color_footer_backgroundpanel]">$VAR[image_footer_bg]</texture>
 				<animation effect="fade" start="100" end="0" time="250" easing="inout" reversible="true" condition="[Control.IsVisible(503) |Control.IsVisible(504) ] + !String.IsEmpty(Window(home).Property(TrailerIsPlaying))">conditional</animation>
 			</control>
@@ -95,7 +95,7 @@
 					<param name="id" value="50500"/>
 					<param name="rating" value="tvdb"/>
 					<param name="color" value="$PARAM[forcedcolor]" />
-					<visible>[[Container.Content(tvshows) | String.IsEqual(ListItem.DBTYPE,tvshow)] | [Container.Content(episodes) | String.IsEqual(ListItem.DBTYPE,episode)] | [Container.Content(seasons) | String.IsEqual(ListItem.DBTYPE,season)]]</visible>
+					<visible>[[Container.Content(tvshows) | String.IsEqual(ListItem.DBTYPE,tvshow)] | [Container.Content(episodes) | String.IsEqual(ListItem.DBTYPE,episode)] | [Container.Content(seasons) | String.IsEqual(ListItem.DBTYPE,season)]] | [Window.IsActive(fullcreenvideo) + VideoPlayer.Content(episodes)]</visible>
 				</include>
 				<include content="rating_footer_template">
 					<param name="id" value="50502"/>
@@ -114,7 +114,7 @@
 	<include name="rating_footer_template">
 		<definition>
 		<control type="grouplist">
-			<visible>Window.IsActive(videos) + Skin.HasSetting(Show_$PARAM[rating]_Rating) + !String.IsEmpty(Control.GetLabel($PARAM[id]))</visible>
+			<visible>[Window.IsActive(videos) | Window.IsActive(fullscreenvideo)] + Skin.HasSetting(Show_$PARAM[rating]_Rating) + !String.IsEmpty(Control.GetLabel($PARAM[id]))</visible>
 			<top>15</top>
 			<bottom>5</bottom>
 			<width>80</width>
@@ -916,10 +916,20 @@
 				<bordersize>1</bordersize>
 				<centertop>50%</centertop>
 				<visible>!String.IsEmpty(ListItem.$PARAM[flag])</visible>
+				<visible>!Window.IsActive(fullscreenvideo)</visible>
 				<aspectratio>keep</aspectratio>
 				<texture colordiffuse="$PARAM[color]">$INFO[ListItem.$PARAM[flag],flags/flagsmedia/$PARAM[flagtype]/,.png]</texture>
 			</control>
-			
+			<control type="image">
+				<width>$PARAM[width]</width>
+				<height>$PARAM[width]</height>
+				<bordersize>1</bordersize>
+				<centertop>50%</centertop>
+				<visible>!String.IsEmpty(VideoPlayer.$PARAM[flag])</visible>
+				<visible>Window.IsActive(fullscreenvideo)</visible>
+				<aspectratio>keep</aspectratio>
+				<texture colordiffuse="$PARAM[color]">$INFO[VideoPlayer.$PARAM[flag],flags/flagsmedia/$PARAM[flagtype]/,.png]</texture>
+			</control>
 		</definition>
 	</include>
 			<!-- <control type="label" id="$PARAM[id]2">

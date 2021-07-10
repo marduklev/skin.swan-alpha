@@ -1,45 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
-	<defaultcontrol>799</defaultcontrol>
-	<!-- <onunload>ActivateWindow(videoosd)</onunload> -->
+	<defaultcontrol always="true">7102</defaultcontrol>
 	<onload condition="!player.paused">PlayerControl(play)</onload>
 	
+	<controls>
 	
-   <controls>
+	<!-- NOTES : keep either empty to place controls (special ratings, cast ...) in videoOSD.xml and have it visible at contition for the slide fade animations , if mouse is hovering osd will forced activated -->
 	
 	<control type="button" id="799">
 		<include>HiddenObject</include>
+		<onclick>SetFocus(7102)</onclick>
 		<onup>Close</onup>
 		<ondown>Close</ondown>
 		<onleft>Close</onleft>
 		<onright>Close</onright>
 	</control>
-	<animation type="WindowOpen">
-		<effect type="fade" start="0" end="100" time="300" tween="sine" easing="in" />
-		<effect type="slide" start="0,1920" end="0" time="350" tween="cubic" easing="out" />
-	</animation>
-	<animation type="WindowClose">
-		<effect type="fade" start="100" end="0" time="300" tween="sine" easing="out" />
-		<effect type="slide" start="0" end="0,1920" time="350" tween="cubic" easing="out" />
-	</animation>
-	<control type="group">
-		<animation effect="fade" start="100" end="0" time="400" condition="[Player.Paused + System.IdleTime(5) + !Window.IsActive(videoosd)] | [[Window.IsActive(osdvideosettings) | Window.IsActive(osdaudiosettings) | Window.IsActive(osdsubtitlesettings)] + Window.IsTopMost(sliderdialog)]">conditional</animation>
-			
+	
+		<control type="group">
+			<animation type="WindowOpen">
+			<effect type="fade" start="0" end="100" time="200" tween="sine" easing="in" />
+			<effect type="slide" start="0,1920" end="0" time="250" tween="cubic" easing="out" />
+		</animation>
+		<animation type="WindowClose">
+			<effect type="fade" start="100" end="0" time="200" tween="sine" easing="out" />
+			<effect type="slide" start="0" end="0,1920" time="250" tween="cubic" easing="out" />
+		</animation>
+		<animation effect="fade" start="100" end="0" time="400" condition="[Player.Paused + System.IdleTime(5) + [!Window.IsActive(videoosd) + !Window.IsActive(fullscreeninfo)]] | $EXP[embinfodialogactive] | Window.IsActive(1104)">conditional</animation>
 		<width>100%</width>
 		<height>100%</height>
 		<description> temp ? - show together with osd </description>
+		
 		<control type="list" id="699">
-			<description>getinfo - json provide propertys Library.Id = **episodeid ** seasonid **tvshowid **movieid ...
-https kodi.wiki/view/JSON-RPC_API/v8#VideoLibrary_2
-</description>
 			<include>HiddenContainer</include>
-			<onup>600</onup>
-			<ondown>600</ondown>
-			<onleft>600</onleft>
-			<onright>600</onright>
-			<ondown>600</ondown>
 			<content limit="1">$VAR[CurrentlyPlayingItem]</content>
 		</control>
+		<control type="list" id="2000">
+			<description>skin helping stuff  not in use</description>
+			<include>HiddenContainer</include>
+			<content limit="1">$VAR[EmbuaryHelper_GetPlayerInfo_dbid]</content>
+		</control>
+		
+		<control type="group">
+			<description>heading n weather ??</description>
+			<visible>false</visible>
+			<include>HeaderBar</include>
+		</control>
+		
+		<include content="footer">
+			<param name="bottom" value="310" />
+			<param name="footer_mediaflag_width" value="400" />
+			<param name="footer_mediaflag_offsetleft" value="350" />
+			<param name="footer_mediaflag_align" value="left" />
+			<param name="footer_rating_offsetright" value="325" />
+			<param name="footer_rating_align" value="right" />
+		</include>
+		
+		<control type="group">
+			<description>channel icon or disc</description>
+			<width>240</width>
+			<height>240</height>
+			<bottom>310</bottom>
+			<right>50</right>
+			<control type="image">
+				<right>0</right>
+				<bordersize>2</bordersize>
+				<bordertexture /> 
+				<aspectratio scalediffuse="true" align="right" aligny="bottom">keep</aspectratio>
+				<texture diffuse="diffuse/compactdisk.png">$VAR[PlayerDisc]</texture>
+				<animation effect="rotate" end="-360" center="auto" time="4800" loop="true" reversible="false" condition="!Player.Paused">Conditional</animation>
+			</control>
+			<control type="image">
+				<description>test - weatherconditions - fetch n show - like to show tv channel ??</description>
+				<visible>false</visible>
+				<right>0</right>
+				<bordersize>2</bordersize>
+				<bordertexture /> 
+				<aspectratio scalediffuse="true" align="right" aligny="bottom">keep</aspectratio>
+				<texture>$INFO[Weather.ConditionsIcon]</texture>
+				<animation effect="rotate" end="-360" center="auto" time="4800" loop="true" reversible="false" condition="!Player.Paused">Conditional</animation>
+			</control>
+		</control>
+		
+		
+		<control type="group">
+			<description>channel icon or disc</description>
+			<visible>false</visible>
+			<width>400</width>
+			<height>100</height>
+			<bottom>315</bottom>
+			<right>775</right>
+			<control type="label">
+				<top>0</top>
+				<label>LANG: $INFO[VideoPlayer.AudioLanguage]$INFO[VideoPlayer.Property(AudioLanguage.1),$COMMA ,]$INFO[VideoPlayer.Property(AudioLanguage.2),$COMMA ,]$INFO[VideoPlayer.Property(AudioLanguage.3),$COMMA ,]</label>
+				<font>debugtiny</font>
+			</control>
+			<control type="label">
+				<description>test - weatherconditions - fetch n show - like to show tv channel ??</description>
+				<top>50</top>
+				<font>debugtiny</font>
+				<label>SUBS: $INFO[VideoPlayer.SubtitleLanguage]$INFO[VideoPlayer.Property(SubtitleLanguage.1),$COMMA ,]$INFO[VideoPlayer.Property(SubtitleLanguage.2),$COMMA ,]$INFO[VideoPlayer.Property(SubtitleLanguage.3),$COMMA ,]</label>
+			</control>
+		</control>
+		
 		
 		<control type="group">
 			<width>100%</width>
@@ -48,16 +110,6 @@ https kodi.wiki/view/JSON-RPC_API/v8#VideoLibrary_2
 			<control type="image">
 				<texture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white.png</texture>
 			</control>
-			
-		<!-- 	<control type="textbox">
-			<label>
-$INFO[VideoPlayer.DBID]                DBID             The database id of the currently playing video. (supports .offset() and .position())v17 Addition
-$INFO[VideoPlayer.UniqueID() ]         UniqueID        Returns the UniqueID of the currently playing video            v19
-$INFO[VideoPlayer.TvShowDBID]           TvShowDBID      Returns the tv show DBID of the currently playing episode         v19		
-			</label>
-			
-			</control> -->
-
 			<control type="grouplist" id="700">
 				<description>cast Container</description>
 				<top>10</top>
@@ -66,9 +118,9 @@ $INFO[VideoPlayer.TvShowDBID]           TvShowDBID      Returns the tv show DBID
 				<scrolltime tween="quadratic">400</scrolltime>
 				<orientation>vertical</orientation>
 				<usecontrolcoords>true</usecontrolcoords>
-					<onup>Action(back)</onup>
-					<ondown>Action(back)</ondown>
 				
+				<onup>Close</onup>
+				<ondown>Close</ondown>
 				
 				<include content="Universal_ContainerHeader">
 					<param name="groupid" value="7101" />
@@ -91,21 +143,8 @@ $INFO[VideoPlayer.TvShowDBID]           TvShowDBID      Returns the tv show DBID
 					<param name="layout" value="poster" />
 					
 					<param name="layout" value="poster" />
-					<!--
-
-every onclick fail ,just auto close 
-					<onclick>dialog.close(fullscreeninfo,true)</onclick>
-					<include condition="!Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceInfo"/>
-					<include condition="Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceSelect"/>
-					<onclick>playercontrol(pause)</onclick> -->
-					<content>
-						<item id="109">
-							<label />
-							<icon>buttons/osd/infonoborder.png</icon>
-							<visible>!Container(699).IsUpdating + Integer.IsEqual(Container(699).NumItems,1)</visible>
-							
-						</item>
-					</content>
+					
+					<include>Action_CastMemberSearchForceOption</include>
 					
 					<content>$VAR[content_cast_video]</content>
 	

@@ -2340,10 +2340,10 @@ autosubmenu is mostly dynamic, even favourites when use a variable in 5556 conte
 			<onclick condition="[Skin.HasSetting(home_tile_focus_submenu) + !Skin.HasSetting(mainmenuitem$PARAM[nr]_disablesubmenu)] + string.isequal(Skin.String(HomeLayout),MenuTiles)">SetFocus(5556)</onclick>   
 			
 			<onclick condition="String.IsEqual(Skin.String(mainmenuitem$PARAM[nr]_target),1120)">Skin.SetString(SearchTerm)</onclick>   
-			<onclick condition="!String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_executebuiltin))">$INFO[Skin.String(mainmenuitem$PARAM[nr]_executebuiltin)]</onclick>
-			<onclick condition="String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_path))">ActivateWindow($INFO[Skin.String(mainmenuitem$PARAM[nr]_target)],return)</onclick>
+			<onclick condition="Skin.String(mainmenuitem$PARAM[nr]_executebuiltin)">$INFO[Skin.String(mainmenuitem$PARAM[nr]_executebuiltin)]</onclick>
+			<onclick condition="!Skin.String(mainmenuitem$PARAM[nr]_path)">ActivateWindow($INFO[Skin.String(mainmenuitem$PARAM[nr]_target)],return)</onclick>
 			
-			<onclick condition="[[[!Skin.HasSetting(home_tile_focus_submenu) | Skin.HasSetting(mainmenuitem$PARAM[nr]_disablesubmenu)] + string.isequal(Skin.String(HomeLayout),MenuTiles)] | !string.isequal(Skin.String(HomeLayout),MenuTiles] + !String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_path))">ActivateWindow($INFO[Skin.String(mainmenuitem$PARAM[nr]_target),,$COMMA]$INFO[Skin.String(mainmenuitem$PARAM[nr]_path)],return)</onclick>
+			<onclick condition="[[[!Skin.HasSetting(home_tile_focus_submenu) | Skin.HasSetting(mainmenuitem$PARAM[nr]_disablesubmenu)] + string.isequal(Skin.String(HomeLayout),MenuTiles)] | !string.isequal(Skin.String(HomeLayout),MenuTiles)] + !String.IsEmpty(Skin.String(mainmenuitem$PARAM[nr]_path))">ActivateWindow($INFO[Skin.String(mainmenuitem$PARAM[nr]_target),,$COMMA]$INFO[Skin.String(mainmenuitem$PARAM[nr]_path)],return)</onclick>
 			<onclick condition="String.IsEqual(Window(Home).Property(menucontrol_active),home)">ClearProperty(menucontrol_active,home)</onclick>
 		</item>
 	</include>
@@ -2353,24 +2353,60 @@ autosubmenu is mostly dynamic, even favourites when use a variable in 5556 conte
 		<value>resource://resource.images.skin.swan/backgroundimages/</value>
 	</variable>
 	
+	
+<!--
+getinfo - json provide propertys Library.Id = **episodeid ** seasonid **tvshowid **movieid ... default -1
+https kodi.wiki/view/JSON-RPC_API/v8#VideoLibrary_2
+
+{
+  "id": "Library.Id",
+  "type": "integer",
+  "default": -1
+}
+
+https /kodi.wiki/view/Smart_playlists/Rules_and_groupings#Operators
+
+https /github.com/xbmc/xbmc/blob/master/xbmc/playlists/SmartPlayList.cpp 
+-->
+<!-- fail , always return dbid 1 <value condition="player.hasvideo + !String.IsEmpty(videoplayer.dbid)">
+			videodb://movies/titles/?movieid=$INFO[videoplayer.dbid]</value>
+			videodb://movies/titles/$INFO[videoplayer.dbid]
+
+embuary helper
+
+path		   /? [property names?] =
+musicdb://songs/? songid = $INFO[musicplayer.dbid]
+musicdb://songs/? xsp    = %7B%22rules...%22%7D
+...
+
+plugin://script.embuary.helper/?info=getbyargs&filter_args='"{"field": "playcount", "operator": "lessthan", "value": "1"}"'&sort_args='"{"order": "ascending", "method": "title"}"'&tag=HDR&type=movie
+
+ -->
+		
+		
+		
 	<variable name="CurrentlyPlayingItem">
 		<value condition="player.hasaudio + !String.IsEmpty(musicplayer.dbid)">musicdb://songs/?songid=$INFO[musicplayer.dbid]</value>
+		
 		<value condition="player.hasvideo + videoplayer.content(movies)">videodb://movies/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[Player.Title]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</value>
-		<value condition="player.hasvideo + videoplayer.content(episodes)">videodb://tvshows/titles/-1/-1/-1/-1/?xsp=%7B%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22sorttitle%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[videoplayer.title]%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</value>
+		<!-- <value condition="videoplayer.content(movies) + [!System.GetBool(videolibrary.groupmoviesets) | [System.GetBool(videolibrary.groupmoviesets) + String.IsEmpty(videoplayer.SetId)]]">videodb://movies/titles/$INFO[videoplayer.dbid]</value> -->
+		
+		<!-- <value condition="player.hasvideo + videoplayer.content(movies)">videodb://movies/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[Player.Title]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</value> -->
+		<value condition="player.hasvideo + videoplayer.content(episodes)">videodb://tvshows/titles/-1/-1/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[Player.Title]%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</value>
 	</variable>
 	
 	<include name="Menucontrol_Home_MenuTiles">
 
-			<control type="list" id="699">
-				<description>getinfo</description>
-				<include>HiddenContainer</include>
-				<onup>600</onup>
-				<ondown>600</ondown>
-				<onleft>600</onleft>
-				<onright>600</onright>
-				<ondown>600</ondown>
-				<content limit="1">$VAR[CurrentlyPlayingItem]</content>
-			</control>
+		<control type="list" id="699">
+			<description>getinfo</description>
+			<include>HiddenContainer</include>
+			<onup>600</onup>
+			<ondown>600</ondown>
+			<onleft>600</onleft>
+			<onright>600</onright>
+			<ondown>600</ondown>
+			<content limit="1">$VAR[CurrentlyPlayingItem]</content>
+		</control>
 		
 		<control type="group">
 			<!-- option a|b using big window
