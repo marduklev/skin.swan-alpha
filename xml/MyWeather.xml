@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
-	<defaultcontrol always="true"></defaultcontrol>
+	<defaultcontrol always="true">3000</defaultcontrol>
 	<include>media_menucontrol</include>
 <!-- 	1.49 MyWeather.xml
 ID 		Type 			Description
@@ -17,5 +17,108 @@ ID 		Type 			Description
 225 	label 			Localized “UV index” string
 226 	label 			Localized “Wind” string
 227 	label 			Localized “Dew point” string
-228 	label 			Localized “Humidity” string  -->
+228 	label 			Localized “Humidity” string
+  -->
+ 
+	<controls>
+
+		background
+		<control type="group">
+			<!-- Common Weather Fanart -->
+			<control type="multiimage">
+				<visible>false</visible>
+				<imagepath background="true">$INFO[Window(Weather).Property(Current.FanartCode),resource://resource.images.weatherfanart.multi/,]</imagepath>
+				<aspectratio>scale</aspectratio>
+				<timeperimage>2000</timeperimage>
+				<randomize>true</randomize>
+				<fadetime>1000</fadetime>
+				<!-- <visible>false</visible> -->
+				<!-- <visible>Window.IsActive(weather)</visible> -->
+			</control>
+			
+			<!-- Animated Weather Background -->
+			<control type="image">
+				<description>is there any animated fanart weather fanart code based image resource addon out there</description>
+				<texture diffuse="colors/white20.png">special://skin/extras/weather/rain.gif</texture>
+				<visible>true</visible>
+				<!-- <visible>Skin.HasSetting(Weather_BG_animated)</visible> -->
+			</control>
+		</control>	
+		
+		
+		<control type="group" id="3000">
+
+		
+			<include content="Weather_Container">
+				<param name="id" value="50" />
+				<param name="container_visible" value="!String.IsEmpty(Window(weather).Property(Daily.IsFetched))" />
+				<param name="content_include" value="DailyItems" />
+				
+				<left>200</left>
+				<top>200</top>
+				<right>200</right>
+				<bottom>500</bottom>
+				<height>400</height>
+				
+			</include>
+			<include content="Weather_Container">
+				<param name="id" value="51" />
+				<param name="container_visible" value="!String.IsEmpty(Window(weather).Property(Hourly.IsFetched))" />
+				<param name="content_include" value="HourlyItems" />
+				<left>200</left>
+				<top>600</top>
+				<right>200</right>
+				<bottom>100</bottom>
+				<height>400</height>
+				
+			</include>
+		
+		</control>
+		<include content="swan_debug_overlay">
+			<param name="textleft" value="$INFO[Container().ListItem.Icon,Container().ListItem.Icon :  [B][COLOR green],[/B][/COLOR]]
+$INFO[Container().ListItem.label,ListItem.label :  [B][COLOR green],[/B][/COLOR]]     $INFO[Container().ListItem.label2,ListItem.label2 :  [B][COLOR green],[/B][/COLOR]]
+
+$INFO[Window.Property(WeatherProvider),Window.Property(WeatherProvider) :  [B][COLOR green],[/B][/COLOR]]
+$INFO[Weather.Conditions,Weather.Conditions :  [B][COLOR green],[/B][/COLOR]]
+$INFO[Weather.Temperature,Weather.Temperature :  [B][COLOR green],[/B][/COLOR]]
+$INFO[Weather.Location,Weather.Location :  [B][COLOR green],[/B][/COLOR]]
+$INFO[Weather.fanartcode,Weather.fanartcode :  [B][COLOR green],[/B][/COLOR]]
+$INFO[Weather.plugin,Weather.plugin :  [B][COLOR green],[/B][/COLOR]]
+
+$INFO[Window.Property(Updated),Window.Property(Current.Updated) :  [B][COLOR green],[/B][/COLOR]]
+$INFO[Window.Property(Location),Window.Property(Current.Location) :  [B][COLOR green],[/B][/COLOR]]
+$INFO[Window.Property(Current.Condition),Window.Property(Current.Condition) :  [B][COLOR green],[/B][/COLOR]]
+$INFO[Window.Property(Current.Temperature),Window.Property(Current.Temperature) :  [B][COLOR green],[/B][/COLOR]]
+$INFO[Window.Property(Current.FeelsLike),Window.Property(Current.FeelsLike) :  [B][COLOR green],[/B][/COLOR]]
+$INFO[Window.Property(Current.UVIndex),Window.Property(Current.UVIndex) :  [B][COLOR green],[/B][/COLOR]]
+$INFO[Window.Property(Current.Wind),Window.Property(Current.Wind) :  [B][COLOR green],[/B][/COLOR]]
+$INFO[Window.Property(Current.WindSpeed),Window.Property(Current.WindSpeed) :  [B][COLOR green],[/B][/COLOR]]
+$INFO[Window.Property(Current.WindDirection),Window.Property(Current.WindDirection) :  [B][COLOR green],[/B][/COLOR]]
+$INFO[Window.Property(Current.DewPoint),Window.Property(Current.DewPoint) :  [B][COLOR green],[/B][/COLOR]]
+$INFO[Window.Property(Current.Humidity),Window.Property(Current.Humidity) :  [B][COLOR green],[/B][/COLOR]]
+
+[B]Window.Property(Day0.*)[/B]    
+    $INFO[Window.Property(Day0.Title),Window.Property(Day0.Title) :  [B][COLOR green],[/B][/COLOR]]
+    $INFO[Window.Property(Day0.HighTemp),Window.Property(Day0.HighTemp) :  [B][COLOR green],[/B][/COLOR]]
+    $INFO[Window.Property(Day0.LowTemp),Window.Property(Day0.LowTemp) :  [B][COLOR green],[/B][/COLOR]]
+    $INFO[Window.Property(Day0.Outlook),Window.Property(Day0.Outlook) :  [B][COLOR green],[/B][/COLOR]]
+
+[B]Window.Property(Day1.*)[/B]    
+    $INFO[Window.Property(Day1.Title),Window.Property(Day1.Title) :  [B][COLOR green],[/B][/COLOR]]
+    $INFO[Window.Property(Day1.HighTemp),Window.Property(Day1.HighTemp) :  [B][COLOR green],[/B][/COLOR]]
+    $INFO[Window.Property(Day1.LowTemp),Window.Property(Day1.LowTemp) :  [B][COLOR green],[/B][/COLOR]]
+    $INFO[Window.Property(Day1.Outlook),Window.Property(Day1.Outlook) :  [B][COLOR green],[/B][/COLOR]]
+
+"/>
+</include>
+
+
+<!-- 
+Data set in Current.Temperature, Current.FeelsLike, Day[0-6].HighTemp, Day[0-6].LowTemp should be provided in Celsius, and will be autoconverted according to System.TemperatureUnits
+ -->
+		
+	
+	</controls>
+
+
 </window>
