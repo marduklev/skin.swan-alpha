@@ -12,12 +12,15 @@
 		<control type="group">
 			<bottom>0</bottom>
 			<height>300</height>
-			<visible>![Window.Is(videomenu) | Window.IsVisible(sliderdialog) | Window.IsVisible(osdaudiosettings) | Window.IsVisible(osdvideosettings) | Window.IsVisible(VideoBookmarks) | Window.IsVisible(playerprocessinfo) | Window.IsVisible(osdcmssettings) | Window.IsVisible(PVROSDChannels) | Window.IsVisible(pvrchannelguide) | Window.IsVisible(fullscreeninfo)]</visible>
+			<visible>![Window.Is(videomenu) | Window.IsVisible(sliderdialog) | Window.IsVisible(osdaudiosettings) | Window.IsVisible(osdvideosettings) | Window.IsVisible(VideoBookmarks) | Window.IsVisible(playerprocessinfo) | Window.IsVisible(osdcmssettings) | Window.IsVisible(PVROSDChannels) | Window.IsVisible(pvrchannelguide)]</visible>
+			<!-- <visible>![Window.Is(videomenu) | Window.IsVisible(sliderdialog) | Window.IsVisible(osdaudiosettings) | Window.IsVisible(osdvideosettings) | Window.IsVisible(VideoBookmarks) | Window.IsVisible(playerprocessinfo) | Window.IsVisible(osdcmssettings) | Window.IsVisible(PVROSDChannels) | Window.IsVisible(pvrchannelguide) | Window.IsVisible(fullscreeninfo)]</visible> -->
+			
 			<animation effect="fade" time="200">VisibleChange</animation>
 			<control type="group">	
 				<description>top progress n seek bar focusable</description>
 				<visible>Player.SeekEnabled</visible>
 				<description>Returns true if player can seek </description>
+				<animation effect="slide" start="0,0" end="0,-410" time="200" condition="Window.IsVisible(fullscreeninfo)">conditional</animation>
 				<animation effect="slide" start="0,0" end="0,150" time="250" condition="$EXP[osd_video_noinfo]">conditional</animation>
 				
 				<include condition="!VideoPlayer.Content(LiveTV)" content="VideoOSD_ProgressSlider">
@@ -33,7 +36,8 @@
 			
 			<control type="group">
 				<description>VideoOSD_PlayerControls</description>
-				
+				<animation effect="slide" start="0,0" end="0,-310" time="200" condition="Window.IsVisible(fullscreeninfo)">conditional</animation>
+			
 				<bottom>-100</bottom>
 				<height>100</height>
 				<right>100</right>
@@ -51,9 +55,11 @@
 					<itemgap>25</itemgap>
 					<onup>6001</onup>
 					
+						<!-- note show info to false to enable plot info, need check if disable or enable when fullscreeninfo closes to get previos wished state -->
+						<ondown condition="!VideoPlayer.Content(LiveTV) + Player.ShowInfo">Action(info)</ondown>
 					<ondown>Dialog.Close(videoosd,true)</ondown>
 					<ondown condition="!VideoPlayer.Content(LiveTV)">ActivateWindow(fullscreeninfo)</ondown>
-				
+					
 					<control type="button" id="6101">
 						<include content="OSDButton">
 							<param name="texture" value="previous"/>
@@ -116,6 +122,14 @@
 						<visible>!String.IsEmpty(VideoPlayer.Plot)</visible>
 						<onclick>Info</onclick>
 					</control>
+					<!-- just if touch mode , got no image which fit
+					<control type="button" id="6107">
+						<include content="OSDButton">
+							<param name="texture" value=""/>
+						</include>
+						<onclick>Action(down)</onclick>
+					</control>
+					-->
 					<include content="spacer_w">
 						<param name="id" value="6199" />
 						<param name="gap" value="10" />
