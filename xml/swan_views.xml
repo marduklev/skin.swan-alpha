@@ -3,27 +3,64 @@
 <!-- WEATHER -->
 	<include name="Weather_Container">
 		<control type="panel" id="$PARAM[id]">
-				<nested />
-				<visible>$PARAM[container_visible]</visible>
-				<orientation>horizontal</orientation>
-				<onup condition="Control.HasFocus(50)">51</onup>
-				<onup condition="Control.HasFocus(51)">50</onup>
-				<ondown condition="Control.HasFocus(50)">51</ondown>
-				<ondown condition="Control.HasFocus(51)">50</ondown>
-				<ondown></ondown>
-				<itemlayout width="218" height="436">
+			<nested />
+			<visible>$PARAM[container_visible]</visible>
+			<onup condition="Control.HasFocus(50)">51</onup>
+			<onup condition="Control.HasFocus(51)">50</onup>
+			<ondown condition="Control.HasFocus(50)">51</ondown>
+			<ondown condition="Control.HasFocus(51)">50</ondown>
+			<ondown></ondown>
+			<itemlayout width="$PARAM[itemlayout_width]" height="$PARAM[itemlayout_height]">
 					<control type="group">
+						<width>205</width>
 						<control type="image">
+							<visible>$PARAM[is_daily]</visible>
+							<left>40</left>
 							<texture colordiffuse="black">colors/white20.png</texture>
 						</control>
 						<control type="image">
+							<visible>$PARAM[is_daily]</visible>
 							<top>108</top>
 							<width>130</width>
 							<height>130</height>
 							<texture>$INFO[ListItem.Icon]</texture>
 							 <!-- <texture>$INFO[ListItem.Icon,resource://resource.images.weathericons.outline-hd/,.png]</texture> -->
 						</control>
+						
+						hourly layout
+						<control type="group">
+							<visible>!$PARAM[is_daily]</visible>
+								
+							<control type="image">
+								<visible>false</visible>
+								<left>40</left>
+								<height>60</height>
+								<texture colordiffuse="grey">colors/white20.png</texture>
+							</control>
+							<control type="image">
+								<top>30</top>
+								<width>56</width>
+								<height>56</height>
+								<texture>$INFO[ListItem.Icon]</texture>
+							</control>
+							<control type="label">
+								<font>debugtiny</font>
+								<top>5</top>
+								<left>45</left>
+								<height>56</height>
+								<label>$INFO[ListItem.Label,  ,][CR]$INFO[ListItem.Label2,  ,]</label>
+							</control>
+							<control type="label">
+								<description>props</description>
+								<top>60</top>
+								<font>debugtiny</font>
+								<left>45</left>
+								<height>56</height>
+								<label>-</label>
+							</control>
+						</control>
 						<control type="label">
+							<visible>$PARAM[is_daily]</visible>
 							<font>debugtiny</font>
 							<textcolor>white</textcolor>
 							<top>45</top>
@@ -32,6 +69,7 @@
 							<width>230</width>
 						</control>
 						<control type="label">
+							<visible>$PARAM[is_daily]</visible>
 							<font>debugtiny</font>
 							<textcolor>white</textcolor>
 							<top>78</top>
@@ -40,6 +78,7 @@
 							<width>230</width>
 						</control>
 						<control type="label">
+							<visible>$PARAM[is_daily]</visible>
 							<font>debugtiny</font>
 							<textcolor>white</textcolor>
 							<top>236</top>
@@ -49,37 +88,75 @@
 						</control>
 					</control>
 				</itemlayout>
-				<focusedlayout width="218" height="436">
+				<focusedlayout width="$PARAM[itemlayout_width]" height="$PARAM[itemlayout_height]">
 					<control type="group">
-						<control type="image">
-							<texture colordiffuse="white">colors/white20.png</texture>
-						</control>
+						<width>205</width>
 						<control type="image">
 							<left>40</left>
+							<bordertexture border="2">frames/frame.png</bordertexture>
+							<texture colordiffuse="grey">colors/white20.png</texture>
+						</control>
+						<control type="image">
+							<visible>$PARAM[is_daily]</visible>
 							<top>108</top>
 							<width>130</width>
 							<height>130</height>
 							<texture>$INFO[ListItem.Icon]</texture>
 						</control>
+						hourly layout
+						<control type="group">
+							<visible>!$PARAM[is_daily]</visible>
+								
+							<control type="image">
+								<left>40</left>
+								<height>60</height>
+								<texture colordiffuse="grey">colors/white20.png</texture>
+							</control>
+							<control type="image">
+								<top>30</top>
+								<width>56</width>
+								<height>56</height>
+								<texture>$INFO[ListItem.Icon]</texture>
+							</control>
+							<control type="label">
+								<font>debugtiny</font>
+								<top>5</top>
+								<left>45</left>
+								<height>56</height>
+								<label>$INFO[ListItem.Label,  ,][CR]$INFO[ListItem.Label2,  ,]</label>
+							</control>
+							<control type="label">
+								<description>props</description>
+								<top>60</top>
+								<font>debugtiny</font>
+								<left>45</left>
+								<height>56</height>
+								<label>-</label>
+							</control>
+						</control>
+						
 						<control type="label">
+							<visible>$PARAM[is_daily]</visible>
 							<font>debugtiny</font>
-							<textcolor>black</textcolor>
+							<textcolor>white</textcolor>
 							<top>45</top>
 							<align>center</align>
 							<label>$INFO[ListItem.Label]</label>
 							<width>230</width>
 						</control>
 						<control type="label">
+							<visible>$PARAM[is_daily]</visible>
 							<font>debugtiny</font>
-							<textcolor>black</textcolor>
+							<textcolor>white</textcolor>
 							<top>78</top>
 							<align>center</align>
 							<label>$INFO[ListItem.Property(ShortDate)]</label>
 							<width>230</width>
 						</control>
 						<control type="label">
+							<visible>$PARAM[is_daily]</visible>
 							<font>debugtiny</font>
-							<textcolor>black</textcolor>
+							<textcolor>white</textcolor>
 							<top>236</top>
 							<align>center</align>
 							<label>$INFO[ListItem.Label2]</label>
@@ -93,8 +170,7 @@
 	<include name="DailyItems">
 		<content>
 			<item>
-				<icon>resource://resource.images.weathericons.default/na.png</icon>
-				<onclick>noop</onclick>
+				<icon>$INFO[Weather.ConditionsIcon]</icon>
 				<visible>String.IsEmpty(Window(weather).Property(Daily.IsFetched))</visible>
 			</item>
 			<include content="WeatherDailyItem">
@@ -145,8 +221,7 @@
 	<include name="HourlyItems">
 		<content>
 			<item>
-				<icon>resource://resource.images.weathericons.default/na.png</icon>
-				<onclick>noop</onclick>
+				<icon>$INFO[Weather.ConditionsIcon]</icon>
 				<visible>String.IsEmpty(Window(weather).Property(Hourly.IsFetched))</visible>
 			</item>
 			<include content="WeatherHourlyItem">
@@ -184,29 +259,27 @@
 	<include name="WeatherHourlyItem">
 		<item>
 			<label>$INFO[Window(weather).Property(Hourly.$PARAM[item_index].Time)]</label>
-			<label2>$INFO[Window(weather).Property(Hourly.$PARAM[item_index].Temperature)] ∙ $INFO[Window(weather).Property(Hourly.$PARAM[item_index].Precipitation)]</label2>
+			<label2>$INFO[Window(weather).Property(Hourly.$PARAM[item_index].Temperature)][CR]$INFO[Window(weather).Property(Hourly.$PARAM[item_index].Precipitation),   ,]</label2>
 			<property name="Temperature">$INFO[Window(weather).Property(Hourly.$PARAM[item_index].Temperature)]</property>
 			<property name="Outlook">$INFO[Window(weather).Property(Hourly.$PARAM[item_id].Outlook)]</property>
 			<property name="Cloudiness">$INFO[Window(weather).Property(Hourly.$PARAM[item_index].Cloudiness)]</property>
 			<property name="ShortDate">$INFO[Window(weather).Property(Hourly.$PARAM[item_index].ShortDate)]</property>
 			<property name="FanartCode">$INFO[Window(weather).Property(Hourly.$PARAM[item_index].FanartCode)]</property>
-			<thumb>resource://resource.images.weathericons.default/$INFO[Window(weather).Property(Hourly.$PARAM[item_index].OutlookIcon)]</thumb>
-			<onclick>noop</onclick>
+			<thumb>resource://resource.images.weathericons.outline-hd/$INFO[Window(weather).Property(Hourly.$PARAM[item_index].OutlookIcon)]</thumb>
 			<visible>!String.IsEmpty(Window(weather).Property(Hourly.$PARAM[item_index].Outlook))</visible>
 		</item>
 	</include>
 	<include name="WeatherDailyItem">
 		<item>
 			<label>$INFO[Window(weather).Property(Daily.$PARAM[item_index].ShortDay)]</label>
-			<label2>[COLOR blue]$INFO[Window(weather).Property(Daily.$PARAM[item_index].LowTemperature)][/COLOR] ∙ [COLOR red]$INFO[Window(weather).Property(Daily.$PARAM[item_index].HighTemperature)][/COLOR]</label2>
+			<label2>$INFO[Window(weather).Property(Daily.$PARAM[item_index].LowTemperature),[B]↓[/B] ,          ][CR]•[CR]$INFO[Window(weather).Property(Daily.$PARAM[item_index].HighTemperature),          [B]↑[/B] ,]</label2>
 			<property name="LongDay">$INFO[Window(weather).Property(Daily.$PARAM[item_index].LongDay)]</property>
 			<property name="TempDay">$INFO[Window(weather).Property(Daily.$PARAM[item_index].TempDay)]</property>
 			<property name="Cloudiness">$INFO[Window(weather).Property(Daily.$PARAM[item_index].Cloudiness)]</property>
 			<property name="Outlook">$INFO[Window(weather).Property(Daily.$PARAM[item_index].Outlook)]</property>
 			<property name="ShortDate">$INFO[Window(weather).Property(Daily.$PARAM[item_index].ShortDate)]</property>
 			<property name="FanartCode">$INFO[Window(weather).Property(Daily.$PARAM[item_index].FanartCode)]</property>
-			<thumb>resource://resource.images.weathericons.default/$INFO[Window(weather).Property(Daily.$PARAM[item_index].OutlookIcon)]</thumb>
-			<onclick>noop</onclick>
+			<thumb>resource://resource.images.weathericons.outline-hd/$INFO[Window(weather).Property(Daily.$PARAM[item_index].OutlookIcon)]</thumb>
 			<visible>!String.IsEmpty(Window(weather).Property(Daily.$PARAM[item_index].Outlook))</visible>
 		</item>
 	</include>
