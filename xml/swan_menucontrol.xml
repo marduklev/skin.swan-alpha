@@ -559,13 +559,6 @@
 						string.isequal(window(home).property(view_disable_mediawindow),games) | 
 						string.isequal(window(home).property(view_disable_mediawindow),music)
 					</expression>
-	<!-- may later as menu item to avoid open view management , butlock a view for current visible content.container-->
-	<include name="locking_containercontent_OLD_for_">
-		<usealttexture>String.IsEqual(skin.string(view_locked_$PARAM[lock_containercontent]),$PARAM[lock_containercontent_view_id])</usealttexture>
-		<onclick condition="[String.IsEmpty(skin.string(view_locked_$PARAM[lock_containercontent])) | !String.IsEqual(skin.string(view_locked_$PARAM[lock_containercontent]),$PARAM[lock_containercontent_view_id])] + !Container.Content()">Skin.SetString(view_locked_$PARAM[lock_containercontent],$PARAM[lock_containercontent_view_id])</onclick>
-		<onclick condition="[String.IsEmpty(skin.string(view_locked_$PARAM[lock_containercontent])) | !String.IsEqual(skin.string(view_locked_$PARAM[lock_containercontent]),$PARAM[lock_containercontent_view_id])] + Container.Content()">Skin.SetString(view_locked_listing,$PARAM[lock_containercontent_view_id])</onclick>
-		<altclick>Skin.Reset(view_locked_$PARAM[lock_containercontent])</altclick>
-	</include>
 	
 	<include name="viewselect_disable_mediacontent">
 		
@@ -575,9 +568,6 @@
 		<onclick condition="!String.IsEmpty(Skin.String($PARAM[view_window]_disabled_view_$PARAM[view_container_id])) + String.IsEqual(Window(home).Property(view_disable_mediawindow),$PARAM[view_window])">Skin.Reset($PARAM[view_window]_disabled_view_$PARAM[view_container_id])</onclick>
 	
 	</include>
-	<!-- <usealttexture>String.IsEmpty(Skin.String($PARAM[view_window]_disabled_view_$PARAM[view_container_id]))</usealttexture> -->
-	<!-- altclick <onclick condition="!String.IsEmpty(Skin.String($PARAM[view_window]_disabled_view_$PARAM[view_container_id])) + String.IsEqual(Window(home).Property(view_disable_mediawindow),$PARAM[view_window])">Skin.Reset($PARAM[view_window]_disabled_view_$PARAM[view_container_id])</onclick> -->
-	
 	
 	<!-- ############## PROFILES - may delete implemented stuff ############## -->
 	
@@ -1103,6 +1093,8 @@ ID 	Type 					Description
 	consider removed params has_premenu, has_no_premenu
 	-->
 	<!-- global Window.Is(media) , My[foo]Nav.xml -->
+	
+	<!-- note check the f***ng ids -->
 	<include name="menucontrol_global">
 		<param name="menucontrol_id" default="9000" />
 		<param name="window_defaultcontrol_id" default="50" />
@@ -1946,6 +1938,7 @@ msgstr "Video-Wiedergabelisten"
 				<selected>Skin.HasSetting(view_58_FanartLeftAlignment)</selected>
 			</control>
 		</include>
+	
 	<include name="Menucontrol_Content_Navigation">
 		
 		<control type="label" id="7000">
@@ -2116,8 +2109,7 @@ msgstr "Video-Wiedergabelisten"
 				<visible>!Skin.HasSetting(menu_hide_navigationpictures)</visible>
 			</control>
 			
-			
-		
+				
 		
 		<include content="spacer_h">
 			<param name="id" value="4003" />
@@ -2143,6 +2135,9 @@ msgstr "Video-Wiedergabelisten"
 			<selected>Skin.HasSetting(SwanDebug)</selected>
 			<onfocus condition="!String.IsEqual(Window(Home).Property(menucontrol_active),common)">SetProperty(menucontrol_active,common,Home)</onfocus>
 		</control>
+		
+		<include condition="window.isactive(weather)" content="menucontrol_settings_windowweather" />
+		
 	</include>
 	
 	<!-- Home.xml -->
