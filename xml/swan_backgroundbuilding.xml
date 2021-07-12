@@ -152,6 +152,7 @@
 				
 				<control type="group">
 					<description>weather</description>
+					<visible>!Window.IsActive(weather)</visible>
 					<visible>!Skin.HasSetting(HideWeather_Header) + [!String.Contains(Weather.Temperature,$LOCALIZE[503]) | [!String.IsEqual(Weather.fanartcode,na) + Weather.IsFetched]]</visible>
 					<width>110</width>
 					<height>110</height>
@@ -301,6 +302,7 @@ LatestAlbum.[1-10].Title, LatestAlbum.[1-10].Artist, LatestAlbum.[1-10].Year, La
 		<value condition="Container.Content(tvshows)">$LOCALIZE[20161] : [COLOR=$VAR[color_header_text_accent]]$INFO[Window(Home).Property(TVShows.Count)][/COLOR] [B]|[/B] $LOCALIZE[16101] : [COLOR=$VAR[color_header_text_accent]]$INFO[Window(Home).Property(TVShows.UnWatched)][/COLOR]</value>
 		<value condition="Container.Content(episodes)">[UPPERCASE][B]$INFO[listitem.season,$LOCALIZE[20373]  ,  •  ][/B][/UPPERCASE]$LOCALIZE[20161] : [COLOR=$VAR[color_header_text_accent]]$INFO[Container(id).NumItems][/COLOR] [B]|[/B] $LOCALIZE[16101] : [COLOR=$VAR[color_header_text_accent]]$INFO[Container.TotalUnWatched][/COLOR]</value>
 		<value condition="Window.IsMedia">$LOCALIZE[20161] : [COLOR=$VAR[color_header_text_accent]]$INFO[Container(id).NumItems][/COLOR] [B]|[/B] $LOCALIZE[16101] : [COLOR=$VAR[color_header_text_accent]]$INFO[Container.TotalUnWatched][/COLOR]</value>
+		<value condition="Window.IsActive(weather)">[COLOR=$VAR[color_header_text_accent]]$INFO[Window(weather).Property(WeatherProvider)][/COLOR]</value>
 		<value>[COLOR=$VAR[color_header_text_accent]]$INFO[System.CurrentControl][/COLOR]</value>
 	</variable>
 	<variable name="CurrentContent_Info_left">
@@ -400,7 +402,7 @@ LatestAlbum.[1-10].Title, LatestAlbum.[1-10].Artist, LatestAlbum.[1-10].Year, La
 				<texture diffuse="colors/white.png" background="true">$VAR[layer2_image]</texture>
 				<aspectratio align="center" aligny="center">scale</aspectratio>
 				<fadetime>600</fadetime>
-				<include condition="!Skin.HasSetting(bg_use_coloredglass)" content="colordiffuse_layer2_tint" />
+				<include condition="!Skin.HasSetting(bg_use_coloredglass) + !window.isactive(weather)" content="colordiffuse_layer2_tint" />
 				<visible>!$EXP[Spotlight_Layout]</visible>
 				<animation effect="zoom" start="110" end="130" center="auto" time="10000" tween="cubic" easing="inout" pulse="true" condition="Skin.HasSetting(BackgroundAnimation) | Window.Is(settings)">Conditional</animation>
 				<animation effect="slide" start="-10,-10" end="10,10" time="8000" tween="cubic" easing="inout" pulse="true" condition="Skin.HasSetting(BackgroundAnimation) | Window.Is(settings)">Conditional</animation>
@@ -408,7 +410,7 @@ LatestAlbum.[1-10].Title, LatestAlbum.[1-10].Artist, LatestAlbum.[1-10].Year, La
 			<control type="image">
 				<description>Layer2 pellucidoverlay - if artwork tint is unwished</description>
 				<depth>DepthBackground</depth>
-				<visible>Skin.HasSetting(bg_use_coloredglass)</visible>
+				<visible>Skin.HasSetting(bg_use_coloredglass) | window.isactive(weather)</visible>
 				<visible>!$EXP[Spotlight_Layout]</visible>
 				<colordiffuse>$VAR[color_universal_background_layer2]</colordiffuse>
 				<texture>$VAR[texture_layer2_coloredglassoverlay]</texture>
@@ -664,7 +666,11 @@ use this include pr add variable fpr diffuse textures
 		<value condition="Control.IsVisible(99007) + !String.IsEmpty(Control.GetLabel(99007))">$INFO[Control.GetLabel(99007)]</value>
 		<value condition="Control.IsVisible(99006) + !String.IsEmpty(Control.GetLabel(99006)) + !Skin.HasSetting(BlurEnabled)">$INFO[Control.GetLabel(99006)]</value>
 		<!-- <value condition="Control.IsVisible(99006) + !String.IsEmpty(Control.GetLabel(99006)) + Skin.HasSetting(BlurEnabled)">$INFO[Window(home).Property(listitem_blurred)]</value> -->
-		<value condition="Window.IsActive(MyWeather.xml)">$INFO[Skin.String(WeatherFanArtPack.path)]$INFO[Window(Weather).Property(Current.fanartCode)]$INFO[Skin.String(WeatherFanArtPack.ext)]</value>
+		
+
+<value condition="Window.IsActive(weather) + Skin.String(WeatherFanArtPack.path) + ">$INFO[Skin.String(WeatherFanArtPack.path)]$INFO[Window(Weather).Property(Current.fanartCode)]$INFO[Skin.String(WeatherFanArtPack.ext)]</value>
+<value condition="Window.IsActive(weather)">special://skin/extras/weather/clouds.gif</value>
+		
 		<!-- not needed <value condition="$EXP(IsHome) + Skin.String(texture_home_background_layer2)">$INFO[Skin.String(texture_home_background_layer2)]</value> -->
 		<value condition="!$EXP(IsHome) + Skin.String(texture_global_background_layer2)">$INFO[Skin.String(texture_global_background_layer2)]</value>
 		<value>resource://resource.images.skin.swan/backgroundimages/pattern1.jpg</value>

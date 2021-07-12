@@ -1,49 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
-	<defaultcontrol always="true">2</defaultcontrol>
+	<defaultcontrol always="true">200</defaultcontrol>
 	<include>media_menucontrol</include>
-<!-- 	1.49 MyWeather.xml
-ID 		Type 			Description
-
-top left or menucontrol 
-2 		button 			Refresh the weather information
-3 		spincontrolex 	Change weather location
-
-info at bottom
-11 		label 			Shows the time of last weather update
-
-static control main
-31 		label 			Current day label
-32 		label 			Today's high temperature value
-33 		label 			Today's low temperature value
-34 		label 			Today's weather condition
-35 		image 			Today's weather icon
-
-223 	label 			Localized “Temperature” string
-224 	label 			Localized “Feels like” string
-225 	label 			Localized “UV index” string
-226 	label 			Localized “Wind” string
-227 	label 			Localized “Dew point” string
-228 	label 			Localized “Humidity” string
-
-
-  -->
- 
 	<controls>
 
-		<control type="button" id="2">
-			<ondown>3</ondown>
-			<ondown>50</ondown>
-			<left>0</left>
-			<top>110</top>
-		</control>
-		<control type="spincontrolex" id="3">
-			<top>110</top>
-			<left>50%</left>
-			<onup>2</onup>
-			<ondown>50</ondown>
-		</control>
-		<!-- 
 		<control type="label" id="31">
 			<description>Current day label</description>
 			<include content="HiddenObject" />
@@ -60,10 +20,12 @@ static control main
 			<description>Today's weather condition</description>
 			<include content="HiddenObject" />
 		</control>
+		<!-- in real use
 		<control type="image" id="35">
 			<description>Today's weather icon</description>
 			<include content="HiddenObject" />
 		</control>
+		-->
 		<control type="label" id="223">
 			<description>Localized “Temperature” string</description>
 			<include content="HiddenObject" />
@@ -88,136 +50,181 @@ static control main
 			<description>Localized “Humidity” string</description>
 			<include content="HiddenObject" />
 		</control>
- -->
+		<control type="button" id="2">
+			<description>refresh weather</description>
+			<include content="HiddenObject" />
+		</control>
+		
 		<control type="group">
-			<!-- Common Weather Fanart -->
-			<control type="multiimage">
-				<visible>false</visible>
-				<imagepath background="true">$INFO[Window(Weather).Property(Current.FanartCode),resource://resource.images.weatherfanart.multi/,]</imagepath>
-				<aspectratio>scale</aspectratio>
-				<timeperimage>2000</timeperimage>
-				<randomize>true</randomize>
-				<fadetime>1000</fadetime>
-				<!-- <visible>false</visible> -->
-				<!-- <visible>Window.IsActive(weather)</visible> -->
-			</control>
+			<description>may fade it is there any animated fanart weather fanart code based image resource addon out there</description>
+			<include>global_background</include>
+		</control>
+		
+		
+		<control type="spincontrolex" id="3">
+			<top>150</top>
+			<left>200</left>
+			<width>350</width>
+			<height>50</height>
 			
-			<!-- Animated Weather Background -->
+			<!-- <texturefocus />
+			<texturenofocus /> -->
+			<spinposx>10</spinposx>
+			<spinwidth>25</spinwidth>
+			<spinheight>50</spinheight>
+			
+			<textoffsetx>200</textoffsetx>
+			<textcolor>$VAR[color_lib_text_main]</textcolor>
+			<font>font25_title</font>
+			
+			<onup>200</onup>
+			<onright>50</onright>
+			<onleft>50</onleft>
+			<ondown>200</ondown>
+		</control>
+		
+		
+		<control type="group">
+			<left>200</left>
 			<control type="image">
-				<description>is there any animated fanart weather fanart code based image resource addon out there</description>
-				<texture diffuse="colors/white20.png">special://skin/extras/weather/clouds.gif</texture>
-				<visible>true</visible>
-				<!-- <visible>Skin.HasSetting(Weather_BG_animated)</visible> -->
+				<top>250</top>
+				<width>390</width>
+				<bottom>335</bottom>
+				<bordersize>10</bordersize>
+				<bordertexture colordiffuse="ff131313">colors/white30.png</bordertexture>
+				<texture colordiffuse="ff131313">colors/white50.png</texture>
+			</control>
+			<control type="button" id="200">
+				<label />
+				<top>250</top>
+				<width>390</width>
+				<height>495</height>
+				<texturefocus border="2" colordiffuse="white">frames/frame.png</texturefocus>
+				<texturenofocus />
+				<onleft>3</onleft>
+				<onup>3</onup>
+				<onright>50</onright>
+				<ondown>51</ondown>
+				<onclick>SendClick(2)</onclick>
+			</control>
+			<control type="grouplist">
+				<description>now or and container(50).listitems</description>
+				<left>20</left>
+				<top>230</top>
+				<right>200</right>
+				<width>350</width>
+				<bottom>300</bottom>
+				<control type="label">
+					<label />
+					<height>30</height>
+				</control>
+				<control type="label">
+					<label>[B]$INFO[Control.GetLabel(31)][/B]</label>
+					<font>font23_title</font><height>30</height>
+				</control>
+				<control type="label">
+					<label />
+					<height>15</height>
+				</control>
+				<control type="label">
+					<visible>false</visible>
+					<label>$INFO[Window.Property(Location)]  |  $INFO[Window.Property(Updated), updated : ,]</label>
+					<font>MenucontrolItem</font><height>20</height>
+				</control>
+				<control type="group">
+					<top>-15</top>
+					<height>225</height>
+					<width>340</width>
+					<control type="image" id="35">
+						<width>250</width>
+						<height>225</height>
+						<bordersize>10</bordersize>
+					</control>
+					<control type="label">
+						<font>debugtiny</font>
+						<align>right</align>
+						<height>25</height>
+						<description> temperature </description>
+						<label>$INFO[Weather.Temperature]    ( $INFO[Control.GetLabel(33),[B]↓[/B] ,] / $INFO[Control.GetLabel(32),[B]↑[/B],] )</label>
+					</control>
+					<control type="label">
+						<top>35</top>
+						<height>25</height>
+						<font>font23_title</font>
+						<description> condition</description>
+						<align>right</align>
+						<label>$INFO[Window.Property(Current.Condition)]</label>
+					</control>
+				</control>
+				
+				<control type="grouplist">
+					<control type="label">
+						<visible>false</visible>
+						<font>debugtiny</font><height>25</height>
+						<description> temperature </description>
+						<label>$INFO[Control.GetLabel(223)]  : $INFO[Window.Property(Current.Temperature),   ,]    ( $INFO[Control.GetLabel(33),[B]↓[/B] ,]  / $INFO[Control.GetLabel(32),[B]↑[/B],] )</label>
+					</control>
+					<control type="label">
+						<font>debugtiny</font><height>25</height>
+						<description> feels like </description>
+						<label>$INFO[Control.GetLabel(224)] : $INFO[Window.Property(Current.FeelsLike),   ,]</label>
+					</control>
+					<control type="label">
+						<font>debugtiny</font><height>25</height>
+						<description> uv index </description>
+						<label>$INFO[Control.GetLabel(225)] : $INFO[Window.Property(Current.UVIndex),  ,]</label>
+					</control>
+					<control type="label">
+						<font>debugtiny</font><height>25</height>
+						<description> wind </description>
+						<label>$INFO[Control.GetLabel(226)] : $INFO[Window.Property(Current.Wind),   ,]</label>
+					</control>
+					<control type="label">
+						<font>debugtiny</font><height>25</height>
+						<description> dew point </description>
+						<label>$INFO[Control.GetLabel(227)] : $INFO[Window.Property(Current.DewPoint),  ,]</label>
+					</control>
+					<control type="label">
+						<font>debugtiny</font><height>25</height>
+						<description> humidity </description>
+						<label>$INFO[Control.GetLabel(228)] : $INFO[Window.Property(Current.Humidity),  ,]</label>
+					</control>
+				</control>
 			</control>
 		</control>	
 		
-		
-			<control type="label">
-				<label>[B]N O W[/B]</label>
-				<left>200</left>
-				<top>200</top>
-				<right>200</right>
-				<height>100</height>
-			</control>
-			<control type="image" id="35">
-				<left>200</left>
-				<top>250</top>
-				<right>200</right>
-				<width>250</width>
-				<height>250</height>
-			</control>
-			<control type="grouplist">
-				<left>200</left>
-				<top>450</top>
-				<right>200</right>
-				<width>500</width>
-				<height>650</height>
-				<orientation>vertical</orientation>
-				
-				<control type="label" id="31">
-					<font>debugtiny</font><height>25</height>
-					<description>Current day label</description>
-				</control>
-				<control type="label" id="32">
-					<font>debugtiny</font><height>25</height>
-					<description>Today's high temperature value</description>
-				</control>
-				<control type="label" id="33">
-					<font>debugtiny</font><height>25</height>
-					<description>Today's low temperature value</description>
-				</control>
-				<control type="label" id="34">
-					<font>debugtiny</font><height>25</height>
-					<description>Today's weather condition</description>
-				</control>
-				<control type="label" id="223">
-					<font>debugtiny</font><height>25</height>
-					<description>Localized “Temperature” string</description>
-				</control>
-				<control type="label" id="224">
-					<font>debugtiny</font><height>25</height>
-					<description>Localized “Feels like” string</description>
-				</control>
-				<control type="label" id="225">
-					<font>debugtiny</font><height>25</height>
-					<description>Localized “UV index” string</description>
-				</control>
-				<control type="label" id="226">
-					<font>debugtiny</font><height>25</height>
-					<description>Localized “Wind” string</description>
-				</control>
-				<control type="label" id="227">
-					<font>debugtiny</font><height>25</height>
-					<description>Localized “Dew point” string</description>
-				</control>
-				<control type="label" id="228">
-					<font>debugtiny</font><height>25</height>
-					<description>Localized “Humidity” string</description>
-				</control>
-		</control>
-			
-		
 		<control type="group" id="3000">
-
-			<control type="label">
-				<label>[B]T H I S    W E E K[/B]</label>
-				<left>600</left>
-				<top>200</top>
-				<right>200</right>
-				<height>100</height>
-			</control>
 			<include content="Weather_Container">
 				<param name="id" value="50" />
 				<param name="container_visible" value="!String.IsEmpty(Window(weather).Property(Daily.IsFetched))" />
 				<param name="content_include" value="DailyItems" />
 				<param name="itemlayout_width" value="218" />
-				<param name="itemlayout_height" value="436" />
+				<param name="itemlayout_height" value="485" />
 				<param name="is_daily" value="true" />
 				<orientation>horizontal</orientation>
 				
-				<left>600</left>
+				<left>620</left>
 				
-				<!-- <left>200</left> -->
-				<top>300</top>
-				<right>100</right>
+				<top>260</top>
+				<right>0</right>
 				<bottom>500</bottom>
-				<height>450</height>
+				<height>485</height>
 				
 			</include>
 			
 			
 			<control type="label">
-				<label>[B]T O D A Y[/B]</label>
+				<label>[B]2 4     h o u r s[/B]</label>
+				<visible>!String.IsEmpty(Window(weather).Property(Hourly.IsFetched))</visible>
+				<font>font23_title</font>
 				<left>200</left>
-				<top>750</top>
+				<top>760</top>
 				<height>100</height>
 			</control>
 			<control type="image">
-				<texture>colors/white50.png</texture>
-				<visible>false</visible>
-				<top>750</top>
+				<texture colordiffuse="ff131313">colors/white40.png</texture>
 				<left>200</left>
-				<right>200</right>
+				<height>250</height>
 				<bottom>0</bottom>
 			</control>
 			<include content="Weather_Container">
@@ -228,10 +235,9 @@ static control main
 				<param name="itemlayout_height" value="200" />
 				<param name="is_daily" value="false" />
 				<orientation>horizontal</orientation>
-			
-				<left>200</left>
-				<top>840</top>
-				<right>200</right>
+				<left>165</left>
+				<top>850</top>
+				<right>10</right>
 				<bottom>100</bottom>
 				<height>200</height>
 			</include>
@@ -251,28 +257,14 @@ static control main
 			
 		<include content="swan_debug_overlay">
 			<param name="textleft" value="
-$INFO[Control.GetLabel(11),11 Shows the time of last weather update :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Control.GetLabel(31),31 Current day label :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Control.GetLabel(32),32 Today's high temperature value :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Control.GetLabel(33),33 Today's low temperature value :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Control.GetLabel(34),34 Today's weather condition :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Control.GetLabel(35),35 Today's weather icon :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Control.GetLabel(223),223 Localized “Temperature” string :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Control.GetLabel(224),224 Localized “Feels like” string :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Control.GetLabel(225),225 Localized “UV index” string :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Control.GetLabel(226),226 Localized “Wind” string :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Control.GetLabel(227),227 Localized “Dew point” string :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Control.GetLabel(228),228 Localized “Humidity” string :  [B][COLOR green],[/B][/COLOR]]
+$INFO[Control.GetLabel(11),11 Shows the time of last weather update :  [B][COLOR green],[/B][/COLOR]]   $INFO[Control.GetLabel(31),31 Current day label :  [B][COLOR green],[/B][/COLOR]]   $INFO[Control.GetLabel(32),32 Today's high temperature value :  [B][COLOR green],[/B][/COLOR]]  $INFO[Control.GetLabel(33),33 Today's low temperature value :  [B][COLOR green],[/B][/COLOR]]   $INFO[Control.GetLabel(34),34 Today's weather condition :  [B][COLOR green],[/B][/COLOR]]  $INFO[Control.GetLabel(35),35 Today's weather icon :  [B][COLOR green],[/B][/COLOR]]  $INFO[Control.GetLabel(223),223 Localized “Temperature” string :  [B][COLOR green],[/B][/COLOR]]
+$INFO[Control.GetLabel(224),224 Localized “Feels like” string :  [B][COLOR green],[/B][/COLOR]]   $INFO[Control.GetLabel(225),225 Localized “UV index” string :  [B][COLOR green],[/B][/COLOR]]   $INFO[Control.GetLabel(226),226 Localized “Wind” string :  [B][COLOR green],[/B][/COLOR]]   $INFO[Control.GetLabel(227),227 Localized “Dew point” string :  [B][COLOR green],[/B][/COLOR]]   $INFO[Control.GetLabel(228),228 Localized “Humidity” string :  [B][COLOR green],[/B][/COLOR]]
 
 $INFO[Container().ListItem.Icon,Container().ListItem.Icon :  [B][COLOR green],[/B][/COLOR]]
 $INFO[Container().ListItem.label,ListItem.label :  [B][COLOR green],[/B][/COLOR]]     $INFO[Container().ListItem.label2,ListItem.label2 :  [B][COLOR green],[/B][/COLOR]]
 
-$INFO[Window.Property(WeatherProvider),Window.Property(WeatherProvider) :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Weather.Conditions,Weather.Conditions :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Weather.Temperature,Weather.Temperature :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Weather.Location,Weather.Location :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Weather.fanartcode,Weather.fanartcode :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Weather.plugin,Weather.plugin :  [B][COLOR green],[/B][/COLOR]]
+$INFO[Window.Property(WeatherProvider),Window.Property(WeatherProvider) :  [B][COLOR green],[/B][/COLOR]]  $INFO[Weather.Conditions,Weather.Conditions :  [B][COLOR green],[/B][/COLOR]]
+$INFO[Weather.Temperature,Weather.Temperature :  [B][COLOR green],[/B][/COLOR]]  $INFO[Weather.Location,Weather.Location :  [B][COLOR green],[/B][/COLOR]]  $INFO[Weather.fanartcode,Weather.fanartcode :  [B][COLOR green],[/B][/COLOR]]  $INFO[Weather.plugin,Weather.plugin :  [B][COLOR green],[/B][/COLOR]]
 
 $INFO[Window.Property(Updated),Window.Property(Current.Updated) :  [B][COLOR green],[/B][/COLOR]]
 $INFO[Window.Property(Location),Window.Property(Current.Location) :  [B][COLOR green],[/B][/COLOR]]
@@ -291,13 +283,8 @@ $INFO[Window.Property(Current.Humidity),Window.Property(Current.Humidity) :  [B]
     $INFO[Window.Property(Day0.HighTemp),Window.Property(Day0.HighTemp) :  [B][COLOR green],[/B][/COLOR]]
     $INFO[Window.Property(Day0.LowTemp),Window.Property(Day0.LowTemp) :  [B][COLOR green],[/B][/COLOR]]
     $INFO[Window.Property(Day0.Outlook),Window.Property(Day0.Outlook) :  [B][COLOR green],[/B][/COLOR]]
-
-[B]Window.Property(Day1.*)[/B]    
-    $INFO[Window.Property(Day1.Title),Window.Property(Day1.Title) :  [B][COLOR green],[/B][/COLOR]]
-    $INFO[Window.Property(Day1.HighTemp),Window.Property(Day1.HighTemp) :  [B][COLOR green],[/B][/COLOR]]
-    $INFO[Window.Property(Day1.LowTemp),Window.Property(Day1.LowTemp) :  [B][COLOR green],[/B][/COLOR]]
-    $INFO[Window.Property(Day1.Outlook),Window.Property(Day1.Outlook) :  [B][COLOR green],[/B][/COLOR]]
-
+  Cloudiness $INFO[Window.Property(Hourly.0.Cloudiness)]
+  ShortDate  $INFO[Window.Property(Hourly.1.ShortDate)]  LongDate  $INFO[Window.Property(Hourly.1.LongDate)]  FanartCode  $INFO[Window.Property(Hourly.1.FanartCode)]
 "/>
 </include>
 
@@ -306,7 +293,13 @@ $INFO[Window.Property(Current.Humidity),Window.Property(Current.Humidity) :  [B]
 Data set in Current.Temperature, Current.FeelsLike, Day[0-6].HighTemp, Day[0-6].LowTemp should be provided in Celsius, and will be autoconverted according to System.TemperatureUnits
  -->
 		
-	
+	<!--
+$INFO[Control.GetLabel(11),11 Shows the time of last weather update :  [B][COLOR green],[/B][/COLOR]]
+$INFO[Control.GetLabel(31),31 Current day label :  [B][COLOR green],[/B][/COLOR]]
+
+$INFO[Control.GetLabel(34),34 Today's weather condition :  [B][COLOR green],[/B][/COLOR]]
+$INFO[Control.GetLabel(35),35 Today's weather icon :  [B][COLOR green],[/B][/COLOR]]
+-->
 	</controls>
 
 
