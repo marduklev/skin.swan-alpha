@@ -4,6 +4,12 @@
 	<include>media_menucontrol</include>
 	<controls>
 
+		<!-- <control type="list" id="99">
+			<description>test Weather forecast - System.Date(format) $INFO[Control.GetLabel(3)]</description>
+			<include>HiddenContainer</include>
+			<content sortby="file" sortorder="ascending" limit="20">$VAR[weather_forecast_video]</content>
+		</control> -->
+		
 		<control type="label" id="31">
 			<description>Current day label</description>
 			<include content="HiddenObject" />
@@ -71,15 +77,27 @@
 			<animation effect="fade" start="100" end="0" time="300" condition="Skin.HasSetting(weather_windowlayout_2)">conditional</animation>
 			<description>avoid reload - which force refetch use anim anim for cond positioning ?</description>
 			<top>170</top>
-			<left>130</left>
-			<width>410</width>
+			<left>105</left>
+			<width>420</width>
 			<height>50</height>
 			<spinposx>10</spinposx>
 			<spinwidth>25</spinwidth>
 			<spinheight>50</spinheight>
 			<textoffsetx>10</textoffsetx>
 			<textcolor>$VAR[color_lib_text_main]</textcolor>
-			<font>font25_title</font>
+			<font>font_Montserrat_16_extrabold</font>
+			<focusedcolor>$VAR[color_lib_text_main]</focusedcolor>
+			<textcolor>$VAR[color_lib_text_secondary]</textcolor>
+			<disabledcolor />
+			<texturefocus colordiffuse="$VAR[color_lib_text_main]">colors/white10.png</texturefocus>
+			<texturenofocus colordiffuse="$VAR[color_lib_text_main]">colors/white10.png</texturenofocus>
+			<textureup colordiffuse="$VAR[color_lib_text_secondary]">buttons/spinctrlup.png</textureup>
+			<texturedown colordiffuse="$VAR[color_lib_text_secondary]">buttons/spinctrldown.png</texturedown>
+			<textureupfocus colordiffuse="$VAR[color_lib_text_main]">buttons/spinctrlup.png</textureupfocus>
+			<texturedownfocus colordiffuse="$VAR[color_lib_text_main]">buttons/spinctrldown.png</texturedownfocus>
+			<textureupdisabled />
+			<texturedowndisabled />
+		
 			<onfocus condition="!String.IsEmpty(Window(Home).Property(menucontrol_active))">ClearProperty(menucontrol_active,home)</onfocus>
 			<onup>51</onup>
 			<onright>50</onright>
@@ -97,7 +115,48 @@
 			<include condition="true" content="weather_window_layout_2" />
 		</control>
 		
-		<include content="HeaderBar">
+		<control type="label">
+			<animation effect="fade" time="350" start="100" end="0" condition="!Control.HAsFocus(99)">conditional</animation>
+			<font>font_Montserrat_18_extrabold</font>
+			<textcolor>white</textcolor>
+			<top>830</top>
+			<left>130</left>
+			<height>65</height>
+			<label>Youtube - Weather</label>
+		</control>
+			<include condition="!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.youtube)" content="Universal_Container">
+				<top>1180</top>
+				<left>130</left>
+				<right>300</right>
+				<height>160</height>
+				<scrolltime tween="quadratic">400</scrolltime>
+				<onup>50</onup>
+				<ondown>50</ondown>
+				<onleft>99</onleft>
+				<onright>99</onright>
+				<animation type="Focus">
+					<effect type="slide" start="0,0" end="0,-300" time="400" tween="cubic" easing="out" />
+				</animation>
+				<animation type="Unfocus">
+					<effect type="slide" start="0,-300" end="0,0" time="300" tween="cubic" easing="out" />
+				</animation>
+				<param name="id" value="99" />
+				<param name="visible" value="Skin.HasSetting(weather_forecastvideo) + [Integer.IsGreater(Container(99).NumItems,0) | Container(99).IsUpdating]" />
+				<param name="type_height" value="160" />
+				<param name="tags_visible" value="true" />
+				<param name="layout_height" value="150" />
+				<param name="layout_width" value="310" />
+				<param name="itemheight" value="100" />
+				<param name="itemwidth" value="300" />
+				<param name="ls_overlay_visible" value="true" />
+				<param name="layout" value="landscape" />
+				<onclick>PlayMedia($INFO[ListItem.FilenameAndPath],1,noresume)</onclick>
+				<onclick>SetFocus(50)</onclick>
+				<content target="videos" sortby="file" limit="25">plugin://plugin.video.youtube/search/?q=$LOCALIZE[10508]&amp;$INFO[System.Date(yyy-mm-dd)]&amp;$INFO[Window.Property(Location)]</content>
+			</include>
+				
+			
+			<include content="HeaderBar">
 				<param name="HasBGPanel" value="Skin.HasSetting(MediaWindow_UseHeaderBG)" />
 			</include>
 			
@@ -108,9 +167,30 @@
 				<visible>String.IsEqual(Window(Home).Property(menucontrol_active),common)</visible>
 				<include content="menucontrol_global" condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))" />
 			</control>
+		
+		
+		<control type="group">
+			<width>900</width>
+			<height>500</height>
+			<centerleft>62%</centerleft>
+			<centertop>40%</centertop>
+			<description>BG VideoControl</description>
 			
+			
+			<control type="image">
+				<visible>Player.HasVideo</visible>
+			
+				<fadetime>350</fadetime>
+				<bordersize>0</bordersize>
+				<texture colordiffuse="$VAR[color_hub_backgroundlayer1]">colors/white50.png</texture>
+				<aspectratio scalediffuse="true" align="right" aligny="top">scale</aspectratio>
+			</control>
+			<control type="videowindow" />
+			
+		</control>
+		
 		<include content="swan_debug_overlay">
-			<param name="textleft" value="
+			<param name="textleft" value=" $INFO[Container(99).ListItemAbsolute(0).Label]
 $INFO[Control.GetLabel(11),11 Shows the time of last weather update :  [B][COLOR green],[/B][/COLOR]]   $INFO[Control.GetLabel(31),31 Current day label :  [B][COLOR green],[/B][/COLOR]]   $INFO[Control.GetLabel(32),32 Today's high temperature value :  [B][COLOR green],[/B][/COLOR]]  $INFO[Control.GetLabel(33),33 Today's low temperature value :  [B][COLOR green],[/B][/COLOR]]   $INFO[Control.GetLabel(34),34 Today's weather condition :  [B][COLOR green],[/B][/COLOR]]  $INFO[Control.GetLabel(35),35 Today's weather icon :  [B][COLOR green],[/B][/COLOR]]  $INFO[Control.GetLabel(223),223 Localized “Temperature” string :  [B][COLOR green],[/B][/COLOR]]
 $INFO[Control.GetLabel(224),224 Localized “Feels like” string :  [B][COLOR green],[/B][/COLOR]]   $INFO[Control.GetLabel(225),225 Localized “UV index” string :  [B][COLOR green],[/B][/COLOR]]   $INFO[Control.GetLabel(226),226 Localized “Wind” string :  [B][COLOR green],[/B][/COLOR]]   $INFO[Control.GetLabel(227),227 Localized “Dew point” string :  [B][COLOR green],[/B][/COLOR]]   $INFO[Control.GetLabel(228),228 Localized “Humidity” string :  [B][COLOR green],[/B][/COLOR]]
 $INFO[Window.Property(WeatherProvider),Window.Property(WeatherProvider) :  [B][COLOR green],[/B][/COLOR]]  $INFO[Weather.Conditions,Weather.Conditions :  [B][COLOR green],[/B][/COLOR]]
