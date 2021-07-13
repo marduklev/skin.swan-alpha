@@ -20,12 +20,10 @@
 			<description>Today's weather condition</description>
 			<include content="HiddenObject" />
 		</control>
-		<!-- in real use
 		<control type="image" id="35">
 			<description>Today's weather icon</description>
 			<include content="HiddenObject" />
 		</control>
-		-->
 		<control type="label" id="223">
 			<description>Localized “Temperature” string</description>
 			<include content="HiddenObject" />
@@ -70,23 +68,16 @@
 		</control>
 		
 		<control type="spincontrolex" id="3">
-			<!-- better put off screen for clear layout and test send click 
-			<animation effect="slide" start="0,0" end="200,0" time="300" condition="Skin.HasSetting(weather_windowlayout_2)">conditional</animation>
-			 -->
+			<animation effect="fade" start="100" end="0" time="300" condition="Skin.HasSetting(weather_windowlayout_2)">conditional</animation>
 			<description>avoid reload - which force refetch use anim anim for cond positioning ?</description>
-			<top>150</top>
-			<left>140</left>
-			<width>500</width>
+			<top>170</top>
+			<left>130</left>
+			<width>410</width>
 			<height>50</height>
-				<!-- 
-				<texturefocus>$VAR[color_weather_switchlocation_fo]</texturefocus>
-				<texturenofocus>$VAR[color_weather_switchlocation_nf]</texturenofocus>
-				-->
 			<spinposx>10</spinposx>
 			<spinwidth>25</spinwidth>
 			<spinheight>50</spinheight>
-			
-			<textoffsetx>240</textoffsetx>
+			<textoffsetx>10</textoffsetx>
 			<textcolor>$VAR[color_lib_text_main]</textcolor>
 			<font>font25_title</font>
 			<onfocus condition="!String.IsEmpty(Window(Home).Property(menucontrol_active))">ClearProperty(menucontrol_active,home)</onfocus>
@@ -103,7 +94,6 @@
 		</control>
 		<control type="group">
 			<visible>Skin.HasSetting(weather_windowlayout_2)</visible>
-			<!-- <top>300</top> -->
 			<include condition="true" content="weather_window_layout_2" />
 		</control>
 		
@@ -123,13 +113,8 @@
 			<param name="textleft" value="
 $INFO[Control.GetLabel(11),11 Shows the time of last weather update :  [B][COLOR green],[/B][/COLOR]]   $INFO[Control.GetLabel(31),31 Current day label :  [B][COLOR green],[/B][/COLOR]]   $INFO[Control.GetLabel(32),32 Today's high temperature value :  [B][COLOR green],[/B][/COLOR]]  $INFO[Control.GetLabel(33),33 Today's low temperature value :  [B][COLOR green],[/B][/COLOR]]   $INFO[Control.GetLabel(34),34 Today's weather condition :  [B][COLOR green],[/B][/COLOR]]  $INFO[Control.GetLabel(35),35 Today's weather icon :  [B][COLOR green],[/B][/COLOR]]  $INFO[Control.GetLabel(223),223 Localized “Temperature” string :  [B][COLOR green],[/B][/COLOR]]
 $INFO[Control.GetLabel(224),224 Localized “Feels like” string :  [B][COLOR green],[/B][/COLOR]]   $INFO[Control.GetLabel(225),225 Localized “UV index” string :  [B][COLOR green],[/B][/COLOR]]   $INFO[Control.GetLabel(226),226 Localized “Wind” string :  [B][COLOR green],[/B][/COLOR]]   $INFO[Control.GetLabel(227),227 Localized “Dew point” string :  [B][COLOR green],[/B][/COLOR]]   $INFO[Control.GetLabel(228),228 Localized “Humidity” string :  [B][COLOR green],[/B][/COLOR]]
-
-$INFO[Container().ListItem.Icon,Container().ListItem.Icon :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Container().ListItem.label,ListItem.label :  [B][COLOR green],[/B][/COLOR]]     $INFO[Container().ListItem.label2,ListItem.label2 :  [B][COLOR green],[/B][/COLOR]]
-
 $INFO[Window.Property(WeatherProvider),Window.Property(WeatherProvider) :  [B][COLOR green],[/B][/COLOR]]  $INFO[Weather.Conditions,Weather.Conditions :  [B][COLOR green],[/B][/COLOR]]
 $INFO[Weather.Temperature,Weather.Temperature :  [B][COLOR green],[/B][/COLOR]]  $INFO[Weather.Location,Weather.Location :  [B][COLOR green],[/B][/COLOR]]  $INFO[Weather.fanartcode,Weather.fanartcode :  [B][COLOR green],[/B][/COLOR]]  $INFO[Weather.plugin,Weather.plugin :  [B][COLOR green],[/B][/COLOR]]
-
 $INFO[Window.Property(Updated),Window.Property(Current.Updated) :  [B][COLOR green],[/B][/COLOR]]
 $INFO[Window.Property(Location),Window.Property(Current.Location) :  [B][COLOR green],[/B][/COLOR]]
 $INFO[Window.Property(Current.Condition),Window.Property(Current.Condition) :  [B][COLOR green],[/B][/COLOR]]
@@ -141,7 +126,6 @@ $INFO[Window.Property(Current.WindSpeed),Window.Property(Current.WindSpeed) :  [
 $INFO[Window.Property(Current.WindDirection),Window.Property(Current.WindDirection) :  [B][COLOR green],[/B][/COLOR]]
 $INFO[Window.Property(Current.DewPoint),Window.Property(Current.DewPoint) :  [B][COLOR green],[/B][/COLOR]]
 $INFO[Window.Property(Current.Humidity),Window.Property(Current.Humidity) :  [B][COLOR green],[/B][/COLOR]]
-
 [B]Window.Property(Day0.*)[/B]    
     $INFO[Window.Property(Day0.Title),Window.Property(Day0.Title) :  [B][COLOR green],[/B][/COLOR]]
     $INFO[Window.Property(Day0.HighTemp),Window.Property(Day0.HighTemp) :  [B][COLOR green],[/B][/COLOR]]
@@ -149,6 +133,17 @@ $INFO[Window.Property(Current.Humidity),Window.Property(Current.Humidity) :  [B]
     $INFO[Window.Property(Day0.Outlook),Window.Property(Day0.Outlook) :  [B][COLOR green],[/B][/COLOR]]
   Cloudiness $INFO[Window.Property(Hourly.0.Cloudiness)]
   ShortDate  $INFO[Window.Property(Hourly.1.ShortDate)]  LongDate  $INFO[Window.Property(Hourly.1.LongDate)]  FanartCode  $INFO[Window.Property(Hourly.1.FanartCode)]
+  dayly $INFO[Window(weather).Property(Daily.1.LowTemperature),[B]↓[/B] [COLOR cyan],[/COLOR]          ] - $INFO[Window(weather).Property(Daily.1.HighTemperature),          [B]↑[/B] [COLOR orange],[/COLOR]]
+  $INFO[Window(weather).Property(Daily.1.TempDay)]
+  $INFO[Window(weather).Property(Daily.1.Cloudiness)]
+  $INFO[Window(weather).Property(Daily.1.Outlook)]
+  $INFO[Window(weather).Property(Daily.1.LongDate)]
+  hourly $INFO[Window(weather).Property(Hourly.1.Time)]
+  $INFO[Window(weather).Property(Hourly.1.Temperature)]   $INFO[Window(weather).Property(Hourly.1.Precipitation)]  $INFO[Window(weather).Property(Hourly.1.Temperature)]
+  $INFO[Window(weather).Property(Hourly.1.Outlook)]
+  $INFO[Window(weather).Property(Hourly.1.Cloudiness)]
+  $INFO[Window(weather).Property(Hourly.1.LongDate)]
+  end
 "/>
 </include>
 	</controls>

@@ -46,6 +46,7 @@
 		<control type="radiobutton" id="4004">
 			<include>Menucontrol_RadioButton</include>
 			<label>Get The Daylie Icon Centered</label>
+			<visible>!Skin.HasSetting(weather_windowlayout_2)</visible>
 			<onclick>Skin.ToggleSetting(weather_d_icon_centered)</onclick>
 			<selected>Skin.HasSetting(weather_d_icon_centered)</selected>
 		</control>
@@ -73,119 +74,229 @@
 	</include>
 	
 	<!-- deafult layout -->
-	<include name="weather_window_layout_1">
-		
-		
-		
-		<control type="group">
-			<left>130</left>
-			<control type="image">
-				<top>250</top>
-				<width>390</width>
-				<bottom>335</bottom>
-				<bordersize>10</bordersize>
-				<bordertexture colordiffuse="ff131313">colors/white30.png</bordertexture>
-				<texture colordiffuse="ff131313">colors/white50.png</texture>
-			</control>
-			<control type="button" id="200">
-				<label />
-				<top>250</top>
-				<width>390</width>
-				<height>495</height>
-				<texturefocus border="2" colordiffuse="white">frames/frame.png</texturefocus>
-				<texturenofocus />
-				<onfocus condition="!String.IsEmpty(Window(Home).Property(menucontrol_active))">ClearProperty(menucontrol_active,home)</onfocus>
-				<onleft>menu</onleft>
-				<onup>3</onup>
-				<onright>50</onright>
-				<ondown>51</ondown>
-				<onclick>SendClick(2)</onclick>
+	
+	<include name="weather_atts">
+		<control type="grouplist">
+			<control type="grouplist">
+			<height>30</height>
+			<orientation>horizontal</orientation>
+				<control type="image">
+					<visible>Control.IsVisible(35)</visible>
+					<width>40</width>
+					<height>40</height>
+					<bordersize>5</bordersize>
+					<texture>icons/feelslike.png</texture>
+				</control>
+				<control type="label">
+					<font>font_Montserrat_14_extrabold</font>
+					<left>10</left>
+					<height>40</height>
+					<description> feels like </description>
+					<textcolor>$VAR[color_lib_text_main]</textcolor>
+					<label fallback="test">$INFO[Control.GetLabel(224)] : $INFO[Window.Property(Current.FeelsLike)]</label>
+				</control>
 			</control>
 			<control type="grouplist">
+				<height>30</height>
+				<orientation>horizontal</orientation>
+				<control type="image">
+					<visible>Control.IsVisible(35)</visible>
+					<width>40</width>
+					<height>40</height>
+					<bordersize>5</bordersize>
+					<texture>icons/sun.png</texture>
+				</control>
+				<control type="label">
+					<description> uv index </description>
+					<font>font_Montserrat_14_extrabold</font>
+					<left>10</left>
+					<height>40</height>
+					<textcolor>$VAR[color_lib_text_main]</textcolor>
+					<label>$INFO[Control.GetLabel(225)] : $INFO[Window.Property(Current.UVIndex),  ,]</label>
+				</control>
+			</control>
+			<control type="grouplist">
+				<height>30</height>
+				<orientation>horizontal</orientation>
+				<visible>!String.IsEmpty(Window(weather).Property(Daily.1.Cloudiness))</visible>
+				<control type="image">
+					<visible>Control.IsVisible(35)</visible>
+					<width>40</width>
+					<height>40</height>
+					<bordersize>5</bordersize>
+					<texture>icons/cloud.png</texture>
+				</control>
+				<control type="label">
+					<description> wind </description>
+					<font>font_Montserrat_14_extrabold</font>
+					<left>10</left>
+					<height>40</height>
+					<textcolor>$VAR[color_lib_text_main]</textcolor>
+					<label>Cloudyness : $INFO[Window(weather).Property(Daily.1.Cloudiness)]</label>
+				</control>
+			</control>
+			<control type="grouplist">
+				<height>30</height>
+				<orientation>horizontal</orientation>
+				<control type="image">
+					<visible>Control.IsVisible(35)</visible>
+					<width>40</width>
+					<height>40</height>
+					<bordersize>5</bordersize>
+					<texture>icons/windsock.png</texture>
+				</control>
+				<control type="label">
+					<description> wind </description>
+					<font>font_Montserrat_14_extrabold</font>
+					<left>10</left>
+					<height>40</height>
+					<textcolor>$VAR[color_lib_text_main]</textcolor>
+					<label>$INFO[Control.GetLabel(226)] : $INFO[Window.Property(Current.Wind),   ,]</label>
+				</control>
+			</control>
+			<control type="grouplist">
+				<height>30</height>
+				<orientation>horizontal</orientation>
+				<control type="image">
+					<visible>Control.IsVisible(35)</visible>
+					<width>40</width>
+					<height>40</height>
+					<bordersize>5</bordersize>
+					<texture>icons/dewpoint.png</texture>
+				</control>
+				<control type="label">
+					<description> dew point </description>
+					<font>font_Montserrat_14_extrabold</font>
+					<left>10</left>
+					<height>40</height>
+					<textcolor>$VAR[color_lib_text_main]</textcolor>
+					<label>$INFO[Control.GetLabel(227)] : $INFO[Window.Property(Current.DewPoint),  ,]</label>
+				</control>
+			</control>
+			<control type="grouplist">
+				<height>30</height>
+				<orientation>horizontal</orientation>
+				<control type="image">
+					<visible>Control.IsVisible(35)</visible>
+					<width>40</width>
+					<height>40</height>
+					<bordersize>5</bordersize>
+					<texture>icons/humidity.png</texture>
+				</control>
+				<control type="label">
+					<description> humidity </description>
+					<font>font_Montserrat_14_extrabold</font>
+					<left>10</left>
+					<height>40</height>
+					<textcolor>$VAR[color_lib_text_main]</textcolor>
+					<label>$INFO[Control.GetLabel(228)] : $INFO[Window.Property(Current.Humidity),  ,]</label>
+				</control>
+			</control>
+		</control>
+	</include>
+	
+	
+	
+	<include name="weather_window_layout_1">
+		<control type="image">
+			<description>masking in here and keep frame - adjust labels to fit in here</description>
+			<visible>true</visible>
+			<top>250</top>
+			<left>130</left>
+			<width>410</width>
+			<bottom>335</bottom>
+			<bordersize>10</bordersize>
+			<bordertexture colordiffuse="ff131313">colors/white30.png</bordertexture>
+			<texture colordiffuse="ff131313">colors/white50.png</texture>
+		</control>
+		
+	
+	<control type="group">
+		<left>140</left>
+		<control type="button" id="200">
+			<animation type="Focus" reversible="false">
+				<effect type="zoom" end="103,103" time="200" tween="sine" easing="out" center="auto" />
+				<effect type="zoom" end="99,99" time="150" tween="sine" delay="200" easing="out" center="auto" />
+			</animation>
+			<left>-10</left>
+			<top>251</top>
+			<width>410</width>
+			<height>494</height>
+			<label />
+			<texturefocus border="2" colordiffuse="$VAR[color_lib_text_main]">frames/frame.png</texturefocus>
+			<texturenofocus />
+			<onleft>menu</onleft>
+			<onup>3</onup>
+			<onright>50</onright>
+			<ondown>51</ondown>
+			<onclick>SendClick(2)</onclick>
+		</control>
+		<control type="grouplist">
 				<description>now or and container(50).listitems</description>
-				<left>20</left>
-				<top>230</top>
-				<right>200</right>
-				<width>350</width>
+				<left>10</left>
+				<top>250</top>
+				<width>390</width>
 				<bottom>300</bottom>
 				<control type="label">
-					<label />
-					<height>30</height>
-				</control>
-				<control type="label">
+					<top>20</top>
+					<height>40</height>
+					<textcolor>$VAR[color_lib_text_main]</textcolor>
 					<label>[B]$INFO[Control.GetLabel(31)][/B]</label>
-					<font>font23_title</font><height>30</height>
+					<font>Montserrat_ExtraBold_40</font>
 				</control>
 				<control type="label">
 					<label />
-					<height>15</height>
+					<height>5</height>
 				</control>
 				<control type="label">
-					<visible>false</visible>
-					<label>$INFO[Window.Property(Location)]  |  $INFO[Window.Property(Updated), updated : ,]</label>
-					<font>MenucontrolItem</font><height>20</height>
+					<height>10</height>
+					<textcolor>$VAR[color_lib_accent]</textcolor>
+					<label>$INFO[Window.Property(Location)]</label>
+					<font>MenucontrolItem</font>
 				</control>
 				<control type="group">
-					<top>-15</top>
-					<height>225</height>
-					<width>340</width>
-					<control type="image" id="35">
-						<width>250</width>
-						<height>225</height>
+					<top>10</top>
+					<height>230</height>
+					<width>390</width>
+					<control type="image">
+						<visible>Control.IsVisible(35)</visible>
+						<width>230</width>
+						<height>230</height>
 						<bordersize>10</bordersize>
+						<texture>$INFO[Control.GetLabel(35)]</texture>
+					</control>
+					<control type="label">
+						<font>Montserrat_ExtraBold_40</font>
+						<align>right</align>
+						<right>70</right>
+						<height>90</height>
+						<description> temperature </description>
+						<textcolor>$VAR[color_lib_text_main]</textcolor>
+						<label>$INFO[Weather.Temperature]</label>
 					</control>
 					<control type="label">
 						<font>debugtiny</font>
 						<align>right</align>
-						<height>25</height>
+						<right>20</right>
+						<height>95</height>
 						<description> temperature </description>
-						<label>$INFO[Weather.Temperature]    ( $INFO[Control.GetLabel(33),[B]↓[/B] ,] / $INFO[Control.GetLabel(32),[B]↑[/B],] )</label>
+						<textcolor>$VAR[color_lib_text_main]</textcolor>
+						<label>[COLOR blue]$INFO[Control.GetLabel(33),[B]↓[/B] ,][/COLOR][CR][COLOR red]$INFO[Control.GetLabel(32),[B]↑[/B] ,][/COLOR]</label>
 					</control>
 					<control type="label">
-						<top>35</top>
+						<top>75</top>
+						<right>20</right>
 						<height>25</height>
-						<font>font23_title</font>
+						<font>PlotCommon</font>
 						<description> condition</description>
 						<align>right</align>
+						<textcolor>$VAR[color_lib_text_secondary]</textcolor>
 						<label>$INFO[Window.Property(Current.Condition)]</label>
 					</control>
 				</control>
-				
-				<control type="grouplist">
-					<control type="label">
-						<visible>false</visible>
-						<font>debugtiny</font><height>25</height>
-						<description> temperature </description>
-						<label>$INFO[Control.GetLabel(223)]  : $INFO[Window.Property(Current.Temperature),   ,]    ( $INFO[Control.GetLabel(33),[B]↓[/B] ,]  / $INFO[Control.GetLabel(32),[B]↑[/B],] )</label>
-					</control>
-					<control type="label">
-						<font>debugtiny</font><height>25</height>
-						<description> feels like </description>
-						<label>$INFO[Control.GetLabel(224)] : $INFO[Window.Property(Current.FeelsLike),   ,]</label>
-					</control>
-					<control type="label">
-						<font>debugtiny</font><height>25</height>
-						<description> uv index </description>
-						<label>$INFO[Control.GetLabel(225)] : $INFO[Window.Property(Current.UVIndex),  ,]</label>
-					</control>
-					<control type="label">
-						<font>debugtiny</font><height>25</height>
-						<description> wind </description>
-						<label>$INFO[Control.GetLabel(226)] : $INFO[Window.Property(Current.Wind),   ,]</label>
-					</control>
-					<control type="label">
-						<font>debugtiny</font><height>25</height>
-						<description> dew point </description>
-						<label>$INFO[Control.GetLabel(227)] : $INFO[Window.Property(Current.DewPoint),  ,]</label>
-					</control>
-					<control type="label">
-						<font>debugtiny</font><height>25</height>
-						<description> humidity </description>
-						<label>$INFO[Control.GetLabel(228)] : $INFO[Window.Property(Current.Humidity),  ,]</label>
-					</control>
-				</control>
+				<include>weather_atts</include>
 			</control>
-		</control>	
+		</control>
 		
 		<control type="group" id="3000">
 			<!-- <visible> + !Skin.HasSetting(Weather_view_51) ?? maybe alt layout</visible> -->
@@ -253,105 +364,114 @@
 			<left>140</left>
 			
 			<control type="button" id="200">
-			use refresh icon - small button
+				<animation type="Focus" reversible="false">
+					<effect type="zoom" end="103,103" time="200" tween="sine" easing="out" center="auto" />
+					<effect type="zoom" end="99,99" time="150" tween="sine" delay="200" easing="out" center="auto" />
+				</animation>
+				<top>160</top>
+				<width>530</width>
+				<height>550</height>
 				<label />
-				<top>200</top>
-				<width>500</width>
-				<height>500</height>
-				<texturefocus border="2" colordiffuse="white">frames/frame.png</texturefocus>
+				<texturefocus border="2" colordiffuse="$VAR[color_lib_text_main]">frames/frame.png</texturefocus>
 				<texturenofocus />
-				<onleft>3</onleft>
+				<!-- <onleft>menu</onleft> -->
+				<onleft>201</onleft>
 				<onup>3</onup>
-				<onright>50</onright>
-				<ondown>51</ondown>
+				<onright>201</onright>
+				<ondown>50</ondown>
 				<onclick>SendClick(2)</onclick>
 			</control>
+			<control type="button" id="201">
+				<include>Animation_Item_Focus</include>
+				<top>170</top>
+				<width>50</width>
+				<height>50</height>
+				<label />
+				<onclick>SetFocus(3)</onclick>
+				<onclick>Action(select)</onclick>
+				<onclick>SetFocus(200)</onclick>
+				<onup>50</onup>
+				<ondown>50</ondown>
+				<!-- 
+				<left>530</left>
+				<texturefocus flipx="true">buttons/arrowleft.png</texturefocus>
+				<texturenofocus flipx="true">buttons/arrowleft.png</texturenofocus>
+					<onleft>200</onleft>
+					<onright>51</onright>
+				-->
+				
+				<left>-60</left>
+				<texturefocus colordiffuse="$VAR[color_lib_text_main]">buttons/arrowleft.png</texturefocus>
+				<texturenofocus colordiffuse="$VAR[color_lib_text_secondary]">buttons/arrowleft.png</texturenofocus>
+					<onleft>menu</onleft>
+					<onright>200</onright>
+			</control>
 			
-			
+			<!-- compare and merge -->
 			<control type="grouplist">
-				<visible>false</visible>
 				<description>now or and container(50).listitems</description>
 				<left>20</left>
-				<top>230</top>
+				<top>160</top>
 				<right>200</right>
-				<width>350</width>
+				<width>500</width>
 				<bottom>300</bottom>
 				<control type="label">
-					<label />
-					<height>30</height>
-				</control>
-				<control type="label">
+					<top>10</top>
+					<height>40</height>
+					<textcolor>$VAR[color_lib_text_main]</textcolor>
 					<label>[B]$INFO[Control.GetLabel(31)][/B]</label>
-					<font>font23_title</font><height>30</height>
+					<font>Montserrat_ExtraBold_50</font>
 				</control>
 				<control type="label">
 					<label />
 					<height>15</height>
 				</control>
 				<control type="label">
-					<visible>false</visible>
-					<label>$INFO[Window.Property(Location)]  |  $INFO[Window.Property(Updated), updated : ,]</label>
-					<font>MenucontrolItem</font><height>20</height>
+					<height>20</height>
+					<textcolor>$VAR[color_lib_accent]</textcolor>
+					<label>$INFO[Window.Property(Location)]  |  $INFO[Window.Property(Updated), updated • ,]</label>
+					<font>MenucontrolItem</font>
 				</control>
 				<control type="group">
-					<top>-15</top>
-					<height>225</height>
-					<width>340</width>
-					<control type="image" id="35">
-						<width>250</width>
-						<height>225</height>
+					<height>270</height>
+					<width>500</width>
+					<control type="image">
+						<visible>Control.IsVisible(35)</visible>
+						<width>290</width>
+						<height>290</height>
 						<bordersize>10</bordersize>
+						<texture>$INFO[Control.GetLabel(35)]</texture>
+					</control>
+					<control type="label">
+						<font>Montserrat_ExtraBold_50</font>
+						<align>right</align>
+						<right>70</right>
+						<height>90</height>
+						<description> temperature </description>
+						<textcolor>$VAR[color_lib_text_main]</textcolor>
+						<label>$INFO[Weather.Temperature]</label>
 					</control>
 					<control type="label">
 						<font>debugtiny</font>
 						<align>right</align>
-						<height>25</height>
+						<right>10</right>
+						<height>95</height>
 						<description> temperature </description>
-						<label>$INFO[Weather.Temperature]    ( $INFO[Control.GetLabel(33),[B]↓[/B] ,] / $INFO[Control.GetLabel(32),[B]↑[/B],] )</label>
+						<textcolor>$VAR[color_lib_text_main]</textcolor>
+						<label>[COLOR blue]$INFO[Control.GetLabel(33),[B]↓[/B] ,][/COLOR][CR][COLOR red]$INFO[Control.GetLabel(32),[B]↑[/B] ,][/COLOR]</label>
 					</control>
 					<control type="label">
-						<top>35</top>
+						<top>75</top>
+						<right>10</right>
 						<height>25</height>
 						<font>font23_title</font>
 						<description> condition</description>
 						<align>right</align>
+						<textcolor>$VAR[color_lib_text_secondary]</textcolor>
 						<label>$INFO[Window.Property(Current.Condition)]</label>
 					</control>
 				</control>
-				
-				<control type="grouplist">
-					<control type="label">
-						<visible>false</visible>
-						<font>debugtiny</font><height>25</height>
-						<description> temperature </description>
-						<label>$INFO[Control.GetLabel(223)]  : $INFO[Window.Property(Current.Temperature),   ,]    ( $INFO[Control.GetLabel(33),[B]↓[/B] ,]  / $INFO[Control.GetLabel(32),[B]↑[/B],] )</label>
-					</control>
-					<control type="label">
-						<font>debugtiny</font><height>25</height>
-						<description> feels like </description>
-						<label>$INFO[Control.GetLabel(224)] : $INFO[Window.Property(Current.FeelsLike),   ,]</label>
-					</control>
-					<control type="label">
-						<font>debugtiny</font><height>25</height>
-						<description> uv index </description>
-						<label>$INFO[Control.GetLabel(225)] : $INFO[Window.Property(Current.UVIndex),  ,]</label>
-					</control>
-					<control type="label">
-						<font>debugtiny</font><height>25</height>
-						<description> wind </description>
-						<label>$INFO[Control.GetLabel(226)] : $INFO[Window.Property(Current.Wind),   ,]</label>
-					</control>
-					<control type="label">
-						<font>debugtiny</font><height>25</height>
-						<description> dew point </description>
-						<label>$INFO[Control.GetLabel(227)] : $INFO[Window.Property(Current.DewPoint),  ,]</label>
-					</control>
-					<control type="label">
-						<font>debugtiny</font><height>25</height>
-						<description> humidity </description>
-						<label>$INFO[Control.GetLabel(228)] : $INFO[Window.Property(Current.Humidity),  ,]</label>
-					</control>
-				</control>
+				<include>weather_atts</include>
 			</control>
 		</control>	
 		
@@ -367,11 +487,11 @@
 				<param name="focusedlayout_width" value="200" />
 				<param name="focusedlayout_height" value="300" />
 				<param name="is_daily" value="true" />
-				<param name="onup" value="3" />
-				<param name="ondown" value="51" />
-				<param name="fanart_width" value="240" />
-		
-				<onleft>200</onleft>
+				<param name="onup" value="200" />
+				<param name="ondown" value="200" />
+				<param name="fanart_width" value="245" />
+				<onleft>menu</onleft>
+				<onright>51</onright>
 				<left>100</left>
 				<bottom>50</bottom>
 				<height>300</height>
@@ -381,11 +501,10 @@
 			
 			<control type="image">
 				<texture colordiffuse="ff131313">colors/white40.png</texture>
-				<top>150</top>
+				<top>130</top>
 				<right>10</right>
 				<width>200</width>
-				<bottom>100</bottom>
-				<height>900</height>
+				<height>930</height>
 			</control>
 			<include content="Weather_Container">
 				<param name="id" value="51" />
@@ -398,14 +517,15 @@
 				<param name="focusedlayout_height" value="100" />
 				<param name="is_daily" value="false" />
 				
-				<param name="onup" value="200" />
-				<param name="ondown" value="3" />
-				<onleft>50</onleft>
-				<top>150</top>
+				<param name="onup" value="51" />
+				<param name="ondown" value="51" />
+				<onleft>200</onleft>
+				<onright>200</onright>
+				<top>140</top>
 				<right>10</right>
 				<width>200</width>
 				<bottom>100</bottom>
-				<height>900</height>
+				<height>905</height>
 			</include>
 		
 		</control>
@@ -415,7 +535,7 @@
 		- more fanart less container bg
 		- bigger font
 		- hourly items hidden slide in on down
-	
+		- reduce color to minimum, try monochrome (minimalilstic)
 	</include>
 	
 	
@@ -501,7 +621,7 @@
 			<control type="label">
 				<font>debugtiny</font>
 				<textcolor>$PARAM[color]</textcolor>
-				<top>40</top>
+				<top>35</top>
 				<left>45</left>
 				<right>5</right>
 				<align>right</align>
@@ -511,6 +631,7 @@
 			<control type="label">
 				<description>props</description>
 				<top>60</top>
+				<bottom>5</bottom>
 				<font>debugtiny</font>
 				<left>45</left>
 				<height>56</height>
@@ -550,16 +671,16 @@
 				<height>130</height>
 				<colordiffuse>$PARAM[color]</colordiffuse>
 				<texture>$INFO[ListItem.Icon]</texture>
-				<visible>!Skin.HasSetting(weather_d_icon_centered)</visible>
+				<visible>!Skin.HasSetting(weather_d_icon_centered) + !Skin.HasSetting(weather_windowlayout_2)</visible>
 			</control>
 			<control type="image">
 				<left>80</left>
-				<top>108</top>
+				<centertop>35%</centertop>
 				<width>80</width>
 				<height>80</height>
 				<colordiffuse>$PARAM[color]</colordiffuse>
 				<texture>$INFO[ListItem.Icon]</texture>
-				<visible>Skin.HasSetting(weather_d_icon_centered)</visible>
+				<visible>Skin.HasSetting(weather_d_icon_centered) | Skin.HasSetting(weather_windowlayout_2)</visible>
 			</control>
 			<control type="label">
 				<font>debugtiny</font>
@@ -573,10 +694,11 @@
 			<control type="label">
 				<font>debugtiny</font>
 				<textcolor>$PARAM[color]</textcolor>
-				<top>200</top>
+				<centerbottom>20%</centerbottom>
+				<width>230</width>
+				<height>100</height>
 				<align>center</align>
 				<label>$INFO[ListItem.Label2]</label>
-				<width>230</width>
 			</control>
 		</control>
 		
@@ -588,6 +710,7 @@
 	
 	<include name="WeatherDailyItem">
 		<item>
+			<nested />
 			<label>$INFO[Window(weather).Property(Daily.$PARAM[item_index].LongDay)]</label>
 			<label2>$INFO[Window(weather).Property(Daily.$PARAM[item_index].LowTemperature),[B]↓[/B] [COLOR cyan],[/COLOR]          ][CR]•[CR]$INFO[Window(weather).Property(Daily.$PARAM[item_index].HighTemperature),          [B]↑[/B] [COLOR orange],[/COLOR]]</label2>
 			<property name="TempDay">$INFO[Window(weather).Property(Daily.$PARAM[item_index].TempDay)]</property>
@@ -627,6 +750,7 @@
 			</item>
 			<include content="WeatherDailyItem">
 				<param name="item_index" value="1" />
+				<visible>Skin.HasSetting(weather_windowlayout_2)</visible>
 			</include>
 			<include content="WeatherDailyItem">
 				<param name="item_index" value="2" />
