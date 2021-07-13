@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 	
-	<!-- nested in 
-	include menucontrol_global
-	-->
-	<!-- get over id's in use later - especialy the ones that are vis in for different window avoid double id, AND ALSO AVOID USE OF TO MUCH IDS -->
+	
+	<variable name="color_weather_switchlocation_fo">
+		<value condition="Skin.HasSetting(weather_windowlayout_2)">blue</value>
+		<value>$VAR[color_global_button_panel_fo]</value>
+	</variable>
+	<variable name="color_weather_switchlocation_nf">
+		<value condition="Skin.HasSetting(weather_windowlayout_2)">red</value>
+		<value condition="!Skin.HasSetting(weather_windowlayout_2)">$VAR[color_global_button_panel_nf]</value>
+	</variable>
+	
+	
+	
 	<include name="menucontrol_settings_windowweather">
 		<include content="spacer_h">
 			<param name="id" value="4000" />
@@ -13,26 +21,41 @@
 		
 		<control type="radiobutton" id="4001">
 			<include>Menucontrol_RadioButton</include>
-			<label>Hide Background Image</label>
+			<label>Disable Fanart Background (Disable Layer 2-3)</label>
 			<onclick>Skin.ToggleSetting(weather_background_disabled)</onclick>
+			<onclick condition="Skin.HasSetting(weather_background_multiimage)">Skin.ToggleSetting(weather_background_multiimage)</onclick>
+			<onclick condition="Skin.HasSetting(weather_background_singleimage)">Skin.ToggleSetting(weather_background_singleimage)</onclick>
 			<selected>Skin.HasSetting(weather_background_disabled)</selected>
 		</control>
-		
 		<control type="radiobutton" id="4002">
+			<include>Menucontrol_RadioButton</include>
+			<label>Us Singel Image Weather Art Background</label>
+			<onclick>Skin.ToggleSetting(weather_background_singleimage)</onclick>
+			<onclick condition="Skin.HasSetting(weather_background_multiimage)">Skin.ToggleSetting(weather_background_multiimage)</onclick>
+			<onclick condition="Skin.HasSetting(weather_background_disabled)">Skin.ToggleSetting(weather_background_disabled)</onclick>
+			<selected>Skin.HasSetting(weather_background_singleimage)</selected>
+		</control>
+		<control type="radiobutton" id="4003">
 			<include>Menucontrol_RadioButton</include>
 			<label>Us Multi Image Weather Art Background</label>
 			<onclick>Skin.ToggleSetting(weather_background_multiimage)</onclick>
+			<onclick condition="Skin.HasSetting(weather_background_singleimage)">Skin.ToggleSetting(weather_background_singleimage)</onclick>
+			<onclick condition="Skin.HasSetting(weather_background_disabled)">Skin.ToggleSetting(weather_background_disabled)</onclick>
 			<selected>Skin.HasSetting(weather_background_multiimage)</selected>
 		</control>
-		
-		
+		<control type="radiobutton" id="4004">
+			<include>Menucontrol_RadioButton</include>
+			<label>Get The Daylie Icon Centered</label>
+			<onclick>Skin.ToggleSetting(weather_d_icon_centered)</onclick>
+			<selected>Skin.HasSetting(weather_d_icon_centered)</selected>
+		</control>
 		<control type="radiobutton" id="4005">
 			<include>Menucontrol_RadioButton</include>
-			<label>weather_windowlayout_2</label>
+			<label>Use Clear Layout</label>
 			<onclick>Skin.ToggleSetting(weather_windowlayout_2)</onclick>
 			<selected>Skin.HasSetting(weather_windowlayout_2)</selected>
 		</control>
-		
+				<!-- get all the labels first
 		
 		<control type="radiobutton" id="4010">
 			<include>Menucontrol_RadioButton</include>
@@ -40,50 +63,22 @@
 			<onclick>Skin.ToggleSetting(weather_itemlayout_2)</onclick>
 			<selected>Skin.HasSetting(weather_itemlayout_2)</selected>
 		</control>
-		
 		<control type="radiobutton" id="4020">
 			<include>Menucontrol_RadioButton</include>
 			<label>weather_itemlayout_3</label>
 			<onclick>Skin.ToggleSetting(weather_itemlayout_3)</onclick>
 			<selected>Skin.HasSetting(weather_itemlayout_3)</selected>
 		</control>
+		-->
 	</include>
 	
-	
-	
-	<!-- WEATHER LAYOUT 1 -->
-	<include name="weather_window_layout_1_backup">
-	
-		<control type="group">
-			<description>may fade it is there any animated fanart weather fanart code based image resource addon out there - check var formultiimage</description>
-			<include>global_background</include>
-		</control>
+	<!-- deafult layout -->
+	<include name="weather_window_layout_1">
 		
-	
-		<control type="spincontrolex" id="3">
-			<description>use include condiztion for positioning ?</description>
-			<top>150</top>
-			<left>140</left>
-			<width>390</width>
-			<height>50</height>
-			<!-- <texturefocus />
-			<texturenofocus /> -->
-			<spinposx>10</spinposx>
-			<spinwidth>25</spinwidth>
-			<spinheight>50</spinheight>
-			
-			<textoffsetx>240</textoffsetx>
-			<textcolor>$VAR[color_lib_text_main]</textcolor>
-			<font>font25_title</font>
-			
-			<onup>51</onup>
-			<onright>50</onright>
-			<onleft>50</onleft>
-			<ondown>200</ondown>
-		</control>
+		
 		
 		<control type="group">
-			<left>140</left>
+			<left>130</left>
 			<control type="image">
 				<top>250</top>
 				<width>390</width>
@@ -99,7 +94,8 @@
 				<height>495</height>
 				<texturefocus border="2" colordiffuse="white">frames/frame.png</texturefocus>
 				<texturenofocus />
-				<onleft>3</onleft>
+				<onfocus condition="!String.IsEmpty(Window(Home).Property(menucontrol_active))">ClearProperty(menucontrol_active,home)</onfocus>
+				<onleft>menu</onleft>
 				<onup>3</onup>
 				<onright>50</onright>
 				<ondown>51</ondown>
@@ -196,33 +192,36 @@
 			<include content="Weather_Container">
 				<param name="id" value="50" />
 				<param name="container_visible" value="!String.IsEmpty(Window(weather).Property(Daily.IsFetched))" />
-				<param name="content_include" value="DailyItems" />
+				<param name="content_include" value="weather_items_dayly" />
 				<param name="itemlayout_width" value="218" />
 				<param name="itemlayout_height" value="485" />
+				<param name="focusedlayout_width" value="218" />
+				<param name="focusedlayout_height" value="485" />
 				<param name="is_daily" value="true" />
+				<param name="fanart_width" value="205" />
 				<param name="onup" value="3" />
 				<param name="ondown" value="51" />
 				
+				<param name="disable_current" value="true" />
 				<onleft>200</onleft>
-				<left>610</left>
+				<left>600</left>
 				<top>260</top>
 				<bottom>500</bottom>
 				<height>485</height>
-				<right>0</right>
 			</include>
 			
 			
 			<control type="label">
-				<label>[B]2 4     h o u r s[/B]</label>
+				<label>[B]Hourly[/B]</label>
 				<visible>!String.IsEmpty(Window(weather).Property(Hourly.IsFetched))</visible>
 				<font>font23_title</font>
-				<left>200</left>
+				<left>130</left>
 				<top>760</top>
 				<height>100</height>
 			</control>
 			<control type="image">
 				<texture colordiffuse="ff131313">colors/white40.png</texture>
-				<left>140</left>
+				<left>130</left>
 				<height>250</height>
 				<bottom>0</bottom>
 			</control>
@@ -232,13 +231,14 @@
 				<param name="content_include" value="weather_items_hourly" />
 				<param name="itemlayout_width" value="180" />
 				<param name="itemlayout_height" value="200" />
+				<param name="focusedlayout_width" value="180" />
+				<param name="focusedlayout_height" value="200" />
 				<param name="is_daily" value="false" />
 				<param name="onup" value="200" />
 				<param name="ondown" value="3" />
 				
-				<left>105</left>
+				<left>90</left>
 				<top>850</top>
-				<right>10</right>
 				<bottom>100</bottom>
 				<height>200</height>
 			</include>
@@ -246,59 +246,18 @@
 		</control>
 	</include>
 	
-	<!-- WEATHER LAYOUT DEVELOPEMENT  copy to work and test layout 1-->
-	<include name="weather_window_layout_1_dev">
-		
-		
-		<control type="multiimage">
-			<visible>Skin.HasSetting(weather_background_multiimage)</visible>
-			<depth>DepthBackground</depth>
-			<fadetime>3000</fadetime>
-			<timeperimage>10000</timeperimage>
-			<imagepath>resource://resource.images.weatherfanart.multi/$INFO[Weather.FanartCode]/</imagepath>
-		</control>
-		<control type="group">
-			<visible>!Skin.HasSetting(weather_background_disabled)</visible>
-			<description>may fade it is there any animated fanart weather fanart code based image resource addon out there - check var formultiimage</description>
-			<include>global_background</include>
-		</control>
-		
-		
-		<control type="spincontrolex" id="3">
-			<description>use include condiztion for positioning ?</description>
-			<top>150</top>
-			<left>140</left>
-			<width>390</width>
-			<height>50</height>
-			<spinposx>10</spinposx>
-			<spinwidth>20</spinwidth>
-			<spinheight>50</spinheight>
-			
-			<textoffsetx>100</textoffsetx>
-			<textcolor>$VAR[color_lib_text_main]</textcolor>
-			<font>font25_title</font>
-			
-			<onup>51</onup>
-			<onright>50</onright>
-			<onleft>50</onleft>
-			<ondown>200</ondown>
-		</control>
+	<!-- clear layout -->
+	<include name="weather_window_layout_2">
 		
 		<control type="group">
 			<left>140</left>
-			<control type="image">
-				<top>250</top>
-				<width>390</width>
-				<bottom>335</bottom>
-				<bordersize>10</bordersize>
-				<bordertexture colordiffuse="ff131313">colors/white30.png</bordertexture>
-				<texture colordiffuse="ff131313">colors/white50.png</texture>
-			</control>
+			
 			<control type="button" id="200">
+			use refresh icon - small button
 				<label />
-				<top>250</top>
-				<width>390</width>
-				<height>495</height>
+				<top>200</top>
+				<width>500</width>
+				<height>500</height>
 				<texturefocus border="2" colordiffuse="white">frames/frame.png</texturefocus>
 				<texturenofocus />
 				<onleft>3</onleft>
@@ -307,7 +266,10 @@
 				<ondown>51</ondown>
 				<onclick>SendClick(2)</onclick>
 			</control>
+			
+			
 			<control type="grouplist">
+				<visible>false</visible>
 				<description>now or and container(50).listitems</description>
 				<left>20</left>
 				<top>230</top>
@@ -397,55 +359,57 @@
 			<!-- <visible> + !Skin.HasSetting(Weather_view_51) ?? maybe alt layout</visible> -->
 			<include content="Weather_Container">
 				<param name="id" value="50" />
+				<param name="type" value="panel" />
 				<param name="container_visible" value="!String.IsEmpty(Window(weather).Property(Daily.IsFetched))" />
-				<param name="content_include" value="DailyItems" />
-				<param name="itemlayout_width" value="218" />
-				<param name="itemlayout_height" value="485" />
+				<param name="content_include" value="weather_items_dayly" />
+				<param name="itemlayout_width" value="200" />
+				<param name="itemlayout_height" value="300" />
+				<param name="focusedlayout_width" value="200" />
+				<param name="focusedlayout_height" value="300" />
 				<param name="is_daily" value="true" />
 				<param name="onup" value="3" />
 				<param name="ondown" value="51" />
-				
+				<param name="fanart_width" value="240" />
+		
 				<onleft>200</onleft>
-				<left>610</left>
-				<top>260</top>
-				<bottom>500</bottom>
-				<height>485</height>
-				<right>0</right>
+				<left>100</left>
+				<bottom>50</bottom>
+				<height>300</height>
+				<right>200</right>
 			</include>
 			
 			
-			<control type="label">
-				<label>[B]H o u r l y[/B]</label>
-				<visible>!String.IsEmpty(Window(weather).Property(Hourly.IsFetched))</visible>
-				<font>font23_title</font>
-				<left>140</left>
-				<top>760</top>
-				<height>100</height>
-			</control>
 			<control type="image">
 				<texture colordiffuse="ff131313">colors/white40.png</texture>
-				<left>140</left>
-				<height>250</height>
-				<bottom>0</bottom>
+				<top>150</top>
+				<right>10</right>
+				<width>200</width>
+				<bottom>100</bottom>
+				<height>900</height>
 			</control>
 			<include content="Weather_Container">
 				<param name="id" value="51" />
+				<param name="orientation" value="vertical" />
 				<param name="container_visible" value="!String.IsEmpty(Window(weather).Property(Hourly.IsFetched))" />
 				<param name="content_include" value="weather_items_hourly" />
 				<param name="itemlayout_width" value="180" />
-				<param name="itemlayout_height" value="200" />
+				<param name="itemlayout_height" value="100" />
+				<param name="focusedlayout_width" value="180" />
+				<param name="focusedlayout_height" value="100" />
 				<param name="is_daily" value="false" />
+				
 				<param name="onup" value="200" />
 				<param name="ondown" value="3" />
-				
-				<left>105</left>
-				<top>850</top>
+				<onleft>50</onleft>
+				<top>150</top>
 				<right>10</right>
+				<width>200</width>
 				<bottom>100</bottom>
-				<height>200</height>
+				<height>900</height>
 			</include>
 		
 		</control>
+		
 	</include>
 	<include name="weather_window_layout_3">
 		- more fanart less container bg
@@ -456,222 +420,172 @@
 	
 	
 	<include name="Weather_Container">
-		<control type="panel" id="$PARAM[id]">
+		<param name="type" default="panel" />
+		<param name="orientation" default="horizontal" />
+		<definition>
+		<control type="$PARAM[type]" id="$PARAM[id]">
 			<nested />
 			<visible>$PARAM[container_visible]</visible>
 			<onback>200</onback>
 			<onup>$PARAM[onup]</onup>
 			<ondown>$PARAM[ondown]</ondown>
-			<orientation>horizontal</orientation>
-				
+			<orientation>$PARAM[orientation]</orientation>
+			<onfocus condition="!String.IsEmpty(Window(Home).Property(menucontrol_active))">ClearProperty(menucontrol_active,home)</onfocus>
+			<!-- idem color -->
 			<itemlayout width="$PARAM[itemlayout_width]" height="$PARAM[itemlayout_height]">
-				<control type="label">
-					<description>dayly heading</description>
-					<top>5</top>
-					<left>45</left>
-					<right>0</right>
-					<height>20</height>
-					<textcolor>$VAR[color_lib_text_secondary]</textcolor>
-					<label>$INFO[ListItem.Label,[B],[/B]]</label>
-					<font>font23_title</font>
-				</control>
-				<control type="image">
-					<visible>false</visible>
-					<left>45</left>
-					<right>12</right>
-					<top>39</top>
-					<height>1</height>
-					<texture colordiffuse="$VAR[color_lib_accent]">colors/white.png</texture>
-				</control>
-				<control type="group">
-					<visible>$PARAM[is_daily]</visible>
-					<top>40</top>
-					<width>205</width>
-					<control type="image">
-						<left>45</left>
-						<texture colordiffuse="ff131313">colors/white20.png</texture>
-					</control>
-					<control type="image">
-						<description>dimmed scaled fanart code img</description>
-						<left>45</left>
-						<bordersize>5</bordersize>
-						<aspectratio scalediffuse="false" align="center" aligny="center">scale</aspectratio>
-						<texture diffuse="colors/white30.png">resource://resource.images.weatherfanart.single/$INFO[ListItem.Property(FanartCode)].jpg</texture>
-					</control>
-					<control type="image">
-						<left>-10</left>
-						<top>108</top>
-						<width>130</width>
-						<height>130</height>
-						<colordiffuse>$VAR[color_lib_text_secondary]</colordiffuse>
-						<texture>$INFO[ListItem.Icon]</texture>
-						<visible>true</visible>
-					</control>
-					<control type="image">
-						<left>80</left>
-						<top>108</top>
-						<width>80</width>
-						<height>80</height>
-						<colordiffuse>$VAR[color_lib_text_secondary]</colordiffuse>
-						<texture>$INFO[ListItem.Icon]</texture>
-						<visible>false</visible>
-					</control>
-					<control type="label">
-						<font>debugtiny</font>
-						<textcolor>$VAR[color_lib_text_secondary]</textcolor>
-						<top>25</top>
-						<align>center</align>
-						<label>$INFO[ListItem.Property(LongDate)]</label>
-						<width>230</width>
-						<height>25</height>
-					</control>
-					<control type="label">
-						<font>debugtiny</font>
-						<textcolor>$VAR[color_lib_text_secondary]</textcolor>
-						<top>200</top>
-						<align>center</align>
-						<label>$INFO[ListItem.Label2]</label>
-						<width>230</width>
-					</control>
-				</control>
-					<control type="group">
-						<visible>!$PARAM[is_daily]</visible>
-							
-						<control type="image">
-							<left>40</left>
-							<height>60</height>
-							<texture colordiffuse="grey">colors/white20.png</texture>
-						</control>
-						<control type="image">
-							<top>30</top>
-							<left>18</left>
-							<width>56</width>
-							<height>56</height>
-							<texture>$INFO[ListItem.Icon]</texture>
-						</control>
-						<control type="label">
-							<font>debugtiny</font>
-							<top>40</top>
-							<left>45</left>
-							<right>5</right>
-							<align>right</align>
-							<height>65</height>
-							<label>$INFO[ListItem.Label2]</label>
-						</control>
-						<control type="label">
-							<description>props</description>
-							<top>60</top>
-							<font>debugtiny</font>
-							<left>45</left>
-							<height>56</height>
-							<label>-</label>
-						</control>
-					</control>
+				<include content="weather_container_layout_default">
+					<param name="color" value="$VAR[color_lib_text_main]" />
+					<param name="focusedlayout" value="false" />
+					<param name="bg_alpha" value="30" />
+					<param name="fanart_alpha" value="30" />
+					<param name="fanart_width" value="$PARAM[fanart_width]" />
+					<param name="is_daily" value="$PARAM[is_daily]" />
+				</include>
 			</itemlayout>
-			<focusedlayout width="$PARAM[itemlayout_width]" height="$PARAM[itemlayout_height]">
-					<control type="label">
-						<description>dayly heading</description>
-						<top>5</top>
-						<left>45</left>
-						<right>0</right>
-						<height>20</height>
-						<label>$INFO[ListItem.Label,[B],[/B]]</label>
-						<textcolor>$VAR[color_lib_text_main]</textcolor>
-						<font>font23_title</font>
-					</control>
-					<control type="group">
-						<visible>$PARAM[is_daily]</visible>
-						<top>40</top>
-						<width>205</width>
-						<control type="image">
-							<left>45</left>
-							<bordertexture colordiffuse="$VAR[color_lib_accent]" border="2">frames/frame.png</bordertexture>
-							<texture colordiffuse="ff131313">colors/white40.png</texture>
-						</control>
-						<control type="image">
-							<description>dimmed scaled fanart code img</description>
-							<left>45</left>
-							<bordersize>5</bordersize>
-							<aspectratio scalediffuse="false" align="center" aligny="center">scale</aspectratio>
-							<texture diffuse="colors/white50.png">resource://resource.images.weatherfanart.single/$INFO[ListItem.Property(FanartCode)].jpg</texture>
-						</control>
-						<control type="image">
-							<left>-10</left>
-							<top>108</top>
-							<width>130</width>
-							<height>130</height>
-							<colordiffuse>$VAR[color_lib_text_main]</colordiffuse>
-							<texture>$INFO[ListItem.Icon]</texture>
-							<visible>true</visible>
-						</control>
-						<control type="image">
-							<left>80</left>
-							<top>108</top>
-							<width>80</width>
-							<height>80</height>
-							<colordiffuse>$VAR[color_lib_text_main]</colordiffuse>
-							<texture>$INFO[ListItem.Icon]</texture>
-							<visible>false</visible>
-						</control>
-						<control type="label">
-							<font>debugtiny</font>
-							<textcolor>$VAR[color_lib_text_main]</textcolor>
-							<top>25</top>
-							<align>center</align>
-							<label>$INFO[ListItem.Property(LongDate)]</label>
-							<width>230</width>
-							<height>25</height>
-						</control>
-						<control type="label">
-							<font>debugtiny</font>
-							<textcolor>white</textcolor>
-							<top>200</top>
-							<align>center</align>
-							<label>$INFO[ListItem.Label2]</label>
-							<width>230</width>
-						</control>
-					</control>
-					<control type="group">
-						<visible>!$PARAM[is_daily]</visible>
-						<control type="image">
-							<left>40</left>
-							<bordertexture colordiffuse="$VAR[color_lib_accent]" border="2">frames/frame.png</bordertexture>
-							<texture colordiffuse="ff131313">colors/white40.png</texture>
-						</control>
-						<control type="image">
-							<left>40</left>
-							<height>60</height>
-							<texture colordiffuse="grey">colors/white20.png</texture>
-						</control>
-						<control type="image">
-							<top>30</top>
-							<left>18</left>
-							<width>56</width>
-							<height>56</height>
-							<texture>$INFO[ListItem.Icon]</texture>
-						</control>
-						<control type="label">
-							<font>debugtiny</font>
-							<top>40</top>
-							<left>45</left>
-							<right>5</right>
-							<align>right</align>
-							<height>65</height>
-							<label>$INFO[ListItem.Label2]</label>
-						</control>
-						<control type="label">
-							<description>props</description>
-							<top>60</top>
-							<font>debugtiny</font>
-							<left>45</left>
-							<height>56</height>
-							<label>-</label>
-						</control>
-					</control>
-				</focusedlayout>
-				<include>$PARAM[content_include]</include>
-			</control>
+			<focusedlayout width="$PARAM[focusedlayout_width]" height="$PARAM[focusedlayout_height]">
+				<include content="weather_container_layout_default">
+					<param name="color" value="$VAR[color_lib_text_main]" />
+					<param name="focusedlayout" value="true" />
+					<param name="bg_alpha" value="90" />
+					<param name="fanart_alpha" value="60" />
+					<param name="fanart_width" value="$PARAM[fanart_width]" />
+					<param name="is_daily" value="$PARAM[is_daily]" />
+				</include>
+			</focusedlayout>
+			<!-- 
+			prev
+			<itemlayout width="$PARAM[itemlayout_width]" height="$PARAM[itemlayout_height]" condition="!Skin.hassetting(weather_itemlayout_2)">
+				<include content="weather_container_layout_default">
+					<param name="color" value="$VAR[color_lib_text_secondary]" />
+					<param name="focusedlayout" value="false" />
+					<param name="bg_alpha" value="20" />
+					<param name="fanart_alpha" value="30" />
+					<param name="is_daily" value="$PARAM[is_daily]" />
+				</include>
+			</itemlayout>
+			<focusedlayout width="$PARAM[focusedlayout_width]" height="$PARAM[focusedlayout_height]"  condition="!Skin.hassetting(weather_itemlayout_2)">
+				<include content="weather_container_layout_default">
+					<param name="color" value="$VAR[color_lib_text_main]" />
+					<param name="focusedlayout" value="true" />
+					<param name="bg_alpha" value="50" />
+					<param name="fanart_alpha" value="40" />
+					<param name="is_daily" value="$PARAM[is_daily]" />
+				</include>
+			</focusedlayout> -->
+			<include>$PARAM[content_include]</include>
+		</control>
+		</definition>
 	</include>
+	
+	<include name="weather_container_layout_default">
+		<control type="group">
+			<visible>!$PARAM[is_daily]</visible>
+			<control type="image">
+				<visible>$PARAM[focusedlayout]</visible>
+				<left>40</left>
+				<bordertexture colordiffuse="$VAR[color_lib_accent]" border="2">frames/frame.png</bordertexture>
+				<texture colordiffuse="ff131313">colors/white40.png</texture>
+			</control>
+			<control type="image">
+				<left>40</left>
+				<height>60</height>
+				<texture colordiffuse="grey">colors/white20.png</texture>
+			</control>
+			<control type="image">
+				<top>30</top>
+				<left>18</left>
+				<width>56</width>
+				<height>56</height>
+				<texture>$INFO[ListItem.Icon]</texture>
+			</control>
+			<control type="label">
+				<font>debugtiny</font>
+				<textcolor>$PARAM[color]</textcolor>
+				<top>40</top>
+				<left>45</left>
+				<right>5</right>
+				<align>right</align>
+				<height>65</height>
+				<label>$INFO[ListItem.Label2]</label>
+			</control>
+			<control type="label">
+				<description>props</description>
+				<top>60</top>
+				<font>debugtiny</font>
+				<left>45</left>
+				<height>56</height>
+				<label>-</label>
+			</control>
+		</control>
+		<control type="label">
+			<description>heading - booth</description>
+			<top>5</top>
+			<left>45</left>
+			<right>0</right>
+			<height>20</height>
+			<textcolor>$PARAM[color]</textcolor>
+			<label>$INFO[ListItem.Label,[B],[/B]]</label>
+			<font>font23_title</font>
+		</control>
+		<control type="group">
+			<visible>$PARAM[is_daily]</visible>
+			<top>40</top>
+			<width>$PARAM[fanart_width]</width>
+			<control type="image">
+				<left>45</left>
+				<texture colordiffuse="ff131313">colors/white$PARAM[bg_alpha].png</texture>
+			</control>
+			<control type="image">
+				<description>dimmed scaled fanart code img</description>
+				<left>45</left>
+				<bordersize>5</bordersize>
+					<include condition="$PARAM[focusedlayout]">weather_border_fo</include>
+				<aspectratio scalediffuse="false" align="center" aligny="center">scale</aspectratio>
+				<texture diffuse="colors/white$PARAM[fanart_alpha].png">$INFO[ListItem.Property(FanartCode),resource://resource.images.weatherfanart.single/,.jpg]</texture>
+			</control>
+			<control type="image">
+				<left>-10</left>
+				<top>108</top>
+				<width>130</width>
+				<height>130</height>
+				<colordiffuse>$PARAM[color]</colordiffuse>
+				<texture>$INFO[ListItem.Icon]</texture>
+				<visible>!Skin.HasSetting(weather_d_icon_centered)</visible>
+			</control>
+			<control type="image">
+				<left>80</left>
+				<top>108</top>
+				<width>80</width>
+				<height>80</height>
+				<colordiffuse>$PARAM[color]</colordiffuse>
+				<texture>$INFO[ListItem.Icon]</texture>
+				<visible>Skin.HasSetting(weather_d_icon_centered)</visible>
+			</control>
+			<control type="label">
+				<font>debugtiny</font>
+				<textcolor>$PARAM[color]</textcolor>
+				<top>25</top>
+				<align>center</align>
+				<label>$INFO[ListItem.Property(LongDate)]</label>
+				<width>230</width>
+				<height>25</height>
+			</control>
+			<control type="label">
+				<font>debugtiny</font>
+				<textcolor>$PARAM[color]</textcolor>
+				<top>200</top>
+				<align>center</align>
+				<label>$INFO[ListItem.Label2]</label>
+				<width>230</width>
+			</control>
+		</control>
+		
+	</include>
+	<include name="weather_border_fo">
+		<bordertexture colordiffuse="$VAR[color_lib_accent]" border="2">frames/frame.png</bordertexture>
+	</include>
+	
+	
 	<include name="WeatherDailyItem">
 		<item>
 			<label>$INFO[Window(weather).Property(Daily.$PARAM[item_index].LongDay)]</label>
@@ -700,7 +614,12 @@
 	</include>
 	
 	
-	<include name="DailyItems">
+	<!-- disabled current day as it is shown left , all layouts 
+			<include condition="false" content="WeatherDailyItem">
+				<param name="item_index" value="1" />
+			</include>
+	-->
+	<include name="weather_items_dayly">
 		<content>
 			<item>
 				<icon>$INFO[Weather.ConditionsIcon]</icon>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
-	<include name="1105_viewselect_template">
+	<include name="viewselect_template">
 		<control type="group" id="$PARAM[group_id]001">
 			<height>275</height>
 			
@@ -487,7 +487,7 @@
 						<onclick condition="String.IsEqual(skin.string(view_locked_games),$PARAM[view_id])">Skin.Reset(view_locked_games)</onclick>
 					</item>
 					<item>
-						<visible>$EXP[view_select_locking_allMedia]</visible>
+						<visible>$EXP[viewselect_locking_allMedia]</visible>
 						<visible>!String.StartsWith(System.CurrentControlID,1007) + !String.StartsWith(System.CurrentControlID,1009)</visible>
 						<label>24001</label>
 						<label2>$INFO[skin.string(view_locked_addons)]</label2>
@@ -495,7 +495,7 @@
 						<onclick condition="String.IsEqual(skin.string(view_locked_addons),$PARAM[view_id])">Skin.Reset(view_locked_addons)</onclick>
 					</item>
 					<item>
-						<visible>$EXP[view_select_locking_allMedia]</visible>
+						<visible>$EXP[viewselect_locking_allMedia]</visible>
 						<visible>!String.StartsWith(System.CurrentControlID,1007) + !String.StartsWith(System.CurrentControlID,1009)</visible>
 						<label>20395</label>
 						<label2>$INFO[skin.string(view_locked_mixed)]</label2>
@@ -503,7 +503,7 @@
 						<onclick condition="String.IsEqual(skin.string(view_locked_mixed),$PARAM[view_id])">Skin.Reset(view_locked_mixed)</onclick>
 					</item>
 					<item>
-						<visible>$EXP[view_select_locking_allMedia]</visible>
+						<visible>$EXP[viewselect_locking_allMedia]</visible>
 						<visible>!String.StartsWith(System.CurrentControlID,1007) + !String.StartsWith(System.CurrentControlID,1009)</visible>
 						<label>13205</label>
 						<label2>$INFO[skin.string(view_locked_unknown)]</label2>
@@ -511,7 +511,7 @@
 						<onclick condition="String.IsEqual(skin.string(view_locked_unknown),$PARAM[view_id])">Skin.Reset(view_locked_unknown)</onclick>
 					</item>
 					<item>
-						<visible>$EXP[view_select_locking_allMedia]</visible>
+						<visible>$EXP[viewselect_locking_allMedia]</visible>
 						<visible>!String.StartsWith(System.CurrentControlID,1007) + !String.StartsWith(System.CurrentControlID,1009)</visible>
 						<label>10001</label>
 						<label2>$INFO[skin.string(view_locked_plugins)]</label2>
@@ -519,7 +519,7 @@
 						<onclick condition="String.IsEqual(skin.string(view_locked_plugins),$PARAM[view_id])">Skin.Reset(view_locked_plugins)</onclick>
 					</item>
 					<item>
-						<visible>$EXP[view_select_locking_allMedia]</visible>
+						<visible>$EXP[viewselect_locking_allMedia]</visible>
 						<visible>!String.StartsWith(System.CurrentControlID,1007) + !String.StartsWith(System.CurrentControlID,1009)</visible>
 						<label>10002</label>
 						<label2>$INFO[skin.string(view_locked_images)]</label2>
@@ -538,36 +538,34 @@
 			</control>
 		</control>
 	</include>
-					
-					
-	<variable name="view_select_window_image">
+	
+	<include name="viewselect_disable_mediacontent">
+		<usealttexture>!String.IsEmpty(Skin.String($PARAM[view_window]_disabled_view_$PARAM[view_container_id])) | String.IsEqual(Skin.String($PARAM[view_window]_disabled_view_$PARAM[view_container_id]),isdisabled)</usealttexture>
+		<onclick condition="String.IsEmpty(Skin.String($PARAM[view_window]_disabled_view_$PARAM[view_container_id])) + String.IsEqual(Window(home).Property(view_disable_mediawindow),$PARAM[view_window])">Skin.SetString($PARAM[view_window]_disabled_view_$PARAM[view_container_id],isdisabled)</onclick>
+		<onclick condition="!String.IsEmpty(Skin.String($PARAM[view_window]_disabled_view_$PARAM[view_container_id])) + String.IsEqual(Window(home).Property(view_disable_mediawindow),$PARAM[view_window])">Skin.Reset($PARAM[view_window]_disabled_view_$PARAM[view_container_id])</onclick>
+	</include>			
+	
+	<variable name="viewselect_window_image">
 		<value condition="String.IsEqual(Window(home).Property(view_disable_mediawindow),videos)">defaultvideo.png</value>
 		<value condition="String.IsEqual(Window(home).Property(view_disable_mediawindow),music)">music.png</value>
 		<value condition="String.IsEqual(Window(home).Property(view_disable_mediawindow),pictures)">defaultpicture.png</value>
 		<value condition="String.IsEqual(Window(home).Property(view_disable_mediawindow),games)">defaultaddongame.png</value>
 	</variable>
-	<variable name="view_select_window_label">
+	
+	<variable name="viewselect_window_label">
 		<value condition="String.IsEqual(Window(home).Property(view_disable_mediawindow),videos)">$LOCALIZE[10025]</value>
 		<value condition="String.IsEqual(Window(home).Property(view_disable_mediawindow),music)">$LOCALIZE[10502]</value>
 		<value condition="String.IsEqual(Window(home).Property(view_disable_mediawindow),pictures)">$LOCALIZE[10002]</value>
 		<value condition="String.IsEqual(Window(home).Property(view_disable_mediawindow),games)">$LOCALIZE[10821]</value>
 	</variable>
-	<expression name="view_select_locking_allMedia">
-						string.isequal(window(home).property(view_disable_mediawindow),videos) | 
-						string.isequal(window(home).property(view_disable_mediawindow),music) | 
-						string.isequal(window(home).property(view_disable_mediawindow),pictures) | 
-						string.isequal(window(home).property(view_disable_mediawindow),games) | 
-						string.isequal(window(home).property(view_disable_mediawindow),music)
-					</expression>
 	
-	<include name="viewselect_disable_mediacontent">
-		
-		<usealttexture>!String.IsEmpty(Skin.String($PARAM[view_window]_disabled_view_$PARAM[view_container_id])) | String.IsEqual(Skin.String($PARAM[view_window]_disabled_view_$PARAM[view_container_id]),isdisabled)</usealttexture>
-		
-		<onclick condition="String.IsEmpty(Skin.String($PARAM[view_window]_disabled_view_$PARAM[view_container_id])) + String.IsEqual(Window(home).Property(view_disable_mediawindow),$PARAM[view_window])">Skin.SetString($PARAM[view_window]_disabled_view_$PARAM[view_container_id],isdisabled)</onclick>
-		<onclick condition="!String.IsEmpty(Skin.String($PARAM[view_window]_disabled_view_$PARAM[view_container_id])) + String.IsEqual(Window(home).Property(view_disable_mediawindow),$PARAM[view_window])">Skin.Reset($PARAM[view_window]_disabled_view_$PARAM[view_container_id])</onclick>
-	
-	</include>
+	<expression name="viewselect_locking_allMedia">
+		string.isequal(window(home).property(view_disable_mediawindow),videos) | 
+		string.isequal(window(home).property(view_disable_mediawindow),music) | 
+		string.isequal(window(home).property(view_disable_mediawindow),pictures) | 
+		string.isequal(window(home).property(view_disable_mediawindow),games) | 
+		string.isequal(window(home).property(view_disable_mediawindow),music)
+	</expression>
 	
 	<!-- ############## PROFILES - may delete implemented stuff ############## -->
 	
@@ -819,10 +817,8 @@
 		</control>
 	</include>
 		
-	<!-- take care of this id , may change - 8999 - its a global skin id -->
 	<include name="PreMenucontrol">
-		<include content="menucontrol_background_layer"/>
-		
+		<include content="menucontrol_background_layer" />
 		
 		<control type="grouplist" id="8999">
 			<animation effect="slide" start="0,0" end="450,0" time="300" tween="cubic" easing="inout" condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">conditional</animation>
@@ -1077,10 +1073,9 @@ ID 	Type 					Description
 	
 	-->
 	<include name="media_menucontrol">
-		<include content="media_menucontrol_9000" condition="!Skin.HasSetting(menucontrol_forcedfocus_8999)" />
-		<include content="media_menucontrol_8999" condition="Skin.HasSetting(menucontrol_forcedfocus_8999)" />
+		<include content="media_menucontrol_9000" condition="!Skin.HasSetting(menucontrol_forcedfocus_premenu)" />
+		<include content="media_menucontrol_8999" condition="Skin.HasSetting(menucontrol_forcedfocus_premenu)" />
 	</include>
-	
 	<include name="media_menucontrol_9000">
 		<menucontrol>9000</menucontrol>
 	</include>
@@ -1096,13 +1091,12 @@ ID 	Type 					Description
 	
 	<!-- note check the f***ng ids -->
 	<include name="menucontrol_global">
-		<param name="menucontrol_id" default="9000" />
 		<param name="window_defaultcontrol_id" default="50" />
 		<param name="has_premenu" default="true" />
 		<param name="has_no_premenu" default="false" />
 		
 		<definition>
-		<control type="grouplist" id="$PARAM[menucontrol_id]">
+		<control type="grouplist" id="9000">
 			<description>need get cond vis content</description>
 			<top>110</top>
 			<bottom>10</bottom>
@@ -1113,7 +1107,7 @@ ID 	Type 					Description
 			<onup>ClearProperty(menucontrol_active,home)</onup>
 			<onup condition="Control.IsVisible(19)">19</onup>
 			<onup condition="Control.IsVisible(7777)">7777</onup>
-			<onup condition="![Control.IsVisible(19) + Control.IsVisible(7777)]">$PARAM[menucontrol_id]</onup>
+			<onup condition="![Control.IsVisible(19) + Control.IsVisible(7777)]">9000</onup>
 			
 			<onback>ClearProperty(menucontrol_active,home)</onback>
 			<onback>SetFocus($PARAM[window_defaultcontrol_id])</onback>

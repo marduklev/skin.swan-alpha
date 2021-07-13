@@ -56,12 +56,56 @@
 		</control>
 		
 		
-		<!-- skin has setting -->
-		<include condition="false" content="weather_window_layout_1_backup" />
-		<include condition="true" content="weather_window_layout_1_dev" />
-		<include condition="false" content="weather_window_layout_2" />
-		<include condition="false" content="weather_window_layout_3" />
+		<control type="multiimage">
+			<visible>Skin.HasSetting(weather_background_multiimage)</visible>
+			<depth>DepthBackground</depth>
+			<fadetime>3000</fadetime>
+			<timeperimage>10000</timeperimage>
+			<imagepath>$INFO[Weather.FanartCode,resource://resource.images.weatherfanart.multi/,/]</imagepath>
+		</control>
+		<control type="group">
+			<visible>!Skin.HasSetting(weather_background_disabled)</visible>
+			<description>may fade it is there any animated fanart weather fanart code based image resource addon out there - check var formultiimage</description>
+			<include>global_background</include>
+		</control>
 		
+		<control type="spincontrolex" id="3">
+			<!-- better put off screen for clear layout and test send click 
+			<animation effect="slide" start="0,0" end="200,0" time="300" condition="Skin.HasSetting(weather_windowlayout_2)">conditional</animation>
+			 -->
+			<description>avoid reload - which force refetch use anim anim for cond positioning ?</description>
+			<top>150</top>
+			<left>140</left>
+			<width>500</width>
+			<height>50</height>
+				<!-- 
+				<texturefocus>$VAR[color_weather_switchlocation_fo]</texturefocus>
+				<texturenofocus>$VAR[color_weather_switchlocation_nf]</texturenofocus>
+				-->
+			<spinposx>10</spinposx>
+			<spinwidth>25</spinwidth>
+			<spinheight>50</spinheight>
+			
+			<textoffsetx>240</textoffsetx>
+			<textcolor>$VAR[color_lib_text_main]</textcolor>
+			<font>font25_title</font>
+			<onfocus condition="!String.IsEmpty(Window(Home).Property(menucontrol_active))">ClearProperty(menucontrol_active,home)</onfocus>
+			<onup>51</onup>
+			<onright>50</onright>
+			<onleft>menu</onleft>
+			<ondown>200</ondown>
+		</control>
+		
+		<!-- skin has setting -->
+		<control type="group">
+			<visible>!Skin.HasSetting(weather_windowlayout_2)</visible>
+			<include condition="true" content="weather_window_layout_1" />
+		</control>
+		<control type="group">
+			<visible>Skin.HasSetting(weather_windowlayout_2)</visible>
+			<!-- <top>300</top> -->
+			<include condition="true" content="weather_window_layout_2" />
+		</control>
 		
 		<include content="HeaderBar">
 				<param name="HasBGPanel" value="Skin.HasSetting(MediaWindow_UseHeaderBG)" />
@@ -107,19 +151,6 @@ $INFO[Window.Property(Current.Humidity),Window.Property(Current.Humidity) :  [B]
   ShortDate  $INFO[Window.Property(Hourly.1.ShortDate)]  LongDate  $INFO[Window.Property(Hourly.1.LongDate)]  FanartCode  $INFO[Window.Property(Hourly.1.FanartCode)]
 "/>
 </include>
-
-
-<!-- 
-Data set in Current.Temperature, Current.FeelsLike, Day[0-6].HighTemp, Day[0-6].LowTemp should be provided in Celsius, and will be autoconverted according to System.TemperatureUnits
- -->
-		
-	<!--
-$INFO[Control.GetLabel(11),11 Shows the time of last weather update :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Control.GetLabel(31),31 Current day label :  [B][COLOR green],[/B][/COLOR]]
-
-$INFO[Control.GetLabel(34),34 Today's weather condition :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Control.GetLabel(35),35 Today's weather icon :  [B][COLOR green],[/B][/COLOR]]
--->
 	</controls>
 
 
