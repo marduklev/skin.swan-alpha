@@ -4,6 +4,7 @@
 	<include name="spotlight_hor_list_navigation_common">
 	
 		<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
+		<onfocus condition="!String.IsEmpty(Window(Home).Property(view_forcefocus))">SetFocus($INFO[Window(Home).Property(view_forcefocus)])</onfocus>
 
 		<onleft condition="Control.IsVisible(8999)">8999</onleft>
 		
@@ -52,14 +53,18 @@
 	
 	
 	<include name="spotlight_hor_list_navigation_nextup">
+		<onfocus condition="!String.IsEmpty(Window(Home).Property(view_forcefocus))">ClearProperty(view_forcefocus,home)</onfocus>
 		<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
 		<onfocus condition="String.IsEmpty(Window.Property(Spotlight_Sets))">SetProperty(Spotlight_Sets,true)</onfocus>
+		
 		
 		<onback condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">ClearProperty(Spotlight_Sets)</onback>
 		<onback condition="!String.IsEmpty(Window.Property(Spotlight_Cast))">ClearProperty(Spotlight_Cast)</onback>
 		<onback>SetFocus(50)</onback>
 		
-		
+			<onclick>SetProperty(view_forcefocus,$INFO[System.CurrentControlID],home)</onclick>
+			<onclick>PlayMedia($INFO[ListItem.FilenameAndPath],resume)</onclick>
+			
 		<onup condition="Skin.HasSetting(view_503_focusable_cast) + Control.IsVisible(50350)">SetFocus(50350)</onup>
 		
 		<onup condition="!Skin.HasSetting(view_503_focusable_cast) | !Control.IsVisible(50350)">ClearProperty(Spotlight_Sets)</onup>
