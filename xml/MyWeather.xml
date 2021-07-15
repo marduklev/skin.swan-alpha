@@ -67,46 +67,159 @@
 			<include>global_background</include>
 		</control>
 		
-		<control type="spincontrolex" id="3">
-			<animation effect="fade" start="100" end="0" time="300" condition="Skin.HasSetting(weather_windowlayout_2)">conditional</animation>
-			<description>avoid reload - which force refetch use anim anim for cond positioning ?</description>
-			<top>170</top>
-			<left>105</left>
-			<width>420</width>
-			<height>50</height>
-			<spinposx>10</spinposx>
-			<spinwidth>25</spinwidth>
-			<spinheight>50</spinheight>
-			<textoffsetx>10</textoffsetx>
-			<textcolor>$VAR[color_lib_text_main]</textcolor>
-			<font>font_Montserrat_16_extrabold</font>
-			<focusedcolor>$VAR[color_lib_text_main]</focusedcolor>
-			<textcolor>$VAR[color_lib_text_secondary]</textcolor>
-			<disabledcolor />
-			<texturefocus colordiffuse="$VAR[color_lib_text_main]">colors/white10.png</texturefocus>
-			<texturenofocus colordiffuse="$VAR[color_lib_text_main]">colors/white10.png</texturenofocus>
-			<textureup colordiffuse="$VAR[color_lib_text_secondary]">buttons/spinctrlup.png</textureup>
-			<texturedown colordiffuse="$VAR[color_lib_text_secondary]">buttons/spinctrldown.png</texturedown>
-			<textureupfocus colordiffuse="$VAR[color_lib_text_main]">buttons/spinctrlup.png</textureupfocus>
-			<texturedownfocus colordiffuse="$VAR[color_lib_text_main]">buttons/spinctrldown.png</texturedownfocus>
-			<textureupdisabled />
-			<texturedowndisabled />
 		
-			<onfocus condition="!String.IsEmpty(Window(Home).Property(menucontrol_active))">ClearProperty(menucontrol_active,home)</onfocus>
-			<onup>51</onup>
-			<onright>50</onright>
-			<onleft>menu</onleft>
-			<ondown>200</ondown>
-		</control>
 		
-		<!-- skin has setting -->
-		<control type="group">
-			<visible>!Skin.HasSetting(weather_windowlayout_2)</visible>
-			<include condition="true" content="weather_window_layout_1" />
-		</control>
-		<control type="group">
-			<visible>Skin.HasSetting(weather_windowlayout_2)</visible>
-			<include condition="true" content="weather_window_layout_2" />
+		<control type="grouplist" id="2000">
+			<height>1080</height>
+			<control type="group" id="2100">
+				<description>PAGE 1</description>
+				<height>1080</height>
+				
+				
+				<control type="spincontrolex" id="3">
+					<animation effect="fade" start="100" end="0" time="300" condition="Skin.HasSetting(weather_windowlayout_2)">conditional</animation>
+					<animation effect="slide" start="0,0" end="80,540" time="300" condition="Skin.HasSetting(weather_windowlayout_3)">conditional</animation>
+					
+					<!-- no color if layout 3 
+					<focusedcolor />
+					<textcolor />
+					<texturefocus />
+					<texturenofocus />
+					-->
+					
+					<description>avoid reload - which force refetch use anim anim for cond positioning ?</description>
+					<top>170</top>
+					<left>105</left>
+					<width>420</width>
+					<height>50</height>
+					<spinposx>10</spinposx>
+					<spinwidth>25</spinwidth>
+					<spinheight>50</spinheight>
+					<textoffsetx>10</textoffsetx>
+					<font>font_Montserrat_16_extrabold</font>
+					<focusedcolor>$VAR[color_lib_text_main]</focusedcolor>
+					<textcolor>$VAR[color_lib_text_secondary]</textcolor>
+					<disabledcolor />
+					<texturefocus colordiffuse="$VAR[color_lib_text_main]">colors/white10.png</texturefocus>
+					<texturenofocus colordiffuse="$VAR[color_lib_text_main]">colors/white10.png</texturenofocus>
+					<textureup colordiffuse="$VAR[color_lib_text_secondary]">buttons/spinctrlup.png</textureup>
+					<texturedown colordiffuse="$VAR[color_lib_text_secondary]">buttons/spinctrldown.png</texturedown>
+					<textureupfocus colordiffuse="$VAR[color_lib_text_main]">buttons/spinctrlup.png</textureupfocus>
+					<texturedownfocus colordiffuse="$VAR[color_lib_text_main]">buttons/spinctrldown.png</texturedownfocus>
+					<textureupdisabled />
+					<texturedowndisabled />
+				
+					<onfocus condition="!String.IsEmpty(Window(Home).Property(menucontrol_active))">ClearProperty(menucontrol_active,home)</onfocus>
+					<onup>51</onup>
+					<onright>50</onright>
+					<onleft>menu</onleft>
+					<ondown>200</ondown>
+				</control>
+				
+				<!-- skin has setting -->
+				<control type="group">
+					<visible>!Skin.HasSetting(weather_windowlayout_2) + !Skin.HasSetting(weather_windowlayout_3)</visible>
+					<include condition="true" content="weather_window_layout_1" />
+				</control>
+				<control type="group">
+					<visible>Skin.HasSetting(weather_windowlayout_2)</visible>
+					<include condition="true" content="weather_window_layout_2" />
+				</control>
+				<control type="group">
+					<visible>Skin.HasSetting(weather_windowlayout_3)</visible>
+					<include condition="true" content="weather_window_layout_3" />
+				</control>
+			</control>
+			
+			<control type="grouplist" id="2200">
+				<description>PAGE 2 - more extended infos </description>
+				<visible>false</visible>
+				<left>130</left>
+				<top>120</top>
+				<height>960</height>
+				<right>50</right>
+				<align>center</align>
+				<orientation>horizontal</orientation>
+				<control type="button" id="2201">
+					<font>Montserrat_ExtraBold_50</font>
+					<height>960</height>
+					<width>580</width>
+					<label>GROUP 1</label>
+					<texturefocus colordiffuse="cyan">colors/white50.png</texturefocus>
+					<texturenofocus colordiffuse="red">colors/white50.png</texturenofocus>
+					
+					<ondown>2300</ondown>
+				</control>
+				
+				<control type="grouplist" id="2400">
+					<height>560</height>
+					<!-- omit width currently intended -->
+					<orientation>horizontal</orientation>
+					<control type="button" id="2202">
+						<font>Montserrat_ExtraBold_50</font>
+						<height>400</height>
+						<width>580</width>
+						<label>GROUP 2</label>
+						<texturefocus colordiffuse="cyan">colors/white50.png</texturefocus>
+						<texturenofocus colordiffuse="red">colors/white50.png</texturenofocus>
+						
+						<ondown>2300</ondown>
+					</control>
+					<control type="button" id="2203">
+						<font>Montserrat_ExtraBold_50</font>
+						<top>400</top>
+						<height>560</height>
+						<width>580</width>
+						<label>GROUP 3</label>
+						<texturefocus colordiffuse="cyan">colors/white50.png</texturefocus>
+						<texturenofocus colordiffuse="red">colors/white50.png</texturenofocus>
+						
+						<ondown>2300</ondown>
+					</control>
+				</control>
+			</control>
+			
+			<control type="grouplist" id="2300">
+				<description>PAGE 3 - maps </description>
+				<visible>!String.IsEmpty(Window(weather).Property(Map.IsFetched))</visible>
+				<left>130</left>
+				<top>120</top>
+				<height>960</height>
+				<right>50</right>
+				<align>center</align>
+				<orientation>horizontal</orientation>
+				
+				<include content="MapItem">	
+					<param name="label" value="$INFO[Window(weather).Property(Current.Condition][CR][CR]$INFO[Window(weather).Property(Daily.1.Precipitation,  $LOCALIZE[1448] :[CR]    ,][CR][CR]$INFO[Window(weather).Property(Daily.1.Snow,  Amount of snow :[CR]    ,][CR]$INFO[Window(weather).Property(Daily.1.SnowDepth,  Depth of snow on the ground :[CR]    ,]" />
+					<param name="item_index" value="1" />
+					<param name="item_index_prev" value="5" />
+					<param name="item_index_next" value="2" />
+				</include>
+				<include content="MapItem">
+					<param name="label" value="$INFO[Window(weather).Property(Daily.1.Cloudiness),Cloudiness   •   ,[CR][CR]]$INFO[Window(weather).Property(Daily.1.CloudsLow),Clouds Low 0-3 km hight  :[CR]      ,][CR]$INFO[Window(weather).Property(Daily.1.CloudsMid),Clouds Mid 3-5 km hight   :[CR]      ,][CR]$INFO[Window(weather).Property(Daily.1.CloudsHigh),Clouds High more than 5 km hight   :[CR]      ,]" />
+					<param name="item_index" value="2" />
+					<param name="item_index_prev" value="1" />
+					<param name="item_index_next" value="3" />
+				</include>
+				<include content="MapItem">
+					<param name="label" value="$INFO[Window(weather).Property(Current.Temperature)]$INFO[System.TemperatureUnits]               $INFO[Window(weather).Property(Daily.1.LowTemperature),[B]↓[/B] [COLOR cyan],[/COLOR] ][B] | [/B]$INFO[Window(weather).Property(Daily.1.HighTemperature),  [B]↑[/B] [COLOR orange],[/COLOR]][CR][CR]$INFO[Control.GetLabel(225)] : $INFO[Window.Property(Current.UVIndex)]" />
+					<param name="item_index" value="3" />
+					<param name="item_index_prev" value="2" />
+					<param name="item_index_next" value="4" />
+				</include>
+				<include content="MapItem">
+					<param name="label" value="$INFO[Control.GetLabel(226)] : $INFO[Window(weather).Property(Current.Wind)][CR]$INFO[Window(weather).Property(Current.WindDirection)]" />
+					<param name="item_index" value="4" />
+					<param name="item_index_prev" value="3" />
+					<param name="item_index_next" value="5" />
+				</include>
+				<include content="MapItem">
+					<param name="label" value="$INFO[Window(weather).Property(Current.Pressure),Air pressure : ,[CR]]$INFO[Window(weather).Property(Current.SeaLevel),SeaLevel pressure, :]" />
+					<param name="item_index" value="5" />
+					<param name="item_index_prev" value="4" />
+					<param name="item_index_next" value="1" />
+				</include>
+			</control>
 		</control>
 		
 		<include content="HeaderBar">
@@ -132,42 +245,27 @@
 		</control>
 		
 		<include content="swan_debug_overlay">
-			<param name="textleft" value="$INFO[Container(99).ListItemAbsolute(0).Label]
-$INFO[Control.GetLabel(11),11 Shows the time of last weather update :  [B][COLOR green],[/B][/COLOR]]   $INFO[Control.GetLabel(31),31 Current day label :  [B][COLOR green],[/B][/COLOR]]   $INFO[Control.GetLabel(32),32 Today's high temperature value :  [B][COLOR green],[/B][/COLOR]]  $INFO[Control.GetLabel(33),33 Today's low temperature value :  [B][COLOR green],[/B][/COLOR]]   $INFO[Control.GetLabel(34),34 Today's weather condition :  [B][COLOR green],[/B][/COLOR]]  $INFO[Control.GetLabel(35),35 Today's weather icon :  [B][COLOR green],[/B][/COLOR]]  $INFO[Control.GetLabel(223),223 Localized “Temperature” string :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Control.GetLabel(224),224 Localized “Feels like” string :  [B][COLOR green],[/B][/COLOR]]   $INFO[Control.GetLabel(225),225 Localized “UV index” string :  [B][COLOR green],[/B][/COLOR]]   $INFO[Control.GetLabel(226),226 Localized “Wind” string :  [B][COLOR green],[/B][/COLOR]]   $INFO[Control.GetLabel(227),227 Localized “Dew point” string :  [B][COLOR green],[/B][/COLOR]]   $INFO[Control.GetLabel(228),228 Localized “Humidity” string :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Window.Property(WeatherProvider),Window.Property(WeatherProvider) :  [B][COLOR green],[/B][/COLOR]]  $INFO[Weather.Conditions,Weather.Conditions :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Weather.Temperature,Weather.Temperature :  [B][COLOR green],[/B][/COLOR]]  $INFO[Weather.Location,Weather.Location :  [B][COLOR green],[/B][/COLOR]]  $INFO[Weather.fanartcode,Weather.fanartcode :  [B][COLOR green],[/B][/COLOR]]  $INFO[Weather.plugin,Weather.plugin :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Window.Property(Updated),Window.Property(Current.Updated) :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Window.Property(Location),Window.Property(Current.Location) :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Window.Property(Current.Condition),Window.Property(Current.Condition) :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Window.Property(Current.Temperature),Window.Property(Current.Temperature) :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Window.Property(Current.FeelsLike),Window.Property(Current.FeelsLike) :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Window.Property(Current.UVIndex),Window.Property(Current.UVIndex) :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Window.Property(Current.Wind),Window.Property(Current.Wind) :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Window.Property(Current.WindSpeed),Window.Property(Current.WindSpeed) :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Window.Property(Current.WindDirection),Window.Property(Current.WindDirection) :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Window.Property(Current.DewPoint),Window.Property(Current.DewPoint) :  [B][COLOR green],[/B][/COLOR]]
-$INFO[Window.Property(Current.Humidity),Window.Property(Current.Humidity) :  [B][COLOR green],[/B][/COLOR]]
-[B]Window.Property(Day0.*)[/B]    
-    $INFO[Window.Property(Day0.Title),Window.Property(Day0.Title) :  [B][COLOR green],[/B][/COLOR]]
-    $INFO[Window.Property(Day0.HighTemp),Window.Property(Day0.HighTemp) :  [B][COLOR green],[/B][/COLOR]]
-    $INFO[Window.Property(Day0.LowTemp),Window.Property(Day0.LowTemp) :  [B][COLOR green],[/B][/COLOR]]
-    $INFO[Window.Property(Day0.Outlook),Window.Property(Day0.Outlook) :  [B][COLOR green],[/B][/COLOR]]
-  Cloudiness $INFO[Window.Property(Hourly.0.Cloudiness)]
-  ShortDate  $INFO[Window.Property(Hourly.1.ShortDate)]  LongDate  $INFO[Window.Property(Hourly.1.LongDate)]  FanartCode  $INFO[Window.Property(Hourly.1.FanartCode)]
-  dayly 
-  $INFO[Window(weather).Property(Daily.1.LowTemperature),[B]↓[/B] [COLOR cyan],[/COLOR]          ] - $INFO[Window(weather).Property(Daily.1.HighTemperature),          [B]↑[/B] [COLOR orange],[/COLOR]]
-  $INFO[Window(weather).Property(Daily.1.TempDay)]
-  $INFO[Window(weather).Property(Daily.1.Cloudiness)]
-  $INFO[Window(weather).Property(Daily.1.Outlook)]
-  $INFO[Window(weather).Property(Daily.1.LongDate)]
-  hourly 
-  $INFO[Window(weather).Property(Hourly.1.Time)]
-  $INFO[Window(weather).Property(Hourly.1.Temperature)]   $INFO[Window(weather).Property(Hourly.1.Precipitation)]  $INFO[Window(weather).Property(Hourly.1.Temperature)]
-  $INFO[Window(weather).Property(Hourly.1.Outlook)]
-  $INFO[Window(weather).Property(Hourly.1.Cloudiness)]
-  $INFO[Window(weather).Property(Hourly.1.LongDate)]
-  end
+			<param name="textleft" value="
+Map.1.Area   $INFO[Window(weather).Property(Map.1.Area)]
+Map.2.Area   $INFO[Window(weather).Property(Map.2.Area)]
+Map.3.Area   $INFO[Window(weather).Property(Map.3.Area)]
+Map.4.Area   $INFO[Window(weather).Property(Map.4.Area)]
+Map.5.Area   $INFO[Window(weather).Property(Map.5.Area)]
+Map.1.Layer  $INFO[Window(weather).Property(Map.1.Layer)]
+Map.2.Layer  $INFO[Window(weather).Property(Map.2.Layer)]
+Map.3.Layer  $INFO[Window(weather).Property(Map.3.Layer)]
+Map.4.Layer  $INFO[Window(weather).Property(Map.4.Layer)]
+Map.5.Layer  $INFO[Window(weather).Property(Map.5.Layer)]
+Map.1.Heading  $INFO[Window(weather).Property(Map.1.Heading)]
+Map.2.Heading  $INFO[Window(weather).Property(Map.2.Heading)]
+Map.3.Heading  $INFO[Window(weather).Property(Map.3.Heading)]
+Map.4.Heading  $INFO[Window(weather).Property(Map.4.Heading)]
+Map.5.Heading  $INFO[Window(weather).Property(Map.5.Heading)]
+Map.1.Legend  $INFO[Window(weather).Property(Map.1.Legend)]
+Map.2.Legend  $INFO[Window(weather).Property(Map.2.Legend)]
+Map.3.Legend  $INFO[Window(weather).Property(Map.3.Legend)]
+Map.4.Legend  $INFO[Window(weather).Property(Map.4.Legend)]
+Map.5.Legend  $INFO[Window(weather).Property(Map.5.Legend)]
 "/>
 </include>
 	</controls>
