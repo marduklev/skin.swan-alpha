@@ -4,7 +4,6 @@
 	<include name="view_58">
 		
 		<control type="group">
-		
 			<visible>Control.IsVisible(58)</visible>
 			
 			<control type="list" id="58">
@@ -14,6 +13,7 @@
 				<include content="view_58_noLocking" condition="!skin.hassetting(skin_locked_views)" />
 				
 				<viewtype label="$LOCALIZE[31260]">spotlight season info</viewtype>
+				
 				<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
 				<onfocus>RunScript(script.embuary.helper,action=encode,string='"$INFO[ListItem.TVShowTitle]"',prop=EncodedTitle)</onfocus>
 				<onfocus condition="!String.IsEmpty(Window.Property(refreshtrailer))">RunScript(script.embuary.helper,action=lookforfile,file='"$INFO[container.listitem.path]$INFO[container.listitem.FolderName,,-trailer.mp4]"',prop=trailer_avail)</onfocus>
@@ -34,7 +34,6 @@
 			
 			<control type="group">
 				<description>hide if 58001 + string.isempty(window(home).property(menucontrol_active))</description>
-				<visible>Control.IsVisible(58)</visible>
 				<visible>Skin.HasSetting(view_58_EnableFanartBG)</visible>
 				<control type="image">
 					<visible>!Control.HasFocus(58001) + Skin.HasSetting(view_58_EnableBottomPanel)</visible>
@@ -56,7 +55,6 @@
 			<control type="grouplist" id="58000">
 				<include>FullScreenDimensions</include>
 				<animation reversible="true" time="300" effect="fade" start="100" end="0" condition="$EXP[TrailerIsPlaying]">Conditional</animation>
-				<visible>Control.IsVisible(58)</visible>
 				<top>110</top>
 					
 				<onup>58000</onup>
@@ -124,7 +122,6 @@
 					<description>PAGE 2 next up</description>
 					<height>1080</height>
 					<left>100</left>
-					
 					<include content="Special_Header">
 						<param name="pos_top" value="300" />
 						<param name="align" value="left" />
@@ -188,7 +185,7 @@
 						<param name="type_pos_top" value="370" />
 						<param name="bordercolor_fo" value="$VAR[color_spotlightlib_main]" />
 						<param name="bordercolor_nf" value="$VAR[color_spotlightlib_main]" />
-						<param name="visible" value="Control.IsVisible(58)" />
+						<param name="visible" value="" />
 						<param name="layout_height" value="388" />
 						<param name="layout_width" value="648" />
 						<param name="itemheight" value="388" />
@@ -201,11 +198,8 @@
 						<onback>SetFocus(50)</onback>
 						<onup>58001</onup>
 						<ondown>580051</ondown>
-						
-						<!-- <onfocus condition="String.IsEmpty(Window(Home).Property(firstload),done)">SetProperty(firstload,done,home)</onfocus> -->
-						
 						<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
-						<content sortby="playcount" limit="1">$VAR[view_58_Content_view_58_Label_ResumeOrNext]</content>
+						<content>$VAR[view_58_Content_NextUp]</content>
 					</include>
 				</control>
 				
@@ -221,7 +215,6 @@
 					</include>
 					
 					<include content="Universal_Container">
-						<description>i want wo be the native control id58 if season,personal prefered pos linked movies + seasons, no back(circumstance with get bool posible?),no flatten/all seasons,sortby season or year</description>
 						
 						<param name="id" value="580051" />
 						<param name="type_height" value="370" />
@@ -229,7 +222,7 @@
 						<param name="bordercolor_fo" value="$VAR[color_spotlightlib_itemframe_fo]" />
 						<param name="bordercolor_nf" value="$VAR[color_spotlightlib_itemframe_nf]" />
 						<param name="tags_visible" value="true" />
-						<param name="visible" value="Control.IsVisible(58)" />
+						<param name="visible" value="" />
 						<param name="layout_height" value="300" />
 						<param name="layout_width" value="220" />
 						<param name="itemheight" value="300" />
@@ -417,10 +410,9 @@
 								<param name="color_secondary" value="$VAR[color_spotlightlib_secondary]" />
 							</include>
 						</focusedlayout>
-						
-						<content sortby="year" target="videos">$VAR[view_58_Content_Episodes]</content>
+						<content sortby="episodenumber">$VAR[view_58_Content_Episodes]</content>
 					</control>
-					
+				
 					<control type="group">
 						<visible>String.IsEqual(Container(580051).ListItem.dbtype,movie)</visible>
 						<top>580</top>
@@ -470,7 +462,6 @@
 					<description>PAGE 4, cast and trailer</description>
 					<left>130</left>
 					<height>1080</height>
-					<!-- <visible>[Integer.IsGreater(Container(580061).NumItems,0) | Container(580061).IsUpdating | Integer.IsGreater(Container(580062).NumItems,0) | Container(580062).IsUpdating]</visible> -->
 					<include content="Special_Header">
 						<param name="visible" value="Integer.IsGreater(Container(580061).NumItems,0) | Container(580061).IsUpdating" />
 						<param name="pos_top" value="80" />
@@ -534,7 +525,7 @@
 						<param name="bordercolor_fo" value="$VAR[color_spotlightlib_itemframe_fo]" />
 						<param name="bordercolor_nf" value="$VAR[color_spotlightlib_itemframe_nf]" />
 						<param name="tags_visible" value="true" />
-						<param name="visible" value="Control.IsVisible(58)" />
+						<param name="visible" value="" />
 						<param name="layout_height" value="250" />
 						<param name="layout_width" value="440" />
 						<param name="itemheight" value="243" />
@@ -562,7 +553,7 @@
 								<thumb>$VAR[view_58_Image_LocalTrailer]</thumb>
 							</item>
 						</content>
-						<content target="videos" sortby="file" limit="3">$VAR[view_58_Content_YoutubeTrailer]</content>
+						<include condition="!Skin.HasSetting(View_58_DisableOnlineTrailers)">view_58_Content_YoutubeTrailer</include>
 					</include>
 				</control>
 				
@@ -571,8 +562,6 @@
 					
 					<left>100</left>
 					<height>1080</height>
-					
-					<visible>Integer.IsGreater(Container(580071).NumItems,0) | Container(580071).IsUpdating</visible>
 					
 					<include content="Special_Header">
 						<param name="visible" value="Integer.IsGreater(Container(580071).NumItems,0) | Container(580071).IsUpdating" />
@@ -589,7 +578,7 @@
 						<param name="bordercolor_fo" value="$VAR[color_spotlightlib_itemframe_fo]" />
 						<param name="bordercolor_nf" value="$VAR[color_spotlightlib_itemframe_nf]" />
 						<param name="tags_visible" value="false" />
-						<param name="visible" value="Integer.IsGreater(Container(580071).NumItems,0) | Container(580071).IsUpdating" />
+						<param name="visible" value="" />
 						<param name="layout_height" value="250" />
 						<param name="layout_width" value="440" />
 						<param name="itemheight" value="243" />
@@ -602,7 +591,6 @@
 						<param name="diffuse_art_topedges" value="false" />
 						<param name="diffuse_art_alledges" value="true" />
 		
-						
 						<onback>SetFocus(50)</onback>
 						<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
 						<onup condition="Control.IsVisible(580063)">580063</onup>
@@ -618,7 +606,7 @@
 						<onclick>ReplaceWindow(videos,$INFO[container(580071).listitem.path])</onclick>
 						<ondown>58001</ondown>
 						
-						<content target="videos">plugin://script.embuary.helper/?info=getsimilar&amp;type=tvshow&amp;dbid=$INFO[Window(home).Property(dbid)]&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</content>
+						<content target="videos">$VAR[view_58_Content_EmbuarySimiliar]</content>
 					</include>
 				</control>
 			</control>
@@ -839,34 +827,6 @@
 		<value>$LOCALIZE[31231]</value>
 	</variable>
 	
-	<!-- reminder - season level - kodi bools - "myvideos.flatten" - "videolibrary.showallitems" label starts with * "filelists.showparentdiritems" listitem.thumb equal defaultfolderback , listitem.label equal .. -->
-	<!-- Container.Folderpath should match videodb://tvshows/titles/dbid of show/ -->
-	
-	
-	<!-- MATRIX GUI INFOLABEL ListItem.TvShowDBID  returns the tvshow dbid at season and episode level. -->
-	<variable name="view_58_Content_view_58_Label_ResumeOrNext">
-		 <value condition="[Control.IsVisible(58) + Container.Content(Seasons)] + String.EndsWith(Container.Folderpath,/)">$INFO[Container.Folderpath]-1/</value>
-		 <value condition="[Control.IsVisible(58) + Container.Content(Seasons)] + !String.IsEmpty(Window(home).Property(dbid))">videodb://inprogresstvshows/$INFO[Window(home).Property(dbid)]/-1/?tvshowid=$INFO[Window(home).Property(dbid)]</value>
-		 <value condition="[Control.IsVisible(58) + Container.Content(Seasons)] + !String.IsEmpty(Window(home).Property(EncodedTitle))">videodb://inprogresstvshows/-1/-1/?xsp=%7B%22limit%22%3A1%2C%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22method%22%3A%22playcount%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22tvshow%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</value>
-		<value>-</value>
-	</variable>
-	<variable name="view_58_Content_Seasons">
-		<value condition="[Control.IsVisible(58) + Container.Content(Seasons)] + !String.IsEmpty(Container.Folderpath)">$INFO[Container.Folderpath]</value>
-		<value>-</value>
-	</variable>
-	<variable name="view_58_Content_Episodes">
-		<value condition="[Control.IsVisible(58) + Container.Content(Seasons)] + !String.IsEmpty(Container(580051).ListItem.Folderpath)">$INFO[Container(580051).ListItem.Folderpath]</value>
-		<value>-</value>
-	</variable>
-	<variable name="view_58_Content_Cast">
-		<value condition="[Control.IsVisible(58) + Container.Content(Seasons)] + !String.IsEmpty(Window(home).Property(dbid))">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[Window(home).Property(dbid)]</value>
-		<value>-</value>
-	</variable>
-	<variable name="view_58_Content_YoutubeTrailer">
-		<value condition="[Control.IsVisible(58) + Container.Content(Seasons)] + [!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.youtube) + !Skin.HasSetting(View_58_DisableOnlineTrailers)]">plugin://plugin.video.youtube/search/?q=$INFO[Container.FolderName]$INFO[System.Language, $LOCALIZE[20410],]</value>
-		<value>-</value>
-	</variable>
-	
 	<include name="view_58_Plot_Shift">
 		<animation time="300" effect="slide" end="0,200" reversible="true" easing="inout" condition="ControlGroup(9000).HasFocus">Conditional</animation>
 		<visible>!Window.IsActive(shutdownmenu)</visible>
@@ -934,4 +894,32 @@
 			<texture colordiffuse="$VAR[color_spotlightlib_accent]">colors/white50.png</texture>
 		</control>
 	</include>
+	
+	<variable name="view_58_Content_NextUp">
+		<value condition="String.IsEqual(Container.ViewMode,$LOCALIZE[31260]) + !String.IsEmpty(ListItem.TvShowDBID)">videodb://tvshows/titles/$INFO[ListItem.TvShowDBID]/-1/?xsp=%7B%22limit%22%3A1%2C%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22playcount%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22season%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%220%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</value>
+		<value condition="String.IsEqual(Container.ViewMode,$LOCALIZE[31260]) + String.IsEmpty(ListItem.TvShowDBID) + !String.IsEmpty(Window(home).Property(dbid))">videodb://tvshows/titles/$INFO[Window(home).Property(dbid)]/-1/?xsp=%7B%22limit%22%3A1%2C%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22playcount%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22season%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%220%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</value>
+		<value condition="String.IsEqual(Container.ViewMode,$LOCALIZE[31260]) + String.IsEmpty(ListItem.TvShowDBID) + String.IsEmpty(Window(home).Property(dbid)) + !String.IsEmpty(Window(home).Property(EncodedTitle))">videodb://inprogresstvshows/-1/-1/?xsp=%7B%22limit%22%3A1%2C%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22method%22%3A%22playcount%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22tvshow%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%2C%7B%22field%22%3A%22season%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%220%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</value>
+	</variable>
+	<variable name="view_58_Content_Seasons">
+		<value condition="String.IsEqual(Container.ViewMode,$LOCALIZE[31260]) + !String.IsEmpty(Container.Folderpath)">$INFO[Container.Folderpath]</value>
+	</variable>
+	<variable name="view_58_Content_Episodes">
+		<value condition="String.IsEqual(Container.ViewMode,$LOCALIZE[31260]) + !String.IsEmpty(Container(580051).ListItem.Folderpath)">$INFO[Container(580051).ListItem.Folderpath]</value>
+	</variable>
+	<variable name="view_58_Content_Cast">
+		<value condition="String.IsEqual(Container.ViewMode,$LOCALIZE[31260]) + !String.IsEmpty(ListItem.TvShowDBID)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[ListItem.TvShowDBID]</value>
+		<value condition="String.IsEqual(Container.ViewMode,$LOCALIZE[31260]) + String.IsEmpty(ListItem.TvShowDBID) + !String.IsEmpty(Window(home).Property(dbid))">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[Window(home).Property(dbid)]</value>
+	</variable>
+	
+	<include name="view_58_Content_YoutubeTrailer">
+		<content target="videos" sortby="file" limit="3">$VAR[view_58_Content_YoutubeTrailer]</content>
+	</include>
+	<variable name="view_58_Content_YoutubeTrailer">
+		<value condition="String.IsEqual(Container.ViewMode,$LOCALIZE[31260]) + [!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.youtube) + !Skin.HasSetting(View_58_DisableOnlineTrailers)]">plugin://plugin.video.youtube/search/?q=$INFO[Container.FolderName]$INFO[System.Language, $LOCALIZE[20410],]</value>
+	</variable>
+	
+	<variable name="view_58_Content_EmbuarySimiliar">
+		<value condition="String.IsEqual(Container.ViewMode,$LOCALIZE[31260]) + !String.IsEmpty(ListItem.TvShowDBID)">plugin://script.embuary.helper/?info=getsimilar&amp;type=tvshow&amp;dbid=$INFO[ListItem.TvShowDBID]&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
+		<value condition="String.IsEqual(Container.ViewMode,$LOCALIZE[31260]) + String.IsEmpty(ListItem.TvShowDBID) + !String.IsEmpty(Window(home).Property(dbid))">plugin://script.embuary.helper/?info=getsimilar&amp;type=tvshow&amp;dbid=$INFO[Window(home).Property(dbid)]&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
+	</variable>
 </includes>

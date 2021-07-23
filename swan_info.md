@@ -12,16 +12,20 @@
 
 ##  Addon Dependencies & Supported Addons
 **dependencies**
- *  [script embuary helper ](https://forum.kodi.tv/showthread.php?tid=345471)
- *  image resource weather icons outline HD
- *  image resource studio logos colored / white
-
+ *  resource.images.skin.swan" version="1.0.01"/>
+ *  [script.embuary.helper ](https://forum.kodi.tv/showthread.php?tid=345471)
+ *  resource.images.studios.coloured
+ *  resource.images.studios.white
+ *  resource.images.weathericons.outline-hd
+ *  resource.images.languageflags.colour
+ *  script.embuary.helper
+ 
 **supported**
- *  [script embuary info Script](https://forum.kodi.tv/showthread.php?tid=346034)
- *  [script up next](https://forum.kodi.tv/showthread.php?tid=336747)
+ *  [script.embuary.info](https://forum.kodi.tv/showthread.php?tid=346034)
+ *  [service.upnext](https://forum.kodi.tv/showthread.php?tid=336747) - UNDONE
  *   WIP	~~Resource Addon For Actor Thumbs (used in ... ) (resource.images.moviedirectorthumbs) https://forum.kodi.tv/showthread.php?tid=342720~~
- *  [script artwork beef](https://forum.kodi.tv/showthread.php?tid=258886)
- *  [script cu lrc lyrics](https://forum.kodi.tv/showthread.php?tid=147340)
+ *  [script.artwork.beef](https://forum.kodi.tv/showthread.php?tid=258886)
+ *  [script.cu.lrclyrics](https://forum.kodi.tv/showthread.php?tid=147340)
 
 ##  LOCAL TRAILER (if trailer not scraped or trailerpath is set in .nfo )
  * the skin checks if a tv show trailer exists on item focus
@@ -30,11 +34,11 @@
  >  and should be placed in the corresponding tv show root folder
  
 ##   YOUTUBE LOOKUPS
- > this skins uses several windows where **you tube** lookups will be performed, if you dislike such lookups/container content you can disable those in the specific Setting Section
+ > this skins uses several windows where **you tube** lookups will be performed, if you dislike such lookups/container content you can disable them
 those are currently
--  tv show info viewtype (view id 58) **trailers**
--  dialogvideoinfo **sountdtrack** ; **title search**
--  search **searchterm**
+-  tv show info viewtype (view id 58) **trailers** - disable youtube trailer via menucontrol
+-  dialogvideoinfo **sountdtrack** ; **title search** - disable youtube trailer in skinsettings
+-  search **searchterm** - disable youtube trailer in skinsettings
 > you may will also need an [own Youtube API key](https://github.com/anxdpanic/plugin.video.youtube/wiki/Personal-API-Keys) to get those results if wished
 
 ##  TEXTURE THEMES
@@ -212,9 +216,15 @@ Is a special Music Media Window , from here you can navigate trough every Librar
  
  >  choose custom colors / background image / background overlay image ( see backgroundbuilding )
  
-##  HOME MENU
-* can be customized (target path, icon, fanart )
-* limited to 20 entrys
+##  HOME MENU ITEMS
+ *  you can define up to 25 mainmenu items and define their used artwork / attributes seperatly via shortcut section
+       - name
+       - icon
+       - fanart (currently used as background image)
+      
+	  * by default items are supposed to activate specific TARGET ( = windows )  and if set open the window in the specific PATH ( = the path for that window)
+	  * optional you can also define and perform [KODI executebuiltin functions](https://kodi.wiki/view/List_of_built-in_functions)
+
 * by pressing menu button / m key they icon bar gets focused , click left there to slide out the menu panel
 * you can en/disable a profile switcher at the top
 
@@ -234,8 +244,6 @@ Is a special Music Media Window , from here you can navigate trough every Librar
 
    >  you can enable "show title" in the widget Heading which counts globally for all widgets
  
-   >  NOTE at the current state you're not able to change the widget position afterwards ( e.g. move widget pos 1 to pos 5 )
-   
    >  **WIP = means in mind** alignment of widget heading can be left , center , right
    
 ##  SHUTDOWN MENU
@@ -245,11 +253,11 @@ Is a special Music Media Window , from here you can navigate trough every Librar
  ... PUT 1 IMG as comparison (blur vs default)
 
 ##  MEDIA WINDOWS MENU / MENUBAR
-* there is a customizable icon bar (hide/show options) in media windows for quick navigation
+ * there is a customizable icon bar (hide/show options) in media windows for quick navigation
     * there is will be an option to focus that control bar by pressing menu / m key
     * if click left the menu panel will slide out which offers more options
  
-* menu panel is the default section which slides out and gain focus by press _menu / m key_
+ * menu panel is the default section which slides out and gain focus by press _menu / m key_
     *  container setting
     *  navigation settings (can be en/disabled)
     *  view type specific settings
@@ -258,6 +266,15 @@ Is a special Music Media Window , from here you can navigate trough every Librar
      * there ~~is~~ will be an option to focus the filter button by pressing menu / m key
 
 
+##  OSD / VIDEOPLAYBACK
+ * OSD-Controls has optional autoclose : disable osd with timeout by click at playback controls (0 - 9 seconds) - can be set in Skinsettings Section
+ * OSD-Info will fade out after 5 seconds idle time (not optional at current state ) when playback gets paused
+
+ * when OSD Controls have focus - if click up : you'll focus the OSD SeekSlider Control,to move forward / back with left right
+ * when OSD Controls have focus - if click down : you'll open the videofullscreeninfo window which shows some additional info (cast, media Flags, discart) , video will paused on opening 
+
+ * if OSD active and press 'i' key 'Action(info)' - you'll toggle the osd info / Show Plot On/Off
+ * if OSD is not active and press 'i' key 'Action(info)' - you'll Open the videofullscreeninfo window
 
 ## section
 ## section

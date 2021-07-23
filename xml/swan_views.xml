@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
-	
+	<variable name="debug_trailer_available">
+		<value condition="!String.IsEmpty(Window(home).Property(trailer_avail))">[COLOR green]Trailer is available[/COLOR]</value>
+		<value>[COLOR grey]NO TRAILER AVAILABLE[/COLOR]</value>
+	</variable>
 	<!-- SUBMISSION NOTICE TO SORT THE UNMERCIFUL CONDITIONAL THINGS 
 					maybe better prepare with
 						$PARAM[mediawindow eg*viedo]view_locked_movies when set the strings ?
@@ -171,7 +174,9 @@ music					 		!Container.Content(songs) + !Container.Content(sources) +
 			</control>
 	
 			<control type="group" id="70">
-				<description>viewtypes</description>
+				<description>viewtypes - Integer.IsGreater(Container().NumItems,0) + !Window.IsTopMost(busydialog)</description>
+				<visible>Integer.IsGreater(Container().NumItems,0)</visible>
+				
 				<include content="Animation_Close_MediaContainer" condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))" />
 				
 				<animation type="Conditional" condition="$EXP[Infodialog_IsActive] | Window.IsActive(mediasource) | [Window.IsActive(shutdownmenu) + !$EXP[Spotlight_ViewType]]">
