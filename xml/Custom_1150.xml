@@ -11,7 +11,7 @@
 		
 		<control type="grouplist" id="2000">
 			<height>1080</height>
-			
+			<!-- 
 			<control type="grouplist" id="2100">
 				<description>PAGE 1</description>
 				<height>1080</height>
@@ -21,6 +21,8 @@
 				<right>50</right>
 				<align>center</align>
 				<orientation>horizontal</orientation>
+			
+				
 				<control type="button" id="2101">
 					<font>Montserrat_ExtraBold_50</font>
 					<height>960</height>
@@ -58,6 +60,104 @@
 					</control>
 				</control>
 			</control>
+				-->
+				<control type="list" id="2100">
+					<onup>2300</onup>
+					<ondown>2200</ondown>
+					
+					<height>1080</height>
+					<left>130</left>
+					<top>120</top>
+					<height>960</height>
+					<right>50</right>
+					<align>center</align>
+					<orientation>horizontal</orientation>
+			
+					<preloaditems>2</preloaditems>
+					<scrolltime tween="quadratic">400</scrolltime>
+					
+					<focusedlayout height="445" width="260">
+						<include content="SetPropOnFocus_HiddenButton" />
+						<control type="group">
+							<width>240</width>
+							<height>350</height>
+							<description>to avoid relaod skin on disable footer and avoid bottom offset fade out 3rd row of items</description>
+							<include>Animation_Item_Focus</include>
+							<control type="group">
+								<include content="UniversalLayout">
+									<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_fo]" />
+									<param name="artwork" value="poster" />
+									<param name="get_tags" value="true" />
+									<param name="get_tagbgpanel" value="true" />
+									<param name="autoscroll" value="true" />
+									<param name="bordersize_bg" value="4" />
+									<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_fo]" />
+									<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_fo]" />
+									<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_fo]" />
+								</include>
+								<control type="group">
+									<include condition="![String.StartsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),00) | String.EndsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),one)]" content="FocusOverlay">
+										<param name="diffusedimtext" value="artworkdiffuse/usebganel/poster.png" />
+									</include>
+									<include condition="[String.StartsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),00) | String.EndsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),one)]" content="FocusOverlay">
+										<param name="diffusedimtext" value="artworkdiffuse/poster.png" />
+									</include>
+								</control>
+							</control>
+						</control>
+					</focusedlayout>
+					<itemlayout height="365" width="260">
+						<control type="group">
+							<width>240</width>
+							<height>350</height>
+							<include content="UniversalLayout">
+								<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_nf]" />
+								<param name="artwork" value="poster" />
+								<param name="get_tags" value="false" />
+								<param name="get_tagbgpanel" value="false" />
+								<param name="autoscroll" value="false" />
+								<param name="bordersize_bg" value="6" />
+								<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_nf]" />
+								<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_nf]" />
+								<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_nf]" />
+								<param name="conditional_artworkdiffuse_themed" value="true" />
+								<param name="conditional_artworkdiffuse_override" value="false" />
+							</include>
+						</control>
+					</itemlayout>
+					
+					<content>
+						<item>
+							<icon>defaultactor.png</icon>
+							<thumb>defaultactor.png</thumb>
+							<label>1st item</label>
+							<visible>true</visible>
+						</item>
+						<item>
+							<icon>defaultactor.png</icon>
+							<thumb>special://skin/extras/busy/skypishball.apng</thumb>
+							<label>updating</label>
+							<visible>Container(2100).IsUpdating</visible>
+						</item>
+					</content>
+					
+					<!-- <content>special://profile/playlists/video/fetchepisodethumbs [1].xsp</content> -->
+					<content>videodb://movies/titles/?xsp=%7B%22limit%22%3A4%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22bat%22%5D%7D%5D%7D%2C%22group%22%3A%7B%22mixed%22%3Afalse%2C%22type%22%3A%22titles%22%7D%2C%22order%22%3A%7B%22direction%22%3Aascending%2C%22ignorefolders%22%3A0%2C%22method%22%3Ayear%7D%22type%22%3A%22movies%22%7D</content>
+					
+	<!-- 
+		limit working, but sortmethods fail in videos/titles/ same count if load xsp file instead virtual
+		<content>videodb://movies/titles/?xsp=%7B%22limit%22%3A3%2C%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22method%22%3A%22premiered%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22bat%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
+	-->
+	<!-- 
+		limit and sortmethods workin in epsiodes - path = episode
+				{"limit":2,"order":{"direction":"descending","method":"playcount"},"rules":{"and":[{"field":"tvshow","operator":"contains","value":["bates"]}]},"type":"episodes"}
+				<content>videodb://tvshows/titles/-1/-1/?xsp=%7B%22limit%22%3A4%2C%22order%22%3A%7B%22direction%22%3A%22descending%22%2C%22method%22%3A%22playcount%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22tvshow%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22bates%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</content>
+	-->
+				</control>
+				
+				
+				
+			
 			
 			<control type="grouplist" id="2200">
 				<description>PAGE 2 - more extended infos </description>
