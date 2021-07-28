@@ -1273,10 +1273,19 @@ method 2	{"limit":1,"order":{"direction":"ascending","method":"playcount"},"rule
 		<value condition="String.IsEqual(Window(home).Property(XSP),Container(9042).ListItem.Folderpath)">$INFO[Window(home).Property(XSP)]</value>
 		<value condition="!String.IsEqual(Window(home).Property(XSP),Container(9042).ListItem.Folderpath)">$INFO[Container(9042).ListItem.Folderpath]</value>
 	</variable> -->
-	<!-- <variable name="HUB_Albums_5121">
-		<value condition="String.IsEqual(Window(home).Property(HUB_Music),IsHUBartistContent)">$INFO[Container(5120).ListItem.FolderPath]</value>
-		<value condition="String.IsEqual(Window(home).Property(HUB_Music),IsHUBalbumContent) + !String.IsEmpty(Window(home).Property(albumHUB_dbid))">musicdb://albums/$INFO[Window(home).Property(albumHUB_dbid)]/</value>
-	</variable> -->
+	
+	
+<!-- 	matrix
+	by album if NOT multidisc - $INFO[Container(5120).ListItem.FolderPath]
+	
+	by album if multidisc 		musicdb://albums/$INFO[Container(5120).ListItem.dbid]/-1/?albumid=$INFO[Container(5120).ListItem.dbid]</content>
+		by artist ($INFO[Window(home).Property(albumHUB_dbid)]) than album 		musicdb://artists/$INFO[Window(home).Property(albumHUB_dbid)]/$INFO[Container(5120).ListItem.dbid]/-1/?albumartistsonly=false&amp;albumid=$INFO[Container(5120).ListItem.dbid]&amp;artistid=$INFO[Window(home).Property(albumHUB_dbid)]
+	 -->
+	<variable name="HUB_Albums_5121">
+		<value condition="String.IsEqual(Window(home).Property(HUB_Music),IsHUBartistContent) + [Integer.IsEqual(Container(5120).ListItem.TotalDiscs,1) | String.IsEmpty(Container(5120).ListItem.TotalDiscs)]">$INFO[Container(5120).ListItem.FolderPath]</value>
+		<value condition="String.IsEqual(Window(home).Property(HUB_Music),IsHUBartistContent) + Integer.IsGreater(Container(5120).ListItem.TotalDiscs,1)">musicdb://albums/$INFO[Container(5120).ListItem.dbid]/-1/?albumid=$INFO[Container(5120).ListItem.dbid]</value>
+	</variable>
+	
 	
 	<!-- 
 	albums by artist
