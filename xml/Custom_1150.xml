@@ -9,6 +9,13 @@
 			<include>global_background</include>
 		</control>
 		
+		<!-- <control type="list" id="999">
+			<description>youtube lookup for trailer, prevent excessive calls by using system idle time, not very nice but only way to prevtent possible limit exceeds</description>
+			<include>HiddenContainer</include>
+			<visible>system.idletime(5)</visible>
+			<content limit="1" sortby="file">plugin://plugin.video.youtube/search/?q=$INFO[Container(2100).ListItem.Title]+trailer</content>
+		</control> -->
+		
 		<control type="grouplist" id="2000">
 			<height>1080</height>
 			<!-- 
@@ -67,22 +74,20 @@
 					
 					<height>1080</height>
 					<left>130</left>
-					<top>120</top>
-					<height>960</height>
+					<top>170</top>
+					<height>370</height>
 					<right>50</right>
 					<align>center</align>
 					<orientation>horizontal</orientation>
 			
 					<preloaditems>2</preloaditems>
 					<scrolltime tween="quadratic">400</scrolltime>
-					
-					<focusedlayout height="445" width="260">
+					<onlick>Action(select)</onlick>
+					<focusedlayout height="370" width="260">
 						<include content="SetPropOnFocus_HiddenButton" />
 						<control type="group">
 							<width>240</width>
-							<height>350</height>
-							<description>to avoid relaod skin on disable footer and avoid bottom offset fade out 3rd row of items</description>
-							<include>Animation_Item_Focus</include>
+							<height>370</height>
 							<control type="group">
 								<include content="UniversalLayout">
 									<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_fo]" />
@@ -106,15 +111,15 @@
 							</control>
 						</control>
 					</focusedlayout>
-					<itemlayout height="365" width="260">
+					<itemlayout height="370" width="260">
 						<control type="group">
 							<width>240</width>
-							<height>350</height>
+							<height>370</height>
 							<include content="UniversalLayout">
 								<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_nf]" />
 								<param name="artwork" value="poster" />
-								<param name="get_tags" value="false" />
-								<param name="get_tagbgpanel" value="false" />
+								<param name="get_tags" value="true" />
+								<param name="get_tagbgpanel" value="true" />
 								<param name="autoscroll" value="false" />
 								<param name="bordersize_bg" value="6" />
 								<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_nf]" />
@@ -126,12 +131,13 @@
 						</control>
 					</itemlayout>
 					
-					<content>
+					<!-- <content>
 						<item>
 							<icon>defaultactor.png</icon>
 							<thumb>defaultactor.png</thumb>
-							<label>1st item</label>
-							<visible>true</visible>
+							<label>hidden youtube lookup prevent excesive calls by use system dle time</label>
+							<visible>Integer.IsEqual(Container(999).NumItems,1) + system.idletime(5)</visible>
+							<onclick>PlayMedia($INFO[Container(999).ListItem.FilenameAndPath])</onclick>
 						</item>
 						<item>
 							<icon>defaultactor.png</icon>
@@ -140,10 +146,43 @@
 							<visible>Container(2100).IsUpdating</visible>
 						</item>
 					</content>
+					 -->
+					 
+	<!--  'year' seemsd not valid - always do sortby title ( but working when window(playlist) is is active ) -->
+					<content>special://profile/playlists/video/Test_descendingByYear_nogrouping.xsp</content> 
+						<!--
+						videodb://movies/titles/?xsp=      {"limit":6,"order":{"direction":"descending","ignorefolders":0,"method":"year"},"rules":{"and":[{"field":"title","operator":"contains","value":["batman"]}]},"type":"movies"}
+						videodb://movies/titles/?xsp=      %7b%22limit%22%3a6%2c%22order%22%3a%7b%22direction%22%3a%22descending%22%2c%22ignorefolders%22%3a0%2c%22method%22%3a%22year%22%7d%2c%22rules%22%3a%7b%22and%22%3a%5b%7b%22field%22%3a%22title%22%2c%22operator%22%3a%22contains%22%2c%22value%22%3a%5b%22batman%22%5d%7d%5d%7d%2c%22type%22%3a%22movies%22%7d
+						 -->
+		
+	<!-- group actors	
+					<content>special://profile/playlists/video/Test_descendingByYearGroupACTOR.xsp</content> -->
+					<!--
+					videodb://movies/actors/-1/?xsp=			 {"group":{"mixed":false,"type":"actors"},"order":{"direction":"descending","ignorefolders":0,"method":"year"},"rules":{"and":[{"field":"title","operator":"contains","value":["batman"]}]},"type":"movies"}
+					videodb://movies/actors/[ACTOR DB ID]/?xsp=  %7b%22group%22%3a%7b%22mixed%22%3afalse%2c%22type%22%3a%22actors%22%7d%2c%22order%22%3a%7b%22direction%22%3a%22descending%22%2c%22ignorefolders%22%3a0%2c%22method%22%3a%22year%22%7d%2c%22rules%22%3a%7b%22and%22%3a%5b%7b%22field%22%3a%22title%22%2c%22operator%22%3a%22contains%22%2c%22value%22%3a%5b%22batman%22%5d%7d%5d%7d%2c%22type%22%3a%22movies%22%7d	
+					-->
+<!-- 	group years				
+					<content>special://profile/playlists/video/Test_descendingByYearGroupYEAR.xsp</content> -->
+					<!--
+																{"group":{"mixed":false,"type":"years"},"order":{"direction":"descending","ignorefolders":0,"method":"title"},"rules":{"and":[{"field":"title","operator":"contains","value":["ba"]}]},"type":"movies"}
+					videodb://movies/years/[YEAR DB ID]/?xsp=   %7b%22group%22%3a%7b%22mixed%22%3afalse%2c%22type%22%3a%22years%22%7d%2c%22order%22%3a%7b%22direction%22%3a%22descending%22%2c%22ignorefolders%22%3a0%2c%22method%22%3a%22title%22%7d%2c%22rules%22%3a%7b%22and%22%3a%5b%7b%22field%22%3a%22title%22%2c%22operator%22%3a%22contains%22%2c%22value%22%3a%5b%22ba%22%5d%7d%5d%7d%2c%22type%22%3a%22movies%22%7d
 					
-					<!-- <content>special://profile/playlists/video/fetchepisodethumbs [1].xsp</content> -->
-					<content>videodb://movies/titles/?xsp=%7B%22limit%22%3A4%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22bat%22%5D%7D%5D%7D%2C%22group%22%3A%7B%22mixed%22%3Afalse%2C%22type%22%3A%22titles%22%7D%2C%22order%22%3A%7B%22direction%22%3Aascending%2C%22ignorefolders%22%3A0%2C%22method%22%3Ayear%7D%22type%22%3A%22movies%22%7D</content>
-					
+					-->
+	<!-- intended special case for group - omit group - depending on setting (bool show sets, it l show setitems/folder  ) ,omit the group HERE is needed for correct results (rating 250 order)	WHEN OUTSIDE OF MYVIDEONAV/MYPLAYLIST
+					<content>special://profile/playlists/video/imdbtop250.xsp</content>  -->
+					<!--
+					e.g. either  videodb://movies/sets/[SETID]/?setid=[SETID]&amp;?xsp=[XSP]) or videodb://movies/titles/135?xsp=[xsp]
+								{"limit":250,"order":{"direction":"ascending","ignorefolders":0,"method":"top250"},"rules":{"and":[{"field":"top250","operator":"isnot","value":["0"]}]},"type":"movies"}
+								%7B%22limit%22%3A250%2C%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22top250%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22top250%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%220%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D
+					-->
+	
+	<!-- intended special case for group is set to 'none' , which is needed for correct results (rating 250 order) WHEN INSIDE MYPLAYLIST/VIDEONAV
+		, BUT WRONG RESULTS WHEN USE IN OTHER  WINDOWS - GROUP TAGS WILL NOT WORK CORRECT IN THAT SPECIAL CASE 
+					<content>special://profile/playlists/video/imdbtop250_no folders.xsp</content> -->
+					<!--
+					videodb://movies/titles/  	{"group":{"mixed":false,"type":"none"},"limit":250,"order":{"direction":"ascending","ignorefolders":0,"method":"top250"},"rules":{"and":[{"field":"top250","operator":"isnot","value":["0"]}]},"type":"movies"}
+					videodb://movies/titles/ 	?xsp=%7b%22group%22%3a%7b%22mixed%22%3afalse%2c%22type%22%3a%22none%22%7d%2c%22limit%22%3a250%2c%22order%22%3a%7b%22direction%22%3a%22ascending%22%2c%22ignorefolders%22%3a0%2c%22method%22%3a%22top250%22%7d%2c%22rules%22%3a%7b%22and%22%3a%5b%7b%22field%22%3a%22top250%22%2c%22operator%22%3a%22isnot%22%2c%22value%22%3a%5b%220%22%5d%7d%5d%7d%2c%22type%22%3a%22movies%22%7d
+					-->
 	<!-- 
 		limit working, but sortmethods fail in videos/titles/ same count if load xsp file instead virtual
 		<content>videodb://movies/titles/?xsp=%7B%22limit%22%3A3%2C%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22method%22%3A%22premiered%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22bat%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
@@ -178,7 +217,7 @@
 					<ondown>2300</ondown>
 				</control>
 				
-				<control type="grouplist" id="2400">
+				<control type="grouplist" id="2201">
 					<height>560</height>
 					<orientation>horizontal</orientation>
 					<control type="button" id="2202">
@@ -209,7 +248,6 @@
 			
 			<control type="grouplist" id="2300">
 				<description>PAGE 3 - maps </description>
-				<visible>!String.IsEmpty(Window(weather).Property(Map.IsFetched))</visible>
 				<left>130</left>
 				<top>120</top>
 				<height>960</height>
@@ -365,8 +403,49 @@
 		</control>
 		
 		
+		
 		<include content="swan_debug_overlay">
-			<param name="textleft" value=""/>
+			<param name="textleft" value="$INFO[Container(999).ListItem.FilenameAndPath]
+			
+
+listitem.filenameandpath :  $INFO[listitem.filenameandpath]
+  listitem.Path :  $INFO[listitem.path]
+  ListItem.FolderPath :  $INFO[ListItem.FolderPath]
+  ListItem.FolderName :  $INFO[ListItem.FolderName]
+  listitem.dbid :  $INFO[listitem.dbid]
+  listitem.tvshowdbid :  $INFO[listitem.tvshowdbid]
+  listitem.setid :  $INFO[listitem.setid]
+  listitem.uniquiid() • imdb :  $INFO[listitem.uniqueid(imdb)]  -  themoviedb :  $INFO[listitem.uniqueid(themoviedb)]  -  tmdb :  $INFO[listitem.uniqueid(tmdb)]  -  anidb :  $INFO[listitem.uniqueid(anidb)]  -  tvdb :  $INFO[listitem.uniqueid(tvdb)]  -  trakt :  $INFO[listitem.uniqueid(trakt)]  - tvrage :  $INFO[listitem.uniqueid(tvrage)]  -  tvmaze :  $INFO[listitem.uniqueid(tvmaze)]
+
+Container.Content  :  $INFO[Container.Content]  ; Container.ListItem.dbtype  :  $INFO[ Container.ListItem.dbtype]
+Container.PluginName :  $INFO[Container.PluginName]  -  Container.PluginCategory  :  $INFO[Container.PluginCategory]
+Container.Viewmode :  $INFO[Container.Viewmode]  -  Container.ViewCount  :  $INFO[Container.ViewCount]
+Container.FolderPath :  $INFO[Container.FolderPath]
+Container.Totaltime  :  $INFO[Container.Totaltime]
+Container().ListItemAbsolute(0).label :  $INFO[Container().ListItemAbsolute(0).label] 
+
+[B]HiddenContainer byid container(2000)[/B] : $INFO[container(2000).listitem.dbid,container 2000 dbid :    ,    ]   $INFO[container(2000).listitem.dbtype,container 2000 dbtype :    ,    ]   $INFO[container(2000).listitem.label,container 2000 label :    ,    ]
+SHORTCUT ONLY: $INFO[Window(home).Property(shortcutitem_nr),- window Prop Shortcuts ,]$INFO[Window(home).Property(SetShortcutInProgress), - window Prop SetShortcutInProgress ,]
+
+SKINNED PROPS SET ON FOCUS
+  $VAR[debug_trailer_available,VAR Trailer:  ,]
+  $INFO[Window(home).Property(listitemtrailer), listitemtrailer ,     |    ]$INFO[Window(home).Property(dbid),  dbid :,  ]$INFO[Window(home).Property(rating),  rating :,  ]$INFO[Window(home).Property(totalseasons),  totalseasons :,  ]$INFO[Window(home).Property(totalepisodes),  totalepisodes ,]$INFO[Window(home).Property(status),  status :,  ]
+
+$INFO[ListItem.UserRating, userrating :,  ]$INFO[ListItem.Rating, rating :,  ]$INFO[ListItem.Rating(themoviedb), rating(themoviedb) :,  ]$INFO[ListItem.Rating(imdb), rating(imdb) :,  ]$INFO[ListItem.Rating(tvdb), rating(tvdb) :,  ]$INFO[ListItem.Rating(metacritic), rating(metacritic) :,  ]$INFO[ListItem.Rating(tomatometerallaudience), rating(tomatometerallaudience) :,  ]$INFO[ListItem.Rating(tomatometerallcritics), rating(tomatometerallcritics) :,  ]$INFO[ListItem.Rating(tomatometeravgaudience), rating(tomatometeravgaudience) :,  ]$INFO[ListItem.Rating(tomatometeraavgcritics), rating(tomatometeraavgcritics) :,  ]
+
+ ListItem.ActualIcon : $INFO[ListItem.ActualIcon]
+             ListItem.Icon : $INFO[ListItem.Icon]
+ListItem.Art(thumb) : $INFO[ListItem.Art(thumb)]
+Container.Art(fanart) : $INFO[Container.Art(fanart)]
+ListItem.Art(fanart) : $INFO[ListItem.Art(fanart)]
+ListItem.Art(tvshow.fanart) : $INFO[ListItem.Art(tvshow.fanart)]
+ListItem.Art(artist.fanart) : $INFO[ListItem.Art(artist.fanart)]
+ListItem.Art(albumartist.fanart) : $INFO[ListItem.Art(albumartist.fanart)]
+Container.ListItem.Art(fanart) : $INFO[Container.ListItem.Art(fanart)]
+Container.ListItem.Art(tvshow.fanart) : $INFO[Container.ListItem.Art(tvshow.fanart)]
+Container.ListItem.Art(artist.fanart) : $INFO[Container.ListItem.Art(artist.fanart)]
+Container.ListItem.Art(albumartist.fanart) : $INFO[Container.ListItem.Art(albumartist.fanart)]
+"/>
 </include>
 	</controls>
 </window>

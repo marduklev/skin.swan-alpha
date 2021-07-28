@@ -206,7 +206,7 @@
 	-->
 			
 	<variable name="listcontainer_artwork">
-		<value condition="Control.IsVisible(50) + [Skin.HasSetting(View_50_Prefer_Discart_Song) + !String.IsEmpty(ListItem.Art(album.discart)) + [Container.Content(songs) | String.IsEqual(ListItem.dbtype,song)]]">$INFO[ListItem.Art(album.discart)]</value>
+		<value condition="Control.IsVisible(50) + [!String.IsEmpty(ListItem.Art(album.discart)) + [Container.Content(songs) | String.IsEqual(ListItem.dbtype,song)]]">$INFO[ListItem.Art(album.discart)]</value>
 		<value condition="Control.IsVisible(56) + String.IsEqual(ListItem.Label,..)"></value>
 		<!-- unmerged -->
 		<value condition="Control.IsVisible(56) + !Skin.HasSetting(View_56_Prefer_CircleArt)">$VAR[PreferedThumb_Sourcing56]</value>
@@ -323,11 +323,16 @@
 			<width>26%</width>
 			<visible>![
 		Skin.HasSetting(View_$PARAM[id]_Prefer_Disc_Video) |
-		Skin.HasSetting(View_$PARAM[id]_Prefer_Discart_Album) |
-		Skin.HasSetting(View_$PARAM[id]_Prefer_Discart_Song) |
 		Skin.HasSetting(View_$PARAM[id]_Prefer_clearlogo) |
 		Skin.HasSetting(View_$PARAM[id]_Prefer_clearart)]
 		</visible>
+		
+		<!-- 
+		<visible>
+			[container.content(songs) + Control.IsVisible($PARAM[id]) + !Skin.HasSetting(View_$PARAM[id]_Prefer_Discart_Song) + ___] | 
+			[container.content(albums) + Control.IsVisible($PARAM[id]) + !Skin.HasSetting(View_$PARAM[id]_Prefer_Discart_Album) + ___] | 
+		</visible> -->
+		
 			<bordersize>2</bordersize>
 			<bordertexture border="5" colordiffuse="$VAR[color_lib_text_main]">frames/frame320x380.png</bordertexture>
 			<texture background="true">$VAR[PreferedArt_View_$PARAM[id]]</texture>
