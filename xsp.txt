@@ -1,0 +1,219 @@
+
+	?
+	xsp=
+
+		{"limit":20,"rules":{"and":[{"field":"path","operator":"contains","value":["ExtremeSports/Cars/"]}]},"type":"movies"}
+
+		%7b%22limit%22%3a20%2c%22rules%22%3a%7b%22and%22%3a%5b%7b%22field%22%3a%22path%22%2c%22operator%22%3a%22contains%22%2c%22value%22%3a%5b%22ExtremeSports%2fCars%2f%22%5d%7d%5d%7d%2c%22type%22%3a%22movies%22%7d
+
+		node order 	= numeric value in https://codedocs.xyz/AlwinEsch/kodi/group___list__of__sort__methods.html#gaaa514365130b94e17b142d49e6aba9c6 , eg 40 = dateadded
+		type		= "filter" if container should/can be filter media items (via gui edit control 19)
+					  "folder" if its root/files folder
+
+##########################
+
+
+id appendix - numeric
+		6.12.7 Library.Id 
+			Type: integer
+				JSON Schema Description
+				{
+				  "default": -1,
+				  "id": "Library.Id",
+				  "minimum": 1,
+				  "type": "integer"
+				}
+	id(s)	
+		?movieid=
+		?setid=
+		
+		?tvshowid=
+		?seasonid=
+		?episodeid=
+
+		?musicvideoid=
+		
+		?artistid=
+		?albumid=
+		?songid=
+		
+		?roleid=
+		?genre=
+		?source=
+		?tag=
+		
+		?clientid=
+		?channelid=
+		?broadcastid=
+
+#######################
+https://codedocs.xyz/AlwinEsch/kodi/_sort_utils_8h.html#a296ad35aa824e1a843661ca74a675399
+
+https://codedocs.xyz/AlwinEsch/kodi/group___list__of__sort__methods.html
+
+xsp appendix
+
+videodb/tvshows/titles/?xsp=
+	{	
+		"limit":1
+		,
+		"order":
+		{
+			"direction":"ascending"
+			,
+			"ignorefolders":0
+			,
+			"method":"playcount"
+		}
+		,
+		"group":
+		{
+			"mixed":false
+			,
+			"type":"none"
+		}
+		,
+		"rules":
+			{
+			"and":
+				[
+					{
+						"field":"actor"
+						,
+						"operator":"contains"
+						,
+						"value":["$VAR[videoinfo_cast_container_id]"]
+					}
+					,
+					{
+						"field":"title"
+						,
+						"operator":"isnot"
+						,"value":["$INFO[Window(home).Property(EncodedTitle)]"]
+					}
+				]
+			}
+	  ,
+		"type":"movies"
+	}
+	
+	name:	textlabels
+	
+	type:	Songs
+			Albums
+			Artists
+			Movies
+			TV shows
+			Episodes
+			Music Videos
+			Mixed - used to combine Music and Music Videos
+	
+	group:	Adds grouping to the results. The displayed list will consist of folder nodes containing matching media items.
+				eg Selecting group by genre will open a list of all the genres that are used by the titles that match the rules. Then select a genre to see the title list.
+			The mixed operator can only be used when Sets is chosen as the value. It allows combining of what is considered two classes of media - a set/collection and a movie
+		
+		Disabled - Will only list the collection for movies that belong to a Set. Enter a collection to see the individual movie(s) that match the rule(s).
+		Enabled	 - Will show the collection that the matching movies belong to as well as the individual movies that do not belong to a set/collection.
+
+			For a list of available groupings see... https://kodi.wiki/view/Smart_playlists/Rules_and_groupings
+	
+	match: 	all - an item must match all rules for it to be displayed in the list
+			one - an item needs to match only one of the rules for it to be displayed in the list
+	
+	
+TEST  
+https://github.com/xbmc/xbmc/blob/master/xbmc/playlists/SmartPlayList.cpp
+
+
+in most cases a wished definition of of sort methods is failing (only exception in testing are episode path [videodb/tvshows/titles/-1|?tvhowid/-1|seasonid/?xsp=**])
+ - means sortby="" sortorder="" has to be used in xml instead call it virtually via "order":{}
+
+{"limit":4,"rules":{"and":[{"field":"title","operator":"contains","value":["ba"]}]},"group":{"mixed":false,"type":"none"},"order":{"direction":"ascending","ignorefolders":0,"method":"year"}"type":"movies"}
+
+	
+	
+	MUSIC HUB
+	
+
+OPERATORS
+	contains 				True if the field contains the parameter as a substring
+	doesnotcontain 			True if the field does not contain the parameter as a substring
+	is 						True if the field matches the parameter exactly
+	isnot 					True if the field does not match the parameter exactly
+	startswith 				True if the start of the field matches the parameter
+	endswith 				True if the end of the field matches the parameter
+	lessthan 				True if the content of the field is less than the parameter
+	greaterthan 			True if the content of the field is greater than the parameter
+	after 					True if the content of the field comes after the parameter
+	before 					True if the content of the field comes before the parameter
+	inthelast 				True if the field falls in the last range specified by the parameter. Only applicable for a date field.
+	notinthelast 			True if the field does not fall in the last range specified by the parameter. Only applicable for a date field.
+
+
+POSSIBLE DBID CONTAINERFOLDERPATHS
+		consider test Container(id).ListItemPosition(id).[infolabel] 
+		all artist / root			musicdb://artists/
+		albums by artist			musicdb://artists/[artist music dbid]/?albumartistonly=false
+		songs by album 				musicdb://artists/[artist music dbid]/[album music dbid]/?albumartistonly=false&amp;artistid=[artist music dbid]
+
+
+
+				testing - need best practive for set and clear
+						hidden button itemfocus
+						or/and
+						onclick override
+						
+						or get artist dbid by hidden container, which can be slow down and result in incorrect values due to refresh
+					
+					<include name="Store_DBid">
+						<control type="button">
+							<visible allowhiddenfocus="true">false</visible>
+							<onfocus condition="!String.IsEmpty(ListItem.dbid) + string.isequal(listitem.dbtype,artist)">SetProperty(artistHUB_dbid,$INFO[listitem.dbid],home)</onfocus>
+							<onfocus condition="!String.IsEmpty(ListItem.dbid) + string.isequal(listitem.dbtype,album)">SetProperty(albumHUB_dbid,$INFO[listitem.dbid],home)</onfocus>
+							<onfocus condition="!String.IsEmpty(ListItem.dbid) + string.isequal(listitem.dbtype,song)">SetProperty(songHUB_dbid,$INFO[listitem.dbid],home)</onfocus>
+						</control>
+					</include>
+	
+					just usable if came from artist where items can store dbid
+					 usage benefit play album e.g. 
+								<onclick>PlayMedia(musicdb://artists/$INFO[Window(home).Property(artistHUB_dbid)]/-1/)</onclick>
+							   <onclick>PlayMedia(musicdb://artists/$INFO[Window(home).Property(artistHUB_dbid)]/$INFO[Window(home).Property(albumHUB_dbid)]/)</onclick>
+							   <onclick>PlayMedia(musicdb://artists/$INFO[Window(home).Property(artistHUB_dbid)]/$INFO[ListItem.dbid]/)</onclick>
+							   <onclick>PlayMedia(musicdb://artists/$INFO[Window(home).Property(artistHUB_dbid)]/$INFO[Window(home).Property(albumHUB_dbid)]/$INFO[Window(home).Property(songHUB_dbid)])</onclick>
+												   
+		musicvideos					
+				videodb://musicvideos/artists/
+		mvidalbums					
+				videodb://musicvideos/artists/[artists video dbid ]/
+		all by artist				
+				videodb://musicvideos/artists/[artists video dbid ]/-1/?artistid=[artists video dbid]
+		all by album of artist		
+				videodb://musicvideos/artists/[artists video dbid ]/[album id]/?artistid=[artists video dbid]
+
+
+
+
+		YEARS
+
+		notes. music - NEW DBTYPE 	: check view locking -> originalyear
+		year path attribute			:?useoriginalyear    
+			
+			year/
+				|> all albums in year musicdb://years/[YEAR_ID]/?useoriginalyear=true
+						|- all songs in year : musicdb://years/[YEAR_ID]/-1/-2/?useoriginalyear=true&amp;year=[YEAR_ID]
+						|-     album : musicdb://years/[YEAR_ID]/[ALBUM_ID]/-2/?albumid=[ALBUM_ID]&amp;useoriginalyear=true&amp;year=[YEAR_ID]
+
+control = $INFO[Control.GetLabel(8001).index(1)] = MusicHub Filter Control
+method1		{"rules":{"and":[{"field":"artist","operator":"contains","value":["CONTROL"]}]},"type":"artists"}
+method 2	{"limit":1,"order":{"direction":"ascending","method":"title"},"rules":{"and":[{"field":"albumartist","operator":"is","value":["[ALBUMARTISTINFOLABEL]"]},{"field":"*","operator":"**","value":["***"]}]},"type":"****"}
+	
+
+-->
+	
+	
+	
+	
+	
+	
+	
+	
