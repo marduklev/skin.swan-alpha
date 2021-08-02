@@ -653,10 +653,11 @@
 		<value condition="String.IsEqual(ListItem.Label,$LOCALIZE[284])">$LOCALIZE[284]</value>
 		<value>[B]$INFO[ListItem.TrackNumber,, - ]$INFO[ListItem.Title][/B][CR][COLOR=grey]$INFO[ListItem.Artist][/COLOR]</value>
 	</variable>
+	
+	
 	<include name="HUB_box_test">
 		<control type="image">
-			<visible>!String.IsEqual(Window(home).Property(HUB_Music),IsHUBartistContent)</visible>
-			<visible>!String.IsEqual(Window(home).Property(HUB_Music),IsHUBalbumContent)</visible>
+			<visible>String.IsEmpty(Window(home).Property(HUB_containerpath_albums)) + String.IsEmpty(Window(home).Property(HUB_containerpath_songs))</visible>
 			<left>50</left>
 			<bordertexture colordiffuse="$PARAM[colordiffuse]">artworkdiffuse/banner.png</bordertexture>
 			<texture background="true" diffuse="artworkdiffuse/banner.png" fallback="DefaultAudio.png">artworkdiffuse/banner.png</texture>
@@ -664,8 +665,7 @@
 			<bordersize>3</bordersize>
 		</control>
 		<control type="image">
-			<visible>!String.IsEqual(Window(home).Property(HUB_Music),IsHUBartistContent)</visible>
-			<visible>!String.IsEqual(Window(home).Property(HUB_Music),IsHUBalbumContent)</visible>
+			<visible>String.IsEmpty(Window(home).Property(HUB_containerpath_albums)) + String.IsEmpty(Window(home).Property(HUB_containerpath_songs))</visible>
 			<description>thumb vis on prop yy</description>
 			<visible>true</visible>
 			<width>90</width>
@@ -952,116 +952,71 @@
 	</variable>
 	<!-- OVERRIDE ACTIONS -->
 	
-	<!-- prefer dbid paths over encoded xsp paths if not mixed media 
-	
-	fail focus just via 5002, working on 5001 - alarm again ??
-	-->
 	<include name="hub_music_OverrideOnClick">
-		<param name="goto" default="artist" />
 		<definition>
 			<onclick condition="!String.IsEmpty(System.CurrentControlID)">SetProperty(HUB_Music_PrevID,$INFO[System.CurrentControlID],home)</onclick>
 			<onclick condition="!String.IsEmpty(Window(home).Property(HUB_Music))">SetProperty(HUB_Music_PrevProp,$INFO[Window(home).Property(HUB_Music)],home)</onclick>
 			
-			<onclick condition="!String.IsEmpty(ListItem.$PARAM[goto])">RunScript(script.embuary.helper,action=encode,string='"$INFO[ListItem.$PARAM[goto]]"',prop=HUB_EncodedValue)</onclick>
+						<onclick condition="!String.IsEmpty(ListItem.Property(Artist_Description))">SetProperty(HUB_artistinfo,$ESCINFO[ListItem.Property(Artist_Description)],home)</onclick>
+						<onclick condition="!String.IsEmpty(ListItem.Property(Album_Description))">SetProperty(HUB_albuminfo,$ESCINFO[ListItem.Property(Album_Description)],home)</onclick>
 			
-			<onclick condition="!String.IsEmpty(ListItem.$PARAM[goto])">SetProperty(HUB_Music_$PARAM[goto],$INFO[ListItem.$PARAM[goto]],home)</onclick>
-			<onclick condition="!String.IsEmpty(ListItem.Property(Artist_Description))">SetProperty(HUB_artistinfo,$ESCINFO[ListItem.Property(Artist_Description)],home)</onclick>
-			<onclick condition="!String.IsEmpty(ListItem.Property(Album_Description))">SetProperty(HUB_albuminfo,$ESCINFO[ListItem.Property(Album_Description)],home)</onclick>
-				
 			<onclick condition="!String.IsEmpty(ListItem.Art(fanart))">SetProperty(HUB_artwork,$INFO[ListItem.Art(fanart)],home)</onclick>
 			<onclick condition="String.IsEmpty(ListItem.Art(fanart)) + !String.IsEmpty(ListItem.Art(landscape))">SetProperty(HUB_artwork,$INFO[ListItem.Art(fanart)],home)</onclick>
 			<onclick condition="String.IsEmpty(ListItem.Art(fanart)) + String.IsEmpty(ListItem.Art(landscape)) + !String.IsEmpty(ListItem.Art(thumb))">SetProperty(HUB_artwork,$INFO[ListItem.Art(thumb)],home)</onclick>
-			<onclick condition="!String.IsEmpty(ListItem.dbtype)">SetProperty(HUB_Music,$INFO[ListItem.dbtype,IsHUB,Content],home)</onclick>
-			<onclick condition="!String.IsEmpty(ListItem.dbid)">SetProperty($PARAM[goto]HUB_dbid,$INFO[ListItem.dbid],home)</onclick>
+
+			<onclick condition="true">ClearProperty(HUB_Music,home)</onclick>
 			
-			<onclick>SetFocus(5120)</onclick>
+			<onclick condition="String.IsEqual(ListItem.dbtype,artist) | [String.IsEqual(ListItem.dbtype,album) + Integer.IsGreater(ListItem.TotalDiscs,1)]">SetProperty(HUB_containerpath_albums,$INFO[ListItem.FolderPath],home)</onclick>
+			<onclick condition="String.IsEqual(ListItem.dbtype,artist) | [String.IsEqual(ListItem.dbtype,album) + Integer.IsGreater(ListItem.TotalDiscs,1)]">AlarmClock(delayedfocus,SetFocus(5120,absolute,0),00:00,silent)</onclick>
+			
+			<onclick condition="String.IsEqual(ListItem.dbtype,album) + [Integer.IsEqual(ListItem.TotalDiscs,1) | String.IsEmpty(ListItem.TotalDiscs)]">SetProperty(HUB_containerpath_songs,$INFO[ListItem.FolderPath],home)</onclick>
+			<onclick condition="String.IsEqual(ListItem.dbtype,album) + [Integer.IsEqual(ListItem.TotalDiscs,1) | String.IsEmpty(ListItem.TotalDiscs)]">AlarmClock(delayedfocus,SetFocus(5121,absolute,0),00:00,silent)</onclick>
+		
 		</definition>
-	</include>
-	<!-- 
-			<definition>
-				<onclick condition="String.IsEqual(ListItem.dbtype,$PARAM[goto]) + !String.IsEmpty(ListItem.Label)">RunScript(script.embuary.helper,action=encode,string='"$INFO[ListItem.Label]"',prop=HUB_EncodedValue)</onclick>
-				<onclick condition="String.IsEqual(ListItem.dbtype,$PARAM[goto]) + !String.IsEmpty(ListItem.Label)">SetProperty(HUB_Music_$PARAM[goto],$INFO[Container.ListItem.Label],home)</onclick>
-				<onclick condition="!String.IsEmpty(ListItem.Art(fanart))">SetProperty(HUB_artwork,$INFO[ListItem.Art(fanart)],home)</onclick>
-				<onclick condition="String.IsEmpty(ListItem.Art(fanart)) + !String.IsEmpty(ListItem.Art(landscape))">SetProperty(HUB_artwork,$INFO[ListItem.Art(fanart)],home)</onclick>
-				<onclick condition="String.IsEmpty(ListItem.Art(fanart)) + String.IsEmpty(ListItem.Art(landscape)) + !String.IsEmpty(ListItem.Art(thumb))">SetProperty(HUB_artwork,$INFO[ListItem.Art(thumb)],home)</onclick>
-				<onclick condition="!String.IsEmpty(ListItem.dbtype)">SetProperty(HUB_Music,$INFO[ListItem.dbtype,IsHUB,Content],home)</onclick>
-				<onclick condition="!String.IsEmpty(ListItem.dbid)">SetProperty($PARAM[goto]HUB_dbid,$INFO[ListItem.dbid],home)</onclick>
-			</definition>
-		-->
+	</include>	
 	
 	<include name="hub_music_ClearPropsOnBack">
-		<param name="comefrom" default="artist" />
 		<definition>
+			<onback condition="!String.IsEmpty(Window(home).Property(HUB_containerpath_albums))">ClearProperty(HUB_containerpath_albums,home)</onback>
+			<onback condition="!String.IsEmpty(Window(home).Property(HUB_containerpath_songs))">ClearProperty(HUB_containerpath_songs,home)</onback>
 			<onback condition="!String.IsEmpty(Window(home).Property(HUB_Music_PrevProp))">SetProperty(HUB_Music,$INFO[Window(home).Property(HUB_Music_PrevProp)],home)</onback>
 			<onback condition="!String.IsEmpty(Window(home).Property(HUB_Music_PrevID))">AlarmClock(HuB_ForceFocusDelayed,SetFocus($INFO[Window(home).Property(HUB_Music_PrevID)]),00:00,silent)</onback>
 			<onback>ClearProperty(HUB_artwork,home)</onback>
-			<onback>ClearProperty(HUB_EncodedValue,home)</onback>
-			<onback condition="!String.IsEmpty(Window(home).Property(HUB_artistinfo))">ClearProperty(HUB_artistinfo,home)</onback>
-			<onback condition="!String.IsEmpty(Window(home).Property(HUB_albuminfo))">ClearProperty(HUB_albuminfo,home)</onback>
-			<onback>ClearProperty(HUB_Music_$PARAM[comefrom],home)</onback>
-			<onback>ClearProperty($PARAM[comefrom]HUB_dbid,home)</onback>
+					<onback condition="!String.IsEmpty(Window(home).Property(HUB_artistinfo))">ClearProperty(HUB_artistinfo,home)</onback>
+					<onback condition="!String.IsEmpty(Window(home).Property(HUB_albuminfo))">ClearProperty(HUB_albuminfo,home)</onback>
 			<onback>ClearProperty(HUB_Music_PrevID,home)</onback>
 			<onback>ClearProperty(HUB_Music_PrevProp,home)</onback>
 		</definition>
 	</include>
 	
-	<!-- ############ -->
-	<!-- ## Content## -->
-	<!-- ############ -->
-
-	<variable name="HUB_content_artists_TEST">
+	<!-- ####################### -->
+	<!-- #######  Content  ##### -->
+	
+	<!-- 5001(common) | 5010(artists) -->
+	<variable name="filtercontent_artists_contains_artist">
 		<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">musicdb://artists/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22artists%22%7D</value>
 		<value>musicdb://artists/</value>
 	</variable>
-	
-	<variable name="HUB_content_artists">
-		<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">musicdb://artists/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22artists%22%7D</value>
-		<value>musicdb://artists/</value>
-	</variable>
-	
-	<variable name="HUB_content_albums_title">
-		<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22album%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</value>
-		<value>musicdb://albums/</value>
-	</variable>
-	<variable name="HUB_content_albums_artist">
-		<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22albumartist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</value>
-		<value>HUB_content_albums_artist</value>
-	</variable>
-	<variable name="HUB_content_albums_artist_or_title">
+	<!-- 5002 (common) -->
+	<variable name="filtercontent_albums_contains_albumartist_or_album">
 		<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22or%22%3A%5B%7B%22field%22%3A%22albumartist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%2C%7B%22field%22%3A%22album%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</value>
 		<value>musicdb://albums/</value>
 	</variable>
-	
-	<!-- 
-	<variable name="HUB_content_new_albums_title">
-		<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">musicdb://recentlyaddedalbums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22album%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</value>
-		<value>musicdb://recentlyaddedalbums/</value>
-	</variable>
-	-->
-	
-	<variable name="HUB_content_songs_title">
-		<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">musicdb://songs/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22songs%22%7D</value>
-		<value>musicdb://songs/</value>
-	</variable>
-	<variable name="HUB_content_songs_artist">
-		<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">musicdb://songs/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22songs%22%7D</value>
-	</variable>
-	<variable name="HUB_content_songs_title_or_artist">
+	<!-- 5003 free -->
+	<!-- 5004 (common) -->
+	<variable name="filtercontent_songs_contains_title_or_artist">
 		<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">musicdb://songs/?xsp=%7B%22rules%22%3A%7B%22or%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%2C%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22songs%22%7D</value>
 		<value>musicdb://songs/</value>
 	</variable>
-	
-	<variable name="HUB_content_musicvideo_titles">
-		<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">videodb://musicvideos/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</value>
-		<value>videodb://musicvideos/titles/</value>
-	</variable>
-	
-	<variable name="HUB_content_musicvideo_titles_or_artist">
+	<!-- 5008 (musicvideos) genres RESET (ORDER OF IDS )ID--> 
+	<!-- 5007 (common) -->
+	<variable name="filtercontent_musicvideos_contains_title_or_artist">
 		<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">videodb://musicvideos/titles/?xsp=%7B%22rules%22%3A%7B%22or%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%2C%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</value>
 		<value>videodb://musicvideos/titles/</value>
 	</variable>
 	
-			<!-- revisit - cant filter musicvideo folder -->
+			<!-- REVISIT PATH - cant filter musicvideo folder
+			
 			<variable name="HUB_content_musicvideo_artist">
 				<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1)) + !String.IsEqual(Window(home).Property(HUB_Music),songs) + !String.IsEqual(Window(home).Property(HUB_Music),albums)">videodb://musicvideos/artists/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</value>
 				<value condition="String.IsEmpty(Control.GetLabel(8001).index(1)) + !String.IsEqual(Window(home).Property(HUB_Music),songs) + !String.IsEqual(Window(home).Property(HUB_Music),albums)">videodb://musicvideos/artists/</value>
@@ -1070,84 +1025,109 @@
 				<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1)) + String.IsEqual(Window(home).Property(HUB_Music),albums)">videodb://musicvideos/albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22album%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</value>
 				<value condition="String.IsEmpty(Control.GetLabel(8001).index(1)) + String.IsEqual(Window(home).Property(HUB_Music),albums)">videodb://musicvideos/albums/</value>
 			</variable>
+			-->			
+	<!-- 5018 (songs) -->
+	<variable name="filtercontent_songs_contains_title">
+		<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">musicdb://songs/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22songs%22%7D</value>
+		<value>musicdb://songs/</value>
+	</variable>
+				<!-- filtercontent_songs_contains_artist
+				<variable name="HUB_content_songs_artist">
+					<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">musicdb://songs/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22songs%22%7D</value>
+				</variable> -->
 	
-	<variable name="HUB_Albums_by_Artist">
-		<value condition="String.IsEqual(Window(home).Property(HUB_Music),IsHUBartistContent) + !String.IsEmpty(Window(home).Property(artistHUB_dbid))">musicdb://artists/$INFO[Window(home).Property(artistHUB_dbid)]/?albumartistsonly=false</value>
-		<value condition="String.IsEqual(Window(home).Property(HUB_Music),IsHUBartistContent)">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(HUB_EncodedValue)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</value>
-		<value condition="String.IsEqual(Window(home).Property(HUB_Music),IsHUBalbumContent)">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22album%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(HUB_EncodedValue)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</value>
-		<value>HUB_Albums_by_Artist</value>
+				<!-- <variable name="HUB_content_musicvideo_titles">
+					<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">videodb://musicvideos/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</value>
+					<value>videodb://musicvideos/titles/</value>
+				</variable> -->
+				<!-- <variable name="HUB_content_new_albums_title">
+					<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">musicdb://recentlyaddedalbums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22album%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</value>
+					<value>musicdb://recentlyaddedalbums/</value>
+				</variable>
+				-->
+	
+	<!-- 5020 (albums) | 5028 (album_recentadd) -->
+	<variable name="filtercontent_albums_contains_album">
+		<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22album%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</value>
+		<value>musicdb://albums/</value>
+	</variable>
+	
+			<!-- not used 		
+				albums_contains_albumartist
+				<variable name="HUB_content_albums_artist">
+					<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22albumartist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</value>
+					<value>HUB_content_albums_artist</value>
+				</variable>
+			-->
+	
+	<!-- 5030-5033 (genres) -->
+	<variable name="5030_genres">
+		<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">musicdb://genres/?xsp=%7B%22rules%22%3A%7B%22or%22%3A%5B%7B%22field%22%3A%22label%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22genres%22%7D</value>
+		<value>musicdb://genres/</value>
+	</variable>
+	<variable name="5031_artists_by_genre">
+		<value condition="String.IsEqual(Window(home).Property(HUB_Music),genres) + !String.IsEmpty(Container(5030).ListItem.dbid)">musicdb://genres/$INFO[Container(5030).ListItem.dbid]/</value>
+	</variable>
+	<variable name="5032_albums_by_genre">
+		<value condition="String.IsEqual(Window(home).Property(HUB_Music),genres) + !String.IsEmpty(Container(5030).ListItem.dbid)">musicdb://genres/$INFO[Container(5030).ListItem.dbid]/-1/</value>
+	</variable>
+	<variable name="5033_songs_by_genre">
+		<value condition="String.IsEqual(Window(home).Property(HUB_Music),genres) + !String.IsEmpty(Container(5030).ListItem.dbid)">musicdb://genres/$INFO[Container(5030).ListItem.dbid]/-1/-1/</value>
+	</variable>
+			<!--
+			<variable name="5034_musicvideos_by_genre">
+				<value condition="String.IsEqual(Window(home).Property(HUB_Music),genres) + !String.IsEmpty(Container(5030).ListItem.dbid)">videodb://musicvideos/titles/?xsp=%7B%22rules%22%3A%7B%22or%22%3A%5B%7B%22field%22%3A%22genre%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Container(5030).ListItem.label]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</value>
+			</variable>
+			-->
+			
+	<!-- 5035-5038 (years) -->
+	<variable name="5036_albums_by_year">
+		<value condition="string.startswith(System.BuildVersion,18.) + !String.IsEmpty(Container(5035).ListItem.label)">musicdb://years/$INFO[Container(5035).ListItem.label]/</value>
+		<value condition="string.startswith(System.BuildVersion,19.1) + !String.IsEmpty(Container(5035).ListItem.label)">musicdb://years/$INFO[Container(5035).ListItem.label]/?useoriginalyear=true</value>
+	</variable>
+	<variable name="5037_songs_by_year">
+		<value condition="string.startswith(System.BuildVersion,18.) + !String.IsEmpty(Container(5035).ListItem.label)">musicdb://years/$INFO[Container(5035).ListItem.label]/-1/?year=$INFO[Container(5035).ListItem.label]</value>
+		<value condition="string.startswith(System.BuildVersion,19.1) + !String.IsEmpty(Container(5035).ListItem.label)">musicdb://years/$INFO[Container(5035).ListItem.label]/-1/-2/?useoriginalyear=true&amp;year=$INFO[Container(5035).ListItem.label]</value>
+	</variable>
+	<variable name="5038_musicvideos_by_year">
+		<value condition="String.IsEqual(Window(home).Property(HUB_Music),years) + !String.IsEmpty(Container(5035).ListItem.label)">videodb://musicvideos/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22year%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[Container(5035).ListItem.label]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</value>
+	</variable>
+	
+	<variable name="HUB_Albums_5121">
+		<value condition="[Integer.IsEqual(Container(5120).ListItem.TotalDiscs,1) | String.IsEmpty(Container(5120).ListItem.TotalDiscs)] + !String.IsEmpty(Container(5120).ListItem.dbid)">$INFO[Container(5120).ListItem.FolderPath]</value>
+		<value condition="Integer.IsGreater(Container(5120).ListItem.TotalDiscs,1) + !String.IsEmpty(Container(5120).ListItem.dbid)">musicdb://albums/$INFO[Container(5120).ListItem.dbid]/-1/?albumid=$INFO[Container(5120).ListItem.dbid]</value>
+	</variable>
+	
+	
+	
+	
+	<!-- 5120 (HUB_containerpath_albums) -->
+	<variable name="5120_albums">
+		<value condition="!String.IsEmpty(Window(home).Property(HUB_containerpath_albums))">$INFO[Window(home).Property(HUB_containerpath_albums)]</value>
+		<value condition="String.IsEmpty(Window(home).Property(HUB_containerpath_albums)) + Control.IsVisible(5121)">5120 no content</value>
+	</variable>
+	
+	
+	<!-- 5121 (HUB_containerpath_songs) -->
+	<variable name="5121_songs">
+		<value condition="!String.IsEmpty(Window(home).Property(HUB_containerpath_albums)) + Integer.IsGreater(Container(5120).ListItem.TotalDiscs,1)">musicdb://albums/$INFO[Container(5120).ListItem.dbid]/-1/?albumid=$INFO[Container(5120).ListItem.dbid]&amp;discid=$INFO[Container(5120).ListItem.DiscNumber]</value>
+		<value condition="!String.IsEmpty(Window(home).Property(HUB_containerpath_albums)) + [Integer.IsEqual(Container(5120).ListItem.TotalDiscs,1) | String.IsEmpty(ListItem.TotalDiscs)]">$INFO[Container(5120).ListItem.FolderPath]</value>
+		<value condition="!String.IsEmpty(Window(home).Property(HUB_containerpath_songs))">$INFO[Window(home).Property(HUB_containerpath_songs)]</value>
 	</variable>
 	
 	<variable name="Container_HUB_5020_Heading">
 		<value condition="String.IsEqual(Window(home).Property(HUB_Music),albums)">A L B U M S</value>
 		<value condition="String.IsEqual(Window(home).Property(HUB_Music),songs)">S O N G S</value>
 	</variable>
-	
+	<variable name="5020_Label_AlbumName">
+		<value condition="!String.IsEmpty(ListItem.DiscTitle)">$INFO[ListItem.DiscTitle,[CR],]</value>
+		<value condition="String.IsEmpty(ListItem.DiscTitle) + !String.IsEmpty(ListItem.DiscNumber) + Integer.IsGreaterOrEqual(Container(5120).ListItem.TotalDiscs,2)">$INFO[Container(5120).ListItem.Label,[CR],]</value>
+		<value condition="String.IsEmpty(ListItem.DiscTitle)">$INFO[ListItem.Album,[CR],]</value>
+	</variable>
 	<variable name="Container_HUB_5020">
 		<value condition="String.IsEqual(Window(home).Property(HUB_Music),albums)">$VAR[HUB_content_albums_title]</value>
 		<value condition="String.IsEqual(Window(home).Property(HUB_Music),songs)">$VAR[HUB_content_songs_title]</value>
 	</variable>
-	<!-- fail due unsupported content type tag
-	<variable name="Container_HUB_5030_Genre_root">
-		<value condition="!String.IsEmpty(Control.GetLabel(8001).index(1))">musicdb://genres/?xsp=%7B%22rules%22%3A%7B%22or%22%3A%5B%7B%22field%22%3A%22genre%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Control.GetLabel(8001).index(1)]%22%5D%7D%5D%7D%2C%22type%22%3A%22genres%22%7D</value>
-		<value>musicdb://genres/</value>
-	</variable> -->
-	<variable name="Container_HUB_5030_Genre_artists">
-		<value condition="String.IsEqual(Window(home).Property(HUB_Music),genres) + !String.IsEmpty(Container(5030).ListItem.dbid)">musicdb://genres/$INFO[Container(5030).ListItem.dbid]/</value>
-	</variable>
-	<variable name="Container_HUB_5030_Genre_albums">
-		<value condition="String.IsEqual(Window(home).Property(HUB_Music),genres) + !String.IsEmpty(Container(5030).ListItem.dbid)">musicdb://genres/$INFO[Container(5030).ListItem.dbid]/-1/</value>
-	</variable>
-	<variable name="Container_HUB_5030_Genre_songs">
-		<value condition="String.IsEqual(Window(home).Property(HUB_Music),genres) + !String.IsEmpty(Container(5030).ListItem.dbid)">musicdb://genres/$INFO[Container(5030).ListItem.dbid]/-1/-1/</value>
-	</variable>
-	<variable name="Container_HUB_5030_Genre_musicvideos">
-		<value condition="String.IsEqual(Window(home).Property(HUB_Music),genres) + !String.IsEmpty(Container(5030).ListItem.dbid)">videodb://musicvideos/titles/?xsp=%7B%22rules%22%3A%7B%22or%22%3A%5B%7B%22field%22%3A%22genre%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Container(5030).ListItem.label]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</value>
-	</variable>
-
-	<!-- 
-	<variable name="Container_HUB_5035_Year_albums">
-		<value condition="String.IsEqual(Window(home).Property(HUB_Music),genres) + !String.IsEmpty(Container(5030).ListItem.dbid)">musicdb://genres/$INFO[Container(5030).ListItem.dbid]/-1/</value>
-		<value>-</value>
-	</variable>
-	<variable name="Container_HUB_5035_Year_songs">
-		<value condition="String.IsEqual(Window(home).Property(HUB_Music),songs) + !String.IsEmpty(Container(5030).ListItem.dbid)">musicdb://years/$INFO[Container(5030).ListItem.dbid]/-1/-1/</value>
-		<value>-</value>
-	</variable>
-	-->
-	
-	<variable name="Container_HUB_5035_Year_songs">
-		<value condition="string.startswith(System.BuildVersion,18.) + !String.IsEmpty(Container(5035).ListItem.label)">musicdb://years/$INFO[Container(5035).ListItem.label]/-1/?year=$INFO[Container(5035).ListItem.label]</value>
-		<value condition="string.startswith(System.BuildVersion,19.1) + !String.IsEmpty(Container(5035).ListItem.label)">musicdb://years/$INFO[Container(5035).ListItem.label]/-1/-2/?useoriginalyear=true&amp;year=$INFO[Container(5035).ListItem.label]</value>
-	</variable>
-	
-	<variable name="Container_HUB_5035_Year_musicvideos">
-		<value condition="String.IsEqual(Window(home).Property(HUB_Music),years) + !String.IsEmpty(Container(5035).ListItem.label)">videodb://musicvideos/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22year%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[Container(5035).ListItem.label]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</value>
-	</variable>
-	
-	<!-- [String.IsEqual(Window(home).Property(HUB_Music),IsHUBartistContent) | String.IsEqual(Window(home).Property(HUB_Music),IsHUBalbumContent)] -->
-	<variable name="HUB_Albums_5121">
-		<value condition="[Integer.IsEqual(Container(5120).ListItem.TotalDiscs,1) | String.IsEmpty(Container(5120).ListItem.TotalDiscs)] + !String.IsEmpty(Container(5120).ListItem.dbid)">$INFO[Container(5120).ListItem.FolderPath]</value>
-		<value condition="Integer.IsGreater(Container(5120).ListItem.TotalDiscs,1) + !String.IsEmpty(Container(5120).ListItem.dbid)">musicdb://albums/$INFO[Container(5120).ListItem.dbid]/-1/?albumid=$INFO[Container(5120).ListItem.dbid]</value>
-	</variable>
-	<!-- videodb://musicvideos/titles/?xsp={"rules":{"or":[{"field":"genre","operator":"contains","value":["GENRELABEL"]}]},"type":"musicvideos"}
-	videodb://musicvideos/titles/?xsp=%7B%22rules%22%3A%7B%22or%22%3A%5B%7B%22field%22%3A%22genre%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22GENRELABEL%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D -->
-	<!-- <variable name="5040_Playlists">
-		<value condition="String.IsEqual(Window(home).Property(XSP),Container(9042).ListItem.Folderpath)">$INFO[Window(home).Property(XSP)]</value>
-		<value condition="!String.IsEqual(Window(home).Property(XSP),Container(9042).ListItem.Folderpath)">$INFO[Container(9042).ListItem.Folderpath]</value>
-	</variable> -->
-	
-	
-<!-- 	matrix
-	by album if NOT multidisc - $INFO[Container(5120).ListItem.FolderPath]
-	
-	by album if multidisc 		musicdb://albums/$INFO[Container(5120).ListItem.dbid]/-1/?albumid=$INFO[Container(5120).ListItem.dbid]</content>
-		by artist ($INFO[Window(home).Property(albumHUB_dbid)]) than album 		musicdb://artists/$INFO[Window(home).Property(artistHUB_dbid)]/$INFO[Container(5120).ListItem.dbid]/-1/?albumartistsonly=false&amp;albumid=$INFO[Container(5120).ListItem.dbid]&amp;artistid=$INFO[Window(home).Property(artistHUB_dbid)]
-| String.IsEqual(Window(home).Property(HUB_Music),IsHUBalbumContent)	
-
-	-->
-	
-	
 	
 	<!-- 
 	albums by artist

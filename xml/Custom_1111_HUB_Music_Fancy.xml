@@ -23,14 +23,10 @@ currentlyplaying,playlist righ 8000
 	<onload>SetProperty(110_sortby,artist)</onload>
 	
 	
-	
 	<onload condition="!Skin.HasSetting(MusicHUB_StartUprecommendation) + String.IsEmpty(Window(home).Property(HUB_Music))">SetProperty(HUB_Music,common,home)</onload>
 	<onload condition="Skin.HasSetting(MusicHUB_StartUprecommendation) + String.IsEmpty(Window(home).Property(HUB_Music))">SetProperty(HUB_Music,recommendation,home)</onload>
-	
-	<onload condition="!String.IsEmpty(Window(home).Property(artistHUB_dbid))">ClearProperty(artistHUB_dbid,home)</onload>
-	<onload condition="!String.IsEmpty(Window(home).Property(albumHUB_dbid))">ClearProperty(albumHUB_dbid,home)</onload>
-	<onload condition="!String.IsEmpty(Window(home).Property(HUB_EncodedValue))">ClearProperty(HUB_EncodedValue,home)</onload>
-	
+	<onload condition="!String.IsEmpty(Window(home).Property(HUB_containerpath_albums))">ClearProperty(HUB_containerpath_albums,home)</onload>
+	<onload condition="!String.IsEmpty(Window(home).Property(HUB_containerpath_albums))">ClearProperty(HUB_containerpath_songs,home)</onload>
 	
 	<!-- temp -->
 	<onload condition="!String.IsEmpty(Window(home).Property(HUB_artistinfo))">ClearProperty(HUB_artistinfo,home)</onload>
@@ -38,10 +34,8 @@ currentlyplaying,playlist righ 8000
 	
 	
 	<onunload>ClearProperty(HUB_artwork,home)</onunload>
-	<onunload>ClearProperty(HUB_dbid,home)</onunload>
-	<onunload>ClearProperty(HUB_EncodedValue,home)</onunload>
-	<onunload>ClearProperty(HUB_Music_artist,home)</onunload>
-	<onunload>ClearProperty(HUB_Music_album,home)</onunload>
+	<onunload>ClearProperty(HUB_containerpath_albums,home)</onunload>
+	<onunload>ClearProperty(HUB_containerpath_songs,home)</onunload>
 	
 	<!-- conditional temp -->
 	<onunload condition="!String.IsEqual(Window(home).Property(HUB_Music),compilations)">ClearProperty(HUB_Music,home)</onunload>
@@ -436,7 +430,7 @@ currentlyplaying,playlist righ 8000
 				<include content="emptywidget">
 					<param name="id" value="$PARAM[id]" />
 				</include>
-				<content target="music" sortby="$INFO[Window.Property(110_sortby)]" sortorder="$INFO[Window.Property(110_sortorder)]" limit="0">$VAR[HUB_content_artists_TEST]</content>
+				<content target="music" sortby="$INFO[Window.Property(110_sortby)]" sortorder="$INFO[Window.Property(110_sortorder)]" limit="0">$VAR[filtercontent_artists_contains_artist]</content>
 				<!-- <content limit="18" sortby="label" sortorder="$INFO[Window.Property(110_sortorder)]" target="music">$VAR[HUB_content_artists]</content> -->
 				<!-- <content sortby="label" sortorder="$INFO[Window.Property(110_sortorder)]" target="music">$VAR[HUB_content_artists_TEST]</content> -->
 			
@@ -491,7 +485,7 @@ currentlyplaying,playlist righ 8000
 				<include content="emptywidget">
 					<param name="id" value="PARAM[id]" />
 				</include>
-				<content limit="18" sortby="year" sortorder="ascending">$VAR[HUB_content_albums_artist_or_title]</content>
+				<content limit="18" sortby="year" sortorder="ascending">$VAR[filtercontent_albums_contains_albumartist_or_album]</content>
 			</include>
 		</control>
 		
@@ -550,9 +544,9 @@ currentlyplaying,playlist righ 8000
 					</control>
 				</focusedlayout>
 				<include content="emptywidget">
-					<param name="id" value="04" />
+					<param name="id" value="$PARAM[id]" />
 				</include>
-				<content limit="18" sortby="title" sortorder="ascending">$VAR[HUB_content_songs_title_or_artist]</content>
+				<content limit="18" sortby="title" sortorder="ascending">$VAR[filtercontent_songs_contains_title_or_artist]</content>
 			</include>
 			
 			
@@ -668,7 +662,7 @@ currentlyplaying,playlist righ 8000
 				<include content="emptywidget">
 					<param name="id" value="$PARAM[id]" />
 				</include>
-				<content limit="18" sortby="artist" sortorder="" target="videos">$VAR[HUB_content_musicvideo_titles_or_artist]</content>
+				<content limit="18" sortby="artist" sortorder="" target="videos">$VAR[filtercontent_musicvideos_contains_title_or_artist]</content>
 			</include>
 		</control>
 		
@@ -729,9 +723,9 @@ currentlyplaying,playlist righ 8000
 				</control>
 			</focusedlayout>
 			<include content="emptywidget">
-				<param name="id" value="10" />
+				<param name="id" value="$PARAM[id]" />
 			</include>
-			<content sortby="artist" target="music">$VAR[HUB_content_artists]</content>
+			<content sortby="artist" target="music">$VAR[filtercontent_artists_contains_artist]</content>
 		</include>
 		
 		
@@ -915,9 +909,9 @@ currentlyplaying,playlist righ 8000
 				</control>
 			</focusedlayout>
 			<include content="emptywidget">
-				<param name="id" value="20" />
+				<param name="id" value="$PARAM[id]" />
 			</include>
-			<content sortby="year" sortorder="ascending" limit="0">$VAR[HUB_content_albums_title]</content>
+			<content sortby="year" sortorder="ascending" limit="0">$VAR[filtercontent_albums_contains_album]</content>
 		</include>
 		
 		<!-- let it filter ? -->
@@ -962,7 +956,7 @@ currentlyplaying,playlist righ 8000
 				</control>
 			</focusedlayout>
 			<include content="emptywidget">
-				<param name="id" value="26" />
+				<param name="id" value="$PARAM[id]" />
 			</include>
 			<content target="music" sortby="year">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22type%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22soundtrack%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</content>
 		</include>
@@ -1009,7 +1003,7 @@ currentlyplaying,playlist righ 8000
 				</control>
 			</focusedlayout>
 			<include content="emptywidget">
-				<param name="id" value="27" />
+				<param name="id" value="$PARAM[id]" />
 			</include>
 			<content target="music" sortby="year">musicdb://compilations/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22type%22%2C%22operator%22%3A%22doesnotcontain%22%2C%22value%22%3A%5B%22soundtrack%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</content>
 		</include>
@@ -1064,10 +1058,10 @@ currentlyplaying,playlist righ 8000
 			</focusedlayout>
 			<content>
 				<include content="emptywidget">
-					<param name="id" value="18" />
+					<param name="id" value="$PARAM[id]" />
 				</include>
 			  </content>
-			<content sortby="title" sortorder="ascending">$VAR[HUB_content_songs_title]</content>
+			<content sortby="title" sortorder="ascending">$VAR[filtercontent_songs_contains_title]</content>
 		</include>
 		
 		
@@ -1128,7 +1122,7 @@ currentlyplaying,playlist righ 8000
 				</control>
 			</focusedlayout>
 			<include content="emptywidget">
-				<param name="id" value="41" />
+				<param name="id" value="$PARAM[id]" />
 			</include>
 			
 			<content>plugin://plugin.audio.soundcloud/charts/?action=top</content>
@@ -1334,7 +1328,7 @@ currentlyplaying,playlist righ 8000
 						</control>
 					</control>
 				</focusedlayout>
-				<content target="music">$VAR[Container_HUB_5030_Genre_artists]</content>
+				<content target="music">$VAR[5031_artists_by_genre]</content>
 			</include>
 			<include content="HUB_ContainerHeader">
 				<param name="id" value="32" />
@@ -1377,7 +1371,7 @@ currentlyplaying,playlist righ 8000
 					</control>
 				</focusedlayout>
 				
-				<content target="music">$VAR[Container_HUB_5030_Genre_albums]</content>
+				<content target="music">$VAR[5032_albums_by_genre]</content>
 			</include>
 			<include content="HUB_ContainerHeader">
 				<param name="id" value="33" />
@@ -1418,7 +1412,7 @@ currentlyplaying,playlist righ 8000
 					</control>
 				</focusedlayout>
 				
-				<content target="music">$VAR[Container_HUB_5030_Genre_songs]</content>
+				<content target="music">$VAR[5033_songs_by_genre]</content>
 			</include>
 			<!-- 
 			<include content="HUB_ContainerHeader">
@@ -1564,7 +1558,7 @@ currentlyplaying,playlist righ 8000
 					</control>
 				</focusedlayout>
 				
-				<content target="music">musicdb://years/$INFO[Container(5035).ListItem.label]/</content>
+				<content target="music">$VAR[5036_albums_by_year]</content>
 			</include>
 			<include content="HUB_ContainerHeader">
 				<param name="id" value="37" />
@@ -1606,7 +1600,7 @@ currentlyplaying,playlist righ 8000
 					</control>
 				</focusedlayout>
 				
-				<content target="music">musicdb://years/$INFO[Container(5035).ListItem.label]/-1/?year=$INFO[Container(5035).ListItem.label]</content>
+				<content target="music">$VAR[5037_songs_by_year]</content>
 			</include>
 			<include content="HUB_ContainerHeader">
 				<param name="id" value="38" />
@@ -1650,8 +1644,7 @@ currentlyplaying,playlist righ 8000
 					</control>
 				</control>
 			</focusedlayout>
-				
-				<content sortby="rating" target="videos">$VAR[Container_HUB_5035_Year_musicvideos]</content>
+			<content sortby="rating" target="videos">$VAR[5038_musicvideos_by_year]</content>
 			</include>
 		</control>
 		
@@ -1695,7 +1688,7 @@ currentlyplaying,playlist righ 8000
 				</control>
 			</focusedlayout>
 				<include content="emptywidget">
-					<param name="id" value="28" />
+					<param name="id" value="$PARAM[id]" />
 				</include>
 			<content target="music" sortby="dateadded" sortorder="descending" limit="25">$VAR[HUB_content_albums_title]</content>
 		</include>
@@ -1741,7 +1734,7 @@ currentlyplaying,playlist righ 8000
 				</control>
 			</focusedlayout>
 				<include content="emptywidget">
-					<param name="id" value="29" />
+					<param name="id" value="$PARAM[id]" />
 				</include>
 				<content target="music" sortorder="ascending">musicdb://recentlyplayedalbums/</content>
 		</include>
@@ -1787,7 +1780,7 @@ currentlyplaying,playlist righ 8000
 				</control>
 			</focusedlayout>
 				<include content="emptywidget">
-					<param name="id" value="77" />
+					<param name="id" value="$PARAM[id]" />
 				</include>
 				<content target="videos" sortorder="ascending">videodb://recentlyaddedmusicvideos/</content>
 		</include>
@@ -1903,7 +1896,7 @@ currentlyplaying,playlist righ 8000
 				</control>
 			</focusedlayout>
 			<include content="emptywidget">
-				<param name="id" value="30" />
+				<param name="id" value="$PARAM[id]" />
 			</include>
 			<content target="videos" sortby="file" limit="25">plugin://plugin.video.youtube/search/?q=$INFO[Control.GetLabel(8001).index(1)]</content>
 		</control> -->
@@ -1978,7 +1971,7 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 				</control>
 			</focusedlayout>
 			<include content="emptywidget">
-				<param name="id" value="40" />
+				<param name="id" value="5040" />
 			</include>
 			
 			<content target="music">$INFO[Container(9042).ListItem.Folderpath]</content>
@@ -1993,13 +1986,13 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<left>800</left>
 			<height>275</height>
 			<width>100%</width>
-			<visible>String.IsEqual(Window(home).Property(HUB_Music),IsHUBartistContent) | String.IsEqual(Window(home).Property(HUB_Music),IsHUBalbumContent)</visible>
+			<visible>!String.IsEmpty(Window(home).Property(HUB_containerpath_albums)) | !String.IsEmpty(Window(home).Property(HUB_containerpath_songs))</visible>
 			<control type="label" id="6021">
 				<top>25</top>
 				<aligny>top</aligny>
 				<width>100%</width>
 				<font>font_titlefallbackspotlight</font>
-				<label>$INFO[Window(home).Property(HUB_Music_artist)]</label>
+				<label>$INFO[Container(5120).ListItem.Artist]</label>
 				<textcolor>$VAR[color_hub_text_main]</textcolor>
 			</control>
 			<control type="label" id="6020001">
@@ -2041,7 +2034,7 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 		
 		<control type="grouplist" id="6023">
 			<description>albums and song - by artist</description>
-			<visible>String.IsEqual(Window(home).Property(HUB_Music),IsHUBartistContent) | String.IsEqual(Window(home).Property(HUB_Music),IsHUBalbumContent)</visible>
+			<visible>!String.IsEmpty(Window(home).Property(HUB_containerpath_albums)) | !String.IsEmpty(Window(home).Property(HUB_containerpath_songs))</visible>
 			<left>0</left>
 			<height>700</height>
 			<width>100%</width>
@@ -2055,8 +2048,20 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<onleft>9000</onleft>
 			<onright>7060</onright>
 			
+			<control type="image" id="6099">
+				<visible>!String.IsEmpty(Window(home).Property(HUB_containerpath_songs))</visible>
+				<height>260</height>
+				<texture background="true" diffuse="artworkdiffuse_unthemed/thumb.png" fallback="defaultaudio.png">$INFO[Container(5121).ListItem.Art(thumb)]</texture>
+				<bordersize>2</bordersize>
+				<bordertexture colordiffuse="$VAR[color_hub_text_main]">artworkdiffuse_unthemed/thumbborder.png</bordertexture>
+				<aspectratio scalediffuse="true" align="left" aligny="top">keep</aspectratio>
+			</control>
+			
 			<control type="list" id="5120">
 				<description>albums by artist</description>
+				<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(5120).NumItems,0) | Container(5120).IsUpdating">Conditional</animation>
+				<visible>!String.IsEmpty(Window(home).Property(HUB_containerpath_albums))</visible>
+				
 				<top>100</top>
 				<height>260</height>
 				<preloaditems>2</preloaditems>
@@ -2140,11 +2145,14 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 					</control>
 					
 				</focusedlayout>
-				<content sortby="artistthanyear" sortorder="ascending">$VAR[HUB_Albums_by_Artist]</content>
+				<content sortby="artistthanyear" sortorder="ascending">$VAR[5120_albums]</content>
 			</control>
 			
 			
 			<control type="panel" id="5121">
+				<!-- <visible allowhiddenfocus="true">[!String.IsEmpty(Window(home).Property(HUB_containerpath_songs)) | !String.IsEmpty(Window(home).Property(HUB_containerpath_albums))] + [Integer.IsGreater(Container(5121).NumItems,0) | Container(5121).IsUpdating]</visible> -->
+				<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(5121).NumItems,0) | Container(5121).IsUpdating">Conditional</animation>
+				
 				<width>1020</width>
 				<height>280</height>
 				<preloaditems>2</preloaditems>
@@ -2205,7 +2213,7 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 					</control>
 				</control>
 				</focusedlayout>
-				<content target="music" sortby="tracknumber" sortorder="ascending">$INFO[Container(5120).ListItem.FolderPath]</content>
+				<content target="music" sortby="tracknumber" sortorder="ascending">$VAR[5121_songs]</content>
 			</control>
 		</control>
 	</control>
@@ -2436,7 +2444,6 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 				
 				<!-- <onclick>ActivateWindow(Music,special://musicplaylists/,return)</onclick> -->
 				<onclick>SetProperty(HUB_Music,playlists,home)</onclick>
-				<onclick>SetProperty(XSP,$INFO[ListItem.Folderpath],home)</onclick>
 				
 				<scrolltime tween="quadratic">400</scrolltime>
 				<autoscroll>true</autoscroll>
@@ -2789,9 +2796,9 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<onup>500160</onup>
 			<ondown>500160</ondown>
 			
-			<onright condition="[Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">SetProperty(CurrentPlaylistVisible,true)</onright>
-			<onright condition="[Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">SetFocus(7000)</onright>
-			<onright condition="[!Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">5001</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0) + !Container(7000).IsUpdating">SetProperty(CurrentPlaylistVisible,true)</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0) + !Container(7000).IsUpdating">SetFocus(7000)</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">5001</onright>
 			<onleft>6666</onleft>
 			<height>800</height>
 		</control>
@@ -2807,9 +2814,9 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<onup>500260</onup>
 			<ondown>500260</ondown>
 			
-			<onright condition="[Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">SetProperty(CurrentPlaylistVisible,true)</onright>
-			<onright condition="[Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">SetFocus(7000)</onright>
-			<onright condition="[!Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">5002</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0) + !Container(7000).IsUpdating">SetProperty(CurrentPlaylistVisible,true)</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0) + !Container(7000).IsUpdating">SetFocus(7000)</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">5002</onright>
 			<onleft>6666</onleft>
 			<height>800</height>
 		</control>
@@ -2825,9 +2832,9 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<onup>500460</onup>
 			<ondown>500460</ondown>
 			
-			<onright condition="[Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">SetProperty(CurrentPlaylistVisible,true)</onright>
-			<onright condition="[Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">SetFocus(7000)</onright>
-			<onright condition="[!Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">5004</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0) + !Container(7000).IsUpdating">SetProperty(CurrentPlaylistVisible,true)</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0) + !Container(7000).IsUpdating">SetFocus(7000)</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">5004</onright>
 			<onleft>6666</onleft>
 			
 		</control>
@@ -2844,9 +2851,9 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<onup>500760</onup>
 			<ondown>500760</ondown>
 			
-			<onright condition="[Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">SetProperty(CurrentPlaylistVisible,true)</onright>
-			<onright condition="[Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">SetFocus(7000)</onright>
-			<onright condition="[!Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">5007</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0) + !Container(7000).IsUpdating">SetProperty(CurrentPlaylistVisible,true)</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0) + !Container(7000).IsUpdating">SetFocus(7000)</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">5007</onright>
 			<onleft>6666</onleft>
 			
 		</control>
@@ -2863,9 +2870,9 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<onup>501560</onup>
 			<ondown>501560</ondown>
 			
-			<onright condition="[Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">SetProperty(CurrentPlaylistVisible,true)</onright>
-			<onright condition="[Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">SetFocus(7000)</onright>
-			<onright condition="[!Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">5020</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0) + !Container(7000).IsUpdating">SetProperty(CurrentPlaylistVisible,true)</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0) + !Container(7000).IsUpdating">SetFocus(7000)</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">5020</onright>
 			<onleft>6666</onleft>
 			
 		</control>
@@ -2882,9 +2889,9 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<onup>502660</onup>
 			<ondown>502660</ondown>
 			
-			<onright condition="[Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">SetProperty(CurrentPlaylistVisible,true)</onright>
-			<onright condition="[Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">SetFocus(7000)</onright>
-			<onright condition="[!Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">5026</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0) + !Container(7000).IsUpdating">SetProperty(CurrentPlaylistVisible,true)</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0) + !Container(7000).IsUpdating">SetFocus(7000)</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">5026</onright>
 			<onleft>6666</onleft>
 			
 		</control>
@@ -2901,9 +2908,9 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<onup>501860</onup>
 			<ondown>501860</ondown>
 			
-			<onright condition="[Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">SetProperty(CurrentPlaylistVisible,true)</onright>
-			<onright condition="[Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">SetFocus(7000)</onright>
-			<onright condition="[!Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">5018</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0) + !Container(7000).IsUpdating">SetProperty(CurrentPlaylistVisible,true)</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0) + !Container(7000).IsUpdating">SetFocus(7000)</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">5018</onright>
 			<onleft>6666</onleft>
 			
 		</control>
@@ -2928,32 +2935,37 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 		
 		
 	<include content="swan_debug_overlay">
-	<param name="textleft" value="
-	
-  110_sortorder     $INFO[Window.Property(110_sortorder)]
+	<param name="textleft" value="110_sortorder     $INFO[Window.Property(110_sortorder)]
   110_sortby        $INFO[Window.Property(110_sortby)]
   ContainerID       $INFO[Window(1111).Property(ContainerID)]
   ContainerID       $INFO[Window.Property(ContainerID)]
   ForcedelayedFocus $INFO[Window.Property(ForcedelayedFocus)]
-  
-  
-  PROPS
+  ###
+  [COLOR orange]HUB PROPERTYS[/COLOR]
+ HUB_Music ( = Current)  : $INFO[Window(home).Property(HUB_Music),[COLOR cyan][B],[/B][/COLOR]]    [CR]     HUB_Music_PrevProp : $INFO[Window(home).Property(HUB_Music_PrevProp),[COLOR cyan][B],[/B][/COLOR]]   |   HUB_Music_PrevID : $INFO[Window(home).Property(HUB_Music_PrevID),[COLOR cyan][B],[/B][/COLOR]]
+ Window(home).Property(HUB_artwork) : $INFO[Window(home).Property(HUB_artwork),[COLOR cyan][B],[/B][/COLOR]]
+ HUB_containerpath_songs $INFO[Window(home).Property(HUB_containerpath_songs),[COLOR cyan][B],[/B][/COLOR]]  
+ HUB_containerpath_albums $INFO[Window(home).Property(HUB_containerpath_albums),[COLOR cyan][B],[/B][/COLOR]]  
 
-    
-	artistHUB_dbid $INFO[Window(home).Property(artistHUB_dbid)]
-    albumHUB_dbid $INFO[Window(home).Property(albumHUB_dbid)]
+[COLOR orange]CURRENT[/COLOR]
+  $INFO[System.CurrentControlID,Container(,).CurrentItem] : $INFO[ListItem.CurrentItem,[COLOR cyan][B],[/B][/COLOR]]
+  ListItem.dbtype  $INFO[ListItem.dbtype,[COLOR cyan][B],[/B][/COLOR]]  |   ListItem.dbid  $INFO[ListItem.dbid,[COLOR cyan][B],[/B][/COLOR]] 
+  ListItem.DiscNumber  $INFO[ListItem.DiscNumber,[COLOR cyan][B],[/B][/COLOR]]   /   TotalDiscs $INFO[ListItem.TotalDiscs,[COLOR cyan][B],[/B][/COLOR]] DiscTitle $INFO[ListItem.DiscTitle,[COLOR cyan][B],[/B][/COLOR]]
 
-    HUB_EncodedValue $INFO[Window(home).Property(HUB_EncodedValue)]
-	
-    HUB_Music $INFO[Window(home).Property(HUB_Music)]
-    HUB_artistinfo $INFO[Window(home).Property(HUB_artistinfo)]
-    HUB_albuminfo $INFO[Window(home).Property(HUB_albuminfo)]
-    HUB_artwork $INFO[Window(home).Property(HUB_artwork)]
-    HUB_dbid $INFO[Window(home).Property(HUB_dbid)]
+  Container.ListItem.FileNameAndPath : $INFO[Container.ListItem.FilenameAndPath,[COLOR cyan][B],[/B][/COLOR]]
+  ListItem.FileNameAndPath : $INFO[ListItem.FileNameAndPath,[COLOR cyan][B],[/B][/COLOR]]
+  ListItem.Path : $INFO[ListItem.Path,[COLOR cyan][B],[/B][/COLOR]]
+  ListItem.FolderName : $INFO[ListItem.FolderName,[COLOR cyan][B],[/B][/COLOR]]    ListItem.FileName : $INFO[ListItem.FileName,[COLOR cyan][B],[/B][/COLOR]]
+  ListItem.FolderPath : $INFO[ListItem.FolderPath,[COLOR cyan][B],[/B][/COLOR]]
+  ListItem.FileExtension : $INFO[ListItem.FileExtension,[COLOR cyan][B],[/B][/COLOR]]
 
-    HUB_Music_artist $INFO[Window(home).Property(HUB_Music_artist)]
-    HUB_Music_album $INFO[Window(home).Property(HUB_Music_album)
+FileNameAndPath playlistmusic:// = Container(7000).ListItem.FileNameAndPath : $INFO[Container(7000).ListItem.FileNameAndPath,[COLOR cyan][B],[/B][/COLOR]]
+Path playlistmusic:// = Container(7000).ListItem.Path : $INFO[Container(7000).ListItem.Path,[COLOR cyan][B],[/B][/COLOR]]
+FolderName playlistmusic:// = Container(7000).ListItem.FolderName : $INFO[Container(7000).ListItem.FolderName,[COLOR cyan][B],[/B][/COLOR]]
+FolderPath playlistmusic:// = Container(7000).ListItem.FolderPath : $INFO[Container(7000).ListItem.FolderPath,[COLOR cyan][B],[/B][/COLOR]]
 
+stored playlists Container(9042).ListItem.Folderpath  :  $INFO[Container(9042).ListItem.Folderpath]
+stored playlists ontainer(9042).ListItem.FileNameAndPath  :  $INFO[Container(9042).ListItem.FileNameAndPath]
 "/>
 	</include>
 	</controls>
