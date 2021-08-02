@@ -12,7 +12,6 @@
 	
 	<include name="MusicOSD_CommonPlaylist">
 		<control type="group">
-			<visible>!Skin.HasSetting(MusicOSD_SmallPlaylist)</visible>
 			
 			<control type="image">
 				<left>35%</left>
@@ -41,19 +40,10 @@
 					<align>center</align>
 					<preloaditems>2</preloaditems>
 					<orientation>vertical</orientation>
-					<!-- for fixedlist
-					<focusposition>4</focusposition>
-					<movement>0</movement>
-					-->
 					<onup>699</onup>
 					<ondown>699</ondown>
 					<onleft>Dialog.Close(1140)</onleft>
 					<onclick>RunScript(script.embuary.helper,action=playall,id=499,type=music,method=fromhere)</onclick>
-					<!-- <onclick>RunScript(script.embuary.helper,action=resetposition,container=499)</onclick> -->
-					
-					<!-- test musicvideo windowed playback fail due to stop n open video
-					<onclick>PlayMedia($INFO[Container(499).ListItem.Filenameandpath],1)</onclick> -->
-					
 					<onright condition="Control.IsVisible(49960)">49960</onright>
 					<onright condition="!Control.IsVisible(49960)">Dialog.Close(1140)</onright>
 					
@@ -93,7 +83,6 @@
 						</control>
 					</itemlayout>
 					<focusedlayout height="100">
-							
 						<control type="group">
 							<height>90</height>
 							<control type="image">
@@ -139,7 +128,6 @@
 						</control>
 					</focusedlayout>
 					<content target="music">playlistmusic://</content>
-					<!-- <content target="videos">videodb://musicvideos/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(MusicPlayer_EncodedArtist)]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</content> -->
 				</control>
 				<control type="scrollbar" id="49960">
 					<right>-20</right>
@@ -149,13 +137,11 @@
 					<onleft>499</onleft>
 					<onright>499</onright>
 				</control>
-				
 			</control>
 		</control>
 	</include>
 	<include name="MusicOSD_SmallPlaylist">
 		<control type="group">
-			<visible>Skin.HasSetting(MusicOSD_SmallPlaylist) | [Window.IsActive(home) + String.IsEqual(Skin.String(HomeLayout),MenuTiles)]</visible>
 			
 			<animation effect="slide" start="0,120" end="0,0" time="250">WindowOpen</animation>
 			<animation effect="slide" start="0,0" end="0,120" time="250">WindowClose</animation>
@@ -193,15 +179,10 @@
 				<preloaditems>2</preloaditems>
 				<orientation>vertical</orientation>
 				
-				<!-- <focusposition>0</focusposition> -->
-				
 				<onup>699</onup>
 				
 				<onclick>RunScript(script.embuary.helper,action=playall,id=499,type=music,method=fromhere)</onclick>
 				
-				<!-- <onclick>RunScript(script.embuary.helper,action=resetposition,container=499)</onclick> -->
-				<!-- <onclick>Control.SetFocus(499,0,absolute)</onclick> -->
-					<!-- inconsistent set focus absolute ? seems focus is set before item refreshed for playback -->
 				<onleft>Dialog.Close(1140)</onleft>
 				<onright>49960</onright>
 				<pagecontrol>49960</pagecontrol>
