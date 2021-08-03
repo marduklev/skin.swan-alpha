@@ -396,33 +396,33 @@
 
 	<!-- JUST TESTING merge later -->
 	<include name="HUB_Landscape">
-		<control type="image">
-			<description>bordertexture should not match a default white image fallback</description>
-            <texture>artworkdiffuse/landscape.png</texture>
+		<control type="image">	
+			<description>BG (FAKE) FRAME : fullfilled layer 0 , instead of using 'artworkdiffuse/**border.png'</description>
+			<texture>artworkdiffuse/landscape.png</texture>
 			<colordiffuse>$PARAM[colordiffuse]</colordiffuse>
 			<bordersize>$PARAM[bordersize_bg]</bordersize>
         </control>
 		<control type="image">
-			<description>temp workaround for def white or very bright border, may an if not cond needed def icons</description>
-			<texture colordiffuse="66131313">artworkdiffuse/landscape.png</texture>
+			<description>ARTWORK : workaround icons with alpha00</description>
+			<texture colordiffuse="$VAR[color_hub_backgroundlayer1]">artworkdiffuse/landscape.png</texture>
 			<bordersize>8</bordersize>
-			<visible>String.Contains(ListItem.Icon,default)</visible>
-        </control>
+			<visible>String.StartsWith(ListItem.Icon,default) | String.IsEqual(ListItem.Label,$LOCALIZE[284])</visible>
+		</control>
 		<control type="image">
-			<description>kodi default, aspectratio scalediffuse="true" aligny="center" align="center">stretch</description>
+			<description>ARTWORK : kodi default, aspectratio scalediffuse="true" aligny="center" align="center">stretch</description>
 			<texture background="true" diffuse="artworkdiffuse/landscape.png">$VAR[ImageLayout_landscape]</texture>
 			<bordersize>8</bordersize>
 			<visible>!String.IsEmpty(ListItem.Art(landscape))</visible>
 		</control>
 		<control type="image">
-			<description>Fallback aspect keep</description>
+			<description>ARTWORK : Fallback aspect keep</description>
 			<texture background="true" diffuse="artworkdiffuse/landscape.png">$VAR[ImageLayout_landscape]</texture>
 			<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
 			<bordersize>8</bordersize>
 			<visible>String.IsEmpty(ListItem.Art(landscape))</visible>
 		</control>
 		<control type="group">
-			<description>ClearLogo Overlay - fanart</description>
+			<description>ARTWORK OVERLAY: ClearLogo Overlay - fanart</description>
 			<control type="image">
 				<visible>
 					[String.IsEmpty(ListItem.Art(artist.landscape)) +
@@ -444,6 +444,7 @@
 			</control>
 		</control>
 		<control type="textbox">
+			<description>BOTTOM TAGs : </description>
 			<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
 			<bottom>-55</bottom>
 			<left>10</left>
@@ -467,7 +468,13 @@
 			<bordersize>$PARAM[bordersize_bg]</bordersize>
         </control>
 		<control type="image">
-		<description>get better diffuse, keep gradient</description>
+			<description>ARTWORK : workaround icons with alpha00</description>
+			<texture colordiffuse="$VAR[color_hub_backgroundlayer1]">artworkdiffuse_unthemed/square.png</texture>
+			<bordersize>8</bordersize>
+			<visible>String.StartsWith(ListItem.Icon,default) | String.IsEqual(ListItem.Label,$LOCALIZE[284])</visible>
+		</control>
+		<control type="image">
+			<description>get better diffuse, keep gradient</description>
 			<texture background="true" diffuse="artworkdiffuse_unthemed/square.png" fallback="DefaultAudio.png">$VAR[ImageLayout_square]</texture>
 			<bordersize>8</bordersize>
 		</control>
@@ -591,14 +598,23 @@
 			<colordiffuse>FF202020</colordiffuse>
 			<bordersize>3</bordersize>
 		</control>
+			
 		<control type="image">
-			<description>thumb vis on prop yy</description>
+			<description>ARTWORK : workaround icons with alpha00</description>
 			<centertop>50%</centertop>
-			<visible>true</visible>
+			<width>90</width>
+			<height>90</height>
+			<texture colordiffuse="$VAR[color_hub_backgroundlayer1]">artworkdiffuse/circle.png</texture>
+			<bordersize>2</bordersize>
+			<visible>String.StartsWith(ListItem.Icon,default) | String.IsEqual(ListItem.Label,$LOCALIZE[284])</visible>
+		</control>	
+		<control type="image">
+			<description>ARTWORK : </description>
+			<centertop>50%</centertop>
 			<width>90</width>
 			<height>90</height>
 			<texture background="true" diffuse="artworkdiffuse/circle.png" fallback="DefaultAudio.png">$INFO[ListItem.Art(thumb)]</texture>
-			<bordertexture colordiffuse="white">artworkdiffuse/circle.png</bordertexture>
+			<bordertexture colordiffuse="white">artworkdiffuse/circleborder.png</bordertexture>
 			<bordersize>2</bordersize>
 		</control>
 		<control type="image">
@@ -657,7 +673,7 @@
 	
 	<include name="HUB_box_test">
 		<control type="image">
-			<visible>String.IsEmpty(Window(home).Property(HUB_containerpath_albums)) + String.IsEmpty(Window(home).Property(HUB_containerpath_songs))</visible>
+			<visible>!String.IsEqual(Window(home).Property(HUB_Music),SongsByAlbum)</visible>
 			<left>50</left>
 			<bordertexture colordiffuse="$PARAM[colordiffuse]">artworkdiffuse/banner.png</bordertexture>
 			<texture background="true" diffuse="artworkdiffuse/banner.png" fallback="DefaultAudio.png">artworkdiffuse/banner.png</texture>
@@ -665,7 +681,7 @@
 			<bordersize>3</bordersize>
 		</control>
 		<control type="image">
-			<visible>String.IsEmpty(Window(home).Property(HUB_containerpath_albums)) + String.IsEmpty(Window(home).Property(HUB_containerpath_songs))</visible>
+			<visible>!String.IsEqual(Window(home).Property(HUB_Music),SongsByAlbum)</visible>
 			<description>thumb vis on prop yy</description>
 			<visible>true</visible>
 			<width>90</width>
@@ -964,7 +980,8 @@
 			<onclick condition="String.IsEmpty(ListItem.Art(fanart)) + !String.IsEmpty(ListItem.Art(landscape))">SetProperty(HUB_artwork,$INFO[ListItem.Art(fanart)],home)</onclick>
 			<onclick condition="String.IsEmpty(ListItem.Art(fanart)) + String.IsEmpty(ListItem.Art(landscape)) + !String.IsEmpty(ListItem.Art(thumb))">SetProperty(HUB_artwork,$INFO[ListItem.Art(thumb)],home)</onclick>
 
-			<onclick condition="true">ClearProperty(HUB_Music,home)</onclick>
+					<onclick condition="String.IsEqual(ListItem.dbtype,artist) | String.IsEqual(ListItem.dbtype,album)">SetProperty(HUB_Music,SongsByAlbum,home)</onclick>
+					<onclick condition="!String.IsEqual(ListItem.dbtype,artist) + !String.IsEqual(ListItem.dbtype,album)">SetProperty(HUB_Music,I DID SOMETHING WRonNG in CTRL $INFO[System.CurrentControlID],home)</onclick>
 			
 			<onclick condition="String.IsEqual(ListItem.dbtype,artist) | [String.IsEqual(ListItem.dbtype,album) + Integer.IsGreater(ListItem.TotalDiscs,1)]">SetProperty(HUB_containerpath_albums,$INFO[ListItem.FolderPath],home)</onclick>
 			<onclick condition="String.IsEqual(ListItem.dbtype,artist) | [String.IsEqual(ListItem.dbtype,album) + Integer.IsGreater(ListItem.TotalDiscs,1)]">AlarmClock(delayedfocus,SetFocus(5120,0,absolute),00:00,silent)</onclick>
@@ -980,13 +997,35 @@
 			<onback condition="!String.IsEmpty(Window(home).Property(HUB_containerpath_albums))">ClearProperty(HUB_containerpath_albums,home)</onback>
 			<onback condition="!String.IsEmpty(Window(home).Property(HUB_containerpath_songs))">ClearProperty(HUB_containerpath_songs,home)</onback>
 			<onback condition="!String.IsEmpty(Window(home).Property(HUB_Music_PrevProp))">SetProperty(HUB_Music,$INFO[Window(home).Property(HUB_Music_PrevProp)],home)</onback>
-			<onback condition="!String.IsEmpty(Window(home).Property(HUB_Music_PrevID))">AlarmClock(HuB_ForceFocusDelayed,SetFocus($INFO[Window(home).Property(HUB_Music_PrevID)]),00:00,silent)</onback>
+			<onback condition="!String.IsEmpty(Window(home).Property(HUB_Music_PrevID))">AlarmClock(delayedfocus,SetFocus($INFO[Window(home).Property(HUB_Music_PrevID)]),00:00,silent)</onback>
 			<onback>ClearProperty(HUB_artwork,home)</onback>
 					<onback condition="!String.IsEmpty(Window(home).Property(HUB_artistinfo))">ClearProperty(HUB_artistinfo,home)</onback>
 					<onback condition="!String.IsEmpty(Window(home).Property(HUB_albuminfo))">ClearProperty(HUB_albuminfo,home)</onback>
 			<onback>ClearProperty(HUB_Music_PrevID,home)</onback>
 			<onback>ClearProperty(HUB_Music_PrevProp,home)</onback>
 		</definition>
+	</include>
+	
+	<include name="Music_ConatinerUpdating">
+		<control type="group">
+			<visible>Container().IsUpdating</visible>
+			<top>-150</top>
+			<left>75</left>
+			<control type="image">
+				<top>270</top>
+				<texture colordiffuse="$VAR[color_hub_accent]" diffuse="colors/white50.png">icons/musicheadphone.png</texture>
+				<height>170</height>
+				<width>400</width>
+				<aspectratio align="center">keep</aspectratio>
+			</control>
+			<control type="image">
+				<top>210</top>
+				<texture colordiffuse="$VAR[color_hub_text_main]" diffuse="colors/white50.png">special://skin/extras/busy/busyload2.apng</texture>
+				<height>300</height>
+				<width>400</width>
+				<aspectratio align="center">keep</aspectratio>
+			</control>
+		</control>
 	</include>
 	
 	<!-- ####################### -->
