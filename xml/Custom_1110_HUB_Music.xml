@@ -92,8 +92,8 @@ default
 	
 	<onload condition="!String.IsEqual(Window(home).Property(HUB_Music),SongsByAlbum) + !String.IsEmpty(Window(home).Property(HUB_containerpath_albums))">ClearProperty(HUB_containerpath_albums,home)</onload>
 	<onload condition="!String.IsEqual(Window(home).Property(HUB_Music),SongsByAlbum) + !String.IsEmpty(Window(home).Property(HUB_containerpath_songs))">ClearProperty(HUB_containerpath_songs,home)</onload>
-		<onload condition="String.IsEqual(Window(home).Property(HUB_Music),SongsByAlbum) + !String.IsEmpty(Window(home).Property(HUB_containerpath_albums))">AlarmClock(delayedfocus,SetFocus(5120,0,absolute),00:00,silent)</onload>
-		<onload condition="String.IsEqual(Window(home).Property(HUB_Music),SongsByAlbum) + !String.IsEmpty(Window(home).Property(HUB_containerpath_songs))">AlarmClock(delayedfocus,SetFocus(5121,0,absolute),00:00,silent)</onload>
+		<onload condition="String.IsEqual(Window(home).Property(HUB_Music),SongsByAlbum) + !String.IsEmpty(Window(home).Property(HUB_containerpath_albums))">AlarmClock(delayedfocus,SetFocus(5120),00:00,silent)</onload>
+		<onload condition="String.IsEqual(Window(home).Property(HUB_Music),SongsByAlbum) + !String.IsEmpty(Window(home).Property(HUB_containerpath_songs))">AlarmClock(delayedfocus,SetFocus(5121),00:00,silent)</onload>
 	
 	
 	<!-- Next is working - onunaload clear can be used -->
@@ -738,6 +738,7 @@ default
 					</control>
 					<control type="image">
 						<centertop>50%</centertop>
+						<visible>!String.IsEqual(ListItem.Label,$LOCALIZE[284])</visible>
 						<visible>!ListItem.IsPlaying</visible>
 						<left>14</left>
 						<visible>true</visible>
@@ -1207,6 +1208,7 @@ default
 					<control type="image">
 						<centertop>50%</centertop>
 						<visible>!ListItem.IsPlaying</visible>
+						<visible>!String.IsEqual(ListItem.Label,$LOCALIZE[284])</visible>
 						<left>14</left>
 						<visible>true</visible>
 						<width>60</width>
@@ -2139,7 +2141,7 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<control type="panel" id="5120">
 				
 				<!-- <visible allowhiddenfocus="true">!String.IsEmpty(Window(home).Property(HUB_containerpath_albums)) + [Integer.IsGreater(Container(5120).NumItems,0) | Container(5120).IsUpdating]</visible> -->
-				<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(5120).NumItems,0) + !Container.(5120).IsUpdating">Conditional</animation>
+				
 				<visible>!String.IsEmpty(Window(home).Property(HUB_containerpath_albums))</visible>
 				<width>450</width>
 				<height>680</height>
@@ -2213,7 +2215,7 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 				</focusedlayout>
 				<content>
 					<item>
-						<visible>Container().IsUpdating</visible>
+						<visible>Container(5120).IsUpdating</visible>
 						<label />
                         <icon />
                         <thumb />
@@ -2278,6 +2280,7 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 					<control type="image">
 						<centertop>50%</centertop>
 						<visible>!ListItem.IsPlaying</visible>
+						<visible>!String.IsEqual(ListItem.Label,$LOCALIZE[284])</visible>
 						<left>14</left>
 						<visible>true</visible>
 						<width>40</width>
