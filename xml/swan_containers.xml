@@ -1,5 +1,121 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
+	<!-- if dont use themed art diffuse <param name="themed_prefix" value="_unthemed" /> -->
+	
+	<!-- also be proof for list fixedlist  control has focus(container_id)  -->
+	
+	
+	layout
+	circle - will get special
+	fanart
+	landscape
+	poster
+	square
+	thumb
+	
+	
+	<include name="new_dyn_item_template">
+		<param name="unthemed_prefix" default="" />
+	
+		<definition>
+		<control type="group">
+			<description>test for get new consistency in layouts</description>
+			<height>410</height>
+			<width>390</width>
+			
+			<!-- nested tag for stuff here e.g. is focused... -->
+			
+				<control type="image">
+					<description>DEGUB DELETE itemlayout SIZE</description>
+					<texture>colors/white20.png</texture>
+					<colordiffuse>$PARAM[debugdelete_layout_size_full_color]</colordiffuse>
+				</control>
+			
+			<control type="group">
+				<description>ARTWORK</description>
+				<centerleft>50%</centerleft>
+				<top>10</top>
+				<width>$PARAM[artwork_size_w]</width>
+				<height>$PARAM[artwork_size_h]</height>
+				
+					<control type="image">
+						<description>ARTWORK : BG / FRAME</description>
+						<texture diffuse="artworkdiffuse$PARAM[themed_prefix]/$PARAM[artwork_name]border.png">colors/white.png</texture>
+						<colordiffuse>$PARAM[artwork_frame_color]</colordiffuse>
+						<bordersize>$PARAM[artwork_bordersize]</bordersize>
+					</control>
+					
+					<control type="image">
+						<left>3</left>
+						<top>3</top>
+						<right>3</right>
+						<bottom>3</bottom>
+						<description>ARTWORK : workaround icons with alpha00 - fallback img</description>
+						<bordersize>8</bordersize>
+						<bordertexture colordiffuse="black">artworkdiffuse/fanart.png</bordertexture>
+						<texture background="true" colordiffuse="white" diffuse="artworkdiffuse$PARAM[themed_prefix]/$PARAM[artwork_name].png">$INFO[ListItem.Icon]</texture>
+						<visible>String.StartsWith(ListItem.Icon,default) | String.IsEqual(ListItem.Label,$LOCALIZE[284]) | [Container.Content(studios) | string.isequal(listitem.dbtype,studio))]</visible>
+					</control>
+					
+					
+					
+					<control type="image">
+						<description>ARTWORK : </description>
+						<bordersize>8</bordersize>
+						<bordertexture colordiffuse="red" diffuse="artworkdiffuse$PARAM[themed_prefix]/$PARAM[artwork_name].png">colors/white.png</bordertexture>
+						<texture background="true" diffuse="artworkdiffuse$PARAM[themed_prefix]/$PARAM[artwork_name].png">$VAR[ImageLayout_$PARAM[artwork_name]]</texture>
+						<visible>!String.StartsWith(ListItem.Icon,default) + !String.IsEqual(ListItem.Label,$LOCALIZE[284]) + !Container.Content(studios) + !string.isequal(listitem.dbtype,studio))</visible>
+					</control>
+				
+			</control>
+			
+			<control type="group">
+				<description>INFO DATA BOTTOM - exceed laout possible but not recommended </description>
+				
+				<centerleft>50%</centerleft>
+				<width>360</width>
+				
+				<top>$PARAM[artwork_size_h]</top>
+				<bottom>10</bottom>
+				
+				<control type="image">
+					<top>10</top>
+				
+					<description>itemlayout ARTWORK SIZE</description>
+					<texture>colors/white70.png</texture>
+					<colordiffuse>green</colordiffuse>
+				</control>
+				
+				<control type="textbox">
+					<top>10</top>
+					<left>10</left>
+					<right>10</right>
+					<height>30</height>
+					<font>CommonTag</font>
+					<align>left</align>
+					<aligny>center</aligny>
+					<textcolor>$VAR[color_hub_text_main]</textcolor>
+					<selectedcolor>white</selectedcolor>
+					<label>[B]line 1[/B]</label>
+				</control>
+				<control type="textbox">
+					<top>40</top>
+					<left>10</left>
+					<right>10</right>
+					<height>60</height>
+					<font>CommonTag</font>
+					<align>left</align>
+					<aligny>center</aligny>
+					<textcolor>$VAR[color_hub_text_main]</textcolor>
+					<selectedcolor>white</selectedcolor>
+					<label>line 2[CR]line 3</label>
+				</control>
+			</control>
+		</control>
+		
+		</definition>
+	</include>
+	
 	<include name="spotlight_hor_list_navigation_common">
 	
 		<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
