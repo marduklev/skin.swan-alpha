@@ -68,54 +68,68 @@
 				</control>
 			</control>
 				-->
-				<control type="panel" id="2100">
-					<onup>2300</onup>
-					<ondown>2200</ondown>
-					<height>1080</height>
-					<left>130</left>
+				<control type="fixedlist" id="2100">
 					<top>170</top>
-					
-					<height>370</height>
-					
+					<height>410</height>
+					<left>130</left>
 					<right>50</right>
 					
-					<orientation>vertical</orientation>
-			
+					<orientation>horizontal</orientation>
 					<preloaditems>2</preloaditems>
 					<scrolltime tween="quadratic">400</scrolltime>
+					
+					<onup>2300</onup>
+					<ondown>2200</ondown>
 					<onclick></onclick>
 					
-					<itemlayout height="410" width="390">
+					<itemlayout height="300" width="300">
 						<include content="new_dyn_item_template">
 							<param name="debugdelete_layout_size_full_color" value="black" />
-							<param name="unthemed_prefix" value="_unthemed" />
-							<param name="artwork_name" value="thumb" />
-							<param name="artwork_frame_color" value="cc131313" />
+							<param name="unthemed_postfix" value="" />
 							
+							<param name="layout_h" value="300" />
+							<param name="layout_w" value="300" />
+							
+							<param name="artwork_name" value="thumb" />
+								<param name="artwork_getclearlogo_bottom" value="false" />
+								
+							<param name="artwork_frame_color" value="cc131313" />
+							<param name="artwork_arscale_aligny" value="top" />
 							<param name="artwork_bordercolor" value="orange" />
-							<param name="artwork_size_w" value="300" />
-							<param name="artwork_size_h" value="300" />
-							<param name="artwork_bordersize" value="6" />
+							<param name="artwork_size_w" value="260" />
+							<param name="artwork_size_h" value="260" />
+							<param name="artwork_bordersize" value="3" />
 						</include>	
 					</itemlayout>
-					<focusedlayout height="410" width="390">
+					<focusedlayout height="300" width="200">
 						<include content="new_dyn_item_template">
 							<param name="debugdelete_layout_size_full_color" value="white" />
-							<param name="artwork_name" value="circle" />
+							<param name="unthemed_postfix" value="" />
+							
+							<param name="layout_h" value="300" />
+							<param name="layout_w" value="200" />
+							
+							<param name="artwork_name" value="thumb" />
+								<param name="artwork_getclearlogo_bottom" value="false" />
 							
 							<param name="artwork_frame_color" value="white" />
+							<param name="artwork_arscale_aligny" value="center" />
 							
-							<param name="artwork_size_w" value="300" />
-							<param name="artwork_size_h" value="300" />
+							<param name="artwork_size_w" value="200" />
+							<param name="artwork_size_h" value="200" />
 							<param name="artwork_debug_fullbg_color" value="red" />
 							<param name="artwork_bordercolor" value="green" />
-							<param name="artwork_bordersize" value="3" />
+							<param name="artwork_bordersize" value="4" />
 						</include>	
 					</focusedlayout>
 					<include content="emptywidget">
 						<param name="id" value="$PARAM[id]" />
 					</include>
-					<content sortby="year" sortorder="ascending" limit="0">$VAR[filtercontent_albums_contains_album]</content>
+					<content limit="3" sortby="year" sortorder="ascending">$VAR[filtercontent_albums_contains_album]</content>
+					<content limit="3" sortby="year" sortorder="ascending">videodb://movies/titles</content>
+					<content limit="3">special://skin/extras/preventfromzip/playlistvideo/studios.xsp</content>
+					<content limit="3">special://skin/extras/preventfromzip/playlistvideo/Test_descendingByYearGroupACTOR.xsp</content>
+					<content limit="3">special://skin/extras/preventfromzip/playlistvideo/fetchepisodethumbs.xsp</content>
 				</control>
 				
 				<control type="list" id="4000000">
@@ -191,7 +205,7 @@
 						</item>
 						<item>
 							<icon>defaultactor.png</icon>
-							<thumb>special://skin/extras/busy/skypishball.apng</thumb>
+							<thumb>special://skin/extras/preventfromzip/busy/skypishball.apng</thumb>
 							<label>updating</label>
 							<visible>Container(2100).IsUpdating</visible>
 						</item>
@@ -199,27 +213,27 @@
 					 -->
 					 
 	<!--  'year' seemsd not valid - always do sortby title ( but working when window(playlist) is is active ) -->
-					<content>special://profile/playlists/video/Test_descendingByYear_nogrouping.xsp</content> 
+					<content>special://skin/extras/preventfromzip/playlistvideo/Test_descendingByYear_nogrouping.xsp</content> 
 						<!--
 						videodb://movies/titles/?xsp=      {"limit":6,"order":{"direction":"descending","ignorefolders":0,"method":"year"},"rules":{"and":[{"field":"title","operator":"contains","value":["batman"]}]},"type":"movies"}
 						videodb://movies/titles/?xsp=      %7b%22limit%22%3a6%2c%22order%22%3a%7b%22direction%22%3a%22descending%22%2c%22ignorefolders%22%3a0%2c%22method%22%3a%22year%22%7d%2c%22rules%22%3a%7b%22and%22%3a%5b%7b%22field%22%3a%22title%22%2c%22operator%22%3a%22contains%22%2c%22value%22%3a%5b%22batman%22%5d%7d%5d%7d%2c%22type%22%3a%22movies%22%7d
 						 -->
 		
 	<!-- group actors	
-					<content>special://profile/playlists/video/Test_descendingByYearGroupACTOR.xsp</content> -->
+					<content>special://skin/extras/preventfromzip/playlistvideo/Test_descendingByYearGroupACTOR.xsp</content> -->
 					<!--
 					videodb://movies/actors/-1/?xsp=			 {"group":{"mixed":false,"type":"actors"},"order":{"direction":"descending","ignorefolders":0,"method":"year"},"rules":{"and":[{"field":"title","operator":"contains","value":["batman"]}]},"type":"movies"}
 					videodb://movies/actors/[ACTOR DB ID]/?xsp=  %7b%22group%22%3a%7b%22mixed%22%3afalse%2c%22type%22%3a%22actors%22%7d%2c%22order%22%3a%7b%22direction%22%3a%22descending%22%2c%22ignorefolders%22%3a0%2c%22method%22%3a%22year%22%7d%2c%22rules%22%3a%7b%22and%22%3a%5b%7b%22field%22%3a%22title%22%2c%22operator%22%3a%22contains%22%2c%22value%22%3a%5b%22batman%22%5d%7d%5d%7d%2c%22type%22%3a%22movies%22%7d	
 					-->
 <!-- 	group years				
-					<content>special://profile/playlists/video/Test_descendingByYearGroupYEAR.xsp</content> -->
+					<content>special://skin/extras/preventfromzip/playlistvideo/Test_descendingByYearGroupYEAR.xsp</content> -->
 					<!--
 																{"group":{"mixed":false,"type":"years"},"order":{"direction":"descending","ignorefolders":0,"method":"title"},"rules":{"and":[{"field":"title","operator":"contains","value":["ba"]}]},"type":"movies"}
 					videodb://movies/years/[YEAR DB ID]/?xsp=   %7b%22group%22%3a%7b%22mixed%22%3afalse%2c%22type%22%3a%22years%22%7d%2c%22order%22%3a%7b%22direction%22%3a%22descending%22%2c%22ignorefolders%22%3a0%2c%22method%22%3a%22title%22%7d%2c%22rules%22%3a%7b%22and%22%3a%5b%7b%22field%22%3a%22title%22%2c%22operator%22%3a%22contains%22%2c%22value%22%3a%5b%22ba%22%5d%7d%5d%7d%2c%22type%22%3a%22movies%22%7d
 					
 					-->
 	<!-- intended special case for group - omit group - depending on setting (bool show sets, it l show setitems/folder  ) ,omit the group HERE is needed for correct results (rating 250 order)	WHEN OUTSIDE OF MYVIDEONAV/MYPLAYLIST
-					<content>special://profile/playlists/video/imdbtop250.xsp</content>  -->
+					<content>special://skin/extras/preventfromzip/playlistvideo/imdbtop250.xsp</content>  -->
 					<!--
 					e.g. either  videodb://movies/sets/[SETID]/?setid=[SETID]&amp;?xsp=[XSP]) or videodb://movies/titles/135?xsp=[xsp]
 								{"limit":250,"order":{"direction":"ascending","ignorefolders":0,"method":"top250"},"rules":{"and":[{"field":"top250","operator":"isnot","value":["0"]}]},"type":"movies"}
@@ -228,7 +242,7 @@
 	
 	<!-- intended special case for group is set to 'none' , which is needed for correct results (rating 250 order) WHEN INSIDE MYPLAYLIST/VIDEONAV
 		, BUT WRONG RESULTS WHEN USE IN OTHER  WINDOWS - GROUP TAGS WILL NOT WORK CORRECT IN THAT SPECIAL CASE 
-					<content>special://profile/playlists/video/imdbtop250_no folders.xsp</content> -->
+					<content>special://skin/extras/preventfromzip/playlistvideo/imdbtop250_no folders.xsp</content> -->
 					<!--
 					videodb://movies/titles/  	{"group":{"mixed":false,"type":"none"},"limit":250,"order":{"direction":"ascending","ignorefolders":0,"method":"top250"},"rules":{"and":[{"field":"top250","operator":"isnot","value":["0"]}]},"type":"movies"}
 					videodb://movies/titles/ 	?xsp=%7b%22group%22%3a%7b%22mixed%22%3afalse%2c%22type%22%3a%22none%22%7d%2c%22limit%22%3a250%2c%22order%22%3a%7b%22direction%22%3a%22ascending%22%2c%22ignorefolders%22%3a0%2c%22method%22%3a%22top250%22%7d%2c%22rules%22%3a%7b%22and%22%3a%5b%7b%22field%22%3a%22top250%22%2c%22operator%22%3a%22isnot%22%2c%22value%22%3a%5b%220%22%5d%7d%5d%7d%2c%22type%22%3a%22movies%22%7d
@@ -267,10 +281,10 @@
 					<ondown>2300</ondown>
 				</control>
 				
-				<control type="grouplist" id="2201">
+				<control type="grouplist" id="2202">
 					<height>560</height>
 					<orientation>horizontal</orientation>
-					<control type="button" id="2202">
+					<control type="button" id="2203">
 						<font>Montserrat_ExtraBold_50</font>
 						<height>400</height>
 						<width>580</width>
@@ -281,7 +295,7 @@
 					
 						<ondown>2300</ondown>
 					</control>
-					<control type="button" id="2203">
+					<control type="button" id="2204">
 						<font>Montserrat_ExtraBold_50</font>
 						<top>400</top>
 						<height>560</height>
@@ -446,8 +460,8 @@
 			<left>100</left>
 			<width>900</width>
 			<height>200</height> -->
-			<texture border="50" colordiffuse="00ffffff" diffuse="themed/circle_100.png">themed/white_100_hardedge.png</texture>
-			<bordertexture border="50" colordiffuse="white" diffuse="themed/bordercircle_100.png">themed/white_100_hardedge.png</bordertexture>
+			<texture border="50" colordiffuse="00ffffff" diffuse="special://skin/extras/preventfromzip/themed/circle_100.png">special://skin/extras/preventfromzip/themed/white_100_hardedge.png</texture>
+			<bordertexture border="50" colordiffuse="white" diffuse="special://skin/extras/preventfromzip/themed/bordercircle_100.png">special://skin/extras/preventfromzip/themed/white_100_hardedge.png</bordertexture>
 			<bordersize>4</bordersize>
 			<aspectratio scalediffuse="false">stretch</aspectratio>
 		</control>

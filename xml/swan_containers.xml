@@ -5,89 +5,99 @@
 	<!-- also be proof for list fixedlist  control has focus(container_id)  -->
 	
 	
-	layout
-	circle - will get special
-	fanart
-	landscape
-	poster
-	square
-	thumb
-	
-	
 	<include name="new_dyn_item_template">
-		<param name="unthemed_prefix" default="" />
+		<param name="unthemed_postfix" default="" />
+		<param name="fallback_alpha_defaulticonbg_color" default="$VAR[color_global_background_layer2]" />
+		<param name="fallback_alpha_defaulticon_color" default="white" />
 	
 		<definition>
 		<control type="group">
 			<description>test for get new consistency in layouts</description>
-			<height>410</height>
-			<width>390</width>
+			<!-- 
+			<height>$PARAM[layout_h]</height>
+			<width>$PARAM[layout_w]</width>
+			-->
 			
-			<!-- nested tag for stuff here e.g. is focused... -->
+			<nested />
 			
-				<control type="image">
-					<description>DEGUB DELETE itemlayout SIZE</description>
-					<texture>colors/white20.png</texture>
-					<colordiffuse>$PARAM[debugdelete_layout_size_full_color]</colordiffuse>
-				</control>
+			<control type="image">
+				<visible>true</visible>
+				<description>DEGUB DELETE itemlayout SIZE</description>
+				<texture>colors/white20.png</texture>
+				<colordiffuse>$PARAM[debugdelete_layout_size_full_color]</colordiffuse>
+			</control>
 			
 			<control type="group">
 				<description>ARTWORK</description>
 				<centerleft>50%</centerleft>
-				<top>10</top>
 				<width>$PARAM[artwork_size_w]</width>
 				<height>$PARAM[artwork_size_h]</height>
 				
 					<control type="image">
 						<description>ARTWORK : BG / FRAME</description>
-						<texture diffuse="artworkdiffuse$PARAM[themed_prefix]/$PARAM[artwork_name]border.png">colors/white.png</texture>
+						<texture diffuse="artworkdiffuse$PARAM[unthemed_postfix]/$PARAM[artwork_name]border.png">colors/white.png</texture>
 						<colordiffuse>$PARAM[artwork_frame_color]</colordiffuse>
+					</control>
+					
+					<control type="image">
+						<description>ARTWORK : workaround icons with alpha00 - fallback img - </description>
+						<left>$PARAM[artwork_bordersize]</left>
+						<top>$PARAM[artwork_bordersize]</top>
+						<right>$PARAM[artwork_bordersize]</right>
+						<bottom>$PARAM[artwork_bordersize]</bottom>
 						<bordersize>$PARAM[artwork_bordersize]</bordersize>
+						<!-- white bg workaround <bordertexture colordiffuse="$PARAM[fallback_alpha_defaulticonbg_color]">artworkdiffuse$PARAM[unthemed_postfix]/$PARAM[artwork_name].png</bordertexture> -->
+						<bordertexture colordiffuse="green">artworkdiffuse$PARAM[unthemed_postfix]/$PARAM[artwork_name].png</bordertexture>
+						<texture background="true" colordiffuse="$PARAM[fallback_alpha_defaulticon_color]" diffuse="artworkdiffuse$PARAM[unthemed_postfix]/$PARAM[artwork_name].png" fallback="defaultstudios.png">$VAR[ImageLayout_$PARAM[artwork_name]]</texture>
+						<aspectratio scalediffuse="false">scale</aspectratio>
+						
+						<visible>String.StartsWith(ListItem.Icon,default) | String.IsEqual(ListItem.Label,$LOCALIZE[284]) | [Container.Content(studios) | string.isequal(listitem.dbtype,studio)]</visible>
 					</control>
-					
 					<control type="image">
-						<left>3</left>
-						<top>3</top>
-						<right>3</right>
-						<bottom>3</bottom>
-						<description>ARTWORK : workaround icons with alpha00 - fallback img</description>
-						<bordersize>8</bordersize>
-						<bordertexture colordiffuse="black">artworkdiffuse/fanart.png</bordertexture>
-						<texture background="true" colordiffuse="white" diffuse="artworkdiffuse$PARAM[themed_prefix]/$PARAM[artwork_name].png">$INFO[ListItem.Icon]</texture>
-						<visible>String.StartsWith(ListItem.Icon,default) | String.IsEqual(ListItem.Label,$LOCALIZE[284]) | [Container.Content(studios) | string.isequal(listitem.dbtype,studio))]</visible>
+						<description>ARTWORK : SCALED</description>
+						<bordersize>$PARAM[artwork_bordersize]</bordersize>
+						<texture background="true" diffuse="artworkdiffuse$PARAM[unthemed_postfix]/$PARAM[artwork_name].png">$VAR[ImageLayout_$PARAM[artwork_name]]</texture>
+						<visible>!String.StartsWith(ListItem.Icon,default) + !String.IsEqual(ListItem.Label,$LOCALIZE[284]) + !Container.Content(studios) + !string.isequal(listitem.dbtype,studio)</visible>
+						<aspectratio scalediffuse="false" align="center" aligny="$PARAM[artwork_arscale_aligny]">scale</aspectratio>
 					</control>
-					
-					
-					
-					<control type="image">
-						<description>ARTWORK : </description>
-						<bordersize>8</bordersize>
-						<bordertexture colordiffuse="red" diffuse="artworkdiffuse$PARAM[themed_prefix]/$PARAM[artwork_name].png">colors/white.png</bordertexture>
-						<texture background="true" diffuse="artworkdiffuse$PARAM[themed_prefix]/$PARAM[artwork_name].png">$VAR[ImageLayout_$PARAM[artwork_name]]</texture>
-						<visible>!String.StartsWith(ListItem.Icon,default) + !String.IsEqual(ListItem.Label,$LOCALIZE[284]) + !Container.Content(studios) + !string.isequal(listitem.dbtype,studio))</visible>
-					</control>
-				
 			</control>
 			
+			<include condition="$PARAM[artwork_getclearlogo_bottom]" content="listclearlogo_overlay_bottom">
+				<param name="group_width" value="$PARAM[layout_w]" />
+				<param name="width" value="$PARAM[artwork_size_w]" />
+			</include>
+		
+		
 			<control type="group">
-				<description>INFO DATA BOTTOM - exceed laout possible but not recommended </description>
-				
+				<description>INFO DATA BOTTOM - exceed laout possible but not recommended group height=layout h - artwork h , if omit it used container h</description>
+				<visible>!$PARAM[artwork_getclearlogo_bottom]</visible>
 				<centerleft>50%</centerleft>
-				<width>360</width>
-				
+				<width>$PARAM[artwork_size_w]</width>
 				<top>$PARAM[artwork_size_h]</top>
-				<bottom>10</bottom>
+				<!-- <height></height> -->
 				
 				<control type="image">
-					<top>10</top>
-				
-					<description>itemlayout ARTWORK SIZE</description>
+					<visible>false</visible>
+					<description>TAG : BG PANEL IMAGE</description>
 					<texture>colors/white70.png</texture>
 					<colordiffuse>green</colordiffuse>
+					<!-- <height>110</height> -->
 				</control>
 				
+				
+				
+				<control type="image">
+					<description>border round vs default - indicate path with Skin.CurrentTheme ? if not localized
+either put n use correct *xbt or use naming sheme - img h w = control h - indicate bg panel h - and belonging img name</description>
+<height>100</height>
+					<texture border="50" colordiffuse="cyan">special://skin/extras/preventfromzip/themed/tagpanel_$INFO[Skin.CurrentTheme].png</texture>
+					<aspectratio scalediffuse="false">stretch</aspectratio>
+				</control>
+				
+				
 				<control type="textbox">
-					<top>10</top>
+					<description>TAG : bold head disableable</description>
+					<top>8</top>
 					<left>10</left>
 					<right>10</right>
 					<height>30</height>
@@ -96,10 +106,11 @@
 					<aligny>center</aligny>
 					<textcolor>$VAR[color_hub_text_main]</textcolor>
 					<selectedcolor>white</selectedcolor>
-					<label>[B]line 1[/B]</label>
+					<label>[B]$INFO[Skin.CurrentTheme][/B]$INFO[System.GetBool(lookandfeel.skincolors)]</label>
 				</control>
 				<control type="textbox">
-					<top>40</top>
+					<description>TAG : info disableable</description>
+					<top>30</top>
 					<left>10</left>
 					<right>10</right>
 					<height>60</height>
@@ -108,13 +119,63 @@
 					<aligny>center</aligny>
 					<textcolor>$VAR[color_hub_text_main]</textcolor>
 					<selectedcolor>white</selectedcolor>
-					<label>line 2[CR]line 3</label>
+					<label>$INFO[ListItem.Label]$INFO[ListItem.Label2,[CR],]</label>
+				</control>
+			</control>
+			
+			<control type="group">
+				<description>Progress Overlay</description>
+				<centerleft>50%</centerleft>
+				<width>$PARAM[artwork_size_w]</width>
+				<top>$PARAM[artwork_size_h]</top>
+				
+				<control type="image">
+					<centerleft>50%</centerleft>
+					<top>3</top>
+					<height>3</height>
+					<width>97%</width> default, shrink in w if color is none + rounded, include bordersize ?
+					<texture colordiffuse="red">colors/white.png</texture>
 				</control>
 			</control>
 		</control>
 		
 		</definition>
 	</include>
+	
+	
+	
+	<include name="listclearlogo_overlay_bottom">
+		<control type="group">
+			<visible>$PARAM[artwork_getclearlogo_bottom]</visible>
+				
+			<width>$PARAM[group_width]</width>
+			<bottom>10</bottom>
+			<height>100</height>
+			
+			<control type="image">
+				<centerleft>50%</centerleft>
+				<visible>!String.IsEmpty(listitem.art(clearlogo))</visible>
+				<height>100</height>
+				<texture>$INFO[ListItem.Art(clearlogo)]</texture>
+				<aspectratio align="center" aligny="center">keep</aspectratio>
+			</control>
+			<control type="textbox">
+				<visible>String.IsEmpty(listitem.art(clearlogo))</visible>
+				<top>30</top>
+				<left>10</left>
+				<right>10</right>
+				<height>70</height>
+				<font>CommonTag</font>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>$VAR[color_hub_text_main]</textcolor>
+				<selectedcolor>white</selectedcolor>
+				<label>[B]$INFO[Skin.CurrentTheme][/B]$INFO[Skin.Font]</label>
+			</control>
+				
+		</control>
+	</include>
+	
 	
 	<include name="spotlight_hor_list_navigation_common">
 	
@@ -1354,6 +1415,8 @@ what a shit to do
 			<description>Taglines Bottom</description>
 			<visible>$PARAM[get_tags]</visible>
 			<visible>!String.IsEqual(ListItem.label,..)</visible>
+			
+			
 			<control type="image">
 				<visible>$PARAM[get_tagbgpanel]</visible>
 				<top>97%</top>
@@ -1361,6 +1424,18 @@ what a shit to do
 				<height>80</height>
 				<texture colordiffuse="$PARAM[bottompanelcolor]">artworkdiffuse/tagbottom/tagpanel$PARAM[artwork].png</texture>
 			</control>
+			
+			<control type="image">
+				<visible>$PARAM[get_tagbgpanel]</visible>
+				<visible>false</visible>
+				
+				<top>98%</top>
+				<height>80</height>
+				<bordersize>$PARAM[bordersize_bg],0,$PARAM[bordersize_bg],$PARAM[bordersize_bg]</bordersize>
+				<texture border="50,0,50,0" colordiffuse="$PARAM[bottompanelcolor]">special://skin/extras/preventfromzip/themed/circle_100_bottomtag.png</texture>
+				<aspectratio scalediffuse="false">stretch</aspectratio>
+			</control>
+			
 			<control type="textbox">
 				<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
 				<description>unresolved themerounded offset x, some times h100 is good idea-e.g. profiles</description>
