@@ -5,7 +5,49 @@
 	<!-- also be proof for list fixedlist  control has focus(container_id)  -->
 	
 	
-	<include name="new_dyn_item_template">
+	rework and try be proof in changes
+	used in focusedlayout/itemlayout controls
+	-  debugdelete_layout_size_full_color is just to show of 'full' sizing space as bg image - delete later
+	
+	
+	L A Y O U T (always)
+		-  layout_h , match the group (focusedlayout/itemlayout) height attributes , set the whole group height
+		-  layout_w , match the group (focusedlayout/itemlayout) height attributes , set the whole group width
+	
+	
+	A R T W O R K (always)
+		-  artwork_size_h ,  set the artwork group height  +  indicate the offset for info control group which using :top:artwork_size_h:top:
+		-  artwork_size_w ,  set the artwork group width + info group width
+		
+		-  unthemed_postfix , indicate if respect texture theme (default vs roundedge , = artworkdiffuse/*filename*.ext) or use independent path (= 'artworkdiffuse_unthemed/*filename*.ext') for diffue item_artwork
+		
+		
+		-  artwork_name 
+					- indicate call and visible condition = 'listitem.art(*artwork_name*)'
+					- diffuse path lookup ='artworkdiffuse/*artwork_name*.png'
+					- $VAR[ImageLayout_*artwork_name*]
+		-  artwork_frame_color , is bg frame always visible
+		
+		
+			-  artwork_bordersize
+						- define offset for item_artwork
+						- ! special usage for alpha00 fallback img/defaulticons,studiologos (additional use in left,right,top,bottom tags)
+				
+				MAY DELETE AND USE CONSISTENT SIZE + JUST INDICATE FOCUS vs UNFOCUS VIA FOCUSANIMATION
+			
+		-  artwork_arscale_aligny  , indicate scale align y axis - e.g. needed for circle cast - scale a poster into circle (most heads are in the top 1/2,1/3 area of a poster)
+				DEFAULTS to center
+		- artwork_getclearlogo_bottom , indicate if include 'listclearlogo_overlay_bottom' should be called , 
+				DEFAULTS to false
+	
+	I N F O S (NOT IF CIRCLE = !$PARAM[artwork_getclearlogo_bottom])
+		- tag1
+		- tag2
+		- tag3 ??
+		
+		
+		
+	<include name="new_template_itemitemlayout">
 		<param name="unthemed_postfix" default="" />
 		<param name="fallback_alpha_defaulticonbg_color" default="$VAR[color_global_background_layer2]" />
 		<param name="fallback_alpha_defaulticon_color" default="white" />
@@ -39,20 +81,31 @@
 						<colordiffuse>$PARAM[artwork_frame_color]</colordiffuse>
 					</control>
 					
-					<control type="image">
-						<description>ARTWORK : workaround icons with alpha00 - fallback img - </description>
-						<left>$PARAM[artwork_bordersize]</left>
-						<top>$PARAM[artwork_bordersize]</top>
-						<right>$PARAM[artwork_bordersize]</right>
-						<bottom>$PARAM[artwork_bordersize]</bottom>
-						<bordersize>$PARAM[artwork_bordersize]</bordersize>
-						<!-- white bg workaround <bordertexture colordiffuse="$PARAM[fallback_alpha_defaulticonbg_color]">artworkdiffuse$PARAM[unthemed_postfix]/$PARAM[artwork_name].png</bordertexture> -->
-						<bordertexture colordiffuse="green">artworkdiffuse$PARAM[unthemed_postfix]/$PARAM[artwork_name].png</bordertexture>
-						<texture background="true" colordiffuse="$PARAM[fallback_alpha_defaulticon_color]" diffuse="artworkdiffuse$PARAM[unthemed_postfix]/$PARAM[artwork_name].png" fallback="defaultstudios.png">$VAR[ImageLayout_$PARAM[artwork_name]]</texture>
-						<aspectratio scalediffuse="false">scale</aspectratio>
-						
-						<visible>String.StartsWith(ListItem.Icon,default) | String.IsEqual(ListItem.Label,$LOCALIZE[284]) | [Container.Content(studios) | string.isequal(listitem.dbtype,studio)]</visible>
-					</control>
+						<control type="group">
+							<visible>String.StartsWith(ListItem.Icon,default) | String.IsEqual(ListItem.Label,$LOCALIZE[284]) | [Container.Content(studios) | string.isequal(listitem.dbtype,studio)]</visible>
+							<control type="image">
+								<description>ARTWORK : workaround icons with alpha00 - fallback img - </description>
+								<left>$PARAM[artwork_bordersize]</left>
+								<top>$PARAM[artwork_bordersize]</top>
+								<right>$PARAM[artwork_bordersize]</right>
+								<bottom>$PARAM[artwork_bordersize]</bottom>
+								<bordersize>$PARAM[artwork_bordersize]</bordersize>
+								<bordertexture colordiffuse="green">artworkdiffuse$PARAM[unthemed_postfix]/$PARAM[artwork_name].png</bordertexture>
+								<texture>colors/none.png</texture>
+								<aspectratio scalediffuse="true">keep</aspectratio>
+							</control>
+							<control type="image">
+								<description>ARTWORK : workaround icons with alpha00 - fallback img - </description>
+								<left>$PARAM[artwork_bordersize]</left>
+								<top>$PARAM[artwork_bordersize]</top>
+								<right>$PARAM[artwork_bordersize]</right>
+								<bottom>$PARAM[artwork_bordersize]</bottom>
+								<bordersize>$PARAM[artwork_bordersize]</bordersize>
+								<bordertexture colordiffuse="red">artworkdiffuse$PARAM[unthemed_postfix]/$PARAM[artwork_name].png</bordertexture>
+								<texture background="true" colordiffuse="$PARAM[fallback_alpha_defaulticon_color]" diffuse="artworkdiffuse$PARAM[unthemed_postfix]/$PARAM[artwork_name].png">$VAR[ImageLayout_$PARAM[artwork_name]]</texture>
+								<aspectratio scalediffuse="true">keep</aspectratio>
+							</control>
+						</control>
 					<control type="image">
 						<description>ARTWORK : SCALED</description>
 						<bordersize>$PARAM[artwork_bordersize]</bordersize>
