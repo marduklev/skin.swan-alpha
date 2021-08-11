@@ -1,64 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
-	<!-- if dont use themed art diffuse <param name="themed_prefix" value="_unthemed" /> -->
 	
-	<!-- also be proof for list fixedlist  control has focus(container_id)  -->
-	
-	
-	rework and try be proof in changes
-	used in focusedlayout/itemlayout controls
-	-  debugdelete_layout_size_full_color is just to show of 'full' sizing space as bg image - delete later
-	
-	
-	L A Y O U T (always)
-		-  layout_h , match the group (focusedlayout/itemlayout) height attributes , set the whole group height
-		-  layout_w , match the group (focusedlayout/itemlayout) height attributes , set the whole group width
-	
-	
-	A R T W O R K (always)
-		-  artwork_size_h ,  set the artwork group height  +  indicate the offset for info control group which using :top:artwork_size_h:top:
-		-  artwork_size_w ,  set the artwork group width + info group width
-		
-		-  unthemed_postfix , indicate if respect texture theme (default vs roundedge , = artworkdiffuse/*filename*.ext) or use independent path (= 'artworkdiffuse_unthemed/*filename*.ext') for diffue item_artwork
-		
-		
-		-  artwork_name 
-					- indicate call and visible condition = 'listitem.art(*artwork_name*)'
-					- diffuse path lookup ='artworkdiffuse/*artwork_name*.png'
-					- $VAR[ImageLayout_*artwork_name*]
-		-  artwork_frame_color , is bg frame always visible
-		
-		
-			-  artwork_bordersize
-						- define offset for item_artwork
-						- ! special usage for alpha00 fallback img/defaulticons,studiologos (additional use in left,right,top,bottom tags)
-				
-				MAY DELETE AND USE CONSISTENT SIZE + JUST INDICATE FOCUS vs UNFOCUS VIA FOCUSANIMATION
-			
-		-  artwork_arscale_aligny  , indicate scale align y axis - e.g. needed for circle cast - scale a poster into circle (most heads are in the top 1/2,1/3 area of a poster)
-				DEFAULTS to center
-		- artwork_getclearlogo_bottom , indicate if include 'listclearlogo_overlay_bottom' should be called , 
-				DEFAULTS to false
-	
-	I N F O S (NOT IF CIRCLE = !$PARAM[artwork_getclearlogo_bottom])
-		- tag1
-		- tag2
-		- tag3 ??
-		
-		
-		
-	<include name="new_template_itemitemlayout">
-		<param name="unthemed_postfix" default="" />
+	<include name="new_template_itemlayout">
+		<param name="theme_diffusepath" default="" />
 		<param name="fallback_alpha_defaulticonbg_color" default="$VAR[color_global_background_layer2]" />
 		<param name="fallback_alpha_defaulticon_color" default="white" />
 	
 		<definition>
 		<control type="group">
 			<description>test for get new consistency in layouts</description>
-			<!-- 
+			
 			<height>$PARAM[layout_h]</height>
 			<width>$PARAM[layout_w]</width>
-			-->
 			
 			<nested />
 			
@@ -69,85 +22,82 @@
 				<colordiffuse>$PARAM[debugdelete_layout_size_full_color]</colordiffuse>
 			</control>
 			
+			
 			<control type="group">
 				<description>ARTWORK</description>
 				<centerleft>50%</centerleft>
 				<width>$PARAM[artwork_size_w]</width>
 				<height>$PARAM[artwork_size_h]</height>
-				
-					<control type="image">
-						<description>ARTWORK : BG / FRAME</description>
-						<texture diffuse="artworkdiffuse$PARAM[unthemed_postfix]/$PARAM[artwork_name]border.png">colors/white.png</texture>
-						<colordiffuse>$PARAM[artwork_frame_color]</colordiffuse>
-					</control>
-					
-						<control type="group">
-							<visible>String.StartsWith(ListItem.Icon,default) | String.IsEqual(ListItem.Label,$LOCALIZE[284]) | [Container.Content(studios) | string.isequal(listitem.dbtype,studio)]</visible>
-							<control type="image">
-								<description>ARTWORK : workaround icons with alpha00 - fallback img - </description>
-								<left>$PARAM[artwork_bordersize]</left>
-								<top>$PARAM[artwork_bordersize]</top>
-								<right>$PARAM[artwork_bordersize]</right>
-								<bottom>$PARAM[artwork_bordersize]</bottom>
-								<bordersize>$PARAM[artwork_bordersize]</bordersize>
-								<bordertexture colordiffuse="green">artworkdiffuse$PARAM[unthemed_postfix]/$PARAM[artwork_name].png</bordertexture>
-								<texture>colors/none.png</texture>
-								<aspectratio scalediffuse="true">keep</aspectratio>
-							</control>
-							<control type="image">
-								<description>ARTWORK : workaround icons with alpha00 - fallback img - </description>
-								<left>$PARAM[artwork_bordersize]</left>
-								<top>$PARAM[artwork_bordersize]</top>
-								<right>$PARAM[artwork_bordersize]</right>
-								<bottom>$PARAM[artwork_bordersize]</bottom>
-								<bordersize>$PARAM[artwork_bordersize]</bordersize>
-								<bordertexture colordiffuse="red">artworkdiffuse$PARAM[unthemed_postfix]/$PARAM[artwork_name].png</bordertexture>
-								<texture background="true" colordiffuse="$PARAM[fallback_alpha_defaulticon_color]" diffuse="artworkdiffuse$PARAM[unthemed_postfix]/$PARAM[artwork_name].png">$VAR[ImageLayout_$PARAM[artwork_name]]</texture>
-								<aspectratio scalediffuse="true">keep</aspectratio>
-							</control>
-						</control>
-					<control type="image">
-						<description>ARTWORK : SCALED</description>
-						<bordersize>$PARAM[artwork_bordersize]</bordersize>
-						<texture background="true" diffuse="artworkdiffuse$PARAM[unthemed_postfix]/$PARAM[artwork_name].png">$VAR[ImageLayout_$PARAM[artwork_name]]</texture>
-						<visible>!String.StartsWith(ListItem.Icon,default) + !String.IsEqual(ListItem.Label,$LOCALIZE[284]) + !Container.Content(studios) + !string.isequal(listitem.dbtype,studio)</visible>
-						<aspectratio scalediffuse="false" align="center" aligny="$PARAM[artwork_arscale_aligny]">scale</aspectratio>
-					</control>
-			</control>
 			
-			<include condition="$PARAM[artwork_getclearlogo_bottom]" content="listclearlogo_overlay_bottom">
-				<param name="group_width" value="$PARAM[layout_w]" />
-				<param name="width" value="$PARAM[artwork_size_w]" />
+				<include condition="$PARAM[skintheme_ignore]" content="artwork_layout">
+					<param name="theme_diffusepath" value="_unthemed" />
+					<param name="artwork_frame_color" value="$PARAM[artwork_frame_color]" />
+					<param name="artwork_name" value="$PARAM[artwork_name]" />
+					<param name="artwork_bordersize" value="$PARAM[artwork_bordersize]" />
+					<param name="artwork_aspect" value="$PARAM[artwork_aspect]" />
+				</include>
+				<include condition="!$PARAM[skintheme_ignore]" content="artwork_layout">
+					<param name="theme_diffusepath" value="" />
+					<param name="artwork_frame_color" value="$PARAM[artwork_frame_color]" />
+					<param name="artwork_name" value="$PARAM[artwork_name]" />
+					<param name="artwork_bordersize" value="$PARAM[artwork_bordersize]" />
+					<param name="artwork_aspect" value="$PARAM[artwork_aspect]" />
+				</include>
+				
+				
+			</control>
+			<include condition="$PARAM[artwork_clearlogo_overlay_circle]" content="listclearlogo_overlay_bottom">
+				<param name="layout_w" value="$PARAM[layout_w]" />
 			</include>
-		
-		
+			<include condition="$PARAM[artwork_clearlogo_overlay_fanart]" content="listclearlogo_overlay_bottom">
+				<param name="layout_w" value="$PARAM[layout_w]" />
+			</include>
+			
+			<include condition="$PARAM[artwork_clearlogo_overlay_fanart]" content="listclearlogo_overlay_bottom">
+				<param name="layout_w" value="$PARAM[layout_w]" />
+			</include>
+			
+			
+			
 			<control type="group">
-				<description>INFO DATA BOTTOM - exceed laout possible but not recommended group height=layout h - artwork h , if omit it used container h</description>
-				<visible>!$PARAM[artwork_getclearlogo_bottom]</visible>
+				<description>INFO DATA BOTTOM - exceed of layout h possible but not recommended group height=layout h - artwork h , if omit it'll container h</description>
+				<visible>!$PARAM[artwork_clearlogo_overlay_circle]</visible>
+				<visible>$PARAM[infopanel_bottom]</visible>
+				
 				<centerleft>50%</centerleft>
 				<width>$PARAM[artwork_size_w]</width>
 				<top>$PARAM[artwork_size_h]</top>
 				<!-- <height></height> -->
 				
 				<control type="image">
-					<visible>false</visible>
+					<visible>true</visible>
 					<description>TAG : BG PANEL IMAGE</description>
 					<texture>colors/white70.png</texture>
-					<colordiffuse>green</colordiffuse>
+					<colordiffuse>red</colordiffuse>
 					<!-- <height>110</height> -->
 				</control>
+				
 				
 				
 				
 				<control type="image">
 					<description>border round vs default - indicate path with Skin.CurrentTheme ? if not localized
 either put n use correct *xbt or use naming sheme - img h w = control h - indicate bg panel h - and belonging img name</description>
-<height>100</height>
-					<texture border="50" colordiffuse="cyan">special://skin/extras/preventfromzip/themed/tagpanel_$INFO[Skin.CurrentTheme].png</texture>
+					<height>100</height>
+					<texture border="50" colordiffuse="ff131313">special://skin/extras/preventfromzip/themed/tagpanel_$INFO[Skin.CurrentTheme].png</texture>
 					<aspectratio scalediffuse="false">stretch</aspectratio>
 				</control>
 				
-				
+				fit in stars rating ?
+				fit in indicator if browse addon andvitem exist in lib ?
+				<include content="stars_rating">
+					<top>10</top>
+					<right>10</right>
+					<param name="width" value="30%" />
+					<param name="height" value="30" />
+					<param name="alignx" value="right" />
+					<param name="colordiffuse" value="white" />
+				</include>
 				<control type="textbox">
 					<description>TAG : bold head disableable</description>
 					<top>8</top>
@@ -168,40 +118,163 @@ either put n use correct *xbt or use naming sheme - img h w = control h - indica
 					<right>10</right>
 					<height>60</height>
 					<font>CommonTag</font>
-					<align>left</align>
+					<align>center</align>
 					<aligny>center</aligny>
 					<textcolor>$VAR[color_hub_text_main]</textcolor>
 					<selectedcolor>white</selectedcolor>
-					<label>$INFO[ListItem.Label]$INFO[ListItem.Label2,[CR],]</label>
+					<label>$INFO[ListItem.Label]$INFO[ListItem.Year,[CR],]</label>
 				</control>
 			</control>
-			
 			<control type="group">
 				<description>Progress Overlay</description>
-				<centerleft>50%</centerleft>
 				<width>$PARAM[artwork_size_w]</width>
+				<centerleft>50%</centerleft>
 				<top>$PARAM[artwork_size_h]</top>
-				
-				<control type="image">
-					<centerleft>50%</centerleft>
-					<top>3</top>
-					<height>3</height>
-					<width>97%</width> default, shrink in w if color is none + rounded, include bordersize ?
-					<texture colordiffuse="red">colors/white.png</texture>
-				</control>
+					- let user decide ? 
+					indicator overlay 
+					<include content="progress_indicator" condition="false" />
+
+					vs progressbar 
+					<include content="progress_bar" condition="true" />
+					
 			</control>
+			
+			
 		</control>
 		
 		</definition>
 	</include>
 	
 	
+	<!-- use include call for path artworkdiffuse/usebganel/$PARAM[artwork].png if
+	Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel] -->
+	<include name="artwork_layout">
+		<control type="image">
+						<description>ARTWORK : BG / FRAME</description>
+						<texture diffuse="artworkdiffuse$PARAM[theme_diffusepath]/$PARAM[artwork_name]border.png">colors/white.png</texture>
+						<colordiffuse>$PARAM[artwork_frame_color]</colordiffuse>
+					</control>
+					
+					
+					<control type="group">
+						<description>ARTWORK ALPHA 00 : workaround icons ; studios, genres , tags</description>
+							<visible>String.StartsWith(ListItem.Icon,default) | String.IsEqual(ListItem.Label,$LOCALIZE[284]) | [Container.Content(studios) | string.isequal(listitem.dbtype,studio)]</visible>
+							<control type="image">
+								<description>ALPHA ICON  :   1</description>
+								<left>$PARAM[artwork_bordersize]</left>
+								<top>$PARAM[artwork_bordersize]</top>
+								<right>$PARAM[artwork_bordersize]</right>
+								<bottom>$PARAM[artwork_bordersize]</bottom>
+								<bordersize>$PARAM[artwork_bordersize]</bordersize>
+								<bordertexture colordiffuse="ff131313">artworkdiffuse$PARAM[theme_diffusepath]/$PARAM[artwork_name].png</bordertexture>
+								<texture colordiffuse="00ffffff">artworkdiffuse$PARAM[theme_diffusepath]/$PARAM[artwork_name].png</texture>
+							</control>
+							<control type="textbox">
+								<description>ALPHA ICON  : Label 1</description>
+								<description>label center</description>
+								<visible>!String.IsEqual(ListItem.Label,$LOCALIZE[284])</visible>
+								<centertop>50%</centertop>
+								<width>100%</width>
+								<height>100%</height>
+								<font>CommonTag</font>
+								<align>center</align>
+								<textcolor>white</textcolor>
+								<selectedcolor>white</selectedcolor>
+								<label>[B]$INFO[ListItem.Label][/B]</label>
+							</control>
+							
+							<control type="image">
+								<description>ALPHA ICON : if exist bordertexture do the overlay job  note scalediffuse true vs false</description>
+								<left>$PARAM[artwork_bordersize]</left>
+								<top>$PARAM[artwork_bordersize]</top>
+								<right>$PARAM[artwork_bordersize]</right>
+								<bottom>$PARAM[artwork_bordersize]</bottom>
+								
+								<bordersize>$PARAM[artwork_bordersize]</bordersize>
+								<bordertexture colordiffuse="ff131313">artworkdiffuse$PARAM[theme_diffusepath]/$PARAM[artwork_name].png</bordertexture>
+								<texture background="true" colordiffuse="$PARAM[fallback_alpha_defaulticon_color]" diffuse="artworkdiffuse$PARAM[theme_diffusepath]/$PARAM[artwork_name].png">$VAR[ImageLayout_$PARAM[artwork_name]]</texture>
+								<aspectratio scalediffuse="true">keep</aspectratio>
+							</control>
+					</control>
+					
+					<control type="group">
+						<description>ARTWORK : scale vs keep</description>
+						<visible>!String.StartsWith(ListItem.Icon,default) + !String.IsEqual(ListItem.Label,$LOCALIZE[284]) + !Container.Content(studios) + !string.isequal(listitem.dbtype,studio)</visible>
+						
+						<control type="image">
+							<description>ARTWORK SCALE IF ARTWORK NOT MATCH</description>
+							<visible>String.IsEmpty(listitem.art($PARAM[artwork_name]))</visible>
+							
+							<bordersize>$PARAM[artwork_bordersize]</bordersize>
+							<texture background="true" diffuse="artworkdiffuse$PARAM[theme_diffusepath]/$PARAM[artwork_name].png">$VAR[ImageLayout_$PARAM[artwork_name]]</texture>
+							<aspectratio scalediffuse="false" align="center" aligny="$PARAM[artwork_arscale_aligny]">scale</aspectratio>
+						</control>
+						<control type="image">
+							<description>ARTWORK KEEP IF ARTWORK MATCH</description>
+							<visible>!String.IsEmpty(listitem.art($PARAM[artwork_name]))</visible>
+							
+							<bordersize>$PARAM[artwork_bordersize]</bordersize>
+							<texture background="true" diffuse="artworkdiffuse$PARAM[theme_diffusepath]/$PARAM[artwork_name].png">$VAR[ImageLayout_$PARAM[artwork_name]]</texture>
+							<aspectratio scalediffuse="false" align="center" aligny="center">keep</aspectratio>
+						</control>
+					</control>
+		</include>
+			
 	
+	<include name="progress_bar">
+		<control type="progress">
+			<description>in progress playable media, filelike media</description>
+			<include>50_50</include>
+			<visible>$EXP[IsMovie] | $EXP[IsEpisode]</visible>
+			<visible>String.IsEqual(ListItem.Overlay,OverlayUnWatched.png) + ListItem.IsResumable</visible>
+			<info>ListItem.PercentPlayed</info>
+		</control>
+		<control type="image">
+			<description>compromise shows in progress 100 percent=Episodes.Count,calc percent=Episodes.Watched</description>
+			<include>50_50</include>
+			<visible>[$EXP[IsSeason] | $EXP[IsTVShow]] + [String.IsEqual(ListItem.Overlay,OverlayUnWatched.png) + !String.IsEqual(ListItem.Property(TotalEpisodes), ListItem.Property(UnWatchedEpisodes))]</visible>
+			<texture colordiffuse="$VAR[color_universalcontainer_watchedoverlay_progressbar_progress]">colors/white.png</texture>
+		</control>
+		<control type="image">
+			<description>watched</description>
+			<include>50_50</include>
+			
+			<texture colordiffuse="$VAR[color_universalcontainer_watchedoverlay_progressbar_progress]">colors/white.png</texture>
+			<visible>$EXP[IsMovie] | $EXP[IsEpisode] | $EXP[IsSeason] |  $EXP[IsTVShow]</visible>
+			<visible>String.IsEqual(ListItem.Overlay,OverlayWatched.png) | [Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable]</visible>
+		</control>
+		
+	</include>
+		
+	<include name="progress_indicator">
+					<control type="image">
+						<width>295</width>
+						<top>-205</top>
+						<height>35</height>
+						<bordersize>6</bordersize>
+						<bordertexture colordiffuse="$VAR[color_lib_text_main]">frames/bordercircle.png</bordertexture>
+						<texture colordiffuse="$VAR[color_lib_text_main]">overlaywatched.png</texture>
+						<aspectratio scalediffuse="false" aligny="top" align="right">keep</aspectratio>
+						<visible>!String.IsEmpty(Container().ListItem.DBID)</visible>
+					</control>
+	</include>
+	<!--
+	one include for overlay
+	- top left ? <nested />
+	- size in %?
+	-->
+				<include name="50_50">
+					<width>100%</width>
+					<centerleft>50%</centerleft>
+					<top>3</top>
+					<height>3</height>
+				</include>
+				
 	<include name="listclearlogo_overlay_bottom">
 		<control type="group">
-			<visible>$PARAM[artwork_getclearlogo_bottom]</visible>
+			
 				
-			<width>$PARAM[group_width]</width>
+			<width>$PARAM[layout_w]</width>
 			<bottom>10</bottom>
 			<height>100</height>
 			
@@ -1123,6 +1196,7 @@ what a shit to do
 		<param name="focusoverlay_visible" default="true" />
 		<param name="diffuse_art_topedges" default="Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]" />
 		<param name="diffuse_art_alledges" default="!Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]]" />
+		
 		<param name="root_conditional_artworkdiffuse_themed" default="String.IsEqual(ListItem.Label,..) | !Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]]" />
 		<param name="root_conditional_artworkdiffuse_override" default="!String.IsEqual(ListItem.Label,..) + Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]" />
 		
@@ -1240,8 +1314,8 @@ what a shit to do
 			
 	<include name="UniversalLayout">
 		<param name="has_progressbar" default="true" />
-		<param name="has_watchedindicator" default="false" />
-		<param name="image_fallback_aligny" default="center" />
+					<param name="has_watchedindicator" default="false" />
+					<param name="image_fallback_aligny" default="center" />
 		<param name="get_circle" default="false" />
 		<param name="get_landscapelogo" default="false" />
 		<param name="get_bannerlogo" default="false" />
@@ -1253,6 +1327,7 @@ what a shit to do
 		<definition>
 		
 		<control type="group">
+			
 			
 			<visible>$PARAM[conditional_artworkdiffuse_themed]</visible>
 			<control type="image">
@@ -1342,7 +1417,7 @@ what a shit to do
 			</control>
 		</control>
 		
-
+		
 		<control type="group">
 			<visible>$PARAM[get_circle]</visible>
 			
@@ -1386,6 +1461,8 @@ what a shit to do
 				<label>$INFO[ListItem.Label]</label>
 			</control>
 		</control>
+		
+		
 		<control type="group">
 			<visible>$PARAM[get_landscapelogo]</visible>
 			<description>ClearLogo Overlay - fanart</description>
@@ -1417,6 +1494,7 @@ what a shit to do
 			</control>
 			
 		</control>
+		
 		
 		<control type="group">
 			<visible>$PARAM[get_bannerlogo]</visible>
@@ -1462,6 +1540,7 @@ what a shit to do
 				<shadowcolor>black</shadowcolor>
 			</control>	
 		</control>
+		
 		
 		<control type="group">
 			<description>Taglines Bottom</description>
@@ -1509,7 +1588,7 @@ what a shit to do
 			<visible>$PARAM[has_progressbar]</visible>
 			<left>10</left>
 			<right>10</right>
-			<animation type="conditional" condition="$PARAM[conditional_artworkdiffuse_themed]" reversible="false">
+			<animation type="conditional" condition="Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]" reversible="false">
 				<effect type="zoom" start="100,100" end="70,100" center="50%,100%" time="0" />
 			</animation>
 			<include content="ProgressBarOverlay" />
