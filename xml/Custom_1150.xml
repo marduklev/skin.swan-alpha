@@ -10,7 +10,7 @@
 		</control>
 		
 		<!-- <control type="list" id="999">
-			<description>youtube lookup for trailer, prevent excessive calls by using system idle time, not very nice but only way to prevtent possible limit exceeds</description>
+			<description>youtube lookup for trailer, prevent excessive calls by using system idle time, not very nice but only way to prevent possible limit exceeds</description>
 			<include>HiddenContainer</include>
 			<visible>system.idletime(5)</visible>
 			<content limit="1" sortby="file">plugin://plugin.video.youtube/search/?q=$INFO[Container(2100).ListItem.Title]+trailer</content>
@@ -68,12 +68,12 @@
 				</control>
 			</control>
 				-->
-				<control type="fixedlist" id="2100">
+				<control type="fixedlist" id="21001">
 					<top>170</top>
 					<height>410</height>
 					<left>130</left>
 					<right>50</right>
-					
+					<visible>false</visible>
 					<orientation>horizontal</orientation>
 					<preloaditems>2</preloaditems>
 					<scrolltime tween="quadratic">400</scrolltime>
@@ -85,7 +85,7 @@
 					<itemlayout height="300" width="300">
 						<include content="new_template_itemlayout">
 							<param name="debugdelete_layout_size_full_color" value="black" />
-							<param name="skintheme_ignore" value="true" />
+							<param name="skintheme_ignore" value="false" />
 							
 							<param name="layout_h" value="300" />
 							<param name="layout_w" value="300" />
@@ -94,6 +94,9 @@
 							<param name="artwork_size_h" value="260" />
 								 <param name="artwork_bordersize" value="3" />
 							
+								<param name="skintheme_rounded_all" value="false" />
+								<param name="skintheme_rounded_top" value="true" />
+							
 							<param name="artwork_frame_color" value="red" />
 							<param name="artwork_name" value="square" />
 								<!-- new <param name="artwork_aspect" value="scale" /> -->
@@ -101,13 +104,15 @@
 							
 							<param name="artwork_clearlogo_overlay_circle" value="false" />
 							<param name="artwork_clearlogo_overlay_fanart" value="false" />
-							<param name="artwork_clearlogo_overlay_banner" value="false" />
+							
 							<param name="artwork_arscale_aligny" value="top" />
 							
 						</include>	
 					</itemlayout>
 					<focusedlayout height="300" width="300">
 						<include content="new_template_itemlayout">
+							<include>Animation_Item_Focus</include>
+							
 							<param name="debugdelete_layout_size_full_color" value="white" />
 							<param name="skintheme_ignore" value="false" />
 							
@@ -115,15 +120,14 @@
 							<param name="artwork_size_h" value="260" />
 								 <param name="artwork_bordersize" value="5" />
 							<param name="artwork_frame_color" value="white" />
-							<param name="artwork_name" value="poster" />
-							
+							<param name="artwork_name" value="square" />
 								<!-- new <param name="artwork_aspect" value="scale" /> -->
 							
 							<param name="infopanel_bottom" value="true" />
 							
 							<param name="artwork_clearlogo_overlay_circle" value="true" />
 							<param name="artwork_clearlogo_overlay_fanart" value="false" />
-							<param name="artwork_clearlogo_overlay_banner" value="false" />
+							
 							<param name="artwork_arscale_aligny" value="top" />
 							
 						</include>	
@@ -139,10 +143,9 @@
 					<content limit="3">special://skin/extras/preventfromzip/playlistvideo/fetchepisodethumbs.xsp</content>
 				</control>
 				
-				<control type="list" id="4000000">
+				<control type="list" id="2100">
 					<onup>2300</onup>
 					<ondown>2200</ondown>
-					<visible>false</visible>
 					<height>1080</height>
 					<left>130</left>
 					<top>170</top>
@@ -154,54 +157,56 @@
 					<preloaditems>2</preloaditems>
 					<scrolltime tween="quadratic">400</scrolltime>
 					<onlick>Action(select)</onlick>
-					<focusedlayout height="370" width="260">
-						<include content="SetPropOnFocus_HiddenButton" />
-						<control type="group">
-							<width>240</width>
-							<height>370</height>
-							<control type="group">
-								<include content="UniversalLayout">
-									<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_fo]" />
-									<param name="artwork" value="poster" />
-									<param name="get_tags" value="true" />
-									<param name="get_tagbgpanel" value="true" />
-									<param name="autoscroll" value="true" />
-									<param name="bordersize_bg" value="4" />
-									<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_fo]" />
-									<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_fo]" />
-									<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_fo]" />
-								</include>
-								<control type="group">
-									<include condition="![String.StartsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),00) | String.EndsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),one)]" content="FocusOverlay">
-										<param name="diffusedimtext" value="artworkdiffuse/usebganel/poster.png" />
-									</include>
-									<include condition="[String.StartsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),00) | String.EndsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),one)]" content="FocusOverlay">
-										<param name="diffusedimtext" value="artworkdiffuse/poster.png" />
-									</include>
-								</control>
-							</control>
-						</control>
-					</focusedlayout>
+					
 					<itemlayout height="370" width="260">
 						<control type="group">
 							<width>240</width>
 							<height>370</height>
-							<include content="UniversalLayout">
-								<param name="colordiffuse" value="$VAR[color_universalcontainer_itemframe_nf]" />
+							<include content="universal_itemlayout">
+								<param name="artwork_bordercolor" value="$VAR[color_universalcontainer_itemframe_nf]" />
 								<param name="artwork" value="poster" />
-								<param name="get_tags" value="true" />
-								<param name="get_tagbgpanel" value="true" />
-								<param name="autoscroll" value="false" />
-								<param name="bordersize_bg" value="6" />
-								<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_nf]" />
-								<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_nf]" />
-								<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_nf]" />
+								<param name="artwork_focusoverlay_visible" value="false" />
+								<param name="infotags_visible" value="true" />
+								<param name="infotags_autoscroll" value="false" />
+								<param name="artwork_bg_bordersize" value="6" />
+								<param name="infotags_bgpanel_color" value="$VAR[color_universalcontainer_itemtag_bgpanel_nf]" />
+								<param name="infotags_label1_color" value="$VAR[color_universalcontainer_itemtag_label1_nf]" />
+								<param name="infotags_label2_color" value="$VAR[color_universalcontainer_itemtag_label2_nf]" />
 								<param name="conditional_artworkdiffuse_themed" value="true" />
 								<param name="conditional_artworkdiffuse_override" value="false" />
 							</include>
 						</control>
 					</itemlayout>
-					
+					<focusedlayout height="370" width="260">
+						<include content="hiddenbutton_manage_skinpropertys" />
+						<control type="group">
+							<width>240</width>
+							<height>370</height>
+							<control type="group">
+								<include content="universal_itemlayout">
+									<param name="artwork_bordercolor" value="$VAR[color_universalcontainer_itemframe_fo]" />
+									<param name="artwork" value="poster" />
+									<param name="artwork_focusoverlay_visible" value="true" />
+									<param name="infotags_visible" value="true" />
+									<param name="infotags_autoscroll" value="true" />
+									<param name="artwork_bg_bordersize" value="4" />
+									<param name="infotags_bgpanel_color" value="$VAR[color_universalcontainer_itemtag_bgpanel_fo]" />
+									<param name="infotags_label1_color" value="$VAR[color_universalcontainer_itemtag_label1_fo]" />
+									<param name="infotags_label2_color" value="$VAR[color_universalcontainer_itemtag_label2_fo]" />
+								</include>
+								
+							</control>
+						</control>
+					</focusedlayout>
+						<include content="emptywidget">
+						<param name="id" value="999" />
+					</include>
+					<content limit="3" sortby="year" sortorder="ascending">$VAR[filtercontent_albums_contains_album]</content>
+					<content limit="3" sortby="year" sortorder="ascending">videodb://movies/titles</content>
+					<content limit="0" sortby="year" sortorder="ascending">videodb://movies/</content>
+					<content limit="0">special://skin/extras/preventfromzip/playlistvideo/studios.xsp</content>
+					<content limit="3">special://skin/extras/preventfromzip/playlistvideo/Test_descendingByYearGroupACTOR.xsp</content>
+					<content limit="3">special://skin/extras/preventfromzip/playlistvideo/fetchepisodethumbs.xsp</content>
 					<!-- <content>
 						<item>
 							<icon>defaultactor.png</icon>
@@ -220,7 +225,7 @@
 					 -->
 					 
 	<!--  'year' seemsd not valid - always do sortby title ( but working when window(playlist) is is active ) -->
-					<content>special://skin/extras/preventfromzip/playlistvideo/Test_descendingByYear_nogrouping.xsp</content> 
+					<!-- <content>special://skin/extras/preventfromzip/playlistvideo/Test_descendingByYear_nogrouping.xsp</content>  -->
 						<!--
 						videodb://movies/titles/?xsp=      {"limit":6,"order":{"direction":"descending","ignorefolders":0,"method":"year"},"rules":{"and":[{"field":"title","operator":"contains","value":["batman"]}]},"type":"movies"}
 						videodb://movies/titles/?xsp=      %7b%22limit%22%3a6%2c%22order%22%3a%7b%22direction%22%3a%22descending%22%2c%22ignorefolders%22%3a0%2c%22method%22%3a%22year%22%7d%2c%22rules%22%3a%7b%22and%22%3a%5b%7b%22field%22%3a%22title%22%2c%22operator%22%3a%22contains%22%2c%22value%22%3a%5b%22batman%22%5d%7d%5d%7d%2c%22type%22%3a%22movies%22%7d
@@ -477,8 +482,6 @@
 		
 		<include content="swan_debug_overlay">
 			<param name="textleft" value="$INFO[Container(999).ListItem.FilenameAndPath]
-			
-
 listitem.filenameandpath :  $INFO[listitem.filenameandpath]
   listitem.Path :  $INFO[listitem.path]
   ListItem.FolderPath :  $INFO[ListItem.FolderPath]

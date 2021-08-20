@@ -1,10 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
+	e.g.
+	call template_container
+		
+		place container related nested elements
+		
+		
+			
+		
+			
+		
+		
 	
+	
+	<!-- also be proof for list fixedlist  control has focus(container_id)  -->
+	special artwork_name
+		- circle ,square
+		- circle scale ,if actor aligny"top"
+	
+		never use thumb ,use square in cause of visible con empty =scale , not empty =keep ??
+		or indicate via param ? is variable?? working
+	
+	rework and try be proof in changes
+	used in focusedlayout/itemlayout controls
+	-  debugdelete_layout_size_full_color is just to show of 'full' sizing space as bg image - delete later
+	
+	:nested /: used for focusanimation + dimm focusoverlay
+	
+	L A Y O U T (always)
+		-  layout_h , match the group (focusedlayout/itemlayout) height attributes , set the whole group height
+		-  layout_w , match the group (focusedlayout/itemlayout) height attributes , set the whole group width
+	
+	
+	A R T W O R K (always)
+		-  artwork_size_h ,  set the artwork group height  +  indicate the offset for info control group which using :top:artwork_size_h:top:
+		-  artwork_size_w ,  set the artwork group width + info group width
+		
+		-  theme_diffusepath , indicate if respect texture theme (default vs roundedge , = artworkdiffuse/*filename*.ext) or use independent path (= 'artworkdiffuse_unthemed/*filename*.ext') for diffue item_artwork
+		
+		-  artwork_name 
+					- indicate call and visible condition = 'listitem.art(*artwork_name*)'
+					- diffuse path lookup ='artworkdiffuse/*artwork_name*.png'
+					- $VAR[ImageLayout_*artwork_name*]
+		-  artwork_frame_color , is bg frame always visible
+		
+		
+			-  artwork_bordersize
+						- define offset for item_artwork
+						- ! special usage for alpha00 fallback img/defaulticons,studiologos (additional use in left,right,top,bottom tags)
+				
+				MAY DELETE AND USE CONSISTENT SIZE + JUST INDICATE FOCUS vs UNFOCUS VIA FOCUSANIMATION
+			
+		-  artwork_arscale_aligny  , indicate scale align y axis - e.g. needed for circle cast - scale a poster into circle (most heads are in the top 1/2,1/3 area of a poster)
+				DEFAULTS to center
+		- artwork_clearlogo_overlay_circle , indicate if include 'listclearlogo_overlay_bottom' should be called , 
+				DEFAULTS to false
+	
+	
+	!!! NCIRCLE , SQUARE ARTWORK IS NEVER _unthemed, except music hub albums !!
+	
+	I N F O S (NOT IF CIRCLE = !$PARAM[artwork_clearlogo_overlay_circle])
+	?? - dont show if studios , genres , tags ? or :visible:![Container.Content(studios) | string.isequal(listitem.dbtype,studio) | Container.Content(tags) | string.isequal(listitem.dbtype,tag) | Container.Content(genres) | string.isequal(listitem.dbtype,genre)]:/visible:
+		- tag1
+		- tag2
+		- tag3 ??
+		
 	<include name="new_template_itemlayout">
 		<param name="theme_diffusepath" default="" />
 		<param name="fallback_alpha_defaulticonbg_color" default="$VAR[color_global_background_layer2]" />
 		<param name="fallback_alpha_defaulticon_color" default="white" />
+		
+		<param name="skintheme_rounded_all" default="Skin.HasTheme(skindefault) | [Skin.HasTheme(roundedge) + $EXP[HiddentagPanel]]" />
+		<param name="skintheme_rounded_top" default="Skin.HasTheme(Roundedge) + $EXP[VisibletagPanel]" />
+	
 	
 		<definition>
 		<control type="group">
@@ -24,7 +92,59 @@
 			
 			
 			<control type="group">
-				<description>ARTWORK</description>
+				<description>ARTWORK
+				
+				not relevant for bottom tag panel
+				ren theme_diffusepath to artwork_diffusepath
+		
+		if default : no issues anywhere
+			-artworkdiffuse/
+		
+		if override use prefix	:  issue for tag bg panel
+			
+			-artworkdiffuse_unthemed/
+		
+		if rounded and bg panel true
+			- artworkdiffuse/usebganel/
+		
+		if rounded and bg panel false
+				???
+				
+				if override roundedges doesnt matter, all are softedged
+					- texture.xbt												- roundedge
+					
+					-artworkdiffuse/art*name.png								-artworkdiffuse/art*name.png
+									art*nameborder.png											art*nameborder.png
+					
+													-artworkdiffuse_unthemed/art*name.png						
+																			 art*nameborder.png											 
+						
+						
+						
+						
+																				if rounded and bg panel true						if rounded and bg panel false
+																				Skin.HasTheme(Roundedge) + $EXP[VisibletagPanel]	Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]
+																				- artworkdiffuse/usebganel/art*name.png				- artworkdiffuse/art*name.png
+														
+								
+															solution 3 : use param for visible condition  (current)
+															- define param in call   "new_template_container" -> "new_template_itemlayout" -> "artwork_layout"
+															
+
+				all*themed 	-> - artworkdiffuse/art*name.png	
+					override 	-> - artworkdiffuse_unthemed/art*name.png				
+				
+				(skintheme_rounded_top) 	!override + Skin.HasTheme(Roundedge) + $EXP[VisibletagPanel] -> - artworkdiffuse/use_bg_panel/art*name.png
+				
+				(skintheme_rounded_all)	!override + Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel] -> - artworkdiffuse/art*name.png
+					
+					
+								<!-- 
+								<bordertexture colordiffuse="ff131313">artworkdiffuse$PARAM[theme_diffusepath]/$PARAM[artwork_name].png</bordertexture>
+								<texture colordiffuse="00ffffff">artworkdiffuse$PARAM[theme_diffusepath]/$PARAM[artwork_name].png</texture>
+								-->
+						
+				</description>
 				<centerleft>50%</centerleft>
 				<width>$PARAM[artwork_size_w]</width>
 				<height>$PARAM[artwork_size_h]</height>
@@ -36,7 +156,16 @@
 					<param name="artwork_bordersize" value="$PARAM[artwork_bordersize]" />
 					<param name="artwork_aspect" value="$PARAM[artwork_aspect]" />
 				</include>
-				<include condition="!$PARAM[skintheme_ignore]" content="artwork_layout">
+				
+				<include condition="!$PARAM[skintheme_ignore] + $PARAM[skintheme_rounded_top]" content="artwork_layout">
+					<param name="theme_diffusepath" value="/use_bg_panel" />
+					<param name="artwork_frame_color" value="$PARAM[artwork_frame_color]" />
+					<param name="artwork_name" value="$PARAM[artwork_name]" />
+					<param name="artwork_bordersize" value="$PARAM[artwork_bordersize]" />
+					<param name="artwork_aspect" value="$PARAM[artwork_aspect]" />
+				</include>
+				
+				<include condition="!$PARAM[skintheme_ignore] + $PARAM[skintheme_rounded_all]" content="artwork_layout">
 					<param name="theme_diffusepath" value="" />
 					<param name="artwork_frame_color" value="$PARAM[artwork_frame_color]" />
 					<param name="artwork_name" value="$PARAM[artwork_name]" />
@@ -46,6 +175,7 @@
 				
 				
 			</control>
+			
 			<include condition="$PARAM[artwork_clearlogo_overlay_circle]" content="listclearlogo_overlay_bottom">
 				<param name="layout_w" value="$PARAM[layout_w]" />
 			</include>
@@ -149,7 +279,8 @@ either put n use correct *xbt or use naming sheme - img h w = control h - indica
 	<!-- use include call for path artworkdiffuse/usebganel/$PARAM[artwork].png if
 	Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel] -->
 	<include name="artwork_layout">
-		<control type="image">
+					
+					<control type="image">
 						<description>ARTWORK : BG / FRAME</description>
 						<texture diffuse="artworkdiffuse$PARAM[theme_diffusepath]/$PARAM[artwork_name]border.png">colors/white.png</texture>
 						<colordiffuse>$PARAM[artwork_frame_color]</colordiffuse>
@@ -562,12 +693,12 @@ FilterSMS<2-9> 	Filter a list in music or videos using SMS-style input.
 			<bordertexture colordiffuse="$PARAM[colordiffuse]">artworkdiffuse/circleborder.png</bordertexture>
 			<texture background="true" diffuse="artworkdiffuse/circle.png" fallback="defaultactor.png">$INFO[ListItem.Thumb]</texture>
 			<aspectratio scalediffuse="false" aligny="top" align="center">scale</aspectratio>
-			<bordersize>$PARAM[bordersize_bg]</bordersize>
+			<bordersize>$PARAM[artwork_bg_bordersize]</bordersize>
 		</control>
 
 		<control type="group">
 			<control type="textbox">
-				<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
+				<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[infotags_autoscroll]</autoscroll>
 				<top>106%</top>
 				<left>10</left>
 				<right>10</right>
@@ -693,7 +824,7 @@ FilterSMS<2-9> 	Filter a list in music or videos using SMS-style input.
 	
 	
 	<!-- dont forget to use nested benefit later, and that onunfucus -->
-	<include name="SetPropOnFocus_HiddenButton">
+	<include name="hiddenbutton_manage_skinpropertys">
 		<control type="button">
 			<visible allowhiddenfocus="true">false</visible>
 			<nested />
@@ -1023,15 +1154,16 @@ what a shit to do
 										960w x 540h 480x270
 	
 	-->
+	
+	unresolved colors - get variable - forced_color
 	<include name="FocusOverlay">
 		<param name="diffusedimtext" default="colors/white.png" />
 		<param name="bordersize" default="8" />
-		<param name="forced_color" default="lib" />
 		<definition>
 		<control type="group">
 			<animation reversible="false" effect="fade" start="0" end="100" time="350" tween="quadratic" easing="in">Focus</animation>
 			<animation reversible="false" effect="fade" start="100" end="0" time="0">UnFocus</animation>
-			
+			<visible>$PARAM[test_]</visible>
 			<control type="image">
 				<description>temp solution for ... folder</description>
 				<visible>![String.Contains(ListItem.Icon,default) + String.IsEqual(ListItem.Label,..)]</visible>
@@ -1049,7 +1181,7 @@ what a shit to do
 					<centertop>50%</centertop>
 					<width>35%</width>
 					<height>35%</height>
-					<colordiffuse>$VAR[color_$PARAM[forced_color]_widgetitem_overlayicon]</colordiffuse>
+					<colordiffuse>$VAR[color_widgetoverlayicon]</colordiffuse>
 					<aspectratio scalediffuse="false" align="center" aligny="center">keep</aspectratio>
 					<texture>overlay/overlayplay.png</texture>
 					<visible>$EXP[Is_MediaFileItem]</visible>
@@ -1059,7 +1191,7 @@ what a shit to do
 					<centertop>50%</centertop>
 					<width>25%</width>
 					<height>25%</height>
-					<colordiffuse>$VAR[color_$PARAM[forced_color]_widgetitem_overlayicon]</colordiffuse>
+					<colordiffuse>$VAR[color_widgetoverlayicon]</colordiffuse>
 					<aspectratio scalediffuse="false" align="center" aligny="center">keep</aspectratio>
 					<texture>overlay/overlayfolder.png</texture>
 					<visible>$EXP[Is_MediaFolderItem]</visible>
@@ -1157,11 +1289,11 @@ what a shit to do
 		<param name="type" default="panel" />
 		<param name="type_height" default="400" />
 		<param name="type_pos_top" default="50" />
-		<param name="orientation" default="horizontal" />
+		<param name="type_orientation" default="horizontal" />
 		
 		<definition>
 		<control type="$PARAM[type]" id="$PARAM[id]">
-			<orientation>$PARAM[orientation]</orientation>
+			<orientation>$PARAM[type_orientation]</orientation>
 			<preloaditems>2</preloaditems>
 			<scrolltime tween="quadratic">400</scrolltime>
 			
@@ -1181,29 +1313,32 @@ what a shit to do
 		<param name="type" default="panel" />
 		<param name="type_height" default="400" />
 		<param name="type_pos_top" default="50" />
-		<param name="orientation" default="horizontal" />
-		<param name="bordercolor_fo" default="$VAR[color_universalcontainer_itemframe_fo]" />
-		<param name="bordercolor_nf" default="$VAR[color_universalcontainer_itemframe_nf]" />
-		<param name="circle_visible" default="false" />
-		<param name="tags_visible" default="false" />
-		<param name="tagbgpanel_visible" default="true" />
-		<param name="ls_overlay_visible" default="false" />
-		<param name="banner_overlay_visible" default="false" />
-		<param name="get_bgpanel" default="true" />
-		<param name="is_infowidget" default="false" />
-		<param name="infowidth" default="900" />
-		<param name="SetPropOnFocus" default="true" />
-		<param name="focusoverlay_visible" default="true" />
-		<param name="diffuse_art_topedges" default="Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]" />
-		<param name="diffuse_art_alledges" default="!Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]]" />
+		<param name="type_orientation" default="horizontal" />
+		
+		<param name="item_artwork_bordercolor_fo" default="$VAR[color_universalcontainer_itemframe_fo]" />
+		<param name="item_artwork_bordercolor_nf" default="$VAR[color_universalcontainer_itemframe_nf]" />
+		
+		<param name="item_infotags_visible" default="true" />
+		<param name="item_infotags_bgpanel_visible" default="true" />
+		
+		<param name="item_overlay_circle" default="false" />
+		<param name="item_overlay_fanart" default="false" />
+		<param name="item_overlay_banner" default="false" />
+		
+		<param name="item_manage_skinpropertys" default="true" />
+		<param name="item_focusoverlay_visible" default="true" />
+		
+				<param name="item_infobox_right_visible" default="false" />
+				<param name="item_infobox_right_width" default="900" />
+				
 		
 		<param name="root_conditional_artworkdiffuse_themed" default="String.IsEqual(ListItem.Label,..) | !Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]]" />
-		<param name="root_conditional_artworkdiffuse_override" default="!String.IsEqual(ListItem.Label,..) + Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]" />
+		<param name="root_conditional_artworkdiffuse_override" default="!String.IsEqual(ListItem.Label,..) + Skin.HasTheme(Roundedge) + $EXP[VisibletagPanel]" />
 		
 		<definition>
 		<control type="$PARAM[type]" id="$PARAM[id]">
 			<nested />
-			<orientation>$PARAM[orientation]</orientation>
+			<orientation>$PARAM[type_orientation]</orientation>
 			<preloaditems>2</preloaditems>
 			<scrolltime tween="quadratic">400</scrolltime>
 			
@@ -1214,76 +1349,79 @@ what a shit to do
 				<control type="group">
 					<width>$PARAM[itemwidth]</width>
 					<height>$PARAM[itemheight]</height>
-					<include content="UniversalLayout">
-						<param name="colordiffuse" value="$PARAM[bordercolor_nf]" />
-						<param name="artwork" value="$PARAM[layout]" />
-						<param name="get_circle" value="$PARAM[circle_visible]" />
-						<param name="get_tags" value="$PARAM[tags_visible]" />
-						<param name="get_tagbgpanel" value="$PARAM[tagbgpanel_visible]" />
-						<param name="get_landscapelogo" value="$PARAM[ls_overlay_visible]" />
-						<param name="get_bannerlogo" value="$PARAM[banner_overlay_visible]" />
-						<param name="autoscroll" value="false" />
-						<param name="bordersize_bg" value="6" />
-						<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_nf]" />
-						<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_nf]" />
-						<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_nf]" />
+					<include content="universal_itemlayout">
+						<param name="artwork" value="$PARAM[item_artwork_name]" />
+						<param name="artwork_focusoverlay_visible" value="false" />
+						<param name="artwork_bg_bordersize" value="6" />
+						<param name="artwork_bordercolor" value="$PARAM[item_artwork_bordercolor_nf]" />
+							<param name="artwork_overlay_circle" value="$PARAM[item_overlay_circle]" />
+							<param name="artwork_overlay_landscape" value="$PARAM[item_overlay_fanart]" />
+							<param name="artwork_overlay_banner" value="$PARAM[item_overlay_banner]" />
+							
+						<param name="infotags_visible" value="$PARAM[item_infotags_visible]" />
+							<param name="infotags_bgpanel_visible" value="$PARAM[item_infotags_bgpanel_visible]" />
+							<param name="infotags_bgpanel_color" value="$VAR[color_universalcontainer_itemtag_bgpanel_nf]" />
+							<param name="infotags_label1_color" value="$VAR[color_universalcontainer_itemtag_label1_nf]" />
+							<param name="infotags_label2_color" value="$VAR[color_universalcontainer_itemtag_label2_nf]" />
+							<param name="infotags_autoscroll" value="false" />
+						
 						<param name="conditional_artworkdiffuse_themed" value="$PARAM[root_conditional_artworkdiffuse_themed]" />
 						<param name="conditional_artworkdiffuse_override" value="$PARAM[root_conditional_artworkdiffuse_override]" />
 					</include>
 				</control>
-				<control type="group">
-					<left>$PARAM[itemwidth]</left>
-					<height>$PARAM[itemheight]</height>
-					<width>$PARAM[infowidth]</width>
-					<visible>$PARAM[is_infowidget]</visible>
-					<animation effect="fade" end="30" condition="true">Conditional</animation>
-			
-					<include content="UniversalWidgetInfo" />
-				</control>
+					
+					<control type="group">
+						<description>info layout - UniversalWidgetInfo</description>
+						<animation effect="fade" end="30" condition="true">Conditional</animation>
+						<left>$PARAM[itemwidth]</left>
+						<height>$PARAM[itemheight]</height>
+						<width>$PARAM[item_infobox_right_width]</width>
+						<visible>$PARAM[item_infobox_right_visible]</visible>
+						<include condition="$PARAM[item_infobox_right_visible]" content="UniversalWidgetInfo" />
+					</control>
+					
 			</itemlayout>
 			<focusedlayout height="$PARAM[layout_height]" width="$PARAM[layout_width]">
-				<include condition="$PARAM[SetPropOnFocus]" content="SetPropOnFocus_HiddenButton" />
+				<include condition="$PARAM[item_manage_skinpropertys]" content="hiddenbutton_manage_skinpropertys" />
 	
 				<control type="group">
 					<width>$PARAM[itemwidth]</width>
 					<height>$PARAM[itemheight]</height>
 					<include>Animation_Item_Focus</include>
 					<control type="group">
-						<include content="UniversalLayout">
-							<param name="colordiffuse" value="$PARAM[bordercolor_fo]" />
-							<param name="artwork" value="$PARAM[layout]" />
-							<param name="get_circle" value="$PARAM[circle_visible]" />
-							<param name="get_tags" value="$PARAM[tags_visible]" />
-							<param name="get_tagbgpanel" value="$PARAM[tagbgpanel_visible]" />
-							<param name="get_landscapelogo" value="$PARAM[ls_overlay_visible]" />
-							<param name="get_bannerlogo" value="$PARAM[banner_overlay_visible]" />
-							<param name="autoscroll" value="true" />
-							<param name="bordersize_bg" value="4" />
-							<param name="bottompanelcolor" value="$VAR[color_universalcontainer_itemtag_bgpanel_fo]" />
-							<param name="bottomtaglabelcolor" value="$VAR[color_universalcontainer_itemtag_label1_fo]" />
-							<param name="bottomtaglabel2color" value="$VAR[color_universalcontainer_itemtag_label2_fo]" />
+						<include content="universal_itemlayout">
+							
+							<param name="artwork" value="$PARAM[item_artwork_name]" />
+							<param name="artwork_focusoverlay_visible" value="$PARAM[item_focusoverlay_visible]" />
+							<param name="artwork_bg_bordersize" value="4" />
+							<param name="artwork_bordercolor" value="$PARAM[item_artwork_bordercolor_fo]" />
+								<param name="artwork_overlay_circle" value="$PARAM[item_overlay_circle]" />
+								<param name="artwork_overlay_landscape" value="$PARAM[item_overlay_fanart]" />
+								<param name="artwork_overlay_banner" value="$PARAM[item_overlay_banner]" />
+								
+								
+							<param name="infotags_visible" value="$PARAM[item_infotags_visible]" />
+								<param name="infotags_bgpanel_visible" value="$PARAM[item_infotags_bgpanel_visible]" />
+								<param name="infotags_bgpanel_color" value="$VAR[color_universalcontainer_itemtag_bgpanel_fo]" />
+								<param name="infotags_label1_color" value="$VAR[color_universalcontainer_itemtag_label1_fo]" />
+								<param name="infotags_label2_color" value="$VAR[color_universalcontainer_itemtag_label2_fo]" />
+								<param name="infotags_autoscroll" value="true" />
+							
 							<param name="conditional_artworkdiffuse_themed" value="$PARAM[root_conditional_artworkdiffuse_themed]" />
 							<param name="conditional_artworkdiffuse_override" value="$PARAM[root_conditional_artworkdiffuse_override]" />
+							
+							
+							
 						</include>
-						<control type="group">
-							<description>as include load is in use - note that if not home reload skin can be needed</description>
-							<visible>!$PARAM[circle_visible]</visible>
-							<visible>$PARAM[focusoverlay_visible]</visible>
-							<include condition="$PARAM[diffuse_art_topedges]" content="FocusOverlay">
-								<param name="diffusedimtext" value="artworkdiffuse/usebganel/$PARAM[layout].png" />
-							</include>
-							<include condition="$PARAM[diffuse_art_alledges]" content="FocusOverlay">
-								<param name="diffusedimtext" value="artworkdiffuse/$PARAM[layout].png" />
-							</include>
-						</control>
+						
 					</control>
 				</control>
 				<control type="group">
 					<left>$PARAM[itemwidth]</left>
 					<height>$PARAM[itemheight]</height>
-					<width>$PARAM[infowidth]</width>
-					<visible>$PARAM[is_infowidget]</visible>
-					<include content="UniversalWidgetInfo" />
+					<width>$PARAM[item_infobox_right_width]</width>
+					<visible>$PARAM[item_infobox_right_visible]</visible>
+					<include condition="$PARAM[item_infobox_right_visible]" content="UniversalWidgetInfo" />
 				</control>
 			</focusedlayout>
 		</control>
@@ -1312,17 +1450,32 @@ what a shit to do
 			
 			if color is none -->
 			
-	<include name="UniversalLayout">
-		<param name="has_progressbar" default="true" />
-					<param name="has_watchedindicator" default="false" />
-					<param name="image_fallback_aligny" default="center" />
-		<param name="get_circle" default="false" />
-		<param name="get_landscapelogo" default="false" />
-		<param name="get_bannerlogo" default="false" />
-		<param name="get_tagbgpanel" default="true" />
+			
+			
+			<!-- 
+			
+			true false states if focused unfocused  - param name :infotags_autoscroll: nf=false fo=true
+				vs - 	
+													- param name :item_focuslayout:    nf=false fo=true
+			
+			overlay false
+			-->
+			<!-- !!! may need check as focusoverlay is merged ... conditional_artworkdiffuse_themed -->
+			
+			
+			
+			 + !$PARAM[artwork_overlay_circle] gives boolean exp errorcode
+			 if ommit
+			 kodi crash 
+			
+	<include name="universal_itemlayout">
+		<param name="artwork_overlay_circle" default="false" />
+		<param name="artwork_overlay_landscape" default="false" />
+		<param name="artwork_overlay_banner" default="false" />
+		<param name="infotags_bgpanel_visible" default="true" />
 		
 		<param name="conditional_artworkdiffuse_themed" default="String.IsEqual(ListItem.Label,..) | !Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]]" />
-		<param name="conditional_artworkdiffuse_override" default="!String.IsEqual(ListItem.Label,..) + Skin.HasTheme(Roundedge) + !$EXP[HiddentagPanel]" />
+		<param name="conditional_artworkdiffuse_override" default="!String.IsEqual(ListItem.Label,..) + Skin.HasTheme(Roundedge) + $EXP[VisibletagPanel]" />
 		
 		<definition>
 		
@@ -1333,8 +1486,8 @@ what a shit to do
 			<control type="image">
 				<description>testing framed border instead fullbg texture</description>
 				<texture>artworkdiffuse/$PARAM[artwork]border.png</texture>
-				<colordiffuse>$PARAM[colordiffuse]</colordiffuse>
-				<bordersize>$PARAM[bordersize_bg]</bordersize>
+				<colordiffuse>$PARAM[artwork_bordercolor]</colordiffuse>
+				<bordersize>$PARAM[artwork_bg_bordersize]</bordersize>
 			</control>
 			<control type="image">
 				<description>temp workaround for def white or very bright border, may an if not cond needed def icons</description>
@@ -1360,9 +1513,13 @@ what a shit to do
 				<visible>false</visible>
 				<texture background="true" diffuse="artworkdiffuse/$PARAM[artwork].png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
 				<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
-				<colordiffuse>$PARAM[colordiffuse]</colordiffuse>
+				<colordiffuse>$PARAM[artwork_bordercolor]</colordiffuse>
 				<bordersize>8</bordersize>
 			</control>
+			
+			<include condition="$PARAM[artwork_focusoverlay_visible] + !$PARAM[artwork_overlay_circle]" content="FocusOverlay">
+				<param name="diffusedimtext" value="artworkdiffuse/$PARAM[artwork].png" />
+			</include>
 			
 		</control>
 		
@@ -1372,8 +1529,8 @@ what a shit to do
 			<control type="image">
 				<description>testing framed border instead fullbg texture</description>
 				<texture>artworkdiffuse/usebganel/$PARAM[artwork]border.png</texture>
-				<colordiffuse>$PARAM[colordiffuse]</colordiffuse>
-				<bordersize>$PARAM[bordersize_bg]</bordersize>
+				<colordiffuse>$PARAM[artwork_bordercolor]</colordiffuse>
+				<bordersize>$PARAM[artwork_bg_bordersize]</bordersize>
 			</control>
 			<control type="image">
 				<description>temp workaround for def white or very bright border, may an if not cond needed def icons</description>
@@ -1394,8 +1551,9 @@ what a shit to do
 				<bordersize>8</bordersize>
 				<visible>String.IsEmpty(ListItem.Art($PARAM[artwork])) + ![Container.Content(studios) | String.IsEqual(ListItem.dbtype,studio)]</visible>
 			</control>
-			
-			
+			<include condition="$PARAM[artwork_focusoverlay_visible] + !$PARAM[artwork_overlay_circle]" content="FocusOverlay">
+				<param name="diffusedimtext" value="artworkdiffuse/usebganel/$PARAM[artwork].png" />
+			</include>
 		</control>
 		
 		<control description="aspect keep" type="group">
@@ -1419,7 +1577,7 @@ what a shit to do
 		
 		
 		<control type="group">
-			<visible>$PARAM[get_circle]</visible>
+			<visible>$PARAM[artwork_overlay_circle]</visible>
 			
 			<description>ClearLogo Overlay - also nice on non circle</description>
 			<control type="image">
@@ -1446,7 +1604,7 @@ what a shit to do
 					String.IsEmpty(ListItem.Art(clearlogo))
 				</visible>
 				<visible>!String.IsEqual(ListItem.label,..)</visible>
-				<autoscroll delay="3000" time="2000" repeat="3000">$PARAM[autoscroll]</autoscroll>
+				<autoscroll delay="3000" time="2000" repeat="3000">$PARAM[infotags_autoscroll]</autoscroll>
 				<top>90%</top>
 				<left>5</left>
 				<right>5</right>
@@ -1464,7 +1622,7 @@ what a shit to do
 		
 		
 		<control type="group">
-			<visible>$PARAM[get_landscapelogo]</visible>
+			<visible>$PARAM[artwork_overlay_landscape]</visible>
 			<description>ClearLogo Overlay - fanart</description>
 			<animation effect="slide" start="0,0" end="25,-15" condition="Skin.HasTheme(Roundedge)">conditional</animation>
 			<control type="image">
@@ -1497,7 +1655,7 @@ what a shit to do
 		
 		
 		<control type="group">
-			<visible>$PARAM[get_bannerlogo]</visible>
+			<visible>$PARAM[artwork_overlay_banner]</visible>
 			<description>ClearLogo Overlay - Banner</description>
 			<control type="image">
 				<visible>
@@ -1544,30 +1702,29 @@ what a shit to do
 		
 		<control type="group">
 			<description>Taglines Bottom</description>
-			<visible>$PARAM[get_tags]</visible>
+			<visible>$PARAM[infotags_visible]</visible>
+			<visible>!$PARAM[artwork_overlay_circle]</visible>
 			<visible>!String.IsEqual(ListItem.label,..)</visible>
-			
-			
 			<control type="image">
-				<visible>$PARAM[get_tagbgpanel]</visible>
+				<visible>$PARAM[infotags_bgpanel_visible]</visible>
 				<top>97%</top>
-				<bordersize>$PARAM[bordersize_bg],0,$PARAM[bordersize_bg],$PARAM[bordersize_bg]</bordersize>
+				<bordersize>$PARAM[artwork_bg_bordersize],0,$PARAM[artwork_bg_bordersize],$PARAM[artwork_bg_bordersize]</bordersize>
 				<height>80</height>
-				<texture colordiffuse="$PARAM[bottompanelcolor]">artworkdiffuse/tagbottom/tagpanel$PARAM[artwork].png</texture>
+				<texture colordiffuse="$PARAM[infotags_bgpanel_color]">artworkdiffuse/tagbottom/tagpanel$PARAM[artwork].png</texture>
 			</control>
 			
 			<control type="image">
 				<visible>false</visible>
-				<visible>$PARAM[get_tagbgpanel]</visible>
+				<visible>$PARAM[infotags_bgpanel_visible]</visible>
 				<top>98%</top>
 				<height>80</height>
-				<bordersize>$PARAM[bordersize_bg],0,$PARAM[bordersize_bg],$PARAM[bordersize_bg]</bordersize>
-				<texture border="50,0,50,0" colordiffuse="$PARAM[bottompanelcolor]">special://skin/extras/preventfromzip/themed/circle_100_bottomtag.png</texture>
+				<bordersize>$PARAM[artwork_bg_bordersize],0,$PARAM[artwork_bg_bordersize],$PARAM[artwork_bg_bordersize]</bordersize>
+				<texture border="50,0,50,0" colordiffuse="$PARAM[infotags_bgpanel_color]">special://skin/extras/preventfromzip/themed/circle_100_bottomtag.png</texture>
 				<aspectratio scalediffuse="false">stretch</aspectratio>
 			</control>
 			
 			<control type="textbox">
-				<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
+				<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[infotags_autoscroll]</autoscroll>
 				<description>unresolved themerounded offset x, some times h100 is good idea-e.g. profiles</description>
 				<top>101%</top>
 				<left>10</left>
@@ -1577,15 +1734,14 @@ what a shit to do
 				<font>CommonTag</font>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>$PARAM[bottomtaglabelcolor]</textcolor>
+				<textcolor>$PARAM[infotags_label1_color]</textcolor>
 				<selectedcolor>white</selectedcolor>
-				<label>$VAR[Tag_label1][CR][COLOR=$PARAM[bottomtaglabel2color]]$VAR[Tag_label2][/COLOR]</label>
+				<label>$VAR[Tag_label1][CR][COLOR=$PARAM[infotags_label2_color]]$VAR[Tag_label2][/COLOR]</label>
 			</control>
 		</control>
 		
 		<control type="group">
-			<visible>!$PARAM[get_circle]</visible>
-			<visible>$PARAM[has_progressbar]</visible>
+			<visible>!$PARAM[artwork_overlay_circle]</visible>
 			<left>10</left>
 			<right>10</right>
 			<animation type="conditional" condition="Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]" reversible="false">
@@ -1714,7 +1870,7 @@ top-->
 				String.IsEmpty(ListItem.Art(albumartist.clearlogo)) +
 				String.IsEmpty(ListItem.Art(clearlogo))</visible>
 			<visible>!String.IsEqual(ListItem.label,..)</visible>
-			<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[autoscroll]</autoscroll>
+			<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[infotags_autoscroll]</autoscroll>
 			<bottom>-70</bottom>
 			<left>5</left>
 			<right>5</right>
