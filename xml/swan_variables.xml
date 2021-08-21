@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
+	<variable name="check_startup">
+		<value condition="!Skin.HasSetting(initial_startup_done)">1101</value>
+		<value condition="Skin.HasSetting(initial_startup_done) + !String.IsEmpty(Skin.String(custom_startup))">$INFO[Skin.String(custom_startup)]</value>
+		<value condition="Skin.HasSetting(initial_startup_done) + String.IsEmpty(Skin.String(custom_startup))">$INFO[System.StartupWindow]</value>
+	</variable>
 	
 	<variable name="lib_isscanningmedia">
 		<value condition="library.isscanningvideo | library.isscanningmusic">$LOCALIZE[13353]</value>
@@ -15,12 +20,7 @@
 		<value>SW</value>
 	</variable>
 	
-	<variable name="check_startup">
-		<value condition="!Skin.HasSetting(initial_startup_done)">1101</value>
-		<!-- <value condition="![Library.HasContent(video) | Library.HasContent(movies) | Library.HasContent(tvshows) | Library.HasContent(musicvideos) | Library.HasContent(music) | Library.HasContent(musicvideos)]">ReplaceWindow(settings)</value> -->
-		<value condition="Skin.HasSetting(initial_startup_done) + !String.IsEmpty(Skin.String(custom_startup))">$INFO[Skin.String(custom_startup)]</value>
-		<value condition="Skin.HasSetting(initial_startup_done) + String.IsEmpty(Skin.String(custom_startup))">$INFO[System.StartupWindow]</value>
-	</variable>
+	
 	
 	<variable name="embtmdbinfocall">
 		<value condition="String.IsEqual(Container.ListItem.dbtype,actor)">person</value>
@@ -40,8 +40,6 @@
 		<value condition="VideoPlayer.Content(movies)">$INFO[VideoPlayer.Title]</value>
 	</variable>
 	
-<!-- MOVE ME START -->
-	
 	<variable name="EmbuaryHelper_GetInfo_dbid">
 		<value condition="ListItem.IsParentFolder + String.IsEqual(ListItemAbsolute(1).DBType,movie) + Integer.IsGreater(ListItemAbsolute(1).DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[ListItemAbsolute(1).DBID]&amp;type=movie&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
 		<value condition="ListItem.IsParentFolder + String.IsEqual(ListItemAbsolute(1).DBType,tvshow) + Integer.IsGreater(ListItemAbsolute(1).DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[ListItemAbsolute(1).DBID]&amp;type=tvshow&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
@@ -54,7 +52,7 @@
 		<value condition="String.IsEqual(ListItem.DBType,tvshow) + Integer.IsGreater(ListItem.DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[ListItem.DBID]&amp;type=tvshow&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
 		<value condition="String.IsEqual(ListItem.DBType,season) + Integer.IsGreater(ListItem.DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[ListItem.DBID]&amp;type=tvshow&amp;idtype=season&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
 		<value condition="String.IsEqual(ListItem.DBType,episode) + Integer.IsGreater(ListItem.DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[ListItem.DBID]&amp;type=tvshow&amp;idtype=episode&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
-		<value>-</value>
+		<value>special://skin/extras/none.xsp</value>
 	</variable>
 	
 	
@@ -194,14 +192,19 @@
 		<value condition="Window.IsTopMost(movieinformation)">query=$INFO[ListItem.Label]</value> 
 	</variable>
 	
-	
+	<!-- <value condition="VideoPlayer.Content(musicvideos) + [!String.IsEmpty(VideoPlayer.DBID) + !String.IsEqual(VideoPlayer.DBID,0)]">videodb://musicvideos/artists/$INFO[videoplayer. ARTIST DBID]/-1/?artistid$INFO[videoplayer. ARTIST DBID]</value> mööp get videos -->
+		<!-- <value condition="String.StartsWith(System.BuildVersion,19.) + VideoPlayer.Content(episodes) + !String.IsEmpty(VideoPlayer.TvShowDBID)]">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[VideoPlayer.TvShowDBID]</value> -->
+		
 	<variable name="content_cast_video">
 		<value condition="VideoPlayer.Content(movies) + [!String.IsEmpty(VideoPlayer.DBID) + !String.IsEqual(VideoPlayer.DBID,0)]">plugin://script.embuary.helper?info=getcast&amp;type=movie&amp;dbid=$INFO[videoplayer.DBID]</value>
 		<value condition="VideoPlayer.Content(episodes) + [!String.IsEmpty(VideoPlayer.DBID) + !String.IsEqual(VideoPlayer.DBID,0)]">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[VideoPlayer.DBID]&amp;idtype=episode</value>
-		<!-- <value condition="String.StartsWith(System.BuildVersion,19.) + VideoPlayer.Content(episodes) + !String.IsEmpty(VideoPlayer.TvShowDBID)]">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[VideoPlayer.TvShowDBID]</value> -->
 		<value>plugin://plugin.video.themoviedb.helper/?info=cast&amp;$VAR[videofullscreeninfo_tmdb_helper_type]&amp;$VAR[videofullscreeninfo_tmdb_helper_query]</value>
 	</variable>
 	
+	<variable name="fullscreeninfo_7002_header">
+		<value condition="VideoPlayer.Content(musicvideos)">[COLOR grey]Albums by   [/COLOR]$INFO[VideoPlayer.Artist]</value>
+		<value>$LOCALIZE[344]</value>
+	</variable>
 	<variable name="videofullscreeninfo_tmdb_helper_type">
 		<value condition="VideoPlayer.Content(movies)">type=movie</value>
 		<value condition="VideoPlayer.Content(episodes)">type=tv</value>

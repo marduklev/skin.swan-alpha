@@ -1,5 +1,152 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
+	<include name="container_header_simple">
+		<param name="align" default="center" />
+		<definition>
+			<control type="group" id="$PARAM[groupid]">
+				<height>40</height>
+				<description>merge me later with universal header, used for settings heading,centered big bold</description>
+				<visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) | Container($PARAM[id]).IsUpdating</visible>
+				<control type="label">
+					<visible>Control.HasFocus($PARAM[id])</visible>
+					<top>5</top>
+					<width>auto</width>
+					<label>[UPPERCASE][B]$PARAM[label][/UPPERCASE][/B]</label>
+					<aligny>top</aligny>
+					<align>$PARAM[align]</align>
+					<textcolor>$VAR[color_global_button_text_fo]</textcolor>
+					<font>font32_title</font>
+					<height>24</height>
+					<visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) | !Container($PARAM[id]).IsUpdating</visible>
+				</control>
+				<control type="label">
+					<visible>!Control.HasFocus($PARAM[id])</visible>
+					<top>5</top>
+					<width>auto</width>
+					<label>[UPPERCASE]$PARAM[label][/UPPERCASE]</label>
+					<aligny>top</aligny>
+					<align>$PARAM[align]</align>
+					<textcolor>$VAR[color_global_button_text_nf]</textcolor>
+					<font>font32_title</font>
+					<height>24</height>
+					<visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) | !Container($PARAM[id]).IsUpdating</visible>
+				</control>
+			</control>
+		</definition>
+	</include>
+	
+	<include name="container_layout_icon">
+		<param name="containertype" default="fixedlist" />
+		<param name="containerheight" default="300" />
+		<param name="width" default="300" />
+		<param name="height" default="150" />
+		<param name="movement" default="5" />
+		<param name="focusposition" default="0" />
+		<param name="builtin_window" default="global" />
+		
+		<definition>
+		<control type="$PARAM[containertype]" id="$PARAM[id]">
+			<top>50</top>
+			<left>10</left>
+			<width>100%</width>
+			<height>$PARAM[containerheight]</height>
+			
+			<focusposition>$PARAM[focusposition]</focusposition>
+			<movement>$PARAM[movement]</movement>
+			<orientation>horizontal</orientation>
+			<scrolltime tween="quadratic">400</scrolltime>
+			
+			<include condition="!Window.IsVisible(shutdownmenu)" content="Animation_BounceRight">
+				<param name="id">$PARAM[id]</param>
+			</include>
+			<onright condition="!Window.IsVisible(shutdownmenu)">SetProperty(BounceRight,1,home)</onright>
+						
+			<itemlayout height="$PARAM[height]" width="$PARAM[width]">
+				<control type="group">
+					<height>$PARAM[height]</height>
+					<width>$PARAM[width]</width>
+				<control type="image">
+					<centerleft>50%</centerleft>
+					<width>90%</width>
+					<height>90%</height>
+					<texture>$INFO[ListItem.Icon]</texture>
+					<colordiffuse>$VAR[color_$PARAM[builtin_window]_item_nf]</colordiffuse>
+					<aspectratio aligny="top" align="center">keep</aspectratio>
+				</control>
+				<control type="textbox">
+					<height>60</height>
+					<top>$PARAM[height].9</top>
+					<width>$PARAM[width]</width>
+					<align>center</align>
+					<wrapmultiline>true</wrapmultiline>
+					<label>$INFO[ListItem.Label]</label>
+					<textcolor>$VAR[color_$PARAM[builtin_window]_item_nf]</textcolor>
+					<font>font25_narrow</font>
+				</control>
+				</control>
+			</itemlayout>
+			<focusedlayout height="$PARAM[height]" width="$PARAM[width]">
+				<control type="button">
+					<visible allowhiddenfocus="true">false</visible>
+					<onfocus>ClearProperty(menucontrol_active,home)</onfocus>
+				</control>
+				<control type="group">
+					<height>$PARAM[height]</height>
+					<width>$PARAM[width]</width>
+					<visible>!Control.HasFocus($PARAM[id])</visible>
+					<control type="image">
+						<centerleft>50%</centerleft>
+						<width>90%</width>
+						<height>90%</height>
+						<texture>$INFO[ListItem.Icon]</texture>
+						<colordiffuse>$VAR[color_$PARAM[builtin_window]_item_nf]</colordiffuse>
+						<align>center</align>
+						<aspectratio aligny="top" align="center">keep</aspectratio>
+					</control>
+						<control type="textbox">
+						<height>60</height>
+						<top>$PARAM[height]</top>
+						<width>$PARAM[width]</width>
+						<align>center</align>
+						<wrapmultiline>true</wrapmultiline>
+						<label>$INFO[ListItem.Label]</label>
+						<textcolor>$VAR[color_$PARAM[builtin_window]_item_nf]</textcolor>
+						<font>font25_narrow</font>
+					</control>
+				</control>
+				<control type="group">
+					<height>$PARAM[height]</height>
+					<width>$PARAM[width]</width>
+					<visible>Control.HasFocus($PARAM[id])</visible>
+					<include>Animation_Item_Focus</include>
+				
+					<control type="image">
+						<centerleft>50%</centerleft>
+						<width>90%</width>
+						<height>90%</height>
+						<texture>$INFO[ListItem.Icon]</texture>
+						<colordiffuse>$VAR[color_$PARAM[builtin_window]_item_fo]</colordiffuse>
+						<align>center</align>
+						<aspectratio aligny="bottom" align="center">keep</aspectratio>
+					</control>
+					<control type="textbox">
+						<height>60</height>
+						<top>$PARAM[height]</top>
+						<width>106%</width>
+						<left>-3%</left>
+						<align>center</align>
+						<wrapmultiline>true</wrapmultiline>
+						<label>$INFO[ListItem.Label,[B],[/B]]</label>
+						<textcolor>$VAR[color_$PARAM[builtin_window]_item_fo]</textcolor>
+						<font>font25_narrow</font>
+					</control>
+				</control>
+			</focusedlayout>
+			<nested />
+			</control>
+		</definition>
+	</include>
+
 	e.g.
 	call template_container
 		
@@ -349,7 +496,7 @@ either put n use correct *xbt or use naming sheme - img h w = control h - indica
 							<aspectratio scalediffuse="false" align="center" aligny="center">keep</aspectratio>
 						</control>
 					</control>
-		</include>
+	</include>
 			
 	
 	<include name="progress_bar">
@@ -1878,167 +2025,6 @@ top-->
 		</control>
 	</include>
 	
-	
-	<include name="Simple_ContainerHeader">
-		<param name="align" default="left" />
-		<definition>
-			<control type="group" id="$PARAM[groupid]">
-				<height>40</height>
-				<description>merge me later with universal header, used for settings heading,centered big bold</description>
-				<visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) | Container($PARAM[id]).IsUpdating</visible>
-				<nested />
-				<!-- 
-				<animation type="conditional" condition="Control.HasFocus($PARAM[id])" reversible="false">
-					<effect type="zoom" start="80" end="100" center="50%,50%" delay="60" tween="back" time="250" />
-					<effect type="fade" delay="60" start="50" end="100" time="250" />
-				</animation>
-				-->
-				<control type="label">
-					<visible>Control.HasFocus($PARAM[id])</visible>
-					<top>5</top>
-					<width>auto</width>
-					<label>[UPPERCASE][B]$PARAM[label][/UPPERCASE][/B]</label>
-					<aligny>top</aligny>
-					<align>$PARAM[align]</align>
-					<textcolor>$VAR[color_global_button_text_fo]</textcolor>
-					<font>font32_title</font>
-					<height>24</height>
-					<visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) | !Container($PARAM[id]).IsUpdating</visible>
-				</control>
-				<control type="label">
-					<visible>!Control.HasFocus($PARAM[id])</visible>
-					<top>5</top>
-					<width>auto</width>
-					<label>[UPPERCASE]$PARAM[label][/UPPERCASE]</label>
-					<aligny>top</aligny>
-					<align>$PARAM[align]</align>
-					<textcolor>$VAR[color_global_button_text_nf]</textcolor>
-					<font>font32_title</font>
-					<height>24</height>
-					<visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) | !Container($PARAM[id]).IsUpdating</visible>
-				</control>
-			</control>
-		</definition>
-	</include>
-	
-	
-	<!-- Simple Icon and Tag Bottom fixedlist nested 
-	prepare merge dialog button menu 
-	
-	handle icon as button
-	
-	-->
-	<include name="Container_Icons">
-		<param name="containertype" default="fixedlist" />
-		<param name="containerheight" default="300" />
-		<param name="width" default="300" />
-		<param name="height" default="150" />
-		<param name="movement" default="5" />
-		<param name="focusposition" default="0" />
-		<param name="builtin_window" default="global" />
-		
-		<definition>
-		<control type="$PARAM[containertype]" id="$PARAM[id]">
-			<top>50</top>
-			<left>10</left>
-			<width>100%</width>
-			<height>$PARAM[containerheight]</height>
-			
-			<focusposition>$PARAM[focusposition]</focusposition>
-			<movement>$PARAM[movement]</movement>
-			<orientation>horizontal</orientation>
-			<scrolltime tween="quadratic">400</scrolltime>
-			
-			<include condition="!Window.IsVisible(shutdownmenu)" content="Bounce_Right">
-				<param name="id">$PARAM[id]</param>
-			</include>
-			<onright condition="!Window.IsVisible(shutdownmenu)">SetProperty(BounceRight,1,home)</onright>
-						
-			<itemlayout height="$PARAM[height]" width="$PARAM[width]">
-				<control type="group">
-					<height>$PARAM[height]</height>
-					<width>$PARAM[width]</width>
-				<control type="image">
-					<centerleft>50%</centerleft>
-					<width>90%</width>
-					<height>90%</height>
-					<texture>$INFO[ListItem.Icon]</texture>
-					<colordiffuse>$VAR[color_$PARAM[builtin_window]_item_nf]</colordiffuse>
-					<aspectratio aligny="top" align="center">keep</aspectratio>
-				</control>
-				<control type="textbox">
-					<height>60</height>
-					<top>$PARAM[height].9</top>
-					<width>$PARAM[width]</width>
-					<align>center</align>
-					<wrapmultiline>true</wrapmultiline>
-					<label>$INFO[ListItem.Label]</label>
-					<textcolor>$VAR[color_$PARAM[builtin_window]_item_nf]</textcolor>
-					<font>font25_narrow</font>
-				</control>
-				</control>
-			</itemlayout>
-			<focusedlayout height="$PARAM[height]" width="$PARAM[width]">
-				<control type="button">
-					<visible allowhiddenfocus="true">false</visible>
-					<onfocus>ClearProperty(menucontrol_active,home)</onfocus>
-				</control>
-				<control type="group">
-					<height>$PARAM[height]</height>
-					<width>$PARAM[width]</width>
-					<visible>!Control.HasFocus($PARAM[id])</visible>
-					<control type="image">
-						<centerleft>50%</centerleft>
-						<width>90%</width>
-						<height>90%</height>
-						<texture>$INFO[ListItem.Icon]</texture>
-						<colordiffuse>$VAR[color_$PARAM[builtin_window]_item_nf]</colordiffuse>
-						<align>center</align>
-						<aspectratio aligny="top" align="center">keep</aspectratio>
-					</control>
-						<control type="textbox">
-						<height>60</height>
-						<top>$PARAM[height]</top>
-						<width>$PARAM[width]</width>
-						<align>center</align>
-						<wrapmultiline>true</wrapmultiline>
-						<label>$INFO[ListItem.Label]</label>
-						<textcolor>$VAR[color_$PARAM[builtin_window]_item_nf]</textcolor>
-						<font>font25_narrow</font>
-					</control>
-				</control>
-				<control type="group">
-					<height>$PARAM[height]</height>
-					<width>$PARAM[width]</width>
-					<visible>Control.HasFocus($PARAM[id])</visible>
-					<include>Animation_Item_Focus</include>
-				
-					<control type="image">
-						<centerleft>50%</centerleft>
-						<width>90%</width>
-						<height>90%</height>
-						<texture>$INFO[ListItem.Icon]</texture>
-						<colordiffuse>$VAR[color_$PARAM[builtin_window]_item_fo]</colordiffuse>
-						<align>center</align>
-						<aspectratio aligny="bottom" align="center">keep</aspectratio>
-					</control>
-					<control type="textbox">
-						<height>60</height>
-						<top>$PARAM[height]</top>
-						<width>106%</width>
-						<left>-3%</left>
-						<align>center</align>
-						<wrapmultiline>true</wrapmultiline>
-						<label>$INFO[ListItem.Label,[B],[/B]]</label>
-						<textcolor>$VAR[color_$PARAM[builtin_window]_item_fo]</textcolor>
-						<font>font25_narrow</font>
-					</control>
-				</control>
-			</focusedlayout>
-			<nested />
-			</control>
-		</definition>
-	</include>
 
 	<variable name="Tag_label1">
 		<value condition="String.IsEqual(ListItem.label,..)"></value>

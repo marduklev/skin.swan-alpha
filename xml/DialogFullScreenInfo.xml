@@ -3,6 +3,7 @@
 	<defaultcontrol always="true">7102</defaultcontrol>
 	<onload condition="!player.paused">PlayerControl(play)</onload>
 	
+
 	<controls>
 	
 		<!-- NOTES : keep either empty to place controls (special ratings, cast ...) in videoOSD.xml and have it visible at contition for the slide fade animations , if mouse is hovering osd will forced activated -->
@@ -125,7 +126,7 @@
 				<control type="image">
 					<texture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white.png</texture>
 				</control>
-				
+				<!-- make  hor groulist -->
 				<control type="button" id="701">
 					<top>10</top>
 					<left>0</left>
@@ -137,25 +138,6 @@
 					<onclick>RunScript(script.embuary.info,call=$VAR[embtmdbinfocall_playerinfo],query='"$VAR[embtmdbinfoquery_playerinfo]'")</onclick>
 					<enable>VideoPlayer.Content(episodes) | VideoPlayer.Content(movies)</enable>
 					
-					<onup>Close</onup>
-					<ondown>Close</ondown>
-					<onleft>700</onleft>
-					<onright>700</onright>
-				</control>
-				<control type="button" id="702">
-					<top>150</top>
-					<left>0</left>
-					<width>150</width>
-					<height>150</height>
-					<description>COMMON INFO - IF POSSIBLE NEED CONDITIONAL SLIDE AUTO VIA GROULIST OR ANIM </description>
-					<texturefocus colordiffuse="$VAR[color_osdvideo_button_fo]">buttons/tmdbembuaryinfo.png</texturefocus>
-					<texturenofocus colordiffuse="$VAR[color_osdvideo_button_nf]">buttons/tmdbembuaryinfo.png</texturenofocus>
-					
-					<visible>false</visible>
-					<!--
-					<onclick>Action(??)</onclick>
-					<enable>true</enable>
-					-->
 					<onup>Close</onup>
 					<ondown>Close</ondown>
 					<onleft>700</onleft>
@@ -180,7 +162,7 @@
 						<param name="groupid" value="7101" />
 						<param name="top" value="0" />
 						<param name="id" value="7102" />
-						<param name="label" value="$LOCALIZE[344]" />
+						<param name="label" value="$VAR[fullscreeninfo_7002_header]" />
 						
 						<param name="show_seperator_and_listitem" value="false" />
 						<left>-15</left>
@@ -193,7 +175,7 @@
 						<param name="item_artwork_bordercolor_fo" value="$VAR[color_osdvideo_button_fo]" />
 						<param name="item_artwork_bordercolor_nf" value="$VAR[color_osdvideo_button_nf]" /> -->
 					
-					<include content="Universal_Container">
+					<include condition="!VideoPlayer.Content(musicvideos)" content="Universal_Container">
 						<param name="id" value="7102" />
 						<param name="visible" value="Integer.IsGreater(Container(7102).NumItems,0) | Container(7102).IsUpdating" />
 						
@@ -205,12 +187,64 @@
 						<param name="itemwidth" value="115" />
 						<param name="itemheight" value="155" />
 						<param name="item_artwork_name" value="poster" />
-						
-						<param name="item_artwork_name" value="poster" />
 						<include>Action_CastMemberSearchForceOption</include>
 						
 						<content>$VAR[content_cast_video]</content>
 		
+					</include>
+					<include condition="VideoPlayer.Content(musicvideos)" content="Universal_Container">
+						<param name="id" value="7102" />
+						<param name="visible" value="Integer.IsGreater(Container(7102).NumItems,0) | Container(7102).IsUpdating" />
+						
+						<param name="type_height" value="220" />
+						<param name="type_pos_top" value="0" />
+						
+						<param name="layout_height" value="185" />
+						<param name="layout_width" value="185" />
+						<param name="itemwidth" value="185" />
+						<param name="itemheight" value="185" />
+						
+						<param name="item_artwork_name" value="circle" />
+					
+						<!-- 	<onclick condition="VideoPlayer.Content(musicvideos)">ActivateWindow(DialogMusicInfo.xml)</onclick> -->
+						<!-- 
+						
+						go to hub NOTE No PREV ID IS SET
+						<onclick>SetProperty(HUB_Music,SongsByAlbum,home)</onclick>
+						<onclick>close</onclick>
+						<onclick condition="Integer.IsGreater(container(7102).ListItem.TotalDiscs,1)">SetProperty(HUB_containerpath_albums,$INFO[container(7102).ListItem.FolderPath],home)</onclick>
+						<onclick condition="Integer.IsGreater(container(7102).ListItem.TotalDiscs,1)">ActivateWindow(1110)</onclick>
+						<onclick condition="Integer.IsGreater(container(7102).ListItem.TotalDiscs,1)">AlarmClock(delayedfocus,SetFocus(5120,0,absolute),00:00,silent)</onclick>
+						<onclick condition="Integer.IsEqual(container(7102).ListItem.TotalDiscs,1) | String.IsEmpty(container(7102).ListItem.TotalDiscs)">SetProperty(HUB_containerpath_songs,$INFO[[container(7102).ListItem.FolderPath],home)</onclick>
+						<onclick condition="Integer.IsEqual(container(7102).ListItem.TotalDiscs,1) | String.IsEmpty(container(7102).ListItem.TotalDiscs)">ActivateWindow(1110)</onclick>
+						<onclick condition="Integer.IsEqual(container(7102).ListItem.TotalDiscs,1) | String.IsEmpty(container(7102).ListItem.TotalDiscs)">AlarmClock(delayedfocus,SetFocus(5121,0,absolute),00:00,silent)</onclick> -->
+						
+						<content>musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[VideoPlayer.Artist]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</content>
+						
+					</include>
+					
+					
+					get heading instead
+					<include condition="VideoPlayer.Content(musicvideos)" content="spacer_h">
+						<param name="id" value="7103" />
+						<param name="gap" value="100" />
+					</include>
+					<include condition="VideoPlayer.Content(musicvideos)" content="Universal_Container">
+						<param name="id" value="7104" />
+						<param name="visible" value="Integer.IsGreater(Container(7102).NumItems,0) | Container(7102).IsUpdating" />
+						
+						<param name="type_height" value="250" />
+						<param name="type_pos_top" value="0" />
+						
+						<param name="layout_height" value="170" />
+						<param name="layout_width" value="300" />
+						<param name="itemwidth" value="290" />
+						<param name="itemheight" value="155" />
+						
+						<param name="item_artwork_name" value="landscape" />
+				
+						<content>videodb://musicvideos/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[videoplayer.artist]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</content>
+						
 					</include>
 					
 				</control>
