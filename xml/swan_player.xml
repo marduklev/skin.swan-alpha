@@ -552,8 +552,8 @@
 		<value condition="VideoPlayer.Content(movies) + Integer.IsGreater(VideoPlayer.DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[VideoPlayer.DBID]&amp;type=movie</value>
 		<value condition="VideoPlayer.Content(tvshows) + Integer.IsGreater(VideoPlayer.DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[VideoPlayer.DBID]&amp;type=movie</value>
 		<value condition="VideoPlayer.Content(episodes) + Integer.IsGreater(VideoPlayer.DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[VideoPlayer.DBID]&amp;type=tvshow&amp;idtype=episode</value>
-		<value>special://skin/extras/none.xsp</value>
 	</variable>
+	
 	<variable name="Fullscreen_Numeric_Input">
 		<value condition="Window.Is(fullscreenlivetvinput) | !String.IsEmpty(PVR.ChannelNumberInput)">$INFO[PVR.ChannelNumberInput,$LOCALIZE[19029]]</value>
 		<value condition="Window.Is(videotimeseek) | !String.IsEmpty(Player.SeekNumeric)">Jump to a specific time[CR](hh:mm:ss)[CR][CR]$INFO[Player.SeekNumeric(hh:mm:ss),,]</value>
@@ -626,14 +626,14 @@
 				<height>400</height>
 				<animation effect="slide" start="0,0" end="0,-100" time="250" condition="Window.IsActive(videoosd)">conditional</animation>
 					
-					<animation effect="slide" start="0,0" end="0,-410" time="250" condition="Window.IsActive(fullscreeninfo)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,-410" time="250" condition="Window.IsActive(fullscreeninfo)">conditional</animation>
 				
-				<animation effect="slide" start="0,0" end="0,150" time="250" condition="$EXP[osd_video_noinfo]">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,150" time="250" condition="!Window.IsActive(fullscreeninfo) + $EXP[osd_video_noinfo]">conditional</animation>
 				<control type="image" id="99">
 					<description>bottom offset neg as osd button bg</description>
-					<bottom>-100</bottom>
+					<bottom>-200</bottom>
 					<width>102%</width>
-					<height>350</height>
+					<height>450</height>
 					<aspectratio scalediffuse="true" align="center" aligny="bottom">stretch</aspectratio>
 					<bordersize>0,100,0,0</bordersize>
 					<texture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white.png</texture>
@@ -710,7 +710,7 @@
 					<textcolor>$VAR[color_osdvideo_secondary]</textcolor>
 					<font>DialogListItem</font>
 					<label>$VAR[PlayerPlot]</label>
-					<visible>!String.IsEmpty(VideoPlayer.Plot) + !Player.ShowInfo</visible>
+					<visible>[!String.IsEmpty(VideoPlayer.Plot) + !Player.ShowInfo] | Window.IsActive(fullscreeninfo)</visible>
 				</control>
 			</control>
 			

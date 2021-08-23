@@ -1620,8 +1620,6 @@ what a shit to do
 		<definition>
 		
 		<control type="group">
-			
-			
 			<visible>$PARAM[artwork_diffuse_themed]</visible>
 			<control type="image">
 				<description>testing framed border instead fullbg texture</description>
@@ -1656,13 +1654,10 @@ what a shit to do
 				<colordiffuse>$PARAM[artwork_bordercolor]</colordiffuse>
 				<bordersize>8</bordersize>
 			</control>
-			
 			<include condition="$PARAM[artwork_focusoverlay_visible] + !$PARAM[artwork_overlay_circle]" content="FocusOverlay">
 				<param name="diffusedimtext" value="artworkdiffuse/$PARAM[artwork].png" />
 			</include>
-			
 		</control>
-		
 		
 		<control type="group">
 			<visible>$PARAM[artwork_diffuse_override]</visible>
@@ -1715,11 +1710,9 @@ what a shit to do
 			</control>
 		</control>
 		
-		
 		<control type="group">
+			<description>ClearLogo Overlay Circle Items</description>
 			<visible>$PARAM[artwork_overlay_circle]</visible>
-			
-			<description>ClearLogo Overlay - also nice on non circle</description>
 			<control type="image">
 				<visible>![[Container.Content(Seasons) | String.IsEqual(ListItem.dbtype,season)] | [Container.Content(Episodes) | String.IsEqual(ListItem.dbtype,episode)] | [Container.Content(Albums) | String.IsEqual(ListItem.dbtype,album)]]</visible>
 				<visible>
@@ -1760,10 +1753,9 @@ what a shit to do
 			</control>
 		</control>
 		
-		
 		<control type="group">
+			<description>ClearLogo Overlay - Fanart Items</description>
 			<visible>$PARAM[artwork_overlay_landscape]</visible>
-			<description>ClearLogo Overlay - fanart</description>
 			<animation effect="slide" start="0,0" end="25,-15" condition="Skin.HasTheme(Roundedge)">conditional</animation>
 			<control type="image">
 				<visible>
@@ -1786,17 +1778,15 @@ what a shit to do
 				<right>10</right>
 				<height>50%</height>
 				<width>50%</width>
-				
 				<texture background="true">$VAR[ListItemClearLogo]</texture>
 				<aspectratio align="left" aligny="bottom">keep</aspectratio>
 			</control>
 			
 		</control>
 		
-		
 		<control type="group">
+			<description>ClearLogo Overlay - Banner Items</description>
 			<visible>$PARAM[artwork_overlay_banner]</visible>
-			<description>ClearLogo Overlay - Banner</description>
 			<control type="image">
 				<visible>
 					String.IsEmpty(ListItem.Art(tvshow.banner)) +
@@ -1839,7 +1829,6 @@ what a shit to do
 			</control>	
 		</control>
 		
-		
 		<control type="group">
 			<description>Taglines Bottom</description>
 			<visible>$PARAM[infotags_visible]</visible>
@@ -1852,7 +1841,6 @@ what a shit to do
 				<height>80</height>
 				<texture colordiffuse="$PARAM[infotags_bgpanel_color]">artworkdiffuse/tagbottom/tagpanel$PARAM[artwork].png</texture>
 			</control>
-			
 			<control type="image">
 				<visible>false</visible>
 				<visible>$PARAM[infotags_bgpanel_visible]</visible>
@@ -1884,7 +1872,7 @@ what a shit to do
 			<visible>!$PARAM[artwork_overlay_circle]</visible>
 			<left>10</left>
 			<right>10</right>
-			<animation type="conditional" condition="Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]" reversible="false">
+			<animation type="conditional" condition="$PARAM[artwork_diffuse_themed]" reversible="false">
 				<effect type="zoom" start="100,100" end="70,100" center="50%,100%" time="0" />
 			</animation>
 			<include content="ProgressBarOverlay" />
@@ -2082,39 +2070,7 @@ top-->
 		<value condition="!String.IsEmpty(Container.ListItem.Art(fanart))">$INFO[Container.ListItem.Art(fanart)]</value>
 		
 	</variable>
-		<!-- fallback home sections -->
-		<value condition="xystaticitemsegweather">$INFO[ListItem.Property(FanartThumb)]</value>
 	
-	
-	<!-- check resource addon countries content -->
-		<!-- 
-		+
-		https://kodi.wiki/view/Artwork/Accessing_with_skins_and_JSON-RPC
-		<value condition="[Container.Content(genres) | String.IsEqual(ListItem.DBTYPE,genre)] + String.Contains(ListItem.FolderPath,music)">$VAR[MusicGenreIconVarList]</value>
-		<value condition="[Container.Content(genres) | String.IsEqual(ListItem.DBTYPE,genre)]">$VAR[MovieGenreIconVarList]</value>
-		
-		
-		defaulticon working
-		
-		
-		<value condition="[Container.Content(genres) | String.IsEqual(ListItem.dbtype,genre)]">defaultgenre.png</value>
-		<value condition="[Container.Content(actors) | String.IsEqual(ListItem.dbtype,actor)] + String.IsEmpty(ListItem.icon)">defaultactor.png</value>
-		
-		just working if packed to xbt 
-		<value condition="[Container.Content(tags) | String.IsEqual(ListItem.dbtype,tag)]">defaulttags.png</value>
-		<value condition="[Container.Content(countries) | String.IsEqual(ListItem.dbtype,country)]">defaultcountry.png</value>
-		
-		
-		defaulticon doesnt working  , fall back to defaultfolder
-		<value condition="Window.IsActive(videos) + [Container.Content(genres) | String.IsEqual(ListItem.DBTYPE,genre)]">defaultgenre.png</value>
-		<value condition="Window.IsActive(music) + [Container.Content(genres) | String.IsEqual(ListItem.DBTYPE,genre)]">defaultmusicgenres.png</value>
-		<value condition="[Container.Content(directors) | String.IsEqual(ListItem.dbtype,director)]">defaultdirector.png</value>
-		<value condition="Container.Content(years)">defaultyear.png</value>
-			
-		-->
-		<!-- use extra img control in layout to have unique id, if fail use textlabel -->
-		
-		
 	<variable name="ImageLayout_poster">
 		<value condition="!String.IsEmpty(ListItem.Property(icon))">$INFO[ListItem.Property(icon)]</value>
 		<value condition="String.IsEqual(ListItem.Label,..)">defaultfolderback.png</value>
@@ -2152,6 +2108,7 @@ top-->
 		<value condition="!String.IsEmpty(ListItem.Art(season.fanart))">$INFO[ListItem.Art(season.fanart)]</value>
         <value condition="!String.IsEmpty(ListItem.Art(tvshow.fanart))">$INFO[ListItem.Art(tvshow.fanart)]</value>
 		<value condition="!String.IsEmpty(ListItem.Art(fanart))">$INFO[ListItem.Art(fanart)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(poster))">$INFO[ListItem.Art(poster)]</value>
 		<value condition="!String.IsEmpty(ListItem.Icon)">$INFO[ListItem.Icon]</value>
     </variable>
 	
@@ -2209,7 +2166,6 @@ top-->
 		<value condition="String.IsEmpty(ListItem.Art(banner))">$VAR[ImageLayout_landscape]</value>
 	</variable>
 	
-	<!-- square thumb vars -->
 	<variable name="ImageLayout_square">
 	  <value>$VAR[ImageLayout_poster]</value>
     </variable>

@@ -98,46 +98,7 @@
 			</control>
         </control>
 		
-		<!-- Swan DialogSelect Content -->
-		<control type="group">
-            <visible>!String.IsEmpty(Window(home).Property(ShortcutPlaylistContent))</visible>
-			<include content="Dialog_CommonInfo">
-                <param name="Def_Icon" value="$VAR[image_dialogselect]" />
-                <param name="Header_label" value="$INFO[Control.GetLabel(1),[B],[/B]]" />
-                <param name="Item_Description" value="$INFO[ListItem.FilenameandPath]" />
-            </include>
-			
-			<!-- Playlists -->
-			<control type="group">
-				<visible>!String.IsEmpty(Window(home).Property(ShortcutPlaylistContent))</visible>
-				<control type="panel" id="40">
-					
-					<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu) + String.IsEqual(Window(home).Property(ShortcutPlaylistContent),video)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_target,videos)</onclick>
-					<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu) + String.IsEqual(Window(home).Property(ShortcutPlaylistContent),music)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_target,music)</onclick>
-					<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_thumb,defaultplaylist.png)</onclick>
-					<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_path,$INFO[ListItem.FilenameandPath])</onclick>
-					<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_name,$INFO[ListItem.Label])</onclick>
-					
-					<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget) + String.IsEqual(Window(home).Property(ShortcutPlaylistContent),video)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_target,videos)</onclick>
-					<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget) + String.IsEqual(Window(home).Property(ShortcutPlaylistContent),music)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_target,music)</onclick>
-					<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget) + String.IsEqual(Window(home).Property(ShortcutPlaylistContent),video)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout,poster)</onclick>
-					<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget) + String.IsEqual(Window(home).Property(ShortcutPlaylistContent),video)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout.label,poster)</onclick>
-					<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget) + String.IsEqual(Window(home).Property(ShortcutPlaylistContent),music)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout,square)</onclick>
-					<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget) + String.IsEqual(Window(home).Property(ShortcutPlaylistContent),music)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout.label,square)</onclick>
-					<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_path,$INFO[ListItem.FilenameandPath])</onclick>
-					<onclick condition="String.IsEqual(Window(home).Property(SetShortcutInProgress),widget)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_name,$INFO[ListItem.Label])</onclick>
-					
-					<onclick>Dialog.Close(all,true)</onclick>
-					<onclick>ClearProperty(shortcutitem_name,home)</onclick>
-					<onclick>ClearProperty(userwidgetLayout,home)</onclick>
-					<onclick>ClearProperty(SetShortcutInProgress,home)</onclick>
-					<onclick>ClearProperty(shortcutitem_nr,home)</onclick>
-					<onclick>ClearProperty(ShortcutPlaylistContent,home)</onclick>
-					<include content="SwanShortcuts_PanelList" />
-					<content>special://$INFO[Window(home).Property(ShortcutPlaylistContent)]playlists/</content>
-					<content>special://skin/playlists/$INFO[Window(home).Property(ShortcutPlaylistContent)]/</content>
-				</control>
-			</control>
-		</control>
+		<include content="Shortcut_DialogSelect_Contents" condition="!String.IsEmpty(Window(home).Property(ShortcutPlaylistContent))" />
+		
     </controls>
 </window>
