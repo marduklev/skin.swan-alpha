@@ -1485,13 +1485,12 @@ what a shit to do
 		<definition>
 		<control type="$PARAM[type]" id="$PARAM[id]">
 			<nested />
+			<visible>$PARAM[visible]</visible>
 			<orientation>$PARAM[type_orientation]</orientation>
 			<preloaditems>2</preloaditems>
 			<scrolltime tween="quadratic">400</scrolltime>
-			
-			<height>$PARAM[type_height]</height>
 			<top>$PARAM[type_pos_top]</top>
-			<visible>$PARAM[visible]</visible>
+			<height>$PARAM[type_height]</height>
 			<itemlayout height="$PARAM[layout_height]" width="$PARAM[layout_width]">
 				<control type="group">
 					<width>$PARAM[itemwidth]</width>
@@ -1612,10 +1611,9 @@ what a shit to do
 		<param name="artwork_overlay_circle" default="false" />
 		<param name="artwork_overlay_landscape" default="false" />
 		<param name="artwork_overlay_banner" default="false" />
-		<param name="infotags_bgpanel_visible" default="true" />
-		
 		<param name="artwork_diffuse_themed" default="String.IsEqual(ListItem.Label,..) | !Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + $EXP[HiddentagPanel]]" />
 		<param name="artwork_diffuse_override" default="!String.IsEqual(ListItem.Label,..) + Skin.HasTheme(Roundedge) + $EXP[VisibletagPanel]" />
+		<param name="infotags_bgpanel_visible" default="true" />
 		
 		<definition>
 		
@@ -1637,23 +1635,20 @@ what a shit to do
 				<description>kodi default, aspectratio scalediffuse="true" aligny="center" align="center" stretch</description>
 				<texture background="true" diffuse="artworkdiffuse/$PARAM[artwork].png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
 				<bordersize>8</bordersize>
-				<visible>!String.IsEmpty(ListItem.Art($PARAM[artwork])) + ![Container.Content(studios) | String.IsEqual(ListItem.dbtype,studio)]</visible>
+				<visible>!String.IsEmpty(ListItem.Art($PARAM[artwork])) + !String.IsEqual(ListItem.dbtype,studio)</visible>
 			</control>
 			<control type="image">
 				<description>Fallback aspect scale</description>
 				<texture background="true" diffuse="artworkdiffuse/$PARAM[artwork].png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
 				<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
 				<bordersize>8</bordersize>
-				<visible>String.IsEmpty(ListItem.Art($PARAM[artwork])) + ![Container.Content(studios) | String.IsEqual(ListItem.dbtype,studio)]</visible>
+				<visible>String.IsEmpty(ListItem.Art($PARAM[artwork])) + !String.IsEqual(ListItem.dbtype,studio)</visible>
 			</control>
-			<control type="image">
-				<description>Experimental - diffuse based on prop !String.IsEmpty(ListItem.Property(icon))</description>
-				<visible>false</visible>
-				<texture background="true" diffuse="artworkdiffuse/$PARAM[artwork].png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
-				<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
-				<colordiffuse>$PARAM[artwork_bordercolor]</colordiffuse>
-				<bordersize>8</bordersize>
-			</control>
+			<include content="sub_uni_resourceimg_item">
+				<param name="themeprefix" value="" />
+				<param name="artwork" value="$PARAM[artwork]" />
+			</include>
+			
 			<include condition="$PARAM[artwork_focusoverlay_visible] + !$PARAM[artwork_overlay_circle]" content="FocusOverlay">
 				<param name="diffusedimtext" value="artworkdiffuse/$PARAM[artwork].png" />
 			</include>
@@ -1677,39 +1672,24 @@ what a shit to do
 				<description>default, aspectratio scalediffuse="true" aligny="center" align="center" stretch</description>
 				<texture background="true" diffuse="artworkdiffuse/usebganel/$PARAM[artwork].png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
 				<bordersize>8</bordersize>
-				<visible>!String.IsEmpty(ListItem.Art($PARAM[artwork])) + ![Container.Content(studios) | String.IsEqual(ListItem.dbtype,studio)]</visible>
+				<visible>!String.IsEmpty(ListItem.Art($PARAM[artwork])) + !String.IsEqual(ListItem.dbtype,studio)</visible>
 			</control>
 			<control type="image">
 				<description>Fallback aspect scale</description>
 				<texture background="true" diffuse="artworkdiffuse/usebganel/$PARAM[artwork].png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
 				<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
 				<bordersize>8</bordersize>
-				<visible>String.IsEmpty(ListItem.Art($PARAM[artwork])) + ![Container.Content(studios) | String.IsEqual(ListItem.dbtype,studio)]</visible>
+				<visible>String.IsEmpty(ListItem.Art($PARAM[artwork])) + !String.IsEqual(ListItem.dbtype,studio)</visible>
 			</control>
+			
+			<include content="sub_uni_resourceimg_item">
+				<param name="themeprefix" value="/usebganel" />
+				<param name="artwork" value="$PARAM[artwork]" />
+			</include>
 			<include condition="$PARAM[artwork_focusoverlay_visible] + !$PARAM[artwork_overlay_circle]" content="FocusOverlay">
 				<param name="diffusedimtext" value="artworkdiffuse/usebganel/$PARAM[artwork].png" />
 			</include>
 		</control>
-		
-		<control description="aspect keep" type="group">
-			<visible>[Container.Content(studios) | String.IsEqual(ListItem.dbtype,studio)]</visible>
-			<control type="image">
-				<texture fallback="defaultstudios.png" background="true" diffuse="artworkdiffuse/$PARAM[artwork].png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
-				<aspectratio scalediffuse="false" aligny="center" align="center">keep</aspectratio>
-				<bordersize>8</bordersize>
-			</control>
-			<control type="textbox">
-				<visible>false</visible>
-				<info>listitem.label</info>
-				<centertop>50%</centertop>
-				<align>center</align>
-				<wrapmultiline>true</wrapmultiline>
-				<left>15</left>
-				<right>15</right>
-				<font>font20_title</font>
-			</control>
-		</control>
-		
 		<control type="group">
 			<description>ClearLogo Overlay Circle Items</description>
 			<visible>$PARAM[artwork_overlay_circle]</visible>
@@ -1879,6 +1859,37 @@ what a shit to do
 		</control>
 		</definition>
     </include>
+	
+	<include name="sub_uni_resourceimg_item">
+		<control type="group">
+			<visible>String.IsEqual(ListItem.dbtype,studio)</visible>
+			<control type="image">
+				<texture diffuse="artworkdiffuse$PARAM[themeprefix]/$PARAM[artwork].png" colordiffuse="ff131313">colors/white.png</texture>
+				<aspectratio scalediffuse="false" aligny="center" align="center">stretch</aspectratio>
+				<bordersize>8</bordersize>
+			</control>
+			<control type="textbox">
+				<info>listitem.label</info>
+				<centertop>50%</centertop>
+				<align>center</align>
+				<wrapmultiline>true</wrapmultiline>
+				<left>10</left>
+				<right>10</right>
+				<font>MenucontrolItem</font>
+			</control>
+			<control type="image">
+				<left>8</left>
+				<right>8</right>
+				<top>8</top>
+				<bottom>8</bottom>
+				<bordersize>8</bordersize>
+				<bordertexture diffuse="artworkdiffuse$PARAM[themeprefix]/$PARAM[artwork].png" colordiffuse="ff131313">colors/white.png</bordertexture>
+				<texture background="true" diffuse="artworkdiffuse/usebganel/$PARAM[artwork].png">$INFO[ListItem.Label,resource://resource.images.studios.white/,.png]</texture>
+				<aspectratio scalediffuse="false" aligny="center" align="center">keep</aspectratio>
+			</control>
+		</control>
+	</include>
+	
 	
 	<include name="UniversalWidgetInfo">
 	
