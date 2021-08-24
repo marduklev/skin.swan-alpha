@@ -1619,36 +1619,12 @@ what a shit to do
 		
 		<control type="group">
 			<visible>$PARAM[artwork_diffuse_themed]</visible>
-			<control type="image">
-				<description>testing framed border instead fullbg texture</description>
-				<texture>artworkdiffuse/$PARAM[artwork]border.png</texture>
-				<colordiffuse>$PARAM[artwork_bordercolor]</colordiffuse>
-				<bordersize>$PARAM[artwork_bg_bordersize]</bordersize>
-			</control>
-			<control type="image">
-				<description>temp workaround for def white or very bright border, may an if not cond needed def icons</description>
-				<texture colordiffuse="66131313">artworkdiffuse/$PARAM[artwork].png</texture>
-				<bordersize>8</bordersize>
-				<visible>String.Contains(ListItem.Icon,default) | !String.IsEmpty(ListItem.Property(icon))</visible>
-			</control>
-			<control type="image">
-				<description>kodi default, aspectratio scalediffuse="true" aligny="center" align="center" stretch</description>
-				<texture background="true" diffuse="artworkdiffuse/$PARAM[artwork].png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
-				<bordersize>8</bordersize>
-				<visible>!String.IsEmpty(ListItem.Art($PARAM[artwork])) + !String.IsEqual(ListItem.dbtype,studio)</visible>
-			</control>
-			<control type="image">
-				<description>Fallback aspect scale</description>
-				<texture background="true" diffuse="artworkdiffuse/$PARAM[artwork].png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
-				<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
-				<bordersize>8</bordersize>
-				<visible>String.IsEmpty(ListItem.Art($PARAM[artwork])) + !String.IsEqual(ListItem.dbtype,studio)</visible>
-			</control>
-			<include content="sub_uni_resourceimg_item">
+			<include content="unilayout_subcall_artwork">
 				<param name="themeprefix" value="" />
 				<param name="artwork" value="$PARAM[artwork]" />
+				<param name="artwork_bordercolor" value="$PARAM[artwork_bordercolor]" />
+				<param name="artwork_bg_bordersize" value="$PARAM[artwork_bg_bordersize]" />
 			</include>
-			
 			<include condition="$PARAM[artwork_focusoverlay_visible] + !$PARAM[artwork_overlay_circle]" content="FocusOverlay">
 				<param name="diffusedimtext" value="artworkdiffuse/$PARAM[artwork].png" />
 			</include>
@@ -1656,35 +1632,11 @@ what a shit to do
 		
 		<control type="group">
 			<visible>$PARAM[artwork_diffuse_override]</visible>
-			<control type="image">
-				<description>testing framed border instead fullbg texture</description>
-				<texture>artworkdiffuse/usebganel/$PARAM[artwork]border.png</texture>
-				<colordiffuse>$PARAM[artwork_bordercolor]</colordiffuse>
-				<bordersize>$PARAM[artwork_bg_bordersize]</bordersize>
-			</control>
-			<control type="image">
-				<description>temp workaround for def white or very bright border, may an if not cond needed def icons</description>
-				<texture colordiffuse="66131313">artworkdiffuse/usebganel/$PARAM[artwork].png</texture>
-				<bordersize>8</bordersize>
-				<visible>String.Contains(ListItem.Icon,default)</visible>
-			</control>
-			<control type="image">
-				<description>default, aspectratio scalediffuse="true" aligny="center" align="center" stretch</description>
-				<texture background="true" diffuse="artworkdiffuse/usebganel/$PARAM[artwork].png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
-				<bordersize>8</bordersize>
-				<visible>!String.IsEmpty(ListItem.Art($PARAM[artwork])) + !String.IsEqual(ListItem.dbtype,studio)</visible>
-			</control>
-			<control type="image">
-				<description>Fallback aspect scale</description>
-				<texture background="true" diffuse="artworkdiffuse/usebganel/$PARAM[artwork].png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
-				<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
-				<bordersize>8</bordersize>
-				<visible>String.IsEmpty(ListItem.Art($PARAM[artwork])) + !String.IsEqual(ListItem.dbtype,studio)</visible>
-			</control>
-			
-			<include content="sub_uni_resourceimg_item">
+			<include content="unilayout_subcall_artwork">
 				<param name="themeprefix" value="/usebganel" />
 				<param name="artwork" value="$PARAM[artwork]" />
+				<param name="artwork_bordercolor" value="$PARAM[artwork_bordercolor]" />
+				<param name="artwork_bg_bordersize" value="$PARAM[artwork_bg_bordersize]" />
 			</include>
 			<include condition="$PARAM[artwork_focusoverlay_visible] + !$PARAM[artwork_overlay_circle]" content="FocusOverlay">
 				<param name="diffusedimtext" value="artworkdiffuse/usebganel/$PARAM[artwork].png" />
@@ -1860,7 +1812,34 @@ what a shit to do
 		</definition>
     </include>
 	
-	<include name="sub_uni_resourceimg_item">
+	<include name="unilayout_subcall_artwork">
+			<control type="image">
+				<description>testing framed border instead fullbg texture</description>
+				<texture>artworkdiffuse$PARAM[themeprefix]/$PARAM[artwork]border.png</texture>
+				<colordiffuse>$PARAM[artwork_bordercolor]</colordiffuse>
+				<bordersize>$PARAM[artwork_bg_bordersize]</bordersize>
+			</control>
+			<control type="image">
+				<description>temp workaround for def white or very bright border, may an if not cond needed def icons</description>
+				<texture colordiffuse="66131313">artworkdiffuse$PARAM[themeprefix]/$PARAM[artwork].png</texture>
+				<bordersize>8</bordersize>
+				<visible>String.Contains(ListItem.Icon,default)</visible>
+			</control>
+			<control type="image">
+				<description>default, aspectratio scalediffuse="true" aligny="center" align="center" stretch</description>
+				<texture background="true" diffuse="artworkdiffuse$PARAM[themeprefix]/$PARAM[artwork].png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
+				<bordersize>8</bordersize>
+				<visible>!String.IsEmpty(ListItem.Art($PARAM[artwork])) + !String.IsEqual(ListItem.dbtype,studio)</visible>
+			</control>
+			<control type="image">
+				<description>Fallback aspect scale</description>
+				<texture background="true" diffuse="artworkdiffuse$PARAM[themeprefix]/$PARAM[artwork].png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
+				<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
+				<bordersize>8</bordersize>
+				<visible>String.IsEmpty(ListItem.Art($PARAM[artwork])) + !String.IsEqual(ListItem.dbtype,studio)</visible>
+			</control>
+			
+		
 		<control type="group">
 			<visible>String.IsEqual(ListItem.dbtype,studio)</visible>
 			<control type="image">
