@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
-	
-	<!-- widget container -->
-	<!-- <include>RespectBool_selectaction</include> -->
 	<include name="Widget_Container_Template">
 		<param name="height" default="350" />
-		
 		<definition>
-	
 		<control type="$PARAM[type]" id="$PARAM[id]">
 			<nested />
 			<scrolltime tween="quadratic">400</scrolltime>
@@ -17,6 +12,11 @@
 			<orientation>horizontal</orientation>
 			<height>$PARAM[height]</height>
 			<visible>$PARAM[visible]</visible>
+			
+			<include condition="Skin.HasSetting(Home_SectionWidgets)" content="Widget_Container_Linked">
+				<param name="nr" value="$PARAM[nr]" />
+			</include>
+			
 			<onfocus condition="!String.IsEmpty(Window(home).Property(menucontrol_active))">ClearProperty(menucontrol_active,home)</onfocus>
 			
 			<include content="WidgetHome_landscape" condition="String.IsEqual(Skin.String(userwidget$PARAM[nr]_layout),landscape)">
@@ -50,6 +50,10 @@
 		</definition>
 	</include>
 	
+	<include name="Widget_Container_Linked">
+		<visible>String.IsEqual(Skin.String(userwidget$PARAM[nr]_linked),Container(9000).ListItem.Property(itemnumber))</visible>
+	</include>
+
 	<include name="widget_trailerpreview">
 		<control type="group">
 			<visible>[Control.HasFocus($PARAM[id]) + Skin.HasSetting(home_trailer_showwidget) + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))]</visible>
