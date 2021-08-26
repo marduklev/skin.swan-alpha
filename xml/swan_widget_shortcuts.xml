@@ -383,9 +383,9 @@
 	<include name="SwanShortcuts_DialogSelect_LinkWidget">
 		<control type="group">
 			<include content="Dialog_CommonInfo">
-				<param name="Def_Icon" value="$VAR[image_dialogselect]" />
-				<param name="Header_label" value="$INFO[Control.GetLabel(1),[B],[/B]]" />
-				<param name="Item_Description" value="$INFO[Container(9000).ListItem.Property(mainmenuitem)]" />
+				<param name="Def_Icon" value="icons/swanwidgets.png" />
+				<param name="Header_label" value="[B]Choose the Main Menu Entry[CR]you like to link[/B]" />
+				<param name="Item_Description" value="$INFO[Container(9000).ListItem.Property(itemnumber),    Menu Entry id:         [B],[/B]][CR]$INFO[Container(9000).ListItem.Label,    Menu Entry Label:   [B],[/B]]" />
 			</include>
 			<control type="group">
 				<control type="panel" id="9000">
@@ -1316,8 +1316,23 @@ container.setsortmethod()
 			<label2>$INFO[Skin.String(userwidget$PARAM[nr]_layout.label),[B]$LOCALIZE[21858][/B]: ,]$INFO[Skin.String(userwidget$PARAM[nr]_target),  [B]$LOCALIZE[467][/B]: ,]$INFO[Skin.String(userwidget$PARAM[nr]_sortby.label),   [B]$LOCALIZE[581][/B]: ',']$INFO[Skin.String(userwidget$PARAM[nr]_sortorder.label),   [B]$LOCALIZE[21429][/B]: ',']$INFO[Skin.String(userwidget$PARAM[nr]_limit),   [B]$LOCALIZE[21427][/B]: (,)]</label2>
 		</control>
 		
+		<control type="radiobutton" id="$PARAM[id]6">
+			<description>link to mainmenu item - get item icon of liked if linked - get icon without use additional stings later on - not possible</description>
+			<textureradioonfocus colordiffuse="white">defaulttags.png</textureradioonfocus>
+			<textureradioonnofocus colordiffuse="5cC6C6C8">defaulttags.png</textureradioonnofocus>
+			<textureradioofffocus colordiffuse="white">defaulttags.png</textureradioofffocus>
+			<textureradiooffnofocus colordiffuse="5cC6C6C8">defaulttags.png</textureradiooffnofocus>
+			<height>40</height>
+			<align>center</align>
+			<onclick>SetProperty(SwanShortcut_LinkWidget,$PARAM[nr],home)</onclick>
+			<onclick>ActivateWindow(selectdialog)</onclick>
+			<label>Choose belonging Main Menu Entry</label>
+			<label2></label2>
+		</control>
+		
+		
 		<control type="group" id="$PARAM[id]3">
-			<visible>Skin.String(userwidget$PARAM[nr]_target) | Skin.String(userwidget$PARAM[nr]_path)</visible>
+			<visible>Skin.String(userwidget$PARAM[nr]_target) | Skin.String(userwidget$PARAM[nr]_path) | Skin.String(userwidget$PARAM[nr]_executebuiltin)</visible>
 			<height>50</height>
 			
 			<control type="radiobutton" id="$PARAM[id]4">
@@ -1330,7 +1345,7 @@ container.setsortmethod()
 					<param name="radioheight" value="35"/>
 				</include>
 				<left>0</left>
-				<onup>$PARAM[id]2</onup>
+				<onup>$PARAM[id]6</onup>
 				<onleft>SetFocus(200)</onleft>
 				<onright>$PARAM[id]301</onright>
 				<ondown>$PARAM[id]5</ondown>
@@ -1361,7 +1376,7 @@ container.setsortmethod()
 				</include>
 				<left>520</left>
 				
-				<onup>$PARAM[id]2</onup>
+				<onup>$PARAM[id]6</onup>
 				<ondown>$PARAM[id]5</ondown>
 				<onleft>$PARAM[id]4</onleft>
 				<onright>$PARAM[id]302</onright>
@@ -1423,7 +1438,7 @@ container.setsortmethod()
 				</include>
 				<right>0</right>
 				
-				<onup>$PARAM[id]2</onup>
+				<onup>$PARAM[id]6</onup>
 				<ondown>$PARAM[id]5</ondown>
 				<onleft>$PARAM[id]301</onleft>
 				<onright>$PARAM[id]301</onright>
@@ -1698,8 +1713,8 @@ container.setsortmethod()
 			</control>
 			<control type="image">
 				<visible>String.StartsWith(System.CurrentControlid,$PARAM[id]) + Control.IsVisible($PARAM[id]2)</visible>
-				<top>-250</top>
-				<height>250</height>
+				<top>-290</top>
+				<height>290</height>
 				<width>100%</width>
 				<texture border="2">frames/frame.png</texture>
 			</control>
@@ -1737,7 +1752,6 @@ container.setsortmethod()
 			<label>                             Change Attributes</label>
 			<label2 />
 		</control>
-		
 		<control type="group" id="$PARAM[id]3">
 			<visible>Skin.String(mainmenuitem$PARAM[nr]_name) | Skin.String(mainmenuitem$PARAM[nr]_target) | Skin.String(mainmenuitem$PARAM[nr]_path) | Skin.String(mainmenuitem$PARAM[nr]_executebuiltin) | Skin.String(mainmenuitem$PARAM[nr]_thumb) | Skin.String(mainmenuitem$PARAM[nr]_fanart) | Skin.HasSetting(mainmenuitem$PARAM[nr]_disablesubmenu)</visible>
 			<height>50</height>
@@ -2201,23 +2215,6 @@ container.setsortmethod()
 			<onclick>RunScript(script.embuary.helper,action=createselect,header=$LOCALIZE[467])</onclick>
 			<label2>$INFO[Skin.String(userwidget$PARAM[nr]_target.label)]</label2>
 		</control>
-		
-		<control type="radiobutton" id="11041">
-			<description>link to mainmenu item - get iitem icon of liked if linked - get icon without use additional stings later on</description>
-			<label>link this Widget to mainmenu item</label>
-			
-			<label2>$INFO[Skin.String(userwidget$PARAM[nr]_linked),,        ]</label2>
-			
-			<textureradioonfocus colordiffuse="white">defaulttags.png</textureradioonfocus>
-			<textureradioonnofocus colordiffuse="5cC6C6C8">defaulttags.png</textureradioonnofocus>
-			<textureradioofffocus colordiffuse="white">defaulttags.png</textureradioofffocus>
-			<textureradiooffnofocus colordiffuse="5cC6C6C8">defaulttags.png</textureradiooffnofocus>
-			
-			<onclick>SetProperty(SwanShortcut_LinkWidget,$PARAM[nr],home)</onclick>
-			<onclick>ActivateWindow(selectdialog)</onclick>
-		</control>
-		
-		
 	</include>
 	
 </includes>
