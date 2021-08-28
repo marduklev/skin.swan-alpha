@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window id="1103" type="dialog">
 	<defaultcontrol always="true">110</defaultcontrol>
-	<onunload>ClearProperty(SettingSection,home)</onunload>
-	<onunload condition="!String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">ClearProperty(shortcutaction_inprogress,home)</onunload>
-	<onunload condition="!String.IsEmpty(Window(home).Property(shortcutitem_nr))">ClearProperty(shortcutitem_nr,home)</onunload>
+	<onunload condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress)) + !String.IsEmpty(Window(home).Property(shortcutitem_nr))">ClearProperty(shortcutitem_nr,home)</onunload>
 	<onunload condition="!String.IsEmpty(Window(home).Property(mainmenu_nr))">ClearProperty(mainmenu_nr,home)</onunload>
 	<controls>
 		<control type="group">
@@ -50,6 +48,8 @@
 					<centerleft>50%</centerleft>
 					<top>10</top>
 					<height>590</height>
+					<onback condition="!String.IsEmpty(Window(home).Property(shortcutitem_nr))">ClearProperty(shortcutitem_nr,home)</onback>
+					<onback condition="!String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">ClearProperty(SetShortcutInProgress,home)</onback>
 					<onup>110</onup>
 					<onleft>200</onleft>
 					<onright condition="Control.IsVisible(60)">60</onright>
@@ -91,6 +91,8 @@
 					<label>[B]$LOCALIZE[15067][/B]</label>
 					<onup>110</onup>
 					<onclick>Dialog.Close(1103)</onclick>
+					<onclick condition="!String.IsEmpty(Window(home).Property(shortcutitem_nr))">ClearProperty(shortcutitem_nr,home)</onclick>
+					<onclick condition="!String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">ClearProperty(shortcutaction_inprogress,home)</onclick>
 				</control>
 			</control>
 		</control>

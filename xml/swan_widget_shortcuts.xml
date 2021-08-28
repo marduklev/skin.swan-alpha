@@ -330,11 +330,6 @@
 	
 	<include name="SwanShortcuts_SetTargetAndPath_CommonButton">
 		<control type="button" id="$PARAM[id]">
-		<description>set string need be set on save me button - need var for system window, therefore preset here use unlocalized for label string is intended Set target Template, action window and action set string direct e.g. plailist?xsp path</description>
-				<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_target,$PARAM[target])</onclick>
-				<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),widget)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_target,$PARAM[target])</onclick>
-				<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_target.label,$PARAM[target])</onclick>
-				<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),widget)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_target.label,$PARAM[target])</onclick>
 		<onclick>Dialog.Close(1103)</onclick>
 		<onclick>ActivateWindow($PARAM[path])</onclick>
 		<label>$PARAM[label]</label>
@@ -525,11 +520,12 @@
 				<textureradioonnofocus colordiffuse="5cC6C6C8">buttons/enter.png</textureradioonnofocus>
 				<textureradioofffocus colordiffuse="white">buttons/enter.png</textureradioofffocus>
 				<textureradiooffnofocus colordiffuse="5cC6C6C8">buttons/enter.png</textureradiooffnofocus>
-				
+				<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_target,$VAR[systemcurrentwindow_internalname])</onclick>
 				<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),mainmenu)">Skin.Reset(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_executebuiltin)</onclick>
 				<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_path,$INFO[Container.Folderpath])</onclick>
 				<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),mainmenu) + String.IsEmpty(Window(home).Property(shortcutitem_name))">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_name,$INFO[System.CurrentWindow,, • ]$INFO[Container.FolderName])</onclick>
 				
+				<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),widget)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_target,$VAR[systemcurrentwindow_internalname])</onclick>
 				<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),widget) + [String.IsEmpty(Container.Folderpath) + !String.IsEmpty(ListItem.Path)]">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_path,$INFO[ListItem.Path])</onclick>
 				<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),widget) + !String.IsEmpty(Container.Folderpath)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_path,$INFO[Container.Folderpath])</onclick>
 				<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),widget) + String.IsEmpty(Window(home).Property(shortcutitem_name))">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_name,$INFO[System.CurrentWindow,, • ]$INFO[Container.FolderName])</onclick>
@@ -539,7 +535,6 @@
 				<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),widget)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_sortby.label,$INFO[Container.SortMethod])</onclick>
 				<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),widget)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_sortorder,$VAR[ContainerSortOrder])</onclick>
 				<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),widget)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_sortorder.label,$INFO[Container.SortOrder])</onclick>
-				
 				<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),widget)">ClearProperty(userwidgetLayout,home)</onclick>
 				
 				<onclick condition="!String.IsEmpty(Window(home).Property(shortcutitem_name))">ClearProperty(shortcutitem_name,home)</onclick>
@@ -822,9 +817,7 @@ container.setsortmethod()
 			<onright>200</onright>
 			<onleft>200</onleft>
 			
-			
 			<scrolltime tween="cubic" easing="out">300</scrolltime>
-			
 			
 			<itemlayout height="110">
 				<control type="image">
@@ -2534,20 +2527,22 @@ container.setsortmethod()
 			<label2>$INFO[Skin.String(userwidget$PARAM[nr]_limit)]</label2>
 		</control>
 		<control type="button" id="11040">
-			<description>Define Target</description>
+			<description>Define Target - offer with care</description>
 			<label>$LOCALIZE[467]</label>
 			<onclick>SetProperty(Dialog.1.Label,$LOCALIZE[3])</onclick>
-			<onclick>SetProperty(Dialog.1.BuiltIn,Skin.SetString(userwidget$PARAM[nr]_target,videos)||Skin.SetString(userwidget$PARAM[nr]_target.label,$LOCALIZE[3]))</onclick>
+			<onclick>SetProperty(Dialog.1.BuiltIn,Skin.SetString(userwidget$PARAM[nr]_target,videos))</onclick>
 			<onclick>SetProperty(Dialog.2.Label,$LOCALIZE[2])</onclick>
-			<onclick>SetProperty(Dialog.2.BuiltIn,Skin.SetString(userwidget$PARAM[nr]_target,music)||Skin.SetString(userwidget$PARAM[nr]_target.label,$LOCALIZE[2]))</onclick>
+			<onclick>SetProperty(Dialog.2.BuiltIn,Skin.SetString(userwidget$PARAM[nr]_target,music))</onclick>
 			<onclick>SetProperty(Dialog.3.Label,$LOCALIZE[1])</onclick>
-			<onclick>SetProperty(Dialog.3.BuiltIn,Skin.SetString(userwidget$PARAM[nr]_target,pictures)||Skin.SetString(userwidget$PARAM[nr]_target.label,$LOCALIZE[1]))</onclick>
+			<onclick>SetProperty(Dialog.3.BuiltIn,Skin.SetString(userwidget$PARAM[nr]_target,pictures))</onclick>
 			<onclick>SetProperty(Dialog.4.Label,$LOCALIZE[0])</onclick>
-			<onclick>SetProperty(Dialog.4.BuiltIn,Skin.SetString(userwidget$PARAM[nr]_target,programs)||Skin.SetString(userwidget$PARAM[nr]_target.label,$LOCALIZE[0]))</onclick>
-			<onclick>SetProperty(Dialog.5.Label,  - $LOCALIZE[504] ($LOCALIZE[13007]))</onclick>
-			<onclick>SetProperty(Dialog.5.BuiltIn,Skin.Reset(userwidget$PARAM[nr]_target)||Skin.SetString(userwidget$PARAM[nr]_target.label,$LOCALIZE[504]))</onclick>
+			<onclick>SetProperty(Dialog.4.BuiltIn,Skin.SetString(userwidget$PARAM[nr]_target,programs))</onclick>
+			<onclick>SetProperty(Dialog.5.Label,$LOCALIZE[10821])</onclick>
+			<onclick>SetProperty(Dialog.5.BuiltIn,Skin.SetString(userwidget$PARAM[nr]_target,games))</onclick>
+			<onclick>SetProperty(Dialog.6.Label,  - $LOCALIZE[504] ($LOCALIZE[13007]))</onclick>
+			<onclick>SetProperty(Dialog.6.BuiltIn,Skin.Reset(userwidget$PARAM[nr]_target))</onclick>
 			<onclick>RunScript(script.embuary.helper,action=createselect,header=$LOCALIZE[467])</onclick>
-			<label2>$INFO[Skin.String(userwidget$PARAM[nr]_target.label)]</label2>
+			<label2>$INFO[Skin.String(userwidget$PARAM[nr]_target]</label2>
 		</control>
 	</include>
 	
