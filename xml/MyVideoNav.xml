@@ -3,6 +3,14 @@
 	<include content="media_window_attributes">
 		<param name="view_ids" value="50,51,52,53,54,55,502,56,58,503,504" />
 	</include>
+	<onload condition="Skin.HasSetting(TMDbHelper_Ratings) + !Skin.HasSetting(TMDbHelper.Service)">Skin.SetBool(TMDbHelper.Service)</onload>
+	<onunload condition="Skin.HasSetting(TMDbHelper.Service)">Skin.ToggleSetting(TMDbHelper.Service)</onunload>
+
+<!-- https github.com/jurialmunkey/plugin.video.themoviedb.helper/wiki/Service-Monitor -->
+<!-- Skin.ToggleSetting(TMDbHelper.DisableArtwork) 	Disable additional artwork lookups -->
+<!-- Skin.ToggleSetting(TMDbHelper.DisablePersonStats) 	Disable kodi db person statistics -->
+<!-- Skin.ToggleSetting(TMDbHelper.DisableExtendedProperties) Disable additional properties such as Director.X.Name -->
+	
 	<controls>
 		<!-- MATRIX GUI INFOLABEL
 	
@@ -87,12 +95,14 @@
 		</include>
 		
 		<include content="swan_debug_overlay">
-			<param name="textleft" value="ResumeOrNext $VAR[view_58_Content_NextUp]
-seasons $VAR[view_58_Content_Seasons]
-episodes  $VAR[view_58_Content_Episodes]
-cast $VAR[view_58_Content_Cast]
-youtube $VAR[view_58_Content_YoutubeTrailer]
-similiar $VAR[view_58_Content_EmbuarySimiliar]
+			<param name="textleft" value="
+TMDb_Rating $INFO[Window(Home).Property(TMDbHelper.ListItem.TMDb_Rating)]
+Trakt_Rating $INFO[Window(Home).Property(TMDbHelper.ListItem.Trakt_Rating)]
+Metacritic_Rating $INFO[Window(Home).Property(TMDbHelper.ListItem.Metacritic_Rating)]
+IMDb_Rating $INFO[Window(Home).Property(TMDbHelper.ListItem.IMDb_Rating)]
+RottenTomatoes_Rating $INFO[Window(Home).Property(TMDbHelper.ListItem.RottenTomatoes_Rating)]
+RottenTomatoes_UserMeter $INFO[Window(Home).Property(TMDbHelper.ListItem.RottenTomatoes_UserMeter)]
+
 
 !! ListItem.DateAdded $INFO[ListItem.DateAdded,[COLOR cyan][B],[/B][/COLOR]]  ListItem.Date $INFO[ListItem.Date,[COLOR cyan][B],[/B][/COLOR]]
 

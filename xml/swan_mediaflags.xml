@@ -244,6 +244,8 @@
         <value condition="!String.IsEmpty(videoplayer.Rating)">$INFO[videoplayer.Rating,flags/rating/stars/,.png]</value>
     </variable>
 	
+	
+	
 	<variable name="image_imdb">
 		<value condition="Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/imdb_monochrome.png</value>   
 		<value>flags/ratings/imdb_color.png</value> 
@@ -281,12 +283,8 @@
 		<value>$INFO[ListItem.Studio,resource://resource.images.studios.white/,.png]</value>
     </variable>
 	
-	
-	<!-- also a possible check for default
-	
-	String.IsEqual(ListItem.Rating,ListItemRating(imdb))
-	-->
-	
+<!-- maybe
+Trakt_Rating $INFO[Window(Home).Property(TMDbHelper.ListItem.Trakt_Rating)] -->
 	<variable name="label_listitemrating_imdbtop250">
 		<value condition="!String.IsEmpty(ListItem.Top250)">$INFO[ListItem.Top250]</value>
 		<value condition="Skin.HasSetting(SH_Rating_Fallback) + String.IsEmpty(ListItem.Top250)">$INFO[Window(Home).Property(SkinHelper.ListItem.IMDB.Top250)]</value> 
@@ -294,20 +292,20 @@
 	<variable name="label_listitemrating_imdb">
 		<value condition="!String.IsEmpty(ListItem.Rating(imdb))">$INFO[ListItem.Rating(imdb)]</value>  
 		<value condition="String.IsEmpty(ListItem.Rating(imdb)) + !String.IsEmpty(Container(2000).ListItem.Rating(imdb))">$INFO[Container(2000).ListItem.Rating(imdb)]</value>
-		<value condition="Skin.HasSetting(SH_Rating_Fallback) + String.IsEmpty(ListItem.Rating(imdb)) + String.IsEmpty(Container(2000).ListItem.Rating(imdb))">$INFO[Window(Home).Property(SkinHelper.ListItem.Rating.IMDB)]</value> 
+		<value condition="[String.IsEmpty(Window(Home).Property(TMDbHelper.IsUpdating)) + Skin.HasSetting(TMDbHelper_Ratings) + Skin.HasSetting(TMDbHelper.Service)] + !String.IsEmpty(Window(Home).Property(TMDbHelper.ListItem.IMDb_Rating))">$INFO[Window(Home).Property(TMDbHelper.ListItem.IMDb_Rating)]</value> 
 	</variable>
 	<variable name="label_listitemrating_themoviedb">
 		<value condition="!String.IsEmpty(ListItem.Rating(themoviedb))">$INFO[ListItem.Rating(themoviedb)]</value>  
 		<value condition="String.IsEmpty(ListItem.Rating(themoviedb)) + !String.IsEmpty(Container(2000).ListItem.Rating(themoviedb))">$INFO[Container(2000).ListItem.Rating(themoviedb)]</value>
-		<value condition="Skin.HasSetting(SH_Rating_Fallback) + String.IsEmpty(ListItem.Rating(themoviedb)) + String.IsEmpty(Container(2000).ListItem.Rating(themoviedb))">$INFO[Window(Home).Property(SkinHelper.ListItem.Rating.TMDB)]</value> 
+		<value condition="[String.IsEmpty(Window(Home).Property(TMDbHelper.IsUpdating)) + Skin.HasSetting(TMDbHelper_Ratings) + Skin.HasSetting(TMDbHelper.Service)] + !String.IsEmpty(Window(Home).Property(TMDbHelper.ListItem.TMDb_Rating))">$INFO[Window(Home).Property(TMDbHelper.ListItem.TMDb_Rating)]</value> 
 	</variable>
 	<variable name="label_listitemrating_metacritic">
 		<value condition="!String.IsEmpty(ListItem.Rating(metacritic)) | [!String.IsEmpty(Container(2000).ListItem.Rating(metacritic)) + String.IsEmpty(ListItem.Rating(metacritic))]">$VAR[formatted_rating_metacritic,,%]</value>  
-		<value condition="Skin.HasSetting(SH_Rating_Fallback) + String.IsEmpty(ListItem.Rating(metacritic)) + String.IsEmpty(Container(2000).ListItem.Rating(metacritic))">$INFO[Window(Home).Property(SkinHelper.ListItem.MetaCritic.Rating)]</value> 
+		<value condition="[String.IsEmpty(Window(Home).Property(TMDbHelper.IsUpdating)) + Skin.HasSetting(TMDbHelper_Ratings) + Skin.HasSetting(TMDbHelper.Service)] + !String.IsEmpty(Window(Home).Property(TMDbHelper.ListItem.Metacritic_Rating))">$INFO[Window(Home).Property(TMDbHelper.ListItem.Metacritic_Rating)]</value> 
 	</variable>
 	<variable name="label_listitemrating_tomatometerallaudience">
 		<value condition="!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) | [!String.IsEmpty(Container(2000).ListItem.Rating(tomatometerallaudience)) + String.IsEmpty(ListItem.Rating(tomatometerallaudience))]">$VAR[formatted_rating_tomatometerallaudience,,%]</value>  
-		<value condition="Skin.HasSetting(SH_Rating_Fallback) + String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.IsEmpty(Container(2000).ListItem.Rating(tomatometerallaudience))">$INFO[Window(Home).Property(SkinHelper.ListItem.RottenTomatoes.Meter),,%]</value> 
+		<value condition="[String.IsEmpty(Window(Home).Property(TMDbHelper.IsUpdating)) + Skin.HasSetting(TMDbHelper_Ratings) + Skin.HasSetting(TMDbHelper.Service)] + !String.IsEmpty(Window(Home).Property(TMDbHelper.ListItem.RottenTomatoes_UserMeter))">$INFO[Window(Home).Property(TMDbHelper.ListItem.RottenTomatoes_UserMeter),,%]</value> 
 	</variable>
 	<!-- <variable name="label_listitemrating_tomatometeravgaudience">
 		<value condition="!String.IsEmpty(ListItem.Rating(tomatometeravgaudience))">$INFO[ListItem.Rating(tomatometeravgaudience),,%]</value>  
@@ -316,7 +314,7 @@
 	</variable> -->
 	<variable name="label_listitemrating_tomatometerallcritics">
 		<value condition="!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) | [!String.IsEmpty(Container(2000).ListItem.Rating(tomatometerallcritics)) + String.IsEmpty(ListItem.Rating(tomatometerallcritics))]">$VAR[formatted_rating_tomatometerallcritics,,%]</value>
-		<value condition="Skin.HasSetting(SH_Rating_Fallback) + String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.IsEmpty(Container(2000).ListItem.Rating(tomatometerallcritics))">$INFO[Window(Home).Property(SkinHelper.ListItem.RottenTomatoes.Meter),,%]</value> 
+		<value condition="[String.IsEmpty(Window(Home).Property(TMDbHelper.IsUpdating)) + Skin.HasSetting(TMDbHelper_Ratings) + Skin.HasSetting(TMDbHelper.Service)] + !String.IsEmpty(Window(Home).Property(TMDbHelper.ListItem.RottenTomatoes_Rating))">$INFO[Window(Home).Property(TMDbHelper.ListItem.RottenTomatoes_Rating),,%]</value>
 	</variable>
 	<!-- <variable name="label_listitemrating_tomatometeravgcritics">
 		<value condition="!String.IsEmpty(ListItem.Rating(tomatometeravgcritics))">$INFO[ListItem.Rating(tomatometeravgcritics),,%]</value>  
