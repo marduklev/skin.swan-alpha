@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window id="1103" type="dialog">
 	<defaultcontrol always="true">110</defaultcontrol>
-	<onunload condition="String.IsEmpty(Window(home).Property(SetShortcutInProgress))">ClearProperty(shortcutitem_nr,home)</onunload>
-	<onunload condition="!String.IsEmpty(Window(home).Property(mainmenu_nr))">ClearProperty(mainmenu_nr,home)</onunload>
 	<onunload>ClearProperty(SettingSection,home)</onunload>
+	<onunload condition="!String.IsEmpty(Window(home).Property(SetShortcutInProgress))">ClearProperty(SetShortcutInProgress,home)</onunload>
+	<onunload condition="!String.IsEmpty(Window(home).Property(shortcutitem_nr))">ClearProperty(shortcutitem_nr,home)</onunload>
+	<onunload condition="!String.IsEmpty(Window(home).Property(mainmenu_nr))">ClearProperty(mainmenu_nr,home)</onunload>
 	<controls>
-		
 		<control type="group">
 			<include>global_background</include>
 		</control>
-		
 		<control type="grouplist">
 			<visible>!Window.IsVisible(selectdialog) + !Window.IsVisible(numericinput) + !Window.IsVisible(virtualkeyboard)</visible>
 			<include>Animation_OpenClose_Zoom</include>
@@ -20,7 +19,6 @@
 			-->
 			<left>5%</left>
 			<width>90%</width>
-			
 			<top>20%</top>
 			<height max="80%">auto</height>
 			<orientation>vertical</orientation>
@@ -40,14 +38,13 @@
 					<textcolor>white</textcolor>
 					<label>$VAR[1103_header]</label>
 				</control>				
-				<!-- 
+				<!-- bg panel usage ? 
 				<control type="image">
 					<height>600</height>
 					<texture colordiffuse="CC101010">colors/white.png</texture>
 					<aspectratio>stretch</aspectratio>
 				</control> 
 				-->
-				
 				<control type="grouplist" id="110">
 					<description>using $PARAM[win(home)prop], or just $INFO[win(home)prop] failing in include so use as condition</description>
 					<centerleft>50%</centerleft>
@@ -57,10 +54,6 @@
 					<onleft>200</onleft>
 					<onright condition="Control.IsVisible(60)">60</onright>
 					<onright condition="!Control.IsVisible(60)">200</onright>
-					
-					<onback condition="!String.IsEmpty(Window(home).Property(shortcutitem_nr))">ClearProperty(shortcutitem_nr,home)</onback>
-					<onback condition="!String.IsEmpty(Window(home).Property(SetShortcutInProgress))">ClearProperty(SetShortcutInProgress,home)</onback>
-				
 					<ondown>200</ondown>
 					<pagecontrol>60</pagecontrol>
 					<include condition="String.IsEqual(Window(home).Property(SettingSection),ViewSelect_MediaWindow)">1103_Content_ViewSelect_MediaWindow</include>
@@ -90,16 +83,14 @@
 				<orientation>horizontal</orientation>
 				<itemgap>5</itemgap>
 				<align>center</align>
-				<onright>60</onright>
+				<onright condition="Control.IsVisible(60)">60</onright>
+				<onright condition="!Control.IsVisible(60)">110</onright>
 				<onleft>110</onleft>
 				<control type="button" id="201">
 					<width>auto</width>
 					<label>[B]$LOCALIZE[15067][/B]</label>
 					<onup>110</onup>
-					<onclick>close</onclick>
-					<onclick condition="!String.IsEmpty(Window(home).Property(shortcutitem_nr))">ClearProperty(shortcutitem_nr,home)</onclick>
-					<onclick condition="!String.IsEmpty(Window(home).Property(mainmenu_nr))">ClearProperty(mainmenu_nr,home)</onclick>
-					<onclick condition="!String.IsEmpty(Window(home).Property(SetShortcutInProgress))">ClearProperty(SetShortcutInProgress,home)</onclick>
+					<onclick>Dialog.Close(1103)</onclick>
 				</control>
 			</control>
 		</control>
