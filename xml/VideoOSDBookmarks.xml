@@ -1,11 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <window>
 	<defaultcontrol always="true">2</defaultcontrol>
-<!-- 	1.59 VideoOSDBookmarks.xml
-ID 	Type 		Description
-2 	button 		Add a video bookmark
-3 	button 		Clear all bookmarks
-4 	button 		Use the currently selected video bookmark as the episode thumbnail
-11 	container 	List of available bookmarks  
--->
+	<onload condition="skin.hassetting(bookmark_pauseonload) + !player.paused">PlayerControl(play)</onload>
+	<controls>
+		<control type="group">
+			<animation type="WindowOpen">
+				<effect type="fade" start="0" end="100" time="200" tween="sine" easing="in" />
+				<effect type="slide" start="0,1920" end="0" time="250" tween="cubic" easing="out" />
+			</animation>
+			<animation type="WindowClose">
+				<effect type="fade" start="100" end="0" time="200" tween="sine" easing="out" />
+				<effect type="slide" start="0" end="0,1920" time="250" tween="cubic" easing="out" />
+			</animation>
+			<animation effect="fade" start="100" end="0" time="400" condition="[Player.Paused + System.IdleTime(5) + [!Window.IsActive(videoosd) + !Window.IsActive(fullscreeninfo)]] | $EXP[embinfodialogactive] | Window.IsActive(1104)">conditional</animation>
+			<width>100%</width>
+			<height>100%</height>
+			<control type="group">
+				
+				<width>100%</width>
+				<height>250</height>
+				<bottom>0</bottom>
+				<left>320</left>
+				<control type="image">
+					<texture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white.png</texture>
+				</control>
+				
+				<control type="grouplist">
+					<orientation>vertical</orientation>
+					<itemgap>10</itemgap>
+					<height>220</height>
+					<top>10</top>
+					<left>30</left>
+					<align>center</align>
+					<onleft>11</onleft>
+					<onright>11</onright>
+					
+					<control type="button" id="2">
+						<description>Add a video bookmark $LOCALIZE[294]</description>
+						<texturefocus colordiffuse="$VAR[color_osdvideo_button_fo]">buttons/addsource.png</texturefocus>
+						<texturenofocus colordiffuse="$VAR[color_osdvideo_button_nf]">buttons/addsource.png</texturenofocus>
+						<include>Animation_Item_Focus</include>
+						<width>60</width>
+						<height>60</height>
+						<label />
+						<onup>3</onup>
+						<ondown>4</ondown>
+						<onleft>11</onleft>
+						<onright>11</onright>
+					</control>
+					<control type="button" id="3">
+						<description>Clear all bookmarks $LOCALIZE[296]</description>
+						<texturefocus colordiffuse="$VAR[color_osdvideo_button_fo]">buttons/delete.png</texturefocus>
+						<texturenofocus colordiffuse="$VAR[color_osdvideo_button_nf]">buttons/delete.png</texturenofocus>
+						<include>Animation_Item_Focus</include>
+						<width>60</width>
+						<height>60</height>
+						<label />
+					</control>
+					<control type="button" id="4">
+						<description>Use the currently selected video bookmark as the episode thumbnail  $LOCALIZE[20406]</description>
+						<texturefocus colordiffuse="$VAR[color_osdvideo_button_fo]">defaultaddonszip.png</texturefocus>
+						<texturenofocus colordiffuse="$VAR[color_osdvideo_button_nf]">defaultaddonszip.png</texturenofocus>
+						<include>Animation_Item_Focus</include>
+						<width>50</width>
+						<height>50</height>
+						<label />
+						<visible>Control.IsEnabled(4)</visible>
+					</control>
+				</control>
+				
+				<!-- reminder <param name="type" value="list" /> get unfocused param for any other than panel -->
+				<include content="Universal_Container">
+					<param name="id" value="11" />
+					<param name="visible" value="true" />
+					
+					<param name="type_height" value="250" />
+					<param name="type_pos_top" value="10" />
+					
+					<param name="layout_height" value="170" />
+					<param name="layout_width" value="300" />
+					<param name="itemwidth" value="290" />
+					<param name="itemheight" value="155" />
+					
+					<param name="item_artwork_name" value="fanart" />
+					<left>150</left>
+					<ondown>2</ondown>
+					<onup>dialog.close(videobookmarks)</onup>
+				</include>
+			</control>
+		</control>
+	</controls>
 </window>
+
