@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
 	<include content="media_window_attributes" />
-<!-- 	1.39 MyMusicPlaylistEditor.xml
+<!-- 	1.39 MyMusicPlaylistEditor.xml | 10503 | musicplaylisteditor
 ID 		Type 		Description
 6 		button 		Load the playlist
 7 		button 		Save the playlist
@@ -12,33 +12,36 @@ ID 		Type 		Description
 101 	label 		Number of items in the playlist  
 -->
 	<controls>
-	<control type="group">
-		<visible>!Skin.HasSetting(BlurEnabled)</visible>
-		<visible>String.IsEmpty(Window(home).Property(shortcutaction_inprogress))</visible>
-		<include>global_background</include>
-	</control>
-	<control type="group">
-		<visible>Skin.HasSetting(BlurEnabled)</visible>
-		<visible>String.IsEmpty(Window(home).Property(shortcutaction_inprogress))</visible>
-		<include>GlobalBlurredBackground</include>
-	</control>
-	
-	<control type="group">
-		<top>110</top>
-		<visible>false</visible>
+		<control type="group">
+			<visible>!Skin.HasSetting(BlurEnabled)</visible>
+			<visible>String.IsEmpty(Window(home).Property(shortcutaction_inprogress))</visible>
+			<include>global_background</include>
+		</control>
+		<control type="group">
+			<visible>Skin.HasSetting(BlurEnabled)</visible>
+			<visible>String.IsEmpty(Window(home).Property(shortcutaction_inprogress))</visible>
+			<include>GlobalBlurredBackground</include>
+		</control>
 		
-		<include content="View_BGPanel">
-			<param name="width2" value="760" />
-			<param name="width3" value="1020" />
-		</include>
-	</control>		
-	
-	<control type="group">
-		<top>110</top>
-		<left>130</left>
-		<width>600</width>
+		<control type="group">
+			<top>110</top>
+			<visible>Skin.HasSetting(mplaylisteditor_showbgpanel)</visible>
+			
+			<include content="View_BGPanel">
+				<param name="width2" value="760" />
+				<param name="width3" value="1020" />
+			</include>
+		</control>		
 		
-		
+		<control type="group">
+			<top>110</top>
+			<left>130</left>
+			<width>600</width>
+			<!-- get diff layout depending on current content -
+			- may later slide/fade ,keep stuff like labels thumbs from parent dir visible 
+			- get scrollbar(s)
+			-->
+			
 			<include content="Universal_Container">
 				<param name="id" value="50" />
 				<param name="visible" value="true" />
@@ -54,12 +57,12 @@ ID 		Type 		Description
 				<param name="item_artwork_name" value="square" />
 				
 				<onright>7</onright>
-				slide?
+				<onleft>menu</onleft>
 			</include>
+			
+		</control>
 		
-	</control>
-	
-	<control type="grouplist">
+		<control type="grouplist">
 			<orientation>vertical</orientation>
 			<left>800</left>
 			<width>100</width>
@@ -72,8 +75,8 @@ ID 		Type 		Description
 			
 			<control type="button" id="6">
 				<description>Load the playlist</description>
-				<texturefocus colordiffuse="$VAR[color_osdvideo_button_fo]">buttons/addsource.png</texturefocus>
-				<texturenofocus colordiffuse="$VAR[color_osdvideo_button_nf]">buttons/addsource.png</texturenofocus>
+				<texturefocus colordiffuse="$VAR[color_lib_text_main]">buttons/searchsource.png</texturefocus>
+				<texturenofocus colordiffuse="$VAR[color_lib_text_secondary]">buttons/searchsource.png</texturenofocus>
 				<include>Animation_Item_Focus</include>
 				<width>60</width>
 				<height>60</height>
@@ -81,8 +84,8 @@ ID 		Type 		Description
 			</control>
 			<control type="button" id="7">
 				<description>Save the playlist</description>
-				<texturefocus colordiffuse="$VAR[color_osdvideo_button_fo]">buttons/addsource.png</texturefocus>
-				<texturenofocus colordiffuse="$VAR[color_osdvideo_button_nf]">buttons/addsource.png</texturenofocus>
+				<texturefocus colordiffuse="$VAR[color_lib_text_main]">buttons/enter.png</texturefocus>
+				<texturenofocus colordiffuse="$VAR[color_lib_text_secondary]">buttons/enter.png</texturenofocus>
 				<include>Animation_Item_Focus</include>
 				<width>60</width>
 				<height>60</height>
@@ -90,16 +93,19 @@ ID 		Type 		Description
 			</control>
 			<control type="button" id="8">
 				<description>Clear the playlist</description>
-				<texturefocus colordiffuse="$VAR[color_osdvideo_button_fo]">buttons/addsource.png</texturefocus>
-				<texturenofocus colordiffuse="$VAR[color_osdvideo_button_nf]">buttons/addsource.png</texturenofocus>
+				<texturefocus colordiffuse="$VAR[color_lib_text_main]">buttons/cleanup.png</texturefocus>
+				<texturenofocus colordiffuse="$VAR[color_lib_text_secondary]">buttons/cleanup.png</texturenofocus>
 				<include>Animation_Item_Focus</include>
-				<width>60</width>
-				<height>60</height>
+				<left>5</left>
+				<width>50</width>
+				<height>50</height>
 				<label />
 			</control>
 			
 		</control>
-	
+		
+		
+		<!-- need adjust offset for columns n infolabels in music_list_1row -->
 		<control type="group">
 			
 			<control type="panel" id="100">
@@ -132,9 +138,9 @@ ID 		Type 		Description
 				</focusedlayout>
 			</control>
 		</control>
-	
+		
 		<include content="HeaderBar">
-			<param name="HasBGPanel" value="Skin.HasSetting(MediaWindow_UseHeaderBG)" />
+			<param name="HasBGPanel" value="true" />
 		</include>
 		
 		<include content="PreMenucontrol" />
@@ -142,9 +148,7 @@ ID 		Type 		Description
 		<control type="group">
 			<animation effect="slide" start="-450,0" end="0,0" time="300" tween="cubic" easing="inout">VisibleHidden</animation>
 			<visible>String.IsEqual(Window(Home).Property(menucontrol_active),common)</visible>
-			<include content="menucontrol_global" condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" />
+			<include content="menucontrol_global" condition="true" />
 		</control>
-			
-	
 	</controls>
 </window>

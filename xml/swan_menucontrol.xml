@@ -1363,8 +1363,8 @@ msgstr "Video-Wiedergabelisten"
 			<!-- Naviagtion Panel -->
 			<!-- diff colors global vs home ? params -->
 			<include content="Menucontrol_Content_Navigation" />
-			<include content="menucontrol_mymedia_viewid_settings" condition="Window.IsMedia" />
-		
+			<include content="menucontrol_mymedia_viewid_settings" condition="Window.IsMedia + !Window.IsActive(musicplaylisteditor)" />
+			<include content="menucontrol_musicplaylisteditor_settings" condition="Window.IsActive(musicplaylisteditor)" />
 		</control>
 		</definition>
 	</include>
@@ -1512,8 +1512,27 @@ msgstr "Video-Wiedergabelisten"
 			</include>
 		</control>
 	</include>
+	
+	<!-- View Type Settings - use include placements? myvideo, mymusic...? -->
+	<!-- differ some things between videos|music|musicplaylisteditor... -->
+	
+	<include name="menucontrol_musicplaylisteditor_settings">
+		<control type="label" id="4228">
+			<label>   [B]$LOCALIZE[14018][/B]</label>
+			<height>60</height>
+			<font>font12</font>
+			<textcolor>$VAR[color_lib_menu_item_fo]</textcolor>
+		</control>
+		<control type="radiobutton" id="4008">
+			<include>Menucontrol_RadioButton</include>
+			<label>Show BG Panel</label>
+			<onclick>Skin.ToggleSetting(mplaylisteditor_showbgpanel)</onclick>
+			<selected>Skin.HasSetting(mplaylisteditor_showbgpanel)</selected>
+		</control>
+	</include>
+	
 	<include name="menucontrol_mymedia_viewid_settings">
-			<!-- View Type Settings - use include placements? myvideo, mymusic...? -->
+			
 			<include content="spacer_h">
 				<param name="id" value="4006" />
 				<param name="gap" value="40" />
@@ -1522,12 +1541,12 @@ msgstr "Video-Wiedergabelisten"
 				<label>   [B]$LOCALIZE[14018][/B]</label>
 				<height>60</height>
 				<font>font12</font>
-				<visible>Window.IsMedia</visible>
 				<textcolor>$VAR[color_lib_menu_item_fo]</textcolor>
 			</control>
 			<control type="radiobutton" id="4008">
 				<include>Menucontrol_RadioButton</include>
 				<label>Show BG Panel</label>
+				
 				<visible>Control.IsVisible(50) | Control.IsVisible(51) | Control.IsVisible(52) | Control.IsVisible(53) | Control.IsVisible(54) | Control.IsVisible(56)</visible>
 				<onclick condition="Control.IsVisible(50)">Skin.ToggleSetting(View_50_ShowBGPanel)</onclick>
 				<onclick condition="Control.IsVisible(51)">Skin.ToggleSetting(View_51_ShowBGPanel)</onclick>
