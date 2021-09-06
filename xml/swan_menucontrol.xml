@@ -1364,8 +1364,8 @@ msgstr "Video-Wiedergabelisten"
 			<!-- Naviagtion Panel -->
 			<!-- diff colors global vs home ? params -->
 			<include content="Menucontrol_Content_Navigation" />
-			<include content="menucontrol_mymedia_viewid_settings" condition="Window.IsMedia + !Window.IsActive(musicplaylisteditor)" />
-			<include content="menucontrol_musicplaylisteditor_settings" condition="Window.IsActive(musicplaylisteditor)" />
+			<include content="menucontrol_mymedia_viewid_settings" condition="Window.IsMedia + !Window.IsActive(musicplaylisteditor) + !Window.IsActive(videoplaylist) + !Window.IsActive(musicplaylist)" />
+			<include content="menucontrol_musicplaylisteditor_settings" condition="Window.IsActive(musicplaylisteditor) | Window.IsActive(videoplaylist) | Window.IsActive(musicplaylist)" />
 		</control>
 		</definition>
 	</include>
@@ -1527,8 +1527,8 @@ msgstr "Video-Wiedergabelisten"
 		<control type="radiobutton" id="4008">
 			<include>Menucontrol_RadioButton</include>
 			<label>Show BG Panel</label>
-			<onclick>Skin.ToggleSetting(mplaylisteditor_showbgpanel)</onclick>
-			<selected>Skin.HasSetting(mplaylisteditor_showbgpanel)</selected>
+			<onclick>Skin.ToggleSetting(media_isplaylist_showbgpanel)</onclick>
+			<selected>Skin.HasSetting(media_isplaylist_showbgpanel)</selected>
 		</control>
 	</include>
 	
@@ -2029,6 +2029,17 @@ msgstr "Video-Wiedergabelisten"
 				<onclick>ActivateWindow(home)</onclick>
 				<visible>!Window.IsVisible(home)</visible>
 				<visible>!Skin.HasSetting(menu_hide_navigationhome)</visible>
+			</control>
+			<control type="button" id="7006">
+				<include condition="Window.Is(home)" content="Menucontrol_Button">
+					<param name="section" value="home" />
+				</include>
+				<include condition="!Window.Is(home)" content="Menucontrol_Button"/>
+				<label>Gehe zu</label>
+				<label2>$LOCALIZE[13350]</label2>
+				<onclick condition="Player.HasAudio">ActivateWindow(musicplaylist)</onclick>
+				<onclick condition="Player.HasVideo">ActivateWindow(videoplaylist)</onclick>
+				
 			</control>
 			
 			<control type="button" id="7010">

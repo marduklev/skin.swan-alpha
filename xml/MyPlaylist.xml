@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
-	<!-- <onload condition="!String.IsEmpty(Window(home).Property(partymode))">ActivateWindow(1110,return)</onload> -->
 	<include content="media_window_attributes" />
 	<controls>
 	<!-- 	
-playlist.xml		
+		
+videoplaylist 	WINDOW_VIDEO_PLAYLIST 	10028 	MyPlaylist.xml 
+musicplaylist 	WINDOW_MUSIC_PLAYLIST 	10500 	MyPlaylist.xml 
 
-acvivate windo and click by prop (hub)
-SendClick(musicplaylist/videoplaylist,id)
+activate window and click by prop (when came from music hub)
+	SendClick(musicplaylist/videoplaylist,id)
 
 2 	button 	Select viewtype (list, thumbnail, media info, etc...)
 3 	button 	Select sort method (sort by: name, date size, etc...)
@@ -20,6 +21,7 @@ SendClick(musicplaylist/videoplaylist,id)
 24 	button 	Play the next item in the playlist
 25 	button 	Play the previous item in the playlist
 26 	button 	Put the playlist on repeat
+
 -->
 	
 		<control type="label" id="12">
@@ -28,12 +30,16 @@ SendClick(musicplaylist/videoplaylist,id)
 		<control type="radiobutton" id="20">
 			<include>HiddenObject</include>
 		</control>
+		<!-- 
 		<control type="button" id="21">
 			<include>HiddenObject</include>
 		</control>
+		-->
+		<!-- 
 		<control type="button" id="22">
 			<include>HiddenObject</include>
 		</control>
+		-->
 		<control type="button" id="23">
 			<include>HiddenObject</include>
 		</control>
@@ -47,95 +53,124 @@ SendClick(musicplaylist/videoplaylist,id)
 			<include>HiddenObject</include>
 		</control>
 	
-		<!-- <include>global_background</include>
-		
-		<include>HeaderBar</include> -->
+		<control type="group">
+			<visible>!Skin.HasSetting(BlurEnabled)</visible>
+			<visible>String.IsEmpty(Window(home).Property(shortcutaction_inprogress))</visible>
+			<include>global_background</include>
+		</control>
+		<control type="group">
+			<visible>Skin.HasSetting(BlurEnabled)</visible>
+			<visible>String.IsEmpty(Window(home).Property(shortcutaction_inprogress))</visible>
+			<include>GlobalBlurredBackground</include>
+		</control>
 		
 		<control type="group">
-			<!-- <animation effect="fade" start="100" end="10" time="200" tween="sine" condition="true">Conditional</animation> -->
-			<control type="group">
-				<control type="panel" id="50">
-				
-				<onfocus condition="!String.IsEmpty(Window(home).Property(partymode))">ReplaceWindow(1110)</onfocus>
-				
-				<width>70%</width>
-				<top>200</top>
-				<height>65%</height>
-				<right>30</right>
-				<onleft>9000</onleft>
-				<onup>50</onup>
-				<ondown>50</ondown>
-				<onright>60</onright>
-				<pagecontrol>60</pagecontrol>
-				<scrolltime tween="quadratic">400</scrolltime>
-				
-				<itemlayout height="90">
-					<control type="group">
-						<height>90</height>
-					
-						<control type="image">
-							<visible>true</visible>
-							<width>90</width>
-							<height>90</height>
-							<texture background="true" diffuse="artworkdiffuse/circle.png" fallback="DefaultAddon.png">$INFO[Listitem.Icon]</texture>
-							<bordertexture colordiffuse="white">artworkdiffuse/circle.png</bordertexture>
-							<bordersize>2</bordersize>
-						</control>
-						<control type="textbox">
-							<autoscroll delay="2000" time="1500" repeat="1500">false</autoscroll>
-							<wrapmultiline>true</wrapmultiline>
-							<font>CommonTag</font>
-							<width>600</width>
-							<left>105</left>
-							<align>left</align>
-							<aligny>center</aligny>
-							<textcolor>$VAR[color_global_button_text_fo]</textcolor>
-							<selectedcolor>white</selectedcolor>
-							<label>[B]$INFO[ListItem.Label][/B][CR][COLOR=$VAR[color_global_button_text_nf]]$INFO[ListItem.Label2][/COLOR]</label>
-							<label2>test</label2>
-						</control>
-						
-					</control>
-				</itemlayout>
-				<focusedlayout height="90">
-					<control type="group">
-						<height>90</height>
-						<control type="image">
-							<left>50</left>
-							<texture background="true">artworkdiffuse/banner.png</texture>
-							<colordiffuse>red</colordiffuse>
-							
-							<bordersize>3</bordersize>
-						</control>
-						<control type="image">
-							<visible>true</visible>
-							<width>90</width>
-							<height>90</height>
-							<texture background="true" diffuse="artworkdiffuse/circle.png">$INFO[Listitem.Icon]</texture>
-							<bordertexture colordiffuse="white">artworkdiffuse/circle.png</bordertexture>
-							<bordersize>2</bordersize>
-						</control>
-						<control type="textbox">
-							<autoscroll delay="2000" time="1500" repeat="1500">true</autoscroll>
-							<wrapmultiline>true</wrapmultiline>
-							<font>CommonTag</font>
-							<width>600</width>
-							<left>105</left>
-							<align>left</align>
-							<aligny>center</aligny>
-							<textcolor>$VAR[color_global_button_text_fo]</textcolor>
-							<selectedcolor>white</selectedcolor>
-							<label>[B]$INFO[ListItem.Label][/B][CR][COLOR=$VAR[color_global_button_text_nf]]$INFO[ListItem.Label2][/COLOR]</label>
-							<label2>test</label2>
-						</control>
-					</control>
-				</focusedlayout>
-			</control>
-				
-			</control>
-			<include>Scrollbar_Lib_vertical</include>
-			<include>Scrollbar_Lib_horizontal</include>
+			<visible>Skin.HasSetting(media_isplaylist_showbgpanel)</visible>
+			
+			<include content="View_BGPanel">
+				<param name="width2" value="1640" />
+				<param name="width3" value="200" />
+			</include>
+		</control>		
+		
+		<control type="panel" id="50">
+			<viewtype label="$LOCALIZE[535]">list</viewtype>
+			<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
+		
+			<orientation>vertical</orientation>
+			<top>200</top>
+			<left>130</left>
+			<width>1500</width>
+			<preloaditems>4</preloaditems>
+			<scrolltime tween="quadratic">400</scrolltime>
+			<pagecontrol>60</pagecontrol>
+			<height>880</height>
+			<top>110</top>
+			
+			<onleft>menu</onleft>
+			<onright condition="!Control.IsVisible(60)">21</onright>
+			<onright condition="Control.IsVisible(60)">60</onright>
+			
+			<itemlayout height="50" condition="true">
+				<include content="music_list_1row">
+					<param name="focsed" value="false"/>
+					<param name="text_main" value="$VAR[color_lib_text_secondary]"/>
+					<param name="text_secondary" value="$VAR[color_lib_text_secondary]"/>
+					<param name="text_accent" value="$VAR[color_lib_text_secondary]"/>
+				</include>
+			</itemlayout>
+			<focusedlayout height="50" condition="true">
+				<include content="music_list_1row">
+					<param name="focsed" value="true"/>
+					<param name="text_main" value="$VAR[color_lib_text_main]"/>
+					<param name="text_secondary" value="$VAR[color_lib_text_secondary]"/>
+					<param name="text_accent" value="$VAR[color_lib_accent]"/>
+				</include>
+			</focusedlayout>
 		</control>
+			
+		
+		<control type="grouplist">
+			<orientation>vertical</orientation>
+			<left>1800</left>
+			<width>100</width>
+			<height>100%</height>
+			<itemgap>50</itemgap>
+			<align>center</align>
+			
+			<onleft condition="!Control.IsVisible(60)">50</onleft>
+			<onleft condition="Control.IsVisible(60)">60</onleft>
+			<onright>50</onright>
+			
+			<control type="button" id="21">
+				<description>Save the playlist</description>
+				<texturefocus colordiffuse="$VAR[color_lib_text_main]">buttons/enter.png</texturefocus>
+				<texturenofocus colordiffuse="$VAR[color_lib_text_secondary]">buttons/enter.png</texturenofocus>
+				<include>Animation_Item_Focus</include>
+				<width>60</width>
+				<height>60</height>
+				<label />
+			</control>
+			<control type="button" id="22">
+				<description>Clear the playlist</description>
+				<texturefocus colordiffuse="$VAR[color_lib_text_main]">buttons/cleanup.png</texturefocus>
+				<texturenofocus colordiffuse="$VAR[color_lib_text_secondary]">buttons/cleanup.png</texturenofocus>
+				<include>Animation_Item_Focus</include>
+				<left>5</left>
+				<width>50</width>
+				<height>50</height>
+				<label />
+			</control>
+			
+		</control>
+		
+		
+		
+		<include content="HeaderBar">
+			<param name="HasBGPanel" value="true" />
+		</include>
+		
+		<include content="PreMenucontrol" />
+		
+		<control type="group">
+			<animation effect="slide" start="-450,0" end="0,0" time="300" tween="cubic" easing="inout">VisibleHidden</animation>
+			<visible>String.IsEqual(Window(Home).Property(menucontrol_active),common)</visible>
+			<include content="menucontrol_global" condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" />
+		</control>
+		
+		<control type="scrollbar" id="60">
+			<animation effect="fade" start="100" end="0" time="250" condition="Control.HasFocus(600)">conditional</animation>
+			<showonepage>true</showonepage>
+			<right>238</right>
+			<top>160</top>
+			<height>74%</height>
+			<onup>60</onup>
+			<ondown>60</ondown>
+			<onleft>50</onleft>
+			<onright>21</onright>
+		</control>
+		
+		
 		<include content="swan_debug_overlay">
 			<param name="textleft" value="1  istitem.filenameandpath :  $INFO[listitem.filenameandpath]
 2  listitem.path :         $INFO[listitem.path]
