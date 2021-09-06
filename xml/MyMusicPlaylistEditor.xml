@@ -12,5 +12,139 @@ ID 		Type 		Description
 101 	label 		Number of items in the playlist  
 -->
 	<controls>
+	<control type="group">
+		<visible>!Skin.HasSetting(BlurEnabled)</visible>
+		<visible>String.IsEmpty(Window(home).Property(shortcutaction_inprogress))</visible>
+		<include>global_background</include>
+	</control>
+	<control type="group">
+		<visible>Skin.HasSetting(BlurEnabled)</visible>
+		<visible>String.IsEmpty(Window(home).Property(shortcutaction_inprogress))</visible>
+		<include>GlobalBlurredBackground</include>
+	</control>
+	
+	<control type="group">
+		<top>110</top>
+		<visible>false</visible>
+		
+		<include content="View_BGPanel">
+			<param name="width2" value="760" />
+			<param name="width3" value="1020" />
+		</include>
+	</control>		
+	
+	<control type="group">
+		<top>110</top>
+		<left>130</left>
+		<width>600</width>
+		
+		
+			<include content="Universal_Container">
+				<param name="id" value="50" />
+				<param name="visible" value="true" />
+				<param name="type_orientation" value="vertical" />
+				<param name="type_height" value="900" />
+				<param name="type_pos_top" value="10" />
+				
+				<param name="layout_height" value="250" />
+				<param name="layout_width" value="300" />
+				<param name="itemwidth" value="290" />
+				<param name="itemheight" value="155" />
+				
+				<param name="item_artwork_name" value="square" />
+				
+				<onright>7</onright>
+				slide?
+			</include>
+		
+	</control>
+	
+	<control type="grouplist">
+			<orientation>vertical</orientation>
+			<left>800</left>
+			<width>100</width>
+			<height>100%</height>
+			<itemgap>50</itemgap>
+			<align>center</align>
+			
+			<onleft>50</onleft>
+			<onright>100</onright>
+			
+			<control type="button" id="6">
+				<description>Load the playlist</description>
+				<texturefocus colordiffuse="$VAR[color_osdvideo_button_fo]">buttons/addsource.png</texturefocus>
+				<texturenofocus colordiffuse="$VAR[color_osdvideo_button_nf]">buttons/addsource.png</texturenofocus>
+				<include>Animation_Item_Focus</include>
+				<width>60</width>
+				<height>60</height>
+				<label />
+			</control>
+			<control type="button" id="7">
+				<description>Save the playlist</description>
+				<texturefocus colordiffuse="$VAR[color_osdvideo_button_fo]">buttons/addsource.png</texturefocus>
+				<texturenofocus colordiffuse="$VAR[color_osdvideo_button_nf]">buttons/addsource.png</texturenofocus>
+				<include>Animation_Item_Focus</include>
+				<width>60</width>
+				<height>60</height>
+				<label />
+			</control>
+			<control type="button" id="8">
+				<description>Clear the playlist</description>
+				<texturefocus colordiffuse="$VAR[color_osdvideo_button_fo]">buttons/addsource.png</texturefocus>
+				<texturenofocus colordiffuse="$VAR[color_osdvideo_button_nf]">buttons/addsource.png</texturenofocus>
+				<include>Animation_Item_Focus</include>
+				<width>60</width>
+				<height>60</height>
+				<label />
+			</control>
+			
+		</control>
+	
+		<control type="group">
+			
+			<control type="panel" id="100">
+				<orientation>vertical</orientation>
+				<left>900</left>
+				<right>10</right>
+				<preloaditems>2</preloaditems>
+				<scrolltime tween="quadratic">400</scrolltime>
+				<height>880</height>
+				<top>110</top>
+				
+				<onleft>7</onleft>
+				<onright>50</onright>
+				
+				<itemlayout height="50" condition="true">
+					<include content="music_list_1row">
+						<param name="focsed" value="false"/>
+						<param name="text_main" value="$VAR[color_lib_text_secondary]"/>
+						<param name="text_secondary" value="$VAR[color_lib_text_secondary]"/>
+						<param name="text_accent" value="$VAR[color_lib_text_secondary]"/>
+					</include>
+				</itemlayout>
+				<focusedlayout height="50" condition="true">
+					<include content="music_list_1row">
+						<param name="focsed" value="true"/>
+						<param name="text_main" value="$VAR[color_lib_text_main]"/>
+						<param name="text_secondary" value="$VAR[color_lib_text_secondary]"/>
+						<param name="text_accent" value="$VAR[color_lib_accent]"/>
+					</include>
+				</focusedlayout>
+			</control>
+		</control>
+	
+		<include content="HeaderBar">
+			<param name="HasBGPanel" value="Skin.HasSetting(MediaWindow_UseHeaderBG)" />
+		</include>
+		
+		<include content="PreMenucontrol" />
+		
+		<control type="group">
+			<animation effect="slide" start="-450,0" end="0,0" time="300" tween="cubic" easing="inout">VisibleHidden</animation>
+			<visible>String.IsEqual(Window(Home).Property(menucontrol_active),common)</visible>
+			<include content="menucontrol_global" condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" />
+		</control>
+			
+	
 	</controls>
 </window>

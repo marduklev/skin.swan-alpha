@@ -612,7 +612,7 @@ static const TypeMapping types[] =
 					<param name="id" value="$PARAM[id]000"/>
 					<param name="label" value="H O M E     M E N U     S E T T I N G S"/>
 				</include>
-				<control type="radiobutton" id="$PARAM[id]001">
+				<!-- <control type="radiobutton" id="$PARAM[id]001">
 					<label>TEMP SETTING : use custom main menu</label>
 					<font>font30_title</font>
 					<textoffsetx>0</textoffsetx>
@@ -620,7 +620,14 @@ static const TypeMapping types[] =
 					<onclick>Skin.ToggleSetting(useshortcut_mainmenu)</onclick>
 					<selected>Skin.HasSetting(useshortcut_mainmenu)</selected>
 					<visible>Skin.HasSetting(SwanDebug)</visible>
+				</control> -->
+				<control type="radiobutton" id="$PARAM[id]001">
+					<visible>!string.isequal(Skin.String(HomeLayout),MenuTiles)</visible>
+					<label>Enable Circular Navigation</label>
+					<onclick>Skin.ToggleSetting(home_circular_nav)</onclick>
+					<selected>Skin.HasSetting(home_circular_nav)</selected>
 				</control>
+			
 			
 				<control type="radiobutton" id="$PARAM[id]002">
 					<description>refresh profile container + toggle setting</description>
@@ -2093,154 +2100,163 @@ static const TypeMapping types[] =
 					<selected>Skin.HasSetting(ShowOSD_OnStart)</selected>
 				</control>
 				<control type="radiobutton" id="$PARAM[id]003">
-					<label>Close OSD [I]choose timout between [B]0[/B] and [B]9[/B] seconds[/I]</label>
+					<label>Autoclose OSD when hit OSD Button [I]choose timout between [B]0[/B] and [B]9[/B] seconds[/I]</label>
 					<label2>$INFO[Skin.String(timeout_close_videoosd)]          </label2>
 					<onclick condition="!Skin.String(timeout_close_videoosd)">SetProperty(force_num_singledigit,timeout_close_videoosd)</onclick>
 					<onclick condition="!Skin.String(timeout_close_videoosd)">Skin.SetNumeric(timeout_close_videoosd)</onclick>
 					<onclick condition="Skin.String(timeout_close_videoosd)">Skin.Reset(timeout_close_videoosd)</onclick>
 					<selected>Skin.String(timeout_close_videoosd)</selected>
 				</control>
-				<control type="radiobutton" id="$PARAM[id]006">
-					<label>Hide Busy Loader In OSD</label>
-					<onclick>Skin.ToggleSetting(HideBusyOSD)</onclick>
-					<selected>Skin.HasSetting(HideBusyOSD)</selected>
-				</control>
-				<control type="radiobutton" id="$PARAM[id]007">
+				<control type="radiobutton" id="$PARAM[id]004">
 					<label>Start Video with disabled subtitles</label>
 					<onclick>Skin.ToggleSetting(DisableSubtitles)</onclick>
 					<selected>Skin.HasSetting(DisableSubtitles)</selected>
 				</control>
-				<control type="radiobutton" id="$PARAM[id]008">
+				<control type="radiobutton" id="$PARAM[id]005">
 					<label>Pause Video when open 'fullscreeninfo dialog'</label>
 					<onclick>Skin.ToggleSetting(fullscreeninfo_pauseonload)</onclick>
 					<selected>Skin.HasSetting(fullscreeninfo_pauseonload)</selected>
 				</control>
-				<control type="radiobutton" id="$PARAM[id]009">
-					<visible>false</visible>
+				<control type="radiobutton" id="$PARAM[id]006">
 					<label>Pause Video when open 'bookmark dialog'</label>
 					<onclick>Skin.ToggleSetting(bookmark_pauseonload)</onclick>
 					<selected>Skin.HasSetting(bookmark_pauseonload)</selected>
 				</control>
+				<control type="radiobutton" id="$PARAM[id]008">
+					<label>Open Fullscreeninfo When hit Down from OSD Buttons</label>
+					<label2></label2>
+					<onclick>Skin.ToggleSetting(videoosd_ondown_videobookmarks)</onclick>
+					<selected>!Skin.HasSetting(videoosd_ondown_videobookmarks)</selected>
+				</control>
+				<control type="radiobutton" id="$PARAM[id]009">
+					<label>Open Videobookmarks When hit Down from OSD Buttons</label>
+					<label2></label2>
+					<onclick>Skin.ToggleSetting(videoosd_ondown_videobookmarks)</onclick>
+					<selected>Skin.HasSetting(videoosd_ondown_videobookmarks)</selected>
+				</control>
+				<control type="radiobutton" id="$PARAM[id]010">
+					<label>Hide Busy Loader In OSD</label>
+					<onclick>Skin.ToggleSetting(HideBusyOSD)</onclick>
+					<selected>Skin.HasSetting(HideBusyOSD)</selected>
+				</control>
 				
-				
-				
-				<control type="button" id="$PARAM[id]008">
+				<control type="button" id="$PARAM[id]020">
 					<description>choose next up addon layout  setbool(1|2|3) settings</description>
 					<visible>false</visible>
 				</control>
 				
 				<include content="SectionHeadline">
-					<param name="id" value="$PARAM[id]009"/>
+					<param name="id" value="$PARAM[id]030"/>
 					<param name="label" value="V I D E O      O S D      C O L O R S"/>
 				</include>
 				
 				<include content="SkinSettings_ColorButton">
-					<param name="id" value="$PARAM[id]010" />
+					<param name="id" value="$PARAM[id]031" />
 					<param name="label" value="Video OSD Dimmed Background Color (channel switch busy)" />
 					<param name="skinsetting" value="color_osdvideo_dimmedbg" />
 				</include>
 				<include content="SkinSettings_ColorButton">
-					<param name="id" value="$PARAM[id]012" />
+					<param name="id" value="$PARAM[id]032" />
 					<param name="label" value="Video OSD Busy Spinner Color (channel switch busy)" />
 					<param name="skinsetting" value="color_osdvideo_busyspinner" />
 				</include>
 				<include content="SkinSettings_ColorButton">
-					<param name="id" value="$PARAM[id]011" />
+					<param name="id" value="$PARAM[id]033" />
 					<param name="label" value="Video OSD Background Panel Color" />
 					<param name="skinsetting" value="color_osdvideo_bgpanel" />
 				</include>
 				
 				<include content="SkinSettings_ColorButton">
-					<param name="id" value="$PARAM[id]013" />
+					<param name="id" value="$PARAM[id]034" />
 					<param name="label" value="Video OSD Main Color" />
 					<param name="skinsetting" value="color_osdvideo_main" />
 				</include>
 				<include content="SkinSettings_ColorButton">
-					<param name="id" value="$PARAM[id]014" />
+					<param name="id" value="$PARAM[id]035" />
 					<param name="label" value="Video OSD Secondary Color" />
 					<param name="skinsetting" value="color_osdvideo_secondary" />
 				</include>
 				<include content="SkinSettings_ColorButton">
-					<param name="id" value="$PARAM[id]015" />
+					<param name="id" value="$PARAM[id]036" />
 					<param name="label" value="Video OSD Color for Focused Button" />
 					<param name="skinsetting" value="color_osdvideo_button_fo" />
 				</include>
 				<include content="SkinSettings_ColorButton">
-					<param name="id" value="$PARAM[id]016" />
+					<param name="id" value="$PARAM[id]037" />
 					<param name="label" value="Video OSD Color for UnFocused Button" />
 					<param name="skinsetting" value="color_osdvideo_button_nf" />
 				</include>
 				<include content="SkinSettings_ColorButton">
-					<param name="id" value="$PARAM[id]017" />
+					<param name="id" value="$PARAM[id]038" />
 					<param name="label" value="Video OSD Color for Progress Bar (progress)" />
 					<param name="skinsetting" value="color_osdvideo_progress" />
 				</include>
 				<include content="SkinSettings_ColorButton">
-					<param name="id" value="$PARAM[id]018" />
+					<param name="id" value="$PARAM[id]039" />
 					<param name="label" value="Video OSD Color for Progress Bar (remaining)" />
 					<param name="skinsetting" value="color_osdvideo_remain" />
 				</include>
 				
 				
 				<include content="SectionHeadline">
-					<param name="id" value="$PARAM[id]020"/>
+					<param name="id" value="$PARAM[id]040"/>
 					<param name="label" value="M U S I C"/>
 				</include>
-				<control type="radiobutton" id="$PARAM[id]021">
+				<control type="radiobutton" id="$PARAM[id]041">
 					<label>Use Small Playlist Bottom Left Instead Extended List Centered</label>
 					<onclick>Skin.ToggleSetting(MusicOSD_SmallPlaylist)</onclick>
 					<selected>Skin.HasSetting(MusicOSD_SmallPlaylist)</selected>
 				</control>
-				<control type="radiobutton" id="$PARAM[id]022">
+				<control type="radiobutton" id="$PARAM[id]042">
 					<label>Animate Music Background</label>
 					<onclick>Skin.ToggleSetting(MusicPlayer_BackgroundAnimation)</onclick>
 					<selected>Skin.HasSetting(MusicPlayer_BackgroundAnimation)</selected>
 				</control>
-				<control type="radiobutton" id="$PARAM[id]023">
+				<control type="radiobutton" id="$PARAM[id]043">
 					<label>Use Rotating Extra Music Fanart</label>
 					<onclick>Skin.ToggleSetting(Rotating_MusicPlayerFanart)</onclick>
 					<selected>Skin.HasSetting(Rotating_MusicPlayerFanart)</selected>
 				</control>
-				<control type="radiobutton" id="$PARAM[id]024">
+				<control type="radiobutton" id="$PARAM[id]044">
 					<label>Prefer Discart over Album Thumb</label>
 					<onclick condition="Skin.HasSetting(MusicPlayer_PreferAlbumandDisc)">Skin.ToggleSetting(MusicPlayer_PreferAlbumandDisc)</onclick>
 					<onclick>Skin.ToggleSetting(MusicPlayer_PreferDisc)</onclick>
 					<selected>Skin.HasSetting(MusicPlayer_PreferDisc)</selected>
 				</control>
-				<control type="radiobutton" id="$PARAM[id]025">
+				<control type="radiobutton" id="$PARAM[id]045">
 					<label>Show Album Thumb + Discart if existing</label>
 					<onclick condition="Skin.HasSetting(MusicPlayer_PreferDisc)">Skin.ToggleSetting(MusicPlayer_PreferDisc)</onclick>
 					<onclick>Skin.ToggleSetting(MusicPlayer_PreferAlbumandDisc)</onclick>
 					<selected>Skin.HasSetting(MusicPlayer_PreferAlbumandDisc)</selected>
 				</control>
 				<include content="SkinSettings_ColorButton">
-					<param name="id" value="$PARAM[id]028" />
+					<param name="id" value="$PARAM[id]048" />
 					<param name="label" value="Overlay Color (50% img )" />
 					<param name="skinsetting" value="color_osdmusic_bgpanel" />
 				</include>
 				<include content="SkinSettings_ColorButton">
-					<param name="id" value="$PARAM[id]029" />
+					<param name="id" value="$PARAM[id]049" />
 					<param name="label" value="MusicPlayerBorder Color (70% img over overlay )" />
 					<param name="skinsetting" value="color_osdmusic_bgpanelseperator" />
 				</include>
 				<include content="SkinSettings_ColorButton">
-					<param name="id" value="$PARAM[id]030" />
+					<param name="id" value="$PARAM[id]050" />
 					<param name="label" value="Music Player Main Color" />
 					<param name="skinsetting" value="color_osdmusic_main" />
 				</include>
 				<include content="SkinSettings_ColorButton">
-					<param name="id" value="$PARAM[id]031" />
+					<param name="id" value="$PARAM[id]051" />
 					<param name="label" value="Music Player Secondary Text Color" />
 					<param name="skinsetting" value="color_osdmusic_secondary" />
 				</include>
 				<include content="SkinSettings_ColorButton">
-					<param name="id" value="$PARAM[id]032" />
+					<param name="id" value="$PARAM[id]052" />
 					<param name="label" value="Music Player Accent Color" />
 					<param name="skinsetting" value="color_osdmusic_accent" />
 				</include>
 				
 				<include content="SectionHeadline">
-					<param name="id" value="$PARAM[id]040"/>
+					<param name="id" value="$PARAM[id]060"/>
 					<param name="label" value="PVR RADIO ?"/>
 				</include>
 				

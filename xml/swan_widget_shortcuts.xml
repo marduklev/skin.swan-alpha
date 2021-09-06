@@ -107,6 +107,13 @@
 			<param name="target" value="music" />
 			<param name="path" value="Music,sources://music/" />
 		</include>
+		<include content="SwanShortcuts_SetTargetAndPath_CommonButton">
+			<param name="visible" value="Library.HasContent(Music) + String.IsEqual(Window(home).Property(shortcutaction_inprogress),mainmenu)" />
+			<param name="id" value="26" />
+			<param name="label" value="$LOCALIZE[10503]" />
+			<param name="target" value="musicplaylisteditor" />
+			<param name="path" value="" />
+		</include>
 		
 		<control type="label" id="30">
 			<height>60</height>
@@ -330,11 +337,11 @@
 	
 	<include name="SwanShortcuts_SetTargetAndPath_CommonButton">
 		<control type="button" id="$PARAM[id]">
-		<onclick>Dialog.Close(1103)</onclick>
-		<onclick>ActivateWindow($PARAM[path])</onclick>
-		<label>$PARAM[label]</label>
-		<visible>$PARAM[visible]</visible>
-	</control>
+			<onclick>Dialog.Close(1103)</onclick>
+			<onclick>ActivateWindow($PARAM[path])</onclick>
+			<label>$PARAM[label]</label>
+			<visible>$PARAM[visible]</visible>
+		</control>
 	</include>
 	
 	
@@ -396,9 +403,14 @@
 			<include content="DialogBackground_TriplePanel" />
 		</control>
 
-		<include content="Dialog_CommonInfo">
+		<include content="Dialog_CommonInfo" condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),widget)">
 			<param name="Header_posy" value="50" />
 			<param name="Header_label" value="Browse and Set your[CR][B]W I D G E T[/B]" />
+			<param name="Item_Description" value="[CR]" />
+		</include>
+		<include content="Dialog_CommonInfo" condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),mainmenu)">
+			<param name="Header_posy" value="50" />
+			<param name="Header_label" value="Browse and Set your[CR][B]M A I N M E N U     I T E M[/B]" />
 			<param name="Item_Description" value="[CR]" />
 		</include>
 		
