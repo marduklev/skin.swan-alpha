@@ -1152,8 +1152,7 @@ ID 	Type 					Description
 				<textcolor>$VAR[color_lib_menu_item_fo]</textcolor>
 			</control>
 			<control type="label" id="912">
-				<visible>Window.IsMedia</visible>
-				<visible>!Control.HasFocus(911)</visible>
+				<visible>!Control.HasFocus(911) + Control.IsVisible(911)</visible>
 				<textoffset>20</textoffset>
 				<label>[CR][B]    Container Settings[/B]</label>
 				<font>font12</font>
@@ -1165,6 +1164,7 @@ ID 	Type 					Description
 			
 			<control type="panel" id="911">
 				<visible>Window.IsMedia</visible>
+				<visible>Integer.IsGreaterOrEqual(Container(911).NumItems,1)</visible>
 				<onfocus condition="!String.IsEqual(Window(Home).Property(menucontrol_active),common)">SetProperty(menucontrol_active,common,Home)</onfocus>
 				<scrolltime tween="quadratic">400</scrolltime>
 				<top>0</top>
@@ -1297,6 +1297,7 @@ msgstr "Video-Wiedergabelisten"
 						<visible>Control.IsVisible(9) + Window.IsActive(addonbrowser)</visible>
 					</item>
 					<item>
+						<visible>[Window.IsActive(videos) | Window.IsActive(music) | Window.IsActive(games) | Window.IsActive(pictures)]</visible>
 						<icon>buttons/viewswitch.png</icon>
 						<property name="icon">buttons/viewswitch.png</property>
 						<label>ViewMode Select</label>
@@ -1314,7 +1315,7 @@ msgstr "Video-Wiedergabelisten"
 						<label2>$INFO[Container.Viewmode]</label2>
 						<onclick>Container.NextViewMode</onclick>
 						<visible>Control.IsVisible(2)</visible>
-						<visible>false</visible>
+						<visible>![Window.IsActive(videos) | Window.IsActive(music) | Window.IsActive(games) | Window.IsActive(pictures)]</visible>
 					</item>
 					<item>
 						<icon>defaultmusicvideotitle.png</icon>
