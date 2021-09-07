@@ -11,7 +11,7 @@
 		<definition>
 		<control type="group">
 			<animation effect="slide" start="0,90" end="0,0" time="350" tween="quadratic" easing="out" delay="100">VisibleChange</animation>
-			<visible>[Window.IsActive(videos) + [Control.IsVisible($PARAM[view_id]) + !Skin.HasSetting(View_$PARAM[view_id]_DisableFooter)]] | Window.IsActive(fullscreenvideo)</visible>
+			<visible>[Control.IsVisible($PARAM[view_id]) + !Skin.HasSetting(View_$PARAM[view_id]_DisableFooter)] | Window.IsActive(fullscreenvideo)</visible>
 			<bottom>$PARAM[bottom]</bottom>
 			<height>90</height>
 			<control type="image">
@@ -70,40 +70,50 @@
 					<param name="gap" value="50"/>
 					<param name="visible" value="!Window.IsActive(movieinformation) + !String.IsEmpty(ListItem.Studio)"/>
 				</include>
-				
 				<include content="rating_footer_template">
-					<param name="id" value="50505"/>
+					<param name="id" value="6769"/>
+					<param name="rating" value="default"/>
+					<param name="color" value="$PARAM[forcedcolor]" />
+					<param name="visible" value="!String.IsEmpty(ListItem.Rating) | !String.IsEmpty(ListItem.UserRating)" />
+				</include>
+				<include content="rating_footer_template">
+					<param name="id" value="6770"/>
+					<param name="rating" value="trakt"/>
+					<param name="color" value="$PARAM[forcedcolor]" />
+				</include>
+				<include content="rating_footer_template">
+					<param name="id" value="6771"/>
 					<param name="rating" value="metacritic"/>
 					<param name="color" value="$PARAM[forcedcolor]" />
 				</include>
 				<include content="rating_footer_template">
-					<param name="id" value="50503"/>
+					<param name="id" value="6772"/>
 					<param name="rating" value="tomatometerallaudience"/>
 					<param name="color" value="$PARAM[forcedcolor]" />
 				</include>
 				<include content="rating_footer_template">
-					<param name="id" value="50504"/>
+					<param name="id" value="6773"/>
 					<param name="rating" value="tomatometerallcritics"/>
 					<param name="color" value="$PARAM[forcedcolor]" />
 				</include>
 				<include content="rating_footer_template">
-					<param name="id" value="50501"/>
+					<param name="id" value="6774"/>
 					<param name="rating" value="themoviedb"/>
 					<param name="color" value="$PARAM[forcedcolor]" />
 				</include>
 				<include content="rating_footer_template">
-					<param name="id" value="50500"/>
+					<param name="id" value="6775"/>
 					<param name="rating" value="tvdb"/>
 					<param name="color" value="$PARAM[forcedcolor]" />
-					<visible>[[Container.Content(tvshows) | String.IsEqual(ListItem.DBTYPE,tvshow)] | [Container.Content(episodes) | String.IsEqual(ListItem.DBTYPE,episode)] | [Container.Content(seasons) | String.IsEqual(ListItem.DBTYPE,season)]] | [Window.IsActive(fullscreenvideo) + VideoPlayer.Content(episodes)]</visible>
+					<visible>[[String.IsEqual(ListItem.DBTYPE,tvshow)] | [Container.Content(episodes) | String.IsEqual(ListItem.DBTYPE,episode)] | [Container.Content(seasons) | String.IsEqual(ListItem.DBTYPE,season)]] | [Window.IsActive(fullscreenvideo) + VideoPlayer.Content(episodes)]</visible>
 				</include>
 				<include content="rating_footer_template">
-					<param name="id" value="50502"/>
+					<param name="id" value="6776"/>
 					<param name="rating" value="imdb"/>
 					<param name="color" value="$PARAM[forcedcolor]" />
 				</include>
 				<include content="rating_footer_template">
-					<param name="id" value="50506"/>
+					<param name="id" value="6777"/>
 					<param name="rating" value="imdbtop250"/>
 					<param name="color" value="$PARAM[forcedcolor]" />
 				</include>
@@ -111,10 +121,16 @@
 		</definition>		
     </include>
 	
+			<!-- fade if upadting ? (2000|tmdbhelper.service)
+			<animation effect="fade" start="100" end="0" time="100">Hidden</animation>
+			<animation effect="fade" start="0" end="100" time="200">Visible</animation> -->
+			
 	<include name="rating_footer_template">
+		<param name="visible" default="Window.IsActive(videos) | Window.IsActive(fullscreenvideo)" />
 		<definition>
 		<control type="grouplist">
-			<visible>[Window.IsActive(videos) | Window.IsActive(fullscreenvideo)] + Skin.HasSetting(Show_$PARAM[rating]_Rating) + !String.IsEmpty(Control.GetLabel($PARAM[id]))</visible>
+			<visible>$PARAM[visible]</visible>
+			<visible>Skin.HasSetting(Show_$PARAM[rating]_Rating) + !String.IsEmpty(Control.GetLabel($PARAM[id]))</visible>
 			<top>15</top>
 			<bottom>5</bottom>
 			<width>80</width>
@@ -122,6 +138,7 @@
 			<orientation>vertical</orientation>
 			<nested />
             <control type="image">
+				<visible>Skin.HasSetting(Show_$PARAM[rating]_Rating)</visible>
 				<width>60</width>
 				<height>40</height>
                 <bordersize>2</bordersize>
@@ -132,6 +149,7 @@
 				<texture>$VAR[image_$PARAM[rating]]</texture>
 			</control>
 			<control type="label" id="$PARAM[id]">
+				<visible>Skin.HasSetting(Show_$PARAM[rating]_Rating)</visible>
 				<height>25</height>
                 <width>60</width>
 				<align>center</align>
@@ -244,7 +262,14 @@
         <value condition="!String.IsEmpty(videoplayer.Rating)">$INFO[videoplayer.Rating,flags/rating/stars/,.png]</value>
     </variable>
 	
-	
+	<variable name="image_default">
+		<value condition="!String.IsEmpty(ListItem.UserRating)">flags/ratings/userrating.png</value>
+		<value condition="!String.IsEmpty(ListItem.Rating)">flags/ratings/star_red.png</value>  
+	</variable>
+		<!-- or seperate? -->
+		<!-- <variable name="image_userrating"> -->
+			<!-- <value condition="!String.IsEmpty(ListItem.UserRating)">flags/ratings/userrating.png</value> -->
+		<!-- </variable> -->
 	
 	<variable name="image_imdb">
 		<value condition="Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/imdb_monochrome.png</value>   
@@ -263,48 +288,51 @@
 		<value>flags/ratings/themoviedb_color.png</value>
 	</variable>
     <variable name="image_tomatometerallaudience">
-		<value condition="[Integer.IsGreater(Container(2000).ListItem.Rating(tomatometerallaudience),5.9) | Integer.IsGreater(ListItem.Rating(tomatometerallaudience),5.9)] + Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/audience_fresh_monochrome.png</value>     
-		<value condition="![Integer.IsGreater(Container(2000).ListItem.Rating(tomatometerallaudience),5.9) | Integer.IsGreater(ListItem.Rating(tomatometerallaudience),5.9)] + Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/audience_rotten_monochrome.png</value>     
-		<value condition="[Integer.IsGreater(Container(2000).ListItem.Rating(tomatometerallaudience),5.9) | Integer.IsGreater(ListItem.Rating(tomatometerallaudience),5.9)] + !Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/audience_fresh_color.png</value>     
-		<value condition="![Integer.IsGreater(Container(2000).ListItem.Rating(tomatometerallaudience),5.9) | Integer.IsGreater(ListItem.Rating(tomatometerallaudience),5.9)] + !Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/audience_rotten_color.png</value>     
+		<value condition="[Integer.IsGreaterOrEqual(Container(2000).ListItem.Rating(tomatometerallaudience),6) | Integer.IsGreaterOrEqual(ListItem.Rating(tomatometerallaudience),6) | Integer.IsGreaterOrEqual(Window(Home).Property(TMDbHelper.ListItem.RottenTomatoes_UserMeter),60)] + Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/audience_fresh_monochrome.png</value>     
+		<value condition="[Integer.IsLess(Container(2000).ListItem.Rating(tomatometerallaudience),6) | Integer.IsLess(ListItem.Rating(tomatometerallaudience),6) | Integer.IsLess(Window(Home).Property(TMDbHelper.ListItem.RottenTomatoes_UserMeter),60)] + Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/audience_rotten_monochrome.png</value>
+		<value condition="[Integer.IsGreaterOrEqual(Container(2000).ListItem.Rating(tomatometerallaudience),6) | Integer.IsGreaterOrEqual(ListItem.Rating(tomatometerallaudience),6) | Integer.IsGreaterOrEqual(Window(Home).Property(TMDbHelper.ListItem.RottenTomatoes_UserMeter),60)] + !Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/audience_fresh_color.png</value>     
+		<value condition="[Integer.IsLess(Container(2000).ListItem.Rating(tomatometerallaudience),6) | Integer.IsLess(ListItem.Rating(tomatometerallaudience),6) | Integer.IsLess(Window(Home).Property(TMDbHelper.ListItem.RottenTomatoes_UserMeter),60)] + !Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/audience_rotten_color.png</value>     
 	</variable>
 	<variable name="image_tomatometerallcritics">
-		<value condition="[Integer.IsGreater(Container(2000).ListItem.Rating(tomatometerallcritics),5.9) | Integer.IsGreater(ListItem.Rating(tomatometerallcritics),5.9)] + Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/critics_rotten_fresh_monochrome.png</value>     
-		<value condition="![Integer.IsGreater(Container(2000).ListItem.Rating(tomatometerallcritics),5.9) | Integer.IsGreater(ListItem.Rating(tomatometerallcritics),5.9)] + Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/critics_rotten_rotten_monochrome.png</value>     
-		<value condition="[Integer.IsGreater(Container(2000).ListItem.Rating(tomatometerallcritics),5.9) | Integer.IsGreater(ListItem.Rating(tomatometerallcritics),5.9)] + !Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/critics_fresh_color.png</value> 
-		<value condition="![Integer.IsGreater(Container(2000).ListItem.Rating(tomatometerallcritics),5.9) | Integer.IsGreater(ListItem.Rating(tomatometerallcritics),5.9)] + !Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/critics_rotten_color.png</value> 		
+		<value condition="[Integer.IsGreaterOrEqual(Container(2000).ListItem.Rating(tomatometerallcritics),6) | Integer.IsGreaterOrEqual(ListItem.Rating(tomatometerallcritics),6) | Integer.IsGreaterOrEqual(Window(Home).Property(TMDbHelper.ListItem.RottenTomatoes_Rating),60)] + Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/critics_rotten_fresh_monochrome.png</value>     
+		<value condition="[Integer.IsLess(Container(2000).ListItem.Rating(tomatometerallcritics),6) | Integer.IsLess(ListItem.Rating(tomatometerallcritics),6) | Integer.IsLess(Window(Home).Property(TMDbHelper.ListItem.RottenTomatoes_Rating),60)] + Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/critics_rotten_rotten_monochrome.png</value>     
+		<value condition="[Integer.IsGreaterOrEqual(Container(2000).ListItem.Rating(tomatometerallcritics),6) | Integer.IsGreaterOrEqual(ListItem.Rating(tomatometerallcritics),6) | Integer.IsGreaterOrEqual(Window(Home).Property(TMDbHelper.ListItem.RottenTomatoes_Rating),60)] + !Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/critics_fresh_color.png</value> 
+		<value condition="[Integer.IsLess(Container(2000).ListItem.Rating(tomatometerallcritics),6) | Integer.IsLess(ListItem.Rating(tomatometerallcritics),6) | Integer.IsLess(Window(Home).Property(TMDbHelper.ListItem.RottenTomatoes_Rating),60)] + !Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/critics_rotten_color.png</value> 		
 	</variable>
 	<variable name="image_metacritic">
 		<value condition="Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/metacritic_monochrome.png</value>   
 		<value>flags/ratings/metacritic_color.png</value>     
-    </variable>  
+    </variable>
+	<variable name="image_trakt">
+		<value condition="Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/trakt_monochrome.png</value>   
+		<value>flags/ratings/trakt_coloured_ff.png</value>     
+    </variable>
+	
 	<variable name="image_StudioLogo">
 		<value condition="!Skin.HasSetting(use_monochrome_studioflags)">$INFO[ListItem.Studio,resource://resource.images.studios.coloured/,.png]</value>
 		<value>$INFO[ListItem.Studio,resource://resource.images.studios.white/,.png]</value>
     </variable>
 	
-<!-- maybe
-Trakt_Rating $INFO[Window(Home).Property(TMDbHelper.ListItem.Trakt_Rating)] -->
 	<variable name="label_listitemrating_imdbtop250">
 		<value condition="!String.IsEmpty(ListItem.Top250)">$INFO[ListItem.Top250]</value>
-		<value condition="Skin.HasSetting(SH_Rating_Fallback) + String.IsEmpty(ListItem.Top250)">$INFO[Window(Home).Property(SkinHelper.ListItem.IMDB.Top250)]</value> 
 	</variable>
 	<variable name="label_listitemrating_imdb">
 		<value condition="!String.IsEmpty(ListItem.Rating(imdb))">$INFO[ListItem.Rating(imdb)]</value>  
-		<value condition="String.IsEmpty(ListItem.Rating(imdb)) + !String.IsEmpty(Container(2000).ListItem.Rating(imdb))">$INFO[Container(2000).ListItem.Rating(imdb)]</value>
+		<value condition="String.IsEmpty(ListItem.Rating(imdb)) + [!Container(2000).IsUpdating + !String.IsEmpty(Container(2000).ListItem.Rating(imdb))]">$INFO[Container(2000).ListItem.Rating(imdb)]</value>
 		<value condition="[String.IsEmpty(Window(Home).Property(TMDbHelper.IsUpdating)) + Skin.HasSetting(TMDbHelper_Ratings) + Skin.HasSetting(TMDbHelper.Service)] + !String.IsEmpty(Window(Home).Property(TMDbHelper.ListItem.IMDb_Rating))">$INFO[Window(Home).Property(TMDbHelper.ListItem.IMDb_Rating)]</value> 
 	</variable>
 	<variable name="label_listitemrating_themoviedb">
 		<value condition="!String.IsEmpty(ListItem.Rating(themoviedb))">$INFO[ListItem.Rating(themoviedb)]</value>  
-		<value condition="String.IsEmpty(ListItem.Rating(themoviedb)) + !String.IsEmpty(Container(2000).ListItem.Rating(themoviedb))">$INFO[Container(2000).ListItem.Rating(themoviedb)]</value>
+		<value condition="String.IsEmpty(ListItem.Rating(themoviedb)) + [!Container(2000).IsUpdating + !String.IsEmpty(Container(2000).ListItem.Rating(themoviedb))]">$INFO[Container(2000).ListItem.Rating(themoviedb)]</value>
 		<value condition="[String.IsEmpty(Window(Home).Property(TMDbHelper.IsUpdating)) + Skin.HasSetting(TMDbHelper_Ratings) + Skin.HasSetting(TMDbHelper.Service)] + !String.IsEmpty(Window(Home).Property(TMDbHelper.ListItem.TMDb_Rating))">$INFO[Window(Home).Property(TMDbHelper.ListItem.TMDb_Rating)]</value> 
 	</variable>
+	<!-- <value condition="!String.IsEmpty(ListItem.Rating(themoviedb)) | [String.IsEmpty(ListItem.Rating(themoviedb)) + [!Container(2000).IsUpdating + !String.IsEmpty(Container(2000).ListItem.Rating(themoviedb))]]">$VAR[formatted_rating_themoviedb,,%]</value> -->
 	<variable name="label_listitemrating_metacritic">
-		<value condition="!String.IsEmpty(ListItem.Rating(metacritic)) | [!String.IsEmpty(Container(2000).ListItem.Rating(metacritic)) + String.IsEmpty(ListItem.Rating(metacritic))]">$VAR[formatted_rating_metacritic,,%]</value>  
-		<value condition="[String.IsEmpty(Window(Home).Property(TMDbHelper.IsUpdating)) + Skin.HasSetting(TMDbHelper_Ratings) + Skin.HasSetting(TMDbHelper.Service)] + !String.IsEmpty(Window(Home).Property(TMDbHelper.ListItem.Metacritic_Rating))">$INFO[Window(Home).Property(TMDbHelper.ListItem.Metacritic_Rating)]</value> 
+		<value condition="!String.IsEmpty(ListItem.Rating(metacritic)) | [[!Container(2000).IsUpdating + !String.IsEmpty(Container(2000).ListItem.Rating(metacritic))] + String.IsEmpty(ListItem.Rating(metacritic))]">$VAR[formatted_rating_metacritic,,%]</value>  
+		<value condition="[String.IsEmpty(Window(Home).Property(TMDbHelper.IsUpdating)) + Skin.HasSetting(TMDbHelper_Ratings) + Skin.HasSetting(TMDbHelper.Service)] + !String.IsEmpty(Window(Home).Property(TMDbHelper.ListItem.Metacritic_Rating))">$INFO[Window(Home).Property(TMDbHelper.ListItem.Metacritic_Rating),,%]</value> 
 	</variable>
 	<variable name="label_listitemrating_tomatometerallaudience">
-		<value condition="!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) | [!String.IsEmpty(Container(2000).ListItem.Rating(tomatometerallaudience)) + String.IsEmpty(ListItem.Rating(tomatometerallaudience))]">$VAR[formatted_rating_tomatometerallaudience,,%]</value>  
+		<value condition="!String.IsEmpty(ListItem.Rating(tomatometerallaudience)) | [[!Container(2000).IsUpdating + !String.IsEmpty(Container(2000).ListItem.Rating(tomatometerallaudience))] + String.IsEmpty(ListItem.Rating(tomatometerallaudience))]">$VAR[formatted_rating_tomatometerallaudience,,%]</value>  
 		<value condition="[String.IsEmpty(Window(Home).Property(TMDbHelper.IsUpdating)) + Skin.HasSetting(TMDbHelper_Ratings) + Skin.HasSetting(TMDbHelper.Service)] + !String.IsEmpty(Window(Home).Property(TMDbHelper.ListItem.RottenTomatoes_UserMeter))">$INFO[Window(Home).Property(TMDbHelper.ListItem.RottenTomatoes_UserMeter),,%]</value> 
 	</variable>
 	<!-- <variable name="label_listitemrating_tomatometeravgaudience">
@@ -313,7 +341,7 @@ Trakt_Rating $INFO[Window(Home).Property(TMDbHelper.ListItem.Trakt_Rating)] -->
 		<value condition="Skin.HasSetting(SH_Rating_Fallback) + String.IsEmpty(ListItem.Rating(tomatometeravgaudience)) + String.IsEmpty(Container(2000).ListItem.Rating(tomatometerallaudience))">$INFO[Window(Home).Property(SkinHelper.ListItem.RottenTomatoes.Meter),,%]</value> 
 	</variable> -->
 	<variable name="label_listitemrating_tomatometerallcritics">
-		<value condition="!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) | [!String.IsEmpty(Container(2000).ListItem.Rating(tomatometerallcritics)) + String.IsEmpty(ListItem.Rating(tomatometerallcritics))]">$VAR[formatted_rating_tomatometerallcritics,,%]</value>
+		<value condition="!String.IsEmpty(ListItem.Rating(tomatometerallcritics)) | [[!Container(2000).IsUpdating + !String.IsEmpty(Container(2000).ListItem.Rating(tomatometerallcritics))] + String.IsEmpty(ListItem.Rating(tomatometerallcritics))]">$VAR[formatted_rating_tomatometerallcritics,,%]</value>
 		<value condition="[String.IsEmpty(Window(Home).Property(TMDbHelper.IsUpdating)) + Skin.HasSetting(TMDbHelper_Ratings) + Skin.HasSetting(TMDbHelper.Service)] + !String.IsEmpty(Window(Home).Property(TMDbHelper.ListItem.RottenTomatoes_Rating))">$INFO[Window(Home).Property(TMDbHelper.ListItem.RottenTomatoes_Rating),,%]</value>
 	</variable>
 	<!-- <variable name="label_listitemrating_tomatometeravgcritics">
@@ -323,9 +351,18 @@ Trakt_Rating $INFO[Window(Home).Property(TMDbHelper.ListItem.Trakt_Rating)] -->
 	</variable> -->
 	<variable name="label_listitemrating_tvdb">
 		<value condition="!String.IsEmpty(ListItem.Rating(tvdb))">$INFO[ListItem.Rating(tvdb)]</value>  
-		<value condition="String.IsEmpty(ListItem.Rating(tvdb)) + !String.IsEmpty(Container(2000).ListItem.Rating(tvdb))">$INFO[Container(2000).ListItem.Rating(tvdb)]</value>
-		<value condition="Skin.HasSetting(SH_Rating_Fallback) + String.IsEmpty(ListItem.Rating(tvdb)) + String.IsEmpty(Container(2000).ListItem.Rating(tvdb))">$INFO[Window(Home).Property(SkinHelper.ListItem.Rating.TVDB)]</value> 
+		<value condition="String.IsEmpty(ListItem.Rating(tvdb)) + [!Container(2000).IsUpdating + !String.IsEmpty(Container(2000).ListItem.Rating(tvdb))]">$INFO[Container(2000).ListItem.Rating(tvdb)]</value>
 	</variable>
+	<variable name="label_listitemrating_trakt">
+		<value condition="[String.IsEmpty(Window(Home).Property(TMDbHelper.IsUpdating)) + Skin.HasSetting(TMDbHelper_Ratings) + Skin.HasSetting(TMDbHelper.Service)] + !String.IsEmpty(Window(Home).Property(TMDbHelper.ListItem.Trakt_Rating))">$INFO[Window(Home).Property(TMDbHelper.ListItem.Trakt_Rating)]</value>
+	</variable>
+	
+	<!-- DOES NOT CHECK for Empty Online fallbacks -->
+	<variable name="label_listitemrating_default">
+		<value condition="!String.IsEmpty(ListItem.UserRating) + [String.IsEmpty(ListItem.Rating(imdb)) + String.IsEmpty(ListItem.Rating(themoviedb)) + String.IsEmpty(ListItem.Rating(metacritic)) + String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.IsEmpty(ListItem.Rating(tvdb))]">$INFO[ListItem.UserRating]</value>
+		<value condition="!String.IsEmpty(ListItem.Rating) + [String.IsEmpty(ListItem.UserRating) + String.IsEmpty(ListItem.Rating(imdb)) + String.IsEmpty(ListItem.Rating(themoviedb)) + String.IsEmpty(ListItem.Rating(metacritic)) + String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.IsEmpty(ListItem.Rating(tvdb))]">$INFO[ListItem.Rating]</value>  
+	</variable>
+	<variable name="label_listitemrating_userrating"></variable>
 	
 	<variable name="formatted_rating_themoviedb">
 		<value condition="[String.IsEmpty(ListItem.Rating(themoviedb)) + String.EndsWith(Container(2000).ListItem.Rating(themoviedb),0.1)] | [!String.IsEmpty(ListItem.Rating(themoviedb)) + String.EndsWith(ListItem.Rating(themoviedb),0.1)]">1</value>

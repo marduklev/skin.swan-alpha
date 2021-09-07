@@ -87,39 +87,16 @@ Network.IPAddress :     $INFO[Network.IPAddress]
 
    PrevWindow  - $VAR[PrevWindow]
    NextWindow  - $VAR[NextWindow]
+   
+   emb_helper_container2000_label - $VAR[emb_helper_container2000_label]
+   
 </label>
-<!-- 
-[COLOR white]shortcutaction_inprogress[/COLOR] $INFO[Window(home).Property(shortcutaction_inprogress)]
-
-[COLOR white]userwidget11[/COLOR]
-[COLOR white]userwidget1_target[/COLOR]    $INFO[Skin.String(userwidget1_target)]
-[COLOR white]userwidget1_path[/COLOR]      $INFO[Skin.String(userwidget1_path)]
-[COLOR white]Property(shortcutitem_nr)[/COLOR]     $INFO[Window(home).Property(shortcutitem_nr)]
-
-
-
-[COLOR white]shortcutaction_inprogress[/COLOR] $INFO[Window(home).Property(shortcutaction_inprogress)]
-
-[COLOR white]mainmenuitem1[/COLOR]
-[COLOR white]mainmenuitem1_target[/COLOR]    $INFO[Skin.String(mainmenuitem1_target)]
-[COLOR white]mainmenuitem1_path[/COLOR]      $INFO[Skin.String(mainmenuitem1_path)]
-[COLOR white]Property(shortcutitem_nr)[/COLOR]     $INFO[Window(home).Property(shortcutitem_nr)]
-
-$INFO[Container($INFO[System.CurrentControlID]).CurrentItem] -->
-<!-- 
-Skin.AspectRatio  $INFO[Skin.AspectRatio]
-System.ScreenWidth $INFO[System.ScreenWidth]
-System.ScreenHeight $INFO[System.ScreenHeight]
--->
 					</control>
 				</control>
 				
 				
 				
 		</control>
-		<!-- for ease 
-		file:///C:/apps/Kodi Leia/portable_data/userdata/addon_data/skin.swan-beta/settings.xml
-		-->
 		<control type="button">
 			<visible>Skin.HasSetting(SwanDebug)</visible>
 			<visible>!String.IsEmpty(ListItem.Folderpath) | !String.IsEmpty(Container.Folderpath)</visible>
@@ -136,10 +113,6 @@ System.ScreenHeight $INFO[System.ScreenHeight]
 		</definition>
 	</include>
 	
-	<!-- https kodi.wiki/view/InfoLabels#ListItem -->
-	<variable name="container.contentinfos">
-		<value condition="container.content(tvshows)">$INFO[]</value>
-	</variable>
 	<variable name="trailer_available">
 		<value condition="!String.IsEmpty(Window(home).Property(trailer_avail))">Trailer [B]is[/B] available</value>
 		<value>Trailer is NOT available</value>
@@ -293,10 +266,15 @@ In addition, there are the following "special" windows whose id is not really a 
 (Python Windows) 	- 	- 	none
 addon 	- 	- 	none  -->
 	
-	
 	<variable name="has_locked_content">
 		<value condition="skin.hassetting(skin_locked_views)">[COLOR orange]skin has locked content[/COLOR]</value>
 		<value condition="!skin.hassetting(skin_locked_views)">[COLOR cyan]skin has NOT LOCKED any content[/COLOR]</value>
+	</variable>
+	<variable name="emb_helper_container2000_label">
+		<value condition="!Control.IsVisible(2000)">[COLOR orange]not visible[/COLOR]</value>
+		<value condition="Control.IsVisible(2000) + [Integer.IsEqual(Container(2000).NumItems,0) + !Container(2000).IsUpdating]">[COLOR orange]visible but empty[/COLOR]</value>
+		<value condition="Control.IsVisible(2000) + [Integer.IsGreater(Container(2000).NumItems,0) + Container(2000).IsUpdating]">[COLOR orange]is updating $INFO[Container(2000).ListItem.Label][/COLOR]</value>
+		<value condition="Control.IsVisible(2000) + [Integer.IsGreater(Container(2000).NumItems,0) + !Container(2000).IsUpdating]">[COLOR orange]is not updating $INFO[Container(2000).ListItem.Label][/COLOR]</value>
 	</variable>
 	
 </includes>

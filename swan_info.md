@@ -22,6 +22,7 @@
  
 **supported**
  *  [script.embuary.info](https://forum.kodi.tv/showthread.php?tid=346034)
+ *  [plugin.video.themoviedb.helper](https://forum.kodi.tv/showthread.php?tid=345847)
  *  [service.upnext](https://forum.kodi.tv/showthread.php?tid=336747) - UNDONE
  *   WIP	~~Resource Addon For Actor Thumbs (used in ... ) (resource.images.moviedirectorthumbs) https://forum.kodi.tv/showthread.php?tid=342720~~
  *  [script.artwork.beef](https://forum.kodi.tv/showthread.php?tid=258886)
