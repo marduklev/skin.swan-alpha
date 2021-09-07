@@ -58,18 +58,31 @@
 				<itemgap>5</itemgap>
 				
 				<include content="studiologo_image">
-					<param name="id" value="6767"/>
-					<param name="aligny" value="center"/>
-					<param name="width" value="250"/>
-					<param name="height" value="90"/>
+					<param name="id" value="6767" />
+					<param name="aligny" value="center" />
+					<param name="width" value="250" />
+					<param name="height" value="90" />
 					<param name="color" value="$PARAM[forcedcolor]" />
 					<visible>!Window.IsActive(movieinformation) + [Skin.HasSetting(show_studio_flag) + !String.IsEmpty(ListItem.Studio)]</visible>
+				</include>
+				<include content="framedflag">
+					<param name="id" value="6766" />
+					<param name="color" value="$VAR[color_footer_items]" />
+					<description>if i reload skin on ' ..'item, getlabel works fine, if reload when media item is focused Control.GetLabel(6767) has no output even if image is shown</description>
+					<visible>String.IsEqual(Control.GetLabel(6767),) + !Window.IsActive(movieinformation) + [Skin.HasSetting(show_studio_flag) + !String.IsEmpty(ListItem.Studio)]</visible>
+					<width max="250">auto</width>
+					<top>10</top>
+					<height>70</height>
+					<font>debugtiny</font>
+					<label>$INFO[ListItem.Studio]</label>
+					<wrapmultiline>true</wrapmultiline>
 				</include>
 				<include content="spacer_w">
 					<param name="id" value="6768"/>
 					<param name="gap" value="50"/>
 					<param name="visible" value="!Window.IsActive(movieinformation) + !String.IsEmpty(ListItem.Studio)"/>
 				</include>
+				
 				<include content="rating_footer_template">
 					<param name="id" value="6769"/>
 					<param name="rating" value="default"/>
@@ -162,12 +175,11 @@
 	</include>
 	
 	<include name="studiologo_image">
-		<param name="aligny" default="top"/>
-		<param name="alignx" default="center"/>
-		<param name="width" default="430"/>
-		<param name="height" default="150"/>
-		<param name="color" default="$PARAM[forcedcolor]"/>
-		<param name="id" />
+		<param name="aligny" default="top" />
+		<param name="alignx" default="center" />
+		<param name="width" default="430" />
+		<param name="height" default="150" />
+		<param name="color" default="$PARAM[forcedcolor]" />
 		<definition>
 			<control type="image" id="$PARAM[id]">
 				<nested />
@@ -357,10 +369,12 @@
 		<value condition="[String.IsEmpty(Window(Home).Property(TMDbHelper.IsUpdating)) + Skin.HasSetting(TMDbHelper_Ratings) + Skin.HasSetting(TMDbHelper.Service)] + !String.IsEmpty(Window(Home).Property(TMDbHelper.ListItem.Trakt_Rating))">$INFO[Window(Home).Property(TMDbHelper.ListItem.Trakt_Rating)]</value>
 	</variable>
 	
-	<!-- DOES NOT CHECK for Empty Online fallbacks -->
+	<!-- DOES NOT CHECK for Empty Online fallbacks 
+	also rating(foo) is equal rating for non video items
+need expression	-->
 	<variable name="label_listitemrating_default">
-		<value condition="!String.IsEmpty(ListItem.UserRating) + [String.IsEmpty(ListItem.Rating(imdb)) + String.IsEmpty(ListItem.Rating(themoviedb)) + String.IsEmpty(ListItem.Rating(metacritic)) + String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.IsEmpty(ListItem.Rating(tvdb))]">$INFO[ListItem.UserRating]</value>
-		<value condition="!String.IsEmpty(ListItem.Rating) + [String.IsEmpty(ListItem.UserRating) + String.IsEmpty(ListItem.Rating(imdb)) + String.IsEmpty(ListItem.Rating(themoviedb)) + String.IsEmpty(ListItem.Rating(metacritic)) + String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.IsEmpty(ListItem.Rating(tvdb))]">$INFO[ListItem.Rating]</value>  
+		<value condition="!String.IsEmpty(ListItem.UserRating) + [!Window.Is(videos) | Window.Is(videos) + [String.IsEmpty(ListItem.Rating(imdb)) + String.IsEmpty(ListItem.Rating(themoviedb)) + String.IsEmpty(ListItem.Rating(metacritic)) + String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.IsEmpty(ListItem.Rating(tvdb))]]">$INFO[ListItem.UserRating]</value>
+		<value condition="!String.IsEmpty(ListItem.Rating) + [!Window.Is(videos) | Window.Is(videos) + [String.IsEmpty(ListItem.UserRating) + String.IsEmpty(ListItem.Rating(imdb)) + String.IsEmpty(ListItem.Rating(themoviedb)) + String.IsEmpty(ListItem.Rating(metacritic)) + String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + String.IsEmpty(ListItem.Rating(tvdb))]]">$INFO[ListItem.Rating]</value>  
 	</variable>
 	<variable name="label_listitemrating_userrating"></variable>
 	
