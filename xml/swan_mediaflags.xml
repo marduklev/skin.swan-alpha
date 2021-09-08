@@ -67,20 +67,16 @@
 				<itemgap>5</itemgap>
 				
 				<include content="studiologo_image">
-					<param name="id" value="6767" />
 					<param name="aligny" value="center" />
 					<param name="width" value="250" />
 					<param name="height" value="90" />
 					<param name="color" value="$PARAM[forcedcolor]" />
-					<visible>!Window.IsActive(movieinformation) + [Skin.HasSetting(show_studio_flag) + !String.IsEmpty(ListItem.Studio)]</visible>
+					<visible>String.EndsWith(Control.GetLabel(2005),.png) + !Window.IsActive(movieinformation) + [Skin.HasSetting(show_studio_flag) + !String.IsEmpty(ListItem.Studio)]</visible>
 				</include>
 				
 				<include content="framedflag">
-					<param name="id" value="6766" />
-					<param name="color" value="$VAR[color_footer_items]" />
-					<description>if i reload skin on ' ..'item, getlabel works fine, if reload when media item is focused Control.GetLabel(6767) has no output even if image is shown</description>
-					<visible>false</visible>
-					<visible>String.IsEqual(Control.GetLabel(6767),) + !Window.IsActive(movieinformation) + [Skin.HasSetting(show_studio_flag) + !String.IsEmpty(ListItem.Studio)]</visible>
+					<param name="color" value="$PARAM[forcedcolor]" />
+					<visible>String.IsEqual(Control.GetLabel(2005),) + !Window.IsActive(movieinformation) + [Skin.HasSetting(show_studio_flag) + !String.IsEmpty(ListItem.Studio)]</visible>
 					<width max="250">auto</width>
 					<top>10</top>
 					<height>70</height>
@@ -88,11 +84,9 @@
 					<label>$INFO[ListItem.Studio]</label>
 					<wrapmultiline>true</wrapmultiline>
 				</include>
-				
 				<include content="spacer_w">
-					<param name="id" value=""/>
 					<param name="gap" value="50"/>
-					<param name="visible" value="!Window.IsActive(movieinformation) + !String.IsEmpty(ListItem.Studio)"/>
+					<param name="visible" value="String.IsEqual(Control.GetLabel(2005),) + !Window.IsActive(movieinformation) + [Skin.HasSetting(show_studio_flag) + !String.IsEmpty(ListItem.Studio)]"/>
 				</include>
 				
 				<include content="ratingcommon_footer_template">
@@ -244,6 +238,7 @@ del id="$PARAM[id], if needed better use id="$PARAM[view_id]$PARAM[id]
 		<param name="width" default="430" />
 		<param name="height" default="150" />
 		<param name="color" default="$PARAM[forcedcolor]" />
+		<param name="id" />
 		<definition>
 			<control type="image" id="$PARAM[id]">
 				<nested />
