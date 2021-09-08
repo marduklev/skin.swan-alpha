@@ -4,73 +4,40 @@
 		<param name="view_ids" value="50,51,52,53,54,55,502,56,58,503,504" />
 	</include>
 	<onload condition="Skin.HasSetting(TMDbHelper_Ratings) + !Skin.HasSetting(TMDbHelper.Service) + !$EXP[IsOfflineMode]">Skin.SetBool(TMDbHelper.Service)</onload>
+	<onload condition="!Skin.HasSetting(TMDbHelper.DisableArtwork)">Skin.SetBool(TMDbHelper.DisableArtwork)</onload>
+	<onload condition="!Skin.HasSetting(TMDbHelper.DisablePersonStats)">Skin.SetBool(TMDbHelper.DisablePersonStats)</onload>
+	<onload condition="!Skin.HasSetting(TMDbHelper.DisableExtendedProperties)">Skin.SetBool(TMDbHelper.DisableExtendedProperties)</onload>
 	<onunload condition="Skin.HasSetting(TMDbHelper.Service)">Skin.Reset(TMDbHelper.Service)</onunload>
-
-	
-<!-- https github.com/jurialmunkey/plugin.video.themoviedb.helper/wiki/Service-Monitor -->
-<!-- Skin.ToggleSetting(TMDbHelper.DisableArtwork) 	Disable additional artwork lookups -->
-<!-- Skin.ToggleSetting(TMDbHelper.DisablePersonStats) 	Disable kodi db person statistics -->
-<!-- Skin.ToggleSetting(TMDbHelper.DisableExtendedProperties) Disable additional properties such as Director.X.Name -->
-	
 	<controls>
-		<!-- MATRIX GUI INFOLABEL
-	
-	new infolabel  ListItem.TvShowDBID  returns the tvshow dbid at season and episode level.
-	
-	new infobool   Library.HasNode() - This will return True if the specified node is available  eg  Library.HasNode(library://video/movies/titles.xml)
-	
-	-->
-		<!-- skin helping stuff -->
 		<control type="list" id="2000">
 			<include>HiddenContainer</include>
 			<visible>String.IsEmpty(Window(home).Property(shortcutaction_inprogress))</visible>
 			<content limit="1">$VAR[EmbuaryHelper_GetInfo_dbid]</content>
 		</control>
-		
-		<!-- native GUI Ctrls -->
-		<!--
-			8	button	<label>$LOCALIZE[137]</label>	Search for a string anywhere in the Kodi video database
-			12	label	Number of items in the list
-			15	label	Filter label
-			18	label	Warning to the user to turn off library mode when no scanned media is found
-		-->
-		
 		<control type="button" id="2">
 			<description>Select viewtype</description>
 			<include content="HiddenObject" />
 		</control>
-		
 		<control type="button" id="3">
 			<description>Select sort method (sort by: name, date size, etc...)</description>
 			<visible>Control.IsEnabled(3)</visible>
 			<include content="HiddenObject" />
 		</control>
-		
 		<control type="togglebutton" id="4">
 			<description>Select sortmode (ascending or descending)</description>
 			<visible>Control.IsEnabled(4)</visible>
 			<include content="HiddenObject" />
 		</control>
-		
-		<!-- 
-		<control type="button" id="5">
-			<description>Switch to file mode</description>
-			<label>$LOCALIZE[1214]</label>
-			<include content="HiddenObject" />
-		</control>
-		 -->
 		<control type="button" id="6">
 			<description>Play DVD (used the play physical DVD discs)</description>
 			<label>$LOCALIZE[341]</label>
 			<include content="HiddenObject" />
 		</control>
-		
 		<control type="button" id="10">
 			<description>Show only watched, unwatched or all videos</description>
 			<visible>Container.Content(movies) | Container.Content(sets) | Container.Content(tvshows) | Container.content(seasons) | Container.Content(episodes)</visible>
 			<include content="HiddenObject" />
 		</control>
-		
 		<control type="button" id="11">
 			<description>Unlock shares</description>
 			<selected>system.ismaster</selected>
@@ -79,78 +46,17 @@
 			<visible>system.haslocks</visible>
 			<include content="HiddenObject" />
 		</control>
-		
 		<control type="button" id="16">
 			<description>Start party mode (randomly play musicvideos from your collection)</description>
 			<label>$LOCALIZE[20389]</label>
 			<include content="HiddenObject" />
 		</control>
-		
 		<control type="button" id="20">
 			<description>Update library</description>
 			<include content="HiddenObject" />
 		</control>
-		
 		<include content="mediawindow_layout">
 			<param name="window" value="videos" />
 		</include>
-		
-		<include content="swan_debug_overlay">
-			<param name="textleft" value="
-TMDb_Rating $INFO[Window(Home).Property(TMDbHelper.ListItem.TMDb_Rating)]
-Trakt_Rating $INFO[Window(Home).Property(TMDbHelper.ListItem.Trakt_Rating)]
-Metacritic_Rating $INFO[Window(Home).Property(TMDbHelper.ListItem.Metacritic_Rating)]
-IMDb_Rating $INFO[Window(Home).Property(TMDbHelper.ListItem.IMDb_Rating)]
-RottenTomatoes_Rating $INFO[Window(Home).Property(TMDbHelper.ListItem.RottenTomatoes_Rating)]
-RottenTomatoes_UserMeter $INFO[Window(Home).Property(TMDbHelper.ListItem.RottenTomatoes_UserMeter)]
-
-99005 $INFO[Control.GetLabel(99005)]
-99006 $INFO[Control.GetLabel(99006)]
-99007 $INFO[Control.GetLabel(99007)]
-
-listitem.filenameandpath :  $INFO[listitem.filenameandpath]
-  listitem.Path :  $INFO[listitem.path]
-  ListItem.FolderPath :  $INFO[ListItem.FolderPath]
-  ListItem.FolderName :  $INFO[ListItem.FolderName]
-  listitem.dbid :  $INFO[listitem.dbid]
-  listitem.tvshowdbid :  $INFO[listitem.tvshowdbid]
-  listitem.setid :  $INFO[listitem.setid]
-  listitem.uniquiid() • imdb :  $INFO[listitem.uniqueid(imdb)]  -  themoviedb :  $INFO[listitem.uniqueid(themoviedb)]  -  tmdb :  $INFO[listitem.uniqueid(tmdb)]  -  anidb :  $INFO[listitem.uniqueid(anidb)]  -  tvdb :  $INFO[listitem.uniqueid(tvdb)]  -  trakt :  $INFO[listitem.uniqueid(trakt)]  - tvrage :  $INFO[listitem.uniqueid(tvrage)]  -  tvmaze :  $INFO[listitem.uniqueid(tvmaze)]
-
-Container.Content  :  $INFO[Container.Content]  ; Container.ListItem.dbtype  :  $INFO[ Container.ListItem.dbtype]
-Container.PluginName :  $INFO[Container.PluginName]  -  Container.PluginCategory  :  $INFO[Container.PluginCategory]
-Container.Viewmode :  $INFO[Container.Viewmode]  -  Container.ViewCount  :  $INFO[Container.ViewCount]
-Container.FolderPath :  $INFO[Container.FolderPath]
-Container.Totaltime  :  $INFO[Container.Totaltime]
-Container().ListItemAbsolute(0).label :  $INFO[Container().ListItemAbsolute(0).label] 
-
-[B]HiddenContainer byid container(2000)[/B] : $INFO[container(2000).listitem.dbid,container 2000 dbid :    ,    ]   $INFO[container(2000).listitem.dbtype,container 2000 dbtype :    ,    ]   $INFO[container(2000).listitem.label,container 2000 label :    ,    ]
-SHORTCUT ONLY: $INFO[Window(home).Property(shortcutitem_nr),- window Prop Shortcuts ,]$INFO[Window(home).Property(shortcutaction_inprogress), - window Prop shortcutaction_inprogress ,]
-
-SKINNED PROPS SET ON FOCUS
-  $VAR[debug_trailer_available,VAR Trailer:  ,]
-  $INFO[Window(home).Property(listitemtrailer), listitemtrailer ,     |    ]$INFO[Window(home).Property(dbid),  dbid :,  ]$INFO[Window(home).Property(rating),  rating :,  ]$INFO[Window(home).Property(totalseasons),  totalseasons :,  ]$INFO[Window(home).Property(totalepisodes),  totalepisodes ,]$INFO[Window(home).Property(status),  status :,  ]
-
-$INFO[ListItem.UserRating, userrating :,  ]$INFO[ListItem.Rating, rating :,  ]$INFO[ListItem.Rating(themoviedb), rating(themoviedb) :,  ]$INFO[ListItem.Rating(imdb), rating(imdb) :,  ]$INFO[ListItem.Rating(tvdb), rating(tvdb) :,  ]$INFO[ListItem.Rating(metacritic), rating(metacritic) :,  ]$INFO[ListItem.Rating(tomatometerallaudience), rating(tomatometerallaudience) :,  ]$INFO[ListItem.Rating(tomatometerallcritics), rating(tomatometerallcritics) :,  ]$INFO[ListItem.Rating(tomatometeravgaudience), rating(tomatometeravgaudience) :,  ]$INFO[ListItem.Rating(tomatometeraavgcritics), rating(tomatometeraavgcritics) :,  ]
-vars
-ImageLayout_fanart $VAR[ImageLayout_fanart,[COLOR cyan][B],[/B][/COLOR]]
-
-listitem.art
-ListItem.ActualIcon : $INFO[ListItem.ActualIcon]
-ListItem.Icon : $INFO[ListItem.Icon]
-ListItem.Art(thumb) : $INFO[ListItem.Art(thumb)]
-Container.Art(fanart) : $INFO[Container.Art(fanart)]
-ListItem.Art(fanart) : $INFO[ListItem.Art(fanart)]
-ListItem.Art(tvshow.fanart) : $INFO[ListItem.Art(tvshow.fanart)]
-ListItem.Art(artist.fanart) : $INFO[ListItem.Art(artist.fanart)]
-ListItem.Art(albumartist.fanart) : $INFO[ListItem.Art(albumartist.fanart)]
-Container.ListItem.Art(fanart) : $INFO[Container.ListItem.Art(fanart)]
-Container.ListItem.Art(tvshow.fanart) : $INFO[Container.ListItem.Art(tvshow.fanart)]
-Container.ListItem.Art(artist.fanart) : $INFO[Container.ListItem.Art(artist.fanart)]
-Container.ListItem.Art(albumartist.fanart) : $INFO[Container.ListItem.Art(albumartist.fanart)]
-
-
-"/>
-</include>
 	</controls>
 </window>
