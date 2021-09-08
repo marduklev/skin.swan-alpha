@@ -4,7 +4,7 @@
 		<value condition="!String.IsEmpty(Window(home).Property(trailer_avail))">[COLOR green]Trailer is available[/COLOR]</value>
 		<value>[COLOR grey]NO TRAILER AVAILABLE[/COLOR]</value>
 	</variable>
-	<!-- SUBMISSION NOTICE TO SORT THE UNMERCIFUL CONDITIONAL THINGS 
+<!-- SUBMISSION NOTICE TO SORT THE UNMERCIFUL CONDITIONAL THINGS 
 					maybe better prepare with
 						$PARAM[mediawindow eg*viedo]view_locked_movies when set the strings ?
 					if so than later
@@ -161,96 +161,76 @@ music					 		!Container.Content(songs) + !Container.Content(sources) +
 	</include>
 
 	<include name="mediawindow_layout">
-			
-			<control type="group">
-				<visible>!Skin.HasSetting(BlurEnabled)</visible>
-				<visible>String.IsEmpty(Window(home).Property(shortcutaction_inprogress))</visible>
-				<include>global_background</include>
-			</control>
-			<control type="group">
-				<visible>Skin.HasSetting(BlurEnabled)</visible>
-				<visible>String.IsEmpty(Window(home).Property(shortcutaction_inprogress))</visible>
-				<include>GlobalBlurredBackground</include>
-			</control>
-	
-			<control type="group" id="70">
-				<description>viewtypes - Integer.IsGreater(Container().NumItems,0) + !Window.IsTopMost(busydialog)</description>
-				<visible>Integer.IsGreater(Container().NumItems,0)</visible>
-				
-				<include content="Animation_Close_MediaContainer" condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" />
-				
-				<animation type="Conditional" condition="$EXP[Infodialog_IsActive] | Window.IsActive(mediasource) | [Window.IsActive(shutdownmenu) + !$EXP[Spotlight_ViewType]]">
-					<effect type="fade" start="100" end="0" time="250" tween="sine" easing="out" />
-					<effect type="zoom" center="50%,50%" start="100" end="0" time="300" tween="cubic" easing="out" />
-				</animation>
-				
-				<include condition="!string.isempty(window(home).property(shortcutitem_nr))" content="SwanShortcuts_Container" />
-				
-				<include condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">view_layer4</include>
-				
-				<include condition="String.IsEmpty(Skin.String($PARAM[window]_disabled_view_50)) + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">view_50</include>
-				<include condition="String.IsEmpty(Skin.String($PARAM[window]_disabled_view_51)) + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">view_51</include>
-				<include condition="String.IsEmpty(Skin.String($PARAM[window]_disabled_view_52)) + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">view_52</include>
-				<include condition="String.IsEmpty(Skin.String($PARAM[window]_disabled_view_53)) + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">view_53</include>
-				<include condition="String.IsEmpty(Skin.String($PARAM[window]_disabled_view_54)) + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">view_54</include>
-				<include condition="String.IsEmpty(Skin.String($PARAM[window]_disabled_view_56)) + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">view_56</include>
-				
-				<include condition="String.IsEmpty(Skin.String($PARAM[window]_disabled_view_58)) + [Window.IsActive(videos) + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))]">view_58</include>
-				
-				<include condition="String.IsEmpty(Skin.String($PARAM[window]_disabled_view_502)) + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">view_502</include>
-				
-				<include condition="[String.IsEmpty(Skin.String($PARAM[window]_disabled_view_503)) + String.IsEmpty(Skin.String($PARAM[window]_disabled_view_503))] + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">view_503_504</include>
-				
-				<include condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" content="ScrollBar_Alphabet">
-					<right>0</right>
-					<width>100</width>
-					<top>110</top>
-					
-					<param name="id" value="600" />
-					<param name="visible" value="[Control.IsVisible(50) | Control.IsVisible(51) | Control.IsVisible(52) | Control.IsVisible(53) | Control.IsVisible(54) | Control.IsVisible(56) | Control.IsVisible(502)]" />
-					<param name="orientation" value="vertical" />
-					<param name="panel_width" value="60" />
-					<param name="height" value="880" />
-					<param name="item_hw" value="32.5" />
-					<param name="bg_texture_visible" value="true" />
-					<param name="is_vertical" value="true" />
-					<param name="color_1" value="ff131313" />
-					<param name="color_2" value="ffffffff" />
-				</include>
-				<include condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" content="ScrollBar_Alphabet">
-					<bottom>380</bottom>
-					<animation effect="slide" start="0,0" end="380,10" condition="[Control.IsVisible(503) + Skin.HasSetting(View_503_DisableFooter) | Control.IsVisible(504) + Skin.HasSetting(View_504_DisableFooter)]">conditional</animation>
-				
-					<param name="id" value="610" />
-					<param name="visible" value="[Control.IsVisible(503) | Control.IsVisible(504)]" />
-					<param name="orientation" value="horizontal" />
-					<param name="panel_width" value="1720" />
-					<param name="height" value="90" />
-					<param name="item_hw" value="50" />
-					<param name="bg_texture_visible" value="true" />
-					<param name="is_vertical" value="false" />
-					<param name="color_1" value="ff131313" />
-					<param name="color_2" value="ffffffff" />
-				</include>
-				
-				<include condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">Scrollbar_Lib_vertical</include>
-				<include condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">Scrollbar_Lib_horizontal</include>
-				
-			</control>
-			
-			<include content="HeaderBar">
-				<param name="HasBGPanel" value="Skin.HasSetting(MediaWindow_UseHeaderBG)" />
+		<control type="group">
+			<visible>!Skin.HasSetting(BlurEnabled)</visible>
+			<visible>String.IsEmpty(Window(home).Property(shortcutaction_inprogress))</visible>
+			<include>global_background</include>
+		</control>
+		<control type="group">
+			<visible>Skin.HasSetting(BlurEnabled)</visible>
+			<visible>String.IsEmpty(Window(home).Property(shortcutaction_inprogress))</visible>
+			<include>GlobalBlurredBackground</include>
+		</control>
+		<control type="group">
+			<description>viewtypes</description>
+			<visible>Integer.IsGreater(Container().NumItems,0) | Window.IsActive(busydialog)</visible>
+			<include content="Animation_Close_MediaContainer" condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" />
+			<animation type="Conditional" condition="$EXP[Infodialog_IsActive] | Window.IsActive(mediasource) | [Window.IsActive(shutdownmenu) + !$EXP[Spotlight_ViewType]]">
+				<effect type="fade" start="100" end="0" time="250" tween="sine" easing="out" />
+				<effect type="zoom" center="50%,50%" start="100" end="0" time="300" tween="cubic" easing="out" />
+			</animation>
+			<include condition="!string.isempty(window(home).property(shortcutitem_nr))" content="SwanShortcuts_Container" />
+			<include condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">view_layer4</include>
+			<include condition="String.IsEmpty(Skin.String($PARAM[window]_disabled_view_50)) + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">view_50</include>
+			<include condition="String.IsEmpty(Skin.String($PARAM[window]_disabled_view_51)) + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">view_51</include>
+			<include condition="String.IsEmpty(Skin.String($PARAM[window]_disabled_view_52)) + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">view_52</include>
+			<include condition="String.IsEmpty(Skin.String($PARAM[window]_disabled_view_53)) + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">view_53</include>
+			<include condition="String.IsEmpty(Skin.String($PARAM[window]_disabled_view_54)) + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">view_54</include>
+			<include condition="String.IsEmpty(Skin.String($PARAM[window]_disabled_view_56)) + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">view_56</include>
+			<include condition="String.IsEmpty(Skin.String($PARAM[window]_disabled_view_58)) + [Window.IsActive(videos) + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))]">view_58</include>
+			<include condition="String.IsEmpty(Skin.String($PARAM[window]_disabled_view_502)) + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">view_502</include>
+			<include condition="[String.IsEmpty(Skin.String($PARAM[window]_disabled_view_503)) + String.IsEmpty(Skin.String($PARAM[window]_disabled_view_503))] + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">view_503_504</include>
+			<include condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" content="ScrollBar_Alphabet">
+				<right>0</right>
+				<width>100</width>
+				<top>110</top>
+				<param name="id" value="600" />
+				<param name="visible" value="[Control.IsVisible(50) | Control.IsVisible(51) | Control.IsVisible(52) | Control.IsVisible(53) | Control.IsVisible(54) | Control.IsVisible(56) | Control.IsVisible(502)]" />
+				<param name="orientation" value="vertical" />
+				<param name="panel_width" value="60" />
+				<param name="height" value="880" />
+				<param name="item_hw" value="32.5" />
+				<param name="bg_texture_visible" value="true" />
+				<param name="is_vertical" value="true" />
+				<param name="color_1" value="ff131313" />
+				<param name="color_2" value="ffffffff" />
 			</include>
-			
-			<include content="PreMenucontrol" />
-			
-			<control type="group">
-				<animation effect="slide" start="-450,0" end="0,0" time="300" tween="cubic" easing="inout">VisibleHidden</animation>
-				<visible>String.IsEqual(Window(Home).Property(menucontrol_active),common)</visible>
-				<include content="menucontrol_global" condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" />
-			</control>
-			
-			<include condition="[[Window.IsActive(videos) | Window.IsActive(music)] + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))]" content="NativeString_Filter" />
-			
+			<include condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" content="ScrollBar_Alphabet">
+				<bottom>380</bottom>
+				<animation effect="slide" start="0,0" end="380,10" condition="[Control.IsVisible(503) + Skin.HasSetting(View_503_DisableFooter) | Control.IsVisible(504) + Skin.HasSetting(View_504_DisableFooter)]">conditional</animation>
+				<param name="id" value="610" />
+				<param name="visible" value="[Control.IsVisible(503) | Control.IsVisible(504)]" />
+				<param name="orientation" value="horizontal" />
+				<param name="panel_width" value="1720" />
+				<param name="height" value="90" />
+				<param name="item_hw" value="50" />
+				<param name="bg_texture_visible" value="true" />
+				<param name="is_vertical" value="false" />
+				<param name="color_1" value="ff131313" />
+				<param name="color_2" value="ffffffff" />
+			</include>
+			<include condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">Scrollbar_Lib_vertical</include>
+			<include condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">Scrollbar_Lib_horizontal</include>
+		</control>
+		<include content="HeaderBar">
+			<param name="HasBGPanel" value="Skin.HasSetting(MediaWindow_UseHeaderBG)" />
 		</include>
+		<include content="PreMenucontrol" />
+		<control type="group">
+			<animation effect="slide" start="-450,0" end="0,0" time="300" tween="cubic" easing="inout">VisibleHidden</animation>
+			<visible>String.IsEqual(Window(Home).Property(menucontrol_active),common)</visible>
+			<include content="menucontrol_global" condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" />
+		</control>
+		<include condition="[[Window.IsActive(videos) | Window.IsActive(music)] + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))]" content="NativeString_Filter" />
+	</include>
 </includes>
