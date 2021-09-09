@@ -82,19 +82,22 @@ System.CurrentWindow :     $INFO[System.CurrentWindow]
 System.CurrentControl :     $INFO[System.CurrentControl]
 System.CurrentControlID :     $INFO[System.CurrentControlID]
 $INFO[System.Progressbar,System.Progressbar :     ,]
-System.InternetState :     $INFO[System.InternetState]
-Network.IPAddress :     $INFO[Network.IPAddress]
-
+• $VAR[OfflineMode]
+  System.InternetState :     $INFO[System.InternetState]
+  Network.IPAddress :     $INFO[Network.IPAddress]
+      
    PrevWindow  - $VAR[PrevWindow]
    NextWindow  - $VAR[NextWindow]
    
-   $INFO[Control.GetLabel(6767)]
-	
-   $INFO[Control.GetLabel(6766),label:  , ]
-   
+  
+   script realted skinsettings
    emb_helper_container2000_label - $VAR[emb_helper_container2000_label]
- 
-
+   Window(Home).Property(TMDbHelper.IsUpdating : $INFO[Window(Home).Property(TMDbHelper.IsUpdating)]
+   $VAR[TMDbHelper.Service]
+   $VAR[TMDbHelper.DisableArtwork]
+   $VAR[TMDbHelper.DisablePersonStats]
+   $VAR[TMDbHelper.DisableArtwork]
+   $VAR[TMDbHelper.DisableExtendedProperties]
 </label>
 					</control>
 				</control>
@@ -281,5 +284,45 @@ addon 	- 	- 	none  -->
 		<value condition="Control.IsVisible(2000) + [Integer.IsGreater(Container(2000).NumItems,0) + Container(2000).IsUpdating]">[COLOR orange]is updating $INFO[Container(2000).ListItem.Label][/COLOR]</value>
 		<value condition="Control.IsVisible(2000) + [Integer.IsGreater(Container(2000).NumItems,0) + !Container(2000).IsUpdating]">[COLOR orange]is not updating $INFO[Container(2000).ListItem.Label][/COLOR]</value>
 	</variable>
+	
+	<variable name="TMDbHelper.Service">
+		<value condition="skin.hassetting(TMDbHelper.Service)">TMDbHelper.Service is [COLOR orange]ON[/COLOR]</value>
+		<value>TMDbHelper.Service is off</value>
+	</variable>
+	<variable name="TMDbHelper.DisableArtwork">
+		<value condition="skin.hassetting(TMDbHelper.DisableArtwork)">TMDbHelper: Artwork Service is [COLOR orange]Disabled[/COLOR]</value>
+		<value>TMDbHelper: Artwork Service is off</value>
+	</variable>
+	<variable name="TMDbHelper.DisablePersonStats">
+		<value condition="skin.hassetting(TMDbHelper.DisablePersonStats)">TMDbHelper: PersonStats Service is [COLOR orange]Disabled[/COLOR]</value>
+		<value>TMDbHelper: PersonStats Service is on</value>
+	</variable>
+	<variable name="TMDbHelper.DisableExtendedProperties">
+		<value condition="skin.hassetting(TMDbHelper.DisableExtendedProperties)">TMDbHelper: ExtendedProperties are [COLOR orange]Disabled[/COLOR]</value>
+		<value>TMDbHelper: ExtendedProperties Service is on</value>
+	</variable>
+	
+	<variable name="OfflineMode">
+		<value condition="!$EXP[IsOfflineMode]">Network [COLOR green]ONLINE[/COLOR]  STATUS</value>
+		<value condition="$EXP[IsOfflineMode]">Network [COLOR red]OFFLINE[/COLOR]  STATUS</value>
+	</variable>
+	
+	<variable name="IsParentFolder">
+		<value condition="ListItem.IsParentFolder">true</value>
+		<value condition="!ListItem.IsParentFolder">false</value>
+	</variable>
+	<variable name="HasParent_parenthesis">
+		<value condition="Container().HasParent">true</value>
+		<value condition="!Container().HasParent">false</value>
+	</variable>
+	<variable name="HasParent">
+		<value condition="Container.HasParent">true</value>
+		<value condition="Container.HasParent">false</value>
+	</variable>
+	
+	
+	
+	
+	
 	
 </includes>

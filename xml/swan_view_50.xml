@@ -194,6 +194,7 @@
 				<param name="colordiffuse" value="$PARAM[highlightcolor]" />
 			</include>		
 			<include content="ListItem_Indicators" description="56 not placed and adjusted like wished">
+				<param name="show_unwatchedindicator" value="true" />
 				<param name="watched_size" value="$PARAM[indicator_watchedstate_size]" />
 				<param name="folderind_size" value="$PARAM[indicator_folderind_size]" />
 			</include>
@@ -256,25 +257,27 @@
 		
 	<include name="ListItem_Indicators">
         <control type="group">
+			<description>changed watched.png to buttons/enter.png</description>
             <visible>!String.IsEqual(ListItem.Label,..)</visible>
-            
+            <nested />
 			<control description="watched" type="image">
 				<visible>!String.IsEqual(ListItem.dbtype,Set) + Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable</visible>
 				<centertop>50%</centertop>
 				<centerright>5%</centerright>
 				<width>$PARAM[watched_size]</width>
 				<height>$PARAM[watched_size]</height>
-				<texture colordiffuse="$VAR[color_lib_watchedoverlay_watched]" diffuse="watched.png">colors/white.png</texture>
+				<texture colordiffuse="$VAR[color_lib_watchedoverlay_watched]" diffuse="buttons/enter.png">colors/white.png</texture>
 				<bordersize>2</bordersize>
-				<bordertexture colordiffuse="$VAR[color_lib_watchedoverlay_frame]" diffuse="frames/bordercircle.png">colors/white50.png</bordertexture>
+				<bordertexture colordiffuse="$VAR[color_lib_watchedoverlay_frame]" diffuse="colors/white70.png">frames/bordercircler25.png</bordertexture>
 			</control>
             <control description="unwatched" type="image">
 				<visible>!String.IsEqual(ListItem.dbtype,Set) + [String.IsEqual(ListItem.Overlay,OverlayUnWatched.png) + !ListItem.IsResumable]</visible>
+				<visible>$PARAM[show_unwatchedindicator]</visible>
 				<centertop>50%</centertop>
 				<centerright>5%</centerright>
 				<width>$PARAM[watched_size]</width>
 				<height>$PARAM[watched_size]</height>
-				<texture colordiffuse="$VAR[color_lib_watchedoverlay_frame]" diffuse="frames/bordercircle.png">colors/white50.png</texture>
+				<texture colordiffuse="$VAR[color_lib_watchedoverlay_frame]" diffuse="colors/white70.png">frames/bordercircler25.png</texture>
 			</control>
 			<control description="in progress" type="image">
 				<visible>[!String.IsEqual(ListItem.dbtype,Set) + [String.IsEqual(ListItem.Overlay,OverlayUnWatched.png) + ListItem.IsResumable]] | [$EXP[IsSeason] | [$EXP[IsTVShow]]] + [String.IsEqual(ListItem.Overlay,OverlayUnWatched.png) + !String.IsEqual(ListItem.Property(TotalEpisodes), ListItem.Property(UnWatchedEpisodes))]</visible>
@@ -284,7 +287,7 @@
 				<height>$PARAM[watched_size]</height>
 				<texture colordiffuse="$VAR[color_lib_watchedoverlay_resumeable]" diffuse="progress.png">colors/white.png</texture>
 				<bordersize>2</bordersize>
-				<bordertexture colordiffuse="$VAR[color_lib_watchedoverlay_frame]" diffuse="frames/bordercircle.png">colors/white50.png</bordertexture>
+				<bordertexture colordiffuse="$VAR[color_lib_watchedoverlay_frame]" diffuse="colors/white70.png">frames/bordercircler25.png</bordertexture>
 			</control>
 			<control description="set" type="image">
 				<visible>String.IsEqual(ListItem.dbtype,Set)</visible>
@@ -292,7 +295,7 @@
 				<centerright>5%</centerright>
 				<width>$PARAM[folderind_size]</width>
 				<height>$PARAM[folderind_size]</height>
-				<texture colordiffuse="$VAR[color_lib_text_main]" diffuse="defaultsets.png">colors/white30.png</texture>
+				<texture colordiffuse="$VAR[color_lib_text_main]" diffuse="colors/white40.png">defaultsets.png</texture>
 			</control>
         </control>
     </include>

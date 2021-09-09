@@ -4,7 +4,7 @@
 	<include name="footer">
 		<param name="bottom" default="0" />
 		<param name="footer_bgpanel_visible" default="!Window.IsActive(fullscreenvideo)" />
-		
+		<param name="footer_show_ratings" default="true" />
 		<param name="footer_mediaflag_width" default="30%" />
 		<param name="footer_mediaflag_offsetleft" default="100" />
 		<param name="footer_mediaflag_align" default="left" />
@@ -27,7 +27,7 @@
 				<param name="mediaflag_offset_align" value="$PARAM[footer_mediaflag_align]" />
 				<param name="mediaflag_width" value="$PARAM[footer_mediaflag_width]" />
 			</include>
-			<include content="Ratings_Footer">
+			<include condition="$PARAM[footer_show_ratings]" content="Ratings_Footer">
 				<param name="rating_offset_left" value="$PARAM[footer_mediaflag_width]" />
 				<param name="rating_offset_right" value="$PARAM[footer_rating_offsetright]" />
 				<param name="rating_align" value="$PARAM[footer_rating_align]" />
@@ -280,7 +280,9 @@ del id="$PARAM[id], if needed better use id="$PARAM[view_id]$PARAM[id]
 		</definition>
 	</include>
 	
-	<!-- framed flag template label equal visible ? or nested-->
+	<!-- framed flag template label equal visible ? or nested
+	<shadowcolor>black</shadowcolor>
+	-->
 	<include name="framedflag">
 	<param name="id" />
 	<param name="textcolor" default="$VAR[color_lib_text_main]" />
@@ -289,6 +291,7 @@ del id="$PARAM[id], if needed better use id="$PARAM[view_id]$PARAM[id]
 			<nested />
 			<align>center</align>
 			<textcolor>$PARAM[textcolor]</textcolor>
+			
 			<textoffsetx>10</textoffsetx>
 			<disabledcolor>$PARAM[textcolor]</disabledcolor>
 			<texturefocus border="2" colordiffuse="$PARAM[color]">frames/frame.png</texturefocus>

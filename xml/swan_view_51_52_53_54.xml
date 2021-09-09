@@ -429,4 +429,433 @@
 			</include>
 		</control>
 	</include>
+	
+	<include name="Media_Container_Infopanel">
+		<param name="width" default="580" />
+		<param name="right" default="110" />
+		<definition>
+			<control type="group">
+				<width>$PARAM[width]</width>
+				<right>$PARAM[right]</right>
+				<top>Header</top>
+				<bottom>Footer</bottom>
+				<visible>Control.IsVisible($PARAM[view_id])</visible>
+					
+					
+						<control type="image">
+							<description>Dimmed Art DONE _ EXCEPT COLORS - need get diffusor for blur plot </description>
+							<description>bg</description>
+							<bordersize>20</bordersize>
+							<bordertexture colordiffuse="ff131313">colors/white.png</bordertexture>
+							<texture diffuse="colors/white50.png">$VAR[ImageLayout_fanart]</texture>
+							<aspectratio align="center">scale</aspectratio>
+						</control>
+				
+						<control type="image">
+							<description>bg hedaer - NO BLURRING - wished overlay for some clearart</description>
+							<left>20</left>
+							<right>20</right>
+							<top>300</top>
+							<height>70</height>
+							<texture colordiffuse="ff131313">colors/white.png</texture>
+						</control>
+					
+					
+					<control type="grouplist">
+					
+					<description>T E M P _ PLACEHOLDER UNADJUSTED METADATA</description>
+					
+					
+							<orientation>horizontal</orientation>
+								<align>center</align>
+							<height>50</height>
+							<itemgap>10</itemgap>
+							<right>25</right>
+											<top>330</top>
+											<left>35</left>
+											<animation effect="zoom" start="100" end="65" center="255,330" condition="true">conditional</animation>
+											<animation effect="fade" start="100" end="60" condition="true">conditional</animation>
+											<description>i was a copy paste job in include Meta_Uncommon_Top - temp animation - till adjust</description>
+							
+							<control type="label">
+								<visible>!String.IsEmpty(ListItem.Year)</visible>	
+								<top>5</top>
+								<left>10</left>
+								<height>35</height>
+								<width>auto</width>
+								<aligny>center</aligny>
+								<font>font_SpotlightMetaDataBar</font>
+								<label>$INFO[ListItem.Year,[B],[/B]]</label>
+								<textcolor>$VAR[color_global_spotlight_main]</textcolor>
+							</control>
+							
+							<control type="button">
+								<width min="50">auto</width>
+								<font>font_SpotlightMetaDataBar</font>
+								<label>$INFO[ListItem.MPAA,[B],[/B]]</label>
+								<aligny>top</aligny>
+								<align>center</align>
+								<textcolor>$VAR[color_global_spotlight_main]</textcolor>
+								<disabledcolor>$VAR[color_global_spotlight_main]</disabledcolor>
+								<posy>3</posy>
+								<height>40</height>
+								<textoffsetx>20</textoffsetx>
+								<textoffsety>4</textoffsety>
+								<texturenofocus colordiffuse="$VAR[color_global_spotlight_main]">flags/detailframe.png</texturenofocus>
+								<enable>false</enable>
+								<visible>!String.IsEmpty(ListItem.MPAA)</visible>
+							</control>
+							
+							<control type="label">
+								<posy>5</posy>
+								<width>auto</width>
+								<label>$VAR[Meta_Top_Details]</label>
+								<height>35</height>
+								<aligny>center</aligny>
+								<textcolor>$VAR[color_global_spotlight_main]</textcolor>
+								<font>font_SpotlightMetaDataBar</font>
+							</control>
+							
+							<include content="FramedCodecInfo">
+								<param name="id" value="611114" />
+								<param name="label_id" value="6111141" />
+								<param name="infolabel" value="$VAR[Simple_Resolution,[B],[/B]]" />
+							</include>
+							<control type="group">
+								<left>-10</left>
+								<width>70</width>
+								<include content="FramedCodecInfo">
+									<param name="id" value="611115" />
+									<param name="label_id" value="6111151" />
+									<param name="infolabel" value="$VAR[Simple_AudioChannel,[B],[/B]]" />
+								</include>
+							</control>
+							
+						</control>
+				
+						<control type="image">
+							<visible>Skin.HasSetting(BlurEnabled)</visible>
+							<description>test blur plot bg</description>
+							<bordersize>20,160,20,70</bordersize>
+							<description>l,t,r,b</description>
+							<texture diffuse="diffuse/border320horcenter.png">$INFO[Window(home).Property(listitem_blurred)]</texture>
+							<aspectratio align="center">scale</aspectratio>
+						</control>
+						<control type="image">
+							<description>diffusesblurred plot bg- top height just for get diffuse template creation - alpha 60 if blurred vs 70-100 deafult</description>
+							<visible>Skin.HasSetting(BlurEnabled)</visible>
+							<left>20</left>
+							<right>20</right>
+							<top>378</top>
+							<height>195</height>
+							<texture colordiffuse="ff131313">colors/white70.png</texture>
+						</control>
+						<control type="image">
+							<description>diffusesblurred plot bg- top height just for get diffuse template creation - alpha 60 if blurred vs 70-100 deafult</description>
+							<visible>!Skin.HasSetting(BlurEnabled)</visible>
+							<left>20</left>
+							<right>20</right>
+							<top>378</top>
+							<height>195</height>
+							<bordertexture border="1" colordiffuse="black">frames/frame.png</bordertexture>
+							<texture colordiffuse="ff131313">colors/white70.png</texture>
+						</control>
+				
+						
+							
+					<include content="ListItem_Indicators">
+						<param name="show_unwatchedindicator" value="false" />
+						<param name="watched_size" value="25" />
+						<param name="folderind_size" value="60" />
+						<right>30</right>
+						<top>-195</top>
+					</include>
+					
+				<control type="group">
+					<left>10</left>
+					<right>10</right>
+					<bottom>10</bottom>
+					<top>130</top>
+					
+					<control type="image">
+						<visible>!$EXP[ListItemClearLogo_IsEmpty]</visible>
+						<description>colordiffuse ?</description>
+						<height>200</height>
+						<aspectratio align="center" aligny="bottom">keep</aspectratio>
+						<texture background="true">$VAR[ListItemClearLogo]</texture>
+					</control>
+					<control type="textbox">
+						<visible>$EXP[ListItemClearLogo_IsEmpty]</visible>
+						<font>Montserrat_ExtraBold_40</font>
+						<align>center</align>
+						<label>$INFO[Container.ListItem.Label]</label>
+						<height>200</height>
+						<textcolor>white</textcolor>
+						<shadowcolor>black</shadowcolor>
+					</control>
+							
+					<control type="textbox">
+						<description>put into a group - for above used bg imgs 160-180h</description>
+						<top>255</top>
+						<left>30</left>
+						<right>30</right>
+						<info>listitem.plot</info>
+						<height>180</height>
+						<align>justify</align>
+						<font>debugtiny</font>
+						<textcolor>grey</textcolor>
+					</control>
+					
+					
+											<control type="group">
+												<visible>false</visible>
+												<description>progress circle percent ??</description>
+												<bottom>160</bottom>
+												<left>30</left>
+												<height>80</height>
+												<control type="image">
+													<height>80</height>
+													<aspectratio align="left" aligny="bottom">keep</aspectratio>
+													<texture background="true" diffuse="$VAR[ListItemClearLogo]">colors/white.png</texture>
+												</control>
+												
+												<control type="textbox">
+													<font>debugtiny</font>
+													<align>center</align>
+													<label>$INFO[ListItem.Progress]</label>
+													<height>200</height>
+													<textcolor>red</textcolor>
+												</control>
+											</control>
+					
+					<control type="group">
+						<bottom>20</bottom>
+						<height>90</height>
+						<control type="image">
+							<description>method3 - diffusesblurred flag bg | plot bg - top height just for get diffuse template creation</description>
+							<left>10</left>
+							<right>10</right>
+							
+							<height>90</height>
+							<texture flipx="true" colordiffuse="cyan" diffuse="diffuse/gradientleft.png">colors/white30.png</texture>
+							<!-- <texture colordiffuse="ff131313" diffuse="diffuse/gradientshortleftlongright.png">colors/white.png</texture> -->
+						</control>
+						<description> TEMP -ITS  TOO LARGE</description>
+						<!-- idea - zoom n slide ratings|mediaflags from footer if disabled ? -->	
+						<control type="grouplist">
+							<animation effect="zoom" start="100" end="65" center="315,50" condition="true">conditional</animation>
+						<description>neg offset to circumstance group width tag - just good n needed if using shrink animation</description>
+							<orientation>horizontal</orientation>
+							<align>center</align>
+							<right>-100</right>
+							<left>-100</left>
+							<itemgap>5</itemgap>
+							<include content="ratingcommon_footer_template">
+								<param name="listitem" value="UserRating"/>
+								<param name="color" value="white" />
+								<visible>!Window.IsActive(movieinformation)</visible>
+							</include>
+							<include content="ratingcommon_footer_template">
+								<param name="listitem" value="Rating"/>
+								<param name="color" value="white" />
+								<visible>!$EXP[NonMusic_ListItem] | ListItem.IsCollection</visible>
+							</include>
+							<include content="rating_footer_template">
+								<param name="rating" value="trakt"/>
+								<param name="rating_prop" value="Trakt_Rating" />
+								<param name="color" value="white" />
+							</include>
+							<include content="ratingcommon_footer_template">
+								<param name="listitem" value="Rating"/>
+								<param name="color" value="white" />
+								<visible>String.StartsWith(ListItem.FolderPath,plugin://)</visible>
+							</include>
+							<include content="rating_footer_template">
+								<param name="rating" value="metacritic"/>
+								<param name="rating_prop" value="Metacritic_Rating" />
+								<param name="color" value="white" />
+							</include>
+							<include content="rating_footer_template">
+								<param name="rating" value="tomatometerallaudience"/>
+								<param name="rating_prop" value="RottenTomatoes_UserMeter" />
+								<param name="color" value="white" />
+							</include>
+							<include content="rating_footer_template">
+								<param name="rating" value="tomatometerallcritics"/>
+								<param name="rating_prop" value="RottenTomatoes_Rating" />
+								<param name="color" value="white" />
+							</include>
+							<include content="rating_footer_template">
+								<param name="rating" value="themoviedb"/>
+								<param name="rating_prop" value="TMDb_Rating" />
+								<param name="color" value="white" />
+							</include>
+							<include content="rating_footer_template">
+								<param name="rating" value="tvdb"/>
+								<param name="rating_prop" value="tvdb_rating" />
+								<param name="color" value="white" />
+							</include>
+							<include content="rating_footer_template">
+								<param name="rating" value="imdb"/>
+								<param name="rating_prop" value="IMDb_Rating" />
+								<param name="color" value="white" />
+							</include>
+							<include content="rating_footer_template">
+								<param name="rating" value="imdbtop250"/>
+								<param name="rating_prop" value="Top250" />
+								<param name="color" value="white" />
+							</include>
+						</control>
+					</control>
+						
+				</control>
+			
+			</control>
+		
+		</definition>
+	
+	</include>
+	
+	
+	<include name="view_510">
+		<control type="group">
+			<visible>Control.IsVisible(510)</visible>
+			<animation effect="fade" start="100" end="0" time="250" tween="quadratic" easing="out" delay="100" condition="Player.HasMedia + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))">conditional</animation>
+      
+
+			
+		   <include content="View_BGPanel">
+				<param name="width2" value="90" />
+				<param name="width3" value="100" />
+			</include>
+		
+		   
+			<include content="Media_Container_Infopanel">
+				<param name="view_id" value="510" />
+			</include>
+		   
+			<control type="panel" id="510">
+				<viewtype label="$LOCALIZE[31244]">icon</viewtype>
+				<visible>Container.Content(movies) | Container.Content(sets) | Container.Content(tvshows) | Container.Content(seasons) | Container.Content(musicvideos) | Container.Content(artists) | Container.Content(albums) | Container.Content(mixed) | Container.Content(images) | Container.Content(videos) | Container.Content(games)</visible>
+					
+					<!-- some accident BUT if ommit width param Media_Container_Infopanel <animation effect="fade" start="100" end="0" time="250" tween="quadratic" easing="out" delay="100" condition="true">conditional</animation> -->
+           
+				<!-- NOT ADJUSTED 
+				<include content="view_locking" condition="skin.hassetting(skin_locked_views)">
+					<param name="view_id" value="510" />
+				</include> -->
+				
+				<include content="Media_Container_Attributes">
+					<param name="view_id" value="510" />
+					<param name="left" value="170" />
+					<param name="right" value="570" />
+				</include>
+				
+				
+				
+				<include>Media_Values_ContainerNavigation</include>
+				
+				<!-- currently use slide, as best option to avoid reload skin even if bottom offset 0 is wished 
+				<include condition="Skin.HasSetting(View_510_DisableFooter)" content="Media_Container_Attributes">
+					<param name="left" value="170" />
+					<param name="bottom" value="0" />
+				</include>
+				-->
+				
+				<itemlayout height="445" width="260" condition="!Skin.HasSetting(View_510_DisableTags)">
+					<control type="group">
+						<width>240</width>
+						<height>350</height>
+						<include content="universal_itemlayout">
+							<param name="artwork_bordercolor" value="$VAR[color_universalcontainer_itemframe_nf]" />
+							<param name="artwork" value="poster" />
+							<param name="artwork_focusoverlay_visible" value="false" />
+							<param name="infotags_visible" value="true" />
+							<param name="infotags_autoscroll" value="false" />
+							<param name="artwork_bg_bordersize" value="6" />
+							<param name="infotags_bgpanel_color" value="$VAR[color_universalcontainer_itemtag_bgpanel_nf]" />
+							<param name="infotags_label1_color" value="$VAR[color_universalcontainer_itemtag_label1_nf]" />
+							<param name="infotags_label2_color" value="$VAR[color_universalcontainer_itemtag_label2_nf]" />
+						</include>
+					</control>
+				</itemlayout>
+				<focusedlayout height="445" width="260" condition="!Skin.HasSetting(View_510_DisableTags)">
+					<include content="hiddenbutton_manage_skinpropertys" />
+					<control type="group">
+						<width>240</width>
+						<height>350</height>
+						<description>to avoid relaod skin on disable footer and avoid bottom offset fade out 3rd row of items</description>
+						<include>Animation_Item_Focus</include>
+						<control type="group">
+							<include content="universal_itemlayout">
+								<param name="artwork_bordercolor" value="$VAR[color_universalcontainer_itemframe_fo]" />
+								<param name="artwork" value="poster" />
+								<param name="artwork_focusoverlay_visible" value="true" />
+								<param name="infotags_visible" value="true" />
+								<param name="infotags_autoscroll" value="true" />
+								<param name="artwork_bg_bordersize" value="4" />
+								<param name="infotags_bgpanel_color" value="$VAR[color_universalcontainer_itemtag_bgpanel_fo]" />
+								<param name="infotags_label1_color" value="$VAR[color_universalcontainer_itemtag_label1_fo]" />
+								<param name="infotags_label2_color" value="$VAR[color_universalcontainer_itemtag_label2_fo]" />
+							</include>
+						</control>
+					</control>
+				</focusedlayout>
+				<itemlayout height="365" width="260" condition="Skin.HasSetting(View_510_DisableTags)">
+					<control type="group">
+						<width>240</width>
+						<height>350</height>
+						<include content="universal_itemlayout">
+							<param name="artwork_bordercolor" value="$VAR[color_universalcontainer_itemframe_nf]" />
+							<param name="artwork" value="poster" />
+							<param name="artwork_focusoverlay_visible" value="false" />
+							<param name="infotags_visible" value="false" />
+							<param name="infotags_bgpanel_visible" value="false" />
+							<param name="infotags_autoscroll" value="false" />
+							<param name="artwork_bg_bordersize" value="6" />
+							<param name="infotags_bgpanel_color" value="$VAR[color_universalcontainer_itemtag_bgpanel_nf]" />
+							<param name="infotags_label1_color" value="$VAR[color_universalcontainer_itemtag_label1_nf]" />
+							<param name="infotags_label2_color" value="$VAR[color_universalcontainer_itemtag_label2_nf]" />
+							<param name="artwork_diffuse_themed" value="true" />
+							<param name="artwork_diffuse_override" value="false" />
+						</include>
+					</control>
+				</itemlayout>
+				<focusedlayout height="365" width="260" condition="Skin.HasSetting(View_510_DisableTags)">
+					<include content="hiddenbutton_manage_skinpropertys" />
+					<control type="group">
+						<width>240</width>
+						<height>350</height>
+						<include>Animation_Item_Focus</include>
+						<control type="group">
+							<include content="universal_itemlayout">
+								<param name="artwork_bordercolor" value="$VAR[color_universalcontainer_itemframe_fo]" />
+								<param name="artwork" value="poster" />
+								<param name="artwork_focusoverlay_visible" value="true" />
+								<param name="infotags_visible" value="false" />
+								<param name="infotags_bgpanel_visible" value="false" />
+								<param name="infotags_autoscroll" value="true" />
+								<param name="artwork_bg_bordersize" value="4" />
+								<param name="infotags_bgpanel_color" value="$VAR[color_universalcontainer_itemtag_bgpanel_fo]" />
+								<param name="infotags_label1_color" value="$VAR[color_universalcontainer_itemtag_label1_fo]" />
+								<param name="infotags_label2_color" value="$VAR[color_universalcontainer_itemtag_label2_fo]" />
+								<param name="artwork_diffuse_themed" value="true" />
+								<param name="artwork_diffuse_override" value="false" />
+							</include>
+						</control>
+					</control>
+				</focusedlayout>
+			</control>
+			
+			<include content="footer">
+				<param name="view_id" value="510" />
+				<param name="footer_show_ratings" value="false" />
+				<param name="footer_mediaflag_align" value="center" />
+		
+				<param name="footer_mediaflag_width" value="100%" />
+				<param name="footer_mediaflag_offsetleft" value="-100" />
+				<param name="footer_rating_offsetright" value="200" />
+			</include>
+		</control>
+	</include>
 </includes>
