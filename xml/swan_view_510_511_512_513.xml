@@ -27,9 +27,26 @@
 					<description>Dimmed Art DONE _ EXCEPT COLORS - need get diffusor for blur plot - need  new color for artwork frame/bg - color_lib_infopanelframe</description>
 					<bordersize>20</bordersize>
 					<bordertexture colordiffuse="ff131313">colors/white.png</bordertexture>
-					<texture diffuse="colors/white50.png">$VAR[ImageLayout_fanart]</texture>
+					<texture diffuse="colors/white80.png">$VAR[ImageLayout_fanart]</texture> 
+							<!-- get own var - ImageLayout_fanart is fallback - prefer keyart ? - optional rotating art ? get blank if Control.IsVisible(99007) + String.IsEmpty(Control.GetLabel(99007)) -->
 					<aspectratio align="center">scale</aspectratio>
 					<visible>!$EXP[TrailerIsPlaying]</visible>
+				</control>
+				<control type="image">
+					<description>need be optional and inactive if blurring is enabled - check n handle in the bg building conditions</description>
+					<visible>Control.IsVisible(99007) + !String.IsEmpty(Control.GetLabel(99007))</visible>
+					<description>Dimmed Art DONE _ EXCEPT COLORS - need get diffusor for blur plot - need  new color for artwork frame/bg - color_lib_infopanelframe</description>
+					<bordersize>20</bordersize>
+					<texture>$INFO[Control.GetLabel(99007)]</texture>
+					<aspectratio align="center">scale</aspectratio>
+					<visible>!$EXP[TrailerIsPlaying]</visible>
+					
+					<animation type="Visible" reversible="false">
+						<effect type="fade" start="0" end="100" time="750" />
+					</animation>
+					<animation type="Hidden" reversible="false">
+						<effect type="fade" start="100" end="0" time="1000" />
+					</animation>
 				</control>
 					
 		
@@ -37,16 +54,16 @@
 		<control type="group">
 		
 		anim just for testing best posy	<animation effect="slide" start="0,0" end="0,200" condition="true">conditional</animation>
-				
-				
-				<control type="image">
-					<description>bg hedaer - NO BLURRING - wished overlay for some clearart</description>
-					<left>20</left>
-					<right>20</right>
-					<top>300</top>
-					<height>70</height>
-					<texture colordiffuse="ff131313">colors/white.png</texture>
-				</control>
+							
+			<animation effect="slide" start="0,0" end="0,-200" condition="$EXP[TrailerIsPlaying]">conditional</animation>
+			<control type="image">
+				<description>bg hedaer - NO BLURRING - wished overlay for some clearart</description>
+				<left>20</left>
+				<right>20</right>
+				<top>300</top>
+				<height>70</height>
+				<texture colordiffuse="ff131313">colors/white.png</texture>
+			</control>
 				<control type="grouplist">
 			
 						<description>T E M P _ PLACEHOLDER UNADJUSTED METADATA</description>
@@ -210,7 +227,6 @@
 						
 						<control type="grouplist">
 							<animation effect="zoom" start="100" end="65" center="315,-450" condition="true">conditional</animation>
-							<animation effect="slide" start="0,0" end="0,-200" condition="$EXP[TrailerIsPlaying]">conditional</animation>
 							<description>neg offset to circumstance group width tag - just good n needed if using shrink animation</description>
 							<orientation>horizontal</orientation>
 							<align>center</align>
