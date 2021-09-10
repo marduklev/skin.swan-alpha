@@ -7,46 +7,43 @@
 		<definition>
 		
 			<control type="image">
-					<visible>$EXP[TrailerIsPlaying]</visible>
-					<animation effect="fade" start="0" end="100" time="750">VisibleChange</animation>
-				
-					<texture>colors/white80.png</texture>
-					<colordiffuse>ff000000</colordiffuse>
-				</control>
+				<visible>Control.IsVisible(510) | Control.IsVisible(511) | Control.IsVisible(512) | Control.IsVisible(513)</visible>
+				<visible>$EXP[TrailerIsPlaying]</visible>
+				<animation effect="fade" start="0" end="100" time="750">VisibleChange</animation>
+				<texture>colors/white50.png</texture>
+				<colordiffuse>ff000000</colordiffuse>
+			</control>
+			
 			<control type="group">
 				<width>$PARAM[width]</width>
 				<right>$PARAM[right]</right>
 				<top>Header</top>
 				<bottom>Footer</bottom>
-				<visible>Control.IsVisible($PARAM[view_id])</visible>
-					
-					
-						<control type="image">
-							<description>Dimmed Art DONE _ EXCEPT COLORS - need get diffusor for blur plot </description>
-							<description>bg</description>
-							<bordersize>20</bordersize>
-							<bordertexture colordiffuse="ff131313">colors/white.png</bordertexture>
-							<texture diffuse="colors/white50.png">$VAR[ImageLayout_fanart]</texture>
-							<aspectratio align="center">scale</aspectratio>
-						</control>
-				
-						<control type="image">
-							<description>bg hedaer - NO BLURRING - wished overlay for some clearart</description>
-							<left>20</left>
-							<right>20</right>
-							<top>300</top>
-							<height>70</height>
-							<texture colordiffuse="ff131313">colors/white.png</texture>
-						</control>
-					
+				<visible>Control.IsVisible(510) | Control.IsVisible(511) | Control.IsVisible(512) | Control.IsVisible(513)</visible>
+					<control type="image">
+						<description>Dimmed Art DONE _ EXCEPT COLORS - need get diffusor for blur plot </description>
+						<description>bg</description>
+						<bordersize>20</bordersize>
+						<bordertexture colordiffuse="ff131313">colors/white.png</bordertexture>
+						<texture diffuse="colors/white50.png">$VAR[ImageLayout_fanart]</texture>
+						<aspectratio align="center">scale</aspectratio>
+						<visible>!$EXP[TrailerIsPlaying]</visible>
+					</control>
+					<control type="image">
+						<description>bg hedaer - NO BLURRING - wished overlay for some clearart</description>
+						<left>20</left>
+						<right>20</right>
+						<top>300</top>
+						<height>70</height>
+						<texture colordiffuse="ff131313">colors/white.png</texture>
+					</control>
 					
 					<control type="grouplist">
 					
-					<description>T E M P _ PLACEHOLDER UNADJUSTED METADATA</description>
-					
-					
-							<orientation>horizontal</orientation>
-								<align>center</align>
+						<description>T E M P _ PLACEHOLDER UNADJUSTED METADATA</description>
+						<orientation>horizontal</orientation>
+						
+							<align>center</align>
 							<height>50</height>
 							<itemgap>10</itemgap>
 							<right>25</right>
@@ -150,7 +147,7 @@
 						<top>-195</top>
 					</include>
 					
-				<control type="group">
+				<control description="meta2" type="group">
 					<left>10</left>
 					<right>10</right>
 					<bottom>10</bottom>
@@ -186,44 +183,26 @@
 					</control>
 					
 					
-											<control type="group">
-												<visible>false</visible>
-												<description>progress circle percent ??</description>
-												<bottom>160</bottom>
-												<left>30</left>
-												<height>80</height>
-												<control type="image">
-													<height>80</height>
-													<aspectratio align="left" aligny="bottom">keep</aspectratio>
-													<texture background="true" diffuse="$VAR[ListItemClearLogo]">colors/white.png</texture>
-												</control>
-												
-												<control type="textbox">
-													<font>debugtiny</font>
-													<align>center</align>
-													<label>$INFO[ListItem.Progress]</label>
-													<height>200</height>
-													<textcolor>red</textcolor>
-												</control>
-											</control>
+										
 					
-					<control type="group">
+					<control description="ratings" type="group">
 						<bottom>20</bottom>
 						<height>90</height>
 						<control type="image">
 							<description>method3 - diffusesblurred flag bg | plot bg - top height just for get diffuse template creation</description>
 							<left>10</left>
 							<right>10</right>
-							
+							<visible>!$EXP[TrailerIsPlaying]</visible>
 							<height>90</height>
 							<texture flipx="true" colordiffuse="cyan" diffuse="diffuse/gradientleft.png">colors/white30.png</texture>
 							<!-- <texture colordiffuse="ff131313" diffuse="diffuse/gradientshortleftlongright.png">colors/white.png</texture> -->
 						</control>
-						<description> TEMP -ITS  TOO LARGE</description>
+						<description> TEMP - ITS  TOO LARGE</description>
 						<!-- idea - zoom n slide ratings|mediaflags from footer if disabled ? -->	
 						<control type="grouplist">
 							<animation effect="zoom" start="100" end="65" center="315,50" condition="true">conditional</animation>
-						<description>neg offset to circumstance group width tag - just good n needed if using shrink animation</description>
+							<animation effect="slide" start="0,0" end="0,-200" condition="$EXP[TrailerIsPlaying]">conditional</animation>
+							<description>neg offset to circumstance group width tag - just good n needed if using shrink animation</description>
 							<orientation>horizontal</orientation>
 							<align>center</align>
 							<right>-100</right>
@@ -295,6 +274,7 @@
 			
 			
 			<control type="group">
+				<visible>Control.IsVisible(510) | Control.IsVisible(511) | Control.IsVisible(512) | Control.IsVisible(513)</visible>
 				<visible>$EXP[TrailerIsPlaying]</visible>
 				<animation effect="fade" start="0" end="100" time="750">VisibleChange</animation>
 				<top>0</top>
@@ -315,18 +295,16 @@
 		<control type="group">
 			<visible>Control.IsVisible(510)</visible>
 			
-			<include content="Media_Container_Infopanel">
-				<param name="view_id" value="510" />
-			</include>
 			<control type="panel" id="510">
 				<viewtype label="$LOCALIZE[31244]">icon</viewtype>
 				<animation effect="fade" start="100" end="0" time="250" tween="quadratic" easing="out" delay="100" condition="Player.HasMedia + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))">conditional</animation>
 			<!-- some accident BUT if ommit width param Media_Container_Infopanel <animation effect="fade" start="100" end="0" time="250" tween="quadratic" easing="out" delay="100" condition="true">conditional</animation> -->
            
-				<!-- <visible>Container.Content(movies) | Container.Content(sets) | Container.Content(tvshows) | Container.Content(seasons) | Container.Content(musicvideos) | Container.Content(artists) | Container.Content(albums) | Container.Content(mixed) | Container.Content(images) | Container.Content(videos) | Container.Content(games)</visible> -->
+				<include content="view_510_noLocking" condition="!skin.hassetting(skin_locked_views)" />
 				<include content="view_locking" condition="skin.hassetting(skin_locked_views)">
 					<param name="view_id" value="510" />
 				</include>
+				
 				<include content="Media_Container_Attributes">
 					<param name="view_id" value="510" />
 					<param name="left" value="170" />
@@ -435,13 +413,10 @@
 		<control type="group">
 			<visible>Control.IsVisible(511)</visible>
 			
-			<include content="Media_Container_Infopanel">
-				<param name="view_id" value="511" />
-			</include>
-			
 			<include content="Universal_Container">
 				<viewtype label="$LOCALIZE[31245]">icon</viewtype>
 				<animation effect="fade" start="100" end="0" time="250" tween="quadratic" easing="out" delay="100" condition="Player.HasMedia + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))">conditional</animation>
+				<include content="view_511_noLocking" condition="!skin.hassetting(skin_locked_views)" />
 				<include content="view_locking" condition="skin.hassetting(skin_locked_views)">
 					<param name="view_id" value="511" />
 				</include>
@@ -479,13 +454,11 @@
 	<include name="view_512">
 		<control type="group">
 			<visible>Control.IsVisible(512)</visible>
-			<include content="Media_Container_Infopanel">
-				<param name="view_id" value="512" />
-			</include>
+			
 			<control type="panel" id="512">
 				<animation effect="fade" start="100" end="0" time="250" tween="quadratic" easing="out" delay="100" condition="Player.HasMedia + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))">conditional</animation>
 				<viewtype label="$LOCALIZE[31246]">icon</viewtype>
-				<!-- <visible>Container.Content(movies) | Container.Content(sets) | Container.Content(tvshows) | Container.Content(seasons) | Container.Content(musicvideos) | Container.Content(artists) | Container.Content(albums) | Container.Content(mixed) | Container.Content(images) | Container.Content(videos) | Container.Content(games)</visible> -->
+				<include content="view_512_noLocking" condition="!skin.hassetting(skin_locked_views)" />
 				<include content="view_locking" condition="skin.hassetting(skin_locked_views)">
 					<param name="view_id" value="512" />
 				</include>
@@ -602,13 +575,10 @@
 		<control type="group">
 			<visible>Control.IsVisible(513)</visible>
 			
-			<include content="Media_Container_Infopanel">
-				<param name="view_id" value="513" />
-			</include>
 			<control type="panel" id="513">
 				<viewtype label="$LOCALIZE[31247]">icon</viewtype>
 				<animation effect="fade" start="100" end="0" time="250" tween="quadratic" easing="out" delay="100" condition="Player.HasMedia + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))">conditional</animation>
-				<!-- <visible>Container.Content(movies) | Container.Content(sets) | Container.Content(tvshows) | Container.Content(seasons) | Container.Content(musicvideos) | Container.Content(artists) | Container.Content(albums) | Container.Content(mixed) | Container.Content(images) | Container.Content(videos) | Container.Content(games)</visible> -->
+				<include content="view_513_noLocking" condition="!skin.hassetting(skin_locked_views)" />
 				<include content="view_locking" condition="skin.hassetting(skin_locked_views)">
 					<param name="view_id" value="513" />
 				</include>
