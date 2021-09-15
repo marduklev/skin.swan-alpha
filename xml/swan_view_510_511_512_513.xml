@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
+
+	
+
 	<!-- the higher the transparency the lesser the transparency to diffuse - if using blur -->
 	<variable name="infopanel_bg_plot">
 		<value condition="!Skin.HasSetting(BlurEnabled) | [Skin.HasSetting(BlurEnabled) + $EXP[TrailerIsPlaying]]">colors/white70.png</value>
@@ -35,10 +38,10 @@ need  new color for artwork frame/bg - color_lib_infopanelframe
 				
 				
 				<control type="image">
-					<description>Main ARTWORK + BORDER - get own var - ImageLayout_fanart is fallback - prefer keyart ? - optional rotating art ? get blank if Control.IsVisible(99007) + String.IsEmpty(Control.GetLabel(99007)) </description>
+					<description>Main ARTWORK + BORDER -  var infopanel_fanart - prefer keyart HAS TO MUCH DEALY TO CHECK THE VAR</description>
 					<bordersize>20</bordersize>
 					<bordertexture colordiffuse="$VAR[color_lib_infopanel_frame]">colors/white.png</bordertexture>
-					<texture diffuse="colors/white80.png">$VAR[ImageLayout_fanart]</texture> 
+					<texture background="true" diffuse="colors/white80.png">$VAR[ImageLayout_fanart]</texture> 
 					<aspectratio align="center">scale</aspectratio>
 					<visible>!$EXP[TrailerIsPlaying]</visible>
 				</control>
@@ -51,7 +54,6 @@ need  new color for artwork frame/bg - color_lib_infopanelframe
 					<texture>$INFO[Control.GetLabel(99007)]</texture>
 					<aspectratio align="center">scale</aspectratio>
 					<visible>!$EXP[TrailerIsPlaying]</visible>
-					
 					<animation type="Visible" reversible="false">
 						<effect type="fade" start="0" end="100" time="750" />
 					</animation>
@@ -62,13 +64,12 @@ need  new color for artwork frame/bg - color_lib_infopanelframe
 				
 				<control type="image">
 					<description>BLURRED diffused ARTWORK - plot bg ,optional</description>
-						<visible>Skin.HasSetting(BlurEnabled)</visible>
-						<bordersize>20,0,20,0</bordersize>
-						<description>l,t,r,b</description>
-						<texture diffuse="diffuse/infopanel_blur.png">$INFO[Window(home).Property(listitem_blurred)]</texture>
-						<aspectratio align="center">scale</aspectratio>
-						<animation effect="fade" start="100" end="0" time="150" condition="$EXP[TrailerIsPlaying]">conditional</animation>
-					
+					<visible>Skin.HasSetting(BlurEnabled)</visible>
+					<bordersize>20,0,20,0</bordersize>
+					<description>l,t,r,b</description>
+					<texture diffuse="diffuse/infopanel_blur.png">$INFO[Window(home).Property(listitem_blurred)]</texture>
+					<aspectratio align="center">scale</aspectratio>
+					<animation effect="fade" start="100" end="0" time="150" condition="$EXP[TrailerIsPlaying]">conditional</animation>
 				</control>
 					
 		
@@ -200,7 +201,7 @@ need  new color for artwork frame/bg - color_lib_infopanelframe
 					</control>
 					
 					<control type="image">
-						<description>border 2,1,2,1 , common plot bg  - bottom , slide on trailer playback, disabled artwork sync with diffued height blur img</description>
+						<description>crop l,r - border 2,1,2,1 , common plot bg  - bottom , slide on trailer playback, disabled artwork sync with diffued height blur img</description>
 						<top>248</top>
 						<left>10</left>
 						<right>10</right>
