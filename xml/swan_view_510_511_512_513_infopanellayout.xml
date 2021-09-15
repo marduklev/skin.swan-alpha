@@ -3,10 +3,26 @@
 	
 	<variable name="infopanel_bg_plot">
 		<value condition="!Skin.HasSetting(BlurEnabled) | [Skin.HasSetting(BlurEnabled) + $EXP[TrailerIsPlaying]]">colors/white70.png</value>
-		<value condition="Skin.HasSetting(BlurEnabled) + !$EXP[TrailerIsPlaying] + [!Skin.String(color_lib_infopanel_frame) | String.StartsWith(Skin.String(color_lib_infopanel_frame),ff)]">colors/white40.png</value>
-		<value condition="Skin.HasSetting(BlurEnabled) + !$EXP[TrailerIsPlaying] + !String.StartsWith(Skin.String(color_lib_infopanel_frame),ff)">colors/white60.png</value>
+		<value condition="Skin.HasSetting(BlurEnabled) + !$EXP[TrailerIsPlaying]">colors/white40.png</value>  
+	</variable>
+	<!-- <variable name="infopanel_bg_color">
+		<value condition="false">ff131313</value>
+		<value condition="true">ffffffff</value>  
 	</variable>
 	
+	<variable name="infopanel_metadata_color">
+		<value condition="false">ffffffff</value>
+		<value condition="true">ff131313</value>  
+	</variable> -->
+	<variable name="infopanel_bg_color">
+		<value condition="true">ff131313</value>
+		<value condition="false">ffffffff</value>  
+	</variable>
+	
+	<variable name="infopanel_metadata_color">
+		<value condition="true">ffffffff</value>
+		<value condition="false">ff131313</value>  
+	</variable>
 	<include name="Media_Container_Infopanel">
 		<param name="width" default="580" />
 		<param name="right" default="110" />
@@ -37,7 +53,7 @@ need  new color for artwork frame/bg - color_lib_infopanelframe
 				<control type="image">
 					<description>Main ARTWORK + BORDER - get own var - ImageLayout_fanart is fallback - prefer keyart ? - optional rotating art ? get blank if Control.IsVisible(99007) + String.IsEmpty(Control.GetLabel(99007)) </description>
 					<bordersize>20</bordersize>
-					<bordertexture colordiffuse="$VAR[color_lib_infopanel_frame]">colors/white.png</bordertexture>
+					<bordertexture colordiffuse="$VAR[infopanel_bg_color]">colors/white.png</bordertexture>
 					<texture diffuse="colors/white80.png">$VAR[ImageLayout_fanart]</texture> 
 					<aspectratio align="center">scale</aspectratio>
 					<visible>!$EXP[TrailerIsPlaying]</visible>
@@ -80,16 +96,12 @@ need  new color for artwork frame/bg - color_lib_infopanelframe
 				<animation effect="slide" start="0,0" end="0,-200" condition="$EXP[TrailerIsPlaying]">conditional</animation>
 					
 				<control type="image">
-					<description>bg header infos - NO BLURRING - wished overlay for some clearart , temp Skin.HasSetting(BlurEnabled) or generell h80 - better for meta flags top row</description>
-					
-					<!-- no_gap zoom equals height80 , -->
-					<animation effect="zoom" start="100,100" end="100,113" condition="true">conditional</animation>
-					
+					<description>bg header infos - NO BLURRING - wished overlay for some clearart</description>
 					<left>20</left>
 					<right>20</right>
 					<top>300</top>
 					<height>70</height>
-					<texture colordiffuse="$VAR[color_lib_infopanel_frame]">colors/white.png</texture>
+					<texture colordiffuse="$VAR[infopanel_bg_color]">colors/white.png</texture>
 				</control>
 				<control type="grouplist">
 			
@@ -115,7 +127,7 @@ need  new color for artwork frame/bg - color_lib_infopanelframe
 								<aligny>center</aligny>
 								<font>font_SpotlightMetaDataBar</font>
 								<label>$INFO[ListItem.Year,[B],[/B]]</label>
-								<textcolor>$VAR[color_lib_infopanel_main]</textcolor>
+								<textcolor>$VAR[infopanel_metadata_color]</textcolor>
 							</control>
 							
 							<control type="button">
@@ -124,8 +136,8 @@ need  new color for artwork frame/bg - color_lib_infopanelframe
 								<label>$INFO[ListItem.MPAA,[B],[/B]]</label>
 								<aligny>top</aligny>
 								<align>center</align>
-								<textcolor>$VAR[color_lib_infopanel_main]</textcolor>
-								<disabledcolor>$VAR[color_lib_infopanel_main]</disabledcolor>
+								<textcolor>$VAR[infopanel_metadata_color]</textcolor>
+								<disabledcolor>$VAR[infopanel_metadata_color]</disabledcolor>
 								<posy>3</posy>
 								<height>40</height>
 								<textoffsetx>20</textoffsetx>
@@ -141,7 +153,7 @@ need  new color for artwork frame/bg - color_lib_infopanelframe
 								<label>$VAR[Meta_Top_Details]</label>
 								<height>35</height>
 								<aligny>center</aligny>
-								<textcolor>$VAR[color_lib_infopanel_main]</textcolor>
+								<textcolor>$VAR[infopanel_metadata_color]</textcolor>
 								<font>font_SpotlightMetaDataBar</font>
 							</control>
 							
@@ -162,14 +174,19 @@ need  new color for artwork frame/bg - color_lib_infopanelframe
 							
 						</control>
 				
+				
+						
+						
+						
+				
+						
+							
 					<include content="ListItem_Indicators">
 						<param name="show_unwatchedindicator" value="false" />
 						<param name="watched_size" value="25" />
 						<param name="folderind_size" value="60" />
 						<right>30</right>
 						<top>-195</top>
-						<!-- no_gap equals top175	-->
-						<animation effect="slide" start="0,0" end="0,20" condition="true">conditional</animation>
 					</include>
 					
 				<control description="meta2" type="group">
@@ -177,6 +194,9 @@ need  new color for artwork frame/bg - color_lib_infopanelframe
 					<right>10</right>
 					<bottom>10</bottom>
 					<top>130</top>
+					
+					
+					
 					
 					<control type="image">
 						<visible>!$EXP[ListItemClearLogo_IsEmpty]</visible>
@@ -196,14 +216,14 @@ need  new color for artwork frame/bg - color_lib_infopanelframe
 					</control>
 					
 					<control type="image">
-						<description>border 2,1,2,1 , common plot bg  - bottom , slide on trailer playback, disabled artwork sync with diffued height blur img</description>
-						<top>248</top>
-						<left>9</left>
-						<right>9</right>
-						<height>195</height>
-						<bordertexture border="1" colordiffuse="$VAR[color_lib_infopanel_frame]">frames/frame.png</bordertexture>
-						<texture colordiffuse="$VAR[color_lib_infopanel_frame]">$VAR[infopanel_bg_plot]</texture>
-					</control>
+							<description>border 2,1,2,1 , common plot bg  - bottom , slide on trailer playback, disabled artwork sync with diffued height blur img</description>
+							<top>248</top>
+							<left>9</left>
+							<right>9</right>
+							<height>195</height>
+							<bordertexture border="2,1,2,1" colordiffuse="$VAR[infopanel_bg_color]">frames/frame.png</bordertexture>
+							<texture colordiffuse="$VAR[infopanel_bg_color]">$VAR[infopanel_bg_plot]</texture>
+						</control>
 					
 					<control type="textbox">
 						<description>put into a group - for above used bg imgs 160-180h</description>
@@ -214,29 +234,28 @@ need  new color for artwork frame/bg - color_lib_infopanelframe
 						<height>180</height>
 						<align>justify</align>
 						<font>debugtiny</font>
-						<textcolor>$VAR[color_lib_infopanel_main]</textcolor>
+						<textcolor>$VAR[infopanel_metadata_color]</textcolor>
 					</control>
 					
 					<control description="ratings" type="group">
 						<bottom>20</bottom>
 						<height>90</height>
 						<control type="image">
-							no gap <animation effect="slide" start="0,0" end="0,-169" condition="true">conditional</animation>
-							<!-- gap <animation effect="slide" start="0,0" end="0,-160" condition="true">conditional</animation> -->
+							<animation effect="slide" start="0,0" end="0,-160" condition="true">conditional</animation>
 							
 							<description>method3 - diffusesblurred flag bg | plot bg - top height just for get diffuse template creation</description>
 							<left>10</left>
 							<right>10</right>
 							<visible>!$EXP[TrailerIsPlaying]</visible>
-							<height>70</height> <!-- no gap 116% height60 --> 
-							<!-- gap <height>60</height> -->
-							<texture flipx="true" colordiffuse="$VAR[color_lib_infopanel_accent]">diffuse/gradientleft.png</texture>
+							<height>60</height>
+							<texture flipx="true" colordiffuse="cyan" diffuse="diffuse/gradientleft.png">colors/white30.png</texture>
+							
 						</control>
 						<description> TEMP - ITS  TOO LARGE</description>
 						
 						<control type="grouplist">
-							no gap <animation effect="zoom" start="100" end="65" center="315,-465" condition="true">conditional</animation>
-							<!-- gap	<animation effect="zoom" start="100" end="65" center="315,-450" condition="true">conditional</animation> -->
+							<animation effect="zoom" start="100" end="65" center="315,-450" condition="true">conditional</animation>
+							
 							<description>neg offset to circumstance group width tag - just good n needed if using shrink animation</description>
 							<orientation>horizontal</orientation>
 							<align>center</align>
@@ -320,6 +339,8 @@ need  new color for artwork frame/bg - color_lib_infopanelframe
 		</definition>
 	
 	</include>
+	
+	
 	<include name="view_510">
 		<control type="group">
 			<visible>Control.IsVisible(510)</visible>
