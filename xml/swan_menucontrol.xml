@@ -889,31 +889,28 @@
 				<onclick>ActivateWindow(shutdownmenu)</onclick>
 			</control>
 			
-			<control type="radiobutton" id="8006">
-				<visible>!String.IsEqual(Window(Home).Property(menucontrol_active),common)</visible>
-				<visible>String.IsEmpty(Window(home).Property(TrailerIsPlaying))</visible>
+			<control type="togglebutton" id="8005">
+				<visible>!String.IsEqual(Window(Home).Property(menucontrol_active),common) + !Skin.HasSetting(premenu_hide_trailer)</visible>
 				<visible>$EXP[Has_Trailer]</visible>
-				<visible>!Skin.HasSetting(premenu_hide_trailer)</visible>
-				<include content="PreMenucontrol_RadioButton">
-					<param name="radiotexture" value="buttons/trailer" />
-				</include>
+				<usealttexture>!String.IsEmpty(Window(home).Property(TrailerIsPlaying))</usealttexture>
+				<width>65</width>
+				<height>65</height>
+				<label />
+				<altlabel />
+				<include content="Animation_Item_Focus" />
+				<texturefocus colordiffuse="$VAR[PreMenucontrol_button_fo]">buttons/trailer.png</texturefocus>
+				<texturenofocus colordiffuse="$VAR[PreMenucontrol_button_nf]">buttons/trailer.png</texturenofocus>
+				<alttexturefocus colordiffuse="$VAR[PreMenucontrol_button_fo]">buttons/stop.png</alttexturefocus>
+				<alttexturenofocus colordiffuse="$VAR[PreMenucontrol_button_nf]">buttons/stop.png</alttexturenofocus>	
 				<onclick>PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onclick>
 				<onclick>SetProperty(TrailerIsPlaying,true,home)</onclick>
-				<onclick>SetFocus(8007)</onclick>
-				
 				<onclick condition="Control.IsVisible(51) | Control.IsVisible(52) | Control.IsVisible(53) | Control.IsVisible(54)">ActivateWindow(1122)</onclick>
-				
+				<altclick>ClearProperty(TrailerIsPlaying,home)</altclick>
+				<altclick>Action(stop)</altclick>
+				<altclick>SetFocus(50)</altclick>
 			</control>
-			<control type="radiobutton" id="8007">
-				<visible allowhiddenfocus="true">[!String.IsEqual(Window(Home).Property(menucontrol_active),common) + !Skin.HasSetting(premenu_hide_trailer)] + !String.IsEmpty(Window(home).Property(TrailerIsPlaying))</visible>
-				<include content="PreMenucontrol_RadioButton">
-					<param name="radiotexture" value="buttons/stop" />
-				</include>
-				<onclick>ClearProperty(TrailerIsPlaying,home)</onclick>
-				<onclick>Action(stop)</onclick>
-				<onclick>SetFocus(50)</onclick>
-			</control>
-			<control type="radiobutton" id="8005">
+			
+			<control type="radiobutton" id="8006">
 				<visible>Player.HasMedia</visible>
 				<include content="PreMenucontrol_RadioButton">
 					<param name="radiotexture" value="buttons/togglefullscreen" />
