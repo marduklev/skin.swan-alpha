@@ -10,8 +10,9 @@
 		<value condition="Skin.HasSetting(BlurEnabled) + !$EXP[TrailerIsPlaying] + [Skin.String(color_lib_infopanel_frame) + !String.StartsWith(Skin.String(color_lib_infopanel_frame),ff)]">colors/white60.png</value>
 	</variable>
 	
+	<!-- align to scrollbarright with no gaps <param name="right" default="99" /> -->
 	<include name="Media_Container_Infopanel">
-		<param name="width" default="580" />
+		<param name="width" default="590" />
 		<param name="right" default="110" />
 		<definition>
 		
@@ -28,22 +29,25 @@
 			</control>
 			
 			<control type="group">
-				<description>info group
-need  new color for artwork frame/bg - color_lib_infopanelframe
-</description>
+				<description>info group</description>
 				<width>$PARAM[width]</width>
 				<right>$PARAM[right]</right>
 				<top>Header</top>
 				<bottom>Footer</bottom>
-				
-				
+				<!-- <top>127</top>
+				<bottom>105</bottom> -->
+				<!-- align to footer,header with no gaps
+				<top>110</top>
+				<bottom>90</bottom>
+				 -->
 				<control type="image">
 					<description>Main ARTWORK + BORDER -  var infopanel_fanart - prefer keyart HAS TO MUCH DEALY TO CHECK THE VAR</description>
 					<bordersize>20</bordersize>
 					<bordertexture colordiffuse="$VAR[color_lib_infopanel_frame]">colors/white.png</bordertexture>
-					<texture background="true" diffuse="colors/white80.png">$VAR[ImageLayout_fanart]</texture> 
+					<texture diffuse="colors/white80.png">$VAR[infopanel_fanart]</texture> 
 					<aspectratio align="center">scale</aspectratio>
 					<visible>!$EXP[TrailerIsPlaying]</visible>
+					<visible>[Control.IsVisible(510) + !Skin.HasSetting(View_510_disabledart)] | [Control.IsVisible(511) + !Skin.HasSetting(View_511_disabledart)] | [Control.IsVisible(512) + !Skin.HasSetting(View_512_disabledart)] | [Control.IsVisible(513) + !Skin.HasSetting(View_513_disabledart)]</visible>
 				</control>
 				
 				<control type="image">
@@ -71,254 +75,249 @@ need  new color for artwork frame/bg - color_lib_infopanelframe
 					<aspectratio align="center">scale</aspectratio>
 					<animation effect="fade" start="100" end="0" time="150" condition="$EXP[TrailerIsPlaying]">conditional</animation>
 				</control>
-					
-		
-		
-		<control type="group">
-			<description>Metadats</description>
-		anim just for testing best posy	<animation effect="slide" start="0,0" end="0,200" condition="true">conditional</animation>
 				
-				<animation effect="slide" start="0,0" end="0,-200" condition="$EXP[TrailerIsPlaying]">conditional</animation>
+				<control type="group">
+					<description>Metadats</description>
+					<top>200</top>	
+					<animation effect="slide" start="0,0" end="0,-200" condition="$EXP[TrailerIsPlaying]">conditional</animation>
 					
-				<control type="image">
-					<description>bg header infos - NO BLURRING - wished overlay for some clearart , temp Skin.HasSetting(BlurEnabled) or generell h80 - better for meta flags top row</description>
-					
-					<!-- no_gap zoom equals height80 , -->
-					<animation effect="zoom" start="100,100" end="100,113" condition="!$EXP[InfoPanel_gap_enabled]">conditional</animation>
-					
-					<left>20</left>
-					<right>20</right>
-					<top>300</top>
-					<height>70</height>
-					<texture colordiffuse="$VAR[color_lib_infopanel_frame]">colors/white.png</texture>
-				</control>
-				<control type="grouplist">
-			
-						<description>header - infos T E M P _ PLACEHOLDER UNADJUSTED METADATA</description>
-						<orientation>horizontal</orientation>
+					<control type="image">
+						<description>bg header infos - NO BLURRING - wished overlay for some clearart , temp Skin.HasSetting(BlurEnabled) or generell h80 - better for meta flags top row</description>
 						
-							<align>center</align>
-							<height>50</height>
-							<itemgap>10</itemgap>
-							<right>25</right>
-							<top>330</top>
-							<left>35</left>
-							<animation effect="zoom" start="100" end="65" center="255,330" condition="true">conditional</animation>
-							<animation effect="fade" start="100" end="60" condition="true">conditional</animation>
-							<description>i was a copy paste job in include Meta_Uncommon_Top - temp animation - till adjust</description>
+						<!-- no_gap zoom equals height80 , -->
+						<animation effect="zoom" start="100,100" end="100,113" condition="!$EXP[InfoPanel_gap_enabled]">conditional</animation>
+						
+						<left>20</left>
+						<right>20</right>
+						<top>300</top>
+						<height>70</height>
+						<texture colordiffuse="$VAR[color_lib_infopanel_frame]">colors/white.png</texture>
+					</control>
+					<control type="grouplist">
+				
+							<description>header - infos T E M P _ PLACEHOLDER UNADJUSTED METADATA</description>
+							<orientation>horizontal</orientation>
 							
-							<control type="label">
-								<visible>!String.IsEmpty(ListItem.Year)</visible>	
-								<top>5</top>
-								<left>10</left>
-								<height>35</height>
-								<width>auto</width>
-								<aligny>center</aligny>
-								<font>font_SpotlightMetaDataBar</font>
-								<label>$INFO[ListItem.Year,[B],[/B]]</label>
-								<textcolor>$VAR[color_lib_infopanel_main]</textcolor>
-							</control>
-							
-							<control type="button">
-								<width min="50">auto</width>
-								<font>font_SpotlightMetaDataBar</font>
-								<label>$INFO[ListItem.MPAA,[B],[/B]]</label>
-								<aligny>top</aligny>
 								<align>center</align>
-								<textcolor>$VAR[color_lib_infopanel_main]</textcolor>
-								<disabledcolor>$VAR[color_lib_infopanel_main]</disabledcolor>
-								<posy>3</posy>
-								<height>40</height>
-								<textoffsetx>20</textoffsetx>
-								<textoffsety>4</textoffsety>
-								<texturenofocus colordiffuse="$VAR[color_global_spotlight_main]">flags/detailframe.png</texturenofocus>
-								<enable>false</enable>
-								<visible>!String.IsEmpty(ListItem.MPAA)</visible>
-							</control>
-							
-							<control type="label">
-								<!-- <visible>!String.IsEmpty(ListItem.Property(TotalSeasons)) | !String.IsEmpty(ListItem.Property(TotalEpisodes)) | !String.IsEmpty(ListItem.Label2)</visible> -->
-							
-								<posy>5</posy>
-								<width>auto</width>
-								<label>$VAR[Meta_Top_Details]</label>
-								<height>35</height>
-								<aligny>center</aligny>
-								<textcolor>$VAR[color_lib_infopanel_main]</textcolor>
-								<font>font_SpotlightMetaDataBar</font>
-							</control>
-							
-							<include content="FramedCodecInfo">
-								<param name="id" value="611114" />
-								<param name="label_id" value="6111141" />
-								<param name="infolabel" value="$VAR[Simple_Resolution,[B],[/B]]" />
-							</include>
-							<control type="group">
-								<visible>!String.IsEmpty(ListItem.AudioChannels)</visible>
-								<left>-10</left>
-								<width>70</width>
+								<height>50</height>
+								<itemgap>10</itemgap>
+								<right>25</right>
+								<top>330</top>
+								<left>35</left>
+								<animation effect="zoom" start="100" end="65" center="255,330" condition="true">conditional</animation>
+								<animation effect="fade" start="100" end="60" condition="true">conditional</animation>
+								<description>i was a copy paste job in include Meta_Uncommon_Top - temp animation - till adjust</description>
+								
+								<control type="label">
+									<visible>!String.IsEmpty(ListItem.Year)</visible>	
+									<top>5</top>
+									<left>10</left>
+									<height>35</height>
+									<width>auto</width>
+									<aligny>center</aligny>
+									<font>font_SpotlightMetaDataBar</font>
+									<label>$INFO[ListItem.Year,[B],[/B]]</label>
+									<textcolor>$VAR[color_lib_infopanel_main]</textcolor>
+								</control>
+								
+								<control type="button">
+									<width min="50">auto</width>
+									<font>font_SpotlightMetaDataBar</font>
+									<label>$INFO[ListItem.MPAA,[B],[/B]]</label>
+									<aligny>top</aligny>
+									<align>center</align>
+									<textcolor>$VAR[color_lib_infopanel_main]</textcolor>
+									<disabledcolor>$VAR[color_lib_infopanel_main]</disabledcolor>
+									<posy>3</posy>
+									<height>40</height>
+									<textoffsetx>20</textoffsetx>
+									<textoffsety>4</textoffsety>
+									<texturenofocus colordiffuse="$VAR[color_global_spotlight_main]">flags/detailframe.png</texturenofocus>
+									<enable>false</enable>
+									<visible>!String.IsEmpty(ListItem.MPAA)</visible>
+								</control>
+								
+								<control type="label">
+									<!-- <visible>!String.IsEmpty(ListItem.Property(TotalSeasons)) | !String.IsEmpty(ListItem.Property(TotalEpisodes)) | !String.IsEmpty(ListItem.Label2)</visible> -->
+								
+									<posy>5</posy>
+									<width>auto</width>
+									<label>$VAR[Meta_Top_Details]</label>
+									<height>35</height>
+									<aligny>center</aligny>
+									<textcolor>$VAR[color_lib_infopanel_main]</textcolor>
+									<font>font_SpotlightMetaDataBar</font>
+								</control>
+								
 								<include content="FramedCodecInfo">
-									<param name="id" value="611115" />
-									<param name="label_id" value="6111151" />
-									<param name="infolabel" value="$VAR[Simple_AudioChannel,[B],[/B]]" />
+									<param name="visible" value="ListItem.IsStereoscopic | !String.IsEmpty(ListItem.VideoResolution)" />
+									<param name="infolabel" value="$VAR[Simple_Resolution,[B],[/B]]" />
+								</include>
+								<control type="group">
+									<visible>!String.IsEmpty(ListItem.AudioChannels)</visible>
+									<left>-10</left>
+									<width>70</width>
+									<include content="FramedCodecInfo">
+										<param name="visible" value="!String.IsEmpty(ListItem.AudioChannels)" />
+										<param name="infolabel" value="$VAR[Simple_AudioChannel,[B],[/B]]" />
+									</include>
+								</control>
+							</control>
+						
+								
+								
+						<include content="ListItem_Indicators">
+							<param name="show_unwatchedindicator" value="false" />
+							<param name="watched_size" value="25" />
+							<param name="folderind_size" value="60" />
+							<right>30</right>
+							<top>10</top>
+							<animation effect="slide" start="0,0" end="0,10" condition="!$EXP[InfoPanel_gap_enabled]">conditional</animation>
+						</include>
+						
+					<control description="meta2" type="group">
+						<left>10</left>
+						<right>10</right>
+						<bottom>10</bottom>
+						<top>130</top>
+						
+						<control type="image">
+							<visible>!$EXP[ListItemClearLogo_IsEmpty]</visible>
+							<description>colordiffuse ?</description>
+							<height>200</height>
+							<aspectratio align="center" aligny="bottom">keep</aspectratio>
+							<texture background="true">$VAR[ListItemClearLogo]</texture>
+						</control>
+						<control type="textbox">
+							<visible>$EXP[ListItemClearLogo_IsEmpty]</visible>
+							<font>Montserrat_ExtraBold_40</font>
+							<align>center</align>
+							<label>$INFO[Container.ListItem.Label]</label>
+							<height>200</height>
+							<textcolor>white</textcolor>
+							<shadowcolor>black</shadowcolor>
+						</control>
+						
+						<control type="image">
+							<description>crop l,r - border 2,1,2,1 , common plot bg  - bottom , slide on trailer playback, disabled artwork sync with diffued height blur img</description>
+							<top>248</top>
+							<left>10</left>
+							<right>10</right>
+							<height>195</height>
+							<bordertexture border="1" colordiffuse="$VAR[color_lib_infopanel_frame]">frames/frame.png</bordertexture>
+							<texture colordiffuse="$VAR[color_lib_infopanel_frame]">$VAR[infopanel_bg_plot]</texture>
+						</control>
+						
+						<control type="textbox">
+							<description>put into a group - for above used bg imgs 160-180h</description>
+							<top>255</top>
+							<left>30</left>
+							<right>30</right>
+							<label>$VAR[plot]</label>
+							<height>180</height>
+							<align>justify</align>
+							<!-- <font>MenucontrolItem</font> -->
+							<font>debugtiny</font>
+							<textcolor>$VAR[color_lib_infopanel_main]</textcolor>
+						</control>
+						
+						<control description="ratings" type="group">
+							<top>442</top>
+							<bottom>20</bottom>
+							<height>90</height>
+							<control type="image">
+								<!-- gap -->    <animation effect="slide" start="0,0" end="0,10" condition="$EXP[InfoPanel_gap_enabled]">conditional</animation>
+												<animation effect="zoom" start="100,100" end="100,85" condition="$EXP[InfoPanel_gap_enabled]">conditional</animation>
+								<description>method3 - diffusesblurred flag bg | plot bg - top height just for get diffuse template creation</description>
+								<left>10</left>
+								<right>10</right>
+								<visible>!$EXP[TrailerIsPlaying]</visible>
+								<height>70</height>
+								<texture flipx="true" colordiffuse="$VAR[color_lib_infopanel_accent]">diffuse/gradientleft.png</texture>
+							</control>
+							<description> TEMP - ITS  TOO LARGE</description>
+							
+							<control type="grouplist">
+								<!-- no_gap --> <animation effect="zoom" start="100" end="65" center="315,20" condition="!$EXP[InfoPanel_gap_enabled]">conditional</animation>
+								<!-- gap -->	<animation effect="zoom" start="100" end="65" center="315,30" condition="$EXP[InfoPanel_gap_enabled]">conditional</animation>
+								<description>neg offset to circumstance group width tag - just good n needed if using shrink animation</description>
+								<orientation>horizontal</orientation>
+								<align>center</align>
+								<right>-100</right>
+								<left>-100</left>
+								<itemgap>5</itemgap>
+								<include content="ratingcommon_footer_template">
+									<param name="listitem" value="UserRating"/>
+									<param name="color" value="white" />
+									<visible>!Window.IsActive(movieinformation)</visible>
+								</include>
+								<include content="ratingcommon_footer_template">
+									<param name="listitem" value="Rating"/>
+									<param name="color" value="white" />
+									<visible>!$EXP[NonMusic_ListItem] | ListItem.IsCollection</visible>
+								</include>
+								<include content="rating_footer_template">
+									<param name="rating" value="trakt"/>
+									<param name="rating_prop" value="Trakt_Rating" />
+									<param name="color" value="white" />
+								</include>
+								<include content="ratingcommon_footer_template">
+									<param name="listitem" value="Rating"/>
+									<param name="color" value="white" />
+									<visible>String.StartsWith(ListItem.FolderPath,plugin://)</visible>
+								</include>
+								<include content="rating_footer_template">
+									<param name="rating" value="metacritic"/>
+									<param name="rating_prop" value="Metacritic_Rating" />
+									<param name="color" value="white" />
+								</include>
+								<include content="rating_footer_template">
+									<param name="rating" value="tomatometerallaudience"/>
+									<param name="rating_prop" value="RottenTomatoes_UserMeter" />
+									<param name="color" value="white" />
+								</include>
+								<include content="rating_footer_template">
+									<param name="rating" value="tomatometerallcritics"/>
+									<param name="rating_prop" value="RottenTomatoes_Rating" />
+									<param name="color" value="white" />
+								</include>
+								<include content="rating_footer_template">
+									<param name="rating" value="themoviedb"/>
+									<param name="rating_prop" value="TMDb_Rating" />
+									<param name="color" value="white" />
+								</include>
+								<include content="rating_footer_template">
+									<param name="rating" value="tvdb"/>
+									<param name="rating_prop" value="tvdb_rating" />
+									<param name="color" value="white" />
+								</include>
+								<include content="rating_footer_template">
+									<param name="rating" value="imdb"/>
+									<param name="rating_prop" value="IMDb_Rating" />
+									<param name="color" value="white" />
+								</include>
+								<include content="rating_footer_template">
+									<param name="rating" value="imdbtop250"/>
+									<param name="rating_prop" value="Top250" />
+									<param name="color" value="white" />
 								</include>
 							</control>
 						</control>
-					
-							
-							
-					<include content="ListItem_Indicators">
-						<param name="show_unwatchedindicator" value="false" />
-						<param name="watched_size" value="25" />
-						<param name="folderind_size" value="60" />
-						<right>30</right>
-						<top>-195</top>
-						<!-- no_gap equals top175	Control.IsEnabled(4208) does not work -->
-						<animation effect="slide" start="0,0" end="0,10" condition="!$EXP[InfoPanel_gap_enabled]">conditional</animation>
-					</include>
-					
-				<control description="meta2" type="group">
-					<left>10</left>
-					<right>10</right>
-					<bottom>10</bottom>
-					<top>130</top>
-					
-					<control type="image">
-						<visible>!$EXP[ListItemClearLogo_IsEmpty]</visible>
-						<description>colordiffuse ?</description>
-						<height>200</height>
-						<aspectratio align="center" aligny="bottom">keep</aspectratio>
-						<texture background="true">$VAR[ListItemClearLogo]</texture>
-					</control>
-					<control type="textbox">
-						<visible>$EXP[ListItemClearLogo_IsEmpty]</visible>
-						<font>Montserrat_ExtraBold_40</font>
-						<align>center</align>
-						<label>$INFO[Container.ListItem.Label]</label>
-						<height>200</height>
-						<textcolor>white</textcolor>
-						<shadowcolor>black</shadowcolor>
-					</control>
-					
-					<control type="image">
-						<description>crop l,r - border 2,1,2,1 , common plot bg  - bottom , slide on trailer playback, disabled artwork sync with diffued height blur img</description>
-						<top>248</top>
-						<left>10</left>
-						<right>10</right>
-						<height>195</height>
-						<bordertexture border="1" colordiffuse="$VAR[color_lib_infopanel_frame]">frames/frame.png</bordertexture>
-						<texture colordiffuse="$VAR[color_lib_infopanel_frame]">$VAR[infopanel_bg_plot]</texture>
-					</control>
-					
-					<control type="textbox">
-						<description>put into a group - for above used bg imgs 160-180h</description>
-						<top>255</top>
-						<left>30</left>
-						<right>30</right>
-						<label>$VAR[Plots]</label>
-						<height>180</height>
-						<align>justify</align>
-						<font>debugtiny</font>
-						<textcolor>$VAR[color_lib_infopanel_main]</textcolor>
-					</control>
-					
-					<control description="ratings" type="group">
-						<bottom>20</bottom>
-						<height>90</height>
-						<control type="image">
-							<!-- no_gap --> <animation effect="slide" start="0,0" end="0,-169" condition="!$EXP[InfoPanel_gap_enabled]">conditional</animation>
-							<!-- gap -->    <animation effect="slide" start="0,0" end="0,-160" condition="$EXP[InfoPanel_gap_enabled]">conditional</animation>
-											<animation effect="zoom" start="100,100" end="100,85" condition="$EXP[InfoPanel_gap_enabled]">conditional</animation>
-							<description>method3 - diffusesblurred flag bg | plot bg - top height just for get diffuse template creation</description>
-							<left>10</left>
-							<right>10</right>
-							<visible>!$EXP[TrailerIsPlaying]</visible>
-							<height>70</height>
-							<texture flipx="true" colordiffuse="$VAR[color_lib_infopanel_accent]">diffuse/gradientleft.png</texture>
-						</control>
-						<description> TEMP - ITS  TOO LARGE</description>
-						
-						<control type="grouplist">
-							<!-- no_gap --> <animation effect="zoom" start="100" end="65" center="315,-465" condition="!$EXP[InfoPanel_gap_enabled]">conditional</animation>
-							<!-- gap -->	<animation effect="zoom" start="100" end="65" center="315,-450" condition="$EXP[InfoPanel_gap_enabled]">conditional</animation>
-							<description>neg offset to circumstance group width tag - just good n needed if using shrink animation</description>
-							<orientation>horizontal</orientation>
-							<align>center</align>
-							<right>-100</right>
-							<left>-100</left>
-							<itemgap>5</itemgap>
-							<include content="ratingcommon_footer_template">
-								<param name="listitem" value="UserRating"/>
-								<param name="color" value="white" />
-								<visible>!Window.IsActive(movieinformation)</visible>
-							</include>
-							<include content="ratingcommon_footer_template">
-								<param name="listitem" value="Rating"/>
-								<param name="color" value="white" />
-								<visible>!$EXP[NonMusic_ListItem] | ListItem.IsCollection</visible>
-							</include>
-							<include content="rating_footer_template">
-								<param name="rating" value="trakt"/>
-								<param name="rating_prop" value="Trakt_Rating" />
-								<param name="color" value="white" />
-							</include>
-							<include content="ratingcommon_footer_template">
-								<param name="listitem" value="Rating"/>
-								<param name="color" value="white" />
-								<visible>String.StartsWith(ListItem.FolderPath,plugin://)</visible>
-							</include>
-							<include content="rating_footer_template">
-								<param name="rating" value="metacritic"/>
-								<param name="rating_prop" value="Metacritic_Rating" />
-								<param name="color" value="white" />
-							</include>
-							<include content="rating_footer_template">
-								<param name="rating" value="tomatometerallaudience"/>
-								<param name="rating_prop" value="RottenTomatoes_UserMeter" />
-								<param name="color" value="white" />
-							</include>
-							<include content="rating_footer_template">
-								<param name="rating" value="tomatometerallcritics"/>
-								<param name="rating_prop" value="RottenTomatoes_Rating" />
-								<param name="color" value="white" />
-							</include>
-							<include content="rating_footer_template">
-								<param name="rating" value="themoviedb"/>
-								<param name="rating_prop" value="TMDb_Rating" />
-								<param name="color" value="white" />
-							</include>
-							<include content="rating_footer_template">
-								<param name="rating" value="tvdb"/>
-								<param name="rating_prop" value="tvdb_rating" />
-								<param name="color" value="white" />
-							</include>
-							<include content="rating_footer_template">
-								<param name="rating" value="imdb"/>
-								<param name="rating_prop" value="IMDb_Rating" />
-								<param name="color" value="white" />
-							</include>
-							<include content="rating_footer_template">
-								<param name="rating" value="imdbtop250"/>
-								<param name="rating_prop" value="Top250" />
-								<param name="color" value="white" />
-							</include>
-						</control>
-					</control>
-				</control>		
+					</control>		
 			
-				<control type="label">
-					<animation effect="fade" start="100" end="60" condition="true">conditional</animation>
-					<visible>!String.IsEmpty(ListItem.Genre) + !$EXP[InfoPanel_gap_enabled]</visible>
-					<width>auto</width>
-					<top>352</top>
-					<height>30</height>
-					<aligny>center</aligny>
-					<label>$INFO[ListItem.Genre]</label>
-					<textcolor>$VAR[color_lib_infopanel_accent]</textcolor>
-					<align>center</align>
-					<font>NotoSans_bold15</font>
+					<control type="label">
+						<animation effect="fade" start="100" end="60" condition="true">conditional</animation>
+						<visible>!String.IsEmpty(ListItem.Genre) + !$EXP[InfoPanel_gap_enabled]</visible>
+						<width>auto</width>
+						<top>352</top>
+						<height>30</height>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Genre]</label>
+						<textcolor>$VAR[color_lib_infopanel_accent]</textcolor>
+						<align>center</align>
+						<font>NotoSans_bold15</font>
+					</control>
 				</control>
-			</control>
 			
 			</control>
 			
