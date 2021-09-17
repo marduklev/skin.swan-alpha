@@ -124,7 +124,7 @@
 				<control type="image">
 					<texture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white.png</texture>
 				</control>
-				<!-- make  hor groulist -->
+				
 				<control type="button" id="701">
 					<top>10</top>
 					<left>0</left>
@@ -135,6 +135,7 @@
 					<texturenofocus colordiffuse="$VAR[color_osdvideo_button_nf]">buttons/tmdbembuaryinfo.png</texturenofocus>
 					<onclick>RunScript(script.embuary.info,$VAR[embuaryinfo_player])</onclick>
 					<enable>VideoPlayer.Content(episodes) | VideoPlayer.Content(movies)</enable>
+					<visible>VideoPlayer.Content(episodes) | VideoPlayer.Content(movies)</visible>
 					<onup>Close</onup>
 					<ondown>Close</ondown>
 					<onleft>700</onleft>
@@ -143,14 +144,12 @@
 				
 				<control type="grouplist" id="700">
 					<description>cast Container</description>
-					<top>10</top>
+					<top>5</top>
 					<left>150</left>
 					<height>300</height>
 					<scrolltime tween="quadratic">400</scrolltime>
 					<orientation>vertical</orientation>
 					<usecontrolcoords>true</usecontrolcoords>
-					
-					<!-- <onup>ActivateWindow(videoosd)</onup> -->
 					<onup>Close</onup>
 					<ondown>Close</ondown>
 					<onleft>701</onleft>
@@ -160,7 +159,6 @@
 						<param name="top" value="0" />
 						<param name="id" value="7102" />
 						<param name="label" value="$VAR[fullscreeninfo_7002_header]" />
-						
 						<param name="show_seperator_and_listitem" value="false" />
 						<left>-15</left>
 						<visible>Control.IsVisible(7102)</visible>
@@ -175,35 +173,33 @@
 					<include condition="!VideoPlayer.Content(musicvideos)" content="Universal_Container">
 						<param name="id" value="7102" />
 						<param name="visible" value="Integer.IsGreater(Container(7102).NumItems,0) | Container(7102).IsUpdating" />
-						
-						<param name="type_height" value="220" />
+						<param name="type_height" value="225" />
 						<param name="type_pos_top" value="0" />
-						
-						<param name="layout_height" value="185" />
+						<param name="layout_height" value="190" />
 						<param name="layout_width" value="118" />
 						<param name="itemwidth" value="115" />
-						<param name="itemheight" value="155" />
+						<param name="itemheight" value="170" />
 						<param name="item_artwork_name" value="poster" />
+						<param name="item_artwork_diffuse_themed" value="true" />
+						<param name="item_artwork_diffuse_override" value="false" />
+						<param name="item_infotags_visible" value="true" />
+						<param name="item_infotags_bgpanel_visible" value="false" />
+						<right>8</right>
 						<include>Action_CastMemberSearchForceOption</include>
-						
 						<content>$VAR[content_cast_video]</content>
-		
 					</include>
 					<include condition="VideoPlayer.Content(musicvideos)" content="Universal_Container">
 						<param name="id" value="7102" />
 						<param name="visible" value="Integer.IsGreater(Container(7102).NumItems,0) | Container(7102).IsUpdating" />
-						
 						<param name="type_height" value="220" />
 						<param name="type_pos_top" value="0" />
-						
 						<param name="layout_height" value="185" />
 						<param name="layout_width" value="185" />
 						<param name="itemwidth" value="185" />
 						<param name="itemheight" value="185" />
-						
 						<param name="item_artwork_name" value="circle" />
-					
-						<!-- 	<onclick condition="VideoPlayer.Content(musicvideos)">ActivateWindow(DialogMusicInfo.xml)</onclick> -->
+						<right>298</right>
+						<!-- <onclick condition="VideoPlayer.Content(musicvideos)">ActivateWindow(musicinformation)</onclick> -->
 						<!-- 
 						
 						go to hub NOTE No PREV ID IS SET
@@ -215,33 +211,29 @@
 						<onclick condition="Integer.IsEqual(container(7102).ListItem.TotalDiscs,1) | String.IsEmpty(container(7102).ListItem.TotalDiscs)">SetProperty(HUB_containerpath_songs,$INFO[[container(7102).ListItem.FolderPath],home)</onclick>
 						<onclick condition="Integer.IsEqual(container(7102).ListItem.TotalDiscs,1) | String.IsEmpty(container(7102).ListItem.TotalDiscs)">ActivateWindow(1110)</onclick>
 						<onclick condition="Integer.IsEqual(container(7102).ListItem.TotalDiscs,1) | String.IsEmpty(container(7102).ListItem.TotalDiscs)">AlarmClock(delayedfocus,SetFocus(5121,0,absolute),00:00,silent)</onclick> -->
-						
 						<content>musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[VideoPlayer.Artist]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</content>
-						
 					</include>
-					
-					
-					get heading instead
-					<include condition="VideoPlayer.Content(musicvideos)" content="spacer_h">
-						<param name="id" value="7103" />
-						<param name="gap" value="100" />
+					<include content="Universal_ContainerHeader">
+						<param name="groupid" value="7103" />
+						<param name="top" value="0" />
+						<param name="id" value="7104" />
+						<param name="label" value="[COLOR grey]More Musicvideos by   [/COLOR]$INFO[videoplayer.artist]" />
+						<param name="show_seperator_and_listitem" value="false" />
+						<left>-15</left>
+						<visible>Control.IsVisible(7104)</visible>
 					</include>
 					<include condition="VideoPlayer.Content(musicvideos)" content="Universal_Container">
 						<param name="id" value="7104" />
 						<param name="visible" value="Integer.IsGreater(Container(7102).NumItems,0) | Container(7102).IsUpdating" />
-						
 						<param name="type_height" value="250" />
 						<param name="type_pos_top" value="0" />
-						
 						<param name="layout_height" value="170" />
-						<param name="layout_width" value="300" />
+						<param name="layout_width" value="295" />
 						<param name="itemwidth" value="290" />
 						<param name="itemheight" value="155" />
-						
 						<param name="item_artwork_name" value="landscape" />
-				
+						<right>298</right>
 						<content>videodb://musicvideos/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[videoplayer.artist]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</content>
-						
 					</include>
 					
 				</control>

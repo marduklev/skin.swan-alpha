@@ -40,30 +40,40 @@
 		<value condition="String.IsEqual(Container.ListItem.dbtype,tvshow) | String.IsEqual(Container.ListItem.dbtype,season) | String.IsEqual(Container.ListItem.dbtype,episode)">$INFO[Container.ListItem.TVShowTitle]</value>
 		<value>$INFO[Container.ListItem.Label]</value>
 	</variable>
+	<variable name="embtmdbinfoquery_year">
+		<value condition="String.IsEmpty(Container.ListItem.year)">,year=$INFO[Container.ListItem.Year]</value>
+		<value></value>
+	</variable>
 	<!-- MATRIX GUI INFOLABEL ListItem.TvShowDBID  returns the tvshow dbid at season and episode level. -->
 	
+	
+	<!-- using year in shows can cause no info found
+	 e.g. amazon pulls year from latest season, not first - amazon = 2007, tmdb 2003
+	 ,exact=true also not consistent in lookups  -e.g. moneyball does not open even if title n year match exactly
+	 -->
 	<variable name="embuaryinfo_listitem">
-		<value condition="String.IsEqual(Container.ListItem.dbtype,actor)">RunScript(script.embuary.info,call=person,query='"$INFO[Container.ListItem.Label]"')</value>
-		<value condition="[Container.Content(movies) | String.IsEqual(Container.ListItem.DBtype,movie)] + !String.IsEmpty(Container.ListItem.UniqueID(tmdb))">call=movie,tmbd_id=$INFO[Container.ListItem.UniqueID(tmdb)]</value>
-		<value condition="[Container.Content(movies) | String.IsEqual(Container.ListItem.DBtype,movie)] + !String.IsEmpty(Container.ListItem.UniqueID(imdb))">call=movie,external_id=$INFO[Container.ListItem.UniqueID(imdb)]</value>
-		<value condition="[Container.Content(movies) | String.IsEqual(Container.ListItem.DBtype,movie)] + !String.IsEmpty(Container.ListItem.IMDBNumber)">call=movie,external_id=$INFO[Container.ListItem.IMDBNumber]</value>
-		<value condition="[Container.Content(movies) | String.IsEqual(Container.ListItem.DBtype,movie)] + !String.IsEmpty(Container.ListItem.dbid)">call=movie,dbid=$INFO[Container.ListItem.dbid]</value>
-		<value condition="[Container.Content(movies) | String.IsEqual(Container.ListItem.DBtype,movie)] + !String.IsEmpty(Container.ListItem.OriginalTitle) + !String.IsEmpty(Container.ListItem.Year)">call=movie,query='"$INFO[Container.ListItem.OriginalTitle]"',year=$INFO[Container.ListItem.Year]</value>
-		<value condition="[Container.Content(movies) | String.IsEqual(Container.ListItem.DBtype,movie)] + String.IsEmpty(Container.ListItem.OriginalTitle) + !String.IsEmpty(Container.ListItem.Year)">call=movie,query='"$INFO[Container.ListItem.Title]"',year=$INFO[Container.ListItem.Year]</value>
-		<value condition="[Container.Content(movies) | String.IsEqual(Container.ListItem.DBtype,movie)] + String.IsEmpty(Container.ListItem.OriginalTitle) + String.IsEmpty(Container.ListItem.Year)">call=movie,query='"$INFO[Container.ListItem.Title]"'</value>
-		<value condition="[String.IsEqual(Container.ListItem.DBtype,season) | String.IsEqual(Container.ListItem.DBtype,episode)] + !String.IsEmpty(Container.ListItem.UniqueID(tmdb)) + !String.IsEmpty(Container.ListItem.Season)">RunScript(script.embuary.info,call=tv,tmbd_id=$INFO[Container.ListItem.UniqueID(tmdb)],season=$INFO[Container.ListItem.Season])</value>
-		<value condition="[Container.Content(tvshows) | String.IsEqual(Container.ListItem.DBtype,tvshow)] + !String.IsEmpty(Container.ListItem.UniqueID(tvdb))">call=tv,external_id=$INFO[Container.ListItem.UniqueID(tvdb)]</value>
-		<value condition="[Container.Content(tvshows) | String.IsEqual(Container.ListItem.DBtype,tvshow)] + !String.IsEmpty(Container.ListItem.UniqueID(imdb))">call=tv,external_id=$INFO[Container.ListItem.UniqueID(imdb)]</value>
-		<value condition="[Container.Content(tvshows) | String.IsEqual(Container.ListItem.DBtype,tvshow)] + !String.IsEmpty(Container.ListItem.dbid)">RunScript(script.embuary.info,call=tv,dbid=$INFO[Container.ListItem.dbid])</value>
-		<value condition="!String.IsEmpty(Container.ListItem.TVShowTitle) + !String.IsEmpty(Container.ListItem.Year)">call=tv,query='"$INFO[VideoPlayer.TVShowTitle]"',year=$INFO[Container.ListItem.Year]</value>
-		<value condition="!String.IsEmpty(Container.ListItem.TVShowTitle) + String.IsEmpty(Container.ListItem.Year)">call=tv,query='"$INFO[VideoPlayer.TVShowTitle]"'</value>
-		<value>call=movie,query='"$INFO[Container.ListItem.Label]"'</value>
+		<value condition="String.IsEqual(Container.ListItem.dbtype,actor)">call=person,query='"$INFO[Container.ListItem.Label]"'</value>
+		<value condition="String.IsEqual(Container.ListItem.DBtype,movie) + !String.IsEmpty(Container.ListItem.UniqueID(tmdb))">call=movie,tmbd_id=$INFO[Container.ListItem.UniqueID(tmdb)]</value>
+		<value condition="String.IsEqual(Container.ListItem.DBtype,movie) + !String.IsEmpty(Container.ListItem.UniqueID(imdb))">call=movie,external_id=$INFO[Container.ListItem.UniqueID(imdb)]</value>
+		<value condition="String.IsEqual(Container.ListItem.DBtype,movie) + !String.IsEmpty(Container.ListItem.IMDBNumber)">call=movie,external_id=$INFO[Container.ListItem.IMDBNumber]</value>
+		<value condition="String.IsEqual(Container.ListItem.DBtype,movie) + !String.IsEmpty(Container.ListItem.dbid)">call=movie,dbid=$INFO[Container.ListItem.dbid]</value>
+		<value condition="String.IsEqual(Container.ListItem.DBtype,movie) + !String.IsEmpty(Container.ListItem.OriginalTitle) + !String.IsEmpty(Container.ListItem.Year)">call=movie,query='"$INFO[Container.ListItem.OriginalTitle]"',year=$INFO[Container.ListItem.Year]</value>
+		<value condition="String.IsEqual(Container.ListItem.DBtype,movie) + String.IsEmpty(Container.ListItem.OriginalTitle) + !String.IsEmpty(Container.ListItem.Year)">call=movie,query='"$INFO[Container.ListItem.Title]"',year=$INFO[Container.ListItem.Year]</value>
+		<value condition="String.IsEqual(Container.ListItem.DBtype,movie) + String.IsEmpty(Container.ListItem.OriginalTitle) + String.IsEmpty(Container.ListItem.Year)">call=movie,query='"$INFO[Container.ListItem.Title]"'</value>
+			<value condition="String.IsEqual(Container.ListItem.DBtype,movie)">call=movie,query='"$INFO[Container.ListItem.Label]"'</value>
+		<value condition="!String.IsEmpty(Container.ListItem.TvShowDBID)">call=tv,dbid=$INFO[Container.ListItem.TvShowDBID]</value>
+		<value condition="[String.IsEqual(Container.ListItem.DBtype,season) | String.IsEqual(Container.ListItem.DBtype,episode)]">call=tv,query='"$INFO[Container.ListItem.TVShowTitle]"'</value>
+		<value condition="String.IsEqual(Container.ListItem.DBtype,tvshow) + !String.IsEmpty(Container.ListItem.dbid)">call=tv,dbid=$INFO[Container.ListItem.dbid]</value>
+		<value condition="String.IsEqual(Container.ListItem.DBtype,tvshow) + !String.IsEmpty(Container.ListItem.UniqueID(tvdb))">call=tv,external_id=$INFO[Container.ListItem.UniqueID(tvdb)]</value>
+		<value condition="String.IsEqual(Container.ListItem.DBtype,tvshow) + !String.IsEmpty(Container.ListItem.UniqueID(imdb))">call=tv,external_id=$INFO[Container.ListItem.UniqueID(imdb)]</value>
+		<value condition="String.IsEqual(Container.ListItem.DBtype,tvshow) + !String.IsEmpty(Container.ListItem.TVShowTitle) + !String.IsEmpty(Container.ListItem.Year) + !String.StartsWith(ListItem.FolderPath,plugin://)">call=tv,query='"$INFO[Container.ListItem.TVShowTitle]"',year=$INFO[Container.ListItem.Year]</value>
+		<value condition="String.IsEqual(Container.ListItem.DBtype,tvshow) + !String.IsEmpty(Container.ListItem.TVShowTitle) + String.IsEmpty(Container.ListItem.Year)">call=tv,query='"$INFO[Container.ListItem.TVShowTitle]"'</value>
+			<value condition="!String.IsEqual(Container.ListItem.DBtype,movie)">call=tv,query='"$INFO[Container.ListItem.Label]"'</value>
 	</variable>
-		
+	
 	<!-- does not work <value condition="VideoPlayer.Content(movies) + !String.IsEmpty(VideoPlayer.UniqueID(tmdb))">call=movie,tmbd_id=$INFO[VideoPlayer.UniqueID(tmdb)]</value> -->
 	<variable name="embuaryinfo_player">
-		<value condition="VideoPlayer.Content(episodes) + !String.IsEmpty(VideoPlayer.TVShowTitle) + !String.IsEmpty(VideoPlayer.Year)">call=tv,query='"$INFO[VideoPlayer.TVShowTitle]"',year=$INFO[VideoPlayer.Year]</value>
-		<value condition="VideoPlayer.Content(episodes) + !String.IsEmpty(VideoPlayer.TVShowTitle) + String.IsEmpty(VideoPlayer.Year)">call=tv,query='"$INFO[VideoPlayer.TVShowTitle]"'</value>
+		<value condition="VideoPlayer.Content(episodes) + !String.IsEmpty(VideoPlayer.TVShowTitle)">call=tv,query='"$INFO[VideoPlayer.TVShowTitle]"'</value>
 		<value condition="VideoPlayer.Content(movies) + !String.IsEmpty(VideoPlayer.UniqueID(imdb))">call=movie,external_id=$INFO[VideoPlayer.UniqueID(imdb)]</value>
 		<value condition="VideoPlayer.Content(movies) + !String.IsEmpty(VideoPlayer.IMDBNumber)">call=movie,external_id=$INFO[VideoPlayer.IMDBNumber]</value>
 		<value condition="VideoPlayer.Content(movies) + !String.IsEmpty(VideoPlayer.dbid)">call=movie,dbid=$INFO[VideoPlayer.dbid]</value>
@@ -71,6 +81,7 @@
 		<value condition="VideoPlayer.Content(movies) + String.IsEmpty(Videoplayer.OriginalTitle) + !String.IsEmpty(VideoPlayer.Year)">call=movie,query='"$INFO[VideoPlayer.Title]"',year=$INFO[VideoPlayer.Year]</value>
 		<value condition="VideoPlayer.Content(movies) + String.IsEmpty(Videoplayer.OriginalTitle) + String.IsEmpty(VideoPlayer.Year)">call=movie,query='"$INFO[VideoPlayer.Title]"'</value>
 	</variable>
+	
 	
 <!-- ListItem.IsParentFolder Returns true is the slected item is the 'up' item 
 	Container(id).HasParent Return true when the container with id (or current container if id is omitted) contains a parent ('..') item. 
