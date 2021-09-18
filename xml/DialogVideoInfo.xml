@@ -394,6 +394,32 @@
 				<pagecontrol>60</pagecontrol>
 				<orientation>horizontal</orientation>
 				
+				<control type="button" id="801">
+					<description>trakt - open dialog ? or add each button themoviedbhelper - add item</description>
+					<visible>!Skin.HasSetting(hide_trakt_buttons) + [!String.IsEmpty(listitem.uniqueid(tmdb)) | !String.IsEmpty(ListItem.Property(tmdb_id))]</visible>
+					<include>Button_VideoInfo</include>
+					<label>trakt add item $INFO[listitem.uniqueid(tmdb)]</label>
+					<!-- - test container wind 1150- 
+					either native 
+					$INFO[listitem.uniqueid(imdb)]         
+					$INFO[listitem.uniqueid(themoviedb)]
+					 -->
+					<!-- $INFO[ListItem.Property(tmdb_id)] -->
+					
+					<onclick condition="String.IsEqual(ListItem.DBType,movie) + !String.IsEmpty(listitem.uniqueid(tmdb))">RunPlugin(plugin://plugin.video.themoviedb.helper?info=details&amp;trakt=watchlist_add&amp;tmdb_id=$INFO[listitem.uniqueid(tmdb)]&amp;type=movie)</onclick>
+					<onclick condition="String.IsEqual(ListItem.DBType,movie) + [String.IsEmpty(listitem.uniqueid(tmdb)) + !String.IsEmpty(ListItem.Property(tmdb_id))]">RunPlugin(plugin://plugin.video.themoviedb.helper?info=details&amp;trakt=watchlist_add&amp;tmdb_id=$INFO[ListItem.Property(tmdb_id)]&amp;type=movie)</onclick>
+					<!-- <onclick condition="String.IsEqual(ListItem.DBType,tvshow)">RunPlugin(plugin://plugin.video.themoviedb.helper?info=details&amp;trakt=watchlist_add&amp;tmdb_id=$INFO[ListItem.Property(tmdb_id)]&amp;type=tv)</onclick>
+					<onclick condition="String.IsEqual(ListItem.DBType,episode)">RunPlugin(plugin://plugin.video.themoviedb.helper?info=details&amp;trakt=watchlist_add&amp;tmdb_id=$INFO[ListItem.Property(tvshow.tmdb_id)]&amp;type=episode&amp;season=$INFO[ListItem.Season]&amp;episode=$INFO[ListItem.Episode])</onclick> -->
+				</control>
+				
+				
+				<!-- <control type="button" id="802">
+					<description>trakt - open dialog ? or add each button themoviedbhelper - remove item</description>
+					<visible>!Skin.HasSetting(hide_trakt_buttons)</visible>
+					<include>Button_VideoInfo</include>
+					<label>trakt remove item</label>
+				</control> -->
+				
 				<control type="button" id="8">
 					<description>play native</description>
 					<visible>!Skin.HasSetting(VideoInfo_Button_play)</visible>
@@ -1074,5 +1100,15 @@
 			<texturesliderbar colordiffuse="$VAR[color_global_scrollbar_slider_fo]">colors/white.png</texturesliderbar>
 			<textureslidernib />
 		</control>
+		
+		<include content="swan_debug_overlay">
+			<param name="textleft" value="
+  helper  ListItem.Property(tmdb_id) $INFO[ListItem.Property(tmdb_id)]
+  helper  ListItem.Property(tvshow.tmdb_id) $INFO[ListItem.Property(tvshow.tmdb_id)]
+  
+native listitem.uniquiid() • imdb :  $INFO[listitem.uniqueid(imdb)]  -  themoviedb :  $INFO[listitem.uniqueid(themoviedb)]  -  tmdb :  $INFO[listitem.uniqueid(tmdb)]  -  anidb :  $INFO[listitem.uniqueid(anidb)]  -  tvdb :  $INFO[listitem.uniqueid(tvdb)]  -  trakt :  $INFO[listitem.uniqueid(trakt)]  - tvrage :  $INFO[listitem.uniqueid(tvrage)]  -  tvmaze :  $INFO[listitem.uniqueid(tvmaze)]		
+
+"/>
+</include>
 	</controls>
 </window>
