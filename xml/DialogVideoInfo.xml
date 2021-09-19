@@ -7,6 +7,10 @@
 	<onload condition="!string.isempty(listitem.dbid) + [container.content(movies) | String.IsEqual(ListItem.DBTYPE,movie)]">RunScript(script.embuary.helper,action=lookforfile,file='"$VAR[extrasLocation_lookup]"',prop=bonuscontentavail)</onload>
 	<!-- maybe auto close dialog and open embuary.info window() if not media from lib ? -->
 	
+			<onload condition="String.IsEqual(ListItem.DBType,movie) + !String.IsEmpty(listitem.uniqueid(tmdb))">SetProperty(movie_tmdbid,$INFO[listitem.uniqueid(tmdb)],home)</onload>
+			<onload condition="String.IsEqual(ListItem.DBType,movie) + [String.IsEmpty(listitem.uniqueid(tmdb)) + !String.IsEmpty(ListItem.Property(tmdb_id))]">SetProperty(movie_tmdbid,$INFO[ListItem.Property(tmdb_id)],home)</onload>
+					
+	
 	<onunload>ClearProperty(AdditionalInfo)</onunload>
 	<onunload>ClearProperty(EncodedTitle,home)</onunload>
 	<onunload condition="!String.IsEmpty(Window(home).Property(bonuscontentavail))">ClearProperty(bonuscontentavail,home)</onunload>	
@@ -398,18 +402,9 @@
 					<description>trakt - open dialog ? or add each button themoviedbhelper - add item</description>
 					<visible>!Skin.HasSetting(hide_trakt_buttons) + [!String.IsEmpty(listitem.uniqueid(tmdb)) | !String.IsEmpty(ListItem.Property(tmdb_id))]</visible>
 					<include>Button_VideoInfo</include>
-					<label>trakt add item $INFO[listitem.uniqueid(tmdb)]</label>
-					<!-- - test container wind 1150- 
-					either native 
-					$INFO[listitem.uniqueid(imdb)]         
-					$INFO[listitem.uniqueid(themoviedb)]
-					 -->
-					<!-- $INFO[ListItem.Property(tmdb_id)] -->
+					<label>trakt manage</label>
 					
-					<onclick condition="String.IsEqual(ListItem.DBType,movie) + !String.IsEmpty(listitem.uniqueid(tmdb))">RunPlugin(plugin://plugin.video.themoviedb.helper?info=details&amp;trakt=watchlist_add&amp;tmdb_id=$INFO[listitem.uniqueid(tmdb)]&amp;type=movie)</onclick>
-					<onclick condition="String.IsEqual(ListItem.DBType,movie) + [String.IsEmpty(listitem.uniqueid(tmdb)) + !String.IsEmpty(ListItem.Property(tmdb_id))]">RunPlugin(plugin://plugin.video.themoviedb.helper?info=details&amp;trakt=watchlist_add&amp;tmdb_id=$INFO[ListItem.Property(tmdb_id)]&amp;type=movie)</onclick>
-					<!-- <onclick condition="String.IsEqual(ListItem.DBType,tvshow)">RunPlugin(plugin://plugin.video.themoviedb.helper?info=details&amp;trakt=watchlist_add&amp;tmdb_id=$INFO[ListItem.Property(tmdb_id)]&amp;type=tv)</onclick>
-					<onclick condition="String.IsEqual(ListItem.DBType,episode)">RunPlugin(plugin://plugin.video.themoviedb.helper?info=details&amp;trakt=watchlist_add&amp;tmdb_id=$INFO[ListItem.Property(tvshow.tmdb_id)]&amp;type=episode&amp;season=$INFO[ListItem.Season]&amp;episode=$INFO[ListItem.Episode])</onclick> -->
+					<onclick>ActivateWindow(1104,return)</onclick>
 				</control>
 				
 				
