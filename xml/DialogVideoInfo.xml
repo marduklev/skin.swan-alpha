@@ -7,9 +7,16 @@
 	<onload condition="!string.isempty(listitem.dbid) + [container.content(movies) | String.IsEqual(ListItem.DBTYPE,movie)]">RunScript(script.embuary.helper,action=lookforfile,file='"$VAR[extrasLocation_lookup]"',prop=bonuscontentavail)</onload>
 	<!-- maybe auto close dialog and open embuary.info window() if not media from lib ? -->
 	
+		<!-- WIP TRAKT -->
 			<onload condition="String.IsEqual(ListItem.DBType,movie) + !String.IsEmpty(listitem.uniqueid(tmdb))">SetProperty(movie_tmdbid,$INFO[listitem.uniqueid(tmdb)],home)</onload>
 			<onload condition="String.IsEqual(ListItem.DBType,movie) + [String.IsEmpty(listitem.uniqueid(tmdb)) + !String.IsEmpty(ListItem.Property(tmdb_id))]">SetProperty(movie_tmdbid,$INFO[ListItem.Property(tmdb_id)],home)</onload>
-					
+			<onload condition="String.IsEqual(ListItem.DBType,tvshow) + !String.IsEmpty(listitem.uniqueid(tmdb))">SetProperty(tvshow_tmdbid,$INFO[listitem.uniqueid(tmdb)],home)</onload>
+			<onload condition="String.IsEqual(ListItem.DBType,tvshow) + [String.IsEmpty(listitem.uniqueid(tmdb)) + !String.IsEmpty(ListItem.Property(tmdb_id))]">SetProperty(tvshow_tmdbid,$INFO[ListItem.Property(tmdb_id)],home)</onload>
+				<!-- <onload condition="String.IsEqual(ListItem.DBType,episode) + !String.IsEmpty(ListItem.Property(tvshow.tmdb_id))">SetProperty(episodetvshow_tmdbid,$INFO[ListItem.Property(tvshow.tmdb_id)],home)</onload>	-->
+			
+			<onunload condition="!String.IsEmpty(Window(home).Property(movie_tmdbid))">ClearProperty(movie_tmdbid,home)</onunload>
+			<onunload condition="!String.IsEmpty(Window(home).Property(tvshow_tmdbid))">ClearProperty(tvshow_tmdbid,home)</onunload>
+				<!-- <onunload condition="!String.IsEmpty(Window(home).Property(episodetvshow_tmdbid))">ClearProperty(tvshow_tmdbid,home)</onunload> -->
 	
 	<onunload>ClearProperty(AdditionalInfo)</onunload>
 	<onunload>ClearProperty(EncodedTitle,home)</onunload>
@@ -400,20 +407,14 @@
 				
 				<control type="button" id="801">
 					<description>trakt - open dialog ? or add each button themoviedbhelper - add item</description>
-					<visible>!Skin.HasSetting(hide_trakt_buttons) + [!String.IsEmpty(listitem.uniqueid(tmdb)) | !String.IsEmpty(ListItem.Property(tmdb_id))]</visible>
+					<visible>!Skin.HasSetting(hide_trakt_buttons) + [!String.IsEmpty(Window(home).Property(movie_tmdbid)) | !String.IsEmpty(Window(home).Property(tvshow_tmdbid))]</visible>
 					<include>Button_VideoInfo</include>
-					<label>trakt manage</label>
-					
-					<onclick>ActivateWindow(1104,return)</onclick>
+					<label>Trakt Functions</label>
+					<onclick condition="string.startswith(System.BuildVersion,19.1) + !String.IsEmpty(Window(home).Property(movie_tmdbid))">RunScript(plugin.video.themoviedb.helper,sync_trakt,type=movie,tmdb_id=$INFO[Window(home).Property(movie_tmdbid)])</onclick>
+					<onclick condition="string.startswith(System.BuildVersion,19.1) + !String.IsEmpty(Window(home).Property(tvshow_tmdbid))">RunScript(plugin.video.themoviedb.helper,sync_trakt,type=tv,tmdb_id=$INFO[Window(home).Property(movie_tmdbid)])</onclick>
+					<!-- <onclick condition="string.startswith(System.BuildVersion,19.1) + !String.IsEmpty(Window(home).Property(episodetvshow_tmdbid))">RunScript(plugin.video.themoviedb.helper,sync_trakt,type=tv,tmdb_id=$INFO[ListItem.Property(tvshow.tmdb_id)],season=$INFO[ListItem.Season],episode=$INFO[ListItem.Episode])</onclick> -->
+					<onclick condition="string.startswith(System.BuildVersion,18.)">ActivateWindow(1104,return)</onclick>
 				</control>
-				
-				
-				<!-- <control type="button" id="802">
-					<description>trakt - open dialog ? or add each button themoviedbhelper - remove item</description>
-					<visible>!Skin.HasSetting(hide_trakt_buttons)</visible>
-					<include>Button_VideoInfo</include>
-					<label>trakt remove item</label>
-				</control> -->
 				
 				<control type="button" id="8">
 					<description>play native</description>

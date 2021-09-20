@@ -2,11 +2,11 @@
 <window id="1104" type="dialog">
 	<defaultcontrol always="true">10450</defaultcontrol>
 	
-	<onunload condition="!String.IsEmpty(Window(home).Property(movie_tmdbid))">ClearProperty(movie_tmdbid,home)</onunload>
-	<onunload condition="!String.IsEmpty(Window(home).Property(tvshow_tmdbid))">ClearProperty(tvshow_tmdbid,home)</onunload>
 	<controls>
 		
 		<control type="group">
+			
+			
 			<description>Heading</description>
 			<include>Animation_OpenClose_Zoom</include>
 			<control type="image">
@@ -14,7 +14,6 @@
 				<aspectratio>stretch</aspectratio>
 			</control>
 			<control type="label">
-				<visible>!String.IsEmpty(Window(home).Property(CastMemberLabel))</visible>
 				<width>100%</width>
 				<top>20%</top>
 				<height>60</height>
@@ -23,19 +22,7 @@
 				<align>center</align>
 				<textoffsetx>5</textoffsetx>
 				<textcolor>$VAR[color_global_dialog_accent]</textcolor>
-				<label>what you gonna do with    $INFO[Window(home).Property(CastMemberLabel)]</label>
-			</control>
-			<control type="label">
-				<visible>!String.IsEmpty(Window(home).Property(movie_tmdbid)) | !String.IsEmpty(Window(home).Property(tvshow_tmdbid))</visible>
-				<width>100%</width>
-				<top>20%</top>
-				<height>60</height>
-				<font>Montserrat_ExtraBold_40</font>
-				<aligny>center</aligny>
-				<align>center</align>
-				<textoffsetx>5</textoffsetx>
-				<textcolor>$VAR[color_global_dialog_accent]</textcolor>
-				<label>Manage TRAKT $INFO[Window(home).Property(movie_tmdbid)]</label>
+				<label>$VAR[1104_header]</label>
 			</control>
 		</control>
 		
@@ -51,6 +38,7 @@
 				<param name="slide_start" value="1920,0" />
 				<param name="slide_end" value="0,0" />
 			</include>
+			
 			<control type="radiobutton" id="$PARAM[id]1">
 				<visible>!String.IsEmpty(Window(home).Property(CastMemberLabel))</visible>
 				<height>200</height>
@@ -73,11 +61,11 @@
 			
 			<control type="radiobutton" id="$PARAM[id]2">
 				<visible>!String.IsEmpty(Window(home).Property(movie_tmdbid)) | !String.IsEmpty(Window(home).Property(tvshow_tmdbid))</visible>
-				<height>200</height>
+				<height>75</height>
 				<radioposx>50</radioposx>
 				<textoffsetx>50</textoffsetx>
 				<radiowidth>150</radiowidth>
-				<radioheight>150</radioheight>
+				<radioheight>50</radioheight>
 				<textureradioonfocus colordiffuse="$VAR[color_global_button_text_fo]">flags/ratings/trakt_monochrome.png</textureradioonfocus>
 				<textureradioonnofocus colordiffuse="$VAR[color_global_button_text_nf]">flags/ratings/trakt_monochrome.png</textureradioonnofocus>
 				<textureradioofffocus colordiffuse="$VAR[color_global_button_text_fo]">flags/ratings/trakt_monochrome.png</textureradioofffocus>
@@ -92,9 +80,58 @@
 					<!-- episode RunPlugin(plugin://plugin.video.themoviedb.helper?info=details&amp;trakt=watchlist_add&amp;tmdb_id=$INFO[ListItem.Property(tvshow.tmdb_id)]&amp;type=episode&amp;season=$INFO[ListItem.Season]&amp;episode=$INFO[ListItem.Episode]) -->
 				<label>                 [I]Trakt Wathclist[/I]    [B]A d d[/B]</label>
 			</control>
-			
-					
-			
+			<control type="label" id="$PARAM[id]3">
+				<visible>!String.IsEmpty(Window(home).Property(movie_tmdbid)) | !String.IsEmpty(Window(home).Property(tvshow_tmdbid))</visible>
+				<height>120</height>
+					<label />
+			</control>
+			<control type="radiobutton" id="$PARAM[id]4">
+				<visible>!String.IsEmpty(Window(home).Property(movie_tmdbid)) | !String.IsEmpty(Window(home).Property(tvshow_tmdbid))</visible>
+				<height>75</height>
+				<radioposx>50</radioposx>
+				<textoffsetx>50</textoffsetx>
+				<radiowidth>150</radiowidth>
+				<radioheight>50</radioheight>
+				<textureradioonfocus colordiffuse="$VAR[color_global_button_text_fo]">flags/ratings/trakt_monochrome.png</textureradioonfocus>
+				<textureradioonnofocus colordiffuse="$VAR[color_global_button_text_nf]">flags/ratings/trakt_monochrome.png</textureradioonnofocus>
+				<textureradioofffocus colordiffuse="$VAR[color_global_button_text_fo]">flags/ratings/trakt_monochrome.png</textureradioofffocus>
+				<textureradiooffnofocus colordiffuse="$VAR[color_global_button_text_nf]">flags/ratings/trakt_monochrome.png</textureradiooffnofocus>
+				<textureradioondisabled colordiffuse="disabled">flags/ratings/trakt_monochrome.png</textureradioondisabled>
+				<textureradiooffdisabled colordiffuse="disabled">flags/ratings/trakt_monochrome.png</textureradiooffdisabled>
+				<font>font45</font>
+				<onclick>Dialog.Close(1104,true)</onclick>
+				
+					<onclick condition="!String.IsEmpty(Window(home).Property(movie_tmdbid))">RunPlugin(plugin://plugin.video.themoviedb.helper?info=details&amp;trakt=watchlist_add&amp;tmdb_id=$INFO[Window(home).Property(movie_tmdbid)]&amp;type=movie)</onclick>
+					<onclick condition="!String.IsEmpty(Window(home).Property(tvshow_tmdbid))">RunPlugin(plugin://plugin.video.themoviedb.helper?info=details&amp;trakt=watchlist_add&amp;tmdb_id=$INFO[Window(home).Property(tvshow_tmdbid)]&amp;type=tv)</onclick>
+					<!-- episode RunPlugin(plugin://plugin.video.themoviedb.helper?info=details&amp;trakt=watchlist_add&amp;tmdb_id=$INFO[ListItem.Property(tvshow.tmdb_id)]&amp;type=episode&amp;season=$INFO[ListItem.Season]&amp;episode=$INFO[ListItem.Episode]) -->
+				<label>                 [I]Trakt Collection[/I]    [B]A d d[/B]</label>
+			</control>
+			<control type="label" id="$PARAM[id]5">
+				<visible>!String.IsEmpty(Window(home).Property(movie_tmdbid)) | !String.IsEmpty(Window(home).Property(tvshow_tmdbid))</visible>
+				<height>120</height>
+					<label></label>
+			</control>
+			<control type="radiobutton" id="$PARAM[id]6">
+				<visible>!String.IsEmpty(Window(home).Property(movie_tmdbid)) | !String.IsEmpty(Window(home).Property(tvshow_tmdbid))</visible>
+				<height>75</height>
+				<radioposx>50</radioposx>
+				<textoffsetx>50</textoffsetx>
+				<radiowidth>150</radiowidth>
+				<radioheight>50</radioheight>
+				<textureradioonfocus colordiffuse="$VAR[color_global_button_text_fo]">flags/ratings/trakt_monochrome.png</textureradioonfocus>
+				<textureradioonnofocus colordiffuse="$VAR[color_global_button_text_nf]">flags/ratings/trakt_monochrome.png</textureradioonnofocus>
+				<textureradioofffocus colordiffuse="$VAR[color_global_button_text_fo]">flags/ratings/trakt_monochrome.png</textureradioofffocus>
+				<textureradiooffnofocus colordiffuse="$VAR[color_global_button_text_nf]">flags/ratings/trakt_monochrome.png</textureradiooffnofocus>
+				<textureradioondisabled colordiffuse="disabled">flags/ratings/trakt_monochrome.png</textureradioondisabled>
+				<textureradiooffdisabled colordiffuse="disabled">flags/ratings/trakt_monochrome.png</textureradiooffdisabled>
+				<font>font45</font>
+				<onclick>Dialog.Close(1104,true)</onclick>
+				
+					<onclick condition="!String.IsEmpty(Window(home).Property(movie_tmdbid))">RunPlugin(plugin://plugin.video.themoviedb.helper?info=details&amp;trakt=watchlist_add&amp;tmdb_id=$INFO[Window(home).Property(movie_tmdbid)]&amp;type=movie)</onclick>
+					<onclick condition="!String.IsEmpty(Window(home).Property(tvshow_tmdbid))">RunPlugin(plugin://plugin.video.themoviedb.helper?info=details&amp;trakt=watchlist_add&amp;tmdb_id=$INFO[Window(home).Property(tvshow_tmdbid)]&amp;type=tv)</onclick>
+					<!-- episode RunPlugin(plugin://plugin.video.themoviedb.helper?info=details&amp;trakt=watchlist_add&amp;tmdb_id=$INFO[ListItem.Property(tvshow.tmdb_id)]&amp;type=episode&amp;season=$INFO[ListItem.Season]&amp;episode=$INFO[ListItem.Episode]) -->
+				<label>                 [I]Trakt Watched History[/I]    [B]A d d[/B]</label>
+			</control>
 		</include>
 		
 		<include content="Menucontrol_Grouplist">
@@ -107,6 +144,9 @@
 			<param name="onup" value="10450"/>
 			<param name="ondown" value="10450"/>
 			<param name="top" value="50%"/>
+
+<animation effect="slide" start="0,0" end="0,-123" time="0" tween="quadratic" easing="in" delay="100" condition="String.IsEmpty(Window(home).Property(CastMemberLabel))">conditional</animation>
+
 			<right>40%</right>
 			
 			<control type="radiobutton" id="$PARAM[id]1">
@@ -133,11 +173,12 @@
 			</control>
 			
 			<control type="radiobutton" id="$PARAM[id]2">
+				
 				<visible>!String.IsEmpty(Window(home).Property(movie_tmdbid)) | !String.IsEmpty(Window(home).Property(tvshow_tmdbid))</visible>
-				<height>200</height>
+				<height>75</height>
 				<textoffsetx>50</textoffsetx>
 				<radiowidth>500</radiowidth>
-				<radioheight>150</radioheight>
+				<radioheight>50</radioheight>
 				<textureradioonfocus colordiffuse="$VAR[color_global_button_text_fo]">flags/ratings/trakt_monochrome.png</textureradioonfocus>
 				<textureradioonnofocus colordiffuse="$VAR[color_global_button_text_nf]">flags/ratings/trakt_monochrome.png</textureradioonnofocus>
 				<textureradioofffocus colordiffuse="$VAR[color_global_button_text_fo]">flags/ratings/trakt_monochrome.png</textureradioofffocus>
@@ -147,6 +188,62 @@
 				<font>font45</font>
 				<label />
 				<label2>[I]Trakt Wathclist[/I]    [B]R e m o v e[/B]                            </label2>
+				<onclick>Dialog.Close(1104,true)</onclick>
+				
+				<onclick condition="!String.IsEmpty(Window(home).Property(movie_tmdbid))">RunPlugin(plugin://plugin.video.themoviedb.helper?info=details&amp;trakt=watchlist_remove&amp;tmdb_id=$INFO[Window(home).Property(movie_tmdbid)]&amp;type=movie)</onclick>
+				<onclick condition="!String.IsEmpty(Window(home).Property(tvshow_tmdbid))">RunPlugin(plugin://plugin.video.themoviedb.helper?info=details&amp;trakt=watchlist_remove&amp;tmdb_id=$INFO[Window(home).Property(tvshow_tmdbid)]&amp;type=tv)</onclick>
+				<!-- episode use tvid prop RunPlugin(plugin://plugin.video.themoviedb.helper?info=details&amp;trakt=watchlist_add&amp;tmdb_id=$INFO[ListItem.Property(tvshow.tmdb_id)]&amp;type=episode&amp;season=$INFO[ListItem.Season]&amp;episode=$INFO[ListItem.Episode]) -->
+			
+			</control>
+			<control type="label" id="$PARAM[id]3">
+				<visible>!String.IsEmpty(Window(home).Property(movie_tmdbid)) | !String.IsEmpty(Window(home).Property(tvshow_tmdbid))</visible>
+				<height>120</height>
+					<label />
+			</control>
+			<control type="radiobutton" id="$PARAM[id]4">
+				<visible>!String.IsEmpty(Window(home).Property(movie_tmdbid)) | !String.IsEmpty(Window(home).Property(tvshow_tmdbid))</visible>
+				<height>75</height>
+				<textoffsetx>50</textoffsetx>
+				<radiowidth>500</radiowidth>
+				<radioheight>50</radioheight>
+				<textureradioonfocus colordiffuse="$VAR[color_global_button_text_fo]">flags/ratings/trakt_monochrome.png</textureradioonfocus>
+				<textureradioonnofocus colordiffuse="$VAR[color_global_button_text_nf]">flags/ratings/trakt_monochrome.png</textureradioonnofocus>
+				<textureradioofffocus colordiffuse="$VAR[color_global_button_text_fo]">flags/ratings/trakt_monochrome.png</textureradioofffocus>
+				<textureradiooffnofocus colordiffuse="$VAR[color_global_button_text_nf]">flags/ratings/trakt_monochrome.png</textureradiooffnofocus>
+				<textureradioondisabled colordiffuse="disabled">flags/ratings/trakt_monochrome.png</textureradioondisabled>
+				<textureradiooffdisabled colordiffuse="disabled">flags/ratings/trakt_monochrome.png</textureradiooffdisabled>
+				<font>font45</font>
+				<label />
+				<label2>[I]Trakt Collection[/I]    [B]R e m o v e[/B]                            </label2>
+				<onclick>Dialog.Close(1104,true)</onclick>
+				
+				<onclick condition="!String.IsEmpty(Window(home).Property(movie_tmdbid))">RunPlugin(plugin://plugin.video.themoviedb.helper?info=details&amp;trakt=watchlist_remove&amp;tmdb_id=$INFO[Window(home).Property(movie_tmdbid)]&amp;type=movie)</onclick>
+				<onclick condition="!String.IsEmpty(Window(home).Property(tvshow_tmdbid))">RunPlugin(plugin://plugin.video.themoviedb.helper?info=details&amp;trakt=watchlist_remove&amp;tmdb_id=$INFO[Window(home).Property(tvshow_tmdbid)]&amp;type=tv)</onclick>
+				<!-- episode use tvid prop RunPlugin(plugin://plugin.video.themoviedb.helper?info=details&amp;trakt=watchlist_add&amp;tmdb_id=$INFO[ListItem.Property(tvshow.tmdb_id)]&amp;type=episode&amp;season=$INFO[ListItem.Season]&amp;episode=$INFO[ListItem.Episode]) -->
+			
+				
+			
+			</control>
+			<control type="label" id="$PARAM[id]5">
+				<visible>!String.IsEmpty(Window(home).Property(movie_tmdbid)) | !String.IsEmpty(Window(home).Property(tvshow_tmdbid))</visible>
+				<height>120</height>
+					<label />
+			</control>
+			<control type="radiobutton" id="$PARAM[id]6">
+				<visible>!String.IsEmpty(Window(home).Property(movie_tmdbid)) | !String.IsEmpty(Window(home).Property(tvshow_tmdbid))</visible>
+				<height>75</height>
+				<textoffsetx>50</textoffsetx>
+				<radiowidth>500</radiowidth>
+				<radioheight>50</radioheight>
+				<textureradioonfocus colordiffuse="$VAR[color_global_button_text_fo]">flags/ratings/trakt_monochrome.png</textureradioonfocus>
+				<textureradioonnofocus colordiffuse="$VAR[color_global_button_text_nf]">flags/ratings/trakt_monochrome.png</textureradioonnofocus>
+				<textureradioofffocus colordiffuse="$VAR[color_global_button_text_fo]">flags/ratings/trakt_monochrome.png</textureradioofffocus>
+				<textureradiooffnofocus colordiffuse="$VAR[color_global_button_text_nf]">flags/ratings/trakt_monochrome.png</textureradiooffnofocus>
+				<textureradioondisabled colordiffuse="disabled">flags/ratings/trakt_monochrome.png</textureradioondisabled>
+				<textureradiooffdisabled colordiffuse="disabled">flags/ratings/trakt_monochrome.png</textureradiooffdisabled>
+				<font>font45</font>
+				<label />
+				<label2>[I]Trakt Watched History[/I]    [B]R e m o v e[/B]                            </label2>
 				<onclick>Dialog.Close(1104,true)</onclick>
 				
 				<onclick condition="!String.IsEmpty(Window(home).Property(movie_tmdbid))">RunPlugin(plugin://plugin.video.themoviedb.helper?info=details&amp;trakt=watchlist_remove&amp;tmdb_id=$INFO[Window(home).Property(movie_tmdbid)]&amp;type=movie)</onclick>
