@@ -14,16 +14,7 @@ TYPE must be either movie or tv (specify season/episode numbers for specific epi
 If you don't have tmdb_id you can specify IMDB ID or a Title query params to do a lookup (if episode use ListItem.TvShowTitle for query not Title)
 query=$INFO[ListItem.Title],imdb_id=$INFO[ListItem.IMDBNumber]
 -->
-			<onload condition="String.IsEqual(ListItem.DBType,movie) + !String.IsEmpty(listitem.uniqueid(tmdb))">SetProperty(movie_tmdbid,$INFO[listitem.uniqueid(tmdb)],home)</onload>
-			<onload condition="String.IsEqual(ListItem.DBType,movie) + [String.IsEmpty(listitem.uniqueid(tmdb)) + !String.IsEmpty(ListItem.Property(tmdb_id))]">SetProperty(movie_tmdbid,$INFO[ListItem.Property(tmdb_id)],home)</onload>
-			<onload condition="String.IsEqual(ListItem.DBType,tvshow) + !String.IsEmpty(listitem.uniqueid(tmdb))">SetProperty(tvshow_tmdbid,$INFO[listitem.uniqueid(tmdb)],home)</onload>
-			<onload condition="String.IsEqual(ListItem.DBType,tvshow) + [String.IsEmpty(listitem.uniqueid(tmdb)) + !String.IsEmpty(ListItem.Property(tmdb_id))]">SetProperty(tvshow_tmdbid,$INFO[ListItem.Property(tmdb_id)],home)</onload>
-			<onload condition="String.IsEqual(ListItem.DBType,episode) + !String.IsEmpty(ListItem.Property(tvshow.tmdb_id))">SetProperty(episodetvshow_tmdbid,$INFO[ListItem.Property(tvshow.tmdb_id)],home)</onload>
 			
-			<onunload condition="!String.IsEmpty(Window(home).Property(movie_tmdbid))">ClearProperty(movie_tmdbid,home)</onunload>
-			<onunload condition="!String.IsEmpty(Window(home).Property(tvshow_tmdbid))">ClearProperty(tvshow_tmdbid,home)</onunload>
-			<onunload condition="!String.IsEmpty(Window(home).Property(episodetvshow_tmdbid))">ClearProperty(episodetvshow_tmdbid,home)</onunload>
-	
 	<onunload>ClearProperty(AdditionalInfo)</onunload>
 	<onunload>ClearProperty(EncodedTitle,home)</onunload>
 	<onunload condition="!String.IsEmpty(Window(home).Property(bonuscontentavail))">ClearProperty(bonuscontentavail,home)</onunload>	
