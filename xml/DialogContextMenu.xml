@@ -51,18 +51,45 @@ ID 		Type 		Description
 			<onleft>900</onleft>
 			<onright>900</onright>
 			
-			<!-- 
 			<control type="button" id="777">
+				<visible>true</visible>
 				<texturefocus />
 				<texturenofocus />
 				<width>450</width>
 				<align>center</align>
 				<font>InfoCommon</font>
-				<label>QUE ITEM TEST</label>
-				<onclick>noop</onclick>
+				<label>Play Next</label>
+				<onclick>SetProperty(shortcutaction_inprogress,fakeforplaylistfunctions,home)</onclick>
+				<onclick condition="!string.isempty(window(music).property(album_id))">activatewindow(music,musicdb://albums/?xsp=%%7B%22limit%22%3A1%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22path%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[window(music).property(album_id)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D)</onclick>
+				<onclick condition="!string.isempty(window(music).property(song_id))">activatewindow(music,musicdb://songs/?xsp=%7B%22limit%22%3A1%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22Filename%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[window(music).property(song_id)]%22%5D%7D%5D%7D%2C%22type%22%3A%22songs%22%7D)</onclick>
+				<onclick>RunScript(script.embuary.helper,action=settimer,do='"Action(playnext)||Notification(Item added to Playlist,as next title)||ReplaceWindow(1110)"',busydialog=false)</onclick>
 			</control>
-			-->
+			<control type="button" id="778">
+				<visible>true</visible>
+				<texturefocus />
+				<texturenofocus />
+				<width>450</width>
+				<align>center</align>
+				<font>InfoCommon</font>
+				<label>Queue in Playlist</label>
+				<onclick>SetProperty(shortcutaction_inprogress,fakeforplaylistfunctions,home)</onclick>
+				<onclick condition="!string.isempty(window(music).property(album_id))">activatewindow(music,musicdb://albums/?xsp=%%7B%22limit%22%3A1%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22path%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[window(music).property(album_id)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D)</onclick>
+				<onclick condition="!string.isempty(window(music).property(song_id))">activatewindow(music,musicdb://songs/?xsp=%7B%22limit%22%3A1%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22Filename%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[window(music).property(song_id)]%22%5D%7D%5D%7D%2C%22type%22%3A%22songs%22%7D)</onclick>
+				<onclick>RunScript(script.embuary.helper,action=settimer,do='"Action(queue)||Notification(Item added to Playlist,queued)||ReplaceWindow(1110)"',busydialog=false)</onclick>
+			</control>
 			
+			<control type="button" id="779">
+				<visible>false</visible>
+				<visible>string.isequal(window(home).property(shortcutaction_inprogress),fakeforplaylistfunctions)</visible>
+				<texturefocus />
+				<texturenofocus />
+				<width>450</width>
+				<align>center</align>
+				<font>InfoCommon</font>
+				<label>TEST script</label>
+				
+				<onclick>RunScript(special://skin/scripts/test.py)</onclick>
+			</control>
 		</include>
 <!-- 
 https://alwinesch.github.io/group__python___play_list.html

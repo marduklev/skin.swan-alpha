@@ -1,5 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
+
+<!-- https://alwinesch.github.io/group__python___play_list.html -->
+	
+	<!-- - 1st attemt is cleaner in code: 
+				<onclick condition="!string.isempty(window(music).property(song_id))">activatewindow(music,musicdb://songs/?xsp=%7B%22limit%22%3A1%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22Filename%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[window(music).property(song_id)]%22%5D%7D%5D%7D%2C%22type%22%3A%22songs%22%7D)</onclick>
+				<onclick>RunScript(script.embuary.helper,action=settimer,do='"Action(queue)||Notification(playlist function done,Play NEXT)||ReplaceWindow(1110)"',busydialog=true)</onclick>
+				
+		- 2nd seems more correct even if strayed one function into pts for dependencie windows
+			1st - starting window - listitem - store path/dbid
+			2nd - contextmenu -  inside contextmenu -> go to mediawindow using stored path via xsp method
+			3rd - my[media]nav.xml - real action |  container.update | replacewindow()
+			4rd - starting window - clear props
+		
+	 -->		
+	<include name="pl_functions_strayed_part1">
+		<control type="button">
+			<visible allowhiddenfocus="true">false</visible>
+			<onfocus condition="string.isequal(listitem.dbtype,song) + !string.isempty(listitem.dbid)">SetProperty(song_id,$INFO[listitem.filename],music)</onfocus>
+			<onfocus condition="string.isequal(listitem.dbtype,album) + !string.isempty(listitem.dbid)">SetProperty(album_id,$INFO[listitem.path],music)</onfocus>
+			
+		</control>
+	</include>
+	
+	
+	
+
+
 	<variable name="debug_trailer_available">
 		<value condition="!String.IsEmpty(Window(home).Property(trailer_avail))">[COLOR green]Trailer is available[/COLOR]</value>
 		<value>[COLOR grey]NO TRAILER AVAILABLE[/COLOR]</value>
@@ -191,7 +218,7 @@ music					 		!Container.Content(songs) + !Container.Content(sources) +
 				<effect type="fade" start="100" end="0" time="250" tween="sine" easing="out" />
 				<effect type="zoom" center="50%,50%" start="100" end="0" time="300" tween="cubic" easing="out" />
 			</animation>
-			<include condition="!string.isempty(window(home).property(shortcutitem_nr))" content="SwanShortcuts_Container" />
+			<include condition="!string.isempty(window(home).property(shortcutaction_inprogress))" content="SwanShortcuts_Container" />
 			<include condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">view_layer4</include>
 			<include condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">Media_Container_Infopanel</include>
 			
@@ -203,7 +230,7 @@ music					 		!Container.Content(songs) + !Container.Content(sources) +
 			<include condition="String.IsEmpty(Skin.String($PARAM[window]_disabled_view_56)) + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">view_56</include>
 			<include condition="String.IsEmpty(Skin.String($PARAM[window]_disabled_view_58)) + [Window.IsActive(videos) + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))]">view_58</include>
 			<include condition="String.IsEmpty(Skin.String($PARAM[window]_disabled_view_502)) + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">view_502</include>
-			<include condition="[String.IsEmpty(Skin.String($PARAM[window]_disabled_view_503)) + String.IsEmpty(Skin.String($PARAM[window]_disabled_view_503))] | [String.IsEmpty(Skin.String($PARAM[window]_disabled_view_504)) + String.IsEmpty(Skin.String($PARAM[window]_disabled_view_504))] + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">view_503_504</include>
+			<include condition="[String.IsEmpty(Skin.String($PARAM[window]_disabled_view_503)) + String.IsEmpty(Skin.String($PARAM[window]_disabled_view_504))] + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">view_503_504</include>
 			<include condition="String.IsEmpty(Skin.String($PARAM[window]_disabled_view_510)) + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">view_510</include>
 			<include condition="String.IsEmpty(Skin.String($PARAM[window]_disabled_view_511)) + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">view_511</include>
 			<include condition="String.IsEmpty(Skin.String($PARAM[window]_disabled_view_512)) + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">view_512</include>
