@@ -1,31 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 
-<!-- https://alwinesch.github.io/group__python___play_list.html -->
+<!-- https://alwinesch.github.io/group__python___play_list.html 
+need run fn playlist.getpoistion() before 
+fn playlist.add()
+
+index= *value getposition
+url= winprop? - 
+
+add() 
+
+-->
 	
-	<!-- - 1st attemt is cleaner in code: 
-				<onclick condition="!string.isempty(window(music).property(song_id))">activatewindow(music,musicdb://songs/?xsp=%7B%22limit%22%3A1%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22Filename%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[window(music).property(song_id)]%22%5D%7D%5D%7D%2C%22type%22%3A%22songs%22%7D)</onclick>
-				<onclick>RunScript(script.embuary.helper,action=settimer,do='"Action(queue)||Notification(playlist function done,Play NEXT)||ReplaceWindow(1110)"',busydialog=true)</onclick>
-				
-		- 2nd seems more correct even if strayed one function into pts for dependencie windows
-			1st - starting window - listitem - store path/dbid
-			2nd - contextmenu -  inside contextmenu -> go to mediawindow using stored path via xsp method
-			3rd - my[media]nav.xml - real action |  container.update | replacewindow()
-			4rd - starting window - clear props
-		
-	 -->		
+	<!--
+		still no real url, esp when br folderitems|grouped
+	
+	
+	xsp vs dbid
+		- booth got its p|c
+		- xsp usage  seems 'faster'
+	- fn prop need encode
+	-->		
 	<include name="pl_functions_strayed_part1">
 		<control type="button">
 			<visible allowhiddenfocus="true">false</visible>
-			<onfocus condition="string.isequal(listitem.dbtype,song) + !string.isempty(listitem.dbid)">SetProperty(song_id,$INFO[listitem.filename],music)</onfocus>
-			<onfocus condition="string.isequal(listitem.dbtype,album) + !string.isempty(listitem.dbid)">SetProperty(album_id,$INFO[listitem.path],music)</onfocus>
+			
+			<onfocus condition="string.isequal(listitem.dbtype,song) + !string.isempty(listitem.dbid)">SetProperty(song_fn,$INFO[listitem.filename],music)</onfocus>
+			<onfocus condition="string.isequal(listitem.dbtype,album)">SetProperty(album_fn,$INFO[listitem.label],music)</onfocus> 
+			
+				<onfocus condition="string.isequal(listitem.dbtype,song) + !string.isempty(window(music).property(artist_id))">ClearProperty(artist_id,music)</onfocus>
+				<onfocus condition="string.isequal(listitem.dbtype,song) + !string.isempty(window(music).property(album_id))">ClearProperty(album_id,music)</onfocus>
+				<onfocus condition="string.isequal(listitem.dbtype,song) + !string.isempty(window(music).property(url))">ClearProperty(url,music)</onfocus>
+				<onfocus condition="string.isequal(listitem.dbtype,song) + !string.isempty(window(music).property(album_fn))">ClearProperty(album_fn,music)</onfocus>
+			<onfocus condition="string.isequal(listitem.dbtype,song) + !string.isempty(listitem.dbid)">SetProperty(song_id,$INFO[listitem.dbid],music)</onfocus>
+				
+				<onfocus condition="string.isequal(listitem.dbtype,album) + !string.isempty(window(music).property(artist_id))">ClearProperty(artist_id,music)</onfocus>
+				<onfocus condition="string.isequal(listitem.dbtype,album) + !string.isempty(window(music).property(song_id))">ClearProperty(song_id,music)</onfocus>
+				<onfocus condition="string.isequal(listitem.dbtype,album) + !string.isempty(window(music).property(url))">ClearProperty(url,music)</onfocus>
+				<onfocus condition="string.isequal(listitem.dbtype,album) + !string.isempty(window(music).property(song_fn))">ClearProperty(song_fn,music)</onfocus>
+			<onfocus condition="string.isequal(listitem.dbtype,album) + !string.isempty(listitem.dbid)">SetProperty(album_id,$INFO[listitem.dbid],music)</onfocus>
+			
+				<onfocus condition="string.isequal(listitem.dbtype,artist) + !string.isempty(window(music).property(album_id))">ClearProperty(album_id,music)</onfocus>
+				<onfocus condition="string.isequal(listitem.dbtype,artist) + !string.isempty(window(music).property(song_id))">ClearProperty(song_id,music)</onfocus>
+				<onfocus condition="string.isequal(listitem.dbtype,artist) + !string.isempty(window(music).property(url))">ClearProperty(url,music)</onfocus>
+				<onfocus condition="string.isequal(listitem.dbtype,artist) + !string.isempty(window(music).property(song_fn))">ClearProperty(song_fn,music)</onfocus>
+				<onfocus condition="string.isequal(listitem.dbtype,artist) + !string.isempty(window(music).property(album_fn))">ClearProperty(album_fn,music)</onfocus>
+			<onfocus condition="string.isequal(listitem.dbtype,artist) + !string.isempty(listitem.dbid)">SetProperty(artist_id,$INFO[listitem.dbid],music)</onfocus>
+			
+				<onfocus condition="string.isempty(listitem.dbid) + !string.isempty(window(music).property(song_id))">ClearProperty(song_id,music)</onfocus>
+				<onfocus condition="string.isempty(listitem.dbid) + !string.isempty(window(music).property(album_id))">ClearProperty(album_id,music)</onfocus>
+				<onfocus condition="string.isempty(listitem.dbid) + !string.isempty(window(music).property(artist_id))">ClearProperty(artist_id,music)</onfocus>
+				<onfocus condition="string.isempty(listitem.dbid) + !string.isempty(window(music).property(song_fn))">ClearProperty(song_fn,music)</onfocus>
+				<onfocus condition="string.isempty(listitem.dbid) + !string.isempty(window(music).property(album_fn))">ClearProperty(album_fn,music)</onfocus>
+			<onfocus condition="string.isempty(listitem.dbid) + !string.isempty(listitem.folderpath)">SetProperty(url,$INFO[listitem.folderpath],music)</onfocus>
+			<onfocus condition="string.isempty(listitem.dbid) + string.isempty(listitem.folderpath) + !string.isempty(listitem.filenameandpath)">SetProperty(url,$INFO[listitem.filenameandpath],music)</onfocus>
 			
 		</control>
 	</include>
 	
+	<include name="skin_contextfinction_playlist">
+		<visible>true</visible>
+				<texturefocus />
+				<texturenofocus />
+				<width>450</width>
+				<align>center</align>
+				<font>InfoCommon</font>
+				<onclick>SetProperty(shortcutaction_inprogress,fakeforplaylistfunctions,home)</onclick>
+				<onclick condition="!player.hasmedia">Playlist.Clear</onclick>
+					<!-- <onclick condition="!string.isempty(window(music).property(song_id))">activatewindow(music,musicdb://songs/?songid=$INFO[Window(music).Property(song_id)],return)</onclick> -->
+					<!-- <onclick condition="!string.isempty(window(music).property(album_id))">activatewindow(music,musicdb://albums/?albumid=$INFO[Window(music).Property(album_id)],return)</onclick> -->
+				<onclick condition="!string.isempty(window(music).property(song_fn))">activatewindow(music,musicdb://songs/?xsp=%7B%22limit%22%3A1%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22Filename%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[window(music).property(song_fn)]%22%5D%7D%5D%7D%2C%22type%22%3A%22songs%22%7D,return)</onclick>
+				<onclick condition="!string.isempty(window(music).property(album_fn))">activatewindow(music,musicdb://albums/?xsp=%7B%22limit%22%3A1%2C%22rules%22%3A%7B%22or%22%3A%5B%7B%22field%22%3A%22album%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[window(music).property(album_fn)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D,return)</onclick>
+				
+				<onclick condition="!string.isempty(window(music).property(artist_id))">activatewindow(music,musicdb://artists/?artistid=$INFO[Window(music).Property(artist_id)],return)</onclick>
+				<onclick condition="!string.isempty(window(music).property(url))">activatewindow(music,$INFO[window(music).property(url)],return)</onclick>
+				
+				<onclick>RunScript(script.embuary.helper,action=settimer,do='"$VAR[actiondown]$PARAM[action]||Container.Update||$VAR[clear]||ReplaceWindow(1110)||ClearProperty(shortcutaction_inprogress,home)"',busydialog=false)</onclick>
+	</include>
+	<variable name="actiondown">
+		<value condition="System.GetBool(filelists.showparentdiritems)">action(down)||</value>
+		<value></value>
+	</variable>
+	<variable name="clear">
+		<value condition="!String.IsEmpty(Window(music).Property(song_fn))">ClearProperty(song_fn,music)</value>
+		<value condition="!String.IsEmpty(Window(music).Property(album_fn))">ClearProperty(album_fn,music)</value>
+		<value condition="!String.IsEmpty(Window(music).Property(song_id))">ClearProperty(song_id,music)</value>
+		<value condition="!String.IsEmpty(Window(music).Property(album_id))">ClearProperty(album_id,music)</value>
+		<value condition="!String.IsEmpty(Window(music).Property(artist_id))">ClearProperty(artist_id,music)</value>
+		<value condition="!String.IsEmpty(Window(music).Property(url))">ClearProperty(url,music)</value>
+	</variable>
 	
 	
-
+	
 
 	<variable name="debug_trailer_available">
 		<value condition="!String.IsEmpty(Window(home).Property(trailer_avail))">[COLOR green]Trailer is available[/COLOR]</value>

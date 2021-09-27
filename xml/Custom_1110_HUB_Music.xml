@@ -93,13 +93,19 @@ default
 		<effect type="fade" start="100" end="0" time="300" tween="sine" easing="out" />
 		<effect type="zoom" center="50%,50%" start="100" end="0" time="300" tween="cubic" easing="out" />
 	</animation>
-	<onload condition="!String.IsEmpty(Window(music).Property(album_id)">ClearProperty(album_id,music)</onload>
-	<onload condition="!String.IsEmpty(Window(music).Property(song_id)">ClearProperty(song_id,music)</onload>
-	<onload condition="!String.IsEmpty(Window(home).Property(shortcutaction_inprogress)">ClearProperty(shortcutaction_inprogress,home)</onload>
+		
+		<onload condition="!String.IsEmpty(Window(music).Property(song_fn))">ClearProperty(song_fn,music)</onload>
+		<onload condition="!String.IsEmpty(Window(music).Property(album_fn))">ClearProperty(album_fn,music)</onload>
+		<onload condition="!String.IsEmpty(Window(music).Property(song_id))">ClearProperty(song_id,music)</onload>
+		<onload condition="!String.IsEmpty(Window(music).Property(album_id))">ClearProperty(album_id,music)</onload>
+		<onload condition="!String.IsEmpty(Window(music).Property(artist_id))">ClearProperty(artist_id,music)</onload>
+		<onload condition="!String.IsEmpty(Window(music).Property(url))">ClearProperty(url,music)</onload>
+	
 	
 	<!-- Window.Previous|Next(**) dont get wished result, no 'real window change perform' idkw -->
 	<onload condition="!Skin.HasSetting(MusicHUB_StartUprecommendation) + String.IsEmpty(Window(home).Property(HUB_Music))">SetProperty(HUB_Music,common,home)</onload>
 	<onload condition="Skin.HasSetting(MusicHUB_StartUprecommendation) + String.IsEmpty(Window(home).Property(HUB_Music))">SetProperty(HUB_Music,recommendation,home)</onload>
+	
 	
 	<onload condition="!String.IsEqual(Window(home).Property(HUB_Music),SongsByAlbum) + !String.IsEmpty(Window(home).Property(HUB_containerpath_albums))">ClearProperty(HUB_containerpath_albums,home)</onload>
 	<onload condition="!String.IsEqual(Window(home).Property(HUB_Music),SongsByAlbum) + !String.IsEmpty(Window(home).Property(HUB_containerpath_songs))">ClearProperty(HUB_containerpath_songs,home)</onload>
@@ -2599,9 +2605,9 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<onup>501860</onup>
 			<ondown>501860</ondown>
 			
-			<onright condition="[Integer.IsGreater(Container(7000).NumItems,0) + !Container(7000).IsUpdating">SetProperty(CurrentPlaylistVisible,true)</onright>
-			<onright condition="[Integer.IsGreater(Container(7000).NumItems,0) + !Container(7000).IsUpdating">SetFocus(7000)</onright>
-			<onright condition="[!Integer.IsGreater(Container(7000).NumItems,0)">5018</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0) + !Container(7000).IsUpdating">SetProperty(CurrentPlaylistVisible,true)</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0) + !Container(7000).IsUpdating">SetFocus(7000)</onright>
+			<onright condition="!Integer.IsGreater(Container(7000).NumItems,0)">5018</onright>
 			<onleft>6666</onleft>
 			
 		</control>
