@@ -52,8 +52,8 @@ add()
 				<onfocus condition="string.isempty(listitem.dbid) + !string.isempty(window(music).property(artist_id))">ClearProperty(artist_id,music)</onfocus>
 				<onfocus condition="string.isempty(listitem.dbid) + !string.isempty(window(music).property(song_fn))">ClearProperty(song_fn,music)</onfocus>
 				<onfocus condition="string.isempty(listitem.dbid) + !string.isempty(window(music).property(album_fn))">ClearProperty(album_fn,music)</onfocus>
-			<onfocus condition="string.isempty(listitem.dbid) + !string.isempty(listitem.folderpath)">SetProperty(url,$INFO[listitem.folderpath],music)</onfocus>
-			<onfocus condition="string.isempty(listitem.dbid) + string.isempty(listitem.folderpath) + !string.isempty(listitem.filenameandpath)">SetProperty(url,$INFO[listitem.filenameandpath],music)</onfocus>
+			<onfocus condition="[string.isempty(listitem.dbid) | string.isequal(listitem.dbtype,genre) | string.isequal(listitem.dbtype,year)] + !string.isempty(listitem.folderpath)">SetProperty(url,$INFO[listitem.folderpath],music)</onfocus>
+			<onfocus condition="[string.isempty(listitem.dbid) | string.isequal(listitem.dbtype,genre) | string.isequal(listitem.dbtype,year)] + string.isempty(listitem.folderpath) + !string.isempty(listitem.filenameandpath)">SetProperty(url,$INFO[listitem.filenameandpath],music)</onfocus>
 			
 		</control>
 	</include>
@@ -79,6 +79,7 @@ add()
 	</include>
 	<variable name="actiondown">
 		<value condition="System.GetBool(filelists.showparentdiritems)">action(down)||</value>
+		<!-- <value condition="System.GetBool(filelists.showparentdiritems) + [[!string.isempty(window(music).property(album_fn)) | !string.isempty(window(music).property(album_id))] + System.GetBool(musiclibrary.showallitems)]">action(down)||action(down)||</value> -->
 		<value></value>
 	</variable>
 	<variable name="clear">
