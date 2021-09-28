@@ -5,43 +5,57 @@
 	<menucontrol>9000</menucontrol>
 	<onload condition="!Skin.HasSetting(initial_startup_done)">ReplaceWindow(1101)</onload>
 	<onload condition="!String.IsEmpty(Window(Home).Property(menucontrol_active))">ClearProperty(menucontrol_active,home)</onload>
-	<onload>SetFocus(9000)</onload>
-	<!-- <onload condition="Skin.HasSetting(TMDbHelper_Ratings) + !Skin.HasSetting(TMDbHelper.Service) + !$EXP[IsOfflineMode]">Skin.SetBool(TMDbHelper.Service)</onload>
+	
+	<!-- 
+	<onload condition="Skin.HasSetting(TMDbHelper_Ratings) + !Skin.HasSetting(TMDbHelper.Service) + !$EXP[IsOfflineMode]">Skin.SetBool(TMDbHelper.Service)</onload>
 	<onload condition="!Skin.HasSetting(TMDbHelper.DisableArtwork)">Skin.SetBool(TMDbHelper.DisableArtwork)</onload>
-	<onload condition="!Skin.HasSetting(TMDbHelper.DisablePersonStats)">Skin.SetBool(TMDbHelper.DisablePersonStats)</onload> -->
+	<onload condition="!Skin.HasSetting(TMDbHelper.DisablePersonStats)">Skin.SetBool(TMDbHelper.DisablePersonStats)</onload>
+	 -->
+	
 	<onload>SetFocus(9000)</onload>
 	<controls>
+		
 		<control type="label">
 			<info>Weather.ConditionsIcon</info>
 			<include>HiddenObject</include>
 		</control>
+		
 		<!-- <control type="list" id="2000">
 			<include>HiddenContainer</include>
 			<visible>Skin.HasSetting(home_showspecialratings)</visible>
 			<content limit="1">$VAR[EmbuaryHelper_GetInfo_dbid]</content>
 		</control> -->
+		
 		<include condition="!String.IsEqual(Skin.String(HomeLayout),MenuTiles)" content="global_background" />
+	
 		<control type="group">
 			<include content="Animation_TransitionFadeOut">
 				<param name="condition" value="Window.IsActive(1122) | $EXP[Infodialog_IsActive] | Window.IsActive(mediasource) | Window.IsActive(shutdownmenu)" />
 			</include>
+			
 			<control type="group">
 				<description>home layouts</description>
 							<!-- TEMP SLIDE non custom menu -->
 							<animation effect="zoom" start="70" end="100" time="250" center="85%,25%" condition="!ControlGroup(9000).HasFocus()">Conditional</animation>
+				
 				<include condition="String.IsEqual(Skin.String(HomeLayout),Spotlight)">Home_Layout_Spotlight</include>
 				<include condition="String.IsEmpty(Skin.String(HomeLayout)) | String.IsEqual(Skin.String(HomeLayout),WidgetsOnly)">Home_Layout_WidgetOnly</include>
 			</control>
+			
 			<control type="group">
 				<description>menucontrol</description>
 				<include content="menucontrol_home_iconpanel_left" condition="Skin.HasSetting(useshortcut_mainmenu) + !String.IsEqual(Skin.String(HomeLayout),MenuTiles)" />
 				<include content="Menucontrol_Home_test1" condition="!Skin.HasSetting(useshortcut_mainmenu) + !String.IsEqual(Skin.String(HomeLayout),MenuTiles)" />
 				<include content="Menucontrol_Home_MenuTiles" condition="String.IsEqual(Skin.String(HomeLayout),MenuTiles)" />
 			</control>
+			
 			<!-- <include condition="Skin.HasSetting(home_showspecialratings)">footer</include> -->
 		</control>
+		
+		
+		
 		<include content="swan_debug_overlay">
-            <param name="textleft" value="
+			<param name="textleft" value="
 
 99005 $INFO[Control.GetLabel(99005)]
 99006 $INFO[Control.GetLabel(99006)]
