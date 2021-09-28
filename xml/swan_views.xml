@@ -62,6 +62,8 @@ add()
 		</control>
 	</include>
 	
+	
+	
 	<include name="skin_contextfinction_playlist">
 		<visible>!string.isempty(window(home).property(song_fn)) | !string.isempty(window(home).property(album_fn)) | !string.isempty(window(home).property(artist_fn)) | !string.isempty(window(home).property(url))</visible>
 				<texturefocus />
@@ -80,29 +82,16 @@ add()
 				<onclick condition="!string.isempty(window(home).property(artist_fn))">activatewindow(music,musicdb://artists/?xsp=%7B%22limit%22%3A1%2C%22rules%22%3A%7B%22or%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[window(home).property(artist_fn)]%22%5D%7D%5D%7D%2C%22type%22%3A%22artists%22%7D,return)</onclick>
 				
 				<onclick condition="!string.isempty(window(home).property(url))">activatewindow(music,$INFO[window(home).property(url)],return)</onclick>
-				<!-- <onclick>RunScript(script.embuary.helper,action=settimer,do='"$VAR[actiondown]$PARAM[action]||Container.Refresh"',busydialog=false)</onclick> -->
-				<onclick>RunScript(script.embuary.helper,action=settimer,do='"$VAR[actiondown]$PARAM[action]||Container.Refresh||$VAR[clear]||ReplaceWindow(1110)"',delay=100,busydialog=false)</onclick>
+				<onclick>RunScript(script.embuary.helper,action=settimer,do='"$VAR[actiondown]$PARAM[action]||ReplaceWindow(1110)"',busydialog=false)</onclick>
+				<!-- <onclick>RunScript(script.embuary.helper,action=settimer,do='"$VAR[actiondown]$PARAM[action]||ReplaceWindow(1110)||ClearProperty(shortcutaction_inprogress,home)"',time=500,delay=100,busydialog=false)</onclick> -->
 	</include>
 	
-	
+	<!-- System.HasVisibleModalDialog Activate of window '11110' refused because there are active modal dialogs -->
 	<variable name="actiondown">
 		<value condition="System.GetBool(filelists.showparentdiritems)">action(down)||</value>
-		<!-- <value condition="System.GetBool(filelists.showparentdiritems) + [[!string.isempty(window(home).property(album_fn)) | !string.isempty(window(home).property(album_id))] + System.GetBool(musiclibrary.showallitems)]">action(down)||action(down)||</value> -->
 		<value></value>
 	</variable>
-	<variable name="clear">
-		<value condition="!String.IsEmpty(Window(home).Property(song_fn))">ClearProperty(song_fn,home)</value>
-		<value condition="!String.IsEmpty(Window(home).Property(album_fn))">ClearProperty(album_fn,home)</value>
-		<value condition="!String.IsEmpty(Window(home).Property(artist_fn))">ClearProperty(artist_fn,home)</value>
-		<value condition="!String.IsEmpty(Window(home).Property(song_id))">ClearProperty(song_id,home)</value>
-		<value condition="!String.IsEmpty(Window(home).Property(album_id))">ClearProperty(album_id,home)</value>
-		<value condition="!String.IsEmpty(Window(home).Property(artist_id))">ClearProperty(artist_id,home)</value>
-		<value condition="!String.IsEmpty(Window(home).Property(url))">ClearProperty(url,home)</value>
-	</variable>
 	
-	
-	
-
 	<variable name="debug_trailer_available">
 		<value condition="!String.IsEmpty(Window(home).Property(trailer_avail))">[COLOR green]Trailer is available[/COLOR]</value>
 		<value>[COLOR grey]NO TRAILER AVAILABLE[/COLOR]</value>
