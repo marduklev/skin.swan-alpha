@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import xbmc
-import xbmcgui
 
 playlist = xbmc.PlayList(0)
 current = playlist.getposition()
