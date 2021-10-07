@@ -6,4 +6,3 @@ current = playlist.getposition()
 selected = xbmc.getInfoLabel('ListItem.CurrentItem')
 index = int(selected) - int(current) -1
 xbmc.executebuiltin('Playlist.PlayOffset(%s)' % (index))
-
