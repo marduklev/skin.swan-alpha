@@ -2,6 +2,8 @@
 <window>
 	<defaultcontrol always="true">2</defaultcontrol>
 	<onload condition="skin.hassetting(bookmark_pauseonload) + !player.paused">PlayerControl(play)</onload>
+	<onunload condition="!String.IsEmpty(Window(home).Property(VideoBookmarks))">ClearProperty(VideoBookmarks,home)</onunload>
+	<onload condition="!String.IsEmpty(Window(home).Property(VideoBookmarks))">SetFocus(7000,0,absolute)</onload>
 	<controls>
 		<control type="group">
 			<animation type="WindowOpen">
@@ -26,6 +28,7 @@
 				</control>
 				
 				<control type="grouplist">
+					<visible>String.IsEmpty(Window(home).Property(VideoBookmarks))</visible>
 					<orientation>vertical</orientation>
 					<itemgap>10</itemgap>
 					<height>220</height>
@@ -72,7 +75,7 @@
 				<!-- reminder <param name="type" value="list" /> get unfocused param for any other than panel -->
 				<include content="Universal_Container">
 					<param name="id" value="11" />
-					<param name="visible" value="true" />
+					<param name="visible" value="String.IsEmpty(Window(home).Property(VideoBookmarks))" />
 					
 					<param name="type_height" value="250" />
 					<param name="type_pos_top" value="10" />
@@ -86,6 +89,29 @@
 					<left>150</left>
 					<ondown>2</ondown>
 					<onup>dialog.close(videobookmarks)</onup>
+				</include>
+				
+				<include content="Universal_Container">
+					<param name="id" value="7000" />
+					<param name="visible" value="!String.IsEmpty(Window(home).Property(VideoBookmarks))" />
+					
+					<param name="type_height" value="250" />
+					<param name="type_pos_top" value="10" />
+					
+					<param name="layout_height" value="170" />
+					<param name="layout_width" value="300" />
+					<param name="itemwidth" value="290" />
+					<param name="itemheight" value="155" />
+					
+					<param name="item_artwork_name" value="fanart" />
+					<left>150</left>
+					<ondown>2</ondown>
+					<onup>dialog.close(videobookmarks)</onup>
+					<!-- pr pending <onclick>RunScript(script.embuary.helper,action=playlistplayoffset,type=music)</onclick> -->
+					<onclick>Runscript(special://skin/scripts/playlistplayoffset.py)</onclick>
+					
+					<content>playlistvideo://</content>
+					
 				</include>
 			</control>
 		</control>
