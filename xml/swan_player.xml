@@ -603,7 +603,8 @@
 	
 	<!-- Infos -->
 	<variable name="VideoPlayerInfo">
-		<value condition="window.isactive(videobookmarks)">$INFO[System.CurrentWindow,[B],[/B]]</value>
+		<value condition="window.isactive(videobookmarks) + String.IsEmpty(Window(home).Property(VideoBookmarks))">$INFO[System.CurrentWindow,[B],[/B]]</value>
+		<value condition="window.isactive(videobookmarks) + !String.IsEmpty(Window(home).Property(VideoBookmarks))">[B]Current Playlist[/B]</value>
 		<value condition="!window.isactive(videobookmarks) + Player.HasVideo + VideoPlayer.Content(episodes)">[B]$INFO[VideoPlayer.TVShowTitle,,  •  ]$LOCALIZE[20373]$INFO[VideoPlayer.Season, ,]  $LOCALIZE[20359] $INFO[VideoPlayer.Episode, ,][/B]$INFO[Player.Title,[B]  |  ,[/B]]</value>
 		<value condition="!window.isactive(videobookmarks)">$INFO[Player.Title,[B],[/B]]$INFO[VideoPlayer.Year,[B]  (,) [/B]]</value>
 	</variable>
@@ -758,4 +759,10 @@
 		<onclick condition="player.paused">AlarmClock(timeout_close_videoosd,dialog.close(videoosd),00:0$INFO[Skin.String(timeout_close_videoosd)],silent)</onclick>
 		<onunfocus condition="System.HasAlarm(timeout_close_videoosd)">CancelAlarm(timeout_close_videoosd,silent)</onunfocus>
 	</include>
+	<variable name="playlist_foldercontent">
+		<value condition="Integer.IsGreater(VideoPlayer.PlaylistLength,1)">playlistvideo://</value>
+		<value condition="!String.IsEmpty(VideoPlayer.TvShowDBID) + !String.IsEmpty(VideoPlayer.Season)">videodb://tvshows/titles/$INFO[VideoPlayer.TvShowDBID]/$INFO[VideoPlayer.Season]/?tvshowid=$INFO[VideoPlayer.TvShowDBID]</value>
+	</variable>
+	
+	
 </includes>

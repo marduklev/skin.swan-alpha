@@ -3,7 +3,7 @@
 	<defaultcontrol always="true">2</defaultcontrol>
 	<onload condition="skin.hassetting(bookmark_pauseonload) + !player.paused">PlayerControl(play)</onload>
 	<onunload condition="!String.IsEmpty(Window(home).Property(VideoBookmarks))">ClearProperty(VideoBookmarks,home)</onunload>
-	<onload condition="!String.IsEmpty(Window(home).Property(VideoBookmarks))">SetFocus(7000,0,absolute)</onload>
+	<onload condition="!String.IsEmpty(Window(home).Property(VideoBookmarks))">SetFocus(7000)</onload>
 	<controls>
 		<control type="group">
 			<animation type="WindowOpen">
@@ -108,10 +108,10 @@
 					<ondown>2</ondown>
 					<onup>dialog.close(videobookmarks)</onup>
 					<!-- pr pending <onclick>RunScript(script.embuary.helper,action=playlistplayoffset,type=music)</onclick> -->
-					<onclick>Runscript(special://skin/scripts/playlistplayoffset.py)</onclick>
+					<onclick condition="Integer.IsGreater(VideoPlayer.PlaylistLength,1)">Runscript(special://skin/scripts/playlistplayoffset.py)</onclick>
+					<!-- <onclick condition="!Integer.IsGreater(VideoPlayer.PlaylistLength,1)"></onclick> -->
 					
-					<content>playlistvideo://</content>
-					
+					<content>$VAR[playlist_foldercontent]</content>
 				</include>
 			</control>
 		</control>

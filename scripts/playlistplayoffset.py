@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import xbmc
 
-playlist = xbmc.PlayList(0)
+playlistid = 1 if xbmc.getCondVisibility('Player.HasVideo') else 0
+playlist = xbmc.PlayList(playlistid)
 current = playlist.getposition()
 selected = xbmc.getInfoLabel('ListItem.CurrentItem')
 index = int(selected) - int(current) -1

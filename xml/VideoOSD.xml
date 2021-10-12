@@ -116,10 +116,15 @@
 						<visible>!VideoPlayer.Content(livetv)</visible>
 					</control>
 					<control type="button" id="6131">
-						<texturefocus colordiffuse="$VAR[color_osdmusic_accent]">buttons/osd/playlist.png</texturefocus>
-						<texturenofocus colordiffuse="$VAR[color_osdmusic_secondary]">buttons/osd/playlist.png</texturenofocus>
+						<texturefocus colordiffuse="$VAR[color_osdvideo_button_fo]">buttons/osd/playlist.png</texturefocus>
+						<texturenofocus colordiffuse="$VAR[color_osdvideo_button_nf]">buttons/osd/playlist_nf.png</texturenofocus>
 						<!-- <onclick>ActivateWindow(1140,return)</onclick> -->
-						<!-- abuse bookmark window or create own and extend all th  expressions -->
+						<!-- abuse bookmark window till create own and extend all the expressions -->
+						<include condition="$PARAM[can_autoclose_osd]" content="Close_OSD_onfocus" />
+						<include>Animation_Item_Focus</include>
+						<width>60</width>
+						<height>60</height>
+						<visible>Integer.IsGreater(VideoPlayer.PlaylistLength,1) | [!String.IsEmpty(VideoPlayer.TvShowDBID) + !String.IsEmpty(VideoPlayer.Season)]</visible>
 						<onclick>SetProperty(VideoBookmarks,custom,home)</onclick>
 						<onclick>ActivateWindow(VideoBookmarks)</onclick>
 					</control>
