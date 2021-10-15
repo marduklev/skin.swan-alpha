@@ -31,26 +31,29 @@
 			<effect type="slide" start="0,0" end="2050,0" time="400" />
 		</animation>
 		
+		<!-- cond posy  when provide setting dont show info
+		<animation effect="slide" start="0,0" end="0,130" time="0" condition="true">conditional</animation>
+		 -->
 		<include>hide_upnextbuttons</include>
 		
 		<control type="image">
 			<right>0</right>
 			<bottom>0</bottom>
 			<height>550</height>
-			<width>600</width>
-			<texture border="5" colordiffuse="$VAR[color_playerpopups_background]">diffuse/gradient.png</texture>
+			<width>580</width>
+			<texture colordiffuse="$VAR[color_playerpopups_background]">diffuse/gradient.png</texture>
 		</control>
 		<control type="grouplist">
-			<right>0</right>
+			<right>10</right>
 			<bottom>0</bottom>
 			<height>550</height>
 			<width>550</width>
-			<itemgap>10</itemgap>
+			<itemgap>5</itemgap>
 			<orientation>vertical</orientation>
 			<control type="label">
 				<left>20</left>
 				<width>550</width>
-				<height>35</height>
+				<height>40</height>
 				<align>left</align>
 				<aligny>bottom</aligny>
 				<textcolor>$VAR[color_playerpopups_text_main]</textcolor>
@@ -65,7 +68,7 @@
 				<font>font_Montserrat_18_extrabold</font>
 				<aligny>bottom</aligny>
 				<textcolor>$VAR[color_playerpopups_text_main]</textcolor>
-				<label>Next Episode Playing in [COLOR=cyan][B]$INFO[Player.TimeRemaining(ss), ,][/COLOR][/B] seconds...</label>
+				<label>Next Episode Playing in [COLOR $VAR[color_playerpopups_accent]][B]$INFO[Player.TimeRemaining(ss), ,][/COLOR][/B]  seconds...</label>
 			</control>
 			<control type="group">
 				<left>20</left>
@@ -77,7 +80,7 @@
 					<bordersize>4</bordersize>
 					<bordertexture colordiffuse="$VAR[color_playerpopups_text_main]">colors/white.png</bordertexture>
 					<texture>$VAR[NextUpThumb]</texture>
-					<aspectratio scalediffuse="false" align="center" aligny="center">scale</aspectratio>
+					<aspectratio align="center" aligny="center">scale</aspectratio>
 				</control>
 				<control type="image">
 					<left>13</left>
@@ -85,26 +88,47 @@
 					<width>70</width>
 					<height>70</height>
 					<texture colordiffuse="$VAR[color_playerpopups_text_main]">$VAR[nextupbutton_TimeRemaining]</texture>
-					<aspectratio scalediffuse="false" align="center" aligny="center">keep</aspectratio>
+					<aspectratio align="center" aligny="center">keep</aspectratio>
 				</control>
 				<control type="image">
 					<bottom>-1</bottom>
-					<height>55</height>
+					<height>100</height>
 					<width>500</width>
 					<bordersize>5</bordersize>
-					<texture colordiffuse="ff000000">diffuse/gradient.png</texture>
+					<texture colordiffuse="ff000000">diffuse/episodeinfogradient.png</texture>
 				</control>
 				<control type="label">
-					<bottom>10</bottom>
-					<left>13</left>
-					<height>20</height>
-					<width>auto</width>
+					<visible>!String.IsEmpty(Window.Property(title))</visible>
+					<bottom>22</bottom>
+					<left>10</left>
+					<height>30</height>
+					<width>500</width>
 					<textcolor>$VAR[color_playerpopups_text_main]</textcolor>
-					<font>MenucontrolSectionHeading</font>
-					<label>$INFO[Window.Property(season),S,: ]$INFO[Window.Property(episode),E,]</label>
+					<font>font20_title</font>
+					<label>$INFO[Window.Property(title)]</label>
+				</control>
+				<control type="label">
+					<visible>!String.IsEmpty(Window.Property(season)) + !String.IsEmpty(Window.Property(episode))</visible>
+					<bottom>3</bottom>
+					<left>10</left>
+					<height>30</height>
+					<width>500</width>
+					<textcolor>$VAR[color_playerpopups_text_main]</textcolor>
+					<!-- <textcolor>grey</textcolor> -->
+					<font>debugtiny</font>
+					<label>$INFO[Window.Property(season),$LOCALIZE[20373] [B],[/B]]$INFO[Window.Property(episode), $LOCALIZE[20359] [B],[/B]]</label>
+				</control>
+				<control type="image">
+					<width>500</width>
+					<height>23</height>
+					<bottom>12</bottom>
+					<right>12</right>
+					<texture fallback="flags/rating/stars/0.0.png" colordiffuse="$VAR[color_playerpopups_accent]">$VAR[stars_rating_$PARAM[infolabel_prefix]]</texture>
+					<aspectratio align="right" aligny="center">keep</aspectratio>
 				</control>
 			</control>
 			<control type="label">
+				<visible>false</visible>
 				<left>20</left>
 				<height>25</height>
 				<width>auto</width>
@@ -121,12 +145,19 @@
 				<left>20</left>
 				<height>35</height>
 				<width>680</width>
+				<control type="image">
+					<visible>false</visible>
+					<width>105</width>
+					<height>40</height>
+					<texture fallback="flags/rating/stars/empty.png" colordiffuse="$VAR[color_playerpopups_accent]">$VAR[stars_rating_$PARAM[infolabel_prefix]]</texture>
+					<aspectratio align="left" aligny="center">keep</aspectratio>
+				</control>
 				<control type="label">
 					<width>auto</width>
 					<height>40</height>
 					<aligny>center</aligny>
 					<font>debugtiny</font>
-					<textcolor>cyan</textcolor>
+					<textcolor>$VAR[color_playerpopups_accent]</textcolor>
 					<label>$INFO[Window.Property(year)]</label>
 					<visible>!String.IsEmpty(Window.Property(year))</visible>
 				</control>
@@ -138,7 +169,7 @@
 						<width>100</width>
 						<height>30</height>
 						<aspect>keep</aspect>
-						<texture align="center" colordiffuse="cyan" border="2">frames/framefilled.png</texture>
+						<texture align="center" colordiffuse="$VAR[color_playerpopups_accent]" border="2">frames/framefilled.png</texture>
 					</control>
 					<control type="label">
 						<width>100</width>
@@ -146,10 +177,9 @@
 						<aligny>center</aligny>
 						<align>center</align>
 						<font>font_Montserrat_18_extrabold</font>
-						<textcolor>cyan</textcolor>
-						<label>$INFO[VideoPlayer.mpaa]</label>
-						<visible>!String.IsEmpty(VideoPlayer.mpaa))</visible> <!-- need disabled if playlist -->
-						<!-- <visible>!String.IsEmpty(Window.Property(mpaa))</visible> ,not in yet,maybe sometime -->
+						<textcolor>$VAR[color_playerpopups_accent]</textcolor>
+						<label>$VAR[UpNext_label_genre]</label>
+						<visible>!String.IsEmpty(VideoPlayer.mpaa) | !String.IsEmpty(VideoPlayer.Offset(1).mpaa)</visible>
 					</control>
 				</control>
 				<control type="label">
@@ -157,7 +187,7 @@
 					<height>40</height>
 					<aligny>center</aligny>
 					<font>font_Montserrat_18_extrabold</font>
-					<textcolor>cyan</textcolor>
+					<textcolor>$VAR[color_playerpopups_accent]</textcolor>
 					<label>HD</label>
 					<!-- <visible>!String.IsEmpty(VideoPlayer.**)</visible> , not in yet, maybe sometime -->
 				</control>
@@ -167,7 +197,7 @@
 					<width>136.84</width>
 					<height>43,2</height>
 					<aspectratio aligny="center" align="left">keep</aspectratio>
-					<texture colordiffuse="cyan" background="true">$INFO[VideoPlayer.Studio,resource://resource.images.studios.white/,.png]</texture>
+					<texture colordiffuse="$VAR[color_playerpopups_accent]" background="true">$VAR[UpNext_label_studio,resource://resource.images.studios.white/,.png]</texture>
 					<visible>!String.IsEmpty(VideoPlayer.Studio)</visible>
 				</control>
 			</control>
@@ -183,7 +213,7 @@
 			</control>
 		</control>
 	</include>
-		<!-- Addon default  -->
+	
 	<include name="upnext_fancy_default">
 		<animation type="WindowOpen" reversible="false">
 			<effect type="fade" start="0" end="100" time="400" />
@@ -438,6 +468,7 @@
 			<bottom>0</bottom>
 			<height>100%</height>
 			<width>100%</width>
+			add from titan
 			<texture colordiffuse="$VAR[color_playerpopups_background]">$VAR[UpNextPanel]</texture>  
 		</control>	
 		<control type="group">
@@ -457,7 +488,7 @@
 			</control>
 			<!-- Countdown image -->
 			<control type="image">
-				<visible>Skin.HasSetting(UpNext_ShowCountdownAtThumb)</visible>
+				<!-- <visible>Skin.HasSetting(UpNext_ShowCountdownAtThumb)</visible> -->
 				<top>95</top>
 				<left>210</left>
 				<width>80</width>
@@ -473,7 +504,7 @@
 			<width>387</width>
             <height>135</height>
 			<aspectratio aligny="center" align="right">keep</aspectratio>
-			<texture colordiffuse="$VAR[color_playerpopups_text_main]" background="true">$INFO[Skin.String(SkinHelper.studiologos.path)]$INFO[VideoPlayer.Studio].png</texture>
+			<texture colordiffuse="$VAR[color_playerpopups_main]" background="true">$VAR[UpNext_label_studio,resource://resource.images.studios.white/,.png]</texture>
 			<visible>!String.IsEmpty(VideoPlayer.Studio)</visible>
 		</control>
 		<!-- clearlogo -->
@@ -512,7 +543,7 @@
 				<textcolor>$VAR[color_playerpopups_text_main]</textcolor>
 				<shadowcolor></shadowcolor>
 				<font>Light32</font>
-				<label>[B]$LOCALIZE[31212][/B]</label>
+				<label>[B]Als nächstes[/B]</label>
 			</control>	
 			<control type="label">
 				<height>30</height>
@@ -569,7 +600,7 @@
 				<wrapmultiline>true</wrapmultiline>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>cyan</textcolor>
+				<textcolor>$VAR[color_playerpopups_accent]</textcolor>
 				<shadowcolor></shadowcolor>
 				<font>Bold28</font>
 				<label>[UPPERCASE][B]$INFO[Window.Property(tvshowtitle)][/B][/UPPERCASE]</label>
@@ -583,8 +614,8 @@
 				<height>35</height>
 				<aligny>center</aligny>
 				<font>Reg28</font>
-				<textcolor>cyan</textcolor>
-				<label>$LOCALIZE[31212] : [COLOR=$VAR[color_playerpopups_text_main]]$INFO[Window.Property(season),$LOCALIZE[20373] [B],[/B] • ]$INFO[Window.Property(episode),$LOCALIZE[20359] [B],[/B]][B]$INFO[Window.Property(title), • ,][/COLOR][B] • Starting in[COLOR=$VAR[color_playerpopups_text_main]][B]$INFO[Player.TimeRemaining(ss),[/B] ,][/COLOR] seconds</label>
+				<textcolor>$VAR[color_playerpopups_accent]</textcolor>
+				<label>$LOCALIZE[31212] : [COLOR=$VAR[color_playerpopups_text_main]]$INFO[Window.Property(season),$LOCALIZE[20373] [B],[/B] • ]$INFO[Window.Property(episode),$LOCALIZE[20359] [B],[/B]][B]$INFO[Window.Property(title), • ,][/COLOR][B] • Starting in[COLOR=$VAR[color_playerpopups_text_main]][B]$INFO[Player.TimeRemaining(ss),[/B] ,][/COLOR]  seconds</label>
 			</control>
 			
 			<control type="grouplist">
@@ -640,7 +671,7 @@
 					<width>136.84</width>
 					<height>43,2</height>
 					<aspectratio aligny="center" align="left">keep</aspectratio>
-					<texture colordiffuse="$VAR[color_playerpopups_text_main]" background="true">$INFO[Skin.String(SkinHelper.studiologos.path)]$INFO[VideoPlayer.Studio].png</texture>
+					<texture colordiffuse="$VAR[color_playerpopups_accent]" background="true">$VAR[UpNext_label_studio,resource://resource.images.studios.white/,.png]</texture>
 					<visible>!String.IsEmpty(VideoPlayer.Studio)</visible>
 				</control>
 			</control>
@@ -825,12 +856,7 @@
 	<include name="Upnext_No_diffused_thumb">
 		<texture background="true" diffuse="nextupicons/diffusor_Square Bold.png">$VAR[NextUpThumb]</texture>
 	</include>
-	<include name="Upnext_diffused_clearlogo">
-		<texture background="true" fallback="$INFO[Window.Property(clearart)]" colordiffuse="$VAR[color_playerpopups_background]">$INFO[Window.Property(clearlogo)]</texture>
-	</include>
-	<include name="Upnext_No_diffused_clearlogo">
-		<texture background="true" fallback="$INFO[Window.Property(clearart)]">$INFO[Window.Property(clearlogo)]</texture>
-	</include>
+	
 	<variable name="nextupbutton_TimeRemaining">
 		<value condition="Integer.IsGreater(Player.TimeRemaining(ss),30)">nextupicons/30.png</value>
 		<value condition="Integer.IsLessOrEqual(Player.TimeRemaining(ss),30)">$INFO[Player.TimeRemaining(ss),nextupicons/,.png]</value>
@@ -843,5 +869,14 @@
 	<variable name="UpNextPanel">
 		<value condition="!Skin.HasSetting(UpNext_Use_Inked_Panel)">nextupicons/UpNext_corner.png</value> <!-- panel use just transparency, left border use color + transparency/diffuse -->
         <value condition="Skin.HasSetting(UpNext_Use_Inked_Panel)">nextupicons/UpNext_corner_iverted.png</value> <!-- <texture colordiffuse="red">nextupicons/UpNext_corner_iverted.png</texture>  panel use color + transparency/diffuse-->
+	</variable>
+	
+	<variable name="UpNext_label_genre">
+		<value condition="!String.IsEmpty(VideoPlayer.Offset(1).mpaa)">$INFO[VideoPlayer.Offset(1).mpaa]</value>
+		<value condition="!String.IsEmpty(VideoPlayer.mpaa)">$INFO[VideoPlayer.mpaa]</value>
+	</variable>
+	<variable name="UpNext_label_studio">
+		<value condition="!String.IsEmpty(VideoPlayer.Offset(1).studio)">$INFO[VideoPlayer.Offset(1).studio]</value>
+		<value condition="!String.IsEmpty(VideoPlayer.studio)">$INFO[VideoPlayer.studio]</value>
 	</variable>
 </includes>
