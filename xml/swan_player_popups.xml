@@ -1,24 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- may revisit github.com/im85288/service.upnext/wiki/Skinners -->
 <includes>
-	<include name="upnext_layout">
-		<defaultcontrol always="true">3012</defaultcontrol>
-		<onload>Dialog.Close(fullscreeninfo,true)</onload>
-		<onload>Dialog.Close(videoosd,true)</onload>
-		<controls>
-			<control type="group">
-				<include condition="String.IsEqual(Skin.String(nextuplayout),fancy_common)">upnext_fancy_common</include>
-				<include condition="String.IsEqual(Skin.String(nextuplayout),fancy_triangle)">upnext_fancy_triangle</include>
-				<include condition="String.IsEqual(Skin.String(nextuplayout),fancy_default)">upnext_fancy_default</include>
-				<include condition="String.IsEqual(Skin.String(nextuplayout),simple_common)">upnext_simple_common</include>
-				<include condition="String.IsEqual(Skin.String(nextuplayout),simple_small) | !Skin.String(nextuplayout)">upnext_simple_small</include>
-				<include condition="String.IsEqual(Skin.String(nextuplayout),simple_default)">upnext_simple_default</include>
-			</control>
-			
-		</controls>
+	<include name="upnext_buttons_hidden">
+		<control type="button" id="3013">
+			<include>HiddenObject</include>
+		</control>
+		<control type="progress" id="3014">
+			<include>HiddenObject</include>
+		</control>
 	</include>
-	<include name="stillwatching_layout">
-		<!-- ... -->
+	
+		<include name="upnext_button_invisible">
+				<control type="button" id="3012">
+					<description>touch workaround</description>
+					<right>0</right>
+					<bottom>0</bottom>
+					<width>100%</width>
+					<height>50%</height>
+					<align>right</align>
+					<texturefocus />
+					<texturenofocus />
+					<onleft>SendClick(3013)</onleft>
+					<onright>SendClick(3013)</onright>
+					<onup>SendClick(3013)</onup>
+					<ondown>SendClick(3013)</ondown>
+					<onback>SendClick(3013)</onback>
+				</control>
 	</include>
 	
 	<include name="upnext_fancy_common">
@@ -33,7 +40,7 @@
 		
 		<animation effect="slide" start="0,0" end="0,80" time="0" condition="Skin.HasSetting(upnext_noplot)">conditional</animation>
 		
-		<include>hide_upnextbuttons</include>
+		<include>upnext_buttons_hidden</include>
 		
 		<control type="image">
 			<right>0</right>
@@ -90,6 +97,9 @@
 					<texture>$VAR[NextUpThumb]</texture>
 					<aspectratio align="center" aligny="center">scale</aspectratio>
 				</control>
+				
+				<include content="upnext_button_invisible" />
+				
 				<control type="image">
 					<animation effect="zoom" start="100,100" center="auto" end="113,113" delay="100" time="550" pulse="true" condition="true">Conditional</animation>
 					<left>13</left>
@@ -154,18 +164,20 @@
 				</control>
 				<control type="button">
 					<width>auto</width>
-					<top>3</top>
+					<top>2</top>
 					<height>30</height>
-					<font>font_Montserrat_18_extrabold</font>
 					<align>center</align>
+					<aligny>top</aligny>
+					<textoffsety>3</textoffsety>
+					<font>debugtiny</font>
 					<textcolor>$VAR[color_playerpopups_text_main]</textcolor>
 					<disabledcolor>$VAR[color_playerpopups_text_main]</disabledcolor>
 					<label>$VAR[videoplayer_offset1_mpaa]</label>
 					<visible>!String.IsEmpty(VideoPlayer.Offset(1).mpaa) | !String.IsEmpty(VideoPlayer.mpaa)</visible>
 					<textoffsetx>10</textoffsetx>
 					<enable>false</enable>
-					<texturefocus align="center" colordiffuse="$VAR[color_playerpopups_accent]" border="3">frames/framefilled.png</texturefocus>
-					<texturenofocus align="center" colordiffuse="$VAR[color_playerpopups_accent]" border="3">frames/framefilled.png</texturenofocus>
+					<texturefocus align="center" colordiffuse="$VAR[color_playerpopups_accent]" border="2">frames/framefilled.png</texturefocus>
+					<texturenofocus align="center" colordiffuse="$VAR[color_playerpopups_accent]" border="2">frames/framefilled.png</texturenofocus>
 				</control>
 				<control type="label">
 					<visible>!String.IsEmpty(VideoPlayer.offset(1).VideoResolution)</visible>
@@ -438,16 +450,19 @@
 			<effect type="slide" start="0,0" end="1420,0" time="400" />
 		</animation>
 		
-		<include>hide_upnextbuttons</include>
+		<include>upnext_buttons_hidden</include>
 		
 		<control type="image">
 			<right>0</right>
 			<bottom>0</bottom>
 			<width>43%</width>
-			<texture colordiffuse="$VAR[color_playerpopups_accent]">nextupicons/upnext_cornerbg_border.png</texture>
-			<bordertexture colordiffuse="$VAR[color_playerpopups_background]">nextupicons/upnext_cornerbg.png</bordertexture>
+			<texture colordiffuse="$VAR[color_playerpopups_accent]">diffuse/triangleoverlay.png</texture>
+			<bordertexture colordiffuse="$VAR[color_playerpopups_background]">diffuse/triangle.png</bordertexture>
 			<aspectratio align="right" aligny="bottom">keep</aspectratio>
 		</control>
+		
+		<include content="upnext_button_invisible" />
+		
 		<control type="image">
 			<right>20</right>
 			<bottom>450</bottom>
@@ -466,8 +481,7 @@
 			<control type="image">
 				<right>0</right>
 				<width>410</width>
-				<!-- <texture diffuse="diffuse/diffuse_allcorners.png">$VAR[NextUpThumb]</texture> -->
-				<texture diffuse="nextupicons/diffusor_Square Bold.png">$VAR[NextUpThumb]</texture>
+				<texture diffuse="diffuse/diffusetranspedges.png">$VAR[NextUpThumb]</texture>
 				<aspectratio scalediffuse="false" align="right" aligny="bottom">scale</aspectratio>
 			</control>
 			<control type="image">
@@ -542,7 +556,7 @@
 
 	<include name="upnext_simple_common">
 		
-		<include>hide_upnextbuttons</include>
+		<include>upnext_buttons_hidden</include>
 		
 		<control type="image">
 			<description>revisit .......</description>
@@ -567,6 +581,9 @@
 			<right>50</right>
 			<width>100%</width>
 			<height>100</height>
+			
+			<include content="upnext_button_invisible" />
+			
 			<control type="image">
 				<left>10</left>
 				<width>243</width>
@@ -829,22 +846,288 @@
 		</control>
 	</include>
 	
-	
-	
-	<!-- includes for skinsettings -->
-	<include name="hide_upnextbuttons">
-		<control type="button" id="3012">
-			<include>HiddenObject</include>
-			<onback>SendClick(3013)</onback>
-		</control>
+	<include name="upnext_stillwatching_simple">
+		<animation type="WindowOpen" reversible="false">
+			<effect type="fade" start="0" end="100" time="500" />
+		</animation>
+		<animation type="WindowClose" reversible="false">
+			<effect type="fade" start="100" end="0" time="100" />
+		</animation>
 		<control type="button" id="3013">
-			<include>HiddenObject</include>
+			<include>HiddenButton</include>
 		</control>
-		<control type="progress" id="3014">
-			<include>HiddenObject</include>
+		<control type="image">
+			<top>0</top>
+			<width>100%</width>
+			<height>140</height>
+			<texture border="5" flipy="true" colordiffuse="$VAR[color_playerpopups_background]">diffuse/gradient.png</texture>
+		</control>
+		
+		
+			<control type="label">
+				<top>10</top>
+				<width>100%</width>
+				<height>30</height>
+				<aligny>top</aligny>
+				<align>center</align>
+				<font>font_Montserrat_24_extrabold</font>
+				<textcolor>$VAR[color_playerpopups_text_main]</textcolor>
+				<label>[CAPITALIZE][B]$ADDON[service.upnext 30024][/B][/CAPITALIZE]</label>
+			</control>
+			<control type="button" id="3012">
+				<top>55</top>
+				<centerleft>50%</centerleft>
+				<label>$LOCALIZE[107] , $ADDON[service.upnext 30010]</label>
+				<height>40</height>
+				<width>400</width>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font_Montserrat_18_extrabold</font>
+				<textcolor>$VAR[color_playerpopups_text_main]</textcolor>
+				<focusedcolor>$VAR[color_playerpopups_text_main]</focusedcolor>
+				<texturefocus colordiffuse="$VAR[color_playerpopups_accent]" border="2">frames/frame.png</texturefocus>
+				<texturenofocus colordiffuse="$VAR[color_playerpopups_accent]" border="2">frames/frame.png</texturenofocus>
+				<onback>SendClick(3013)</onback>
+				<animation effect="fade" start="100" end="50" time="900" pulse="true" condition="true">Conditional</animation>
+			</control>
+			
+		<!-- diffused image -->
+		<control type="group">
+			<control type="image">
+				<visible>false</visible>
+				<left>220</left>
+				<width>223.75</width>
+				<height>126.25</height>
+				<texture diffuse="diffuse/diffusetranspedges.png">$VAR[NextUpThumb]</texture>
+				<aspectratio scalediffuse="false" align="center" aligny="center">scale</aspectratio>
+			</control>
+			<control type="image">
+				<top>20</top>
+				<left>150</left>
+				<width>234</width>
+				<height>90.7</height>
+				<aspectratio>keep</aspectratio>
+				<texture>$INFO[Window.Property(clearlogo)]</texture>
+			</control>
+		</control>
+		<control type="label">
+			<top>5</top>
+			<right>100</right>
+			<height>50</height>
+			<width>30%</width>
+			<align>center</align>
+			<aligny>center</aligny>
+			<textcolor>$VAR[color_playerpopups_text_main]</textcolor>
+			<font>font_Montserrat_18_extrabold</font>
+			<label>[COLOR $VAR[color_playerpopups_accent]][B]$ADDON[service.upnext 30049][/B][/COLOR]$INFO[Window.Property(title),  ,][COLOR $VAR[color_playerpopups_accent]]   $LOCALIZE[31302][B][/COLOR]$INFO[Player.TimeRemaining(ss),  ,  ][/B][COLOR $VAR[color_playerpopups_accent]]$LOCALIZE[31301][/COLOR]</label>
+		</control>
+		<control type="label">
+			<top>25</top>
+			<right>80</right>
+			<height>50</height>
+			<width>30%</width>
+			<align>center</align>
+			<aligny>center</aligny>
+			<textcolor>$VAR[color_playerpopups_text_main]</textcolor>
+			<font>debugtiny</font>
+			<label>$INFO[Window.Property(season),$LOCALIZE[20373] [B],[/B]]$INFO[Window.Property(episode), $LOCALIZE[20359] [B],[/B]]</label>
+		</control>
+	
+		<control type="image">
+			<top>10</top>
+			<right>25</right>
+			<width>75</width>
+			<height>75</height>
+			<aspectratio>keep</aspectratio>
+			<texture colordiffuse="$VAR[color_playerpopups_text_main]">$VAR[nextupbutton_TimeRemaining]</texture>
 		</control>
 	</include>
-	
+
+	<include name="upnext_stillwatching_common">
+		<animation type="WindowOpen" reversible="false">
+			<effect type="fade" start="0" end="100" time="500" />
+		</animation>
+		<animation type="WindowClose" reversible="false">
+			<effect type="fade" start="100" end="0" time="100" />
+		</animation>
+		<control type="button" id="3013">
+			<include>HiddenButton</include>
+		</control>
+		<control type="image">
+			<centertop>50%</centertop>
+			<width>100%</width>
+			<height>550</height>
+			<texture colordiffuse="$VAR[color_playerpopups_background]">diffuse/gradientcenter.png</texture>
+		</control>
+		<control type="group">
+			<centertop>50%</centertop>
+			<width>100%</width>
+			<height>400</height>
+			<control type="image">
+				<left>120</left>
+				<width>420</width>
+				<height>400</height>
+				<aspectratio>keep</aspectratio>
+				<texture fallback="$INFO[Window.Property(clearart)]">$INFO[Window.Property(clearlogo)]</texture>
+			</control>
+			<control type="textbox">
+				<visible>String.isempty(Window.Property(clearart)) + string.isempty(Window.Property(clearlogo))</visible>
+				<left>20</left>
+				<width>600</width>
+				<height>400</height>
+				<align>center</align>
+				<textcolor>$VAR[color_playerpopups_text_main]</textcolor>
+				<font>Montserrat_ExtraBold_40</font>
+				<label>[B]$INFO[Window.Property(tvshowtitle)][/B]</label>
+			</control>
+			<control type="label">
+				<animation effect="fade" end="60" condition="true">conditional</animation>
+				<left>20</left>
+				<top>275</top>
+				<width>600</width>
+				<height>45</height>
+				<align>center</align>
+				<textcolor>$VAR[color_playerpopups_text_main]</textcolor>
+				<font>font20_title</font>
+				<label>[COLOR $VAR[color_playerpopups_accent]][B]$ADDON[service.upnext 30049][/B][/COLOR]$INFO[Window.Property(title),  ,]</label>
+			</control>
+			
+			<control type="image">
+				<top>55</top>
+				<centerleft>50%</centerleft>
+				<width>534</width>
+				<height>300</height>
+				<animation effect="fade" end="10" condition="true">conditional</animation>
+				<texture diffuse="diffuse/diffusetranspedges.png">$INFO[Window.Property(fanart)]</texture>
+				<aspectratio scalediffuse="false" align="center" aligny="center">scale</aspectratio>
+			</control>
+			<control type="image">
+				<top>75</top>
+				<right>50</right>
+				<right>80</right>
+				<width>445</width>
+				<height>250</height>
+				<texture diffuse="diffuse/diffusetranspedges.png">$VAR[NextUpThumb]</texture>
+				<aspectratio scalediffuse="false" align="right" aligny="center">scale</aspectratio>
+			</control>
+			<control type="label">
+				<top>85</top>
+				<height>35</height>
+				<aligny>top</aligny>
+				<align>center</align>
+				<font>font30_title</font>
+				<textcolor>$VAR[color_playerpopups_text_main]</textcolor>
+				<label>[CAPITALIZE][B]$ADDON[service.upnext 30024][/B][/CAPITALIZE]</label>
+			</control>
+			<control type="grouplist">
+				<animation effect="fade" end="60" condition="true">conditional</animation>
+				<orientation>horizontal</orientation>
+				<top>275</top>
+				<left>30</left>
+				<itemgap>10</itemgap>
+				<height>50</height>
+				<width>100%</width>
+				<align>center</align>
+				<control type="label">	
+					<top>10</top>
+					<width>auto</width>
+					<height>25</height>
+					<aligny>center</aligny>
+					<font>debugtiny</font>
+					<textcolor>$VAR[color_playerpopups_text_main]</textcolor>
+					<label>[COLOR $VAR[color_playerpopups_accent]]$LOCALIZE[20373]$INFO[Window.Property(season), ,   ][/COLOR][B]|[/B]   [COLOR $VAR[color_playerpopups_accent]]$LOCALIZE[20359]$INFO[Window.Property(episode), ,    ][/COLOR]</label>
+				</control>
+				<control type="button">
+					<top>10</top>
+					<visible>!String.IsEmpty(VideoPlayer.offset(1).VideoResolution)</visible>
+					<label>$VAR[videoplayer_offset1_resolution]</label>
+					<width>auto</width>
+					<height>27</height>
+					<align>center</align>
+					<aligny>top</aligny>
+					<font>font_Montserrat_18_extrabold</font>
+					<textcolor>$VAR[color_playerpopups_text_main]</textcolor>
+					<textoffsetx>10</textoffsetx>
+					<disabledcolor>$VAR[color_playerpopups_text_main]</disabledcolor>
+					<texturefocus border="2" colordiffuse="$PARAM[color]">frames/frame.png</texturefocus>
+					<texturenofocus border="2" colordiffuse="$PARAM[color]">frames/frame.png</texturenofocus>
+					<enable>false</enable>
+				</control>
+				<control type="label">
+					<top>10</top>
+					<width>100</width>
+					<height>25</height>
+					<aligny>center</aligny>
+					<align>center</align>
+					<font>font_Montserrat_18_extrabold</font>
+					<textcolor>$VAR[color_playerpopups_text_main]</textcolor>
+					<label>$INFO[VideoPlayer.mpaa]</label>
+					<visible>!String.IsEmpty(VideoPlayer.offset(1).mpaa)</visible>
+				</control>
+				<control type="button">
+					<top>10</top>
+					<visible>!String.IsEmpty(Window.Property(year))</visible>
+					<label>$INFO[Window.Property(year)]</label>
+					<width>auto</width>
+					<height>25</height>
+					<align>center</align>
+					<aligny>center</aligny>
+					<font>debugtiny</font>
+					<textcolor>$VAR[color_playerpopups_text_main]</textcolor>
+					<textoffsetx>5</textoffsetx>
+					<disabledcolor>$VAR[color_playerpopups_text_main]</disabledcolor>
+					<texturefocus border="2" colordiffuse="$PARAM[color]">frames/frame.png</texturefocus>
+					<texturenofocus border="2" colordiffuse="$PARAM[color]">frames/frame.png</texturenofocus>
+					<enable>false</enable>
+				</control>
+				<control type="image">
+					<left>50</left>
+					<width>136</width>
+					<height>50</height>
+					<aspectratio aligny="center" align="left">keep</aspectratio>
+					<texture colordiffuse="$VAR[color_playerpopups_text_main]" fallback="$VAR[UpNext_label_studio,resource://resource.images.studios.white/,.png]">$VAR[UpNext_label_studio,resource://resource.images.studios.coloured/,.png]</texture>
+					<visible>!String.IsEmpty(VideoPlayer.Studio) | !String.IsEmpty(VideoPlayer.Offset(1).studio)</visible>
+				</control>
+			</control>
+		</control>
+		<control type="button" id="3012">
+			<animation type="conditional" condition="true" loop="true">
+				<effect type="fade" start="100" end="20" time="1000" delay="1000" />
+				<effect type="fade" start="20" end="100" time="1000" />
+			</animation>
+			<centertop>50%</centertop>
+			<centerleft>50%</centerleft>
+			<label>$LOCALIZE[107] , $ADDON[service.upnext 30010]</label>
+			<height>100</height>
+			<width>630</width>
+			<font>Bold30</font>
+			<align>center</align>
+			<textcolor>$VAR[color_playerpopups_text_main]</textcolor>
+			<textoffsetx>90</textoffsetx>
+			<focusedcolor>$VAR[color_playerpopups_text_main]</focusedcolor>
+			<texturefocus align="center" colordiffuse="$VAR[color_playerpopups_accent]" border="2">frames/frame.png</texturefocus>
+			<texturenofocus align="center" colordiffuse="$VAR[color_playerpopups_accent]" border="2">frames/frame.png</texturenofocus>
+			<onback>SendClick(3013)</onback>
+		</control>
+		<control type="image">
+			<centertop>50%</centertop>
+			<centerleft>37%</centerleft>
+			<width>80</width>
+			<height>80</height>
+			<aspectratio align="top" aligny="left">keep</aspectratio>
+			<texture colordiffuse="$VAR[color_playerpopups_accent]">$VAR[nextupbutton_TimeRemaining]</texture>
+		</control>
+		<control type="image">
+			<animation effect="zoom" start="100,100" center="auto" end="115,115" delay="100" time="650" pulse="true" condition="true">Conditional</animation>
+			<centertop>50%</centertop>
+			<centerleft>37%</centerleft>
+			<width>80</width>
+			<height>80</height>
+			<aspectratio align="top" aligny="left">keep</aspectratio>
+			<bordersize>10</bordersize>
+			<texture colordiffuse="$VAR[color_playerpopups_text_main]">nextupicons/00.png</texture>
+		</control>
+	</include>
 	<variable name="nextupbutton_TimeRemaining">
 		<value condition="Integer.IsGreater(Player.TimeRemaining(ss),30)">nextupicons/30.png</value>
 		<value condition="Integer.IsLessOrEqual(Player.TimeRemaining(ss),30)">$INFO[Player.TimeRemaining(ss),nextupicons/,.png]</value>
@@ -868,4 +1151,5 @@
 		<value condition="Integer.IsLess(VideoPlayer.offset(1).VideoResolution,720)">[B]SD[/B]</value>
 		<value>[B]SD[/B]</value>
 	</variable>
+	
 </includes>
