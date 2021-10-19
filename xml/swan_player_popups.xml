@@ -10,22 +10,22 @@
 		</control>
 	</include>
 	
-		<include name="upnext_button_invisible">
-				<control type="button" id="3012">
-					<description>touch workaround</description>
-					<right>0</right>
-					<bottom>0</bottom>
-					<width>100%</width>
-					<height>50%</height>
-					<align>right</align>
-					<texturefocus />
-					<texturenofocus />
-					<onleft>SendClick(3013)</onleft>
-					<onright>SendClick(3013)</onright>
-					<onup>SendClick(3013)</onup>
-					<ondown>SendClick(3013)</ondown>
-					<onback>SendClick(3013)</onback>
-				</control>
+	<include name="upnext_button_invisible">
+		<control type="button" id="3012">
+			<description>touch workaround</description>
+			<right>0</right>
+			<bottom>0</bottom>
+			<width>100%</width>
+			<height>50%</height>
+			<align>right</align>
+			<texturefocus />
+			<texturenofocus />
+			<onleft>SendClick(3013)</onleft>
+			<onright>SendClick(3013)</onright>
+			<onup>SendClick(3013)</onup>
+			<ondown>SendClick(3013)</ondown>
+			<onback>SendClick(3013)</onback>
+		</control>
 	</include>
 	
 	<include name="upnext_fancy_common">
@@ -211,6 +211,7 @@
 	</include>
 	
 	<include name="upnext_fancy_default">
+	
 		<animation type="WindowOpen" reversible="false">
 			<effect type="fade" start="0" end="100" time="400" />
 			<effect type="slide" start="0,-181" end="0,0" time="400" />
@@ -299,18 +300,7 @@
 					<font>font25_title</font>
 					<textcolor>eeffffff</textcolor>
 					<shadowcolor>00000000</shadowcolor>
-					<label>$ADDON[service.upnext 30036]</label>
-					<visible>!Integer.IsGreater(Player.TimeRemaining,59)</visible>
-				</control>
-				<control type="label">
-					<width>auto</width>
-					<height>35</height>
-					<aligny>center</aligny>
-					<font>font25_title</font>
-					<textcolor>eeffffff</textcolor>
-					<shadowcolor>00000000</shadowcolor>
-					<label>$ADDON[service.upnext 30008]</label>
-					<visible>Integer.IsGreater(Player.TimeRemaining,59)</visible>
+					<label>$VAR[upnext_default_Header]</label>
 				</control>
 				<control type="grouplist">
 					<orientation>horizontal</orientation>
@@ -356,13 +346,14 @@
 						<visible>!String.IsEmpty(Window.Property(rating))</visible>
 					</control>
 				</control>
+				
 				<control type="grouplist">
 					<orientation>horizontal</orientation>
 					<height>56</height>
 					<bottom>20</bottom>
 					<itemgap>10</itemgap>
 					<control type="button" id="3012">
-						<label>    $ADDON[service.upnext 30006]</label>
+						<label>$VAR[upnext_default_3012]</label>
 						<height>56</height>
 						<width min="50">auto</width>
 						<font>font20_title</font>
@@ -410,7 +401,7 @@
 					<visible>!Window.IsVisible(extendedprogressdialog)</visible>
 					<animation effect="fade" time="150">VisibleChange</animation>
 					<control type="label">
-						<font>font_MainMenu</font>
+						<font>font45_title</font>
 						<shadowcolor>text_shadow</shadowcolor>
 						<top>0</top>
 						<right>20</right>
@@ -421,7 +412,7 @@
 					</control>
 					<control type="label">
 						<right>24</right>
-						<top>55</top>
+						<top>45</top>
 						<width>800</width>
 						<height>50</height>
 						<align>right</align>
@@ -430,7 +421,7 @@
 						<usecontrolcoords>true</usecontrolcoords>
 						<label>$ADDON[service.upnext 30009]</label>
 						<textcolor>grey</textcolor>
-						<font>Montserrat_ExtraBold_40</font>
+						<font>font_labelprofile</font>
 						<shadowcolor>text_shadow</shadowcolor>
 						<visible>!String.IsEmpty(Window.Property(endtime))</visible>
 					</control>
@@ -854,7 +845,7 @@
 			<effect type="fade" start="100" end="0" time="100" />
 		</animation>
 		<control type="button" id="3013">
-			<include>HiddenButton</include>
+			<include>HiddenObject</include>
 		</control>
 		<control type="image">
 			<top>0</top>
@@ -951,7 +942,7 @@
 			<effect type="fade" start="100" end="0" time="100" />
 		</animation>
 		<control type="button" id="3013">
-			<include>HiddenButton</include>
+			<include>HiddenObject</include>
 		</control>
 		<control type="image">
 			<centertop>50%</centertop>
@@ -1128,6 +1119,19 @@
 			<texture colordiffuse="$VAR[color_playerpopups_text_main]">nextupicons/00.png</texture>
 		</control>
 	</include>
+	
+
+	<variable name="upnext_default_3012">
+		<value condition="![Window.IsActive(script-upnext-stillwatching.xml) | Window.IsActive(script-upnext-stillwatching-simple.xml)]">    $ADDON[service.upnext 30006]</value>
+		<value condition="Window.IsActive(script-upnext-stillwatching.xml) | Window.IsActive(script-upnext-stillwatching-simple.xml)">    $ADDON[service.upnext 30010]</value>
+	</variable>
+	<variable name="upnext_default_Header">
+		<value condition="![Window.IsActive(script-upnext-stillwatching.xml) | Window.IsActive(script-upnext-stillwatching-simple.xml)] + Integer.IsGreater(Player.TimeRemaining,59)">$ADDON[service.upnext 30008]</value>
+		<value condition="![Window.IsActive(script-upnext-stillwatching.xml) | Window.IsActive(script-upnext-stillwatching-simple.xml)] + !Integer.IsGreater(Player.TimeRemaining,59))">$ADDON[service.upnext 30036]</value>
+		<value condition="[Window.IsActive(script-upnext-stillwatching.xml) | Window.IsActive(script-upnext-stillwatching-simple.xml)]">$ADDON[service.upnext 30024]</value>
+	</variable>
+
+	
 	<variable name="nextupbutton_TimeRemaining">
 		<value condition="Integer.IsGreater(Player.TimeRemaining(ss),30)">nextupicons/30.png</value>
 		<value condition="Integer.IsLessOrEqual(Player.TimeRemaining(ss),30)">$INFO[Player.TimeRemaining(ss),nextupicons/,.png]</value>
