@@ -538,7 +538,7 @@
 	
 	<include name="VideoOSD_ProgressSlider">
 		
-		<control type="progress">
+		<control type="progress" id="$PARAM[id]">
 			<bottom>149</bottom>
 			<left>320</left>
 			<right>0</right>
@@ -639,6 +639,7 @@
 				<animation effect="slide" start="0,0" end="0,-100" time="250" condition="Window.IsActive(videoosd)">conditional</animation>
 				<animation effect="slide" start="0,0" end="0,-410" time="250" condition="Window.IsActive(fullscreeninfo)">conditional</animation>
 				<animation effect="slide" start="0,0" end="0,150" time="250" condition="[!Window.IsActive(fullscreeninfo) + !Window.IsActive(videobookmarks)] + $EXP[osd_video_noinfo]">conditional</animation>
+				
 				<control type="image" id="99">
 					<description>bottom offset neg as osd button bg</description>
 					<bottom>-200</bottom>
@@ -726,6 +727,25 @@
 			</control>
 			
 			<control type="group" id="99">
+				<description></description>
+				<animation effect="slide" start="0,0" end="0,50" time="250" condition="String.IsEmpty(VideoPlayer.Plot) | Player.ShowInfo">conditional</animation> 
+				<animation effect="fade" start="0" end="100" delay="250" time="100">Visible</animation>
+				<animation effect="fade" start="100" end="0" time="0">Hidden</animation>
+				<visible>![Window.IsActive(videoosd) | Window.Is(videomenu) | Window.IsVisible(sliderdialog) | Window.IsVisible(osdaudiosettings) | Window.IsVisible(osdvideosettings) | Window.IsVisible(VideoBookmarks) | Window.IsVisible(playerprocessinfo) | Window.IsVisible(osdcmssettings) | Window.IsVisible(PVROSDChannels) | Window.IsVisible(pvrchannelguide)]</visible>
+					
+					<include condition="!VideoPlayer.Content(LiveTV)" content="VideoOSD_ProgressSlider">
+						<param name="id" value="99" />
+						<param name="info" value="Player.Progress" />
+						<param name="slider_action" value="seek" />
+					</include>
+					<include condition="VideoPlayer.Content(LiveTV)" content="VideoOSD_ProgressSlider">
+						<param name="id" value="99" />
+						<param name="info" value="PVR.TimeshiftProgressPlayPos" />
+						<param name="slider_action" value="pvr.seek" />
+					</include>
+				</control>
+				
+			<control type="group" id="99">
 				<animation effect="slide" start="0,0" end="0,-310" time="250" condition="Window.IsActive(fullscreeninfo)">conditional</animation>
 				
 				<bottom>0</bottom>
@@ -765,6 +785,5 @@
 		<!-- pers preference dont show previous but just curr season -->
 		<value condition="!String.IsEmpty(VideoPlayer.Episode) + !String.IsEmpty(VideoPlayer.Season)">videodb://tvshows/titles/-1/-1/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22tvshow%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[VideoPlayer.TVShowTitle]%22%5D%7D%2C%7B%22field%22%3A%22season%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[VideoPlayer.Season]%22%5D%7D%2C%7B%22field%22%3A%22episode%22%2C%22operator%22%3A%22greaterthan%22%2C%22value%22%3A%5B%22$INFO[VideoPlayer.Episode]%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</value>
 	</variable>
-	addition content tag greater than current season if not playlist
 	
 </includes>
