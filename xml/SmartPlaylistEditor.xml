@@ -24,22 +24,29 @@ ID 	Type 			Description
 23 	button 			Group by
 24 	radiobutton 	Mixed  
 -->
-	<include>Animation_DialogPopupOpenClose</include>
+	<include>Animation_OpenClose_Zoom</include>
 	<controls>
 		<include>Dialog_Fullscreen_BGPanel</include>
 		
+		<control type="image">
+			<top>25</top>
+			<height>125</height>
+			<aspectratio align="center" aligny="top">keep</aspectratio>
+			<texture colordiffuse="$VAR[color_global_dialog_accent]" diffuse="colors/white20.png">$VAR[playlistedit_window_image]</texture>
+		</control>
 		<control type="label" id="2">
 			<top>50</top>
 			<align>center</align>
-			<height>50</height>
+			<height>100</height>
+			<font>font_Montserrat_30_extrabold</font>
+			<textcolor>$VAR[color_global_dialog_accent]</textcolor>
+			<wrapmultiline>true</wrapmultiline>
 		</control>
-			
+		
 		<control type="group">
 			<description>will slide to left with offset of given with from xsprules.xml</description>
 			<animation effect="fade" start="100" end="30" time="350" condition="window.isactive(10137)">conditional</animation>
-				
-			<!-- <animation effect="slide" start="0,0" end="-300,0" time="350" condition="window.isactive(10137)">conditional</animation> -->
-			<top>50</top>
+			<top>100</top>
 			<left>100</left>
 			<width>1700</width>
 			
@@ -52,7 +59,7 @@ ID 	Type 			Description
 				<ondown>9001</ondown>
 				<onup>9001</onup>
 				<itemgap>10</itemgap>
-				<width>60%</width>
+				<width>80%</width>
 				<control type="button" id="22">
 					<description>Set Playlist type (movies, episodes, mixed, etc...)</description>
 					<label>$LOCALIZE[467]</label>
@@ -64,117 +71,69 @@ ID 	Type 			Description
 				<control type="button" id="16">
 					<label>$LOCALIZE[21424]</label>
 				</control>
-				
 				<control type="list" id="10">
 					<animation effect="fade" start="100" end="0" time="350" condition="window.isactive(10137)">conditional</animation>
-			
+					<top>-5</top>
 					<description>Rules List Control</description>
-					<height>180</height>
+					<height>300</height>
 					<onleft>500</onleft>
 					<onright>9001</onright>
 					<orientation>vertical</orientation>
 					<itemlayout height="60">
 						<control type="group">
-							<top>5</top>
-							<control type="image">
-								<!-- <visible>String.IsEqual(listitem.label,$LOCALIZE[21423])</visible> -->
-								<texture colordiffuse="$VAR[color_global_button_panel_nf]">colors/white.png</texture>
-							</control>
-							<control type="label">
-								<visible>String.IsEqual(listitem.label,$LOCALIZE[21423])</visible>
-								<right>20</right>
-								<left>60</left>
-								<height>50</height>
-								<aligny>center</aligny>
-								<font>font27</font>
-								<textcolor>$VAR[color_global_button_text_nf]</textcolor>
-								<label>$INFO[ListItem.Label]</label>
-							</control>
-							<control type="label">
-								<visible>!String.IsEqual(listitem.label,$LOCALIZE[21423])</visible>
-								<right>20</right>
-								<left>60</left>
-								<height>50</height>
-								<aligny>center</aligny>
-								<font>font27</font>
-								<textcolor>$VAR[color_global_button_text_nf]</textcolor>
-								<label>$INFO[ListItem.CurrentItem,• rule  ,    |    ]$INFO[ListItem.Label]</label>
-							</control>
+							<include content="rules_listcontainer">
+								<param name="color_panel" value="$VAR[color_global_button_panel_nf]" />
+								<param name="color_text" value="$VAR[color_global_button_text_nf]" />
+							</include>
 						</control>
 					</itemlayout>
 					<focusedlayout height="60">
 						<control type="group">
-							<top>5</top>
 							<visible>Control.HasFocus(10)</visible>
-							<control type="image">
-								<!-- <visible>String.IsEqual(listitem.label,$LOCALIZE[21423])</visible> -->
-								<texture colordiffuse="$VAR[color_global_button_panel_fo]">colors/white.png</texture>
-							</control>
-							<control type="label">
-								<visible>String.IsEqual(listitem.label,$LOCALIZE[21423])</visible>
-								<right>20</right>
-								<left>60</left>
-								<height>50</height>
-								<aligny>center</aligny>
-								<font>font27</font>
-								<textcolor>$VAR[color_global_button_text_fo]</textcolor>
-								<label>$INFO[ListItem.Label]</label>
-							</control>
-							<control type="label">
-								<visible>!String.IsEqual(listitem.label,$LOCALIZE[21423])</visible>
-								<right>20</right>
-								<left>60</left>
-								<height>50</height>
-								<aligny>center</aligny>
-								<font>font27</font>
-								<textcolor>$VAR[color_global_button_text_fo]</textcolor>
-								<label>$INFO[ListItem.CurrentItem,• edit  rule  ,    |    ]$INFO[ListItem.Label]</label>
-							</control>
+							<include content="rules_listcontainer">
+								<param name="color_panel" value="$VAR[color_global_button_panel_fo]" />
+								<param name="color_text" value="$VAR[color_global_button_text_fo]" />
+							</include>
 						</control>
 						<control type="group">
-							<top>5</top>
 							<visible>!Control.HasFocus(10)</visible>
-							<control type="image">
-								<!-- <visible>String.IsEqual(listitem.label,$LOCALIZE[21423])</visible> -->
-								<texture colordiffuse="$VAR[color_global_button_panel_nf]">colors/white.png</texture>
-							</control>
-							<control type="label">
-								<visible>String.IsEqual(listitem.label,$LOCALIZE[21423])</visible>
-								<right>20</right>
-								<left>60</left>
-								<height>50</height>
-								<aligny>center</aligny>
-								<font>font27</font>
-								<textcolor>$VAR[color_global_button_text_nf]</textcolor>
-								<label>$INFO[ListItem.Label]</label>
-							</control>
-							<control type="label">
-								<visible>!String.IsEqual(listitem.label,$LOCALIZE[21423])</visible>
-								<right>20</right>
-								<left>60</left>
-								<height>50</height>
-								<aligny>center</aligny>
-								<font>font27</font>
-								<textcolor>$VAR[color_global_button_text_nf]</textcolor>
-								<label>$INFO[ListItem.CurrentItem,• rule  ,    |    ]$INFO[ListItem.Label]</label>
-							</control>
+							<include content="rules_listcontainer">
+								<param name="color_panel" value="$VAR[color_global_button_panel_nf]" />
+								<param name="color_text" value="$VAR[color_global_button_text_nf]" />
+							</include>
 						</control>
 					</focusedlayout>
 				</control>
 				<!-- slide down up dep on rules items-->
-				<control type="button" id="19">
-					<label>$LOCALIZE[31032]</label>
-				</control>
-				<control type="button" id="18">
-					<label>$LOCALIZE[21429]</label>
-				</control>
+				<!-- 
+				<control type="group" id="600">
+					<height>50</height>
+					<include>slide_bottombuttons</include>
+					-->
+						<control type="button" id="19">
+							<include>slide_bottombuttons</include>
+							<!-- <width>500</width> -->
+							<label>$LOCALIZE[580]</label>
+						</control>
+						<control type="button" id="18">
+							<!-- <width>500</width>
+							<left>520</left> -->
+							<include>slide_bottombuttons</include>
+							
+							<label>$LOCALIZE[21429]</label>
+						</control>
+				<!-- </control>		 -->
+					
 				<control type="button" id="17">
+					<include>slide_bottombuttons</include>
 					<label>$LOCALIZE[21427]</label>
 				</control>
 				<control type="button" id="23">
+					<include>slide_bottombuttons</include>
 					<label>$LOCALIZE[21458]</label>
 				</control>
 				<control type="radiobutton" id="24">
+					<include>slide_bottombuttons</include>
 					<visible>Control.IsEnabled(24)</visible>
 					<label>$LOCALIZE[467]: $LOCALIZE[21459]</label>
 				</control>
@@ -267,29 +226,33 @@ ID 	Type 			Description
 		</control>
 		
 		<control type="grouplist" id="9001">
-				<animation effect="fade" start="100" end="0" time="350" condition="window.isactive(10137)">conditional</animation>
-				<orientation>horizontal</orientation>
-				<bottom>50</bottom>
+			<animation effect="fade" start="100" end="0" time="350" condition="window.isactive(10137)">conditional</animation>
+			<orientation>horizontal</orientation>
+			<bottom>20</bottom>
+			<align>center</align>
+			<aligny>bottom</aligny>
+			<centerleft>50%</centerleft>
+			<height>60</height>
+			<width>620</width>
+			<itemgap>20</itemgap>
+			
+			<onup>500</onup>
+			<ondown>500</ondown>
+			<control type="button" id="20">
+				<font>font_Montserrat_24_extrabold</font>
+				<label>$LOCALIZE[190]</label>
 				<align>center</align>
-				<aligny>bottom</aligny>
-				<centerleft>50%</centerleft>
-				<height>100</height>
-				<width>500</width>
-				<itemgap>20</itemgap>
-				
-				<onup>500</onup>
-				<ondown>500</ondown>
-				<control type="button" id="20">
-					<label>$LOCALIZE[186]</label>
-					<width>200</width>
-					<height>100</height>
-				</control>
-				<control type="button" id="21">
-					<label>$LOCALIZE[222]</label>
-					<width>200</width>
-					<height>100</height>
-				</control>
+				<width>300</width>
+				<height>60</height>
 			</control>
+			<control type="button" id="21">
+				<font>font_Montserrat_24_extrabold</font>
+				<label>$LOCALIZE[222]</label>
+				<align>center</align>
+				<width>300</width>
+				<height>60</height>
+			</control>
+		</control>
 			
 	</controls>
 
