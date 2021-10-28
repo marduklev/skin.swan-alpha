@@ -1,4 +1,208 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
-	<!-- ... -->
+	<!-- grids -->
+	<!-- copy paste from . https kodi.wiki/view/EPGGrid_control -->
+	<include name="grid_test">
+		<control type="epggrid" id="$PARAM[grid_id]">
+			<top>200</top>
+			<description>EPG Grid</description>
+			<left>80</left>
+			<width>1620</width>
+			<height>780</height>
+			<pagecontrol>10</pagecontrol>
+			<scrolltime tween="cubic" easing="in">300</scrolltime>
+			<timeblocks>40</timeblocks>
+					<rulerunit>6</rulerunit>
+			<progresstexture flipx="true">diffuse/gradientborderleft.png</progresstexture>
+					<onleft>31</onleft>
+					<onright>31</onright>
+			<onup>11</onup>
+					<ondown>10</ondown> scrollbar
+			<orientation>$PARAM[orientation]</orientation>
+			<rulerdatelayout width="1700" height="45" condition="$PARAM[has_rulerdate_layout]">
+				<control type="label">
+					<description>move to header ?</description>
+					<width>1700</width>
+					<height>45</height>
+					<font>font24</font>
+					<label>$INFO[ListItem.Label]</label>
+					<textcolor>red</textcolor>
+					<align>center</align>
+					<aligny>center</aligny>
+				</control>
+			</rulerdatelayout>
+			<rulerlayout height="35" width="40">
+				<control type="image" id="1">
+					<width>40</width>
+					<height>29</height>
+					<left>0</left>
+					<top>0</top>
+					<texture colordiffuse="cyan">colors/white30.png</texture>
+				</control>
+				<control type="label" id="2">
+					<left>10</left>
+					<top>0</top>
+					<width>34</width>
+					<height>29</height>
+					<font>font12</font>
+					<aligny>center</aligny>
+					<selectedcolor>selected</selectedcolor>
+					<align>left</align>
+					<label>$INFO[ListItem.Label]</label>
+				</control>
+			</rulerlayout>
+			<channellayout height="52" width="400">
+				<animation effect="fade" start="110" time="200">UnFocus</animation>
+				<control type="image" id="1">
+					<texture colordiffuse="red">colors/white10.png</texture>
+				</control>
+				<control type="label">
+					<left>5</left>
+					<top>5</top>
+					<font>font12</font>
+					<align>left</align>
+					<aligny>center</aligny>
+					<textcolor>grey</textcolor>
+					<selectedcolor>grey</selectedcolor>
+					<label>$INFO[ListItem.ChannelNumber]</label>
+				</control>
+				<control type="image">
+					<left>45</left>
+					<top>4</top>
+					<width>45</width>
+					<height>44</height>
+					<texture>$INFO[ListItem.Icon]</texture>
+				</control>
+				<control type="label" id="1">
+					<left>94</left>
+					<top>0</top>
+					<height>52</height>
+					<font>special12</font>
+					<aligny>center</aligny>
+					<selectedcolor>selected</selectedcolor>
+					<align>left</align>
+					<label>$INFO[ListItem.ChannelName]</label>
+				</control>
+			</channellayout>
+			<focusedchannellayout height="156" width="400">
+				<animation effect="fade" start="110" time="200">OnFocus</animation>
+				<control type="image" id="1">
+					<left>0</left>
+					<top>0</top>
+					<width>270</width>
+					<height>156</height>
+					<texture border="5">button-focus.png</texture>
+				</control>
+				<control type="label">
+					<left>5</left>
+					<top>5</top>
+					<height>35</height>
+					<font>font12</font>
+					<align>left</align>
+					<aligny>center</aligny>
+					<textcolor>grey</textcolor>
+					<selectedcolor>grey</selectedcolor>
+					<label>$INFO[ListItem.ChannelNumber]</label>
+				</control>
+				<control type="image">
+					<left>45</left>
+					<top>4</top>
+					<width>45</width>
+					<height>44</height>
+					<texture>$INFO[ListItem.Icon]</texture>
+				</control>
+				<control type="label" id="1">
+					<left>94</left>
+					<top>0</top>
+					<height>156</height>
+					<font>special12</font>
+					<aligny>center</aligny>
+					<selectedcolor>selected</selectedcolor>
+					<align>left</align>
+					<label>$INFO[ListItem.ChannelName]</label>
+				</control>
+			</focusedchannellayout>
+			<itemlayout height="52" width="40">
+				<control type="image" id="2">
+					<width>40</width>
+					<height>52</height>
+					<left>0</left>
+					<top>0</top>
+					<aspectratio>stretch</aspectratio>
+					<texture border="3">epg-genres/$INFO[ListItem.Property(GenreType)].png</texture>
+				</control>
+				<control type="label" id="1">
+					<left>6</left>
+					<top>3</top>
+					<width>30</width>
+					<height>25</height>
+					<font>font12</font>
+					<aligny>center</aligny>
+					<selectedcolor>selected</selectedcolor>
+					<align>left</align>
+					<label>$INFO[ListItem.Label]</label>
+				</control>
+				<control type="image">
+					<left>5</left>
+					<top>28</top>
+					<width>30</width>
+					<height>20</height>
+					<texture>PVR-IsRecording.png</texture>
+					<visible>ListItem.IsRecording</visible>
+				</control>
+				<control type="image">
+					<left>5</left>
+					<top>28</top>
+					<width>20</width>
+					<height>20</height>
+					<texture>PVR-HasTimer.png</texture>
+					<visible>ListItem.HasTimer + !ListItem.IsRecording</visible>
+				</control>
+			</itemlayout>
+			<focusedlayout height="156" width="40">
+				<control type="image" id="14">
+					<width>40</width>
+					<height>156</height>
+					<left>0</left>
+					<top>0</top>
+					<texture colordiffuse="orange">colors/white80.png</texture>
+				</control>
+				<control type="image" id="2">
+					<width>40</width>
+					<height>156</height>
+					<left>0</left>
+					<top>0</top>
+					<aspectratio>stretch</aspectratio>
+					<texture border="3">epg-genres/$INFO[ListItem.Property(GenreType)].png</texture>
+				</control>
+				<control type="label" id="1">
+					<left>6</left>
+					<top>3</top>
+					<width>30</width>
+					<height>25</height>
+					<font>font12</font>
+					<aligny>center</aligny>
+					<selectedcolor>selected</selectedcolor>
+					<align>left</align>
+					<label>$INFO[ListItem.Label]</label>
+				</control>
+				<control type="image">
+					<left>5</left>
+					<top>28</top>
+					<width>30</width>
+					<height>20</height>
+					<texture>PVR-IsRecording.png</texture>
+					<visible>ListItem.IsRecording</visible>
+				</control>
+				<control type="image">
+					<left>5</left>
+					<top>28</top>
+					<width>20</width>
+					<height>20</height>
+					<texture>PVR-HasTimer.png</texture>
+					<visible>ListItem.HasTimer + !ListItem.IsRecording</visible>
+				</control>
+			</focusedlayout>
+		</control>
+	</include>
 </includes>
