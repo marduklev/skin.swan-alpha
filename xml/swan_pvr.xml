@@ -2,6 +2,9 @@
 <includes>
 	<!-- grids -->
 	<!-- copy paste from . https kodi.wiki/view/EPGGrid_control -->
+	
+	whats is native id1  
+	
 	<include name="grid_test">
 		<control type="epggrid" id="$PARAM[grid_id]">
 			<top>200</top>
@@ -11,50 +14,74 @@
 			<height>780</height>
 			<pagecontrol>10</pagecontrol>
 			<scrolltime tween="cubic" easing="in">300</scrolltime>
-			<timeblocks>40</timeblocks>
-					<rulerunit>6</rulerunit>
-			<progresstexture flipx="true">diffuse/gradientborderleft.png</progresstexture>
-					<onleft>31</onleft>
-					<onright>31</onright>
+			<onleft>31</onleft>
+			<onright>31</onright>
 			<onup>11</onup>
-					<ondown>10</ondown> scrollbar
+			<ondown>10</ondown> scrollbar
 			<orientation>$PARAM[orientation]</orientation>
-			<rulerdatelayout width="1700" height="45" condition="$PARAM[has_rulerdate_layout]">
+			
+			<timeblocks>30</timeblocks> <!-- timeblocks 	The number of timeframes on the top row.  -->
+			<rulerunit>6</rulerunit> <!-- rulerunit 	Timeframe of each unit on the top row. 1 unit equals 5 minutes. -->
+			<progresstexture flipx="true" colordiffuse="red">diffuse/gradientborderleft.png</progresstexture> <!-- progresstexture 	A texture which indicates the current progress time  -->
+<!-- 				
+
+it handles 'grid container' like a 
+grouplist
+	rulerdatelayout 	The layout of the date header.
+	rulerlayout 	The layout of the top row.
+
+	channellayout 	The layout of the left column.
+	focusedchannellayout 	The focused layout of the left column.
+
+	itemlayout 	The layout of the grid
+	focusedlayout 	The focused layout of the grid
+ -->
+			
+			black
+			<rulerdatelayout width="1700" height="55">
 				<control type="label">
+					<description>placed on top 1st row of group - dont show if header is present and showing system.date</description>
 					<description>move to header ?</description>
+					<left>400</left>
 					<width>1700</width>
-					<height>45</height>
+					<height>50</height>
 					<font>font24</font>
 					<label>$INFO[ListItem.Label]</label>
-					<textcolor>red</textcolor>
-					<align>center</align>
+					<textcolor>black</textcolor>
+					<align>left</align>
 					<aligny>center</aligny>
 				</control>
 			</rulerdatelayout>
+			
 			<rulerlayout height="35" width="40">
 				<control type="image" id="1">
+				<description>rulerlayout placed on top 2st row of group</description>
+					<description>id 1 reserved for time full bar</description>
 					<width>40</width>
 					<height>29</height>
 					<left>0</left>
 					<top>0</top>
-					<texture colordiffuse="cyan">colors/white30.png</texture>
+					<texture colordiffuse="black">colors/white.png</texture>
 				</control>
 				<control type="label" id="2">
+				<description>rulerlayout placed on top 2st row of group</description>
+					<description>id 2 reserved for time</description>
 					<left>10</left>
 					<top>0</top>
 					<width>34</width>
 					<height>29</height>
 					<font>font12</font>
 					<aligny>center</aligny>
+					<textcolor>white</textcolor>
 					<selectedcolor>selected</selectedcolor>
 					<align>left</align>
 					<label>$INFO[ListItem.Label]</label>
 				</control>
 			</rulerlayout>
+			grey
 			<channellayout height="52" width="400">
-				<animation effect="fade" start="110" time="200">UnFocus</animation>
 				<control type="image" id="1">
-					<texture colordiffuse="red">colors/white10.png</texture>
+					<texture colordiffuse="grey">colors/white10.png</texture>
 				</control>
 				<control type="label">
 					<left>5</left>
@@ -70,7 +97,7 @@
 					<left>45</left>
 					<top>4</top>
 					<width>45</width>
-					<height>44</height>
+					<height>45</height>
 					<texture>$INFO[ListItem.Icon]</texture>
 				</control>
 				<control type="label" id="1">
@@ -79,19 +106,19 @@
 					<height>52</height>
 					<font>special12</font>
 					<aligny>center</aligny>
+					<textcolor>grey</textcolor>
 					<selectedcolor>selected</selectedcolor>
 					<align>left</align>
 					<label>$INFO[ListItem.ChannelName]</label>
 				</control>
 			</channellayout>
-			<focusedchannellayout height="156" width="400">
-				<animation effect="fade" start="110" time="200">OnFocus</animation>
+			orange
+			<focusedchannellayout height="208" width="400">
 				<control type="image" id="1">
-					<left>0</left>
-					<top>0</top>
-					<width>270</width>
-					<height>156</height>
-					<texture border="5">button-focus.png</texture>
+					<texture colordiffuse="orange">colors/white10.png</texture>
+				</control>
+				<control type="image">
+					<texture border="2" colordiffuse="orange">frames/frame.png</texture>
 				</control>
 				<control type="label">
 					<left>5</left>
@@ -100,7 +127,7 @@
 					<font>font12</font>
 					<align>left</align>
 					<aligny>center</aligny>
-					<textcolor>grey</textcolor>
+					<textcolor>red</textcolor>
 					<selectedcolor>grey</selectedcolor>
 					<label>$INFO[ListItem.ChannelNumber]</label>
 				</control>
@@ -108,41 +135,57 @@
 					<left>45</left>
 					<top>4</top>
 					<width>45</width>
-					<height>44</height>
+					<height>45</height>
 					<texture>$INFO[ListItem.Icon]</texture>
 				</control>
 				<control type="label" id="1">
+					<!-- 
+					<description>just if no image avail</description>
+					<visible>String.IsEmpty(ListItem.Icon)</visible>
+					-->
 					<left>94</left>
 					<top>0</top>
-					<height>156</height>
+					<height>52</height>
 					<font>special12</font>
 					<aligny>center</aligny>
+					<textcolor>orange</textcolor>
 					<selectedcolor>selected</selectedcolor>
 					<align>left</align>
 					<label>$INFO[ListItem.ChannelName]</label>
 				</control>
 			</focusedchannellayout>
+			
+			grey
 			<itemlayout height="52" width="40">
-				<control type="image" id="2">
-					<width>40</width>
-					<height>52</height>
-					<left>0</left>
-					<top>0</top>
-					<aspectratio>stretch</aspectratio>
-					<texture border="3">epg-genres/$INFO[ListItem.Property(GenreType)].png</texture>
+				<control type="image" id="14">
+					<texture colordiffuse="grey">colors/white10.png</texture>
+					<animation effect="fade" end="20" condition="true">conditional</animation>
+				
+				</control>
+				<control type="image" id="1">
+					<animation effect="fade" end="20" condition="true">conditional</animation>
+				
+					<texture border="2" colordiffuse="grey">frames/frame.png</texture>
 				</control>
 				<control type="label" id="1">
-					<left>6</left>
+					<animation effect="fade" end="20" condition="true">conditional</animation>
+					<!-- 
+					<animation effect="slide" start="0,0" end="0,-104" condition="true">conditional</animation>
+					<animation effect="slide" start="0,0" end="0,104" condition="Integer.IsLess(System.CurrentControl, System.CurrentControl)">conditional</animation>
+					-->
+					<left>36</left>
 					<top>3</top>
 					<width>30</width>
 					<height>25</height>
 					<font>font12</font>
 					<aligny>center</aligny>
+					<textcolor>grey</textcolor>
 					<selectedcolor>selected</selectedcolor>
 					<align>left</align>
 					<label>$INFO[ListItem.Label]</label>
 				</control>
 				<control type="image">
+					<animation effect="fade" end="20" condition="true">conditional</animation>
 					<left>5</left>
 					<top>28</top>
 					<width>30</width>
@@ -151,6 +194,7 @@
 					<visible>ListItem.IsRecording</visible>
 				</control>
 				<control type="image">
+					<animation effect="fade" end="20" condition="true">conditional</animation>
 					<left>5</left>
 					<top>28</top>
 					<width>20</width>
@@ -159,32 +203,74 @@
 					<visible>ListItem.HasTimer + !ListItem.IsRecording</visible>
 				</control>
 			</itemlayout>
-			<focusedlayout height="156" width="40">
+			
+			green
+			<focusedlayout height="208" width="40">
+				<control type="image" id="2">
+					<height>365</height>
+					<texture border="2" colordiffuse="black">colors/white50.png</texture>
+				</control>
+				<control type="image">
+					<top>56</top>
+					<height>152</height>
+					<width>1920</width>
+					<texture border="2" colordiffuse="ff000000">colors/white.png</texture>
+				</control>
 				<control type="image" id="14">
-					<width>40</width>
-					<height>156</height>
-					<left>0</left>
-					<top>0</top>
-					<texture colordiffuse="orange">colors/white80.png</texture>
+					<bordersize>4</bordersize>
+					<texture colordiffuse="FF3A0079">colors/white10.png</texture>
 				</control>
 				<control type="image" id="2">
-					<width>40</width>
-					<height>156</height>
-					<left>0</left>
-					<top>0</top>
-					<aspectratio>stretch</aspectratio>
-					<texture border="3">epg-genres/$INFO[ListItem.Property(GenreType)].png</texture>
+					<height>208</height>
+					<texture border="2" colordiffuse="cyan">frames/frame.png</texture>
 				</control>
 				<control type="label" id="1">
-					<left>6</left>
-					<top>3</top>
+					<description>top</description>
 					<width>30</width>
-					<height>25</height>
+					<left>10</left>
+					<align>left</align>
+					<height>208</height>
 					<font>font12</font>
 					<aligny>center</aligny>
+					<textcolor>FF3A0079</textcolor>
 					<selectedcolor>selected</selectedcolor>
 					<align>left</align>
 					<label>$INFO[ListItem.Label]</label>
+				</control>
+				<control type="image">
+					<top>65</top>
+					<height>130</height>
+					<width>210</width>
+					<left>10</left>
+					<bordersize>2</bordersize>
+					<bordertexture border="2" colordiffuse="white">frames/frame.png</bordertexture>
+					<aspectratio>scale</aspectratio>
+					<texture>$VAR[ImageLayout_landscape]</texture>
+				</control>
+				<control type="label" id="4">
+					<top>145</top>
+					<left>230</left>
+					<align>left</align>
+					<height>30</height>
+					<font>debugtiny</font>
+					<aligny>center</aligny>
+					<textcolor>white</textcolor>
+					<selectedcolor>selected</selectedcolor>
+					<label>$INFO[ListItem.StartTime] - $INFO[ListItem.EndTime]$INFO[ListItem.mpaa,   |  ,]$INFO[ListItem.year,   |  ,][CR]$INFO[ListItem.genre]</label>
+				</control>
+				<control type="textbox">
+					<description>plot</description>
+					<width>500</width>
+					<top>112</top>
+					<height>80</height>
+					<left>230</left>
+					<align>left</align>
+					<font>font_Montserrat_16_semibold</font>
+					<aligny>bottom</aligny>
+					<wrapmultiline>true</wrapmultiline>
+					<textcolor>FF3A0079</textcolor>
+					<selectedcolor>selected</selectedcolor>
+					<label>$INFO[ListItem.Plot]</label>
 				</control>
 				<control type="image">
 					<left>5</left>
@@ -205,4 +291,75 @@
 			</focusedlayout>
 		</control>
 	</include>
+	
+<!-- $INFO[PVR.NowRecordingTitle]       Title of the programme being recorded 	
+$INFO[PVR.NowRecordingDateTime]       Start date and time of the current recording]       
+$INFO[PVR.NowRecordingChannel]       Channel number that's being recorded]       
+$INFO[PVR.NextRecordingTitle]       Title of the next programme that will be recorded]       
+$INFO[PVR.NextRecordingDateTime]       Start date and time of the next recording]       
+$INFO[PVR.NextRecordingChannel]       Channel name of the next recording]       
+$INFO[PVR.BackendName]       Name of the backend being used]       
+$INFO[PVR.BackendVersion]       Version of the backend that's being used]       
+$INFO[PVR.BackendHost]       Backend hostname]       
+$INFO[PVR.BackendDiskSpace]       Available diskspace on the backend]       
+$INFO[PVR.BackendChannels]       Number of available channels the backend provides]       
+$INFO[PVR.BackendTimers]       Number of timers set for the backend]       
+$INFO[PVR.BackendRecordings]       Number of recording available on the backend]       
+$INFO[PVR.BackendDiskspace]       Free diskspace available for recordings on the backend]       
+$INFO[PVR.BackendNumber]       Backend number]       
+$INFO[PVR.TotalDiscSpace]       Total diskspace available for recordings]       
+$INFO[PVR.NextTimer]       Next timer date]       
+$INFO[PVR.EpgEventDuration[(format)]]       Returns the duration of the currently played title on TV. See ListItem.Duration for optinional formatting options]       
+$INFO[PVR.EpgEventElapsedTime[(format)]]       Returns the time position of the currently played title on TV. See ListItem.Duration for optinional formatting options]       
+$INFO[PVR.EpgEventRemainingTime[(format)]]       Returns the remaining time for currently playing epg event. See ListItem.Duration for optinional formatting options]       v18
+$INFO[PVR.EpgEventFinishTime[(format)]]       Returns the time the currently playing epg event will end. See ListItem.Duration for optinional formatting options]       v18
+$INFO[PVR.EpgEventSeekTime[(format)]]       Returns the seek time of the currently playing epg event. See ListItem.Duration for optinional formatting options]       v18
+$INFO[PVR.EpgEventProgress]       Returns the position of currently played title on TV as integer]       
+$INFO[PVR.TimeShiftStart[(format)]]       Start position of the timeshift. See ListItem.Duration for optinional formatting options]       
+$INFO[PVR.TimeShiftEnd[(format)]]       End position of the timeshift. See ListItem.Duration for optinional formatting options]       
+$INFO[PVR.TimeShiftCur[(format)]]       Current position of the timeshift. See ListItem.Duration for optinional formatting options
+$INFO[PVR.TimeShiftOffset[(format)]]       Current offset of the timeshift. See ListItem.Duration for optinional formatting options]       
+$INFO[PVR.TimeShiftProgress]       Returns the position of currently timeshifted title on TV as interger]       
+$INFO[PVR.ActStreamClient]       Stream client name]       
+$INFO[PVR.ActStreamDevice]       Stream device name]       
+$INFO[PVR.ActStreamStatus]       Status of the stream]       
+$INFO[PVR.ActStreamSignal]       Signal quality of the stream]       
+$INFO[PVR.ActStreamSnr]       Signal to noise ratio of the stream]       
+$INFO[PVR.ActStreamBer]       Bit error rate of the stream]       
+$INFO[PVR.ActStreamUnc]       UNC value of the stream]       
+$INFO[PVR.ActStreamVideoBitRate]       Video bitrate of the stream]       
+$INFO[PVR.ActStreamAudioBitRate]       Audio bitrate of the stream]       
+$INFO[PVR.ActStreamDolbyBitRate]       Dolby bitrate of the stream]       
+$INFO[PVR.ActStreamProgrSignal]       Signal quality of the programme]       
+$INFO[PVR.ActStreamProgrSnr]       Signal to noise ratio of the programme]       
+$INFO[PVR.ActStreamEncryptionName]       Encryption used on the stream]       
+$INFO[PVR.TVNowRecordingTitle]       Title of the tv programme being recorded]       v17 Addition
+$INFO[PVR.TVNowRecordingDateTime]       Start date and time of the current tv recording]       v17 Addition
+$INFO[PVR.TVNowRecordingChannel]       Channel name of the current tv recording]       v17 Addition
+$INFO[PVR.TVNowRecordingChannelIcon]       Icon of the current recording TV channel]       v17 Addition
+$INFO[PVR.TVNextRecordingTitle]       Title of the next tv programme that will be recorded]       v17 Addition
+$INFO[PVR.TVNextRecordingDateTime]       Start date and time of the next tv recording]       v17 Addition
+$INFO[PVR.TVNextRecordingChannel]       Channel name of the next tv recording]       v17 Addition
+$INFO[PVR.TVNextRecordingChannelIcon]       Icon of the next recording tv channel]       v17 Addition
+$INFO[PVR.RadioNowRecordingTitle]       Title of the radio programme being recorded]       v17 Addition
+$INFO[PVR.RadioNowRecordingDateTime]       Start date and time of the current radio recording]       v17 Addition
+$INFO[PVR.RadioNowRecordingChannel]       Channel name of the current radio recording]       v17 Addition
+$INFO[PVR.RadioNowRecordingChannelIcon]       Icon of the current recording radio channel]       v17 Addition
+$INFO[PVR.RadioNextRecordingTitle]       Title of the next radio programme that will be recorded]       v17 Addition
+$INFO[PVR.RadioNextRecordingDateTime]       Start date and time of the next radio recording]       v17 Addition
+$INFO[PVR.RadioNextRecordingChannel]       Channel name of the next radio recording]       v17 Addition
+$INFO[PVR.ChannelNumberInput]       Label displaying the number the user entered on remote or keyboard]       v18
+$INFO[PVR.TimeshiftProgressDuration]       Returns the duration of the PVR timeshift progress in the format hh:mm:ss. hh: will be omitted if hours value is zero]       v18
+$INFO[PVR.TimeshiftProgressDuration(format)]       Returns the duration of the PVR timeshift progress in different formats, hours (hh), minutes (mm) or seconds (ss)]       v18
+$INFO[PVR.TimeshiftProgressStartTime]       Returns the start time of the PVR timeshift progress in the format hh:mm:ss. hh: will be omitted if hours value is zero]       v18
+$INFO[PVR.TimeshiftProgressStartTime(format)]       Returns the start time of the PVR timeshift progress in different formats, hours (hh), minutes (mm) or seconds (ss)]       v18
+$INFO[PVR.TimeshiftProgressEndTime]       Returns the end time of the PVR timeshift progress in the format hh:mm:ss. hh: will be omitted if hours value is zero]       v18
+$INFO[PVR.TimeshiftProgressEndTime(format)]       Returns the end time of the PVR timeshift progress in different formats, hours (hh), minutes (mm) or seconds (ss)]       v18
+$INFO[PVR.TimeshiftProgressPlayPos]       Returns the percentage of the current play position within the PVR timeshift progress]       v18
+$INFO[PVR.TimeshiftProgressEpgStart]       Returns the percentage of the start of the currently playing epg event within the PVR timeshift progress]       v18
+$INFO[PVR.TimeshiftProgressEpgEnd]       Returns the percentage of the end of the currently playing epg event within the PVR timeshift progress]       v18
+$INFO[PVR.TimeshiftProgressBufferStart]       Returns the percentage of the start of the timeshift buffer within the PVR timeshift progress]       v18
+$INFO[PVR.TimeshiftProgressBufferEnd]       Returns the percentage of the end of the timeshift buffer within the PVR timeshift progress]       v18
+$INFO[$INFO[PVR.TimeShiftSeekbar]       This is the equivalent of Player.Seekbar, but for LiveTV (can be used in a slider control and indicates the position being seeked to) 	v19 -->
+
 </includes>
