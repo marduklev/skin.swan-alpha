@@ -1,6 +1,177 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 	
+	
+<!-- Window.IsActive(PVRGuideInfo) | Window.IsActive(PVRRecordingInfo)
+1.23 DialogPVRInfo.xml
+ID 	Type 	Description
+4 	button 	Similar button
+5 	button 	Switch to channel button
+6 	button 	Record button
+7 	button 	OK button
+8 	button 	Play button
+9 	button 	Add timer button
+
+10 watch item
+11 Set reminder
+ -->
+				
+	<include name="pvrguideinfo_buttons">
+		<control type="button" id="5">
+			<description>Switch to channel button</description>
+			<include>Button_VideoInfo</include>
+			<label>$LOCALIZE[19165]</label>
+		</control>
+		<control type="button" id="8">
+			<description>pvr play</description>
+			<include>Button_VideoInfo</include>
+			<label>$LOCALIZE[19687]</label>
+		</control>
+		<control type="button" id="10">
+			<description>pvr watch item</description>
+			<include>Button_VideoInfo</include>
+			<label>$LOCALIZE[19190]</label>
+		</control>
+		<control type="button" id="9">
+			<description>pvr add timer</description>
+			<include>Button_VideoInfo</include>
+			<label>$LOCALIZE[19061]</label>
+		</control>
+		<control type="button" id="7">
+			<description>ok native</description>
+			<visible>false</visible>
+			<include>Button_VideoInfo</include>
+			<label>ok</label>
+		</control>
+		<control type="button" id="6">
+			<description>record native</description>
+			<include>Button_VideoInfo</include>
+		</control>
+		<control type="button" id="4">
+			<description>Similar button</description>
+			<include>Button_VideoInfo</include>
+			<label>$LOCALIZE[19003]</label>
+		</control>
+		<control type="button" id="11">
+			<include>Button_VideoInfo</include>
+			<label>$LOCALIZE[826]</label>
+		</control>
+		<control type="button" id="20">
+			<description>show textviewer plot</description>
+			<visible>!Skin.HasSetting(VideoInfo_Button_Plot)</visible>
+			<include>Button_VideoInfo</include>
+			<label>$LOCALIZE[207]</label>
+			<onclick>RunScript(script.embuary.helper,action=textviewer,header='$ESCINFO[ListItem.Title]',message='$ESCINFO[ListItem.Plot]')</onclick>
+		</control>
+		<control type="button" id="23">
+			<description>Embuary TMDB Info - may adjust for pvr</description>
+			<visible>!Skin.HasSetting(EmbuaryTMDBInfo) + System.HasAddon(script.embuary.info) + !String.IsEqual(ListItem.DBTYPE,musicvideo)</visible>
+			<include>Button_VideoInfo</include>
+			<label>Embuary TMDB Info</label>
+			<onclick>RunScript(script.embuary.info,$VAR[embuaryinfo_listitem])</onclick>
+		</control>
+	</include> 
+	
+	<include name="videoinfo_buttons">
+		<control type="button" id="8">
+			<description>play native</description>
+			<visible>!Skin.HasSetting(VideoInfo_Button_play)</visible>
+			<include>Button_VideoInfo</include>
+			<label>208</label>
+		</control>
+		
+		<control type="button" id="9">
+			<visible>!Skin.HasSetting(VideoInfo_Button_play) + ListItem.IsResumable</visible>
+			<include>Button_VideoInfo</include>
+			<label>13404</label>
+		</control>
+		
+		<include condition="Window.IsActive(pvrguideinfo)">pvrguideinfo_buttons</include> 
+		
+		
+		<control type="button" id="20">
+			<description>show textviewer plot</description>
+			<visible>!Skin.HasSetting(VideoInfo_Button_Plot)</visible>
+			<include>Button_VideoInfo</include>
+			<label>$LOCALIZE[207]</label>
+			<onclick>RunScript(script.embuary.helper,action=textviewer,header='$ESCINFO[ListItem.Title]',message='$ESCINFO[ListItem.Plot]')</onclick>
+		</control>
+		
+		<control type="togglebutton" id="21">
+			<description>Play Trailer</description>
+			<visible>!Skin.HasSetting(VideoInfo_Button_Trailer) + $EXP[Has_Trailer]</visible>
+			<include>Button_VideoInfo</include>
+			<label>20410</label>
+			<onclick condition="!String.IsEmpty(ListItem.Trailer)">PlayMedia($INFO[ListItem.Trailer],1)</onclick>
+			<onclick condition="String.IsEmpty(ListItem.Trailer) + [!String.IsEmpty(Window(home).Property(listitemtrailer)) + !String.IsEmpty(Window(home).Property(trailer_avail))]">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onclick>
+			<onclick>SetProperty(TrailerIsPlaying,true,home)</onclick>
+			<usealttexture>!String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</usealttexture>
+			<alttexturefocus colordiffuse="$VAR[color_global_button_panel_fo]" diffuse="diffuse/gradienttoplinear100.png" border="25">frames/circler25.png</alttexturefocus>
+			<alttexturenofocus colordiffuse="$VAR[color_global_button_panel_nf]" border="25">frames/bordercircler25.png</alttexturenofocus>
+			<altlabel>244</altlabel>
+			<altclick>FullScreen</altclick>
+		</control>
+		
+		<control type="button" id="122">
+			<visible>!String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
+			<include>Button_VideoInfo</include>
+			<label>36044</label>
+			<onclick>Stop</onclick>
+		</control>
+		
+		<control type="button" id="23">
+			<description>Embuary TMDB Info</description>
+			<visible>!Skin.HasSetting(EmbuaryTMDBInfo) + System.HasAddon(script.embuary.info) + !String.IsEqual(ListItem.DBTYPE,musicvideo)</visible>
+			<include>Button_VideoInfo</include>
+			<label>Embuary TMDB Info</label>
+			<onclick>RunScript(script.embuary.info,$VAR[embuaryinfo_listitem])</onclick>
+		</control>
+		
+		<control type="button" id="7">
+			<description>native set user rating, use setprop to get cond layout for rating in dialogselect based or use cond based on header</description>
+			<visible>!Skin.HasSetting(VideoInfo_Button_Rate) + Control.IsEnabled(7)</visible>
+			<include>Button_VideoInfo</include>
+			<label>Rate Title</label>
+		</control>
+		
+		<control type="button" id="10">
+			<description>native get Thumb</description>
+			<visible>!Skin.HasSetting(VideoInfo_Button_KodiGetThumb)</visible>
+			<include>Button_VideoInfo</include>
+			<label>13511</label>
+		</control>
+		
+		<control type="button" id="24">
+			<description>ArtworkBeef get Thumb</description>
+			<visible>[String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,musicvideo) | String.IsEqual(ListItem.DBType,episode)] + [system.hasaddon(script.artwork.beef) + !Skin.HasSetting(VideoInfo_Button_BeefGetThumb)]</visible>
+			<include>Button_VideoInfo</include>
+			<label>Artwork Beef</label>
+			<onclick condition="String.IsEqual(ListItem.DBType,episode) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=episode, dbid=$INFO[ListItem.DBID])</onclick>
+			<onclick condition="String.IsEqual(ListItem.DBType,tvshow) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=tvshow, dbid=$INFO[ListItem.DBID])</onclick>
+			<onclick condition="String.IsEqual(ListItem.DBType,movie) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=movie, dbid=$INFO[ListItem.DBID])</onclick>
+		</control>
+		
+		<control type="button" id="6">
+			<description>native refresh</description>
+			<include>Button_VideoInfo</include>
+			<label>184</label>
+		</control>
+		
+		<control type="button" id="801">
+			<description>trakt - open dialog ? or add each button themoviedbhelper - add item</description>
+			<include>Button_VideoInfo</include>
+			
+			<visible>!Skin.HasSetting(VideoInfo_Button_Trakt) + [!String.IsEmpty(Window(home).Property(movie_tmdbid)) | !String.IsEmpty(Window(home).Property(tvshow_tmdbid)) | !String.IsEmpty(Window(home).Property(episodetvshow_tmdbid))]</visible>
+			<label>Trakt Functions</label>
+			<onclick condition="string.startswith(System.BuildVersion,19.1) + !String.IsEmpty(Window(home).Property(movie_tmdbid))">RunScript(plugin.video.themoviedb.helper,sync_trakt,type=movie,tmdb_id=$INFO[Window(home).Property(movie_tmdbid)])</onclick>
+			<onclick condition="string.startswith(System.BuildVersion,19.1) + !String.IsEmpty(Window(home).Property(tvshow_tmdbid))">RunScript(plugin.video.themoviedb.helper,sync_trakt,type=tv,tmdb_id=$INFO[Window(home).Property(movie_tmdbid)])</onclick>
+			<onclick condition="string.startswith(System.BuildVersion,19.1) + !String.IsEmpty(Window(home).Property(episodetvshow_tmdbid))">RunScript(plugin.video.themoviedb.helper,sync_trakt,type=tv,tmdb_id=$INFO[ListItem.Property(episodetvshow_tmdbid)],season=$INFO[ListItem.Season],episode=$INFO[ListItem.Episode])</onclick>
+			<onclick condition="string.startswith(System.BuildVersion,18.)">ActivateWindow(1104,return)</onclick>
+		</control>
+				
+	</include>
+	
+	
 	<include name="dialog_videoinfo">
 		
 		<control type="group">
@@ -362,127 +533,9 @@
 				<pagecontrol>60</pagecontrol>
 				<orientation>horizontal</orientation>
 				
-				<control type="button" id="801">
-					<description>trakt - open dialog ? or add each button themoviedbhelper - add item</description>
-					<include>Button_VideoInfo</include>
-					
-					<visible>!Skin.HasSetting(VideoInfo_Button_Trakt) + [!String.IsEmpty(Window(home).Property(movie_tmdbid)) | !String.IsEmpty(Window(home).Property(tvshow_tmdbid)) | !String.IsEmpty(Window(home).Property(episodetvshow_tmdbid))]</visible>
-					<label>Trakt Functions</label>
-					<onclick condition="string.startswith(System.BuildVersion,19.1) + !String.IsEmpty(Window(home).Property(movie_tmdbid))">RunScript(plugin.video.themoviedb.helper,sync_trakt,type=movie,tmdb_id=$INFO[Window(home).Property(movie_tmdbid)])</onclick>
-					<onclick condition="string.startswith(System.BuildVersion,19.1) + !String.IsEmpty(Window(home).Property(tvshow_tmdbid))">RunScript(plugin.video.themoviedb.helper,sync_trakt,type=tv,tmdb_id=$INFO[Window(home).Property(movie_tmdbid)])</onclick>
-					<onclick condition="string.startswith(System.BuildVersion,19.1) + !String.IsEmpty(Window(home).Property(episodetvshow_tmdbid))">RunScript(plugin.video.themoviedb.helper,sync_trakt,type=tv,tmdb_id=$INFO[ListItem.Property(episodetvshow_tmdbid)],season=$INFO[ListItem.Season],episode=$INFO[ListItem.Episode])</onclick>
-					
-					<onclick condition="string.startswith(System.BuildVersion,18.)">ActivateWindow(1104,return)</onclick>
-				</control>
-
-
-
-				<!-- global -->
-				<control type="button" id="8">
-					<description>play native</description>
-					<visible>!Skin.HasSetting(VideoInfo_Button_play)</visible>
-					<include>Button_VideoInfo</include>
-					<label>208</label>
-				</control>
+				<include condition="Window.IsActive(pvrguideinfo) | Window.IsActive(PVRRecordingInfo)">pvrguideinfo_buttons</include> 
+				<include condition="!Window.IsActive(pvrguideinfo) + !Window.IsActive(PVRRecordingInfo)">videoinfo_buttons</include> 
 				
-				<control type="button" id="9">
-					<description>USE VAR for LABEL - resume native | pvr Add timer button</description>
-					<visible>Window.IsActive(pvrguideinfo) | [!Skin.HasSetting(VideoInfo_Button_play) + ListItem.IsResumable]</visible>
-					<include>Button_VideoInfo</include>
-					<label>13404</label>
-				</control>
-				
-				<!-- pvr only -->
-				<!-- 7 	button 	OK button PVR; NON PVR RATE TITLE -->
-				<!-- 6 	button 	RECORD button PVR; NON PVR REFRESH ITEM -->
-				
-				<!-- 
-				<control type="button" id="6">
-					<description>record native</description>
-					<visible>Window.IsActive(pvrguideinfo)</visible>
-					<include>Button_VideoInfo</include>
-				</control>
-				-->
-				<control type="button" id="4">
-					<description>Similar button</description>
-					<visible>Window.IsActive(pvrguideinfo)</visible>
-					<include>Button_VideoInfo</include>
-					<label>PVR Similar button</label>
-				</control>
-				<control type="button" id="5">
-					<description>Switch to channel button</description>
-					<visible>Window.IsActive(pvrguideinfo)</visible>
-					<include>Button_VideoInfo</include>
-					<label>Switch to channel button</label>
-				</control>
-				
-				<control type="button" id="20">
-					<description>show textviewer plot</description>
-					<visible>!Skin.HasSetting(VideoInfo_Button_Plot)</visible>
-					<include>Button_VideoInfo</include>
-					<label>$LOCALIZE[207]</label>
-					<onclick>RunScript(script.embuary.helper,action=textviewer,header='$ESCINFO[ListItem.Title]',message='$ESCINFO[ListItem.Plot]')</onclick>
-				</control>
-				
-				<control type="togglebutton" id="21">
-					<description>Play Trailer</description>
-					<visible>!Skin.HasSetting(VideoInfo_Button_Trailer) + $EXP[Has_Trailer]</visible>
-					<include>Button_VideoInfo</include>
-					<label>20410</label>
-					<onclick condition="!String.IsEmpty(ListItem.Trailer)">PlayMedia($INFO[ListItem.Trailer],1)</onclick>
-					<onclick condition="String.IsEmpty(ListItem.Trailer) + [!String.IsEmpty(Window(home).Property(listitemtrailer)) + !String.IsEmpty(Window(home).Property(trailer_avail))]">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onclick>
-					<onclick>SetProperty(TrailerIsPlaying,true,home)</onclick>
-					<usealttexture>!String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</usealttexture>
-					<alttexturefocus colordiffuse="$VAR[color_global_button_panel_fo]" diffuse="diffuse/gradienttoplinear100.png" border="25">frames/circler25.png</alttexturefocus>
-					<alttexturenofocus colordiffuse="$VAR[color_global_button_panel_nf]" border="25">frames/bordercircler25.png</alttexturenofocus>
-					<altlabel>244</altlabel>
-					<altclick>FullScreen</altclick>
-				</control>
-				
-				<control type="button" id="122">
-					<visible>!String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
-					<include>Button_VideoInfo</include>
-					<label>36044</label>
-					<onclick>Stop</onclick>
-				</control>
-				
-				<control type="button" id="23">
-					<description>Embuary TMDB Info</description>
-					<visible>!Skin.HasSetting(EmbuaryTMDBInfo) + System.HasAddon(script.embuary.info) + !String.IsEqual(ListItem.DBTYPE,musicvideo)</visible>
-					<include>Button_VideoInfo</include>
-					<label>Embuary TMDB Info</label>
-					<onclick>RunScript(script.embuary.info,$VAR[embuaryinfo_listitem])</onclick>
-				</control>
-				
-				<control type="button" id="7">
-					<description>native set user rating, use setprop to get cond layout for rating in dialogselect based or use cond based on header</description>
-					<visible>!Skin.HasSetting(VideoInfo_Button_Rate) + Control.IsEnabled(7)</visible>
-					<include>Button_VideoInfo</include>
-					<label>Rate Title</label>
-				</control>
-				
-				<control type="button" id="10">
-					<description>native get Thumb</description>
-					<visible>!Skin.HasSetting(VideoInfo_Button_KodiGetThumb)</visible>
-					<include>Button_VideoInfo</include>
-					<label>13511</label>
-				</control>
-				
-				<control type="button" id="24">
-					<description>ArtworkBeef get Thumb</description>
-					<visible>[String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,musicvideo) | String.IsEqual(ListItem.DBType,episode)] + [system.hasaddon(script.artwork.beef) + !Skin.HasSetting(VideoInfo_Button_BeefGetThumb)]</visible>
-					<include>Button_VideoInfo</include>
-					<label>Artwork Beef</label>
-					<onclick condition="String.IsEqual(ListItem.DBType,episode) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=episode, dbid=$INFO[ListItem.DBID])</onclick>
-					<onclick condition="String.IsEqual(ListItem.DBType,tvshow) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=tvshow, dbid=$INFO[ListItem.DBID])</onclick>
-					<onclick condition="String.IsEqual(ListItem.DBType,movie) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=movie, dbid=$INFO[ListItem.DBID])</onclick>
-				</control>
-				
-				<control type="button" id="6">
-					<description>native refresh</description>
-					<include>Button_VideoInfo</include>
-					<label>184</label>
-				</control>
 			</control>
 			
 			<control type="group">
@@ -596,20 +649,17 @@
 					<param name="item_infobox_right_visible" value="!String.IsEqual(ListItem.Plot,$LOCALIZE[20370])" />
 					<param name="item_artwork_diffuse_themed" value="true" />
 					<param name="item_artwork_diffuse_override" value="false" />
-					
-					
-					
 					<content limit="1" target="videos" sortby="playcount">videodb://inprogresstvshows/$INFO[ListItem.DBID]/-1/?tvshowid=$INFO[ListItem.DBID]</content>
 				</include>
 				
 				<!-- error - will be empty/visible=false if coming back from embuary.info dialogs dont refresh , labels remain empty if tmdbhelper-->
-				<include content="Universal_ContainerHeader">
+				<include condition="!Window.IsActive(pvrguideinfo) + !Window.IsActive(PVRRecordingInfo)" content="Universal_ContainerHeader">
 					<param name="groupid" value="8503" />
 					<param name="id" value="8603" />
 					<param name="label" value="$LOCALIZE[344] $INFO[ListItem.Title,  &quot; , &quot;]" />
 					<visible>Control.IsVisible(8603)</visible>
 				</include>
-				<include content="Universal_Container">
+				<include condition="!Window.IsActive(pvrguideinfo) + !Window.IsActive(PVRRecordingInfo)" content="Universal_Container">
 					<param name="id" value="8603" />
 					<param name="visible" value="Integer.IsGreater(Container(8603).NumItems,0) | Container(8603).IsUpdating" />
 					<param name="type_height" value="380" />
@@ -623,13 +673,13 @@
 					
 					<content>$VAR[content_cast]</content>
 				</include>
-				<include content="Universal_ContainerHeader">
+				<include condition="!Window.IsActive(pvrguideinfo) + !Window.IsActive(PVRRecordingInfo)" content="Universal_ContainerHeader">
 					<param name="groupid" value="8650" />
 					<param name="id" value="50" />
 					<param name="label" value="$LOCALIZE[344] $INFO[ListItem.Title,  &quot; , &quot;]" />
 					<visible>Control.IsVisible(50)</visible>
 				</include>
-				<include content="Universal_Container">
+				<include condition="!Window.IsActive(pvrguideinfo) + !Window.IsActive(PVRRecordingInfo)" content="Universal_Container">
 					<description>may use workaround set hidden focus to button which do control moves</description>
 					<param name="id" value="50" />
 					<param name="visible" value="!Control.IsVisible(8603) + [Integer.IsGreater(Container(50).NumItems,0) | Container(50).IsUpdating]" />
@@ -697,13 +747,13 @@
 					<content target="videos" sortby="year" sortorder="descending">videodb://movies/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22director%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[ListItem.Director]%22%5D%7D%2C%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
 				</include>
 				
-				<include content="Universal_ContainerHeader">
+				<include condition="!Window.IsActive(pvrguideinfo) + !Window.IsActive(PVRRecordingInfo)" content="Universal_ContainerHeader">
 					<param name="groupid" value="8522" />
 					<param name="id" value="8622" />
 					<param name="label" value="Crew [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$INFO[ListItem.Title,  &quot; , &quot;][/COLOR]" />
 					<visible>Control.IsVisible(8622)</visible>
 				</include>
-				<include condition="[!String.IsEqual(ListItem.dbtype,musicvideo) + !$EXP[IsOfflineMode] + System.HasAddon(plugin.video.themoviedb.helper)] + !Skin.HasSetting(VideoInfo_Content_tmdbhelper_crew)" content="Universal_Container">
+				<include condition="[!Window.IsActive(pvrguideinfo) + !Window.IsActive(PVRRecordingInfo)] + [!String.IsEqual(ListItem.dbtype,musicvideo) + !$EXP[IsOfflineMode] + System.HasAddon(plugin.video.themoviedb.helper)] + !Skin.HasSetting(VideoInfo_Content_tmdbhelper_crew)" content="Universal_Container">
 					<param name="id" value="8622" />
 					<param name="visible" value="Integer.IsGreater(Container(8622).NumItems,0) | Container(8622).IsUpdating" />
 					<param name="type_height" value="380" />
@@ -880,7 +930,7 @@
 					<param name="label" value="Bonusmaterial" />
 					<visible>Control.IsVisible(8609)</visible>
 				</include>
-				<include content="Universal_Container">
+				<include condition="!Window.IsActive(pvrguideinfo) + !Window.IsActive(PVRRecordingInfo)" content="Universal_Container">
 					<param name="type" value="panel" />
 					<param name="id" value="8609" />
 					<param name="visible" value="!String.IsEmpty(Window(home).Property(bonuscontentavail)) + [Integer.IsGreater(Container(8609).NumItems,0) | Container(8609).IsUpdating]" />
@@ -1177,11 +1227,11 @@
 			<value condition="String.IsEqual(ListItem.DBType,tvshow) + !String.IsEmpty(ListItem.DBID)">plugin://script.embuary.helper/?info=getsimilar&amp;dbid=$INFO[ListItem.DBID]&amp;type=tvshow</value>
 		</variable>
 	<include name="Button_VideoInfo">
-		<width>280</width>
+		<width>auto</width>
 		<height>45</height>
 		<align>center</align>
 		<aligny>center</aligny>
-		<textoffsetx>5</textoffsetx>
+		<textoffsetx>30</textoffsetx>
 		<focusedcolor>$VAR[color_global_button_text_fo]</focusedcolor>
 		<textcolor>$VAR[color_global_button_text_nf]</textcolor>
 		<texturefocus colordiffuse="$VAR[color_global_button_panel_fo]" diffuse="diffuse/gradienttoplinear100.png" border="25">frames/circler25.png</texturefocus>

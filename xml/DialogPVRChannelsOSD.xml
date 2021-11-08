@@ -1,8 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
 	<defaultcontrol always="true">11</defaultcontrol>
+	<onload>setfocus(11)</onload>
 	<!-- 1.19 DialogPVRChannelsOSD.xml
 ID 	Type 		Description
 11 	container 	Channels list 
 -->
+	<controls>
+		<control type="group">
+			<animation type="WindowOpen">
+				<effect type="fade" start="0" end="100" time="200" tween="sine" easing="in" />
+				<effect type="slide" start="0,1920" end="0" time="250" tween="cubic" easing="out" />
+			</animation>
+			<animation type="WindowClose">
+				<effect type="fade" start="100" end="0" time="200" tween="sine" easing="out" />
+				<effect type="slide" start="0" end="0,1920" time="250" tween="cubic" easing="out" />
+			</animation>
+			<animation effect="fade" start="100" end="0" time="400" condition="[Player.Paused + System.IdleTime(5) + [!Window.IsActive(videoosd) + !Window.IsActive(fullscreeninfo)]] | $EXP[embinfodialogactive] | Window.IsActive(1104)">conditional</animation>
+			<width>100%</width>
+			<height>100%</height>
+			
+			
+			<control type="image">
+				<description>bottom offset neg as osd button bg</description>
+				<bottom>0</bottom>
+				<width>102%</width>
+				<height>650</height>
+				<aspectratio scalediffuse="true" align="center" aligny="bottom">stretch</aspectratio>
+				<bordersize>0,100,0,0</bordersize>
+				<texture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white.png</texture>
+				<bordertexture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white70.png</bordertexture>
+			</control>
+			<control type="label">
+				<bottom>550</bottom>
+				<left>50</left>
+				<width>90%</width>
+				<height>100</height>
+				<font>font13</font>
+				<align>left</align>
+				<aligny>center</aligny>
+				<wrapmultiline>true</wrapmultiline>
+				<textcolor>$VAR[color_osdvideo_main]</textcolor>
+				<label>[B]$INFO[System.CurrentWindow][/B]</label>
+			</control>
+			
+			<control type="group">
+			
+			<description>for layout decisions - needed stuff	
+- progressbar
+			visible ListItem.HasEpg + !$PARAM[has_info_icon]
+			info ListItem.Progress	
+- icon indicator  is.playable | is.recording
+- text channel title + title + time values (start end? duration)
+- img  channel icon and corresponding media item artwork thumb ?
+</description>
+			
+				
+				<width>100%</width>
+				<height>550</height>
+				<bottom>0</bottom>
+				<left>50</left>
+				<right>50</right>
+				
+				<include content="Universal_Container">
+					<param name="id" value="11" />
+					<param name="type_orientation" value="vertical" />
+					<param name="visible" value="String.IsEmpty(Window(home).Property(VideoBookmarks))" />
+					<param name="type_height" value="550" />
+					<param name="type_pos_top" value="10" />
+					<param name="layout_height" value="170" />
+					<param name="layout_width" value="150" />
+					<param name="itemwidth" value="145" />
+					<param name="itemheight" value="77.5" />
+					<param name="item_artwork_name" value="fanart" />
+					
+				</include>
+				
+				
+				
+			</control>
+		</control>
+	</controls>
 </window>
