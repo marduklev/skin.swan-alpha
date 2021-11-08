@@ -1,5 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
+	<include name="osd_channellayout">
+		<control type="group">
+			<width>$PARAM[width]</width>
+			<height>$PARAM[height]</height>
+			<animation effect="fade" end="60" condition="!$PARAM[is_focused]">conditional</animation>
+			<control type="image">
+				<visible>$PARAM[is_focused]</visible>
+				<description>focus frame bad if item bg match global bg</description>
+				<texture colordiffuse="white">colors/white.png</texture>
+				<top>0</top>
+				<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
+			</control>
+			<control type="image">
+				<description>tile bg</description>
+				<texture colordiffuse="ff131313">colors/white.png</texture>
+				<top>0</top>
+				<bordersize>5</bordersize>
+				<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
+			</control>
+			
+			<control type="group">
+				<left>10</left>
+				<right>10</right>
+				<control type="image">
+					<description>diffused fanart</description>
+					<top>10</top>
+					<width>50%</width>
+					<height>90%</height>
+					<texture background="true" diffuse="diffuse/spotlightrightdiffuse.png">$VAR[ImageLayout_fanart]</texture>
+					<aspectratio scalediffuse="false" align="left" aligny="top">scale</aspectratio>
+				</control>
+				<control type="textbox">
+					<description>genre, like to have it framed but button wont work good</description>
+					<visible>!String.IsEmpty(ListItem.Genre)</visible>
+					<bottom>15</bottom>
+					<left>15</left>
+					<width>55%</width>
+					<height>40</height>
+					<aligny>center</aligny>
+					<font>NotoSans_bold15</font>
+					<textcolor>white</textcolor>
+					<label>$INFO[ListItem.Genre]</label>
+				</control>
+				<control type="progress">
+					<visible>ListItem.HasEpg</visible>
+					<left>10</left>
+					<right>10</right>
+					<bottom>10</bottom>
+					<height>2</height>
+					<align>left</align>
+					<info>ListItem.Progress</info>
+				</control>
+			</control>
+			<control type="textbox">
+				<top>10</top>
+				<right>20</right>
+				<height>25</height>
+				<width>45%</width> 
+				<info>listitem.title</info>
+				<font>NotoSans_bold15</font>
+				<textcolor>white</textcolor>
+				<align>right</align>
+				<aligny>center</aligny>
+			</control>
+			<control type="textbox">
+				<description>item description e.g. plot</description>
+				<autoscroll>$PARAM[is_focused]</autoscroll>
+				<top>40</top>
+				<right>20</right>
+				<bottom>70</bottom>
+				<width>45%</width> 
+				<label>$VAR[plot]</label>
+				<font>NotoSans_bold15</font>
+				<textcolor>midgrey</textcolor>
+				<align>right</align>
+				<aligny>center</aligny>
+			</control>
+			<control type="image">
+				<bottom>33</bottom>
+				<right>15</right>
+				<width>35</width>
+				<height>35</height>
+				<bordersize>5</bordersize>
+				<animation effect="fade" start="100" end="60" condition="ListItem.IsRecording" loop="true" time="1000">conditional</animation>
+				<aspectratio align="right">keep</aspectratio>
+				<texture colordiffuse="$VAR[PVRTimerIcon_color_fo]">$VAR[PVR_indicator]</texture>
+			</control>
+			<control type="textbox">
+				<bottom>15</bottom>
+				<right>20</right>
+				<align>right</align>
+				<height>25</height>
+				<font>NotoSans_bold15</font>
+				<textcolor>white</textcolor>
+				<label>$INFO[ListItem.StartTime] - $INFO[ListItem.EndTime]</label>
+			</control>
+		</control>
+	</include>
 	<!-- grids -->
 	
 	<!-- colors -->
