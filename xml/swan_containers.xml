@@ -1858,28 +1858,26 @@ what a shit to do
 			<description>default, aspectratio scalediffuse="true" aligny="center" align="center" stretch</description>
 			<texture background="true" diffuse="artworkdiffuse$PARAM[themeprefix]/$PARAM[artwork].png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
 			<bordersize>8</bordersize>
-			<visible>!String.IsEmpty(ListItem.Art($PARAM[artwork])) + !String.IsEqual(ListItem.dbtype,studio)</visible>
+			<visible>!String.IsEmpty(ListItem.Art($PARAM[artwork])) + [!String.IsEqual(ListItem.dbtype,studio) | String.IsEmpty(ListItem.ChannelName)]</visible>
 		</control>
 		<control type="image">
 			<description>Fallback aspect scale</description>
 			<texture background="true" diffuse="artworkdiffuse$PARAM[themeprefix]/$PARAM[artwork].png">$VAR[ImageLayout_$PARAM[artwork]]</texture>
 			<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
 			<bordersize>8</bordersize>
-			<visible>String.IsEmpty(ListItem.Art($PARAM[artwork])) + !String.IsEqual(ListItem.dbtype,studio)</visible>
+			<visible>String.IsEmpty(ListItem.Art($PARAM[artwork])) + [!String.IsEqual(ListItem.dbtype,studio) | String.IsEmpty(ListItem.ChannelName)]</visible>
 		</control>
 		
 		<control type="group">
 			<description> KODI LOG ERROR : Direct texture file loading failed - even ommit background attribute didnt resolve it - only way to resolve was add vis conds for every contents of the group even if group already has this condition</description>
-			<visible>String.IsEqual(ListItem.dbtype,studio)</visible>
+			<visible>String.IsEqual(ListItem.dbtype,studio) | !String.IsEmpty(ListItem.ChannelName)</visible>
 			<control type="image">
-				<visible>String.IsEqual(ListItem.dbtype,studio)</visible>
 				<texture diffuse="artworkdiffuse$PARAM[themeprefix]/$PARAM[artwork].png" colordiffuse="ff131313">colors/white.png</texture>
 				<aspectratio scalediffuse="false" aligny="center" align="center">stretch</aspectratio>
 				<bordersize>8</bordersize>
 			</control>
 			<control type="textbox">
-				<visible>String.IsEqual(ListItem.dbtype,studio)</visible>
-				<info>listitem.label</info>
+				<label>$VAR[ChannelStudio_Name]</label>
 				<centertop>50%</centertop>
 				<align>center</align>
 				<wrapmultiline>true</wrapmultiline>
@@ -1888,14 +1886,14 @@ what a shit to do
 				<font>MenucontrolItem</font>
 			</control>
 			<control type="image">	
-				<visible>String.IsEqual(ListItem.dbtype,studio)</visible>
+				<visible>!String.StartsWith(ListItem.Icon,default)</visible>
 				<left>8</left>
 				<right>8</right>
 				<top>8</top>
 				<bottom>8</bottom>
 				<bordersize>8</bordersize>
 				<bordertexture diffuse="artworkdiffuse$PARAM[themeprefix]/$PARAM[artwork].png" colordiffuse="ff131313">colors/white.png</bordertexture>
-				<texture background="true" diffuse="artworkdiffuse/usebganel/$PARAM[artwork].png">$INFO[ListItem.Label,resource://resource.images.studios.white/,.png]</texture>
+				<texture background="true" fallback="$INFO[ListItem.Label,resource://resource.images.studios.color/,.png]" diffuse="artworkdiffuse/usebganel/$PARAM[artwork].png">$VAR[ChannelStudio_Icon]</texture>
 				<aspectratio scalediffuse="false" aligny="center" align="center">keep</aspectratio>
 			</control>
 		</control>
