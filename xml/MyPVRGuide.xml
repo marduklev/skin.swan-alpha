@@ -3,6 +3,9 @@
 	<include content="media_window_attributes">
 		<param name="view_ids" value="50,51" /> 
 	</include>
+	
+	<!-- <onunload condition="!String.IsEmpty(Window(home).Property(videofullcreen_pvrgrid))">fullscreen</onunload> -->
+	
 	<defaultcontrol always="true">11</defaultcontrol>
 	<onload condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">setfocus(8000)</onload>
 	<include content="media_window_attributes" />
@@ -51,6 +54,32 @@ ID 	Type 			Description
 			<include>GlobalBlurredBackground</include>
 		</control>
 		
+		
+				
+				<control type="image">
+					<visible>!String.IsEmpty(Window(home).Property(videofullcreen_pvrgrid))</visible>
+					<bottom>0</bottom>
+					<width>102%</width>
+					<height>650</height>
+					<aspectratio scalediffuse="true" align="center" aligny="bottom">stretch</aspectratio>
+					<bordersize>0,100,0,0</bordersize>
+					<texture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white.png</texture>
+					<bordertexture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white70.png</bordertexture>
+				</control>
+				<control type="label">
+					<visible>!String.IsEmpty(Window(home).Property(videofullcreen_pvrgrid))</visible>
+					<bottom>550</bottom>
+					<left>50</left>
+					<width>90%</width>
+					<height>100</height>
+					<font>font13</font>
+					<align>left</align>
+					<aligny>center</aligny>
+					<wrapmultiline>true</wrapmultiline>
+					<textcolor>$VAR[color_osdvideo_main]</textcolor>
+					<label>$LOCALIZE[10609]</label>
+				</control>
+				
 		<control type="group">
 			<description>viewtypes</description>
 			<include content="Animation_Close_MediaContainer" condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" />
@@ -137,23 +166,29 @@ ID 	Type 			Description
 		
 		
 		
-		<include content="HeaderBar">
+		<include condition="String.IsEmpty(Window(home).Property(videofullcreen_pvrgrid))" content="HeaderBar">
 			<param name="HasBGPanel" value="Skin.HasSetting(MediaWindow_UseHeaderBG)" />
 		</include>
-		<include content="PreMenucontrol" />
+		<include condition="String.IsEmpty(Window(home).Property(videofullcreen_pvrgrid))" content="PreMenucontrol" />
+		
 		<control type="group">
 			<animation effect="slide" start="-450,0" end="0,0" time="300" tween="cubic" easing="inout">VisibleHidden</animation>
 			<visible>String.IsEqual(Window(Home).Property(menucontrol_active),common)</visible>
+			<visible>String.IsEmpty(Window(home).Property(videofullcreen_pvrgrid))</visible>
 			<include content="menucontrol_global" condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" />
 		</control>
+		
 		<include content="window_frame" />
 	<!-- views -->
 		<!-- epggrid -->
 		<include content="swan_debug_overlay">
 			<param name="textleft" value="
 art.thumb    $INFO[ListItem.Art(thumb)]
-icon    $INFO[ListItem.Icon]
-$INFO[]
+skin var ChannelStudio_Icon   $VAR[ChannelStudio_Icon]
+ListItem.Icon    $INFO[ListItem.Icon]
+ListItem.EpgEventIcon   $INFO[ListItem.EpgEventIcon]
+ListItem.EpgEventTitle   $INFO[ListItem.EpgEventTitle]
+
 $INFO[]
 $INFO[]
 $INFO[]

@@ -1,51 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
-
-	<!-- expresion autoset parenthesis 
-	REVISIT
-	because 
-!(A + B) = !A | !B
-!(A | B) = !A + !B 
-
-test
-![!a | !b] = a + b 
-
-
-				
-	
-	e.g. $EXP[Has_Trailer] = [!String.IsEmpty(ListItem.Trailer) | [!String.IsEmpty(Window(home).Property(listitemtrailer)) + !String.IsEmpty(Window(home).Property(trailer_avail))]]
-	-->
-intended false positive Player.ShowInfo
-- onload its always false
-- if using action(info) as onload it'll force dialog which is unwished
-	
-	equals a studiologo soureced container
-	<expression name="container_notags">Window.IsActive(MyPVRChannels.xml) | Window.IsActive(MyPVRSearch.xml) | Container.Content(Studios)</expression>
-	
 	<expression name="osd_video_noinfo">String.IsEmpty(VideoPlayer.Plot) | [!String.IsEmpty(VideoPlayer.Plot) + Player.ShowInfo]</expression>
 	
 	<expression name="Has_Trailer">!String.IsEmpty(ListItem.Trailer) | [!String.IsEmpty(Window(home).Property(listitemtrailer)) + !String.IsEmpty(Window(home).Property(trailer_avail))]</expression>
-	<!-- BG -->
+	
+	<expression name="TrailerIsPlaying">Player.HasVideo + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</expression>
+	
 	<expression name="Spotlight_Layout">![Window.IsActive(musicinformation) | Window.IsActive(songinformation) | Window.IsActive(movieinformation) | Window.IsActive(addoninformation) | Window.IsActive(pvrguideinfo) | Window.IsActive(pvrrecordinginfo) | Window.IsActive(pictureinfo) | Window.IsVisible(script-embuary-video.xml) | Window.IsVisible(script-embuary-person.xml)] + 
         [[Window.IsActive(home) + String.IsEqual(Skin.String(HomeLayout),Spotlight)] |
         [!Window.IsActive(home) + [Control.IsVisible(58) | Control.IsVisible(503) | Control.IsVisible(504)]]]
 	</expression>
 	
-	<expression name="spotlight_view_show_cast">
-		[Control.IsVisible(503) + !Skin.HasSetting(view_503_hide_cast)] | [Control.IsVisible(504) + !Skin.HasSetting(view_504_hide_cast)]
-	</expression>
+	<expression name="spotlight_view_show_cast">[Control.IsVisible(503) + !Skin.HasSetting(view_503_hide_cast)] | [Control.IsVisible(504) + !Skin.HasSetting(view_504_hide_cast)]</expression>
 	
-	<expression name="NonMusic_ListItem">
-		!String.IsEqual(ListItem.DBTYPE,artist) + !String.IsEqual(ListItem.DBTYPE,album) + !String.IsEqual(ListItem.DBTYPE,song) + !String.IsEqual(ListItem.DBTYPE,musicvideo)
-	</expression>
+	<expression name="NonMusic_ListItem">!String.IsEqual(ListItem.DBTYPE,artist) + !String.IsEqual(ListItem.DBTYPE,album) + !String.IsEqual(ListItem.DBTYPE,song) + !String.IsEqual(ListItem.DBTYPE,musicvideo)</expression>
 	
 	<expression name="Scrollbar_Lib_Horizontal">Control.IsVisible(58) | Control.IsVisible(503) | Control.IsVisible(504)</expression>
 	
 	<expression name="Spotlight_ViewType">[Window.Is(videos) | Window.Is(music)] + [Control.IsVisible(58) | Control.IsVisible(59) | Control.IsVisible(503)| Control.IsVisible(504)]</expression>
 	
-	<expression name="IsHome">
-		Window.IsActive(home) + ![Window.IsActive(musicinformation) | Window.IsActive(songinformation) | Window.IsActive(movieinformation) | Window.IsActive(addoninformation) | Window.IsActive(pvrguideinfo) | Window.IsActive(pvrrecordinginfo) | Window.IsActive(pictureinfo) | Window.IsVisible(script-embuary-video.xml) | Window.IsVisible(script-embuary-person.xml) | Window.IsVisible(script-embuary-image.xml)]
-	</expression>
+	<expression name="IsHome">Window.IsActive(home) + ![Window.IsActive(musicinformation) | Window.IsActive(songinformation) | Window.IsActive(movieinformation) | Window.IsActive(addoninformation) | Window.IsActive(pvrguideinfo) | Window.IsActive(pvrrecordinginfo) | Window.IsActive(pictureinfo) | Window.IsVisible(script-embuary-video.xml) | Window.IsVisible(script-embuary-person.xml) | Window.IsVisible(script-embuary-image.xml)]</expression>
 	
 	<expression name="IsCurrentyPlayingCommon">
 		String.IsEmpty(Window(Home).Property(TrailerIsPlaying)) + [Player.HasVideo | Player.HasGame | Player.HasAudio] + 
@@ -76,8 +50,6 @@ intended false positive Player.ShowInfo
 		!String.IsEmpty(ListItem.Property(LocalTrailer)) | ListItem.IsPlaybable | String.IsEqual(ListItem.DBType,video) | String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,episode) | String.IsEqual(ListItem.DBType,song)
 	</expression>
 			
-	<!-- trailer playing -->
-	<expression name="TrailerIsPlaying">Player.HasVideo + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</expression>
 	
 	<!-- avoid online lookups if offline , 
 	!String.IsEmpty(Network.IPAddress)
@@ -104,27 +76,15 @@ intended false positive Player.ShowInfo
 	</expression>
 	
 	<expression name="InfoPanel_gap_enabled">
-				[
-				 Control.IsVisible(57) + Skin.HasSetting(View_57_InfoPanel_gap) | 
-                 Control.IsVisible(510) + Skin.HasSetting(View_510_InfoPanel_gap) | 
-			 	 Control.IsVisible(511) + Skin.HasSetting(View_511_InfoPanel_gap) | 
-				 Control.IsVisible(512) + Skin.HasSetting(View_512_InfoPanel_gap) | 
-				 Control.IsVisible(513) + Skin.HasSetting(View_513_InfoPanel_gap)
-				]
+		[
+		 Control.IsVisible(57) + Skin.HasSetting(View_57_InfoPanel_gap) | 
+		 Control.IsVisible(510) + Skin.HasSetting(View_510_InfoPanel_gap) | 
+		 Control.IsVisible(511) + Skin.HasSetting(View_511_InfoPanel_gap) | 
+		 Control.IsVisible(512) + Skin.HasSetting(View_512_InfoPanel_gap) | 
+		 Control.IsVisible(513) + Skin.HasSetting(View_513_InfoPanel_gap)
+		]
 	</expression>
 	<expression name="HiddentagPanel">[Window.Is(home) + [String.StartsWith(Skin.String(color_home_widgetitem_itemtag_bgpanel_fo),00) | String.EndsWith(Skin.String(color_home_widgetitem_itemtag_bgpanel_fo),one)]] | [!Window.Is(home) + [String.StartsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),00) | String.EndsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),one)]]</expression>
-
 	<expression name="VisibletagPanel">[Window.Is(home) + ![String.StartsWith(Skin.String(color_home_widgetitem_itemtag_bgpanel_fo),00) | String.EndsWith(Skin.String(color_home_widgetitem_itemtag_bgpanel_fo),one)]] | [!Window.Is(home) + ![String.StartsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),00) | String.EndsWith(Skin.String(color_lib_widgetitem_itemtag_bgpanel_fo),one)]]</expression>		
+
 </includes>
-
-
-
-
-
-
-
-
-
-
-
-

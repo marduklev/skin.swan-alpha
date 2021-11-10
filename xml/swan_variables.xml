@@ -48,13 +48,32 @@
 		<value condition="Window.IsActive(radiorecordings)">radiorecordings</value>
 	</variable>
 	
+	
 	<variable name="ChannelStudio_Name">
 		<value condition="!String.IsEmpty(ListItem.ChannelName)">$INFO[ListItem.ChannelName]</value>
 		<value>$INFO[listitem.label]</value>
 	</variable>
 	<variable name="ChannelStudio_Icon">
-		<value condition="!String.IsEmpty(ListItem.ChannelName)">$INFO[ListItem.Icon]</value>
+		<value condition="!String.IsEmpty(ListItem.ChannelName) + System.HasAddon(resource.images.thelogodb)">$INFO[ListItem.ChannelName,resource://resource.images.thelogodb/,.png]</value>
+		<value condition="!String.IsEmpty(ListItem.ChannelName) + !System.HasAddon(resource.images.thelogodb)">$INFO[ListItem.Icon]</value>
 		<value>$INFO[ListItem.Label,resource://resource.images.studios.white/,.png]</value>
+	</variable>
+	<variable name="Tag_label1">
+		<value condition="String.IsEqual(ListItem.label,..)"></value>
+		<value condition="!String.IsEmpty(ListItem.ChannelName)">$INFO[ListItem.Title]</value>
+		<value condition="[!$EXP[embinfodialogactive] + String.Contains(Container.Folderpath,script.embuary.info)] + [String.Contains(Container.Folderpath,call=upcoming) | String.Contains(Container.Folderpath,call=now_playing)]">$INFO[ListItem.Label]</value>
+		<value condition="$EXP[IsEpisode]">$INFO[ListItem.Season,[B]s,[/B]]$INFO[ListItem.Episode,[B]e,[/B] -]$INFO[ListItem.Title,[B],[/B]]$INFO[ListItem.Duration(mm), (, min)]</value>
+		<value condition="$EXP[IsSong]">$INFO[ListItem.Label,[B],[/B]]</value>
+		<value condition="!String.IsEmpty(ListItem.Year)">$INFO[ListItem.Label,[B],[/B]]</value>
+		<value>$INFO[ListItem.Label,[B],[/B]]</value>
+	</variable>
+	<variable name="Tag_label2">
+		<value condition="!String.IsEmpty(ListItem.ChannelName)">$INFO[ListItem.StartTime]$INFO[ListItem.EndTime, - ,]</value>
+		<value condition="[!$EXP[embinfodialogactive] + String.Contains(Container.Folderpath,script.embuary.info)] + [String.Contains(Container.Folderpath,call=upcoming) | String.Contains(Container.Folderpath,call=now_playing)]">$INFO[ListItem.Premiered]</value>
+		<value condition="$EXP[IsEpisode]">$INFO[ListItem.Year]</value>
+		<value condition="$EXP[IsSong]">$INFO[ListItem.Album]$INFO[ListItem.Year, (,)]</value>
+		<value condition="!String.IsEmpty(ListItem.Year)">$INFO[ListItem.Year]</value>
+		<value>$INFO[ListItem.Label2]</value>
 	</variable>
 	
 	

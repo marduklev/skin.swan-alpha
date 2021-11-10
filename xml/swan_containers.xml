@@ -1803,15 +1803,14 @@ what a shit to do
 				<texture colordiffuse="$PARAM[infotags_bgpanel_color]">artworkdiffuse/tagbottom/tagpanel$PARAM[artwork].png</texture>
 			</control>
 			<control type="image">
-				<visible>false</visible>
+				<visible>true</visible>
 				<visible>$PARAM[infotags_bgpanel_visible]</visible>
 				<top>98%</top>
 				<height>80</height>
 				<bordersize>$PARAM[artwork_bg_bordersize],0,$PARAM[artwork_bg_bordersize],$PARAM[artwork_bg_bordersize]</bordersize>
-				<texture border="50,0,50,0" colordiffuse="$PARAM[infotags_bgpanel_color]">special://skin/extras/preventfromzip/themed/circle_100_bottomtag.png</texture>
+				<texture border="50,0,50,0" colordiffuse="red">special://skin/extras/preventfromzip/themed/circle_100_bottomtag.png</texture>
 				<aspectratio scalediffuse="false">stretch</aspectratio>
 			</control>
-			
 			<control type="textbox">
 				<autoscroll delay="2000" time="1500" repeat="1500">$PARAM[infotags_autoscroll]</autoscroll>
 				<description>unresolved themerounded offset x, some times h100 is good idea-e.g. profiles</description>
@@ -1869,7 +1868,6 @@ what a shit to do
 		</control>
 		
 		<control type="group">
-			<description> KODI LOG ERROR : Direct texture file loading failed - even ommit background attribute didnt resolve it - only way to resolve was add vis conds for every contents of the group even if group already has this condition</description>
 			<visible>String.IsEqual(ListItem.dbtype,studio) | !String.IsEmpty(ListItem.ChannelName)</visible>
 			<control type="image">
 				<texture diffuse="artworkdiffuse$PARAM[themeprefix]/$PARAM[artwork].png" colordiffuse="ff131313">colors/white.png</texture>
@@ -1958,7 +1956,7 @@ what a shit to do
     </include>
 	<include name="ProgressBarOverlay">
 		<control type="progress">
-			<description>in progress playable media, filelike media</description>
+			<description>common</description>
 			<bottom>0</bottom>
 			<height>3</height>
 			<visible>$EXP[IsMovie] | $EXP[IsEpisode]</visible>
@@ -1989,6 +1987,13 @@ what a shit to do
 			<texture colordiffuse="$VAR[color_universalcontainer_watchedoverlay_progressbar_remain]">colors/white.png</texture>
 			<visible>$EXP[IsMovie] | $EXP[IsEpisode] | $EXP[IsSeason] |  $EXP[IsTVShow]</visible>
 			<visible>String.IsEqual(ListItem.Overlay,OverlayUnWatched.png) + !ListItem.IsResumable</visible>
+		</control>
+		<control type="progress">
+			<description>pvr</description>
+			<bottom>0</bottom>
+			<height>3</height>
+			<visible>ListItem.HasEpg</visible>
+			<info>ListItem.Progress</info>
 		</control>
 	</include>
 	
@@ -2032,24 +2037,6 @@ top-->
 			<label>$INFO[ListItem.Label,[B],[/B]]</label>
 		</control>
 	</include>
-	
-
-	<variable name="Tag_label1">
-		<value condition="String.IsEqual(ListItem.label,..)"></value>
-		<value condition="[!$EXP[embinfodialogactive] + String.Contains(Container.Folderpath,script.embuary.info)] + [String.Contains(Container.Folderpath,call=upcoming) | String.Contains(Container.Folderpath,call=now_playing)]">$INFO[ListItem.Label]</value>
-		<value condition="$EXP[IsEpisode]">$INFO[ListItem.Season,[B]s,[/B]]$INFO[ListItem.Episode,[B]e,[/B] -]$INFO[ListItem.Title,[B],[/B]]$INFO[ListItem.Duration(mm), (, min)]</value>
-		<value condition="$EXP[IsSong]">$INFO[ListItem.Label,[B],[/B]]</value>
-		<value condition="!String.IsEmpty(ListItem.Year)">$INFO[ListItem.Label,[B],[/B]]</value>
-		<value>$INFO[ListItem.Label,[B],[/B]]</value>
-	</variable>
-	<variable name="Tag_label2">
-		<value condition="[!$EXP[embinfodialogactive] + String.Contains(Container.Folderpath,script.embuary.info)] + [String.Contains(Container.Folderpath,call=upcoming) | String.Contains(Container.Folderpath,call=now_playing)]">$INFO[ListItem.Premiered]</value>
-		<value condition="$EXP[IsEpisode]">$INFO[ListItem.Year]</value>
-		<value condition="$EXP[IsSong]">$INFO[ListItem.Album]$INFO[ListItem.Year, (,)]</value>
-		<value condition="!String.IsEmpty(ListItem.Year)">$INFO[ListItem.Year]</value>
-		<value>$INFO[ListItem.Label2]</value>
-	</variable>
-	
 	
 	<!-- ################ -->
 	<!--   ARTWORK ImageLayout_$PARAM[artwork] -->
