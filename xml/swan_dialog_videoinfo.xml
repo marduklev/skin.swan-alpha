@@ -248,6 +248,7 @@ ID 	Type 	Description
 					<visible>String.IsEqual(Window.Property(AdditionalInfo),infolist)</visible>
 				</include>
 				<control type="image">
+					<visible>!String.IsEqual(ListItem.DBType,musicvideo) + !Window.IsActive(pvrguideinfo)</visible>
 					<height>660</height>
 					<width>440</width>
 					<description>thumb - test keep</description>
@@ -255,11 +256,21 @@ ID 	Type 	Description
 					<texture background="true" diffuse="diffuse/poster.png" border="5">$VAR[ImageLayout_poster]</texture>
 					<!-- <texture background="true" diffuse="artworkdiffuse/poster.png" border="5">$VAR[ImageLayout_poster]</texture> -->
 				</control>
+				
+				<control type="image">
+					<visible>String.IsEqual(ListItem.DBType,musicvideo) | Window.IsActive(pvrguideinfo)</visible>
+					<height>660</height>
+					<width>440</width>
+					<description>thumb - test keep</description>
+					<aspectratio align="center" aligny="top" scalediffuse="true">keep</aspectratio>
+					<texture background="true" diffuse="diffuse/poster.png" border="5">$VAR[ImageLayout_poster]</texture>
+				</control>
+				
 				<control type="image">
 					<height>660</height>
 					<width>440</width>
 					<description>overlay - maybe optional or remove and just simple frame instead</description>
-					<visible>!String.IsEqual(ListItem.DBType,musicvideo)</visible>
+					<visible>!String.IsEqual(ListItem.DBType,musicvideo) + !Window.IsActive(pvrguideinfo)</visible>
 					<aspectratio align="center" aligny="top" scalediffuse="true">stretch</aspectratio>
 					<texture background="true" colordiffuse="grey" diffuse="diffuse/poster.png">overlay/postertorna.png</texture>
 					<!-- <texture background="true" colordiffuse="grey" diffuse="artworkdiffuse/poster.png">overlay/tornpostera.png</texture> -->
@@ -1227,7 +1238,7 @@ ID 	Type 	Description
 			<value condition="String.IsEqual(ListItem.DBType,tvshow) + !String.IsEmpty(ListItem.DBID)">plugin://script.embuary.helper/?info=getsimilar&amp;dbid=$INFO[ListItem.DBID]&amp;type=tvshow</value>
 		</variable>
 	<include name="Button_VideoInfo">
-		<width>auto</width>
+		<width>280</width>
 		<height>45</height>
 		<align>center</align>
 		<aligny>center</aligny>

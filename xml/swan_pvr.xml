@@ -115,9 +115,9 @@
 		</control>
 		<control type="image" id="1">
 			<visible>!Control.HasFocus(11)</visible>
+			<animation effect="fade" end="3" condition="$PARAM[is_unfocused]">conditional</animation>
 			<description>frame , maybe just !$PARAM[is_unfocused]</description>
 			<bordersize>$PARAM[bordersize]</bordersize>
-			<animation effect="fade" end="40" condition="$PARAM[is_unfocused]">conditional</animation>
 			<texture border="2" colordiffuse="[color_grid_channel_frame$PARAM[item_color]]">frames/frame.png</texture>
 		</control>
 		<control type="label" id="1">
@@ -141,13 +141,14 @@
 			<height>75</height>
 			<font>NotoSans_reg_16</font>
 			<aligny>center</aligny>
+			<textcolor>$VAR[color_grid_text_accent]</textcolor>
 			<textcolor>$VAR[color_grid_text_$PARAM[item_color]]</textcolor>
 			<selectedcolor>selected</selectedcolor>
 			<align>left</align>
 			<label>$INFO[ListItem.Genre]</label>
 		</control>
 		<control type="label" id="1">
-			<animation effect="fade" end="40" condition="true">conditional</animation>
+			<animation effect="fade" end="40" condition="$PARAM[is_unfocused]">conditional</animation>
 			<visible>ListItem.IsNew | ListItem.IsPremiere | ListItem.IsFinale | ListItem.IsLive</visible>
 			<left>10</left>
 			<bottom>5</bottom>
@@ -155,7 +156,7 @@
 			<height>25</height>
 			<font>NotoSans_reg_16</font>
 			<aligny>center</aligny>
-			<textcolor>$VAR[color_grid_text_$PARAM[item_color]]</textcolor>
+			<textcolor>$VAR[color_grid_text_accent]</textcolor>
 			<selectedcolor>selected</selectedcolor>
 			<align>left</align>
 			<label>test</label>
@@ -216,7 +217,7 @@
 			<onright>menu</onright>
 			<onup>11</onup>
 			<orientation>$PARAM[orientation]</orientation>
-			<timeblocks>63</timeblocks>
+			<timeblocks>60</timeblocks>
 			<rulerunit>6</rulerunit>
 			<!-- need texture with 00 alpha offset top -->
 			<progresstexture flipx="true" colordiffuse="$VAR[color_grid_epg_progress_timeline]">diffuse/gradientborderleft.png</progresstexture>
@@ -269,7 +270,7 @@
 				<control type="label">
 					<left>10</left>
 					<width>20</width>
-					<height>52</height>
+					<height>$PARAM[height]</height>
 					<font>debugtiny</font>
 					<align>left</align>
 					<aligny>center</aligny>
@@ -277,10 +278,10 @@
 					<selectedcolor>cyan</selectedcolor>
 					<label>$INFO[ListItem.ChannelNumberLabel]</label>
 				</control>
-				<control type="label">
+				<control type="textbox">
 					<left>40</left>
-					<right>60</right>
-					<height>52</height>
+					<right>145</right>
+					<height>$PARAM[height]</height>
 					<font>debugtiny</font>
 					<align>left</align>
 					<aligny>center</aligny>
@@ -291,8 +292,8 @@
 				<control type="image">
 					<centertop>50%</centertop>
 					<right>15</right>
-					<width>45</width>
-					<height>45</height>
+					<width>70%</width>
+					<height>70%</height>
 					<aspectratio align="right">keep</aspectratio>
 					<texture fallback="defaulttvshows.png">$VAR[ChannelStudio_Icon]</texture>
 				</control>
@@ -313,7 +314,7 @@
 				<control type="label">
 					<left>10</left>
 					<width>20</width>
-					<height>52</height>
+					<height>$PARAM[height]</height>
 					<font>debugtiny</font>
 					<align>left</align>
 					<aligny>center</aligny>
@@ -321,10 +322,10 @@
 					<selectedcolor>cyan</selectedcolor>
 					<label>$INFO[ListItem.ChannelNumberLabel]</label>
 				</control>
-				<control type="label">
+				<control type="textbox">
 					<left>40</left>
-					<right>60</right>
-					<height>52</height>
+					<right>145</right>
+					<height>$PARAM[height]</height>
 					<font>debugtiny</font>
 					<align>left</align>
 					<aligny>center</aligny>
@@ -335,8 +336,8 @@
 				<control type="image">
 					<centertop>50%</centertop>
 					<right>15</right>
-					<width>45</width>
-					<height>45</height>
+					<width>70%</width>
+					<height>70%</height>
 					<aspectratio align="right">keep</aspectratio>
 					<texture fallback="defaulttvshows.png">$VAR[ChannelStudio_Icon]</texture>
 				</control>
@@ -721,9 +722,21 @@
 						<label>$VAR[plot]</label>
 					</control>
 			</control>
+			<!-- no http support ,idk
+			<control type="image">
+				<width>410</width>
+				<height>410</height>
+				<right>20</right>
+				<top>20</top>
+				<bottom>20</bottom>
+				<bordersize>2</bordersize>
+				<aspectratio align="right" aligny="center">keep</aspectratio>
+				<texture>$INFO[ListItem.Icon]</texture>
+			</control> -->
 			
 			<control type="image">
 				<visible>!String.IsEmpty(ListItem.EpgEventIcon)</visible>
+				<description>or also  | !String.IsEmpty(ListItem.Art(thumb))</description>
 				<width>410</width>
 				<right>20</right>
 				<top>20</top>
@@ -733,9 +746,6 @@
 				<bordertexture colordiffuse="$VAR[color_lib_text_main]">colors/white80.png</bordertexture>
 				<texture fallback="epceventtest.png">$INFO[ListItem.EpgEventIcon]</texture>
 			</control>
-				
-			
-			
 		</control>
 	</include>
 	
