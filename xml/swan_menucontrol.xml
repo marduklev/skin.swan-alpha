@@ -952,9 +952,9 @@
 				<include content="PreMenucontrol_RadioButton">
 					<param name="radiotexture" value="flags/ratings/trakt_monochrome" />
 				</include>
-				<onclick condition="string.startswith(System.BuildVersion,19.1) + !String.IsEmpty(Window(home).Property(movie_tmdbid))">RunScript(plugin.video.themoviedb.helper,sync_trakt,type=movie,tmdb_id=$INFO[Window(home).Property(movie_tmdbid)])</onclick>
-				<onclick condition="string.startswith(System.BuildVersion,19.1) + !String.IsEmpty(Window(home).Property(tvshow_tmdbid))">RunScript(plugin.video.themoviedb.helper,sync_trakt,type=tv,tmdb_id=$INFO[Window(home).Property(movie_tmdbid)])</onclick>
-				<onclick condition="string.startswith(System.BuildVersion,19.1) + !String.IsEmpty(Window(home).Property(episodetvshow_tmdbid))">RunScript(plugin.video.themoviedb.helper,sync_trakt,type=tv,tmdb_id=$INFO[ListItem.Property(episodetvshow_tmdbid)],season=$INFO[ListItem.Season],episode=$INFO[ListItem.Episode])</onclick>
+				<onclick condition="string.startswith(System.BuildVersion,19.) + !String.IsEmpty(Window(home).Property(movie_tmdbid))">RunScript(plugin.video.themoviedb.helper,sync_trakt,type=movie,tmdb_id=$INFO[Window(home).Property(movie_tmdbid)])</onclick>
+				<onclick condition="string.startswith(System.BuildVersion,19.) + !String.IsEmpty(Window(home).Property(tvshow_tmdbid))">RunScript(plugin.video.themoviedb.helper,sync_trakt,type=tv,tmdb_id=$INFO[Window(home).Property(movie_tmdbid)])</onclick>
+				<onclick condition="string.startswith(System.BuildVersion,19.) + !String.IsEmpty(Window(home).Property(episodetvshow_tmdbid))">RunScript(plugin.video.themoviedb.helper,sync_trakt,type=tv,tmdb_id=$INFO[ListItem.Property(episodetvshow_tmdbid)],season=$INFO[ListItem.Season],episode=$INFO[ListItem.Episode])</onclick>
 				<onclick condition="string.startswith(System.BuildVersion,18.)">ActivateWindow(1104,return)</onclick>
 			</control>
 			
@@ -1505,7 +1505,8 @@ msgstr "Video-Wiedergabelisten"
 				<!-- <animation effect="zoom" start="100,100" end="83,100" time="200" center="right" condition="Container(930).HasFocus(9302)">conditional</animation> -->
 			</control>
 			<include content="Menucontrol_Content_Navigation" /> 
-			<include content="menucontrol_mymedia_viewid_settings" condition="Window.IsMedia + !Window.IsActive(musicplaylisteditor) + !Window.IsActive(videoplaylist) + !Window.IsActive(musicplaylist)" />
+			<include content="menucontrol_mymedia_epg_grid_settings" condition="Window.IsActive(MyPVRGuide.xml)" />
+			<include content="menucontrol_mymedia_viewid_settings" condition="!Window.IsActive(MyPVRGuide.xml) + Window.IsMedia + !Window.IsActive(musicplaylisteditor) + !Window.IsActive(videoplaylist) + !Window.IsActive(musicplaylist)" />
 			<include content="menucontrol_musicplaylisteditor_settings" condition="Window.IsActive(musicplaylisteditor) | Window.IsActive(videoplaylist) | Window.IsActive(musicplaylist)" />
 		</control>
 		</definition>
@@ -1673,6 +1674,25 @@ msgstr "Video-Wiedergabelisten"
 		</control>
 	</include>
 	
+	<include name="menucontrol_mymedia_epg_grid_settings">
+		<control type="radiobutton" id="4008">
+			<description>need reload else freeze</description>
+			<include>Menucontrol_RadioButton</include>
+			<label>Hide Channel Nr and Labels</label>
+			<visible>Container(930).HasFocus(9302)</visible>
+			<visible>Control.IsVisible(50) | Control.IsVisible(51)</visible>
+			<onclick condition="Control.IsVisible(50)">Skin.ToggleSetting(Grid_50_HideLabels)</onclick>
+			<onclick condition="Control.IsVisible(51)">Skin.ToggleSetting(Grid_51_HideLabels)</onclick>
+			<onclick>ReloadSkin()</onclick>
+			<selected>
+			[
+			 Control.IsVisible(50) + Skin.HasSetting(Grid_50_HideLabels) | 
+			 Control.IsVisible(51) + Skin.HasSetting(Grid_51_HideLabels)
+			]
+			</selected>
+		</control>
+	
+	</include>
 	<include name="menucontrol_mymedia_viewid_settings">
 			
 			<!-- <include content="spacer_h">
@@ -1689,6 +1709,7 @@ msgstr "Video-Wiedergabelisten"
 				
 				<include>Menucontrol_RadioButton</include>
 				<label>Show BG Panel</label>
+				
 				<visible>Container(930).HasFocus(9302)</visible>
 				<visible>Control.IsVisible(50) | Control.IsVisible(51) | Control.IsVisible(52) | Control.IsVisible(53) | Control.IsVisible(54) | Control.IsVisible(56) | Control.IsVisible(510) | Control.IsVisible(511) | Control.IsVisible(512) | Control.IsVisible(513)</visible>
 				<onclick condition="Control.IsVisible(50)">Skin.ToggleSetting(View_50_ShowBGPanel)</onclick>

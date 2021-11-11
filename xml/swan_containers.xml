@@ -1597,45 +1597,6 @@ what a shit to do
 	</include>
 	
 	
-	
-	<!-- variable vs 2 controls + visible cond
-			
-				themed textures diffuse a  if  
-							!Skin.HasTheme(Roundedge) | [Skin.HasTheme(Roundedge) + string.isequal(Skin.String(Widget_TasBGPanel,none))]
-				=artworkdiffuse/$PARAM[artwork].png
-		
-		
-				round top hard bottom  themed diffuse b  if 
-							[Skin.HasTheme(Roundedge) + !string.isequal(Skin.String(Widget_TasBGPanel,none))]
-			   =artworkdiffusealtpanel/$PARAM[artwork].png
-			
-			
-			contra - defaults
-			based on theme and color
-				var circle,landscape,poster,thumb,square
-				
-				
-			
-			if color is none -->
-			
-			
-			
-			<!-- 
-			
-			true false states if focused unfocused  - param name :infotags_autoscroll: nf=false fo=true
-				vs - 	
-													- param name :item_focuslayout:    nf=false fo=true
-			
-			overlay false
-			-->
-			<!-- !!! may need check as focusoverlay is merged ... artwork_diffuse_themed -->
-			
-			
-			
-			 + !$PARAM[artwork_overlay_circle] gives boolean exp errorcode
-			 if ommit
-			 kodi crash 
-			
 	<include name="universal_itemlayout">
 		<param name="artwork_overlay_circle" default="false" />
 		<param name="artwork_overlay_landscape" default="false" />
@@ -1649,23 +1610,22 @@ what a shit to do
 		<control type="group">
 			<visible>$PARAM[artwork_diffuse_themed]</visible>
 			<include content="unilayout_subcall_artwork">
-				<param name="themeprefix" value="" />
 				<param name="artwork" value="$PARAM[artwork]" />
 				<param name="artwork_bordercolor" value="$PARAM[artwork_bordercolor]" />
 				<param name="artwork_bg_bordersize" value="$PARAM[artwork_bg_bordersize]" />
+				<param name="themeprefix" value="" />
 			</include>
 			<include condition="$PARAM[artwork_focusoverlay_visible] + !$PARAM[artwork_overlay_circle]" content="FocusOverlay">
 				<param name="diffusedimtext" value="artworkdiffuse/$PARAM[artwork].png" />
 			</include>
 		</control>
-		
 		<control type="group">
 			<visible>$PARAM[artwork_diffuse_override]</visible>
 			<include content="unilayout_subcall_artwork">
-				<param name="themeprefix" value="/usebganel" />
 				<param name="artwork" value="$PARAM[artwork]" />
 				<param name="artwork_bordercolor" value="$PARAM[artwork_bordercolor]" />
 				<param name="artwork_bg_bordersize" value="$PARAM[artwork_bg_bordersize]" />
+				<param name="themeprefix" value="/usebganel" />
 			</include>
 			<include condition="$PARAM[artwork_focusoverlay_visible] + !$PARAM[artwork_overlay_circle]" content="FocusOverlay">
 				<param name="diffusedimtext" value="artworkdiffuse/usebganel/$PARAM[artwork].png" />
@@ -1840,6 +1800,11 @@ what a shit to do
 		</definition>
     </include>
 	
+	<!-- cant use default via definition here
+		<param name="artwork" default="$PARAM[artwork]" />
+		<param name="artwork_bordercolor" default="$PARAM[artwork_bordercolor]" />
+		<param name="artwork_bg_bordersize" default="$PARAM[artwork_bg_bordersize]" />
+	-->
 	<include name="unilayout_subcall_artwork">
 		<control type="image">
 			<description>testing framed border instead fullbg texture</description>
@@ -1866,15 +1831,16 @@ what a shit to do
 			<bordersize>8</bordersize>
 			<visible>String.IsEmpty(ListItem.Art($PARAM[artwork])) + [!String.IsEqual(ListItem.dbtype,studio) | String.IsEmpty(ListItem.ChannelName)]</visible>
 		</control>
-		
 		<control type="group">
 			<visible>String.IsEqual(ListItem.dbtype,studio) | !String.IsEmpty(ListItem.ChannelName)</visible>
 			<control type="image">
+				<visible>String.IsEqual(ListItem.dbtype,studio) | !String.IsEmpty(ListItem.ChannelName)</visible>
 				<texture diffuse="artworkdiffuse$PARAM[themeprefix]/$PARAM[artwork].png" colordiffuse="ff131313">colors/white.png</texture>
 				<aspectratio scalediffuse="false" aligny="center" align="center">stretch</aspectratio>
 				<bordersize>8</bordersize>
 			</control>
 			<control type="textbox">
+				<visible>String.IsEqual(ListItem.dbtype,studio) | !String.IsEmpty(ListItem.ChannelName)</visible>
 				<label>$VAR[ChannelStudio_Name]</label>
 				<centertop>50%</centertop>
 				<align>center</align>
@@ -1883,8 +1849,9 @@ what a shit to do
 				<right>10</right>
 				<font>MenucontrolItem</font>
 			</control>
-			<control type="image">	
-				<visible>!String.StartsWith(ListItem.Icon,default)</visible>
+			<control type="image">
+				<visible>String.IsEqual(ListItem.dbtype,studio) | !String.IsEmpty(ListItem.ChannelName)</visible>
+				<description>fallback abuse, maybe bad for loading times</description>
 				<left>8</left>
 				<right>8</right>
 				<top>8</top>
@@ -2078,6 +2045,7 @@ top-->
 		<value condition="!String.IsEmpty(Container.ListItem.Art(fanart))">$INFO[Container.ListItem.Art(fanart)]</value>
 	</variable>
 	
+	<!-- ImageLayout_* overthink dbtype,studio, i use extra group - always? dont load or remove line -->
 	<variable name="ImageLayout_poster">
 		<value condition="!String.IsEmpty(ListItem.Property(icon))">$INFO[ListItem.Property(icon)]</value>
 		<value condition="String.IsEqual(ListItem.Label,..)">defaultfolderback.png</value>
