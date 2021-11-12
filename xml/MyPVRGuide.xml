@@ -7,7 +7,7 @@
 	<!-- <onunload condition="!String.IsEmpty(Window(home).Property(videofullcreen_pvrgrid))">fullscreen</onunload> -->
 	
 	<defaultcontrol always="true">11</defaultcontrol>
-	<onload condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">setfocus(50)</onload>
+	<onload>setfocus(50)</onload>
 	
 	<!-- <onunload condition="!String.IsEmpty(Window(home).Property(videofullcreen_pvrgrid))">AlarmClock(delayedfocus,action(fullscreen),00:01,silent)</onunload> -->
 	<onunload condition="!String.IsEmpty(Window(home).Property(videofullcreen_pvrgrid))">SetProperty(forceopen,fullscreenlivetv,home)</onunload>
@@ -49,69 +49,69 @@ ID 	Type 			Description
 		
 		<control type="group">
 			<visible>!Skin.HasSetting(BlurEnabled)</visible>
-			<visible>String.IsEmpty(Window(home).Property(shortcutaction_inprogress))</visible>
 			<include>global_background</include>
 		</control>
 		<control type="group">
 			<visible>Skin.HasSetting(BlurEnabled)</visible>
-			<visible>String.IsEmpty(Window(home).Property(shortcutaction_inprogress))</visible>
 			<include>GlobalBlurredBackground</include>
 		</control>
 			
 		<control type="image">
-				<visible>!String.IsEmpty(Window(home).Property(videofullcreen_pvrgrid))</visible>
-				<bottom>0</bottom>
-				<width>102%</width>
-				<height>650</height>
-				<aspectratio scalediffuse="true" align="center" aligny="bottom">stretch</aspectratio>
-				<bordersize>0,100,0,0</bordersize>
-				<texture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white.png</texture>
-				<bordertexture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white70.png</bordertexture>
-			</control>
-			<control type="label">
-				<visible>!String.IsEmpty(Window(home).Property(videofullcreen_pvrgrid))</visible>
-				<bottom>550</bottom>
-				<left>50</left>
-				<width>90%</width>
-				<height>100</height>
-				<font>font13</font>
-				<align>left</align>
-				<aligny>center</aligny>
-				<wrapmultiline>true</wrapmultiline>
-				<textcolor>$VAR[color_osdvideo_main]</textcolor>
-				<label>$LOCALIZE[10609]</label>
-			</control>
+			<visible>!String.IsEmpty(Window(home).Property(videofullcreen_pvrgrid))</visible>
+			<bottom>0</bottom>
+			<width>102%</width>
+			<height>650</height>
+			<aspectratio scalediffuse="true" align="center" aligny="bottom">stretch</aspectratio>
+			<bordersize>0,100,0,0</bordersize>
+			<texture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white.png</texture>
+			<bordertexture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white70.png</bordertexture>
+		</control>
+		<control type="label">
+			<visible>!String.IsEmpty(Window(home).Property(videofullcreen_pvrgrid))</visible>
+			<bottom>550</bottom>
+			<left>50</left>
+			<width>90%</width>
+			<height>100</height>
+			<font>font13</font>
+			<align>left</align>
+			<aligny>center</aligny>
+			<wrapmultiline>true</wrapmultiline>
+			<textcolor>$VAR[color_osdvideo_main]</textcolor>
+			<label>$LOCALIZE[10609]</label>
+		</control>
 				
 		<control type="group">
 			<description>viewtypes</description>
-			<include content="Animation_Close_MediaContainer" condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" />
+			<include>Animation_Close_MediaContainer</include>
 			<animation type="Conditional" condition="$EXP[Infodialog_IsActive] | Window.IsActive(mediasource) | [Window.IsActive(shutdownmenu) + !$EXP[Spotlight_ViewType]] | Window.IsActive(1104)">
 				<effect type="fade" start="100" end="0" time="250" tween="sine" easing="out" />
 				<effect type="zoom" center="50%,50%" start="100" end="0" time="300" tween="cubic" easing="out" />
 			</animation>
-			<!--RESTART HERE NEXT
+			
 			<animation type="Conditional" condition="!String.IsEmpty(Window(home).Property(videofullcreen_pvrgrid))">
 				<effect type="slide" start="0,0" end="0,0" time="250" tween="sine" easing="out" />
 				<effect type="zoom" center="1920,1080" start="100" end="70" time="300" tween="cubic" easing="out" />
 			</animation>
-			 -->
-			<include condition="!string.isempty(window(home).property(shortcutaction_inprogress))" content="SwanShortcuts_Container" />
 			
-			<include condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" content="grid_test">
+			<!-- 
+			prepare and terefore keep include condition for param with strings
+			<timeblocks>60</timeblocks>
+			<rulerunit>6</rulerunit>
+			 -->
+				
+			<include condition="true" content="grid_test">
 				<param name="grid_id" value="50" />
 				<param name="grid_vietypelabel" value="19298" />
 				<param name="orientation" value="vertical" />
 				<param name="height" value="52" />
 			</include>
-			<include condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" content="grid_test">
+			<include condition="true" content="grid_test">
 				<param name="grid_id" value="51" />
 				<param name="grid_vietypelabel" value="gridhorlarge" />
 				<param name="orientation" value="vertical" />
 				<param name="height" value="104" />
 			</include>
-			
-			<!-- unadjusted !! -->
-			<include condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" content="grid_test">
+			<include condition="true" content="grid_test">
 				<param name="grid_id" value="52" />
 				<param name="grid_vietypelabel" value="19301" />
 				<param name="orientation" value="horizontal" />
@@ -119,7 +119,6 @@ ID 	Type 			Description
 			</include>
 			
 			<control type="grouplist" id="8000">
-				<visible>String.IsEmpty(Window(home).Property(shortcutaction_inprogress))</visible>
 				<visible>String.IsEmpty(Window(home).Property(videofullcreen_pvrgrid))</visible>
 				<orientation>vertical</orientation>
 				<top>120</top>
@@ -133,43 +132,71 @@ ID 	Type 			Description
 					<onright>9001</onright>
 					<orientation>horizontal</orientation>
 					
+					<!-- 
+					if fixedlist
+						<left>-250</left>
+						<focusposition>1</focusposition>
+					 -->
 					<itemlayout width="250" height="50">
 						<control type="textbox">
 							<right>20</right>
-							<left>10</left>
+							<left>20</left>
 							<height>50</height>
-							<align>left</align>
+							<align>center</align>
 							<aligny>center</aligny>
 							<font>font_Montserrat_semibold_22</font>
-							<textcolor>$VAR[color_grid_text_nf]</textcolor>
+							<textcolor>$VAR[color_grid_channel_text_nf]</textcolor>
 							<label>$INFO[ListItem.Label]$INFO[ListItem.Label2, |  ,]</label>
 						</control>
 					</itemlayout>
 					<focusedlayout width="250" height="50">
 						<control type="image">
+							<animation type="Focus" reversible="false">
+								<effect type="zoom" start="0,100" end="100,100" center="50%" time="350" />
+								<effect type="fade" start="0" end="100" center="auto" tween="cubic" delay="100" easing="in" time="200" />
+							</animation>
 							<visible>Control.HasFocus(11)</visible>
-							<texture colordiffuse="$VAR[color_grid_channel_fo]">colors/white.png</texture>
-							<bordertexture border="2" colordiffuse="$VAR[color_grid_channel_framefo]">frames/frame.png</bordertexture>
+							<texture colordiffuse="$VAR[color_grid_channel_bg_fo]">colors/white.png</texture>
+							<bordertexture border="2" colordiffuse="$VAR[color_grid_channel_focusframe]">frames/frame.png</bordertexture>
 						</control>
 						<control type="textbox">
 							<right>20</right>
-							<left>10</left>
+							<left>20</left>
 							<height>50</height>
-							<align>left</align>
+							<align>center</align>
 							<aligny>center</aligny>
-							<font>font_Montserrat_semibold_22</font>
-							<textcolor>$VAR[color_grid_text_fo]</textcolor>
+							<font>font_Montserrat_24_extrabold</font>
+							<textcolor>$VAR[color_grid_channel_text_fo]</textcolor>
 							<label>$INFO[ListItem.Label]$INFO[ListItem.Label2, |  ,]</label>
 						</control>
+						<!-- 
 						<control type="image">
-							<visible>false</visible>
 							<animation effect="zoom" start="0,100" end="100,100" center="auto" time="200">Focus</animation>
 							<bottom>0</bottom>
-							<height>2</height>
-							<texture colordiffuse="$VAR[color_grid_text_fo]">colors/white70.png</texture>
+							<height>4</height>
+							<left>4</left>
+							<width>95%</width>
+							<texture colordiffuse="$VAR[color_grid_channel_text_fo]">colors/white70.png</texture>
 						</control>
+						<control type="image">
+							<animation effect="zoom" start="0" end="100" center="auto" time="200">Focus</animation>
+							<bottom>0</bottom>
+							<height>30</height>
+							<width>4</width>
+							<texture colordiffuse="$VAR[color_grid_channel_text_fo]">colors/white70.png</texture>
+						</control>
+						<control type="image">
+							<animation effect="zoom" start="0" end="100" center="auto" time="200">Focus</animation>
+							<centerleft>48%</centerleft>
+							<bottom>-30</bottom>
+							<height>30</height>
+							<width>4</width>
+							<texture colordiffuse="$VAR[color_grid_channel_text_fo]">colors/white70.png</texture>
+						</control>
+						-->
 					</focusedlayout>
 				</control>
+				
 			</control>
 		</control>
 		
@@ -184,7 +211,7 @@ ID 	Type 			Description
 			<animation effect="slide" start="-450,0" end="0,0" time="300" tween="cubic" easing="inout">VisibleHidden</animation>
 			<visible>String.IsEqual(Window(Home).Property(menucontrol_active),common)</visible>
 			<visible>String.IsEmpty(Window(home).Property(videofullcreen_pvrgrid))</visible>
-			<include content="menucontrol_global" condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" />
+			<include content="menucontrol_global" />
 		</control>
 		
 		<include content="window_frame" />
