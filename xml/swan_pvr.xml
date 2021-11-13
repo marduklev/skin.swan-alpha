@@ -155,21 +155,21 @@
 		</control>
 		<control type="image" id="1">
 			<animation effect="fade" start="100" end="50" condition="ListItem.IsRecording" loop="true" delay="250" time="1000">conditional</animation>
-				<bottom>5</bottom>
-				<right>2</right>
-				<bordersize>2</bordersize>
-				<height>25</height>
-			<aspectratio align="right" aligny="center">keep</aspectratio>
+				<bottom>3</bottom>
+				<right>7</right>
+				<bordersize>4</bordersize>
+				<height>30</height>
+				<aspectratio align="right" aligny="center">keep</aspectratio>
 			<texture colordiffuse="$VAR[PVRTimerIcon_color_$PARAM[item_color]]" diffuse="colors/white.png">$VAR[PVR_indicator]</texture>
 		</control>
 		<control type="image" id="1">
 			<animation effect="slide" end="-30,0" condition="ListItem.IsRecording | ListItem.HasReminder | ListItem.IsPlayable">conditional</animation>
-				<bottom>7</bottom>
-				<right>2</right>
-				<bordersize>2</bordersize>
-				<height>22</height>
-			<aspectratio align="right" aligny="center">keep</aspectratio>
-			<texture colordiffuse="$VAR[color_grid_item_text_main_$PARAM[item_color]]" diffuse="artworkdiffuse/circle.png">$VAR[PVRTimerIcon_timer]</texture>
+				<bottom>3</bottom>
+				<right>5</right>
+				<bordersize>4</bordersize>
+				<height>30</height>
+				<aspectratio align="right" aligny="center">keep</aspectratio>
+			<texture colordiffuse="$VAR[color_grid_item_text_main_$PARAM[item_color]]">$VAR[PVRTimerIcon_timer]</texture>
 		</control>
 	</include>
 	
@@ -697,7 +697,7 @@
 			</control>
 			<control type="image">
 				<visible>!String.IsEmpty(ListItem.EpgEventIcon)</visible>
-				<description>or also  | !String.IsEmpty(ListItem.Art(thumb)), for testing purpose  fallback epceventtest.png</description>
+				<description>or also  | !String.IsEmpty(ListItem.Art(thumb))</description>
 				<width>410</width>
 				<right>20</right>
 				<top>20</top>
@@ -711,35 +711,31 @@
 	</include>
 	
 	<variable name="PVRTimerIcon_color_fo">
-		<value condition="ListItem.IsPlayable">green</value>
-		<value condition="ListItem.IsRecording">red</value>
+		<value condition="ListItem.IsRecording"></value>
 		<value>$VAR[color_grid_item_text_main_fo]</value>
 	</variable>
 	<variable name="PVRTimerIcon_color_nf">
-		<value condition="ListItem.IsRecording">red</value>
+		<value condition="ListItem.IsRecording"></value>
 		<value>$VAR[color_grid_item_text_main_nf]</value>
 	</variable>
-	<!-- estuary icons,mostly -->
 	<variable name="epg_special">
-		<value condition="ListItem.IsNew | ListItem.IsPremiere">[B]New[/B]</value>
-		<value condition="ListItem.IsFinale">[B]Final Episode[/B]</value>
-		<value condition="ListItem.IsLive">[I]LIVE[/I]</value>
+		<value condition="ListItem.IsPremiere">[B]$LOCALIZE[838][/B]</value>
+		<value condition="ListItem.IsNew">[B]$LOCALIZE[842][/B]</value> 
+		<value condition="ListItem.IsFinale">[B]$LOCALIZE[849] $LOCALIZE[20452][/B]</value>
+		<value condition="ListItem.IsLive">[I]$LOCALIZE[839][/I]</value>
 	</variable>
 	<variable name="PVR_indicator">
-		<value condition="ListItem.IsRecording">buttons/osd/record.png</value>
-		<value condition="ListItem.HasReminder">pvr/timers/bell.png</value>
-		<value condition="ListItem.IsPlayable">icons/play.png</value>
+		<value condition="ListItem.IsRecording">pvr/record.png</value>
+		<value condition="ListItem.HasReminder">pvr/bell.png</value>
+		<value condition="ListItem.IsPlayable">pvr/play.png</value>
 	</variable>
 	<variable name="PVRTimerIcon_timer">
-		<value condition="ListItem.HasTimerSchedule + ListItem.TimerHasError">pvr/PVR-HasTimerScheduleError.png</value>
-		<value condition="ListItem.HasTimer + ListItem.TimerHasError">pvr/PVR-HasTimerError.png</value>
-		<value condition="ListItem.HasTimerSchedule + ListItem.TimerHasConflict">pvr/PVR-HasTimerScheduleConflict.png</value>
-		<value condition="ListItem.HasTimer + ListItem.TimerHasConflict">pvr/PVR-HasTimerConflict.png</value>
-		<value condition="ListItem.HasRecording">pvr/PVR-HasRecording.png</value>
-		<value condition="ListItem.HasTimerSchedule + !ListItem.TimerIsActive">pvr/PVR-HasTimerScheduleDisabled.png</value>
-		<value condition="ListItem.HasTimer + !ListItem.TimerIsActive">pvr/PVR-HasTimerDisabled.png</value>
-		<value condition="ListItem.HasTimerSchedule">pvr/PVR-HasTimerSchedule.png</value>
-		<value condition="ListItem.HasTimer">pvr/PVR-HasTimer.png</value>
+		<value condition="[ListItem.HasTimerSchedule + ListItem.TimerHasError] | [ListItem.HasTimer + ListItem.TimerHasError] | [ListItem.HasTimerSchedule + ListItem.TimerHasConflict] | [ListItem.HasTimer + ListItem.TimerHasConflict]">pvr/pvr-hastimererror.png</value>
+		<value condition="ListItem.HasRecording">pvr/pvr-hasrecording.png</value>
+		<value condition="ListItem.HasTimerSchedule + !ListItem.TimerIsActive">pvr/pvr-hastimerscheduledisabled.png</value>
+		<value condition="ListItem.HasTimer + !ListItem.TimerIsActive">pvr/pvr-hastimerdisabled.png</value>
+		<value condition="ListItem.HasTimerSchedule">pvr/pvr-hastimerschedule.png</value>
+		<value condition="ListItem.HasTimer">pvr/pvr-hastimer.png</value>
 	</variable>
 	
 	
@@ -812,6 +808,7 @@ $INFO[PVR.TimeshiftProgressEpgStart]       Returns the percentage of the start o
 $INFO[PVR.TimeshiftProgressEpgEnd]       Returns the percentage of the end of the currently playing epg event within the PVR timeshift progress]       v18
 $INFO[PVR.TimeshiftProgressBufferStart]       Returns the percentage of the start of the timeshift buffer within the PVR timeshift progress]       v18
 $INFO[PVR.TimeshiftProgressBufferEnd]       Returns the percentage of the end of the timeshift buffer within the PVR timeshift progress]       v18
-$INFO[PVR.TimeShiftSeekbar]       This is the equivalent of Player.Seekbar, but for LiveTV (can be used in a slider control and indicates the position being seeked to) 	v19 -->
+$INFO[PVR.TimeShiftSeekbar]       This is the equivalent of Player.Seekbar, but for LiveTV (can be used in a slider control and indicates the position being seeked to) 	v19
+ -->
 
 </includes>

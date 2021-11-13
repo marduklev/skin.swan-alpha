@@ -233,8 +233,6 @@ static const TypeMapping types[] =
 					</include>
 				</control>
 			</include>
-			<!-- Skin.SelectBool(header, label1|setting1, label2|setting2) -->
-			<!-- Fanart -->
 			<include content="ButtonList">
 				<param name="id" value="2" />
 				<description>B A C K G R O U N D</description>
@@ -244,6 +242,14 @@ static const TypeMapping types[] =
 					<param name="label" value="C U S T O M      I M A G E      O P T I O N S"/>
 				</include>
 				<control type="radiobutton" id="$PARAM[id]001">
+					<height>60</height>
+					<font>font10</font>
+					<label>Apply round edges to all Windows</label>
+					<label2></label2>
+					<onclick>Skin.ToggleSetting(window_frame)</onclick>
+					<selected>Skin.HasSetting(window_frame)</selected>
+				</control>
+				<control type="radiobutton" id="$PARAM[id]002">
 					<height>120</height>
 					<include content="SkinSettings_SettingsRadioButton">
 						<param name="label" value="Choose your Folderpath if you like to use own Source Folder(s) for your images[CR]which will be used for image lookups [I][B](e.g. backgrounds ,backgroundoverlay , profile ...)[/B][/I]$INFO[Skin.String(texturepath_userdefined),[CR]   - [B]$LOCALIZE[21801] : [/B],]" />
@@ -253,10 +259,10 @@ static const TypeMapping types[] =
 					<onclick>Skin.SetPath(texturepath_userdefined)</onclick>
 				</control>
 				<include content="spacer_h">
-					<param name="id" value="$PARAM[id]002" />
+					<param name="id" value="$PARAM[id]003" />
 					<param name="gap" value="15" />
 				</include>
-				<control type="radiobutton" id="$PARAM[id]003">
+				<control type="radiobutton" id="$PARAM[id]004">
 					<height>90</height>
 					<include content="SkinSettings_SettingsRadioButton">
 						<param name="label" value="Set     [B]Global[/B]     Background Image (middle layer) - is also Fallback if Fanart empty" />
@@ -267,7 +273,7 @@ static const TypeMapping types[] =
 					<onclick condition="String.IsEmpty(Skin.String(texturepath_userdefined))">Skin.SetImage(texture_global_background_layer2,resource://resource.images.skin.swan/backgroundimages)</onclick>
 					<onclick condition="!String.IsEmpty(Skin.String(texturepath_userdefined))">Skin.SetImage(texture_global_background_layer2,$INFO[Skin.String(texturepath_userdefined)])</onclick>
 				</control>
-				<control type="radiobutton" id="$PARAM[id]004">
+				<control type="radiobutton" id="$PARAM[id]005">
 					<height>60</height>
 					<font>font10</font>
 					<label>     - Use Tinted Overlay instead Tint the Image itself</label>
@@ -276,10 +282,10 @@ static const TypeMapping types[] =
 					<selected>Skin.HasSetting(bg_use_coloredglass)</selected>
 				</control>
 				<include content="spacer_h">
-					<param name="id" value="$PARAM[id]007" />
+					<param name="id" value="$PARAM[id]006" />
 					<param name="gap" value="5" />
 				</include>
-				<control type="radiobutton" id="$PARAM[id]008">
+				<control type="radiobutton" id="$PARAM[id]007">
 					<height>90</height>
 					<include content="SkinSettings_SettingsRadioButton">
 						<param name="label" value="Set     [B]Common[/B]     Background Overlay Image (top layer)" />
@@ -291,7 +297,7 @@ static const TypeMapping types[] =
 					<onclick condition="!String.IsEmpty(Skin.String(texturepath_userdefined))">Skin.SetImage(texture_global_background_layer3,$INFO[Skin.String(texturepath_userdefined)])</onclick>
 				</control>
 				<include content="spacer_h">
-					<param name="id" value="$PARAM[id]009" />
+					<param name="id" value="$PARAM[id]008" />
 					<param name="gap" value="5" />
 				</include>
 				<control type="radiobutton" id="$PARAM[id]010">
@@ -307,7 +313,7 @@ static const TypeMapping types[] =
 				</control>
 				<!-- 
 				not needed its just fallback if artwork disabled and or empty - color is window dependent texture not
-				<control type="radiobutton" id="$PARAM[id]009">
+				<control type="radiobutton" id="$PARAM[id]011">
 					<height>90</height>
 					<include content="SkinSettings_SettingsRadioButton">
 						<param name="label" value="Set [B]H O M E[/B] Background Image (middle layer)" />
@@ -320,10 +326,10 @@ static const TypeMapping types[] =
 				</control>
 				-->
 				<include content="spacer_h">
-					<param name="id" value="$PARAM[id]011" />
+					<param name="id" value="$PARAM[id]012" />
 					<param name="gap" value="5" />
 				</include>
-				<control type="radiobutton" id="$PARAM[id]012">
+				<control type="radiobutton" id="$PARAM[id]013">
 					<height>90</height>
 					<include content="SkinSettings_SettingsRadioButton">
 						<param name="label" value="Set [B]Header Bar[/B] Image" />
@@ -2415,15 +2421,6 @@ static const TypeMapping types[] =
 					</content>
 				</control> -->
 				<include content="SectionHeadline">
-					<param name="id" value="$PARAM[id]008"/>
-					<param name="label" value="S P E C I A L"/>
-				</include>
-				<include content="SkinSettings_ColorButton">
-					<param name="id" value="$PARAM[id]009" />
-					<param name="label" value="window_frame_color Color (should match the color of your monitor / tv frame )" />
-					<param name="skinsetting" value="window_frame_color" />
-				</include>
-				<include content="SectionHeadline">
 					<param name="id" value="$PARAM[id]010"/>
 					<param name="label" value="B A C K G R O U N D      C O M M O M"/>
 				</include>
@@ -3270,7 +3267,7 @@ static const TypeMapping types[] =
 			<animation effect="fade" start="0" end="100" time="200">Focus</animation>
 			<animation effect="fade" start="100" end="0" time="200">Unfocus</animation>
 		</control>
-		<include content="window_frame" />
+		<include condition="Skin.HasSetting(window_frame)" content="window_frame" />
 		<include content="swan_debug_overlay">
 			<param name="textleft" value="
 refocus_shortcut_id $INFO[window(skinsettings).property(refocus_shortcut_id)]
