@@ -1481,13 +1481,14 @@ msgstr "Video-Wiedergabelisten"
 						<label2></label2>
 						<onclick>ReloadSkin()</onclick>
 					</item>
+					<!-- 
 					<item id="9307">
 						<icon>icons/swanglow.png</icon>
 						<property name="icon">icons/swanglow.png</property>
 						<label>$INFO[System.AddonTitle(skin.swan)]  $LOCALIZE[654]</label>
 						<label2 />
 						<onclick>Skin.ToggleSetting(SwanDebug)</onclick>
-					</item>
+					</item> -->
 					<item id="9308">
 						<icon>buttons/info.png</icon>
 						<property name="icon">buttons/info.png</property>
@@ -1680,19 +1681,28 @@ msgstr "Video-Wiedergabelisten"
 			<include>Menucontrol_RadioButton</include>
 			<label>Hide Channel Nr and Labels</label>
 			<visible>Container(930).HasFocus(9302)</visible>
-			<visible>Control.IsVisible(50) | Control.IsVisible(51)</visible>
-			<onclick condition="Control.IsVisible(50)">Skin.ToggleSetting(Grid_50_HideLabels)</onclick>
-			<onclick condition="Control.IsVisible(51)">Skin.ToggleSetting(Grid_51_HideLabels)</onclick>
-			<onclick>ReloadSkin()</onclick>
+			<visible>Control.IsVisible(50) | Control.IsVisible(51) | Control.IsVisible(52)</visible>
+			<onclick condition="Control.IsVisible(50)">Skin.ToggleSetting(Grid_50_HideChannelLabels)</onclick>
+			<onclick condition="Control.IsVisible(51)">Skin.ToggleSetting(Grid_51_HideChannelLabels)</onclick>
+			<onclick condition="Control.IsVisible(52)">Skin.ToggleSetting(Grid_52_HideChannelLabels)</onclick>
+			<onclick condition="window.IsActive(tvguide)">ReloadSkin()</onclick>
 			<selected>
 			[
-			 Control.IsVisible(50) + Skin.HasSetting(Grid_50_HideLabels) | 
-			 Control.IsVisible(51) + Skin.HasSetting(Grid_51_HideLabels)
+			 Control.IsVisible(50) + Skin.HasSetting(Grid_50_HideChannelLabels) | 
+			 Control.IsVisible(51) + Skin.HasSetting(Grid_51_HideChannelLabels) |
+			 Control.IsVisible(52) + Skin.HasSetting(Grid_52_HideChannelLabels)
 			]
 			</selected>
 		</control>
-	
+		<control type="button" id="4009">
+			<include>Menucontrol_RadioButton</include>
+			<label>$LOCALIZE[31215]</label>
+			<visible>Container(930).HasFocus(9302)</visible>
+			<onclick>Skin.SelectBool(31215, 31216|Grid_greatertimespan, 31217|Grid_commontimespan, 31218|Grid_lesstimespan)</onclick>
+			<onclick>ReloadSkin()</onclick>
+		</control>
 	</include>
+	
 	<include name="menucontrol_mymedia_viewid_settings">
 			
 			<!-- <include content="spacer_h">

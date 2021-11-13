@@ -13,14 +13,11 @@ ID 	Type 	Description
 	<defaultcontrol />
 	
 	<onload condition="!String.IsEmpty(Window(home).Property(videofullcreen_pvrgrid))">ClearProperty(videofullcreen_pvrgrid,home)</onload>
-	
 	<onload condition="!Player.HasGame + [Skin.HasSetting(DisableSubtitles) + [VideoPlayer.SubtitlesEnabled + VideoPlayer.HasSubtitles]]">ShowSubtitles</onload>
-	<onload condition="Skin.HasSetting(ShowOSD_OnStart)">activatewindow(videoosd)</onload>
-	<onload condition="Skin.HasSetting(ShowPlot_OnStart) + !Player.HasGame">SetProperty(ShowOSD_Plot,true,home)</onload>
-	<onload condition="Skin.HasSetting(ShowPlot_OnStart) + !Player.HasGame">AlarmClock(ShowOSD_Plot,ClearProperty(ShowOSD_Plot,home),00:04,silent)</onload>
-	
-	
-	
+	<onload condition="Skin.HasSetting(ShowOSD_OnStart) + String.IsEmpty(Window(home).Property(forceopen))">activatewindow(videoosd)</onload>
+	<onload condition="Skin.HasSetting(ShowPlot_OnStart) + !Player.HasGame + String.IsEmpty(Window(home).Property(forceopen))">SetProperty(ShowOSD_Plot,true,home)</onload>
+	<onload condition="Skin.HasSetting(ShowPlot_OnStart) + !Player.HasGame + String.IsEmpty(Window(home).Property(forceopen))">AlarmClock(ShowOSD_Plot,ClearProperty(ShowOSD_Plot,home),00:04,silent)</onload>
+	<onload condition="!String.IsEmpty(Window(home).Property(forceopen))">ClearProperty(forceopen,home)</onload>
 	<controls>
 	
 	<control type="image" id="99">
@@ -134,7 +131,8 @@ System.CurrentControlID :     $INFO[System.CurrentControlID]
 $INFO[System.Progressbar,System.Progressbar :     ,]
 System.InternetState :     $INFO[System.InternetState]
 Network.IPAddress :     $INFO[Network.IPAddress]    
-
+$INFO[Player.Icon]
+$VAR[ChannelStudio_PlayerIcon]
 VideoPlayer.Offset(1).* will be filled when items playlist.add() done
 	   $INFO[VideoPlayer.Offset(1).studio]
 	   $INFO[VideoPlayer.Offset(1).dbid]
