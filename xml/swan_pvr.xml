@@ -102,17 +102,10 @@
 	<include name="grid_layout">
 		<control type="image" id="14">
 			<description>main bg</description>
-			<visible>!Control.HasFocus(11)</visible>
 			<bordersize>$PARAM[bordersize]</bordersize>
 			<texture colordiffuse="$VAR[color_grid_item_bg_$PARAM[item_color]]">colors/white.png</texture>
 		</control>
-		<control type="image" id="14">
-			<visible>Control.HasFocus(11)</visible>
-			<bordersize>2</bordersize>
-			<texture colordiffuse="$VAR[color_grid_item_bg_nf]">colors/white.png</texture>
-		</control>
 		<control type="image" id="1">
-			<visible>!Control.HasFocus(11)</visible>
 			<bordersize>$PARAM[bordersize]</bordersize>
 			<texture border="2" colordiffuse="$VAR[color_grid_item_frame_$PARAM[item_color]]">frames/frame.png</texture>
 		</control>
@@ -120,44 +113,57 @@
 			<left>10</left>
 			<width>30</width>
 			<height>32</height>
-			<wrapmultiline>true</wrapmultiline>
 			<font>NotoSans_reg_20</font>
-			<aligny>center</aligny>
 			<textcolor>$VAR[color_grid_item_text_main_$PARAM[item_color]]</textcolor>
-			<selectedcolor>selected</selectedcolor>
-			<align>left</align>
 			<label>[B]$INFO[ListItem.Label][/B]</label>
 		</control>
 		<control type="label" id="1">
-			<visible>!control.isvisible(50)</visible>
-			<description>genre vs special if 2 liner ??</description>
+			<visible>!String.IsEmpty(ListItem.Genre)</visible>
 			<left>10</left>
 			<width>30</width>
-			<height>75</height>
+			<height>78</height>
 			<font>NotoSans_reg_18</font>
-			<aligny>center</aligny>
 			<textcolor>$VAR[color_grid_item_text_accent_$PARAM[item_color]]</textcolor>
-			<selectedcolor>selected</selectedcolor>
-			<align>left</align>
 			<label>$INFO[ListItem.Genre]</label>
 		</control>
 		<control type="label" id="1">
+			<visible>Control.IsVisible(52) + !String.IsEmpty(ListItem.EpisodeName)</visible>
 			<left>10</left>
-			<bottom>5</bottom>
+			<bottom>28</bottom>
+			<width>30</width>
+			<height>25</height>
+			<font>NotoSans_reg_16</font>
+			<textcolor>$VAR[color_grid_item_text_secondary_$PARAM[item_color]]</textcolor>
+			<label>$INFO[ListItem.Season,$LOCALIZE[20373] , • ]$INFO[ListItem.Episode,$LOCALIZE[20452] [B],[/B]  ]$INFO[ListItem.EpisodeName,,]</label>
+		</control>
+		<control type="label" id="1">
+			<description>i can workaround a fake fadelabel using delays, but to tired</description>
+			<visible>Control.IsVisible(51) + String.IsEmpty(Window(home).Property(videofullcreen_pvrgrid))</visible>
+			<visible>!String.IsEmpty(ListItem.EpisodeName)</visible>
+			<left>10</left>
+			<bottom>10</bottom>
 			<width>30</width>
 			<height>25</height>
 			<font>NotoSans_reg_18</font>
-			<aligny>center</aligny>
+			<textcolor>$VAR[color_grid_item_text_secondary_$PARAM[item_color]]</textcolor>
+			<label>[COLOR $VAR[color_grid_item_text_accent_$PARAM[item_color]]]$VAR[epg_special,, | ][/COLOR]$INFO[ListItem.Season,$LOCALIZE[20373] , • ]$INFO[ListItem.Episode,$LOCALIZE[20452] [B],[/B]  ]$INFO[ListItem.EpisodeName,,]</label>
+		</control>
+		<control type="label" id="1">
+			<visible>!Control.IsVisible(50) + String.IsEmpty(Window(home).Property(videofullcreen_pvrgrid)) + [ListItem.IsPremiere | ListItem.IsNew | ListItem.IsFinale | ListItem.IsLive]</visible>
+			<left>10</left>
+			<bottom>8</bottom>
+			<width>30</width>
+			<height>25</height>
+			<font>NotoSans_bold_18</font>
 			<textcolor>$VAR[color_grid_item_text_accent_$PARAM[item_color]]</textcolor>
-			<selectedcolor>selected</selectedcolor>
-			<align>left</align>
+			<label>[I]Live[/I]</label>
 			<label>$VAR[epg_special]</label>
 		</control>
 		<control type="image" id="1">
 			<animation effect="fade" start="100" end="50" condition="ListItem.IsRecording" loop="true" delay="250" time="1000">conditional</animation>
 				<bottom>3</bottom>
 				<right>7</right>
-				<bordersize>4</bordersize>
+				<bordersize>3</bordersize>
 				<height>30</height>
 				<aspectratio align="right" aligny="center">keep</aspectratio>
 			<texture colordiffuse="$VAR[PVRTimerIcon_color_$PARAM[item_color]]" diffuse="colors/white.png">$VAR[PVR_indicator]</texture>
@@ -166,7 +172,7 @@
 			<animation effect="slide" end="-30,0" condition="ListItem.IsRecording | ListItem.HasReminder | ListItem.IsPlayable">conditional</animation>
 				<bottom>3</bottom>
 				<right>5</right>
-				<bordersize>4</bordersize>
+				<bordersize>3</bordersize>
 				<height>30</height>
 				<aspectratio align="right" aligny="center">keep</aspectratio>
 			<texture colordiffuse="$VAR[color_grid_item_text_main_$PARAM[item_color]]">$VAR[PVRTimerIcon_timer]</texture>
@@ -188,13 +194,12 @@
 			<right>50</right>
 			<include content="tawnyowlnest" condition="String.IsEmpty(Window(home).Property(videofullcreen_pvrgrid))">
 				<top>150</top>	
-				<height>610</height>
+				<height>630</height>
 			</include>
 			<include content="tawnyowlnest" condition="!String.IsEmpty(Window(home).Property(videofullcreen_pvrgrid))">
 				<top>430</top>	
 				<height>378</height>
 			</include>
-			
 			<include content="tawnyowlnest" condition="Skin.HasSetting(Grid_greatertimespan)">
 				<timeblocks>15</timeblocks>	
 				<rulerunit>3</rulerunit>
@@ -207,16 +212,13 @@
 				<timeblocks>60</timeblocks>	
 				<rulerunit>12</rulerunit>
 			</include>
-					
 			<scrolltime tween="cubic" easing="inout">300</scrolltime>
 			<onleft>menu</onleft>
 			<onright>menu</onright>
 			<onup>11</onup>
 			<orientation>$PARAM[orientation]</orientation>
-			<!-- need texture with 00 alpha offset top -->
 			<progresstexture flipx="true" colordiffuse="$VAR[color_grid_epg_progress_timeline]">diffuse/gradientborderleft.png</progresstexture>
 			
-			<!-- wished h 57 for movement - but will cause filickering icons -->
 			<rulerdatelayout width="1500" height="54">
 				<control type="label">
 					<description>intented hidden placed on top 1st row of group - dont show if header is present and showing ruler currentdate</description>
@@ -294,15 +296,9 @@
 			</channellayout>
 			
 			<focusedchannellayout height="$PARAM[height]" width="300" condition="!Skin.HasSetting(Grid_$PARAM[grid_id]_HideChannelLabels)">
-				
 				<control type="image" id="1">
 					<visible>!Control.HasFocus(11)</visible>
-					<!-- <animation effect="zoom" start="0,100" end="100,100" center="auto" time="200">Focus</animation> -->
 					<animation effect="zoom" start="100" end="104,100" center="100%,50%" time="200" tween="cubic" easing="in">Focus</animation>
-					<!-- <animation effect="fade" start="0" end="100" center="auto" time="200">Focus</animation> -->
-					<!-- <animation effect="fade" start="0" end="100" center="auto" tween="cubic" easing="in" time="1000">Focus</animation> -->
-					<!-- <animation effect="zoom" start="0,100" end="100,100" center="left" time="200">Focus</animation> -->
-					
 					<texture colordiffuse="$VAR[color_grid_channel_bg_fo]">colors/white.png</texture>
 					<bordertexture border="2" colordiffuse="$VAR[color_grid_channel_focusframe]">frames/frame.png</bordertexture>
 					<bordersize>2</bordersize>
@@ -391,71 +387,6 @@
 			</focusedlayout>
 		</control>
 		
-		<control type="group">
-			info right <visible>false</visible>
-			<description>info</description>
-			<right>10</right>
-			<top>240</top>
-			<width>400</width>
-			<height>740</height>
-			
-			<control type="image">
-				<bordersize>4</bordersize>
-				<bordertexture border="2" colordiffuse="$VAR[color_grid_infopanel_text_main]">frames/frame.png</bordertexture>
-				<texture colordiffuse="22000000">colors/white.png</texture>
-			</control>
-			<control type="label">
-				<top>10</top>
-				<left>10</left>
-				<align>left</align>
-				<height>30</height>
-				<font>debugtiny</font>
-				<aligny>center</aligny>
-				<textcolor>$VAR[color_grid_infopanel_text_main]</textcolor>
-				<selectedcolor>selected</selectedcolor>
-				<label>$INFO[ListItem.Label]</label>
-			</control>
-			<control type="image">
-				<top>65</top>
-				<height>130</height>
-				<width>210</width>
-				<left>10</left>
-				<right>300</right>
-				<bordersize>2</bordersize>
-				<bordertexture border="2" colordiffuse="$VAR[color_grid_infopanel_text_main]">frames/frame.png</bordertexture>
-				<aspectratio>scale</aspectratio>
-				<texture>$VAR[ImageLayout_landscape]</texture>
-			</control>
-			<control type="label">
-				<top>70</top>
-				<left>240</left>
-				<align>left</align>
-				<height>120</height>
-				<width>150</width>
-				<font>debugtiny</font>
-				<aligny>center</aligny>
-				<textcolor>$VAR[color_grid_infopanel_text_main]</textcolor>
-				<selectedcolor>selected</selectedcolor>
-				<label>$INFO[ListItem.StartTime] - $INFO[ListItem.EndTime][CR]$INFO[ListItem.mpaa,   |  ,]$INFO[ListItem.year,   |  ,][CR]$INFO[ListItem.genre]</label>
-			</control>
-			<control type="textbox">
-				<description>plot</description>
-				<width>370</width>
-				<top>200</top>
-				<height>400</height>
-				<right>20</right>
-				<align>justify</align>
-				<font>font_Montserrat_16_semibold</font>
-				<aligny>bottom</aligny>
-				<wrapmultiline>true</wrapmultiline>
-				<textcolor>FF3A0079</textcolor>
-				<selectedcolor>selected</selectedcolor>
-				<label>$INFO[ListItem.Plot]</label>
-			</control>
-		</control>
-		
-		
-		
 		<control type="image">
 			<visible>true</visible>
 			<left>-50</left>
@@ -472,106 +403,32 @@
 			<height>250</height>
 			<control type="textbox">
 				<visible>String.IsEqual(ListItem.Icon,defaulttvshows.png)</visible>
-				<top>20</top>
-				<left>10</left>
-				<width>210</width>
+				<top>25</top>
+				<left>0</left>
+				<width>230</width>
+				<aligny>center</aligny>
 				<align>center</align>
-				<height>25</height>
-				<font>font_Montserrat_18_extrabold</font>
+				<height min="30" max="75">auto</height>
+				<font>DialogListItemLowLined</font>
 				<textcolor>$VAR[color_grid_infopanel_text_secondary]</textcolor>
-				<label>$INFO[ListItem.ChannelName]</label>
+				<label>[B]$INFO[ListItem.ChannelName][/B]</label>
 			</control>
 			<control type="image">
-				<top>45</top>
-				<height>130</height>
-				<width>210</width>
-				<left>10</left>
+				<top>35</top>
+				<height>160</height>
+				<width>240</width>
+				<left>0</left>
 				<bordersize>2</bordersize>
 				<aspectratio align="center" aligny="center">keep</aspectratio>
 				<texture fallback="defaulttvshows.png">$VAR[ChannelStudio_Icon]</texture>
 			</control>
-			<control type="group">
-				<visible>false</visible>
-				<top>100</top>
-				<left>240</left>
-				<height>60</height>
-				<width>300</width>
-				<control type="image">
-					<height>30</height>
-					<bordersize>2</bordersize>
-					<aspectratio align="left" aligny="top">keep</aspectratio>
-					<texture fallback="defaulttvshows.png">pvr/clock-start.png</texture>
-				</control>
-				<control type="textbox">
-					<left>35</left>
-					<align>left</align>
-					<height>120</height>
-					<width>300</width>
-					<font>debugtiny</font>
-					<aligny>top</aligny>
-					<textcolor>$VAR[color_grid_infopanel_text_main]</textcolor>
-					<selectedcolor>selected</selectedcolor>
-					<label>$INFO[ListItem.StartTime]</label>
-				</control>
-				<control type="progress">
-					<visible>false</visible>
-					<top>10</top>
-					<right>80</right>
-					<left>80</left>
-					<align>center</align>
-					<height>5</height>
-					<visible>ListItem.HasEpg</visible>
-					<info>ListItem.Progress</info>
-				</control>
-				<control type="textbox">
-					<visible>!String.IsEmpty(ListItem.Duration)</visible>
-					<right>35</right>
-					<left>35</left>
-					<align>center</align>
-					<height>25</height>
-					<font>debugtiny</font>
-					<aligny>top</aligny>
-					<textcolor>red</textcolor>
-					<selectedcolor>selected</selectedcolor>
-					<label>$VAR[ListItemDuration]</label>
-				</control>
-				<control type="progress">
-					<top>23</top>
-					<right>35</right>
-					<left>35</left>
-					<align>center</align>
-					<height>3</height>
-					<visible>ListItem.HasEpg</visible>
-					<info>ListItem.Progress</info>
-				</control>
-				<control type="image">
-					<height>30</height>
-					<right>0</right>
-					<bordersize>2</bordersize>
-					<aspectratio align="right" aligny="bottom">keep</aspectratio>
-					<texture fallback="defaulttvshows.png">pvr/clock-end.png</texture>
-				</control>
-				<control type="textbox">
-					<right>35</right>
-					<align>right</align>
-					<height>120</height>
-					<width>300</width>
-					<font>debugtiny</font>
-					<aligny>top</aligny>
-					<textcolor>$VAR[color_grid_infopanel_text_main]</textcolor>
-					<selectedcolor>selected</selectedcolor>
-					<label>$INFO[ListItem.EndTime]</label>
-				</control>
-			
-			</control>
-			
 			<control type="textbox">
 				<top>10</top>
 				<left>290</left>
 				<align>left</align>
 				<height max="100">auto</height>
 				<width>300</width>
-				<font>debugtiny</font>
+				<font>NotoSans_bold_20_lowline</font>
 				<aligny>top</aligny>
 				<textcolor>$VAR[color_grid_infopanel_text_main]</textcolor>
 				<selectedcolor>selected</selectedcolor>
@@ -584,11 +441,11 @@
 				<align>left</align>
 				<height>120</height>
 				<width>300</width>
-				<font>debugtiny</font>
+				<font>NotoSans_bold_20</font>
 				<aligny>top</aligny>
 				<textcolor>$VAR[color_grid_infopanel_text_main]</textcolor>
 				<selectedcolor>selected</selectedcolor>
-				<label>[B]$INFO[ListItem.StartTime] - $INFO[ListItem.EndTime][/B]</label>
+				<label>$INFO[ListItem.StartTime] - $INFO[ListItem.EndTime]</label>
 			</control>
 			<control type="label">
 				<visible>!String.IsEmpty(ListItem.Duration)</visible>
@@ -597,7 +454,7 @@
 				<align>left</align>
 				<height>120</height>
 				<width>300</width>
-				<font>debugtiny</font>
+				<font>NotoSans_bold_20</font>
 				<aligny>top</aligny>
 				<textcolor>$VAR[color_universalcontainer_watchedoverlay_progressbar_progress]</textcolor>
 				<selectedcolor>selected</selectedcolor>
@@ -613,88 +470,16 @@
 				<visible>ListItem.HasEpg</visible>
 				<info>ListItem.Progress</info>
 			</control>
-			<control type="grouplist">
-				<top>20</top>
-				<bottom>20</bottom>
-				<left>620</left>
-				<right>50</right>
-				<orientation>vertical</orientation>
-				<visible>String.IsEmpty(ListItem.EpgEventIcon)</visible>
-				<control type="textbox">
-					<description>ListItem.EpgEventTitle vs ListItem.Title ??</description>
-					<height min="40" max="80">auto</height>
-					<align>left</align>
-					<font>font_Montserrat_30_semibold</font>
-					<aligny>bottom</aligny>
-					<wrapmultiline>true</wrapmultiline>
-					<textcolor>$VAR[color_grid_infopanel_text_main]</textcolor>
-					<selectedcolor>selected</selectedcolor>
-					<label>$INFO[ListItem.Title]</label>
-				</control>
-				<control type="textbox">
-					<visible>!String.IsEmpty(ListItem.EpisodeName)</visible>
-					<height min="20" max="55">auto</height>
-					<align>left</align>
-					<font>font_Montserrat_20_semibold</font>
-					<aligny>bottom</aligny>
-					<wrapmultiline>true</wrapmultiline>
-					<textcolor>$VAR[color_grid_infopanel_text_accent]</textcolor>
-					<selectedcolor>selected</selectedcolor>
-					<label>$INFO[ListItem.Season,$LOCALIZE[20373] , • ]$INFO[ListItem.Episode,$LOCALIZE[20452] [B],[/B]  ]$INFO[ListItem.EpisodeName,,]</label>
-				</control>
-				<control type="textbox">
-					<description>plot</description>
-					<height>auto</height>
-					<align>justify</align>
-					<font>font_Montserrat_16_semibold</font>
-					<aligny>bottom</aligny>
-					<wrapmultiline>true</wrapmultiline>
-					<textcolor>$VAR[color_grid_infopanel_text_secondary]</textcolor>
-					<selectedcolor>selected</selectedcolor>
-					<label>$VAR[plot]</label>
-				</control>		
-			</control>
-			<control type="grouplist">
-				<top>20</top>
-				<bottom>20</bottom>
-				<left>620</left>
-				<right>470</right>
-				<orientation>vertical</orientation>
-				<visible>!String.IsEmpty(ListItem.EpgEventIcon)</visible>
-				<control type="textbox">
-					<description>ListItem.EpgEventTitle vs ListItem.Title ??</description>
-					<height min="40" max="80">auto</height>
-					<align>left</align>
-					<font>font_Montserrat_30_semibold</font>
-					<aligny>bottom</aligny>
-					<wrapmultiline>true</wrapmultiline>
-					<textcolor>$VAR[color_grid_infopanel_text_main]</textcolor>
-					<selectedcolor>selected</selectedcolor>
-					<label>$INFO[ListItem.Title]</label>
-				</control>
-				<control type="textbox">
-					<visible>!String.IsEmpty(ListItem.EpisodeName)</visible>
-					<height min="20" max="55">auto</height>
-					<align>left</align>
-					<font>font_Montserrat_20_semibold</font>
-					<aligny>bottom</aligny>
-					<wrapmultiline>true</wrapmultiline>
-					<textcolor>$VAR[color_grid_infopanel_text_accent]</textcolor>
-					<selectedcolor>selected</selectedcolor>
-					<label>$INFO[ListItem.Season,$LOCALIZE[20373] , • ]$INFO[ListItem.Episode,$LOCALIZE[20452] [B],[/B]  ]$INFO[ListItem.EpisodeName,,]</label>
-				</control>
-				<control type="textbox">
-					<description>plot</description>
-					<height>auto</height>
-					<align>justify</align>
-					<font>font_Montserrat_16_semibold</font>
-					<aligny>bottom</aligny>
-					<wrapmultiline>true</wrapmultiline>
-					<textcolor>$VAR[color_grid_infopanel_text_secondary]</textcolor>
-					<selectedcolor>selected</selectedcolor>
-					<label>$VAR[plot]</label>
-				</control>
-			</control>
+			
+			<include content="epg_infopanel">
+				<param name="right" value="50" />
+				<param name="visible" value="String.IsEmpty(ListItem.EpgEventIcon)" />
+			</include>
+			<include content="epg_infopanel">
+				<param name="right" value="470" />
+				<param name="visible" value="!String.IsEmpty(ListItem.EpgEventIcon)" />
+			</include>
+			
 			<control type="image">
 				<visible>!String.IsEmpty(ListItem.EpgEventIcon)</visible>
 				<description>or also  | !String.IsEmpty(ListItem.Art(thumb))</description>
@@ -710,6 +495,51 @@
 		</control>
 	</include>
 	
+	<include name="epg_infopanel">
+		<control type="grouplist">
+			<top>20</top>
+			<bottom>20</bottom>
+			<left>670</left>
+			<orientation>vertical</orientation>
+			<visible>$PARAM[visible]</visible>
+			<right>$PARAM[right]</right>
+			<control type="textbox">
+				<description>ListItem.EpgEventTitle vs ListItem.Title ??</description>
+				<height min="42" max="84">auto</height>
+				<align>left</align>
+				<font>font_Montserrat_32_semibold</font>
+				<aligny>bottom</aligny>
+				<wrapmultiline>true</wrapmultiline>
+				<textcolor>$VAR[color_grid_infopanel_text_main]</textcolor>
+				<selectedcolor>selected</selectedcolor>
+				<label>$INFO[ListItem.Title]</label>
+			</control>
+			<control type="textbox">
+				<top>-5</top>
+				<visible>!String.IsEmpty(ListItem.EpisodeName)</visible>
+				<height min="28" max="56">auto</height>
+				<align>left</align>
+				<font>font_Montserrat_22_semibold</font>
+				<aligny>bottom</aligny>
+				<wrapmultiline>true</wrapmultiline>
+				<textcolor>$VAR[color_grid_infopanel_text_accent]</textcolor>
+				<selectedcolor>selected</selectedcolor>
+				<label>$INFO[ListItem.Season,$LOCALIZE[20373] , • ]$INFO[ListItem.Episode,$LOCALIZE[20452] [B],[/B]  ]$INFO[ListItem.EpisodeName,,]</label>
+			</control>
+			<control type="textbox">
+				<top>5</top>
+				<description>plot</description>
+				<height>100</height>
+				<align>justify</align>
+				<font>font_Montserrat_18_semibold</font>
+				<aligny>bottom</aligny>
+				<wrapmultiline>true</wrapmultiline>
+				<textcolor>$VAR[color_grid_infopanel_text_secondary]</textcolor>
+				<selectedcolor>selected</selectedcolor>
+				<label>$VAR[plot]</label>
+			</control>		
+		</control>
+	</include>
 	<variable name="PVRTimerIcon_color_fo">
 		<value condition="ListItem.IsRecording"></value>
 		<value>$VAR[color_grid_item_text_main_fo]</value>
@@ -719,15 +549,15 @@
 		<value>$VAR[color_grid_item_text_main_nf]</value>
 	</variable>
 	<variable name="epg_special">
-		<value condition="ListItem.IsPremiere">[B]$LOCALIZE[838][/B]</value>
-		<value condition="ListItem.IsNew">[B]$LOCALIZE[842][/B]</value> 
-		<value condition="ListItem.IsFinale">[B]$LOCALIZE[849] $LOCALIZE[20452][/B]</value>
+		<value condition="ListItem.IsPremiere">• $LOCALIZE[838] •</value>
+		<value condition="ListItem.IsNew">$LOCALIZE[842][/B]</value> 
+		<value condition="ListItem.IsFinale">$LOCALIZE[849] $LOCALIZE[20452]</value>
 		<value condition="ListItem.IsLive">[I]$LOCALIZE[839][/I]</value>
 	</variable>
 	<variable name="PVR_indicator">
 		<value condition="ListItem.IsRecording">pvr/record.png</value>
 		<value condition="ListItem.HasReminder">pvr/bell.png</value>
-		<value condition="ListItem.IsPlayable">pvr/play.png</value>
+		<value condition="ListItem.IsPlayable">icons/play.png</value>
 	</variable>
 	<variable name="PVRTimerIcon_timer">
 		<value condition="[ListItem.HasTimerSchedule + ListItem.TimerHasError] | [ListItem.HasTimer + ListItem.TimerHasError] | [ListItem.HasTimerSchedule + ListItem.TimerHasConflict] | [ListItem.HasTimer + ListItem.TimerHasConflict]">pvr/pvr-hastimererror.png</value>

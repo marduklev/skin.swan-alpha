@@ -1,47 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
-	<defaultcontrol always="true">50</defaultcontrol>
 	<include content="media_window_attributes">
-		<param name="view_ids" value="50,51,52" /> 
+		<param name="view_ids" value="50,51,52,53" /> 
 	</include>
 	<onload condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onload>
 	<onunload condition="!String.IsEmpty(Window(home).Property(videofullcreen_pvrgrid))">SetProperty(forceopen,fullscreenlivetv,home)</onunload>
 	<onunload condition="!String.IsEmpty(Window(home).Property(videofullcreen_pvrgrid))">ClearProperty(videofullcreen_pvrgrid,home)</onunload>
-	<include content="media_window_attributes" />
-<!-- 	1.44 MyPVRGuide.xml
-ID 	Type 			Description
-2 	button 			Select viewtype (list, thumbnail, media info, etc...)
-3 	button 			Select sort method (sort by: name, date size, etc...)
-4 	togglebutton 	Select sortmode (ascending or descending)
-10 	epggrid 		EPG Guide Timeline
-11 	container 		Channel groups selector ?
-28 	button 			Channel groups button ?
-29 	label 			View name (Now / Next / Timeline)
-30 	label 			Channel groups name  
--->
 	<controls>
 		<control type="button" id="2">
+			<description>Select viewtype (list, thumbnail, media info, etc...)</description>
 			<include>HiddenObject</include>
 		</control>
 		<control type="button" id="3">
+			<description>Select sort method (sort by: name, date size, etc...)</description>
 			<include>HiddenObject</include>
 		</control>
 		<control type="togglebutton" id="4">
+			<description>Select sortmode (ascending or descending)</description>
 			<include>HiddenObject</include>
 		</control>
 		<control type="button" id="28">
-			<description>use container 11 instead ?</description>
+			<description>Channel groups button</description>
 			<include>HiddenObject</include>
 		</control>
 		<control type="label" id="29">
-			<description>native 29 	label View name (Now / Next / Timeline)</description>
+			<description>View name (Now / Next / Timeline)</description>
 			<include>HiddenObject</include>
 		</control>
 		<control type="label" id="30">
-			<description>may adjust header ?</description>
+			<description>Channel groups name</description>
 			<include>HiddenObject</include>
 		</control>
-		
 		<control type="group">
 			<visible>!Skin.HasSetting(BlurEnabled)</visible>
 			<include>global_background</include>
@@ -76,41 +65,30 @@ ID 	Type 			Description
 		</control>
 				
 		<control type="group">
-			<description>viewtypes</description>
+			<description>epggridsviewtypes - mising in wiki 10 horizontal,20 vertical sometime ago ?krypton?</description>
 			<include>Animation_Close_MediaContainer</include>
 			<animation type="Conditional" condition="$EXP[Infodialog_IsActive] | Window.IsActive(mediasource) | [Window.IsActive(shutdownmenu) + !$EXP[Spotlight_ViewType]] | Window.IsActive(1104)">
 				<effect type="fade" start="100" end="0" time="250" tween="sine" easing="out" />
 				<effect type="zoom" center="50%,50%" start="100" end="0" time="300" tween="cubic" easing="out" />
 			</animation>
-			
-			<!-- <animation type="Conditional" condition="!String.IsEmpty(Window(home).Property(videofullcreen_pvrgrid))"> -->
-				<!-- <effect type="slide" start="0,0" end="0,0" time="250" tween="sine" easing="out" /> -->
-				<!-- <effect type="zoom" center="1920,1080" start="100" end="70" time="300" tween="cubic" easing="out" /> -->
-			<!-- </animation> -->
-			
-			<!-- 
-			prepare and terefore keep include condition for param with strings
-			<timeblocks>60</timeblocks>
-			<rulerunit>6</rulerunit>
-			 -->
-			<!-- 	common -->
 			<include condition="String.IsEmpty(Window(home).Property(videofullcreen_pvrgrid))" content="epggrid">
 				<param name="grid_id" value="50" />
 				<param name="grid_vietypelabel" value="19298" />
 				<param name="orientation" value="vertical" />
-				<param name="height" value="57.7" />
+				<param name="height" value="60" />
 			</include>
 			<include condition="String.IsEmpty(Window(home).Property(videofullcreen_pvrgrid))" content="epggrid">
 				<param name="grid_id" value="51" />
 				<param name="grid_vietypelabel" value="19298" />
 				<param name="orientation" value="vertical" />
-				<param name="height" value="86.5" />
+				<param name="height" value="90" />
 			</include>
 			<include condition="String.IsEmpty(Window(home).Property(videofullcreen_pvrgrid))" content="epggrid">
 				<param name="grid_id" value="52" />
 				<param name="grid_vietypelabel" value="gridhorlarge" />
 				<param name="orientation" value="vertical" />
-				<param name="height" value="104" />
+				<param name="font" value="" />
+				<param name="height" value="108" />
 			</include>
 			<include condition="String.IsEmpty(Window(home).Property(videofullcreen_pvrgrid))" content="epggrid">
 				<param name="grid_id" value="53" />
@@ -161,16 +139,10 @@ ID 	Type 			Description
 				<ondown>SetFocus(50)</ondown>
 				
 				<control type="list" id="11">
+					<description>native Channel group container</description>
 					<height>100</height>
-					<onleft>500</onleft>
-					<onright>9001</onright>
 					<orientation>horizontal</orientation>
 					
-					<!-- 
-					if fixedlist
-						<left>-250</left>
-						<focusposition>1</focusposition>
-					 -->
 					<itemlayout width="250" height="50">
 						<control type="textbox">
 							<right>20</right>
