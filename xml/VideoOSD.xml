@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <window>
-	<defaultcontrol always="true">6102</defaultcontrol>
+	<defaultcontrol always="true">6103</defaultcontrol>
 	
 	<animation effect="slide" start="0,0" end="0,-100" time="250">WindowOpen</animation>
 	<animation effect="fade" start="0" end="0" time="200">WindowOpen</animation>
@@ -62,11 +62,18 @@
 						<include content="OSDButton">
 							<param name="texture" value="previous"/>
 						</include>
-						<onclick>PlayerControl(Previous)</onclick>
-						<visible>Player.ChapterCount | Integer.IsGreater(Playlist.Length(video),1) | Player.SeekEnabled</visible>
+						<onclick condition="Player.ChapterCount | Integer.IsGreater(Playlist.Length(video),1) | [Player.SeekEnabled + VideoPlayer.Content(livetv)]">PlayerControl(Previous)</onclick>
+						<onclick condition="!Player.SeekEnabled + VideoPlayer.Content(livetv)">Action(ChannelUp)</onclick>
+						<visible>VideoPlayer.Content(livetv) | Player.ChapterCount | Integer.IsGreater(Playlist.Length(video),1) | PVR.IsTimeShift</visible>
 					</control>
-					
-					<control type="togglebutton" id="6102">
+					<control type="button" id="6102">
+						<include content="OSDButton">
+							<param name="texture" value="rewind"/>
+						</include>
+						<onclick>PlayerControl(Rewind)</onclick>
+						<visible>[Player.SeekEnabled + !VideoPlayer.Content(livetv)] + !Player.Paused</visible>
+					</control>
+					<control type="togglebutton" id="6103">
 						<include content="OSDButton">
 							<param name="texture" value="play"/>
 						</include>
@@ -75,39 +82,42 @@
 						<usealttexture>!Player.Paused</usealttexture>
 						<onclick>PlayerControl(play)</onclick>
 					</control>
-					
-					
-					
-					<control type="button" id="6103">
+					<control type="button" id="6104">
 						<include content="OSDButton">
 							<param name="texture" value="stop"/>
 						</include>
 						<onclick>PlayerControl(Stop)</onclick>
 					</control>
-					
-					<control type="togglebutton" id="6150">
+					<control type="togglebutton" id="6105">
 						<animation effect="fade" start="100" end="40" time="1000" loop="true" condition="PVR.IsRecordingPlayingChannel">conditional</animation>
 						<include condition="true" content="Close_OSD_onfocus" />
 						<include>Animation_Item_Focus</include>
 						<top>5</top>
 						<width>50</width>
 						<height>50</height>
-						<visible>PVR.CanRecordPlayingChannel</visible>
+						<visible>PVR.CanRecordPlayingChannel + VideoPlayer.Content(livetv)</visible>
 						<texturefocus colordiffuse="$VAR[color_osdvideo_button_fo]">buttons/osd/record.png</texturefocus>
 						<texturenofocus colordiffuse="$VAR[color_osdvideo_button_nf]">buttons/osd/record.png</texturenofocus>
 						<alttexturefocus colordiffuse="red">buttons/osd/record.png</alttexturefocus>
 						<alttexturenofocus colordiffuse="red">buttons/osd/record.png</alttexturenofocus>
 						<usealttexture>PVR.IsRecordingPlayingChannel</usealttexture>
 						<onclick>PVR.ToggleRecordPlayingChannel</onclick>
+						<onclick>PVR.ToggleRecordPlayingChannel</onclick>
 					</control>
-					
-					<control type="button" id="6105">
+					<control type="button" id="6106">
+						<include content="OSDButton">
+							<param name="texture" value="fforward"/>
+						</include>
+						<onclick>PlayerControl(Forward)</onclick>
+						<visible>[Player.SeekEnabled + !VideoPlayer.Content(livetv)] + !Player.Paused</visible>
+					</control>
+					<control type="button" id="6107">
 						<include content="OSDButton">
 							<param name="texture" value="next"/>
 						</include>
-						<onclick>PlayerControl(Next)</onclick>
-						<!-- <onclick>action(skipnext)</onclick> -->
-						<visible>Player.ChapterCount | Integer.IsGreater(Playlist.Length(video),1) | [VideoPlayer.Content(LiveTV) + Player.SeekEnabled]</visible>
+						<onclick condition="Player.ChapterCount | Integer.IsGreater(Playlist.Length(video),1) | PVR.IsTimeShift">PlayerControl(Next)</onclick>
+						<onclick condition="!Player.SeekEnabled + !PVR.IsTimeShift + VideoPlayer.Content(livetv)">Action(ChannelUp)</onclick>
+						<visible>VideoPlayer.Content(livetv) | Player.ChapterCount | Integer.IsGreater(Playlist.Length(video),1) | PVR.IsTimeShift</visible>
 					</control>
 					<control type="button" id="6110">
 						<include content="OSDButton">
@@ -117,19 +127,18 @@
 						<visible>VideoPlayer.HasMenu</visible>
 						<description>disc menu</description>
 					</control>
-					
 					<include content="spacer_w">
-						<param name="id" value="6198" />
+						<param name="id" value="6120" />
 						<param name="gap" value="10" />
 					</include>
-					<control type="button" id="6106">
+					<control type="button" id="6121">
 						<include content="OSDButton">
 							<param name="texture" value="info"/>
 						</include>
 						<visible>!String.IsEmpty(VideoPlayer.Plot)</visible>
 						<onclick>Info</onclick>
 					</control>
-					<control type="button" id="6130">
+					<control type="button" id="6122">
 						<include content="OSDButton">
 							<param name="texture" value="bookmark"/>
 							<param name="can_autoclose_osd" value="false" />
@@ -138,7 +147,7 @@
 						<onclick>ActivateWindow(VideoBookmarks)</onclick>
 						<visible>!VideoPlayer.Content(livetv)</visible>
 					</control>
-					<control type="button" id="6131">
+					<control type="button" id="6123">
 						<include content="OSDButton">
 							<param name="texture" value="playlist"/>
 							<param name="can_autoclose_osd" value="false" />
@@ -152,7 +161,7 @@
 						<onclick>ActivateWindow(VideoBookmarks)</onclick>
 					</control>
 					
-					<control type="button" id="6155">
+					<control type="button" id="6140">
 						<include content="OSDButton">
 							<param name="texture" value="teletext"/>
 							<param name="can_autoclose_osd" value="false" />
@@ -161,7 +170,7 @@
 						<visible>VideoPlayer.HasTeletext</visible>
 					</control>
 					
-					<control type="button" id="6152">
+					<control type="button" id="6141">
 						<include content="OSDButton">
 							<param name="texture" value="channelosdcircles"/>
 							<param name="can_autoclose_osd" value="false" />
@@ -170,7 +179,7 @@
 						<onclick>Dialog.Close(VideoOSD)</onclick>
 						<onclick>ActivateWindow(PVROSDChannels)</onclick>
 					</control>
-					<control type="button" id="6153">
+					<control type="button" id="6142">
 						<include condition="Skin.HasSetting(player_videofullcreen_pvrgrid)" content="OSDButton">
 							<param name="texture" value="epggrid"/>
 							<param name="can_autoclose_osd" value="false" />
@@ -185,11 +194,11 @@
 					</control>
 					
 					<include content="spacer_w">
-						<param name="id" value="6199" />
+						<param name="id" value="6150" />
 						<param name="gap" value="10" />
 					</include>
 					
-					<control type="button" id="6122">
+					<control type="button" id="6151">
 						<top>5</top>
 						<width>50</width>
 						<height>50</height>
