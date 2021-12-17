@@ -4,6 +4,12 @@
 	<!-- ################### -->
 	<!-- #### A U D I O #### -->
 	<!-- ################### -->
+	<include name="playlist_container_atts">
+		<onfocus>SetProperty(playlist_itemcontrol,enable,home)</onfocus>
+		<onunfocus>ClearProperty(playlist_itemcontrol,home)</onunfocus>
+		<onclick>Runscript(special://skin/scripts/playlistplayoffset.py)</onclick>
+	</include>
+	
 	<variable name="debugPlayerShowInfo">
 		<value condition="Player.ShowInfo">ShowInfo is true</value>
 		<value condition="!Player.ShowInfo">ShowInfo is false</value>
@@ -49,15 +55,12 @@
 					<preloaditems>2</preloaditems>
 					<orientation>vertical</orientation>
 					
-					<onfocus>SetProperty(playlist_itemcontrol,enable,home)</onfocus>
-					<onunfocus>ClearProperty(playlist_itemcontrol,home)</onunfocus>
+					<include>playlist_container_atts</include>
 					
 					<onup>699</onup>
 					<ondown>699</ondown>
 					<onleft>Dialog.Close(1140)</onleft>
-					<!-- pr pending <onclick>RunScript(script.embuary.helper,action=playlistplayoffset,type=music)</onclick> -->
-					<onclick>Runscript(special://skin/scripts/playlistplayoffset.py)</onclick>
-					 
+					
 					<onright condition="Control.IsVisible(49960)">49960</onright>
 					<onright condition="!Control.IsVisible(49960)">Dialog.Close(1140)</onright>
 					
@@ -141,7 +144,7 @@
 							</control>
 						</control>
 					</focusedlayout>
-					<content target="music">playlistmusic://</content>
+					<content target="music">$VAR[playlistmusic]</content>
 				</control>
 				<control type="scrollbar" id="49960">
 					<right>-20</right>
@@ -195,10 +198,7 @@
 				
 				<onup>699</onup>
 				
-				<onfocus>SetProperty(playlist_itemcontrol,enable,home)</onfocus>
-				<onunfocus>ClearProperty(playlist_itemcontrol,home)</onunfocus>
-				
-				<onclick>RunScript(script.embuary.helper,action=playall,id=499,type=music,method=fromhere)</onclick>
+				<include>playlist_container_atts</include>
 				
 				<onleft>Dialog.Close(1140)</onleft>
 				<onright>49960</onright>
@@ -239,7 +239,7 @@
 						</control>
 					</control>
 				</focusedlayout>
-				<content target="music">playlistmusic://</content>
+				<content target="music">$VAR[playlistmusic]</content>
 			</control>
 		</control>
 	</include>
