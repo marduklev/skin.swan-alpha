@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import xbmc
-import xbmcgui
 
 playlist = xbmc.PlayList(0)
 playlist_id = 0
@@ -37,8 +36,10 @@ if int(dbid) == 0:
 
 if xbmc.getCondVisibility('skin.hassetting(%s_select_queue)' % dbtype):
     if dbtype == 'song' or dbtype == 'album':
-        xbmc.executebuiltin('notification(%s by %s,  Added to Playlist,,%s)' % (item_title,item_artist,item_thumb))
-    if dbtype == 'genre':
-        xbmc.executebuiltin('notification($LOCALIZE[593] %s $LOCALIZE[134],  Added to Playlist,,%s)' % (item_label,item_thumb))
+        xbmc.executebuiltin('notification(%s %s by %s,  Added to Playlist at position %s,,%s)' % (dbtype,item_title,item_artist,index,item_thumb))
+    elif dbtype == 'artist':
+        xbmc.executebuiltin('notification($LOCALIZE[625] %s,  Added to Playlist at position %s,,%s)' % (item_artist,index,item_thumb))
+    else:
+        xbmc.executebuiltin('notification($LOCALIZE[625] %s: %s,  Added to Playlist at position %s,,%s)' % (dbtype,item_label,index,item_thumb)) 
 
 xbmc.executebuiltin('clearproperty(playlist_updating,home)')
