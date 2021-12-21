@@ -112,11 +112,13 @@ The Backgroundbuilding is built up as follows,
 Is a special Music Media Window , from here you can navigate trough every Library Content of your Music & Musicvideos without leaving that window ( if wished so )
  * it has a unique filter method in the top bar
  * easy navigation via menubar on the left
- * if music is playing you'll also able to have the current playlist visible by click on thebplaylist button in the top bar or navigate on right
+ * if music is playing you'll also able to have the current playlist visible by click on thebplaylist button in the top bar or navigate on right (from there you can also manipulate the playlist)
  
  ADD VIDEO HERE
 
-> NOTE: i didnt found a way to queuing/add items to a playlist 
+> NOTE: 
+	- default select action (when item is supposed to be played and not for navigation ) can be choosen by user (add to playlist as next title and play (default) - or just add to playlist as next title in playlist - related to songs,albums,genre items)
+	- playlist manipulation can be done via my playlist.context menu addon ( move focused item up/down, delete focused item) - just bring up contextmenu and choose wished action
 
 ## SEARCH FEATURE
  *  the skin comes with a own search window which is available in the icon premenu and/or menu-panel in media windows
