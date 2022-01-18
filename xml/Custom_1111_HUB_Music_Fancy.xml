@@ -18,24 +18,19 @@ currentlyplaying,playlist righ 8000
 	<defaultcontrol always="true">6666</defaultcontrol>
 	<animation effect="fade" start="0" end="100" time="325">WindowOpen</animation>
 	
-	
+	<!-- FANCY WIP specific -->
 	<!-- set default container sortby temp -->
 	<onload>SetProperty(110_sortby,artist)</onload>
 	
-	
+	<!-- Window.Previous|Next(**) dont get wished result, no 'real window change perform' idkw -->
 	<onload condition="!Skin.HasSetting(MusicHUB_StartUprecommendation) + String.IsEmpty(Window(home).Property(HUB_Music))">SetProperty(HUB_Music,common,home)</onload>
 	<onload condition="Skin.HasSetting(MusicHUB_StartUprecommendation) + String.IsEmpty(Window(home).Property(HUB_Music))">SetProperty(HUB_Music,recommendation,home)</onload>
-	<onload condition="!String.IsEmpty(Window(home).Property(HUB_containerpath_albums))">ClearProperty(HUB_containerpath_albums,home)</onload>
-	<onload condition="!String.IsEmpty(Window(home).Property(HUB_containerpath_albums))">ClearProperty(HUB_containerpath_songs,home)</onload>
-	
-	<!-- temp -->
-	<onload condition="!String.IsEmpty(Window(home).Property(HUB_artistinfo))">ClearProperty(HUB_artistinfo,home)</onload>
-	<onload condition="!String.IsEmpty(Window(home).Property(HUB_albuminfo))">ClearProperty(HUB_albuminfo,home)</onload>
 	
 	
-	<onunload>ClearProperty(HUB_artwork,home)</onunload>
-	<onunload>ClearProperty(HUB_containerpath_albums,home)</onunload>
-	<onunload>ClearProperty(HUB_containerpath_songs,home)</onunload>
+	<onload condition="!String.IsEqual(Window(home).Property(HUB_Music),SongsByAlbum) + !String.IsEmpty(Window(home).Property(HUB_containerpath_albums))">ClearProperty(HUB_containerpath_albums,home)</onload>
+	<onload condition="!String.IsEqual(Window(home).Property(HUB_Music),SongsByAlbum) + !String.IsEmpty(Window(home).Property(HUB_containerpath_songs))">ClearProperty(HUB_containerpath_songs,home)</onload>
+		<onload condition="String.IsEqual(Window(home).Property(HUB_Music),SongsByAlbum) + !String.IsEmpty(Window(home).Property(HUB_containerpath_albums))">AlarmClock(delayedfocus,SetFocus(5120),00:00,silent)</onload>
+		<onload condition="String.IsEqual(Window(home).Property(HUB_Music),SongsByAlbum) + !String.IsEmpty(Window(home).Property(HUB_containerpath_songs))">AlarmClock(delayedfocus,SetFocus(5121),00:00,silent)</onload>
 	
 	<!-- conditional temp -->
 	<onunload condition="!String.IsEqual(Window(home).Property(HUB_Music),compilations)">ClearProperty(HUB_Music,home)</onunload>
@@ -47,7 +42,7 @@ currentlyplaying,playlist righ 8000
 		<description>cant use dialog as conatiner is updating need looked in current window
 		<visible allowhiddenfocus="true">Container(110).IsUpdating + !String.IsEmpty(Window(1111).Property(ForcedelayedFocus))</visible>
 		<visible>Container(110).IsUpdating</visible>
-		use me the have vis and unfocus action
+		
 		</description>
 		<top>200</top>
 		<left>500</left>
@@ -1989,6 +1984,9 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 		<!-- SPECIAL ARTIST VIEW -->
 		<!-- ################### -->
 		<control type="group" id="6020">
+			
+			<description>METADATA right</description>
+			
 			<left>800</left>
 			<height>275</height>
 			<width>100%</width>
@@ -2008,7 +2006,7 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 				<width>100%</width>
 				<font>font_Montserrat_semibold_22</font>
 				<visible>!String.IsEmpty(Container().ListItem.Genre)</visible>
-				<label>$INFO[Container().ListItem.Genre,[B],[/B]]</label>
+				<label>$INFO[Container(5120).ListItem.Genre,[B],[/B]]</label>
 				<textcolor>$VAR[color_hub_accent]</textcolor>
 			</control>
 			<control type="grouplist" id="94443">
@@ -2031,6 +2029,7 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 				<font>font_Montserrat_semibold_22</font>
 				<!-- <font>font_sans_bold_16</font> -->
 				<autoscroll>false</autoscroll>
+				<!-- item based <label>$VAR[plot]</label> -->
 				<label>$INFO[Window(home).Property(HUB_artistinfo)]</label>
 				<textcolor>$VAR[color_hub_text_main]</textcolor>
 			</control>
@@ -2077,7 +2076,7 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 				<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(5120).NumItems,0) | Container(5120).IsUpdating">Conditional</animation>
 				<visible>!String.IsEmpty(Window(home).Property(HUB_containerpath_albums))</visible>
 				
-				<top>100</top>
+				<top>200</top>
 				<height>260</height>
 				<preloaditems>2</preloaditems>
 				<orientation>horizontal</orientation>
@@ -2093,6 +2092,7 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			
 				<itemlayout height="260" width="220">
 					<control type="group">
+						<animation effect="fade" start="100" end="10" condition="Control.HasFocus(5121)">Conditional</animation>
 						<height>215</height>
 						<width>215</width>
 						<control type="group">
@@ -2152,7 +2152,62 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 							</control>
 						</control>
 					</control>
-					
+					<control type="group">
+						<visible>!String.IsEmpty(ListItem.Property(Album_Description)) + Control.HasFocus(5121)</visible>
+						<visible>Integer.IsLess(Container(5120).Position,5)</visible>
+								
+						<animation effect="fade" start="0" end="100" time="300" condition="!String.IsEmpty(ListItem.Property(Album_Description))">Conditional</animation>
+						
+						<top>30</top>
+						<bottom>50</bottom>
+						<left>220</left>
+							
+						<control type="image">
+							<width>650</width>
+							<texture colordiffuse="$VAR[color_hub_backgroundlayer1]">diffuse/gradientleft.png</texture>
+							<texture colordiffuse="white">diffuse/gradientleft.png</texture>
+							<aspectratio scalediffuse="true" align="center" aligny="top">stretch</aspectratio>
+						</control>
+						<control type="textbox">
+							<width>620</width>
+							<left>20</left>
+							<height>180</height>
+							<!-- <textcolor>$VAR[color_hub_backgroundlayer1]</textcolor> -->
+							
+							<label>$INFO[ListItem.Property(Album_Description)]</label>
+							<font>debugtiny</font>
+							<aligny>center</aligny>
+							<align>left</align>
+						</control>
+					</control>
+					<control type="group">
+						<visible>Integer.IsGreaterOrEqual(Container(5120).Position,5)</visible>
+						<visible>!String.IsEmpty(ListItem.Property(Album_Description)) + Control.HasFocus(5121)</visible>
+						<right>-650</right>
+						<width>1950</width>
+						
+						<animation effect="fade" start="0" end="100" time="300" condition="!String.IsEmpty(ListItem.Property(Album_Description))">Conditional</animation>
+						<animation effect="slide" start="0" end="410" condition="true">Conditional</animation> 
+						
+						<top>30</top>
+						<bottom>50</bottom>
+						
+						<control type="image">
+							<width>650</width>
+							<texture colordiffuse="white" flipx="true">diffuse/gradientleft.png</texture>
+							<aspectratio scalediffuse="true" align="center" aligny="top">stretch</aspectratio>
+						</control>
+						<control type="textbox">
+							<width>620</width>
+							<height>180</height>
+							<textcolor>$VAR[color_hub_backgroundlayer1]</textcolor>
+							<label>$INFO[ListItem.Property(Album_Description)]</label>
+							<font>debugtiny</font>
+							<aligny>center</aligny>
+							<align>right</align>
+						</control>
+						
+					</control>
 				</focusedlayout>
 				<content sortby="artistthanyear" sortorder="ascending">$VAR[5120_albums]</content>
 			</control>
@@ -2163,7 +2218,8 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 				<animation effect="fade" start="100" end="0" condition="!Integer.IsGreater(Container(5121).NumItems,0) | Container(5121).IsUpdating">Conditional</animation>
 				
 				<width>1020</width>
-				<height>280</height>
+				<!-- <height>280</height> -->
+				<height>220</height>
 				<preloaditems>2</preloaditems>
 				<orientation>horizontal</orientation>
 				<scrolltime tween="quadratic">400</scrolltime>
@@ -2182,7 +2238,7 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 				
 				<onback>6666</onback>
 			
-				<itemlayout height="75" width="500">
+				<itemlayout height="50" width="500">
 					<control type="group">
 						<height>40</height>
 						<width>500</width>
@@ -2193,7 +2249,7 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 						</include>
 					</control>
 				</itemlayout>
-				<focusedlayout height="75" width="500">
+				<focusedlayout height="50" width="500">
 				<control type="group">
 					<height>40</height>
 					<width>500</width>
@@ -2229,6 +2285,57 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 		</control>
 	</control>
 		<!-- main grouplist 6666 end here -->
+	
+	<control type="group">
+		<top>200</top>
+		<height>260</height>
+		<width>650</width>
+		<!-- <height="260" width="225"></height="260"> -->
+				<visible>false</visible>
+				
+		<!-- <visible>!String.IsEmpty(ListItem.Property(Album_Description)) + Control.HasFocus(5121)</visible> -->
+		
+		<animation effect="slide" start="0" end="220" condition="Integer.IsLess(Container(5120).CurrentItem,6)">Conditional</animation>
+		<animation effect="slide" start="0" end="-650" condition="Integer.IsGreaterOrEqual(Container(5120).CurrentItem,6)">Conditional</animation>
+		<animation effect="fade" start="0" end="100" time="300" condition="!String.IsEmpty(ListItem.Property(Album_Description))">Conditional</animation>
+			<control type="image">
+				<width>100%</width>
+				<!-- <texture colordiffuse="$VAR[color_hub_backgroundlayer1]">colors/white.png</texture> -->
+				<texture colordiffuse="red">colors/white.png</texture>
+				<aspectratio scalediffuse="true" align="center" aligny="top">stretch</aspectratio>
+			</control>
+			<control type="textbox">
+				<visible>Integer.IsLess(Container(5120).CurrentItem,6)</visible>
+				<bottom>20</bottom>
+				<width>650</width>
+				<height>200</height>
+				<label>$INFO[ListItem.Property(Album_Description)]</label>
+				<font>debugtiny</font>
+				<aligny>center</aligny>
+				<align>left</align>
+			</control>
+			
+			<control type="image">
+				<left>-200</left>
+				<visible>Integer.IsGreaterOrEqual(Container(5120).CurrentItem,6)</visible>
+				<width>100%</width>
+				<!-- <texture colordiffuse="$VAR[color_hub_backgroundlayer1]">colors/white.png</texture> -->
+				<texture colordiffuse="green">colors/white.png</texture>
+				<aspectratio scalediffuse="true" align="center" aligny="top">stretch</aspectratio>
+			</control>
+			<control type="textbox">
+				<right>-200</right>
+				<visible>Integer.IsGreaterOrEqual(Container(5120).CurrentItem,6)</visible>
+				<width>650</width>
+				<height>200</height>
+				<label>$INFO[Container(5120).ListItem.Property(Album_Description)]</label>
+				<font>debugtiny</font>
+				<aligny>center</aligny>
+				<align>right</align>
+			</control>
+		
+	</control>
+		
 		
 	<control type="group">
 		<description>S I D E    B A R    L E F T</description>

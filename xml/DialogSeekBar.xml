@@ -4,4 +4,77 @@
 ID 		Type 	Description
 401 	slider 	Marker representing the current seek position
 402 	label 	Time label displaying current seek position  -->
+	<visible>Window.IsActive(fullscreenvideo) | Window.IsActive(visualisation)</visible>
+	<visible>[Player.Seeking | Player.DisplayAfterSeek]</visible>
+	
+	<!-- <onload condition="Player.Playing + Player.HasVideo">PlayerControl(play)</onload>
+	<onunload condition="!Player.Playing + Player.HasVideo">PlayerControl(play)</onunload> -->
+	
+	<!-- <animation effect="fade" start="100" end="0" time="200">WindowClose</animation> -->
+	<controls>
+	
+		<control type="group">
+			<!-- <visible>[Player.Seeking | Player.DisplayAfterSeek]</visible> -->
+			<animation effect="fade" end="100" time="200">Visible</animation>
+			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
+				
+			<control type="image">
+				<texture colordiffuse="$VAR[color_osdvideo_dimmedbg]">colors/white50.png</texture>
+			</control>
+			
+			<control type="grouplist">
+				<orientation>vertical</orientation>
+				<height>200</height>
+				<centertop>50%</centertop>
+				<itemgap>25</itemgap>
+				
+				<control type="label">
+					<height>50</height>
+					<!-- <visible>Player.Seeking</visible> -->
+					<textcolor>$VAR[color_osdvideo_main]</textcolor>
+					<label>$INFO[Player.SeekOffset(ss)]</label>
+					<font>font_titlefallbackspotlight</font>
+					<align>center</align>
+					<aligny>center</aligny>
+				</control>
+				<control type="label">
+					<height>25</height>
+					<!-- <visible>Player.Seeking</visible> -->
+					<textcolor>$VAR[color_osdvideo_main]</textcolor>
+					<label>seek to</label>
+					<font>Montserrat_ExtraBold_40</font>
+					<align>center</align>
+					<aligny>center</aligny>
+				</control>
+				<control type="label">
+					<height>50</height>
+					<textcolor>$VAR[color_osdvideo_main]</textcolor>
+					<label>$INFO[Player.SeekTime]</label>
+					<font>font_titlefallbackspotlight</font>
+					<align>center</align>
+					<aligny>center</aligny>
+				</control>
+					
+				<control type="group">
+					<width>900</width>
+					<centerleft>50%</centerleft>
+				<visible>false</visible>
+					<include condition="!VideoPlayer.Content(LiveTV)" content="VideoOSD_ProgressSlider">
+						<param name="info" value="Player.Progress" />
+						<param name="slider_action" value="seek" />
+					</include>
+					<include condition="VideoPlayer.Content(LiveTV)" content="VideoOSD_ProgressSlider">
+						<param name="info" value="PVR.TimeshiftProgressPlayPos" />
+						<param name="slider_action" value="pvr.seek" />
+					</include>
+			</control>
+					
+			</control>
+			
+			
+		</control>
+		
+		
+		
+	</controls>
 </window>
