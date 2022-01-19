@@ -2,17 +2,52 @@
 <window>
 <!-- 	1.24 DialogSeekBar.xml
 ID 		Type 	Description
-401 	slider 	Marker representing the current seek position
-402 	label 	Time label displaying current seek position  -->
-	<visible>Window.IsActive(fullscreenvideo) | Window.IsActive(visualisation)</visible>
-	<visible>[Player.Seeking | Player.DisplayAfterSeek]</visible>
+401 	slider 	Marker representing the current seek position ~ ?? is it supposed to equal Player.SeekBar 	Time to which the user is seeking as a percentage (for use in slider controls)
+402 	label 	Time label displaying current seek position ~ ?? is it supposed to equal Player.SeekTime 	Time to which the user is seeking 	 -->
 	
-	<!-- <onload condition="Player.Playing + Player.HasVideo">PlayerControl(play)</onload>
-	<onunload condition="!Player.Playing + Player.HasVideo">PlayerControl(play)</onunload> -->
-	
+
 	<!-- <animation effect="fade" start="100" end="0" time="200">WindowClose</animation> -->
+	<visible>[Player.Seeking | Player.DisplayAfterSeek | Player.ShowTime]</visible>
+	<visible>Window.IsActive(fullscreenvideo) + !Window.IsActive(videoosd)</visible>
+	
+	
+	<!--
+	get issues with touch cross ref videosd + slider ??
+		hidden back button as resolve-->
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<!-- 
+	<onload condition="Player.Playing + Player.HasVideo">PlayerControl(play)</onload>
+	<onunload condition="!Player.Playing + Player.HasVideo">PlayerControl(play)</onunload>
+	 -->
+	
+	
 	<controls>
 	
+		<control type="slider" id="401">
+			<!-- <include content="HiddenObject" /> -->
+			
+			<!-- or unintuitive touch support -->
+			<height>100%</height>
+			<texturesliderbar colordiffuse="none" border="10">buttons/sliderback.png</texturesliderbar>
+			<textureslidernib colordiffuse="none">buttons/slidernib.png</textureslidernib>
+			<textureslidernibfocus colordiffuse="none">buttons/slidernib.png</textureslidernibfocus>
+			
+		</control>
+		
+		<control type="label" id="402">
+			<textcolor>red</textcolor>
+			<centertop>50%</centertop>
+			<align>left</align>
+			<aligny>center</aligny>
+			<height>100</height>
+			<width>100%</width>
+		</control>
+		
+		<control type="button" id="9000">
+			<onclick>dialog.close(seekbar)</onclick>
+			<include content="HiddenObject" />
+		</control>
+		
 		<control type="group">
 			<!-- <visible>[Player.Seeking | Player.DisplayAfterSeek]</visible> -->
 			<animation effect="fade" end="100" time="200">Visible</animation>
@@ -24,25 +59,28 @@ ID 		Type 	Description
 			
 			<control type="grouplist">
 				<orientation>vertical</orientation>
-				<height>200</height>
+				<height>400</height>
 				<centertop>50%</centertop>
 				<itemgap>25</itemgap>
 				
 				<control type="label">
+					<visible>false</visible>
 					<height>50</height>
+					<animation effect="fade" time="200" end="40" condition="window.isactive(seekbar)">conditional</animation>
 					<!-- <visible>Player.Seeking</visible> -->
 					<textcolor>$VAR[color_osdvideo_main]</textcolor>
-					<label>$INFO[Player.SeekOffset(ss)]</label>
+					<label>$INFO[Player.SeekStepSize]</label>
 					<font>font_titlefallbackspotlight</font>
 					<align>center</align>
 					<aligny>center</aligny>
 				</control>
 				<control type="label">
+					<description>$INFO[Control.GetLabel(402)] returns nothing</description>
 					<height>25</height>
 					<!-- <visible>Player.Seeking</visible> -->
 					<textcolor>$VAR[color_osdvideo_main]</textcolor>
 					<label>seek to</label>
-					<font>Montserrat_ExtraBold_40</font>
+					<font>font_Montserrat_38_extrabold</font>
 					<align>center</align>
 					<aligny>center</aligny>
 				</control>
@@ -54,27 +92,55 @@ ID 		Type 	Description
 					<align>center</align>
 					<aligny>center</aligny>
 				</control>
-					
-				<control type="group">
-					<width>900</width>
+				
+				
+				
+				<control type="progress" id="6767">
+					<!-- <visible>String.StartsWith(Player.Duration(hh),00)</visible> -->
+					<description>bypass left,right-textures - via reveal tag</description>
+					<reveal>true</reveal>
 					<centerleft>50%</centerleft>
-				<visible>false</visible>
-					<include condition="!VideoPlayer.Content(LiveTV)" content="VideoOSD_ProgressSlider">
-						<param name="info" value="Player.Progress" />
-						<param name="slider_action" value="seek" />
-					</include>
-					<include condition="VideoPlayer.Content(LiveTV)" content="VideoOSD_ProgressSlider">
-						<param name="info" value="PVR.TimeshiftProgressPlayPos" />
-						<param name="slider_action" value="pvr.seek" />
-					</include>
+					<midtexture colordiffuse="$VAR[color_osdvideo_secondary]">buttons/progress17h.png</midtexture>
+					<texturebg diffuse="colors/white30.png" colordiffuse="$VAR[color_global_button_text_fo]">buttons/progress17h.png</texturebg>
+					<info>Player.SeekBar</info>
+					<width>200</width>
+					<height>34</height>
+				</control>
+				
+				<control type="label">
+					<height>30</height>
+					<animation effect="fade" time="200" end="80" condition="window.isactive(seekbar)">conditional</animation>
+					<!-- <visible>Player.Seeking</visible> -->
+					<textcolor>$VAR[color_osdvideo_main]</textcolor>
+					<label>$INFO[Player.SeekStepSize]</label>
+					<font>Montserrat_ExtraBold_40</font>
+					<align>center</align>
+					<aligny>center</aligny>
+				</control>
+				
 			</control>
-					
-			</control>
-			
-			
 		</control>
 		
-		
+	<control type="textbox" id="99">
+		<visible>Skin.HasSetting(SwanDebug)</visible>
+		<font>debugtiny</font>
+		<aligny>top</aligny>
+		<align>left</align>
+		<top>10</top>
+		<right>15</right>
+		<textcolor>cyan</textcolor>
+		<label>
+$INFO[Player.SeekTime]        Player.SeekTime            Time to which the user is seeking 	
+$INFO[Player.SeekBar]        Player.SeekBar            Time to which the user is seeking as a percentage (for use in slider controls) 	
+$INFO[Player.SeekOffset]        Player.SeekOffset            Indicates the seek offset after a seek press (eg user presses BigStepForward, player.seekoffset returns +10:00) 	
+$INFO[Player.SeekOffset(hh:mm:ss)]        Player.SeekOffset(format)            Shows hours (hh), minutes (mm) or seconds (ss). Also supported: (hh:mm), (mm:ss), (hh:mm:ss), (hh:mm:ss). 	
+$INFO[Player.SeekStepSize]        Player.SeekStepSize                Displays the seek step size. (v15 addition)
+
+
+Control.GetLabel(6767) - SEEKBAR PERCENT ~ Player.SeekBar ~ $INFO[Control.GetLabel(6767)]
+</label>
+</control>	
+
 		
 	</controls>
 </window>

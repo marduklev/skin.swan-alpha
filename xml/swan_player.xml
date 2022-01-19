@@ -628,12 +628,32 @@
 		<value>$LOCALIZE[19055]</value>
 	</variable>
 	
-	
+	<!-- = currently no seektime displayed
+decide best practice for dialog seekbar -
+	a) if setting show player info no seekbar = bold labels & progress bar = if hit nav arrows and osd not active - 
+	b) if setting show player info yes seekbar = use time labels as "panel" embuary
+
+
+			when paused
+				- show bold labels & dimm screen ater idle time  ~ user vs 5 mins, fade loop for label
+				- bring up still watching dialog
+						- options yes , custom when no ( stop , shutdown )
+						
+			screensaver 
+				- system.idletime activation monitor activation - 
+				- movie picture slideshow ? if such addon dont exist
+			-->
 	<include name="VideoFullscreen_OSD">
 		<description>keep id 99 if possible - otherwise issues come - as like prefer used in videofullscreen</description>
 			<control type="group" id="99">
-			<visible>Window.IsVisible(videoosd) | Window.IsVisible(seekbar) | Player.Paused | Player.ShowTime | $EXP[IsSeek] | !String.IsEmpty(Window(home).Property(ShowOSD_Plot)) | Window.IsActive(fullscreeninfo) | Window.IsActive(videobookmarks)</visible>
-			<!-- <visible>!Player.Seeking  + !Player.DisplayAfterSeek</visible> -->
+			<visible>Window.IsVisible(videoosd) | [Player.Paused + !Skin.HasSetting(videoplayer_infoonpause)] | !String.IsEmpty(Window(home).Property(ShowOSD_Plot)) | Window.IsActive(fullscreeninfo) | Window.IsActive(videobookmarks)</visible>
+
+			<!-- <visible>!Player.Seeking + !Player.DisplayAfterSeek</visible> vs [Player.Paused + !Skin.HasSetting(videoplayer_infoonpause)] - 
+				default on infos pause show info and fade out after amount of idle time
+			-->
+			<!-- <visible>!window.isactive(seekbar) | !Player.ShowTime</visible> -->
+			<!-- <animation effect="fade" start="100" end="0" time="150" condition="window.isactive(seekbar)">conditional</animation> -->
+			
 			<animation effect="fade" start="0" end="100" time="150">Visible</animation>
 			<animation effect="fade" start="100" end="0" time="200" delay="1500">Hidden</animation>
 			<animation effect="fade" start="100" end="0" time="400" condition="[Player.Paused + System.IdleTime(5) + [!Window.IsActive(videoosd) + !Window.IsActive(fullscreeninfo)]] | [[Window.IsActive(osdvideosettings) | Window.IsActive(osdaudiosettings) | Window.IsActive(osdsubtitlesettings)] + Window.IsTopMost(sliderdialog) | $EXP[embinfodialogactive] | Window.IsActive(1104) | Window.IsActive(plugin-video-netflix-Skip.xml)]">conditional</animation>
@@ -734,23 +754,23 @@
 			</control>
 			
 			<control type="group" id="99">
-				<description></description>
+				<description>I AM DIALOG SEEKBAR too - SEEKBAR CROSS REF - need decision dialog.seekbar/info player paused - vis conditions n behaviour </description>
 				<animation effect="slide" start="0,0" end="0,50" time="250" condition="String.IsEmpty(VideoPlayer.Plot) | Player.ShowInfo">conditional</animation> 
 				<animation effect="fade" start="0" end="100" delay="250" time="100">Visible</animation>
 				<animation effect="fade" start="100" end="0" time="0">Hidden</animation>
 				<visible>![Window.IsActive(videoosd) | Window.Is(videomenu) | Window.IsVisible(sliderdialog) | Window.IsVisible(osdaudiosettings) | Window.IsVisible(osdvideosettings) | Window.IsVisible(VideoBookmarks) | Window.IsVisible(playerprocessinfo) | Window.IsVisible(osdcmssettings) | Window.IsVisible(PVROSDChannels) | Window.IsVisible(pvrchannelguide)]</visible>
-					
-					<include condition="!VideoPlayer.Content(LiveTV)" content="VideoOSD_ProgressSlider">
-						<param name="id" value="99" />
-						<param name="info" value="Player.Progress" />
-						<param name="slider_action" value="seek" />
-					</include>
-					<include condition="VideoPlayer.Content(LiveTV)" content="VideoOSD_ProgressSlider">
-						<param name="id" value="99" />
-						<param name="info" value="PVR.TimeshiftProgressPlayPos" />
-						<param name="slider_action" value="pvr.seek" />
-					</include>
-				</control>
+				
+				<include condition="!VideoPlayer.Content(LiveTV)" content="VideoOSD_ProgressSlider">
+					<param name="id" value="99" />
+					<param name="info" value="Player.SeekBar" />
+					<param name="slider_action" value="seek" />
+				</include>
+				<include condition="VideoPlayer.Content(LiveTV)" content="VideoOSD_ProgressSlider">
+					<param name="id" value="99" />
+					<param name="info" value="PVR.TimeshiftProgressPlayPos" />
+					<param name="slider_action" value="pvr.seek" />
+				</include>
+			</control>
 				
 			<control type="group" id="99">
 				<animation effect="slide" start="0,0" end="0,-310" time="250" condition="Window.IsActive(fullscreeninfo)">conditional</animation>
