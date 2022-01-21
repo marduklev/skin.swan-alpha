@@ -26,253 +26,77 @@ Player.Rewinding32x	Returns true if the player is rewinding at 32x.
 	
 	<defaultcontrol always="true">9000</defaultcontrol>
 	
-	<!-- as Player.DisplayAfterSeek ~ 2.5 sek - <animation effect="fade" start="100" end="0" time="200" delay="2500">WindowClose</animation> -->
 	<visible>Window.IsActive(fullscreenvideo)</visible>
-	
-	<!-- <visible>Player.DisplayAfterSeek + Window.IsActive(fullscreenvideo) + !Window.IsActive(videoosd) + String.IsEmpty(Window(home).Property(ShowOSD_Plot))</visible>
-	<visible>Player.Seeking | Player.SeekEnabled</visible> -->
-	
-	
-	<defaultcontrol always="true">9000</defaultcontrol>
-	
-	
-	<!--
-	get issues with touch cross ref videosd + slider ??
-		hidden back button as resolve-->
-	<!-- 
-	<onload condition="Player.Playing + Player.HasVideo">PlayerControl(play)</onload>
-	<onunload condition="!Player.Playing + Player.HasVideo">PlayerControl(play)</onunload>
-	 -->
-	
-	
+				
 	<controls>
 	
-		<control type="group">
-			<description>native ui ctrls</description>
-			<control type="slider" id="401">
-				<!-- <include content="HiddenObject" /> -->
-				<!-- or unintuitive touch support -->
-				<height>100%</height>
-				<texturesliderbar colordiffuse="none" border="10">buttons/sliderback.png</texturesliderbar>
-				<textureslidernib colordiffuse="none">buttons/slidernib.png</textureslidernib>
-				<textureslidernibfocus colordiffuse="none">buttons/slidernib.png</textureslidernibfocus>
-			</control>
-			<control type="label" id="402">
-				<description>native - but no label ??</description>
-				<textcolor>red</textcolor>
-				<centertop>50%</centertop>
-				<align>left</align>
-				<aligny>center</aligny>
-				<height>100</height>
-				<width>100%</width>
-			</control>
-			
-			<control type="button" id="9000">
-				<onclick>dialog.close(seekbar)</onclick>
-				<include content="HiddenObject" />
-			</control>
+		<control type="button" id="9000">
+			<onclick>dialog.close(seekbar)</onclick>
+			<include content="HiddenObject" />
 		</control>
-		
-		
-		
-		<!-- <control type="group">
-			<description>COMMON</description>
-			<bottom>0</bottom>
-			<height>300</height>
-			<visible>[[Window.IsActive(videoosd) + [!Window.Is(videomenu) | Window.IsVisible(sliderdialog) | Window.IsVisible(osdaudiosettings) | Window.IsVisible(osdvideosettings) | Window.IsVisible(VideoBookmarks) | Window.IsVisible(playerprocessinfo) | Window.IsVisible(osdcmssettings) | Window.IsVisible(PVROSDChannels) | Window.IsVisible(pvrchannelguide)]] | [!Window.IsActive(videoosd) + [[Player.Paused + !Skin.HasSetting(videoplayer_infoonpause)] | !String.IsEmpty(Window(home).Property(ShowOSD_Plot)) | Window.IsActive(fullscreeninfo) | Window.IsActive(videobookmarks)]]]</visible>
-			
-			<animation effect="slide" start="0,0" end="0,-410" time="200" condition="Window.IsVisible(fullscreeninfo)">conditional</animation>
-			<animation effect="slide" start="0,0" end="0,150" time="250" condition="$EXP[osd_video_noinfo]">conditional</animation>
-			
-			<control type="group">
-				<visible>Window.IsActive(videoosd)</visible>
-				
-				
-				<animation effect="slide" start="0,0" end="0,-410" time="200" condition="Window.IsVisible(fullscreeninfo)">conditional</animation>
-				<animation effect="slide" start="0,0" end="0,150" time="250" condition="$EXP[osd_video_noinfo]">conditional</animation>
-				
-				<include condition="!VideoPlayer.Content(LiveTV)" content="VideoOSD_ProgressSlider">
-					<param name="info" value="Player.SeekBar" />
-					<param name="slider_action" value="seek" />
-				</include>
-				<include condition="VideoPlayer.Content(LiveTV)" content="VideoOSD_ProgressSlider">
-					<param name="info" value="PVR.TimeshiftProgressPlayPos" />
-					<param name="slider_action" value="pvr.seek" />
-				</include>
-				
-				<control type="group">
-					<left>350</left>
-					<right>0</right>
-					<bottom>128</bottom>
-					<width>100</width>
-					<height>40</height>
-					<control type="image">
-						<description>get arrow</description>
-						<centertop>43%</centertop>
-						<left>-1</left>
-						<width>3</width>
-						<height>3</height>
-						<texture>colors/white.png</texture>
-					</control>
-					<control type="image">
-						<top>2.5</top>
-						<width>85</width>
-						<height>30</height>
-						<texture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white.png</texture>
-						<bordertexture border="2" colordiffuse="$VAR[color_osdvideo_main]">frames/frame.png</bordertexture>
-						<bordersize>1</bordersize>
-					</control>
-					<control type="textbox">
-						<height>35</height>
-						<left>10</left>
-						<right>10</right>
-						<font>debugtiny</font>
-						<textcolor>$VAR[color_osdvideo_main]</textcolor>
-						<width>100</width>
-						<label>$INFO[Player.SeekStepSize,, [B]|[/B] ]$INFO[Player.SeekTime]</label>			
-					</control>
-					
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),1)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),2)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),3)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),4)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),5)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),6)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),7)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),8)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),9)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),10)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),11)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),12)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),13)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),14)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),15)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),16)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),17)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),18)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),19)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),20)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),21)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),22)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),23)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),24)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),25)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),26)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),27)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),28)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),29)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),30)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),31)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),32)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),33)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),34)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),35)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),36)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),37)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),38)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),39)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),40)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),41)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),42)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),43)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),44)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),45)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),46)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),47)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),48)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),49)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),50)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),51)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),52)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),53)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),54)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),55)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),56)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),57)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),58)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),59)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),60)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),61)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),62)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),63)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),64)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),65)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),66)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),67)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),68)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),69)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),70)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),71)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),72)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),73)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),74)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),75)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),76)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),77)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),78)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),79)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),80)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),81)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),82)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),83)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),84)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),85)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),86)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),87)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),88)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),89)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),90)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),91)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),92)">Conditional</animation>
-					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),93)">Conditional</animation>
-					
-					
-					<animation effect="slide" end="8.22,0" time="0" condition="Integer.IsGreater(Control.GetLabel(6001),94)">Conditional</animation>
-				
-				</control>
-				
-				
-				
-			</control>
-					
-			
-		</control> -->
 		
 		<control type="group">
 			<description>BIG BOLD</description>
-			<!-- <visible>!Window.IsActive(videoosd) + String.IsEmpty(Window(home).Property(ShowOSD_Plot))</visible> -->
-			
 			<visible>[Player.Seeking | Player.DisplayAfterSeek] + Player.SeekEnabled</visible>
 				
 			<control type="image">
-				<visible>!Window.IsActive(videoosd) + String.IsEmpty(Window(home).Property(ShowOSD_Plot))</visible>
 				<texture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white70.png</texture>
-				<animation effect="fade" end="100" time="350">WindowOpen</animation>
-				<animation effect="fade" start="100" end="0" time="350">WindowClose</animation>
 			</control>
 			
 			<control type="grouplist">
 				<orientation>vertical</orientation>
-				<height>190</height>
+				<height>300</height>
 				<centertop>50%</centertop>
-				<itemgap>15</itemgap>
+				<itemgap>2</itemgap>
 					
-				<control type="label">
-					<visible>[!Window.IsActive(videoosd) + String.IsEmpty(Window(home).Property(ShowOSD_Plot))] | [Window.IsActive(videoosd) + !Skin.HasSetting(show_bold_seeklabels)]</visible>
-			
-				
-					<description>$INFO[Control.GetLabel(402)] returns nothing</description>
-					<height>25</height>
-					<textcolor>$VAR[color_osdvideo_main]</textcolor>
-					<label>seek to</label>
-					<font>font_Montserrat_38_extrabold</font>
+				<control type="grouplist">
+					<visible>Player.Forwarding | Player.Rewinding | !String.IsEmpty(Player.SeekOffset) | !String.IsEmpty(Player.SeekStepSize)</visible>
+						
+					<orientation>horizontal</orientation>
+					<height>40</height>
 					<align>center</align>
-					<aligny>center</aligny>
+					<control type="label">
+						<visible>Player.Forwarding | Player.Rewinding | !String.IsEmpty(Player.SeekOffset) | !String.IsEmpty(Player.SeekStepSize)</visible>
+						<height>35</height>
+						<width>auto</width>
+						<textcolor>$VAR[color_osdvideo_main]</textcolor>
+						<label>$VAR[seekbar_info]</label>
+						<font>font_Montserrat_38_extrabold</font>
+						<align>center</align>
+						<aligny>center</aligny>
+					</control>
+					<control type="label">
+						<visible>[Player.Forwarding | Player.Rewinding]</visible>
+						<width>auto</width>
+						<height>39</height>
+						<textcolor>$VAR[color_osdvideo_main]</textcolor>
+						<label>$INFO[Player.PlaySpeed, x [B],[/B]]</label>
+						<font>font_Montserrat_24_extrabold</font>
+						<align>center</align>
+						<aligny>center</aligny>
+					</control>
 				</control>
+				<control type="image">
+					<centerleft>50%</centerleft>
+					<height>2</height>
+					<width>35%</width>
+					<texture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white50.png</texture>
+				</control>
+				<control type="image">
+					<visible>String.IsEmpty(Player.SeekOffset) + String.IsEmpty(Player.SeekStepSize)</visible>
+					<centerright>50%</centerright>
+					<width>100</width>
+					<height>100</height>
+					<bordersize>10</bordersize>
+					<texture colordiffuse="$VAR[color_osdvideo_secondary]">$VAR[seekbar_img]</texture>
+					<bordertexture colordiffuse="$VAR[color_osdvideo_bgpanel]">$VAR[seekbar_img]</bordertexture>
+					<aspectratio align="center" aligny="center">keep</aspectratio>
+					<animation effect="fade" start="100" end="60" condition="true" loop="true" delay="250" time="800">conditional</animation>
+				</control>
+				
 				<control type="label">
 					<visible>[!Window.IsActive(videoosd) + String.IsEmpty(Window(home).Property(ShowOSD_Plot))] | [Window.IsActive(videoosd) + !Skin.HasSetting(show_bold_seeklabels)]</visible>
-			
-					<top>10</top>
+					<top>15</top>
 					<height>50</height>
 					<textcolor>$VAR[color_osdvideo_main]</textcolor>
 					<label>$INFO[Player.SeekTime]</label>
@@ -281,6 +105,7 @@ Player.Rewinding32x	Returns true if the player is rewinding at 32x.
 					<aligny>center</aligny>
 				</control>
 				<control type="progress" id="6767">
+					<top>15</top>
 					<visible>!Window.IsActive(fullscreeninfo) + !Window.IsActive(videobookmarks)</visible>
 					<visible>!Window.IsActive(videoosd)</visible>
 			
@@ -293,27 +118,70 @@ Player.Rewinding32x	Returns true if the player is rewinding at 32x.
 					<width>200</width>
 					<height>34</height>
 				</control>
-				<control type="label">
+				<!-- <control type="label">
+					<left>-5</left>
+					<top>7</top>
 					<visible>[!Window.IsActive(videoosd) + String.IsEmpty(Window(home).Property(ShowOSD_Plot))] | [Window.IsActive(videoosd) + !Skin.HasSetting(show_bold_seeklabels)]</visible>
-			
-					<top>-10</top>
-					<height>25</height>
+					<height>30</height>
 					<animation effect="fade" time="200" end="80" condition="window.isactive(seekbar)">conditional</animation>
 					<textcolor>$VAR[color_osdvideo_main]</textcolor>
 					<label>$INFO[Player.SeekStepSize]</label>
-					<font>Montserrat_ExtraBold_40</font>
+					<font>font_Montserrat_38_extrabold</font>
 					<align>center</align>
 					<aligny>center</aligny>
+				</control> -->
+				<control type="label">
+					<left>-5</left>
+					<top>-35</top>
+					<visible>!String.IsEmpty(Player.SeekOffset) + !String.IsEmpty(Player.SeekStepSize)</visible>
+					<visible>[!Window.IsActive(videoosd) + Player.DisplayAfterSeek] | [Window.IsActive(videoosd) + !Skin.HasSetting(show_bold_seeklabels)]</visible>
+					<height>30</height>
+					<animation effect="fade" time="200" end="80" condition="true">conditional</animation>
+					<textcolor>$VAR[color_osdvideo_bgpanel]</textcolor>
+					<label>$VAR[seekbar_stepsize]</label>
+					<font>font_Montserrat_30_extrabold</font>
+					<align>center</align>
+					<aligny>center</aligny>
+				</control>
+				<control type="image">
+					<visible>false</visible>
+					<centertop>55%</centertop>
+					<centerright>50%</centerright>
+					<width>90</width>
+					<height>90</height>
+					<bordersize>10</bordersize>
+					<texture colordiffuse="$VAR[color_osdvideo_secondary]">$VAR[seekbar_img]</texture>
+					<bordertexture colordiffuse="red">$VAR[seekbar_img]</bordertexture>
+					<aspectrattio align="center" aligny="center">keep</aspectrattio>
 				</control>
 				
 			</control>
 			
 		</control>
+		
+	<control type="group">
+		<description>match osd seekbar</description>
+		<visible>Window.IsVisible(videoosd) | [Player.Paused + !Skin.HasSetting(videoplayer_infoonpause)] | !String.IsEmpty(Window(home).Property(ShowOSD_Plot))</visible>
+		
+		<animation effect="fade" start="0" end="100" time="150">Visible</animation>
+		<animation effect="fade" start="100" end="0" time="200" delay="1500">Hidden</animation>
+		
+		<animation effect="fade" start="100" end="0" condition="Window.isVisible(videoosd)">conditional</animation>
+		
+		<animation effect="slide" start="0,0" end="0,50" time="250" condition="String.IsEmpty(VideoPlayer.Plot) | Player.ShowInfo">conditional</animation> 
+		
+		<include condition="!VideoPlayer.Content(LiveTV)" content="VideoOSD_ProgressSlider">
+			<param name="info" value="Player.SeekBar" />
+			<param name="slider_action" value="seek" />
+		</include>
+		<include condition="VideoPlayer.Content(LiveTV)" content="VideoOSD_ProgressSlider">
+			<param name="info" value="PVR.TimeshiftProgressPlayPos" />
+			<param name="slider_action" value="pvr.seek" />
+		</include>
+	</control>
 	
 	
-	
-			
-	<control type="textbox" id="99">
+	<control type="textbox">
 		<visible>Skin.HasSetting(SwanDebug)</visible>
 		<font>debugtiny</font>
 		<aligny>top</aligny>
@@ -334,6 +202,8 @@ Control.GetLabel(6767) - SEEKBAR PERCENT ~ Player.SeekBar ~ $INFO[Control.GetLab
 $VAR[Player.DisplayAfterSeek]      Player.DisplayAfterSeek      Retruns true for the first 2.5 seconds after a seek.	
 $VAR[Player.Seeking]      Player.Seeking      Returns true if a seek is in progress	
 $VAR[Player.SeekEnabled]      Player.SeekEnabled      Returns true if player can seek
+
+$VAR[ShowOSD_Plot_COND]
 
 </label>
 	</control>
