@@ -1,34 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window type="dialog" id="1193">
 	
-	<!-- skin.hassetting(stillwatching_window) will be automatically set when custom action will be choosen -->
-	<!--  if any button pressed, it'll auto close ! and cancel alarm -->
+	<visible>Skin.String(stillwatching_idle_action)</visible>
+	<visible>Window.IsActive(fullscreenvideo) + System.IdleTime(1) + Player.Paused</visible>
+	
+	<onload condition="String.IsEqual(Skin.String(stillwatching_idle_action),stop)">AlarmClock(stillwatching_timer,PlayerControl(stop),00:30,silent)</onload>
+	<onload condition="String.IsEqual(Skin.String(stillwatching_idle_action),quit)">AlarmClock(stillwatching_timer,Quit(),00:30,silent)</onload>
+	<onload condition="String.IsEqual(Skin.String(stillwatching_idle_action),hibernate)">AlarmClock(stillwatching_timer,Hibernate(),00:30,silent)</onload>
+	<onload condition="String.IsEqual(Skin.String(stillwatching_idle_action),powerdown)">AlarmClock(stillwatching_timer,Powerdown(),00:30,silent)</onload>
+		
+		<onload condition="String.IsEqual(Skin.String(stillwatching_idle_action),hibernate) | String.IsEqual(Skin.String(stillwatching_idle_action),powerdown)">AlarmClock(temp_close,Dialog.Close(all),00:30,silent)</onload>
 	
 	
-	<!-- 
-	enable when finished window
+	<onunload>CancelAlarm(stillwatching_timer,silent)</onunload>
+	<onunload condition="System.HasAlarm(temp_close)">CancelAlarm(temp_close,silent)</onunload>
 	
-	<visible>skin.hassetting(stillwatching_window)</visible>
-	<visible>Window.IsActive(fullscreenvideo) + System.IdleTime(600) + Player.Paused</visible>
-
-	-->		
-				<!-- use play for adjust and lookup del when finished -->
-				
-				<visible>Window.IsActive(fullscreenvideo) + System.IdleTime(1) + Player.Paused</visible>
-			<!-- <onunload condition="true">PlayerControl(Play)</onunload>	 -->
-	
-	<!-- <onload>AlarmClock(stillwatching_timer,ActivateWindow(smartplaylisteditor),00:30,silent)</onload> -->
-	<onload>AlarmClock(stillwatching_timer,ActivateWindow(shutdown),00:05)</onload>
-	<onunload condition="true">PlayerControl(Stop)</onunload>
-	
-
-
-	<!-- 
-		System.HasAlarm(alarm) 	Returns true if the system has the ?alarm? alarm set. 	
-		System.AlarmLessOrEqual(alarmname,seconds) 	Returns true if the alarm with ?alarmname? has less or equal to ?seconds? left. Standard use would be system.alarmlessorequal(shutdowntimer,119), which would return true when the shutdowntimer has less then 2 minutes left. 
-	 -->
-	
-	<onunload>CancelAlarm(stillwatching_timer)</onunload>
 	<animation effect="fade" start="0" end="100" time="325">WindowOpen</animation>
 	<animation effect="fade" start="100" end="0" time="325">WindowClose</animation>
 	<controls>
