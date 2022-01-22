@@ -1,22 +1,345 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window type="dialog" id="1193">
-	<visible>Window.IsActive(fullscreenvideo) + System.IdleTime(1) + Player.Paused</visible>
-	<visible>false</visible>
 	
-	<defaultcontrol always="true">3012</defaultcontrol>
-    <onload>SetFocus(3012)</onload>
+	<!-- skin.hassetting(stillwatching_window) will be automatically set when custom action will be choosen -->
+	<!--  if any button pressed, it'll auto close ! and cancel alarm -->
 	
+	
+	<!-- 
+	enable when finished window
+	
+	<visible>skin.hassetting(stillwatching_window)</visible>
+	<visible>Window.IsActive(fullscreenvideo) + System.IdleTime(600) + Player.Paused</visible>
+
+	-->		
+				<!-- use play for adjust and lookup del when finished -->
+				
+				<visible>Window.IsActive(fullscreenvideo) + System.IdleTime(1) + Player.Paused</visible>
+			<!-- <onunload condition="true">PlayerControl(Play)</onunload>	 -->
+	
+	<!-- <onload>AlarmClock(stillwatching_timer,ActivateWindow(smartplaylisteditor),00:30,silent)</onload> -->
+	<onload>AlarmClock(stillwatching_timer,ActivateWindow(shutdown),00:05)</onload>
+	<onunload condition="true">PlayerControl(Stop)</onunload>
+	
+
+
+	<!-- 
+		System.HasAlarm(alarm) 	Returns true if the system has the ?alarm? alarm set. 	
+		System.AlarmLessOrEqual(alarmname,seconds) 	Returns true if the alarm with ?alarmname? has less or equal to ?seconds? left. Standard use would be system.alarmlessorequal(shutdowntimer,119), which would return true when the shutdowntimer has less then 2 minutes left. 
+	 -->
+	
+	<onunload>CancelAlarm(stillwatching_timer)</onunload>
 	<animation effect="fade" start="0" end="100" time="325">WindowOpen</animation>
 	<animation effect="fade" start="100" end="0" time="325">WindowClose</animation>
-	 
-	
-	
-	
 	<controls>
 		
 		<control type="group">
-			<include>upnext_stillwatching_common</include>
+			<control type="image">
+				<texture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white70.png</texture>
+			</control>
+			<control type="image">
+				<centertop>50%</centertop>
+				<width>100%</width>
+				<height>550</height>
+				<!-- <bordertexture colordiffuse="$VAR[color_playerpopups_background]">diffuse/gradientcenter.png</bordertexture> -->
+				<texture colordiffuse="$VAR[color_playerpopups_background]">diffuse/gradientcenter.png</texture>
+			</control>
+			<control type="group">
+				<centertop>50%</centertop>
+				<width>100%</width>
+				<height>400</height>
+				
+				<control type="image">
+					<left>120</left>
+					<width>420</width>
+					<height>400</height>
+					<aspectratio>keep</aspectratio>
+					<texture>$VAR[PlayerClearlogo]</texture>
+				</control>
+				
+				<control type="textbox">
+					<visible>String.IsEmpty(Player.Art(albumartist.clearlogo)) + !String.IsEmpty(Player.Art(artist.clearlogo)) + String.IsEmpty(Player.Art(tvshow.clearlogo)) + String.IsEmpty(Player.Art(clearlogo))</visible>
+					<left>20</left>
+					<width>600</width>
+					<height>400</height>
+					<align>center</align>
+					<textcolor>$VAR[color_playerpopups_text_main]</textcolor>
+					<font>Montserrat_ExtraBold_40</font>
+					<label>[B]$INFO[Player.Title][/B]</label>
+				</control>
+				<control type="image">
+					<visible>!String.IsEmpty(Player.Art(fanart)) + !String.IsEmpty(Player.Icon)</visible>
+					<top>55</top>
+					<centerleft>50%</centerleft>
+					<width>534</width>
+					<height>300</height>
+					<animation effect="fade" end="10" condition="true">conditional</animation>
+					<texture diffuse="diffuse/diffusetranspedges.png" fallback="$INFO[Player.Icon]">$INFO[Player.Art(fanart)]</texture>
+					<aspectratio scalediffuse="false" align="center" aligny="center">scale</aspectratio>
+				</control>
+				
+				<control type="grouplist">
+					<orientation>vetical</orientation>
+					<top>300</top>
+					<width>1920</width>
+					<height>70</height>
+					<align>center</align>
+					<control type="label">
+						<height>35</height>
+						<width>auto</width>
+						<textcolor>$VAR[color_playerpopups_accent]</textcolor>
+						<label>$INFO[System.Time]</label>
+						<!-- <label>$INFO[System.Time,$LOCALIZE[142] : ,  •  ]$INFO[Player.Finishtime,$LOCALIZE[19127]: [B],[/B]]</label> -->
+						<font>font_Montserrat_24_extrabold</font>
+						<align>center</align>
+						<aligny>center</aligny>
+					</control>
+					<control type="grouplist">
+						<orientation>horizontal</orientation>
+						<height>25</height>
+						<width>1920</width>
+						<align>center</align>
+						<control type="label">
+							<visible>Integer.IsGreater(Player.TimeRemaining(hh),00)</visible>
+							<top>4</top>
+							<width>auto</width>
+							<textcolor>$VAR[color_osdvideo_main]</textcolor>
+							<label>Ends in :  </label>
+							<font>font_Montserrat_semibold_18</font> 
+							<align>center</align>
+							<aligny>center</aligny>
+						</control>
+						<control type="label">
+							<visible>Integer.IsGreater(Player.TimeRemaining(hh),00)</visible>
+							<width>auto</width>
+							<textcolor>$VAR[color_osdvideo_main]</textcolor>
+							<label>$INFO[Player.TimeRemaining(hh)]</label>
+							<font>font_Montserrat_24_extrabold</font>
+							<align>center</align>
+							<aligny>center</aligny>
+						</control>
+						<control type="label">
+							<visible>Integer.IsGreater(Player.TimeRemaining(hh),00)</visible>
+							<top>4</top>
+							<width>auto</width>
+							<textcolor>$VAR[color_osdvideo_main]</textcolor>
+							<label> h  </label>
+							<font>font_Montserrat_semibold_18</font> 
+							<align>center</align>
+							<aligny>center</aligny>
+						</control>
+						<control type="label">
+							<visible>Integer.IsGreater(Player.TimeRemaining(hh),00)</visible>
+							<width>auto</width>
+							<textcolor>$VAR[color_osdvideo_main]</textcolor>
+							<label>$INFO[Player.TimeRemaining(mm)]</label>
+							<font>font_Montserrat_24_extrabold</font>
+							<align>center</align>
+							<aligny>center</aligny>
+						</control>
+						<control type="label">
+							<visible>Integer.IsGreater(Player.TimeRemaining(hh),00)</visible>
+							<top>4</top>
+							<width>auto</width>
+							<textcolor>$VAR[color_osdvideo_main]</textcolor>
+							<label> minutes   </label>
+							<font>font_Montserrat_semibold_18</font>
+							<align>center</align>
+							<aligny>center</aligny>
+						</control>
+						<control type="label">
+							<visible>Integer.IsEqual(Player.TimeRemaining(hh),00)</visible>
+							<top>4</top>
+							<width>auto</width>
+							<textcolor>$VAR[color_osdvideo_main]</textcolor>
+							<label>Ends in :  </label>
+							<font>font_Montserrat_semibold_18</font> 
+							<align>center</align>
+							<aligny>center</aligny>
+						</control>
+						<control type="label">
+							<visible>Integer.IsEqual(Player.TimeRemaining(hh),00)</visible>
+							<width>auto</width>
+							<textcolor>$VAR[color_osdvideo_main]</textcolor>
+							<label>$INFO[Player.TimeRemaining(mm)]</label>
+							<font>font_Montserrat_24_extrabold</font>
+							<align>center</align>
+							<aligny>center</aligny>
+						</control>
+						<control type="label">
+							<visible>Integer.IsEqual(Player.TimeRemaining(hh),00)</visible>
+							<top>4</top>
+							<width>auto</width>
+							<textcolor>$VAR[color_osdvideo_main]</textcolor>
+							<label> minutes</label>
+							<font>font_Montserrat_semibold_18</font>
+							<align>center</align>
+							<aligny>center</aligny>
+						</control>
+					</control>
+				</control>
+				
+				 
+				<control type="image">
+					<top>75</top>
+					<right>50</right>
+					<right>80</right>
+					<width>445</width>
+					<height>250</height>
+					<texture diffuse="diffuse/diffusetranspedges.png">$INFO[Player.Icon]</texture>
+					<aspectratio scalediffuse="false" align="right" aligny="center">scale</aspectratio>
+				</control>
+				<control type="label">
+					<description>still there</description>
+					<top>85</top>
+					<height>35</height>
+					<aligny>top</aligny>
+					<align>center</align>
+					<font>font30_title</font>
+					<textcolor>$VAR[color_playerpopups_text_main]</textcolor>
+					<label>[CAPITALIZE][B]$ADDON[service.upnext 30024][/B][/CAPITALIZE]</label>
+				</control>
+				<control type="grouplist">
+					<animation effect="fade" end="30" condition="true">conditional</animation>
+					<orientation>horizontal</orientation>
+					<top>260</top>
+					<left>30</left>
+					<itemgap>10</itemgap>
+					<height>50</height>
+					<width>100%</width>
+					<align>center</align>
+					
+					<control type="label">
+						<visible>VideoPlayer.Content(movies)</visible>
+						<top>10</top>
+						<width>auto</width>
+						<height>25</height>
+						<aligny>center</aligny>
+						<font>debugtiny</font>
+						<textcolor>$VAR[color_playerpopups_text_main]</textcolor>
+						<label>$INFO[VideoPlayer.Title,,  ]</label>
+					</control>
+					<control type="label">
+						<visible>VideoPlayer.Content(episodes)</visible>
+						<top>10</top>
+						<width>auto</width>
+						<height>25</height>
+						<aligny>center</aligny>
+						<font>debugtiny</font>
+						<textcolor>$VAR[color_playerpopups_text_main]</textcolor>
+						<label>[COLOR $VAR[color_playerpopups_accent]]$LOCALIZE[20373]$INFO[VideoPlayer.Season, ,   ][/COLOR][B]|[/B]   [COLOR $VAR[color_playerpopups_accent]]$LOCALIZE[20359]$INFO[VideoPlayer.Title, ,    ][/COLOR]</label>
+					</control>
+					<control type="button">
+						<top>10</top>
+						<visible>!String.IsEmpty(VideoPlayer.VideoResolution)</visible>
+						<label>$INFO[VideoPlayer.VideoResolution]</label>
+						<width>auto</width>
+						<height>27</height>
+						<align>center</align>
+						<aligny>top</aligny>
+						<font>font_Montserrat_18_extrabold</font>
+						<textcolor>$VAR[color_playerpopups_text_main]</textcolor>
+						<textoffsetx>10</textoffsetx>
+						<disabledcolor>$VAR[color_playerpopups_text_main]</disabledcolor>
+						<texturefocus border="2" colordiffuse="$VAR[color_playerpopups_text_main]">frames/frame.png</texturefocus>
+						<texturenofocus border="2" colordiffuse="$VAR[color_playerpopups_text_main]">frames/frame.png</texturenofocus>
+						<enable>false</enable>
+					</control>
+					<control type="label">
+						<top>10</top>
+						<width>100</width>
+						<height>25</height>
+						<aligny>center</aligny>
+						<align>center</align>
+						<font>font_Montserrat_18_extrabold</font>
+						<textcolor>$VAR[color_playerpopups_text_main]</textcolor>
+						<label>$INFO[VideoPlayer.mpaa]</label>
+						<visible>!String.IsEmpty(VideoPlayer.mpaa)</visible>
+					</control>
+					<control type="button">
+						<top>10</top>
+						<label>$INFO[VideoPlayer.year]</label>
+						<visible>!String.IsEmpty(VideoPlayer.year)</visible>
+						<width>auto</width>
+						<height>25</height>
+						<align>center</align>
+						<aligny>center</aligny>
+						<font>debugtiny</font>
+						<textcolor>$VAR[color_playerpopups_text_main]</textcolor>
+						<textoffsetx>5</textoffsetx>
+						<disabledcolor>$VAR[color_playerpopups_text_main]</disabledcolor>
+						<texturefocus border="2" colordiffuse="$VAR[color_playerpopups_text_main]">frames/frame.png</texturefocus>
+						<texturenofocus border="2" colordiffuse="$VAR[color_playerpopups_text_main]">frames/frame.png</texturenofocus>
+						<enable>false</enable>
+					</control>
+					<control type="image">
+						<left>50</left>
+						<height>50</height>
+						<aspectratio aligny="center" align="left">keep</aspectratio>
+						<texture colordiffuse="$VAR[color_playerpopups_text_main]" fallback="$INFO[VideoPlayer.studio,resource://resource.images.studios.white/,.png]">$INFO[VideoPlayer.studio,resource://resource.images.studios.coloured/,.png]</texture>
+						<visible>!String.IsEmpty(VideoPlayer.studio)</visible>
+					</control>
+				</control>
+				
+			</control>
+			<control type="button">
+				<animation type="conditional" condition="true" loop="true">
+					<effect type="fade" start="100" end="20" time="1000" delay="1000" />
+					<effect type="fade" start="20" end="100" time="1000" />
+				</animation>
+				<centertop>50%</centertop>
+				<centerleft>50%</centerleft>
+				<label>$LOCALIZE[107] , $ADDON[service.upnext 30010]</label>
+				<height>100</height>
+				<width>630</width>
+				<font>Bold30</font>
+				<align>center</align>
+				<textcolor>$VAR[color_playerpopups_text_main]</textcolor>
+				<textoffsetx>90</textoffsetx>
+				<focusedcolor>$VAR[color_playerpopups_text_main]</focusedcolor>
+				<texturefocus align="center" colordiffuse="$VAR[color_playerpopups_accent]" border="2">frames/frame.png</texturefocus>
+				<texturenofocus align="center" colordiffuse="$VAR[color_playerpopups_accent]" border="2">frames/frame.png</texturenofocus>
+				<onback />
+				<onclick />
+			</control>
+			<!-- <control type="image">
+				<centertop>55%</centertop>
+				<centerleft>50%</centerleft>
+				<height>8</height>
+				<width>630</width>
+				<reveal>true</reveal>
+				<right>200</right>
+				<texture colordiffuse="$VAR[color_playerpopups_background]">colors/white.png</texture>
+			</control> -->
+			<control type="progress">
+				<centertop>55%</centertop>
+				<centerleft>50%</centerleft>
+				<height>6</height>
+				<width>631</width>
+				<reveal>true</reveal>
+				<right>200</right>
+				<midtexture colordiffuse="$VAR[color_playerpopups_accent]">colors/white.png</midtexture>
+				<texturebg colordiffuse="$VAR[color_playerpopups_background]">colors/white.png</texturebg>
+				<info>Player.Progress</info>
+			</control>
+			<control type="image">
+				<centertop>50%</centertop>
+				<centerleft>37%</centerleft>
+				<width>80</width>
+				<height>80</height>
+				<aspectratio align="top" aligny="left">keep</aspectratio>
+				<texture colordiffuse="$VAR[color_playerpopups_accent]">$VAR[nextupbutton_TimeRemaining]</texture>
+			</control>
+			<control type="image">
+				<animation effect="zoom" start="100,100" center="auto" end="115,115" delay="100" time="650" pulse="true" condition="true">Conditional</animation>
+				<centertop>50%</centertop>
+				<centerleft>37%</centerleft>
+				<width>80</width>
+				<height>80</height>
+				<aspectratio align="top" aligny="left">keep</aspectratio>
+				<bordersize>10</bordersize>
+				<texture colordiffuse="$VAR[color_playerpopups_text_main]">nextupicons/00.png</texture>
+			</control>
 		</control>
-	
 	</controls>
 </window>
