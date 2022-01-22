@@ -44,17 +44,17 @@ ID 		Type 	Description
 		
 		
 		<control type="group">
-			
-			
 			<description>BIG BOLD</description>
+			
+			<visible>!Skin.HasSetting(seek_info_disabled)</visible>
+			<visible>!Window.IsActive(videoosd) | [!Skin.HasSetting(seek_osd_disabled) + Window.IsActive(videoosd)]</visible>
+			
 			<visible>[Player.Seeking | Player.DisplayAfterSeek] + Player.SeekEnabled</visible>
 			<visible>!Window.IsActive(fullscreeninfo) + !Window.IsActive(videobookmarks)</visible>
-			<visible>!Window.IsActive(videoosd) | [!Skin.HasSetting(Hide_big_Seek_OSD) + Window.IsActive(videoosd)]</visible>
-			<visible>!Skin.HasSetting(seek_info_disabled)</visible>
 				
-			<animation effect="zoom" start="100" end="60" time="250" center="50%,130%" condition="Skin.HasSetting(seek_info_small)">Conditional</animation>
+			<animation effect="zoom" start="100" end="60" time="250" center="50%,140%" condition="Skin.HasSetting(seek_info_small) + !Window.IsActive(videoosd)">Conditional</animation>
 			<control type="image">
-				<visible>Skin.HasSetting(seek_info_small)</visible>
+				<visible>Skin.HasSetting(seek_info_small) + !Window.IsActive(videoosd)</visible>
 				<description>dimmed bg</description>
 				<texture colordiffuse="$VAR[color_osdvideo_bgpanel]" diffuse="colors/white70.png">artworkdiffuse/circle.png</texture>
 				<animation effect="slide" start="0,0" end="0,350" time="0" condition="true">Conditional</animation>
@@ -63,12 +63,11 @@ ID 		Type 	Description
 			
 			
 			<control type="image">
-				<visible>!Skin.HasSetting(seek_info_small)</visible>
+				<visible>!Skin.HasSetting(seek_info_small) | [Skin.HasSetting(seek_info_small) + Window.IsActive(videoosd)]</visible>
 				<description>dimmed bg</description>
 				<texture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white70.png</texture>
 				<animation effect="fade" start="100" end="70" time="0" condition="Window.IsActive(videoosd)">conditional</animation>
 			</control>
-			
 			<control type="grouplist">
 				<orientation>vertical</orientation>
 				<height>auto</height>
