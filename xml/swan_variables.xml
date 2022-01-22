@@ -23,21 +23,25 @@
 	<variable name="seekbar_img">
 		<value condition="Player.Forwarding">buttons/osd/fforward_fo.png</value>
 		<value condition="Player.Rewinding">buttons/osd/rewind_fo.png</value>
-		<value condition="Player.Paused">buttons/osd/pause_fo.png</value>
 		<value condition="Player.Playing">buttons/osd/play_fo.png</value>
+		<value condition="Player.Paused">buttons/osd/pause_fo.png</value>
 	</variable>
 	<variable name="seekbar_info">
-		<value condition="Player.Forwarding">[B]FORWARDING[/B]</value>
-		<value condition="Player.Rewinding">[B]REWINDING[/B]</value>
-		<!-- <value condition="Player.Paused">[B]PAUSED[/B]</value> -->
-		<value>seeking to</value>
+		<value condition="Player.Forwarding">[B][UPPERCASE]$LOCALIZE[31601][/UPPERCASE][/B]</value>
+		<value condition="Player.Rewinding">[B][UPPERCASE]$LOCALIZE[31600][/UPPERCASE][/B]</value>
+		<value condition="Player.Seeking">[B][UPPERCASE]$LOCALIZE[773][/UPPERCASE][/B]</value>
+		<!-- optional ? -->
+		<value condition="Player.Playing + [!Window.IsActive(videoosd) | [Window.IsActive(videoosd) + String.IsEmpty(Player.SeekOffset)]]">[B][UPPERCASE]$LOCALIZE[208][/UPPERCASE][/B]</value>
+		<value condition="Player.Paused + [!Window.IsActive(videoosd) | [Window.IsActive(videoosd) + String.IsEmpty(Player.SeekOffset)]]">[B][UPPERCASE]$LOCALIZE[112][/UPPERCASE][/B]</value>
+		
+		<!-- Player.Seeking wont work if osd active ,even if seeking ,dislike hidden 'stepforward' ..-->		
+		<value condition="Window.IsActive(videoosd)">[B][UPPERCASE]$LOCALIZE[773][/UPPERCASE][/B]</value>
 	</variable>
 	
 	<!-- Player.SeekStepSize got a short visibility therefore extend time -->
 	<variable name="seekbar_stepsize">
 		<value condition="!String.IsEmpty(Player.SeekStepSize)">$INFO[Player.SeekStepSize]</value>
-		<value condition="!String.IsEmpty(Player.SeekOffset)">$INFO[Player.SeekOffset]</value>
-		<value></value>
+		<value condition="!String.IsEmpty(Player.SeekOffset) + Player.DisplayAfterSeek">$INFO[Player.SeekOffset]</value>
 	</variable>
 	
 	

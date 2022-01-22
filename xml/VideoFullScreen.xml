@@ -20,21 +20,18 @@ ID 	Type 	Description
 	<onload condition="!String.IsEmpty(Window(home).Property(forceopen))">ClearProperty(forceopen,home)</onload>
 	<controls>
 	
-	<control type="image" id="99">
-		<description>cond dim screen,may add option to dimm on idle time pause  - ' | [Player.Paused + System.IdleTime(60)] ' dialog(videotimeseek|fullscreenlivetvinput)</description>
-		<visible>[Player.Caching | !String.IsEmpty(PVR.ChannelNumberInput) | !String.IsEmpty(Player.SeekNumeric)]</visible>
-		<animation effect="fade" end="100" time="200">WindowOpen</animation>
-		<animation effect="fade" start="100" end="0" time="200">WindowClose</animation>
-		<animation effect="fade" end="100" time="200">Visible</animation>
-		<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
-		<texture colordiffuse="$VAR[color_osdvideo_dimmedbg]">colors/white70.png</texture>
-	</control>
+	
 	
 	<control type="group" id="1">
 		<description> busy spinner Hide Optional</description>
 		<visible>!Skin.HasSetting(HideBusyOSD) + [Player.Caching + Integer.IsGreater(Player.CacheLevel,0)] + !Window.IsVisible(busydialog)</visible>
 		<animation effect="fade" delay="300" time="200">Visible</animation>
 		<animation effect="fade" delay="200" time="150">Hidden</animation>
+		<control type="image" id="1">
+			<animation effect="fade" end="100" time="200">Visible</animation>
+			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
+			<texture colordiffuse="$VAR[color_osdvideo_dimmedbg]">colors/white70.png</texture>
+		</control>
 		<control type="image" id="1">
 			<centerleft>50%</centerleft>
 			<centertop>50%</centertop>
@@ -56,18 +53,6 @@ ID 	Type 	Description
 		</control>
 	</control>
 	
-	<control type="label" id="99">	
-		<description>numeric Input</description>
-		<top>0</top>
-		<bottom>0</bottom>
-		<left>0</left>
-		<right>0</right>
-		<font>font_Montserrat_38_extrabold</font>
-		<label>$VAR[Fullscreen_Numeric_Input]</label>
-		<align>center</align>
-		<aligny>center</aligny>
-	</control>
-
 	<control type="group" id="0">
 		<description>native gui infos</description>
 		<left>0</left>
@@ -115,6 +100,11 @@ ID 	Type 	Description
 		<textcolor>red</textcolor>
 		<label>System.BuildVersion:     $INFO[System.BuildVersion,[B],[/B]]
 System.BuildDate:     $INFO[System.BuildDate]
+
+$INFO[Control.GetLabel(401)]
+$INFO[Control.GetLabel(402)]
+$INFO[Control.GetLabel(601)]
+$INFO[Control.GetLabel(402)]
 
 $LOCALIZE[31030] :     $INFO[system.memory(used)] [B]/[/B] $INFO[system.memory(total)]       $INFO[system.memory(used.percent)]
 $LOCALIZE[13271]      $INFO[System.CPUUsage]

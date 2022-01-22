@@ -10,25 +10,36 @@
 	<controls>
 		
 		<control type="group">
+			<!-- time for settings expressions
+				<animation effect="fade" start="100" end="0" time="250" condition="Player.Seeking  | Player.DisplayAfterSeek">conditional</animation>
+				seek big label - fade
+			-->
 			
 			<bottom>0</bottom>
 			<height>300</height>
 			
-			<visible>![Window.Is(videomenu) | Window.IsVisible(sliderdialog) | Window.IsVisible(osdaudiosettings) | Window.IsVisible(osdvideosettings) | Window.IsVisible(VideoBookmarks) | Window.IsVisible(playerprocessinfo) | Window.IsVisible(osdcmssettings) | Window.IsVisible(PVROSDChannels) | Window.IsVisible(pvrchannelguide)]</visible>
+			<visible>![Window.Is(videomenu) | Window.IsVisible(sliderdialog) | Window.IsVisible(osdaudiosettings) | Window.IsVisible(osdvideosettings) | Window.IsVisible(playerprocessinfo) | Window.IsVisible(osdcmssettings) | Window.IsVisible(PVROSDChannels) | Window.IsVisible(pvrchannelguide)]</visible>
 			
 			<control type="group">
 				
-				<description>top progress n seek bar focusable</description>
+				<description>top progress n seek bar focusable - as i dont like workaround hidden button and indicate focus of slider, else i could move to dialogseekbar.xml</description>
 				
 				<description>Returns true if player can seek </description>
-				<animation effect="slide" start="0,0" end="0,-410" time="200" condition="Window.IsVisible(fullscreeninfo)">conditional</animation>
 				<animation effect="slide" start="0,0" end="0,150" time="250" condition="$EXP[osd_video_noinfo]">conditional</animation>
 				
-				<include condition="!VideoPlayer.Content(LiveTV)" content="VideoOSD_ProgressSlider">
+				<!-- created special case , which need to be resolved
+                    1 - fullscreeninfo call own 'VideoOSD_ProgressSlider' via dialogseekbar, as OSD by default is noot active - but hover can activate osd without closing fullscreeninfo
+                    2 - dialogseekbar - call  VideoOSD_ProgressSlider - and dimm if 'videoosd' is active
+				-->
+
+				<include condition="!VideoPlayer.Content(LiveTV) + !Window.IsVisible(fullscreeninfo)" content="VideoOSD_ProgressSlider">
 					<param name="info" value="Player.Progress" />
 					<param name="slider_action" value="seek" />
+					
+					<param name="progress_id" value="602" />
+					<param name="slider_id" value="601" />
 				</include>
-				<include condition="VideoPlayer.Content(LiveTV)" content="VideoOSD_ProgressSlider">
+				<include condition="VideoPlayer.Content(LiveTV) + !Window.IsVisible(fullscreeninfo)" content="VideoOSD_ProgressSlider">
 					<param name="info" value="PVR.TimeshiftProgressPlayPos" />
 					<param name="slider_action" value="pvr.seek" />
 				</include>
@@ -39,6 +50,7 @@
 			<control type="group">
 				<description>VideoOSD_PlayerControls</description>
 				<animation effect="slide" start="0,0" end="0,-310" time="0" condition="Window.IsVisible(fullscreeninfo)">conditional</animation>
+				<animation effect="fade" start="100" end="0" time="0" condition="Window.IsVisible(videobookmarks)">conditional</animation>
 			
 				<bottom>-100</bottom>
 				<height>100</height>
@@ -55,7 +67,7 @@
 					<left>0</left>
 					
 					<itemgap>25</itemgap>
-					<onup>401</onup>
+					<onup>601</onup>
 					
 					<ondown condition="!VideoPlayer.Content(LiveTV) + !Skin.HasSetting(videoosd_ondown_videobookmarks)">Dialog.Close(videoosd,true)</ondown>
 					<ondown condition="!VideoPlayer.Content(LiveTV) + !Skin.HasSetting(videoosd_ondown_videobookmarks)">ActivateWindow(fullscreeninfo)</ondown>
@@ -76,6 +88,7 @@
 						<onclick>PlayerControl(Rewind)</onclick>
 						<visible>[Player.SeekEnabled + !VideoPlayer.Content(livetv)] + !Player.Paused</visible>
 					</control>
+					
 					<control type="togglebutton" id="6103">
 						<include content="OSDButton">
 							<param name="texture" value="play"/>
@@ -85,6 +98,18 @@
 						<usealttexture>!Player.Paused</usealttexture>
 						<onclick>PlayerControl(play)</onclick>
 					</control>
+					
+					<control type="button" id="6304">
+						<visible>player.paused</visible>
+						<include>Animation_Item_Focus</include>
+						<texturefocus colordiffuse="$VAR[color_osdvideo_button_fo]">icons/frameadvance.png</texturefocus>
+						<texturenofocus colordiffuse="$VAR[color_osdvideo_button_nf]">icons/frameadvance.png</texturenofocus>
+						<top>13</top>
+						<width>35</width>
+						<height>35</height>
+						<onclick>PlayerControl(FrameAdvance(1))</onclick>
+					</control>
+					
 					<control type="button" id="6104">
 						<include content="OSDButton">
 							<param name="texture" value="stop"/>
@@ -258,6 +283,22 @@
 						<visible>System.HasCMS</visible>
 						<visible>!VideoPlayer.Content(livetv)</visible>
 					</control>
+					
+					<control type="button" id="6156">
+						<description>need filenamenoextension</description>
+						<!-- <visible>String.IsEmpty(Player.Art(fanart)) + movie,episode,musicvideo</visible> -->
+						<visible>false</visible>
+						<include>Animation_Item_Focus</include>
+						<texturefocus colordiffuse="$VAR[color_osdvideo_button_fo]">icons/screenshot.png</texturefocus>
+						<texturenofocus colordiffuse="$VAR[color_osdvideo_button_nf]">icons/screenshot.png</texturenofocus>
+						<left>25</left>
+						<top>13</top>
+						<width>35</width>
+						<height>35</height>
+						<!-- <onclick condition="String.IsEmpty(VideoPlayer.Year)">$INFO[Player.Folderpath]$INFO[VideoPlayer.Title]$INFO[VideoPlayer.Year, ,.png]</onclick> -->
+						<!-- <onclick condition="">$INFO[Player.Folderpath]$INFO[VideoPlayer.Title]$INFO[VideoPlayer.Year, ,.png]</onclick> -->
+						<onclick>TakeScreenshot($INFO[Player.Folderpath]$INFO[Player.FileName]-fanart.png)</onclick>
+					</control>
 				</control>
 								
 				<!--
@@ -319,5 +360,42 @@
 				
 			</control>
 		</control>
+		<control type="textbox">
+		<visible>Skin.HasSetting(SwanDebug)</visible>
+		<font>debugtiny</font>
+		<aligny>top</aligny>
+		<align>left</align>
+		<top>110</top>
+		<right>15</right>
+		<textcolor>white</textcolor>
+		<label>[B]visibility = [COLOR none]seekbar = cyan, [/COLOR]osd = white[/B][CR]
+$INFO[Player.SeekTime]        Player.SeekTime            Time to which the user is seeking
+$INFO[Player.SeekBar]        Player.SeekBar            Time to which the user is seeking as a percentage (for use in slider controls)
+$INFO[Player.SeekOffset]        Player.SeekOffset            Indicates the seek offset after a seek press (eg user presses BigStepForward, player.seekoffset returns +10:00)
+$INFO[Player.SeekOffset(hh:mm:ss)]        Player.SeekOffset(format)            Shows hours (hh), minutes (mm) or seconds (ss). Also supported: (hh:mm), (mm:ss), (hh:mm:ss), (hh:mm:ss).
+$INFO[Player.SeekStepSize]        Player.SeekStepSize                Displays the seek step size. (v15 addition)
+
+
+weird
+Progress 601    $INFO[Control.GetLabel(601)]
+SEEKBAR 602     $INFO[Control.GetLabel(602)]
+
+Progress 401    $INFO[Control.GetLabel(401)]
+SEEKBAR 402     $INFO[Control.GetLabel(402)]
+
+Progress 501    $INFO[Control.GetLabel(501)]
+SEEKBAR 502     $INFO[Control.GetLabel(502)]
+
+$VAR[Player.DisplayAfterSeek]      Player.DisplayAfterSeek      Retruns true for the first 2.5 seconds after a seek.	
+$VAR[Player.Seeking]      Player.Seeking      Returns true if a seek is in progress	
+$VAR[Player.SeekEnabled]      Player.SeekEnabled      Returns true if player can seek
+
+[COLOR white]$VAR[seekbar_stepsize, seekbar_stepsize: ,][/COLOR]
+[COLOR cyan]$VAR[seekbar_stepsize, seekbar_stepsize: ,][/COLOR]
+
+$VAR[ShowOSD_Plot_COND]
+
+</label>
+	</control>
 	</controls>
 </window>
