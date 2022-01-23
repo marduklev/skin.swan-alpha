@@ -44,15 +44,15 @@ ID 		Type 	Description
 			
 			<control type="group">
 				<description>BIG BOLD</description>
-				
-				<!-- 
-				when backported, else just working if > 19.*?
-				<visible>Player.SeekEnabled + !Skin.HasSetting(seek_info_disabled) + !Window.IsActive(fullscreeninfo) + !Window.IsActive(videobookmarks) + [Player.Seeking | Player.DisplayAfterSeek]</visible> -->
-				<visible>Player.SeekEnabled + !Skin.HasSetting(seek_info_disabled) + !Window.IsActive(fullscreeninfo) + !Window.IsActive(videobookmarks) + Player.Seeking</visible>
-				
-				<visible>[Window.IsActive(videoosd) + !Skin.HasSetting(seek_osd_disabled)] | !Window.IsActive(videoosd)</visible>
-				<!-- leia - i am visible always if paused , because of bool player.displayafterseek is always true if paused,  + !string.startswith(System.BuildVersion,19.) -->
-					<animation effect="fade" start="100" end="0" time="200" delay="2500" condition="!Player.Seeking + Player.Paused + Player.DisplayAfterSeek">Conditional</animation>
+				<visible>Player.SeekEnabled + !Skin.HasSetting(seek_info_disabled) + [!Window.IsActive(videoosd) | [!Skin.HasSetting(seek_osd_disabled) + Window.IsActive(videoosd)]] + !Window.IsActive(fullscreeninfo) + !Window.IsActive(videobookmarks)</visible>
+			
+				<!-- matrix vs. leia -->
+				<visible>
+					[!string.startswith(System.BuildVersion,18.) + [Player.Seeking | Player.DisplayAfterSeek]] | 
+					[string.startswith(System.BuildVersion,18.) + [Player.Seeking | [Player.DisplayAfterSeek + !Player.Paused]]]
+				</visible>
+					<!-- leia - i am visible always if paused , because of bool player.displayafterseek is always true if paused,  + !string.startswith(System.BuildVersion,19.) -->
+					<animation effect="fade" start="100" end="0" time="200" delay="2500" condition="!Player.Seeking + Player.Paused + Player.DisplayAfterSeek + string.startswith(System.BuildVersion,18.)">Conditional</animation>
 				
 				<animation effect="zoom" start="100" end="60" time="250" center="50%,146%" condition="Skin.HasSetting(seek_info_small) + !Window.IsActive(videoosd)">Conditional</animation>
 				<control type="image">
@@ -185,35 +185,13 @@ ID 		Type 	Description
 			
 			<control type="group">
 				<description>match osd seekbar</description>
+				
 				<visible>Window.IsVisible(videoosd) | [Player.Paused + Skin.HasSetting(videoplayer_infoonpause)] | !String.IsEmpty(Window(home).Property(ShowOSD_Plot)) | Window.IsActive(fullscreeninfo)</visible>
 					<animation effect="fade" start="0" end="100" time="150">Visible</animation>
 					<animation effect="fade" start="100" end="0" time="200" delay="1500">Hidden</animation>
-					<animation effect="fade" start="100" end="0" condition="[!Window.IsActive(videoosd) + Player.Seeking] | [Window.isVisible(videoosd) + !Window.IsActive(fullscreeninfo)]">conditional</animation>
+					
 					<animation effect="fade" start="100" end="0" time="350" condition="[Player.Paused + Skin.HasSetting(videoplayer_infoonpause) + System.IdleTime(5)] + !Window.IsActive(fullscreeninfo)">conditional</animation>
-				
-				<!-- 
-				
-			MATRIX latest
-				<visible>Window.IsVisible(videoosd) | [Player.Paused + Skin.HasSetting(videoplayer_infoonpause)] | !String.IsEmpty(Window(home).Property(ShowOSD_Plot)) | Window.IsActive(fullscreeninfo)</visible>
-					<animation effect="fade" start="0" end="100" time="150">Visible</animation>
-					<animation effect="fade" start="100" end="0" time="200" delay="1500">Hidden</animation>
-					<animation effect="fade" start="100" end="0" condition="[!Window.IsActive(videoosd) + [Player.Seeking | Player.DisplayAfterSeek]] | [Window.isVisible(videoosd) + !Window.IsActive(fullscreeninfo)]">conditional</animation>
-					<animation effect="fade" start="100" end="0" time="350" condition="[Player.Paused + Skin.HasSetting(videoplayer_infoonpause) + System.IdleTime(5)] + !Window.IsActive(fullscreeninfo)">conditional</animation>
-				-->
-				
-				
-				<!-- 
-				LEIA lates changes 
-				<visible>!Window.IsActive(videoosd) | Window.IsActive(fullscreeninfo)</visible>
-				<animation effect="fade" start="0" end="100" time="0">Visible</animation>
-				<animation effect="fade" start="100" end="0" time="0" delay="0">Hidden</animation>
-				<animation effect="fade" start="0" end="100" time="150">Visible</animation>
-				<animation effect="fade" start="100" end="0" time="200" delay="1500">Hidden</animation>
-				<animation effect="fade" start="100" end="0" condition="Window.IsActive(videoosd)">conditional</animation>
-				<animation effect="fade" start="100" end="0" time="350" condition="[Player.Paused + Skin.HasSetting(videoplayer_infoonpause) + System.IdleTime(5)] + !Window.IsActive(fullscreeninfo)">conditional</animation>
-				-->
-				<!-- leia - i am not visible if paused , because displayafterseek is always true if paused -->
-				<!-- <animation effect="fade" start="0" end="100" time="250" delay="2500" condition="[!Player.Paused + Player.DisplayAfterSeek + !Player.Seeking]">Conditional</animation> -->
+					<animation effect="fade" start="100" end="0" condition="Window.IsVisible(videoosd) + !Window.IsActive(fullscreeninfo)">conditional</animation>
 				
 				<include condition="!VideoPlayer.Content(LiveTV)" content="VideoOSD_ProgressSlider">
 					<param name="info" value="Player.SeekBar" />
