@@ -6,210 +6,240 @@ ID 		Type 	Description
 402 	label 	Time label displaying current seek position ~ ?? is it supposed to equal Player.SeekTime 	Time to which the user is seeking
 -->
 	
-	<defaultcontrol always="true">9000</defaultcontrol>
 	<visible>Window.IsActive(fullscreenvideo)</visible>
 	<visible>!$EXP[embinfodialogactive] + !Window.IsVisible(1104) + !Window.IsVisible(1193)</visible>	
-	
 	<animation effect="fade" end="100" time="200">WindowOpen</animation>
 	<animation effect="fade" start="100" end="0" time="200">WindowClose</animation>
-			
+		
 	<controls>
-	
-		<control type="button" id="9000">
-			<onclick>dialog.close(seekbar)</onclick>
-			<onback>dialog.close(seekbar)</onback>
-			<include content="HiddenObject" />
-		</control>
 		
 		<control type="group">
-			<description>SeekNumeric</description>
-			<visible>Window.Is(videotimeseek) | !String.IsEmpty(Player.SeekNumeric) | Window.Is(fullscreenlivetvinput) | !String.IsEmpty(PVR.ChannelNumberInput)</visible>
 			
-			<control type="image">
-				<texture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white70.png</texture>
-			</control>
-			<control type="label">	
-				<description>numeric Input</description>
-				<top>0</top>
-				<bottom>0</bottom>
-				<left>0</left>
-				<right>0</right>
-				<textcolor>$VAR[color_osdvideo_main]</textcolor>
-				<font>font_Montserrat_38_extrabold</font>
-				<label>$VAR[Fullscreen_Numeric_Input]</label>
-				<align>center</align>
-				<aligny>center</aligny>
-			</control>
-		</control>
+			<animation effect="fade" start="100" end="0" time="0" condition="Window.IsTopMost(sliderdialog) | Window.IsVisible(shutdownmenu) | Window.IsVisible(osdvideosettings) | Window.IsVisible(osdaudiosettings) | Window.IsVisible(osdsubtitlesettings) | Window.IsVisible(osdcmssettings) | Window.IsVisible(pvrosdchannels) | Window.IsVisible(teletext) | !String.IsEmpty(Window(home).Property(service.upnext.dialog))">Conditional</animation>
+			
+			<include content="videofullscreen_infopanel" condition="!Player.HasGame" />
 		
-		
-		<control type="group">
-			<description>BIG BOLD</description>
-			<visible>Player.SeekEnabled + !Skin.HasSetting(seek_info_disabled) + !Window.IsActive(fullscreeninfo) + !Window.IsActive(videobookmarks) + [Player.Seeking | Player.DisplayAfterSeek]</visible>
-			<visible>[Window.IsActive(videoosd) + !Skin.HasSetting(seek_osd_disabled)] | !Window.IsActive(videoosd)</visible>
-			
-			<animation effect="zoom" start="100" end="60" time="250" center="50%,146%" condition="Skin.HasSetting(seek_info_small) + !Window.IsActive(videoosd)">Conditional</animation>
-			<control type="image">
-				<visible>Skin.HasSetting(seek_info_small) + !Window.IsActive(videoosd)</visible>
-				<description>dimmed bg</description>
-				<texture colordiffuse="$VAR[color_osdvideo_bgpanel]" diffuse="colors/white70.png">artworkdiffuse/circle.png</texture>
-				<animation effect="slide" start="0,0" end="0,350" time="0" condition="true">Conditional</animation>
-				<aspectratio>keep</aspectratio>
-			</control>
-			
-			<control type="image">
-				<visible>!Skin.HasSetting(seek_info_small) | [Skin.HasSetting(seek_info_small) + Window.IsActive(videoosd)]</visible>
-				<description>dimmed bg</description>
-				<texture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white70.png</texture>
-				<animation effect="fade" start="100" end="70" time="0" condition="Window.IsActive(videoosd)">conditional</animation>
-			</control>
-			<control type="grouplist">
-				<orientation>vertical</orientation>
-				<height>auto</height>
-				<centertop>40%</centertop>
-				<itemgap>2</itemgap>
-					
-				<control type="grouplist">
-					<visible>Player.Forwarding | Player.Rewinding | !String.IsEmpty(Player.SeekOffset) | !String.IsEmpty(Player.SeekStepSize)</visible>
-					
-					<orientation>horizontal</orientation>
-					<height>40</height>
+			<control type="group">
+				<description>SeekNumeric</description>
+				<visible>Window.Is(videotimeseek) | !String.IsEmpty(Player.SeekNumeric) | Window.Is(fullscreenlivetvinput) | !String.IsEmpty(PVR.ChannelNumberInput)</visible>
+				
+				<control type="image">
+					<texture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white70.png</texture>
+				</control>
+				<control type="label">	
+					<description>numeric Input</description>
+					<top>0</top>
+					<bottom>0</bottom>
+					<left>0</left>
+					<right>0</right>
+					<textcolor>$VAR[color_osdvideo_main]</textcolor>
+					<font>font_Montserrat_38_extrabold</font>
+					<label>$VAR[Fullscreen_Numeric_Input]</label>
 					<align>center</align>
+					<aligny>center</aligny>
+				</control>
+			</control>
+			
+			
+			<control type="group">
+				<description>BIG BOLD</description>
+				
+				<!-- 
+				when backported, else just working if > 19.*?
+				<visible>Player.SeekEnabled + !Skin.HasSetting(seek_info_disabled) + !Window.IsActive(fullscreeninfo) + !Window.IsActive(videobookmarks) + [Player.Seeking | Player.DisplayAfterSeek]</visible> -->
+				<visible>Player.SeekEnabled + !Skin.HasSetting(seek_info_disabled) + !Window.IsActive(fullscreeninfo) + !Window.IsActive(videobookmarks) + Player.Seeking</visible>
+				
+				<visible>[Window.IsActive(videoosd) + !Skin.HasSetting(seek_osd_disabled)] | !Window.IsActive(videoosd)</visible>
+				<!-- leia - i am visible always if paused , because of bool player.displayafterseek is always true if paused,  + !string.startswith(System.BuildVersion,19.) -->
+					<animation effect="fade" start="100" end="0" time="200" delay="2500" condition="!Player.Seeking + Player.Paused + Player.DisplayAfterSeek">Conditional</animation>
+				
+				<animation effect="zoom" start="100" end="60" time="250" center="50%,146%" condition="Skin.HasSetting(seek_info_small) + !Window.IsActive(videoosd)">Conditional</animation>
+				<control type="image">
+					<visible>Skin.HasSetting(seek_info_small) + !Window.IsActive(videoosd)</visible>
+					<description>dimmed bg</description>
+					<texture colordiffuse="$VAR[color_osdvideo_bgpanel]" diffuse="colors/white70.png">artworkdiffuse/circle.png</texture>
+					<animation effect="slide" start="0,0" end="0,350" time="0" condition="true">Conditional</animation>
+					<aspectratio>keep</aspectratio>
+				</control>
+				
+				<control type="image">
+					<visible>!Skin.HasSetting(seek_info_small) | [Skin.HasSetting(seek_info_small) + Window.IsActive(videoosd)]</visible>
+					<description>dimmed bg</description>
+					<texture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white70.png</texture>
+					<animation effect="fade" start="100" end="70" time="0" condition="Window.IsActive(videoosd)">conditional</animation>
+				</control>
+				<control type="grouplist">
+					<orientation>vertical</orientation>
+					<height>auto</height>
+					<centertop>40%</centertop>
+					<itemgap>2</itemgap>
+						
+					<control type="grouplist">
+						<visible>Player.Forwarding | Player.Rewinding | !String.IsEmpty(Player.SeekOffset) | !String.IsEmpty(Player.SeekStepSize)</visible>
+						
+						<orientation>horizontal</orientation>
+						<height>40</height>
+						<align>center</align>
+						<control type="label">
+							<height>35</height>
+							<width>auto</width>
+							<textcolor>$VAR[color_osdvideo_main]</textcolor>
+							<label>$VAR[seekbar_info]</label>
+							<font>font_Montserrat_38_extrabold</font>
+							<align>center</align>
+							<aligny>center</aligny>
+						</control>
+						<control type="label">
+							<visible>[Player.Forwarding | Player.Rewinding]</visible>
+							<width>auto</width>
+							<height>39</height>
+							<textcolor>$VAR[color_osdvideo_main]</textcolor>
+							<label>$INFO[Player.PlaySpeed, x [B],[/B]]</label>
+							<font>font_Montserrat_24_extrabold</font>
+							<align>center</align>
+							<aligny>center</aligny>
+						</control>
+					</control>
+					<control type="image">
+						<centerleft>50%</centerleft>
+						<height>2</height>
+						<width>35%</width>
+						<texture colordiffuse="$VAR[color_osdvideo_main]">colors/white10.png</texture>
+					</control>
+					<control type="image">
+						<visible>!Player.Seeking</visible>
+						<centerright>50%</centerright>
+						<width>100</width>
+						<height>100</height>
+						<bordersize>10</bordersize>
+						<texture colordiffuse="$VAR[color_osdvideo_secondary]">$VAR[seekbar_img]</texture>
+						<bordertexture colordiffuse="$VAR[color_osdvideo_bgpanel]">$VAR[seekbar_img]</bordertexture>
+						<aspectratio align="center" aligny="center">keep</aspectratio>
+						<animation effect="fade" start="100" end="60" loop="true" delay="250" time="800" condition="!Player.Playing" >conditional</animation>
+					</control>
 					<control type="label">
-						<height>35</height>
-						<width>auto</width>
+						<visible>[!Window.IsActive(videoosd) + String.IsEmpty(Window(home).Property(ShowOSD_Plot))] | [Window.IsActive(videoosd) + !Skin.HasSetting(show_bold_seeklabels)]</visible>
+						
+						<top>15</top>
+						<height>50</height>
 						<textcolor>$VAR[color_osdvideo_main]</textcolor>
-						<label>$VAR[seekbar_info]</label>
+						<label>$INFO[Player.SeekTime]</label>
+						<font>font_titlefallbackspotlight</font>
+						<align>center</align>
+						<aligny>center</aligny>
+					</control>
+					<control type="progress">
+						<visible>!Window.IsActive(videoosd)</visible>
+						
+						<top>15</top>
+						<reveal>true</reveal>
+						<centerleft>50%</centerleft>
+						<midtexture colordiffuse="$VAR[color_osdvideo_secondary]">buttons/progress17h.png</midtexture>
+						<texturebg diffuse="colors/white30.png" colordiffuse="$VAR[color_osdvideo_main]">buttons/progress17h.png</texturebg>
+						<info>Player.SeekBar</info>
+						<width>200</width>
+						<height>34</height>
+					</control>
+					<!-- <control type="label">
+						<visible>[!Window.IsActive(videoosd) | [Window.IsActive(videoosd) + !Skin.HasSetting(show_bold_seeklabels)]] + [!String.IsEmpty(Player.SeekOffset) | !String.IsEmpty(Player.SeekStepSize)]</visible>
+						
+						<left>-5</left>
+						<top>7</top>
+						<height>30</height>
+						<animation effect="fade" time="200" end="80" condition="window.isactive(seekbar)">conditional</animation>
+						<textcolor>$VAR[color_osdvideo_main]</textcolor>
+						<label>$INFO[Player.SeekStepSize]</label>
 						<font>font_Montserrat_38_extrabold</font>
 						<align>center</align>
 						<aligny>center</aligny>
-					</control>
+					</control> -->
 					<control type="label">
-						<visible>[Player.Forwarding | Player.Rewinding]</visible>
-						<width>auto</width>
-						<height>39</height>
-						<textcolor>$VAR[color_osdvideo_main]</textcolor>
-						<label>$INFO[Player.PlaySpeed, x [B],[/B]]</label>
-						<font>font_Montserrat_24_extrabold</font>
+						<visible>[!Window.IsActive(videoosd) | [Window.IsActive(videoosd) + Skin.HasSetting(show_bold_seeklabels)]] + [!String.IsEmpty(Player.SeekOffset) | !String.IsEmpty(Player.SeekStepSize)]</visible>
+						
+						<left>-5</left>
+						<top>-35</top>
+						<height>30</height>
+						<animation effect="fade" time="200" end="80" condition="true">conditional</animation>
+						<textcolor>$VAR[color_osdvideo_bgpanel]</textcolor>
+						<label>$VAR[seekbar_stepsize]</label>
+						<font>font_Montserrat_30_extrabold</font>
 						<align>center</align>
 						<aligny>center</aligny>
 					</control>
-				</control>
-				<control type="image">
-					<centerleft>50%</centerleft>
-					<height>2</height>
-					<width>35%</width>
-					<texture colordiffuse="$VAR[color_osdvideo_main]">colors/white10.png</texture>
-				</control>
-				<control type="image">
-					<visible>!Player.Seeking</visible>
-					<centerright>50%</centerright>
-					<width>100</width>
-					<height>100</height>
-					<bordersize>10</bordersize>
-					<texture colordiffuse="$VAR[color_osdvideo_secondary]">$VAR[seekbar_img]</texture>
-					<bordertexture colordiffuse="$VAR[color_osdvideo_bgpanel]">$VAR[seekbar_img]</bordertexture>
-					<aspectratio align="center" aligny="center">keep</aspectratio>
-					<animation effect="fade" start="100" end="60" loop="true" delay="250" time="800" condition="!Player.Playing" >conditional</animation>
-				</control>
-				<control type="label">
-					<visible>[!Window.IsActive(videoosd) + String.IsEmpty(Window(home).Property(ShowOSD_Plot))] | [Window.IsActive(videoosd) + !Skin.HasSetting(show_bold_seeklabels)]</visible>
+					<control type="image">
+						<visible>false</visible>
+						
+						<centerright>50%</centerright>
+						<width>90</width>
+						<height>90</height>
+						<bordersize>10</bordersize>
+						<texture colordiffuse="$VAR[color_osdvideo_secondary]">$VAR[seekbar_img]</texture>
+						<bordertexture colordiffuse="red">$VAR[seekbar_img]</bordertexture>
+						<aspectrattio align="center" aligny="center">keep</aspectrattio>
+					</control>
 					
-					<top>15</top>
-					<height>50</height>
-					<textcolor>$VAR[color_osdvideo_main]</textcolor>
-					<label>$INFO[Player.SeekTime]</label>
-					<font>font_titlefallbackspotlight</font>
-					<align>center</align>
-					<aligny>center</aligny>
-				</control>
-				<control type="progress">
-					<visible>!Window.IsActive(videoosd)</visible>
-					
-					<top>15</top>
-					<reveal>true</reveal>
-					<centerleft>50%</centerleft>
-					<midtexture colordiffuse="$VAR[color_osdvideo_secondary]">buttons/progress17h.png</midtexture>
-					<texturebg diffuse="colors/white30.png" colordiffuse="$VAR[color_osdvideo_main]">buttons/progress17h.png</texturebg>
-					<info>Player.SeekBar</info>
-					<width>200</width>
-					<height>34</height>
-				</control>
-				<!-- <control type="label">
-					<visible>[!Window.IsActive(videoosd) | [Window.IsActive(videoosd) + !Skin.HasSetting(show_bold_seeklabels)]] + [!String.IsEmpty(Player.SeekOffset) | !String.IsEmpty(Player.SeekStepSize)]</visible>
-					
-					<left>-5</left>
-					<top>7</top>
-					<height>30</height>
-					<animation effect="fade" time="200" end="80" condition="window.isactive(seekbar)">conditional</animation>
-					<textcolor>$VAR[color_osdvideo_main]</textcolor>
-					<label>$INFO[Player.SeekStepSize]</label>
-					<font>font_Montserrat_38_extrabold</font>
-					<align>center</align>
-					<aligny>center</aligny>
-				</control> -->
-				<control type="label">
-					<visible>[!Window.IsActive(videoosd) | [Window.IsActive(videoosd) + Skin.HasSetting(show_bold_seeklabels)]] + [!String.IsEmpty(Player.SeekOffset) | !String.IsEmpty(Player.SeekStepSize)]</visible>
-					
-					<left>-5</left>
-					<top>-35</top>
-					<height>30</height>
-					<animation effect="fade" time="200" end="80" condition="true">conditional</animation>
-					<textcolor>$VAR[color_osdvideo_bgpanel]</textcolor>
-					<label>$VAR[seekbar_stepsize]</label>
-					<font>font_Montserrat_30_extrabold</font>
-					<align>center</align>
-					<aligny>center</aligny>
-				</control>
-				<control type="image">
-					<visible>false</visible>
-					
-					<centerright>50%</centerright>
-					<width>90</width>
-					<height>90</height>
-					<bordersize>10</bordersize>
-					<texture colordiffuse="$VAR[color_osdvideo_secondary]">$VAR[seekbar_img]</texture>
-					<bordertexture colordiffuse="red">$VAR[seekbar_img]</bordertexture>
-					<aspectrattio align="center" aligny="center">keep</aspectrattio>
 				</control>
 				
 			</control>
 			
+			<control type="group">
+				<description>match osd seekbar</description>
+				<visible>Window.IsVisible(videoosd) | [Player.Paused + Skin.HasSetting(videoplayer_infoonpause)] | !String.IsEmpty(Window(home).Property(ShowOSD_Plot)) | Window.IsActive(fullscreeninfo)</visible>
+					<animation effect="fade" start="0" end="100" time="150">Visible</animation>
+					<animation effect="fade" start="100" end="0" time="200" delay="1500">Hidden</animation>
+					<animation effect="fade" start="100" end="0" condition="[!Window.IsActive(videoosd) + Player.Seeking] | [Window.isVisible(videoosd) + !Window.IsActive(fullscreeninfo)]">conditional</animation>
+					<animation effect="fade" start="100" end="0" time="350" condition="[Player.Paused + Skin.HasSetting(videoplayer_infoonpause) + System.IdleTime(5)] + !Window.IsActive(fullscreeninfo)">conditional</animation>
+				
+				<!-- 
+				
+			MATRIX latest
+				<visible>Window.IsVisible(videoosd) | [Player.Paused + Skin.HasSetting(videoplayer_infoonpause)] | !String.IsEmpty(Window(home).Property(ShowOSD_Plot)) | Window.IsActive(fullscreeninfo)</visible>
+					<animation effect="fade" start="0" end="100" time="150">Visible</animation>
+					<animation effect="fade" start="100" end="0" time="200" delay="1500">Hidden</animation>
+					<animation effect="fade" start="100" end="0" condition="[!Window.IsActive(videoosd) + [Player.Seeking | Player.DisplayAfterSeek]] | [Window.isVisible(videoosd) + !Window.IsActive(fullscreeninfo)]">conditional</animation>
+					<animation effect="fade" start="100" end="0" time="350" condition="[Player.Paused + Skin.HasSetting(videoplayer_infoonpause) + System.IdleTime(5)] + !Window.IsActive(fullscreeninfo)">conditional</animation>
+				-->
+				
+				
+				<!-- 
+				LEIA lates changes 
+				<visible>!Window.IsActive(videoosd) | Window.IsActive(fullscreeninfo)</visible>
+				<animation effect="fade" start="0" end="100" time="0">Visible</animation>
+				<animation effect="fade" start="100" end="0" time="0" delay="0">Hidden</animation>
+				<animation effect="fade" start="0" end="100" time="150">Visible</animation>
+				<animation effect="fade" start="100" end="0" time="200" delay="1500">Hidden</animation>
+				<animation effect="fade" start="100" end="0" condition="Window.IsActive(videoosd)">conditional</animation>
+				<animation effect="fade" start="100" end="0" time="350" condition="[Player.Paused + Skin.HasSetting(videoplayer_infoonpause) + System.IdleTime(5)] + !Window.IsActive(fullscreeninfo)">conditional</animation>
+				-->
+				<!-- leia - i am not visible if paused , because displayafterseek is always true if paused -->
+				<!-- <animation effect="fade" start="0" end="100" time="250" delay="2500" condition="[!Player.Paused + Player.DisplayAfterSeek + !Player.Seeking]">Conditional</animation> -->
+				
+				<include condition="!VideoPlayer.Content(LiveTV)" content="VideoOSD_ProgressSlider">
+					<param name="info" value="Player.SeekBar" />
+					<param name="slider_action" value="seek" />
+				</include>
+				<include condition="VideoPlayer.Content(LiveTV)" content="VideoOSD_ProgressSlider">
+					<param name="info" value="PVR.TimeshiftProgressPlayPos" />
+					<param name="slider_action" value="pvr.seek" />
+				</include>
+			</control>
+		
 		</control>
 		
-	<control type="group">
-		<description>match osd seekbar</description>
-		<visible>Window.IsVisible(videoosd) | [Player.Paused + Skin.HasSetting(videoplayer_infoonpause)] | !String.IsEmpty(Window(home).Property(ShowOSD_Plot)) | Window.IsActive(fullscreeninfo)</visible>
-		<animation effect="fade" start="0" end="100" time="150">Visible</animation>
-		<animation effect="fade" start="100" end="0" time="200" delay="1500">Hidden</animation>
-		<animation effect="fade" start="100" end="0" condition="[!Window.IsActive(videoosd) + [Player.Seeking | Player.DisplayAfterSeek]] | [Window.isVisible(videoosd) + !Window.IsActive(fullscreeninfo)]">conditional</animation>
-		<animation effect="fade" start="100" end="0" time="350" condition="[Player.Paused + Skin.HasSetting(videoplayer_infoonpause) + System.IdleTime(5)] + !Window.IsActive(fullscreeninfo)">conditional</animation>
 		
-		
-		
-		<include condition="!VideoPlayer.Content(LiveTV)" content="VideoOSD_ProgressSlider">
-			<param name="info" value="Player.SeekBar" />
-			<param name="slider_action" value="seek" />
-		</include>
-		<include condition="VideoPlayer.Content(LiveTV)" content="VideoOSD_ProgressSlider">
-			<param name="info" value="PVR.TimeshiftProgressPlayPos" />
-			<param name="slider_action" value="pvr.seek" />
-		</include>
-	</control>
-	
-	<control type="image">
-		<visible>Skin.HasSetting(SwanDebug)</visible>
-		<texture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white70.png</texture>
-	</control>
-	<control type="textbox">
-		<visible>Skin.HasSetting(SwanDebug)</visible>
-		<font>debugtiny</font>
-		<aligny>top</aligny>
-		<align>left</align>
-		<top>10</top>
-		<right>15</right>
-		<textcolor>cyan</textcolor>
-		<label>[B]visibility = seekbar = cyan, [COLOR none]osd = white[/B][/COLOR][CR]
+		<control type="image">
+			<visible>Skin.HasSetting(SwanDebug)</visible>
+			<texture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white70.png</texture>
+		</control>
+		<control type="textbox">
+			<visible>Skin.HasSetting(SwanDebug)</visible>
+			<font>debugtiny</font>
+			<aligny>top</aligny>
+			<align>left</align>
+			<top>10</top>
+			<right>15</right>
+			<textcolor>cyan</textcolor>
+			<label>[B]visibility = seekbar = cyan, [COLOR none]osd = white[/B][/COLOR][CR]
 $INFO[Player.SeekTime]        Player.SeekTime            Time to which the user is seeking
 $INFO[Player.SeekBar]        Player.SeekBar            Time to which the user is seeking as a percentage (for use in slider controls)
 $INFO[Player.SeekOffset]        Player.SeekOffset            Indicates the seek offset after a seek press (eg user presses BigStepForward, player.seekoffset returns +10:00)
@@ -235,16 +265,9 @@ $VAR[Player.SeekEnabled]      Player.SeekEnabled      Returns true if player can
 [COLOR cyan]$VAR[seekbar_stepsize, seekbar_stepsize: ,][/COLOR]
 
 $VAR[ShowOSD_Plot_COND]
-
-   -  [B]$VAR[seek_osd_disabled][/B] - 
-
-seekbar_bigbold1 $VAR[seekbar_bigbold1]
-
-seekbar_bigbold2 $VAR[seekbar_bigbold2]
-
-
-</label>
-	</control>
+$VAR[debugPlayerShowInfo]
+			</label>
+		</control>
 
 	</controls>
 </window>

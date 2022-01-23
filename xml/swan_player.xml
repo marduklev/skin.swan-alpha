@@ -524,42 +524,17 @@
 	<!-- #### V I D E O #### -->
 	<!-- ################### -->
 	
-	<!-- OSD Controls merge video and music -->
-	
-
 	<include condition="" content="pos_left">
-		<param name="left" value="320" /> <!-- value thumb width ? - differ on screen aspect ratio -->
+		<param name="left" value="320" />
 	</include>
 	
-	<include name="OSD_Slider_Seek">
-		<bottom>141</bottom>
-		<left>320</left>
-		<right>0</right>
-		<height>20</height>
-		<texturesliderbar colordiffuse="none">buttons/slidernib.png</texturesliderbar>
-		<textureslidernib colordiffuse="$VAR[color_osdvideo_progress]">buttons/slidernib.png</textureslidernib>
-		<textureslidernibfocus colordiffuse="$VAR[color_osdvideo_button_fo]">buttons/slidernib.png</textureslidernibfocus>
-		<ondown>6100</ondown>
-	</include>
-	
-	
-	<!-- abuse double id - usage 
-	got issues with
-	<param name="progress_id" default="402" />
-	<param name="slider_id" default="401" />
-	
-	if osd acive seeksteps are empty 
-	
-	give 
-	-->
 	<include name="VideoOSD_ProgressSlider">
 		<param name="slider_id" default="401" />
 		<param name="progress_id" default="402" />
 		<definition>
+			<animation effect="slide" start="0,0" end="0,50" time="250" condition="$EXP[osd_video_noinfo] + !Window.IsActive(videobookmarks)">conditional</animation>
+			<animation effect="slide" start="0,0" end="0,100" time="200" tween="cubic" easing="in" condition="$EXP[osd_video_noinfo] + Window.IsVisible(videoosd) + !Window.IsActive(videobookmarks)">conditional</animation>
 			
-			<animation effect="slide" start="0,0" end="0,150" time="250" condition="$EXP[osd_video_noinfo]">conditional</animation>
-			<animation effect="slide" start="0,0" end="0,-100" time="250" condition="!Window.IsActive(videoosd) + $EXP[osd_video_noinfo]">conditional</animation>
-			<animation effect="slide" start="0,0" end="0,-148" time="250" condition="Window.IsActive(videobookmarks) + $EXP[osd_video_noinfo]">conditional</animation>
 			<animation effect="slide" start="0,0" end="0,-410" time="200" condition="Window.IsActive(fullscreeninfo)">conditional</animation>
 			<animation effect="slide" start="0,0" end="0,-100" time="200" condition="Window.IsActive(fullscreeninfo) + Window.IsActive(videoosd)">conditional</animation>
 			
@@ -576,7 +551,14 @@
 				<info>$PARAM[info]</info>
 			</control>
 			<control type="slider" id="$PARAM[slider_id]">
-				<include content="OSD_Slider_Seek" />
+				<bottom>141</bottom>
+				<left>320</left>
+				<right>0</right>
+				<height>20</height>
+				<texturesliderbar colordiffuse="none">buttons/slidernib.png</texturesliderbar>
+				<textureslidernib colordiffuse="$VAR[color_osdvideo_progress]">buttons/slidernib.png</textureslidernib>
+				<textureslidernibfocus colordiffuse="$VAR[color_osdvideo_button_fo]">buttons/slidernib.png</textureslidernibfocus>
+				<ondown>6100</ondown>
 				<info>$PARAM[info]</info>
 				<action>$PARAM[slider_action]</action>
 			</control>
@@ -613,11 +595,9 @@
 						<textcolor>none</textcolor>
 						<label fallback="$INFO[Player.Time(hh:mm:ss),[B],[/B]]">$INFO[Player.SeekTime(hh:mm:ss),[B],[/B]]</label>
 					</include>
-
-				
+					
 					<!-- using slider_id shouldt possible as ends  %  , but it does too -->
-				
-	                <animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel($PARAM[progress_id]),1)">Conditional</animation>
+					<animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel($PARAM[progress_id]),1)">Conditional</animation>
 	                <animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel($PARAM[progress_id]),2)">Conditional</animation>
 	                <animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel($PARAM[progress_id]),3)">Conditional</animation>
 	                <animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel($PARAM[progress_id]),4)">Conditional</animation>
@@ -718,7 +698,7 @@
 	                <animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel($PARAM[progress_id]),99)">Conditional</animation>
 	                <animation effect="slide" end="16" time="0" condition="Integer.IsGreater(Control.GetLabel($PARAM[progress_id]),100)">Conditional</animation>
 	                <animation effect="slide" end="-118" time="500" condition="Integer.IsGreater(Control.GetLabel($PARAM[progress_id]),93)">Conditional</animation>
-	                <animation effect="fade" end="0" time="200" condition="Integer.IsGreater(Control.GetLabel($PARAM[progress_id]),100)">Conditional</animation>
+	                <animation effect="fade" end="0" time="200" condition="Integer.IsEqual(Control.GetLabel($PARAM[progress_id]),100)">Conditional</animation>
 	            </control>
 			
 			
@@ -789,21 +769,17 @@
 		<value>$LOCALIZE[19055]</value>
 	</variable>
 	
-	<include name="VideoFullscreen_OSD">
-		<description>keep id 99 if possible - otherwise issues come - as like prefer used in videofullscreen</description>
-			<control type="group" id="99">
+	<include name="videofullscreen_infopanel">
+		<control type="group">
+			<visible>!Window.IsTopMost(sliderdialog)</visible>
 			<visible>Window.IsVisible(videoosd) | [Player.Paused + Skin.HasSetting(videoplayer_infoonpause)] | !String.IsEmpty(Window(home).Property(ShowOSD_Plot)) | Window.IsActive(fullscreeninfo) | Window.IsActive(videobookmarks)</visible>
 
-			
 			<animation effect="fade" start="0" end="100" time="150">Visible</animation>
 			<animation effect="fade" start="100" end="0" time="200" delay="1500">Hidden</animation>
-			<animation effect="fade" start="100" end="0" time="400" condition="[[Player.Paused + Skin.HasSetting(videoplayer_infoonpause) + System.IdleTime(5)] + [!Window.IsActive(videoosd) + !Window.IsActive(fullscreeninfo)]] | [[Window.IsActive(osdvideosettings) | Window.IsActive(osdaudiosettings) | Window.IsActive(osdsubtitlesettings)] + Window.IsTopMost(sliderdialog) | $EXP[embinfodialogactive] | Window.IsActive(1104) | Window.IsActive(plugin-video-netflix-Skip.xml)]">conditional</animation>
-			<animation effect="fade" start="100" end="0" time="0" condition="[!Window.IsActive(videoosd) + [Player.Seeking | Player.DisplayAfterSeek]] | Window.IsVisible(pvrosdchannels) | Window.IsVisible(Teletext) | Window.IsVisible(sliderdialog) | Window.IsVisible(shutdownmenu) | !String.IsEmpty(Window(home).Property(service.upnext.dialog))">Conditional</animation>
 			
-			<!-- Window.Is(videotimeseek) in which case is this true -->
-			<!-- exp - > [Window.IsActive(videoosd) + [Player.Seeking | Player.DisplayAfterSeek]] - show big seek labels  -->
-			
-			<control type="group" id="99">
+			<animation effect="fade" start="100" end="0" time="150" condition="[Player.Paused + Skin.HasSetting(videoplayer_infoonpause) + System.IdleTime(5) + [!Window.IsActive(videoosd) + !Window.IsActive(fullscreeninfo)]] | $EXP[embinfodialogactive] | Window.IsActive(1104) | Window.IsActive(plugin-video-netflix-Skip.xml)">conditional</animation>
+				
+			<control type="group">
 				<bottom>0</bottom>
 				<width>100%</width>
 				<height>400</height>
@@ -811,7 +787,7 @@
 				<animation effect="slide" start="0,0" end="0,-410" time="250" condition="Window.IsActive(fullscreeninfo)">conditional</animation>
 				<animation effect="slide" start="0,0" end="0,150" time="250" condition="[!Window.IsActive(fullscreeninfo) + !Window.IsActive(videobookmarks)] + $EXP[osd_video_noinfo]">conditional</animation>
 				
-				<control type="image" id="99">
+				<control type="image">
 					<description>bottom offset neg as osd button bg</description>
 					<bottom>-200</bottom>
 					<width>102%</width>
@@ -822,7 +798,7 @@
 					<bordertexture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white70.png</bordertexture>
 				</control>
 			
-				<control type="label" id="99">
+				<control type="label">
 					<bottom>160</bottom>
 					<left>350</left>
 					<width>65%</width>
@@ -835,7 +811,7 @@
 					<label>$VAR[VideoPlayerInfo]</label>
 				</control>
 				
-				<control type="label" id="99">
+				<control type="label">
 					<bottom>170</bottom>
 					<!-- <right>20</right> -->
 					<right>140</right>
@@ -846,7 +822,7 @@
 					<textcolor>$VAR[color_osdvideo_secondary]</textcolor>
 					<label>$INFO[System.Time]</label>
 				</control>
-				<control type="label" id="99">
+				<control type="label">
 					<bottom>170</bottom>
 					<right>20</right>
 					<height>60</height>
@@ -856,7 +832,7 @@
 					<textcolor>$VAR[color_osdvideo_main]</textcolor>
 					<label>$INFO[Player.Finishtime,Ends at[CR][B],[/B]]</label>
 				</control>
-				<control type="image" id="99">
+				<control type="image">
 					<visible>!Window.IsActive(fullscreeninfo)</visible>
 					<visible>[!String.IsEqual(Weather.fanartcode,na) + !String.IsEmpty(Weather.fanartcode)] + Weather.IsFetched</visible>
 					<bottom>70</bottom>
@@ -866,7 +842,7 @@
 					<texture colordiffuse="$VAR[color_osdvideo_main]">$INFO[Weather.FanartCode,resource://resource.images.weathericons.outline-hd/,.png]</texture>
 					<aspectratio align="left">keep</aspectratio>
 				</control>
-				<control type="label" id="99">
+				<control type="label">
 					<visible>!Window.IsActive(fullscreeninfo)</visible>
 					<visible>[!String.IsEqual(Weather.fanartcode,na) + !String.IsEmpty(Weather.fanartcode)] + Weather.IsFetched</visible>
 					<bottom>70</bottom>
@@ -880,7 +856,7 @@
 					<textcolor>$VAR[color_osdvideo_main]</textcolor>
 				</control>
 				
-				<control type="textbox" id="99">
+				<control type="textbox">
 					<description>intended show info on false</description>
 					<animation effect="fade" start="0" end="100" time="250">Visible</animation>
 					<animation effect="fade" start="100" end="0" time="250">Hidden</animation>
@@ -897,12 +873,12 @@
 				</control>
 			</control>
 			
-			<control type="group" id="99">
+			<control type="group">
 				<animation effect="slide" start="0,0" end="0,-310" time="250" condition="Window.IsActive(fullscreeninfo)">conditional</animation>
 				
 				<bottom>0</bottom>
 				<width>100%</width>
-				<control type="image" id="99">
+				<control type="image">
 					<visible>!VideoPlayer.Content(livetv)</visible>
 					<left>0</left>
 					<bottom>0</bottom>
@@ -911,7 +887,7 @@
 					<texture>$VAR[PlayerThumb]</texture>
 					<aspectratio scalediffuse="false" align="left" aligny="bottom">keep</aspectratio>
 				</control>
-				<control type="image" id="99">
+				<control type="image">
 					<visible>!String.IsEmpty(Player.Icon) + VideoPlayer.Content(livetv)</visible>
 					<left>0</left>
 					<bottom>0</bottom>
