@@ -3,8 +3,8 @@
 <!-- 	1.24 DialogSeekBar.xml
 ID 		Type 	Description
 401 	slider 	Marker representing the current seek position ~ ?? is it supposed to equal Player.SeekBar 	Time to which the user is seeking as a percentage (for use in slider controls)
-
-402 	label 	Time label displaying current seek position ~ ?? is it supposed to equal Player.SeekTime 	Time to which the user is seeking 	 -->
+402 	label 	Time label displaying current seek position ~ ?? is it supposed to equal Player.SeekTime 	Time to which the user is seeking
+-->
 	
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<visible>Window.IsActive(fullscreenvideo)</visible>
@@ -45,14 +45,10 @@ ID 		Type 	Description
 		
 		<control type="group">
 			<description>BIG BOLD</description>
+			<visible>Player.SeekEnabled + !Skin.HasSetting(seek_info_disabled) + !Window.IsActive(fullscreeninfo) + !Window.IsActive(videobookmarks) + [Player.Seeking | Player.DisplayAfterSeek]</visible>
+			<visible>[Window.IsActive(videoosd) + !Skin.HasSetting(seek_osd_disabled)] | !Window.IsActive(videoosd)</visible>
 			
-			<visible>!Skin.HasSetting(seek_info_disabled)</visible>
-			<visible>!Window.IsActive(videoosd) | [!Skin.HasSetting(seek_osd_disabled) + Window.IsActive(videoosd)]</visible>
-			
-			<visible>[Player.Seeking | Player.DisplayAfterSeek] + Player.SeekEnabled</visible>
-			<visible>!Window.IsActive(fullscreeninfo) + !Window.IsActive(videobookmarks)</visible>
-				
-			<animation effect="zoom" start="100" end="60" time="250" center="50%,140%" condition="Skin.HasSetting(seek_info_small) + !Window.IsActive(videoosd)">Conditional</animation>
+			<animation effect="zoom" start="100" end="60" time="250" center="50%,146%" condition="Skin.HasSetting(seek_info_small) + !Window.IsActive(videoosd)">Conditional</animation>
 			<control type="image">
 				<visible>Skin.HasSetting(seek_info_small) + !Window.IsActive(videoosd)</visible>
 				<description>dimmed bg</description>
@@ -60,7 +56,6 @@ ID 		Type 	Description
 				<animation effect="slide" start="0,0" end="0,350" time="0" condition="true">Conditional</animation>
 				<aspectratio>keep</aspectratio>
 			</control>
-			
 			
 			<control type="image">
 				<visible>!Skin.HasSetting(seek_info_small) | [Skin.HasSetting(seek_info_small) + Window.IsActive(videoosd)]</visible>
@@ -202,7 +197,10 @@ ID 		Type 	Description
 		</include>
 	</control>
 	
-	
+	<control type="image">
+		<visible>Skin.HasSetting(SwanDebug)</visible>
+		<texture colordiffuse="$VAR[color_osdvideo_bgpanel]">colors/white70.png</texture>
+	</control>
 	<control type="textbox">
 		<visible>Skin.HasSetting(SwanDebug)</visible>
 		<font>debugtiny</font>
@@ -237,6 +235,13 @@ $VAR[Player.SeekEnabled]      Player.SeekEnabled      Returns true if player can
 [COLOR cyan]$VAR[seekbar_stepsize, seekbar_stepsize: ,][/COLOR]
 
 $VAR[ShowOSD_Plot_COND]
+
+   -  [B]$VAR[seek_osd_disabled][/B] - 
+
+seekbar_bigbold1 $VAR[seekbar_bigbold1]
+
+seekbar_bigbold2 $VAR[seekbar_bigbold2]
+
 
 </label>
 	</control>
