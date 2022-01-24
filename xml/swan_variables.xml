@@ -25,14 +25,11 @@
 		<value condition="Player.Forwarding">[B][UPPERCASE]$LOCALIZE[31601][/UPPERCASE][/B]</value>
 		<value condition="Player.Rewinding">[B][UPPERCASE]$LOCALIZE[31600][/UPPERCASE][/B]</value>
 		<value condition="Player.Seeking">[B][UPPERCASE]$LOCALIZE[773][/UPPERCASE][/B]</value>
-		<!-- optional ? -->
-		<value condition="Player.Playing + [!Window.IsActive(videoosd) | [Window.IsActive(videoosd) + String.IsEmpty(Player.SeekOffset)]]">[B][UPPERCASE]$LOCALIZE[208][/UPPERCASE][/B]</value>
-		<value condition="Player.Paused + [!Window.IsActive(videoosd) | [Window.IsActive(videoosd) + String.IsEmpty(Player.SeekOffset)]]">[B][UPPERCASE]$LOCALIZE[112][/UPPERCASE][/B]</value>
-		
-		<!-- Player.Seeking wont work if osd active ,even if seeking ,dislike hidden 'stepforward' ..-->		
-		<value condition="Window.IsActive(videoosd)">[B][UPPERCASE]$LOCALIZE[773][/UPPERCASE][/B]</value>
+		<!-- when seek via osd slider, player.seeking returns false -->
+		<value condition="Player.Playing + [!Window.IsActive(videoosd) | [Window.IsActive(videoosd) + !String.IsEmpty(Player.SeekOffset) + System.IdleTime(1.5)]]">[B][UPPERCASE]$LOCALIZE[208][/UPPERCASE][/B]</value>
+		<value condition="Player.Paused + [!Window.IsActive(videoosd) | [Window.IsActive(videoosd) + !String.IsEmpty(Player.SeekOffset) + System.IdleTime(1.5)]]">[B][UPPERCASE]$LOCALIZE[112][/UPPERCASE][/B]</value>
+		<value condition="Window.IsActive(videoosd) + Player.DisplayAfterSeek">[B][UPPERCASE]$LOCALIZE[773][/UPPERCASE][/B]</value>
 	</variable>
-	
 	<!-- Player.SeekStepSize got a short visibility therefore extend time -->
 	<variable name="seekbar_stepsize">
 		<value condition="!String.IsEmpty(Player.SeekStepSize)">$INFO[Player.SeekStepSize]</value>
