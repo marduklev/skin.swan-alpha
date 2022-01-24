@@ -18,7 +18,7 @@ ID 		Type 	Description
 			
 			<animation effect="fade" start="100" end="0" time="0" condition="Window.IsTopMost(sliderdialog) | Window.IsVisible(shutdownmenu) | Window.IsVisible(osdvideosettings) | Window.IsVisible(osdaudiosettings) | Window.IsVisible(osdsubtitlesettings) | Window.IsVisible(osdcmssettings) | Window.IsVisible(pvrosdchannels) | Window.IsVisible(teletext) | !String.IsEmpty(Window(home).Property(service.upnext.dialog))">Conditional</animation>
 			
-			<include content="videofullscreen_infopanel" condition="!Player.HasGame" />
+			
 		
 			<control type="group">
 				<description>SeekNumeric</description>
@@ -45,21 +45,16 @@ ID 		Type 	Description
 			<control type="group">
 				<description>BIG BOLD</description>
 				<visible>Player.SeekEnabled + !Skin.HasSetting(seek_info_disabled) + [!Window.IsActive(videoosd) | [!Skin.HasSetting(seek_osd_disabled) + Window.IsActive(videoosd)]] + !Window.IsActive(fullscreeninfo) + !Window.IsActive(videobookmarks)</visible>
-			
-				<!-- matrix vs. leia -->
-				<visible>
-					[!string.startswith(System.BuildVersion,18.) + [Player.Seeking | Player.DisplayAfterSeek]] | 
-					[string.startswith(System.BuildVersion,18.) + [Player.Seeking | [Player.DisplayAfterSeek + !Player.Paused]]]
-				</visible>
-					<!-- leia - i am visible always if paused , because of bool player.displayafterseek is always true if paused,  + !string.startswith(System.BuildVersion,19.) -->
+			    <visible>Player.Seeking | Player.DisplayAfterSeek</visible>
+				<!-- leia - bool player.displayafterseek is always true if paused  -->
 					<animation effect="fade" start="100" end="0" time="200" delay="2500" condition="!Player.Seeking + Player.Paused + Player.DisplayAfterSeek + string.startswith(System.BuildVersion,18.)">Conditional</animation>
 				
-				<animation effect="zoom" start="100" end="60" time="250" center="50%,146%" condition="Skin.HasSetting(seek_info_small) + !Window.IsActive(videoosd)">Conditional</animation>
+				<animation effect="zoom" start="100" end="60" time="0" center="50%,146%" condition="Skin.HasSetting(seek_info_small) + !Window.IsActive(videoosd)">Conditional</animation>
 				<control type="image">
 					<visible>Skin.HasSetting(seek_info_small) + !Window.IsActive(videoosd)</visible>
 					<description>dimmed bg</description>
 					<texture colordiffuse="$VAR[color_osdvideo_bgpanel]" diffuse="colors/white70.png">artworkdiffuse/circle.png</texture>
-					<animation effect="slide" start="0,0" end="0,350" time="0" condition="true">Conditional</animation>
+					<top>350</top>
 					<aspectratio>keep</aspectratio>
 				</control>
 				
@@ -74,7 +69,7 @@ ID 		Type 	Description
 					<height>auto</height>
 					<centertop>40%</centertop>
 					<itemgap>2</itemgap>
-						
+					
 					<control type="grouplist">
 						<visible>Player.Forwarding | Player.Rewinding | !String.IsEmpty(Player.SeekOffset) | !String.IsEmpty(Player.SeekStepSize)</visible>
 						
@@ -131,7 +126,6 @@ ID 		Type 	Description
 					</control>
 					<control type="progress">
 						<visible>!Window.IsActive(videoosd)</visible>
-						
 						<top>15</top>
 						<reveal>true</reveal>
 						<centerleft>50%</centerleft>
@@ -182,6 +176,8 @@ ID 		Type 	Description
 				</control>
 				
 			</control>
+			
+			<include content="videofullscreen_infopanel" condition="!Player.HasGame" />
 			
 			<control type="group">
 				<description>match osd seekbar</description>
