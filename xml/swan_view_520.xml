@@ -6,11 +6,14 @@
 		<control type="group">
 			<visible>Control.IsVisible(520)</visible>
 			
-			<control type="image">
-				<visible>false</visible>
-				<texture colordiffuse="ff131313">colors/white80.png</texture> 
-				<aspectratio scalediffuse="true" align="left" aligny="top">stretch</aspectratio>
-			</control>
+			<include content="Fanart_Diffused">
+				<animation effect="fade" start="100" end="10" time="350" easing="inout" reversible="true" condition="true">conditional</animation>
+				<right>0</right>
+				<param name="width" value="1267" />
+				<param name="height" value="731" />
+				<param name="diffuse" value="diffuse/spotlightleftdiffuse.png" />
+				<param name="visible" value="$PARAM[spotlight_artwork_visible_right]" />
+			</include>
 			
 			<control type="group">
 				<description>metadata n button top</description>
@@ -25,9 +28,9 @@
 				<control type="image">
 					<height>350</height>
 					<width>350</width>
-					<bordersize>20</bordersize>
-					<bordertexture colordiffuse="$VAR[color_lib_infopanel_frame]">colors/white.png</bordertexture>
-					<texture diffuse="colors/white80.png">$INFO[ListItem.Icon]</texture> 
+					<bordersize>10</bordersize>
+					<bordertexture colordiffuse="white">colors/white.png</bordertexture>
+					<texture diffuse="colors/white90.png">$INFO[ListItem.Icon]</texture> 
 					<aspectratio scalediffuse="true" align="left" aligny="top">keep</aspectratio>
 				</control>
 				
@@ -49,20 +52,21 @@
 						
 						<control type="label">
 							<height>40</height>
-							<label>$INFO[ListItem.Artist]</label>
+							<label>$INFO[ListItem.Label,[B],[/B]]</label>
+							<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 							<font>notosans_26_semibold</font>
-						
-							
 						</control>
 						<control type="label">
 							<height>40</height>
-							<label>listitem.dbtype</label>
+							<textcolor>$VAR[color_spotlightlib_accent]</textcolor>
+							<label>$INFO[listitem.genre]</label>
 							<font>notosans_16_bold</font>
 						</control>
 						<control type="textbox">
 							<height>120</height>
-							<width>60%</width>
+							<width>80%</width>
 							<label>$VAR[plot]</label>
+							<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
 							<font>notosans_22_regular_lowlined</font>
 							<!-- <font>liberationsans_23_bold</font> -->
 						</control>
@@ -75,11 +79,13 @@ ListItem.TotalDiscs 	The total amount of discs belonging to an album
 						<control type="label">	
 						<!-- container.content.albums $INFO[ListItem.Duration(hh:mm)]
 						,$INFO[container.content] -->
+							<visible>false</visible>
 							<top>10</top>
 							<height>20</height>
 							<align>left</align>
-							<font>notosans_16_bold</font>
-							<label>$INFO[container.numitems, $LOCALIZE[132]:,]$INFO[ListItem.Duration(hh:mm),     $LOCALIZE[180]: ,]</label>
+							<font>notosans_18_bold</font>
+							<textcolor>$VAR[color_spotlightlib_main]</textcolor>
+							<label>[B]$INFO[container.numitems, $LOCALIZE[132]:,]$INFO[ListItem.Duration(hh:mm),     $LOCALIZE[180]: ,][/B]</label>
 						</control>
 						
 						
@@ -87,14 +93,14 @@ ListItem.TotalDiscs 	The total amount of discs belonging to an album
 					</control>
 					
 					<control type="grouplist">
-						<top>245</top>
+						<top>260</top>
 						<visible>Control.IsVisible(520)</visible>
 						<animation effect="slide" start="0,0" end="0,-10" time="0" condition="true">conditional</animation>
 						<!-- <animation effect="fade" start="100" end="0" time="300" easing="inout" condition="!Control.HasFocus($PARAM[belonging_containerid])">conditional</animation> -->
 						<description>try using control id is enabled + prop is true for content call auto disable control via on focus or use hidden window - booth should could be usable by using send click</description>
-						<width>1700</width>
+						<width>80%</width>
 						<height>80</height>
-						<align>left</align>
+						<!-- <align>center</align> -->
 						<orientation>horizontal</orientation>
 						
 					
