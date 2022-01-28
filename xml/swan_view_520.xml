@@ -52,9 +52,23 @@
 						
 						<control type="label">
 							<height>40</height>
-							<label>$INFO[ListItem.Label,[B],[/B]]</label>
+							<label>$INFO[ListItem.Artist,[B],[/B]]</label>
 							<textcolor>$VAR[color_spotlightlib_main]</textcolor>
-							<font>notosans_26_semibold</font>
+							<font>notosans_30_semibold</font>
+						</control>
+						<control type="label">
+							<height>25</height>
+							<visible>Container.Content(songs) | Container.Content(albums)</visible>
+							<label>$INFO[ListItem.Album,[B],[/B]]$INFO[ListItem.Year,    (,)]</label>
+							<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
+							<font>notosans_21_semibold</font>
+						</control>
+						<control type="label">
+							<height>25</height>
+							<visible>!String.IsEmpty(ListItem.DiscNumber) | !String.IsEmpty(ListItem.DiscTitle) </visible>
+							<label>$INFO[ListItem.DiscNumber,Disc:  ,]$INFO[ListItem.DiscTitle,[B],[/B]]</label>
+							<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
+							<font>notosans_16_regular</font>
 						</control>
 						<control type="label">
 							<height>40</height>
@@ -63,6 +77,7 @@
 							<font>notosans_16_bold</font>
 						</control>
 						<control type="textbox">
+							<description>why album plot sometimes shown and sometimes not - same album</description>
 							<height>120</height>
 							<width>80%</width>
 							<label>$VAR[plot]</label>
@@ -93,6 +108,9 @@ ListItem.TotalDiscs 	The total amount of discs belonging to an album
 					</control>
 					
 					<control type="grouplist">
+						
+						<description>TOUCH CONTROL  - other just usefull if 1 row hor list</description>
+					
 						<top>260</top>
 						<visible>Control.IsVisible(520)</visible>
 						<animation effect="slide" start="0,0" end="0,-10" time="0" condition="true">conditional</animation>
@@ -152,7 +170,16 @@ ListItem.TotalDiscs 	The total amount of discs belonging to an album
 				
 			
 			</control>
-			<!-- placeholder -->
+			
+			
+			
+			<include content="musicinfo_song_sheet">
+				<param name="visible" value="Container.Content(Songs)"/>
+				<param name="top" value="580"/>
+				<param name="left" value="145"/>
+			</include>
+			
+			
 			<control type="panel" id="520">
 				<description>stored playlists</description>
 				<preloaditems>2</preloaditems>
@@ -166,9 +193,13 @@ ListItem.TotalDiscs 	The total amount of discs belonging to an album
 				<onup>41</onup>
 				<ondown>42</ondown>
 				
+				<!-- <animation effect="slide" start="0,0" end="0,50" time="250" condition="Container.Content(Songs)">conditional</animation> -->
+				<animation effect="slide" start="0,0" end="0,80" time="250" condition="Container.Content(Songs) + String.IsEqual(Container(520).ListItemAbsolute(0).Label,..)">conditional</animation>
+				<animation effect="slide" start="0,0" end="0,60" time="250" condition="Container.Content(Songs) + !String.IsEqual(Container(520).ListItemAbsolute(0).Label,..)">conditional</animation>
+				
 				<viewtype label="music list">icon</viewtype>
 				<scrolltime tween="quadratic">400</scrolltime>
-				<itemlayout height="150" width="290" condition="true">
+				<itemlayout height="150" width="290" condition="!Container.Content(Songs)">
 					<control type="group">
 						<width>283</width>
 						<height>140</height>
@@ -189,7 +220,7 @@ ListItem.TotalDiscs 	The total amount of discs belonging to an album
 						</include>
 					</control>
 				</itemlayout>
-				<focusedlayout height="150" width="290" condition="true">
+				<focusedlayout height="150" width="290" condition="!Container.Content(Songs)">
 					<include content="hiddenbutton_manage_skinpropertys" />
 					<control type="group">
 						<width>283</width>
@@ -214,8 +245,27 @@ ListItem.TotalDiscs 	The total amount of discs belonging to an album
 						</control>
 					</control>
 				</focusedlayout>
-			</control>
-		</control>
+				
+				
+				<!-- future inverted colors n bg panel -->
+						<itemlayout height="38" condition="Container.Content(songs)">
+							<include content="music_list_1row">
+								<param name="focsed" value="false"/>
+								<param name="text_main" value="$VAR[color_lib_text_secondary]"/>
+								<param name="text_secondary" value="$VAR[color_lib_text_secondary]"/>
+								<param name="text_accent" value="$VAR[color_lib_text_secondary]"/>
+							</include>
+						</itemlayout>
+						<focusedlayout height="40" condition="Container.Content(songs)">
+							<include content="music_list_1row">
+								<param name="focsed" value="true"/>
+								<param name="text_main" value="$VAR[color_lib_text_main]"/>
+								<param name="text_secondary" value="$VAR[color_lib_text_secondary]"/>
+								<param name="text_accent" value="$VAR[color_lib_accent]"/>
+							</include>
+						</focusedlayout>
+					</control>
+				</control>
 		
 		
 	
