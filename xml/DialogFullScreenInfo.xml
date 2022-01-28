@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
-	<defaultcontrol always="true">7102</defaultcontrol>
+	<defaultcontrol always="true">700</defaultcontrol>
 	<onload condition="skin.hassetting(fullscreeninfo_pauseonload) + !player.paused">PlayerControl(play)</onload>
+	<onload condition="!String.IsEmpty(VideoPlayer.Artist)">SetProperty(playerartist,$INFO[VideoPlayer.Artist],home)</onload>
+	
 	<controls>
 	
 		<!-- NOTES : keep either empty to place controls (special ratings, cast ...) in videoOSD.xml and have it visible at contition for the slide fade animations , if mouse is hovering osd will forced activated -->
 		<!-- preety unhappy about some stuff and unsure how i want it - get active osd or not to gain focus -->
-		<control type="button" id="799">
-			<include>HiddenObject</include>
-			<onclick>SetFocus(7102)</onclick>
-			<onup>Close</onup>
-			<ondown>Close</ondown>
-			<onleft>Close</onleft>
-			<onright>Close</onright>
-		</control>
+		
+		<!-- 
 		<control type="list" id="699">
 			<description>not in use</description>
 			<include>HiddenContainer</include>
 			<content limit="1">$VAR[CurrentlyPlayingItem]</content>
 		</control>
+		-->
+		
+		
 		<control type="list" id="2000">
-			<description>skin helping stuff  not in use</description>
+			<visible>Integer.IsGreater(VideoPlayer.DBID,0)</visible>
+			<description>skin helping stuff - used for additional ratings</description>
 			<include>HiddenContainer</include>
 			<content limit="1">$VAR[EmbuaryHelper_GetPlayerInfo_dbid]</content>
 		</control>
@@ -34,7 +34,6 @@
 				<effect type="fade" start="100" end="0" time="200" tween="sine" easing="out" />
 				<effect type="slide" start="0" end="0,1920" time="250" tween="cubic" easing="out" />
 			</animation>
-			<animation effect="fade" start="100" end="0" time="400" condition="[Player.Paused + System.IdleTime(5) + [!Window.IsActive(videoosd) + !Window.IsActive(fullscreeninfo)]] | $EXP[embinfodialogactive] | Window.IsActive(1104)">conditional</animation>
 			<width>100%</width>
 			<height>100%</height>
 			<description> temp ? - show together with osd ctrls </description>
@@ -163,13 +162,6 @@
 						<left>-15</left>
 						<visible>Control.IsVisible(7102)</visible>
 					</include>
-						<!-- meeh ? head
-						<param name="label_color" value="$VAR[color_osdvideo_button_fo]" />
-						-->
-						<!-- meeh ? container fo|nf
-						<param name="item_artwork_bordercolor_fo" value="$VAR[color_osdvideo_button_fo]" />
-						<param name="item_artwork_bordercolor_nf" value="$VAR[color_osdvideo_button_nf]" /> -->
-					
 					<include condition="!VideoPlayer.Content(musicvideos)" content="Universal_Container">
 						<param name="id" value="7102" />
 						<param name="visible" value="Integer.IsGreater(Container(7102).NumItems,0) | Container(7102).IsUpdating" />
@@ -190,6 +182,7 @@
 						<param name="item_infotags_bgpanel_visible" value="false" />
 						<right>8</right>
 						<include>Action_CastMemberSearchForceOption</include>
+						
 						<content>$VAR[content_cast_video]</content>
 					</include>
 					<include condition="VideoPlayer.Content(musicvideos)" content="Universal_Container">
@@ -205,16 +198,26 @@
 						<right>298</right>
 						<!-- <onclick condition="VideoPlayer.Content(musicvideos)">ActivateWindow(musicinformation)</onclick> -->
 						<!-- 
+						go to hub NOTE No PREV ID IS SET -->
 						
-						go to hub NOTE No PREV ID IS SET
-						<onclick>SetProperty(HUB_Music,SongsByAlbum,home)</onclick>
-						<onclick>close</onclick>
+						<!-- <onclick>SetProperty(HUB_Music,SongsByAlbum,home)</onclick>
+						<onclick>Dialog.Close(all,true)</onclick>
 						<onclick condition="Integer.IsGreater(container(7102).ListItem.TotalDiscs,1)">SetProperty(HUB_containerpath_albums,$INFO[container(7102).ListItem.FolderPath],home)</onclick>
 						<onclick condition="Integer.IsGreater(container(7102).ListItem.TotalDiscs,1)">ActivateWindow(1110)</onclick>
 						<onclick condition="Integer.IsGreater(container(7102).ListItem.TotalDiscs,1)">AlarmClock(delayedfocus,SetFocus(5120,0,absolute),00:00,silent)</onclick>
-						<onclick condition="Integer.IsEqual(container(7102).ListItem.TotalDiscs,1) | String.IsEmpty(container(7102).ListItem.TotalDiscs)">SetProperty(HUB_containerpath_songs,$INFO[[container(7102).ListItem.FolderPath],home)</onclick>
+						<onclick condition="Integer.IsEqual(container(7102).ListItem.TotalDiscs,1) | String.IsEmpty(container(7102).ListItem.TotalDiscs)">SetProperty(HUB_containerpath_songs,$INFO[container(7102).ListItem.FolderPath],home)</onclick>
 						<onclick condition="Integer.IsEqual(container(7102).ListItem.TotalDiscs,1) | String.IsEmpty(container(7102).ListItem.TotalDiscs)">ActivateWindow(1110)</onclick>
 						<onclick condition="Integer.IsEqual(container(7102).ListItem.TotalDiscs,1) | String.IsEmpty(container(7102).ListItem.TotalDiscs)">AlarmClock(delayedfocus,SetFocus(5121,0,absolute),00:00,silent)</onclick> -->
+						
+						<onclick>Dialog.Close(all,true)</onclick>
+						<!-- 
+						all albums
+						<onclick>ActivateWindow(music,musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(playerartist)]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D,return)</onclick>
+						<onclick>AlarmClock(clearprop,ClearProperty(playerartist,home),00:01,silent)</onclick> -->
+						
+						<!-- songs by album -->
+						<onclick>ActivateWindow(music,$INFO[ListItem.Folderpath],return)</onclick>
+						<onclick>AlarmClock(clearprop,ClearProperty(playerartist,home),00:01,silent)</onclick>
 						<content>musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[VideoPlayer.Artist]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</content>
 					</include>
 					<include content="Universal_ContainerHeader">
@@ -228,7 +231,7 @@
 					</include>
 					<include condition="VideoPlayer.Content(musicvideos)" content="Universal_Container">
 						<param name="id" value="7104" />
-						<param name="visible" value="Integer.IsGreater(Container(7102).NumItems,0) | Container(7102).IsUpdating" />
+						<param name="visible" value="Integer.IsGreater(Container(7104).NumItems,0) | Container(7104).IsUpdating" />
 						<param name="type_height" value="250" />
 						<param name="type_pos_top" value="0" />
 						<param name="layout_height" value="170" />
@@ -239,7 +242,8 @@
 						<param name="itemheight" value="155" />
 						<param name="item_artwork_name" value="landscape" />
 						<right>298</right>
-						<content>videodb://musicvideos/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[videoplayer.artist]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</content>
+						<!-- <onclick>SCRIPT ADD TO PLAYLIST vs ADDnPLAY</onclick> -->
+						<content>videodb://musicvideos/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[VideoPlayer.Artist]%22%5D%7D%2C%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%22$INFO[VideoPlayer.Title]%22%5D%7D%5D%7D%2C%22type%22%3A%22musicvideos%22%7D</content>
 					</include>
 					
 				</control>
