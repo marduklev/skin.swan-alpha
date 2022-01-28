@@ -7,7 +7,7 @@
 			<visible>Control.IsVisible(520)</visible>
 			
 			<include content="Fanart_Diffused">
-				<animation effect="fade" start="100" end="10" time="350" easing="inout" reversible="true" condition="true">conditional</animation>
+				<animation effect="fade" start="100" end="25" time="350" easing="inout" reversible="true" condition="true">conditional</animation>
 				<right>0</right>
 				<param name="width" value="1267" />
 				<param name="height" value="731" />
@@ -26,11 +26,12 @@
 				
 				
 				<control type="image">
+					<visible>!String.StartsWith(ListItem.Icon,default)</visible>
 					<height>350</height>
 					<width>350</width>
 					<bordersize>10</bordersize>
 					<bordertexture colordiffuse="white">colors/white.png</bordertexture>
-					<texture diffuse="colors/white90.png">$INFO[ListItem.Icon]</texture> 
+					<texture diffuse="colors/white80.png">$VAR[ImageLayout_poster]</texture> <!-- make var - dont dimm art on albums/songs --> 
 					<aspectratio scalediffuse="true" align="left" aligny="top">keep</aspectratio>
 				</control>
 				
@@ -50,12 +51,24 @@
 						<align>left</align>
 						<orientation>vertical</orientation>
 						
+						<!-- till variable -->
 						<control type="label">
+							<visible>Window.IsActive(music)</visible>
 							<height>40</height>
 							<label>$INFO[ListItem.Artist,[B],[/B]]</label>
 							<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 							<font>notosans_30_semibold</font>
 						</control>
+						<!-- till variable -->
+						<control type="label">
+							<visible>Window.IsActive(videos)</visible>
+							<height>40</height>
+							<label>$INFO[ListItem.Title,[B],[/B]]$INFO[ListItem.Year,[CR]    (,)]</label>
+							<textcolor>$VAR[color_spotlightlib_main]</textcolor>
+							<font>notosans_30_semibold</font>
+						</control>
+						
+						
 						<control type="label">
 							<height>25</height>
 							<visible>Container.Content(songs) | Container.Content(albums)</visible>
@@ -185,6 +198,8 @@ ListItem.TotalDiscs 	The total amount of discs belonging to an album
 				<preloaditems>2</preloaditems>
 				<orientation>vertical</orientation>
 				
+				<visible>Container.Content(artists) | Container.Content(albums) | Container.Content(songs) | Container.Content(movies) | Container.Content(tvshows) | Container.Content(sets)</visible>
+				
 				<top>570</top>
 				<left>150</left>
 				<width>1700</width>
@@ -199,7 +214,7 @@ ListItem.TotalDiscs 	The total amount of discs belonging to an album
 				
 				<viewtype label="music list">icon</viewtype>
 				<scrolltime tween="quadratic">400</scrolltime>
-				<itemlayout height="150" width="290" condition="Container.Content(artists)">
+				<itemlayout height="150" width="290" condition="Container.Content(artists) | Container.Content(movies) | Container.Content(tvshows) | Container.Content(sets)">
 					<control type="group">
 						<width>296</width>
 						<height>156</height>
@@ -220,7 +235,7 @@ ListItem.TotalDiscs 	The total amount of discs belonging to an album
 						</include>
 					</control>
 				</itemlayout>
-				<focusedlayout height="150" width="290" condition="Container.Content(artists)">
+				<focusedlayout height="150" width="290" condition="Container.Content(artists) | Container.Content(movies) | Container.Content(tvshows) | Container.Content(sets)">
 					<include content="hiddenbutton_manage_skinpropertys" />
 					<control type="group">
 						<width>296</width>
