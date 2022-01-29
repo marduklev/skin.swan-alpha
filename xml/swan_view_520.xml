@@ -244,6 +244,10 @@ ListItem.TotalDiscs 	The total amount of discs belonging to an album
 			
 			
 			<control type="panel" id="520">
+				
+				<animation effect="fade" start="100" end="0" time="350" easing="inout" reversible="true" condition="[Player.HasVideo + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))]">conditional</animation>
+					
+				
 				<preloaditems>2</preloaditems>
 				<orientation>vertical</orientation>
 				<onup condition="Control.IsVisible(19)">SetFocus(19)</onup>
@@ -429,7 +433,74 @@ ListItem.TotalDiscs 	The total amount of discs belonging to an album
 							</include>
 						</focusedlayout>
 					</control>
-				</control>
+			
+			
+			
+			<control type="label">
+				<animation effect="fade" start="0" end="100" time="350" easing="inout" reversible="true">VisibleChange</animation>
+				<visible>[Player.HasVideo + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))]</visible>
+				
+				<bottom>0</bottom>
+				<left>180</left>
+				<height>470</height>
+				<right>20</right>
+				<label>$LOCALIZE[206]</label>
+				<textcolor>$VAR[color_spotlightlib_contentheading]</textcolor>
+				<font>montserrat_40_extrabold</font>
+				<aligny>top</aligny>
+			</control>
+			<control type="panel" id="50350">
+				<animation effect="fade" start="0" end="100" time="350" easing="inout" reversible="true">VisibleChange</animation>
+				<visible>[Player.HasVideo + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))]</visible>
+				<bottom>0</bottom>
+				<left>180</left>
+				<height>400</height>
+				<right>20</right>
+				<scrolltime tween="quadratic">400</scrolltime>
+				<preloaditems>2</preloaditems>
+				<orientation>horizontal</orientation>
+				
+				
+				<itemlayout height="380" width="230">
+					<control type="group">
+						<height>202</height>
+						<width>202</width>
+						<control type="group">
+							<include content="Circle_CastWidget">
+								<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_nf]" />
+								<param name="infotags_autoscroll" value="false" />
+								<param name="artwork_bg_bordersize" value="6" />
+							</include>
+						</control>
+					</control>
+				</itemlayout>
+				<focusedlayout height="380" width="230">
+					<control type="group">
+						<height>202</height>
+						<width>202</width>
+						<include>Animation_Item_Focus</include>
+						<control type="group">
+							<visible>!Control.HasFocus(50350)</visible>
+							<include content="Circle_CastWidget">
+								<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_nf]" />
+								<param name="infotags_autoscroll" value="false" />
+								<param name="artwork_bg_bordersize" value="6" />
+							</include>
+						</control>
+						<control type="group">
+							<visible>Control.HasFocus(50350)</visible>
+							<include content="Circle_CastWidget">
+								<param name="colordiffuse" value="$VAR[color_spotlightlib_itemframe_fo]" />
+								<param name="infotags_autoscroll" value="false" />
+								<param name="artwork_bg_bordersize" value="4" />
+							</include>
+						</control>
+					</control>
+				</focusedlayout>
+				<content>$VAR[content_cast]</content>
+			</control>
+			
+		</control>
 		
 		
 	
