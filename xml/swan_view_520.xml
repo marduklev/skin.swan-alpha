@@ -13,16 +13,40 @@
 					<param name="diffuse" value="diffuse/spotlightleftdiffuse.png" />
 					<param name="visible" value="$PARAM[spotlight_artwork_visible_right]" />
 				</include>
-				<include content="spotlight_trailer_overlay">
+				<include condition="false" content="spotlight_trailer_overlay">
 					<param name="trailer_visible_right" value="true" />
 					<param name="trailer_visible_left" value="false" />
 					<param name="diffusetexture" value="diffuse/spotlighttraileroverlayleft.png" />
 				</include>
+				
+				<control type="group">
+					<description>may other pos x - thumb : info : videowindow</description>
+						<!-- <animation effect="slide" start="0,0" end="600,0" time="350" easing="inout" reversible="true" condition="[Player.HasVideo + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))]">conditional</animation> -->
+					
+					<animation effect="zoom" start="0,100" end="100,100" time="250" easing="inout" reversible="true">VisibleChange</animation>
+					<visible>[Player.HasVideo + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))]</visible>
+					<left>410</left>
+					<!-- <right>50</right> -->
+					<top>200</top>
+					<width>612</width>
+					<height>350</height>
+					<bottom>100</bottom>
+					<control type="image">
+						<texture>colors/black.png</texture>
+						<bordersize>2</bordersize>
+						<bordertexture>colors/white.png</bordertexture>
+					</control>
+					<control type="videowindow">
+						<top>2</top>
+						<bottom>2</bottom>
+						<left>9</left>
+						<width>97%</width>
+						
+					</control>
+				</control>
 			
 			
 			<control type="group">
-					
-				
 				<description>metadata n button top</description>
 				<visible>Control.IsVisible(520)</visible>
 				<orientation>horizontal</orientation>
@@ -30,7 +54,6 @@
 				<left>150</left>
 				<top>200</top>
 				<height>380</height>
-				
 				
 				<control type="image">
 					<!-- <visible>!String.StartsWith(ListItem.Icon,default) | icon used for tvshows thumbs</visible> -->
@@ -44,8 +67,9 @@
 				</control>
 				
 				<control type="group">
-					<animation effect="fade" start="100" end="0" time="350" easing="inout" reversible="true" condition="[Player.HasVideo + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))]">conditional</animation>
-					
+					<animation effect="slide" start="0,0" end="530,0" time="350" easing="inout" reversible="true" condition="[Player.HasVideo + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))]">conditional</animation>
+						 <!-- trailer right -<animation effect="slide" start="0,0" end="-100,0" time="350" easing="inout" reversible="true" condition="[Player.HasVideo + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))]">conditional</animation> -->
+						
 					<description>metadata</description>
 					<visible>Control.IsVisible(520)</visible>
 					<orientation>vertical</orientation>
@@ -55,10 +79,6 @@
 					<left>380</left>
 					<width>1200</width>
 					<height>30</height>
-					
-					
-					
-					
 					
 					<control type="grouplist">
 						<visible>true</visible>
@@ -84,7 +104,6 @@
 							<font>notosans_30_semibold</font>
 						</control>
 						
-						
 						<control type="label">
 							<height>25</height>
 							<visible>Container.Content(songs) | Container.Content(albums)</visible>
@@ -106,14 +125,25 @@
 							<font>notosans_16_bold</font>
 						</control>
 						<control type="textbox">
-							<description>why album plot sometimes shown and sometimes not - same album</description>
+							<visible>String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
 							<height>120</height>
 							<width>80%</width>
 							<label>$VAR[plot]</label>
 							<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
 							<font>notosans_22_regular_lowlined</font>
-							<!-- <font>liberationsans_23_bold</font> -->
 						</control>
+						<control type="textbox">
+							<visible>!String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
+							<height>120</height>
+								<width>50%</width> <!-- trailer left -->
+								<!-- <width>46%</width> trailer right -->
+							<label>$VAR[plot]</label>
+							<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
+							<font>notosans_22_regular_lowlined</font>
+						</control>
+						
+						
+					
 						
 						<!-- another listing - flags 
 ListItem.DiscTitle 	The disc title of the currently selected album or song 	v19
@@ -138,7 +168,11 @@ ListItem.TotalDiscs 	The total amount of discs belonging to an album
 					
 					<control type="grouplist">
 						<visible>!Skin.HasSetting(View_520_Hide_Touch_Controls)</visible>
+						<animation effect="fade" start="100" end="0" time="350" easing="inout" reversible="true" condition="[Player.HasVideo + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))]">conditional</animation>
+					
+						
 						<description>TOUCH CONTROL  - other just usefull if 1 row hor list</description>
+						
 					
 						<top>260</top>
 						<visible>Control.IsVisible(520)</visible>
