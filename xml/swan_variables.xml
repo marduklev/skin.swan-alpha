@@ -318,6 +318,18 @@
 		<value> | </value>
 	</variable>
 	
+	
+	<variable name="content_cast_visible">
+		<value condition="String.IsEqual(ListItem.DBType,set)">true</value>
+		<value condition="String.IsEqual(ListItem.DBType,movie) + [!String.IsEmpty(ListItem.DBID) + !String.IsEqual(ListItem.DBID,0)]">true</value>
+		<value condition="String.IsEqual(ListItem.DBType,movie) + String.IsEqual(ListItem.DBID,0)">true</value>
+		<value condition="String.IsEqual(ListItem.DBType,tvshow) + [!String.IsEmpty(ListItem.DBID) + !String.IsEqual(ListItem.DBID,0)]">true</value>
+		<value condition="[String.IsEqual(ListItem.DBType,tvshow) + String.IsEqual(ListItem.DBID,0)] | [[String.IsEqual(ListItem.DBType,episode) | String.IsEqual(ListItem.DBType,season)] + !String.IsEmpty(ListItem.DBID)]">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem.TVShowTitle]'</value>
+		<value condition="Container.Content(seasons) + !String.IsEmpty(ListItem(1).DBID)">true</value>
+		<value condition="Container.Content(seasons) + !String.IsEmpty(ListItem(2).DBID)">true</value>
+		<value condition="[!$EXP[IsOfflineMode] + [Window.IsActive(movieinformation) | String.IsEmpty(ListItem.DBID,0)] + System.HasAddon(plugin.video.themoviedb.helper)] + [String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow)]">true</value>
+		<value>false</value>
+	</variable>
 	<variable name="content_cast">
 		<value condition="String.IsEqual(ListItem.DBType,set)">plugin://script.embuary.helper?info=getsetcast&amp;type=movie&amp;dbid=$INFO[ListItem.DBID]</value>
 		<value condition="String.IsEqual(ListItem.DBType,movie) + [!String.IsEmpty(ListItem.DBID) + !String.IsEqual(ListItem.DBID,0)]">plugin://script.embuary.helper?info=getcast&amp;type=movie&amp;dbid=$INFO[ListItem.DBID]</value>
@@ -326,7 +338,8 @@
 		<value condition="[String.IsEqual(ListItem.DBType,tvshow) + String.IsEqual(ListItem.DBID,0)] | [[String.IsEqual(ListItem.DBType,episode) | String.IsEqual(ListItem.DBType,season)] + !String.IsEmpty(ListItem.DBID)]">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem.TVShowTitle]'</value>
 		<value condition="Container.Content(seasons) + !String.IsEmpty(ListItem(1).DBID)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem(1).TVShowTitle]'</value>
 		<value condition="Container.Content(seasons) + !String.IsEmpty(ListItem(2).DBID)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem(2).TVShowTitle]'</value>
-		<value condition="[!$EXP[IsOfflineMode] + [Window.IsActive(movieinformation) | Control.IsVisible(503)] + System.HasAddon(plugin.video.themoviedb.helper)] + [String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow)]">plugin://plugin.video.themoviedb.helper/?info=cast&amp;$VAR[videoinfo_tmdb_helper_type]&amp;$VAR[videoinfo_tmdb_helper_query]</value>
+		<value condition="[!$EXP[IsOfflineMode] + [Window.IsActive(movieinformation) | String.IsEmpty(ListItem.DBID,0)] + System.HasAddon(plugin.video.themoviedb.helper)] + [String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow)]">plugin://plugin.video.themoviedb.helper/?info=cast&amp;$VAR[videoinfo_tmdb_helper_type]&amp;$VAR[videoinfo_tmdb_helper_query]</value>
+		<value>nocast</value>
 	</variable>
 	
 		<!-- sortby appearance ? is there such prop ? -->
@@ -349,7 +362,8 @@
 	<variable name="content_cast_video">
 		<value condition="VideoPlayer.Content(movies) + [!String.IsEmpty(VideoPlayer.DBID) + !String.IsEqual(VideoPlayer.DBID,0)]">plugin://script.embuary.helper?info=getcast&amp;type=movie&amp;dbid=$INFO[videoplayer.DBID]</value>
 		<value condition="VideoPlayer.Content(episodes) + [!String.IsEmpty(VideoPlayer.DBID) + !String.IsEqual(VideoPlayer.DBID,0)]">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[VideoPlayer.DBID]&amp;idtype=episode</value>
-		<value>plugin://plugin.video.themoviedb.helper/?info=cast&amp;$VAR[videofullscreeninfo_tmdb_helper_type]&amp;$VAR[videofullscreeninfo_tmdb_helper_query]</value>
+		<value condition="!$EXP[IsOfflineMode] + String.IsEmpty(VideoPlayer.DBID) + System.HasAddon(plugin.video.themoviedb.helper)">plugin://plugin.video.themoviedb.helper/?info=cast&amp;$VAR[videofullscreeninfo_tmdb_helper_type]&amp;$VAR[videofullscreeninfo_tmdb_helper_query]</value>
+		<value>-</value>
 	</variable>
 	
 	<variable name="fullscreeninfo_7002_header">
