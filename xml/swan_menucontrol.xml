@@ -3892,8 +3892,62 @@ RadioSearch
 		<value condition="String.IsEqual(Control.GetLabel(10),$LOCALIZE[16102])"></value>
 	</variable>
 	
-	<!-- later on use custom -->
-	<include name="shutdownmenu_content">
+
+	<!-- revisit System.Platform.Android | System.ShowExitButton -->
+	<include name="shutdownmenu_item">
+		<item>
+			<include condition="string.isequal(skin.string(shutdownmenuitem$PARAM[nr]_action),ActivateWindow(home))" content="shutdownmenu_itemvisibility">
+				<param name="visible" value="!Window.IsVisible(loginscreen) + !Window.IsVisible(home)" />
+			</include>
+			<include condition="string.isequal(skin.string(shutdownmenuitem$PARAM[nr]_action),ActivateWindow(settings))" content="shutdownmenu_itemvisibility">
+				<param name="visible" value="!Window.IsVisible(loginscreen) + !Window.IsVisible(settings)" />
+			</include>
+			<include condition="string.isequal(skin.string(shutdownmenuitem$PARAM[nr]_action),quit())" content="shutdownmenu_itemvisibility">
+				<param name="visible" value="System.Platform.Android | System.ShowExitButton" />
+			</include>
+			<include condition="string.isequal(skin.string(shutdownmenuitem$PARAM[nr]_action),powerdown())" content="shutdownmenu_itemvisibility">
+				<param name="visible" value="System.CanPowerDown" />
+			</include>
+			<include condition="string.isequal(skin.string(shutdownmenuitem$PARAM[nr]_action),reboot())" content="shutdownmenu_itemvisibility">
+				<param name="visible" value="System.CanReboot" />
+			</include>
+			
+			<include condition="string.isequal(skin.string(shutdownmenuitem$PARAM[nr]_action),suspend())" content="shutdownmenu_itemvisibility">
+				<param name="visible" value="System.CanSuspend" />
+			</include>
+			<include condition="string.isequal(skin.string(shutdownmenuitem$PARAM[nr]_action),hibernate())" content="shutdownmenu_itemvisibility">
+				<param name="visible" value="System.CanHibernate" />
+			</include>
+			<include condition="string.isequal(skin.string(shutdownmenuitem$PARAM[nr]_action),system.logoff)" content="shutdownmenu_itemvisibility">
+				<param name="visible" value="[System.HasLoginScreen | Integer.IsGreater(System.ProfileCount,1)] + System.Loggedon" />
+			</include>
+			
+			
+			<visible>!String.IsEmpty(Skin.String(shutdownmenuitem$PARAM[nr]_action))</visible>
+			<label>$INFO[Skin.String(shutdownmenuitem$PARAM[nr]_name)]</label>
+			<label2>[I]user defined[/I]</label2>
+			<thumb>$INFO[Skin.String(shutdownmenuitem$PARAM[nr]_thumb)]</thumb>
+			<icon>$INFO[Skin.String(shutdownmenuitem$PARAM[nr]_thumb)]</icon>
+			<onclick condition="System.HasActiveModalDialog">Dialog.Close(all,true)</onclick>
+			<onclick condition="!System.HasActiveModalDialog">Close</onclick>
+			<onclick>$INFO[Skin.String(shutdownmenuitem$PARAM[nr]_action)]</onclick>
+		</item>
+		
+		<item>
+			<label>$LOCALIZE[20151] $INFO[System.AlarmPos,(,)]</label>
+			<icon>icons/alarmcancel.png</icon>
+			<onclick>CancelAlarm(shutdowntimer)</onclick>
+			<visible>System.HasAlarm(shutdowntimer) + string.isequal(skin.string(shutdownmenuitem$PARAM[nr]_action),alarmclock(shutdowntimer,shutdown()))</visible>
+		</item>
+		
+	</include>
+	
+	<include name="shutdownmenu_itemvisibility">
+		<visible>$PARAM[visible]</visible>
+	</include>
+		
+	<!-- 
+<include name="shutdownmenu_content old">
 	<content>
 		<item>
 			<label>$LOCALIZE[10000]</label>
@@ -3985,6 +4039,9 @@ RadioSearch
 		</item>
 		</content>
 	</include>
+	-->
+	
+	
 	
 	<variable name="menucontrol_container930_heading">
 		<value condition="Control.HasFocus(930) | String.StartsWith(System.CurrentControlid,70) | String.StartsWith(System.CurrentControlid,40)">[B]$INFO[Container(930).ListItem.Label][/B]</value>
