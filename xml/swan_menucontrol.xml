@@ -2672,7 +2672,7 @@ autosubmenu is mostly dynamic, even favourites when use a variable in 5556 conte
 	</include>
 	
 	<include name="mainmenu_item_actions_common">
-		<onclick condition="[Skin.HasSetting(home_tile_focus_submenu) + !Skin.HasSetting(mainmenuitem$PARAM[nr]_disablesubmenu)] + string.isequal(Skin.String(HomeLayout),MenuTiles)">SetFocus(5556)</onclick>   
+		<onclick condition="[Skin.HasSetting(home_tile_focus_submenu) + [!Skin.HasSetting(mainmenuitem$PARAM[nr]_disablesubmenu) + !string.isempty(Skin.String(mainmenuitem$PARAM[nr]_path))]] + string.isequal(Skin.String(HomeLayout),MenuTiles)">SetFocus(5556)</onclick>   
 		<onclick condition="String.IsEqual(Skin.String(mainmenuitem$PARAM[nr]_target),1120)">Skin.SetString(SearchTerm)</onclick>   
 		<onclick condition="Skin.String(mainmenuitem$PARAM[nr]_executebuiltin)">$INFO[Skin.String(mainmenuitem$PARAM[nr]_executebuiltin)]</onclick>
 		<onclick condition="!Skin.String(mainmenuitem$PARAM[nr]_path)">ActivateWindow($INFO[Skin.String(mainmenuitem$PARAM[nr]_target)],return)</onclick>
@@ -2742,28 +2742,11 @@ plugin://script.embuary.helper/?info=getbyargs&filter_args='"{"field": "playcoun
 			<content limit="1">$VAR[CurrentlyPlayingItem]</content>
 		</control>
 		
-		<control type="group">
-			<!-- option a|b using big window
-			<width>1800</width>
-			<height>700</height>
-			<centerleft>50%</centerleft>
-			<centertop>50%</centertop>
-			may get rid
-			-->
-			<visible>false</visible>
-			<control type="videowindow" />
-			<!-- <control type="image">
-				option b overlay common if big window
-			</control> -->
-		</control>
-		
 		<control type="multiimage">
 			<depth>DepthBackground</depth>
 			<fadetime>3000</fadetime>
 			<imagepath>$VAR[home_tiles_background]</imagepath>
 		</control>
-		
-		
 		
 		<control type="group">
 			<description>in future template for currently playing bar - ref musci_hub n skinsetting for use it at top</description>
@@ -3283,7 +3266,7 @@ plugin://script.embuary.helper/?info=getbyargs&filter_args='"{"field": "playcoun
 				
 			b) if click focus and fade submenu in (may get issues with onback)
 			-->
-			<include content="Universal_Container">
+			<include content="Universal_Container" condition="Skin.HasSetting(home_tile_focus_submenu)">
 				<param name="type" value="panel" />
 				<param name="id" value="5556" />
 				<param name="type_height" value="150" />
@@ -3325,7 +3308,7 @@ plugin://script.embuary.helper/?info=getbyargs&filter_args='"{"field": "playcoun
 			</include>
 			
 			<control type="group">
-				<visible>Control.HasFocus(5556)</visible>
+				<visible>Skin.HasSetting(home_tile_focus_submenu) + Control.HasFocus(5556)</visible>
 				<top>222</top>
 				<animation effect="slide" start="0,0" end="0,340" time="0" condition="integer.isequal(Container(5555).row,1)">conditional</animation>
 				<animation effect="fade" start="0" end="100" time="250">VisibleChange</animation>
