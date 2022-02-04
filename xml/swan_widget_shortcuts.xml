@@ -350,16 +350,10 @@
 		</include>
 		
 		<control type="label" id="80">
-			<description>SHUTDOWN MENU ITEMS id80 - ??
-add
-
-EjectTray()  - either open/close : System.HasMediadvd 
-PlayDisc(param) : System.HasMediadvd
-
-</description>
+			<description>SHUTDOWN MENU ITEMS</description>
 			<visible>String.IsEqual(Window(home).Property(shortcutaction_inprogress),shutdownmenu)</visible>
 			<height>60</height>
-			<label>PRE DEFINMED SHUTDOWN MENU ITEMS</label>
+			<label>DEFAULT SHUTDOWN-MENU ITEMS</label>
 			<font>notosans_30_bold</font>
 		</control>
 		
@@ -393,52 +387,48 @@ PlayDisc(param) : System.HasMediadvd
 			<param name="label" value="$LOCALIZE[13013]" />
 			<param name="thumb" value="icons/shittyrebbot.png" />
 		</include>
-		
 		<include content="SwanShortcuts_SetShutdownmenuItem_CommonButton" condition="System.CanPowerDown | System.CanSuspend | System.CanHibernate">
 			<param name="button_id" value="86" />
 			<param name="action" value="alarmclock(shutdowntimer,shutdown())" />
 			<param name="label" value="$LOCALIZE[20150]" />
 			<param name="thumb" value="icons/alarmadd.png" />
 		</include>
-				
-		<include content="SwanShortcuts_SetShutdownmenuItem_CommonButton" condition="true">
-			<param name="button_id" value="87" />
-			<param name="action" value="RunScript(special://skin/scripts/multiple_test.py)" />
-			<param name="label" value="test" />
-			<param name="thumb" value="icons/debug.png" />
-		</include>	
-		
 		<include content="SwanShortcuts_SetShutdownmenuItem_CommonButton" condition="System.CanSuspend">
-			<param name="button_id" value="88" />
+			<param name="button_id" value="87" />
 			<param name="action" value="suspend()" />
 			<param name="label" value="$LOCALIZE[13011]" />
 			<param name="thumb" value="icons/suspend.png" />
 		</include>
 		<include content="SwanShortcuts_SetShutdownmenuItem_CommonButton" condition="System.CanHibernate">
-			<param name="button_id" value="89" />
+			<param name="button_id" value="88" />
 			<param name="action" value="hibernate()" />
 			<param name="label" value="$LOCALIZE[13010]" />
 			<param name="thumb" value="icons/hibernate.png" />
 		</include>
 		<include content="SwanShortcuts_SetShutdownmenuItem_CommonButton">
-			<param name="button_id" value="90" />
+			<param name="button_id" value="89" />
 			<param name="action" value="reload.skin()" />
-			<param name="label" value="reloadskin" />
+			<param name="label" value="$LOCALIZE[20183]" />
 			<param name="thumb" value="resource://resource.images.skin.swan/tempfoldersqaurethumbs/synchronize.png" />
 		</include>
 		<include content="SwanShortcuts_SetShutdownmenuItem_CommonButton" condition="System.HasMediadvd">
-			<param name="button_id" value="91" />
+			<param name="button_id" value="90" />
 			<param name="action" value="EjectTray()" />
-			<param name="label" value="Eject / Close Disc Tray" />
+			<param name="label" value="$LOCALIZE[13276] $LOCALIZE[427] • $LOCALIZE[13391]" />
 			<param name="thumb" value="" />
 		</include>
 		<include content="SwanShortcuts_SetShutdownmenuItem_CommonButton" condition="System.HasMediadvd">
-			<param name="button_id" value="92" />
+			<param name="button_id" value="91" />
 			<param name="action" value="PlayDisc()" />
 			<param name="label" value="Play Disc" />
 			<param name="thumb" value="" />
 		</include>
-		
+		<include content="SwanShortcuts_SetShutdownmenuItem_CommonButton" condition="false">
+			<param name="button_id" value="95" />
+			<param name="action" value="RunScript(special://skin/scripts/multiple_test.py)" />
+			<param name="label" value="test" />
+			<param name="thumb" value="icons/debug.png" />
+		</include>	
 		
 		<control type="label" id="71">
 			<description>set direct or use selectdialog ?</description>
@@ -453,6 +443,9 @@ PlayDisc(param) : System.HasMediadvd
 			<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),mainmenu)">Skin.Reset(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_executebuiltin)</onclick>
 			<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),mainmenu)">Skin.Reset(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_path)</onclick>
 			<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_target)</onclick>
+			<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_thumb,resource://resource.images.skin.swan/tempfoldersqaurethumbs/info.png)</onclick>
+			<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_name,mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)])</onclick>
+			
 			<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),widget)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_target)</onclick>
 		</control>
 		<control type="button" id="73">
@@ -470,11 +463,16 @@ PlayDisc(param) : System.HasMediadvd
 			<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),mainmenu)">Skin.Reset(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_target)</onclick>
 			<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),mainmenu)">Skin.Reset(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_path)</onclick>
 			<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_executebuiltin)</onclick>
+			<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_thumb,resource://resource.images.skin.swan/tempfoldersqaurethumbs/info.png)</onclick>
+			<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),mainmenu)">Skin.SetString(mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_name,Custom mainmenuitem$INFO[Window(home).Property(shortcutitem_nr)])</onclick>
 			
 			<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),shutdownmenu)">Skin.Reset(shutdownmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_action)</onclick>
 			<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),shutdownmenu)">Skin.Reset(shutdownmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_thumb)</onclick>
-			<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),shutdownmenu)">Skin.Reset(shutdownmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_label)</onclick>
+			<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),shutdownmenu)">Skin.Reset(shutdownmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_name)</onclick>
 			<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),shutdownmenu)">Skin.SetString(shutdownmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_action)</onclick>
+			<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),shutdownmenu)">Skin.SetString(shutdownmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_thumb,resource://resource.images.skin.swan/tempfoldersqaurethumbs/info.png)</onclick>
+			<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),shutdownmenu)">Skin.SetString(shutdownmenuitem$INFO[Window(home).Property(shortcutitem_nr)]_name,Custom shutdownmenuitem$INFO[Window(home).Property(shortcutitem_nr)])</onclick>
+			
 		</control>
 	</include>
 	
@@ -3068,7 +3066,7 @@ System.ExecWait(script.sh)
 	
 	<include name="shutdownmenu_content">
 	<content>
-		<include content="shutdownmenu_item" condition="true">
+		<include content="shutdownmenu_item">
 			<param name="nr" value="1" />
 		</include>
 		<include content="shutdownmenu_item">
@@ -3128,35 +3126,34 @@ System.ExecWait(script.sh)
 		<include content="shutdownmenu_item">
 			<param name="nr" value="20" />
 		</include>
-			
-			<item>
-				<label>$LOCALIZE[20126][CR]$INFO[system.profilename]</label>
-				<icon>icons/profilelogoff.png</icon>
-				<onclick>Dialog.Close(all,true)</onclick>
-				<onclick>System.LogOff</onclick>
-				<visible>[System.HasLoginScreen | Integer.IsGreater(System.ProfileCount,1)] + System.Loggedon</visible>
-			</item>
-			<item>
-				<label>$LOCALIZE[20046]</label>
-				<onclick>mastermode</onclick>
-				<visible>!Window.IsVisible(loginscreen) + System.HasLocks + System.IsMaster</visible>
-			</item>
-			<item>
-				<label>$LOCALIZE[20045]</label>
-				<onclick>mastermode</onclick>
-				<visible>!Window.IsVisible(loginscreen) + System.HasLocks + !System.IsMaster</visible>
-			</item>
-			<item>
-				<label>$LOCALIZE[13017]</label>
-				<onclick>InhibitIdleShutdown(true)</onclick>
-				<visible>System.HasShutdown + !System.IsInhibit</visible>
-			</item>
-			<item>
-				<label>$LOCALIZE[13018]</label>
-				<onclick>InhibitIdleShutdown(false)</onclick>
-				<visible>System.HasShutdown + System.IsInhibit</visible>
-			</item>
-		</content>
-	</include>
+		<item>
+			<label>$LOCALIZE[20126][CR]$INFO[system.profilename]</label>
+			<icon>icons/profilelogoff.png</icon>
+			<onclick>Dialog.Close(all,true)</onclick>
+			<onclick>System.LogOff</onclick>
+			<visible>[System.HasLoginScreen | Integer.IsGreater(System.ProfileCount,1)] + System.Loggedon</visible>
+		</item>
+		<item>
+			<label>$LOCALIZE[20046]</label>
+			<onclick>mastermode</onclick>
+			<visible>!Window.IsVisible(loginscreen) + System.HasLocks + System.IsMaster</visible>
+		</item>
+		<item>
+			<label>$LOCALIZE[20045]</label>
+			<onclick>mastermode</onclick>
+			<visible>!Window.IsVisible(loginscreen) + System.HasLocks + !System.IsMaster</visible>
+		</item>
+		<item>
+			<label>$LOCALIZE[13017]</label>
+			<onclick>InhibitIdleShutdown(true)</onclick>
+			<visible>System.HasShutdown + !System.IsInhibit</visible>
+		</item>
+		<item>
+			<label>$LOCALIZE[13018]</label>
+			<onclick>InhibitIdleShutdown(false)</onclick>
+			<visible>System.HasShutdown + System.IsInhibit</visible>
+		</item>
+	</content>
+</include>
 	
 </includes>
