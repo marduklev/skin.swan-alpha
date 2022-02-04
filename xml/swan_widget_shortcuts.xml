@@ -369,7 +369,7 @@
 			<param name="label" value="$LOCALIZE[5]" />
 			<param name="thumb" value="icons/settingsslider.png" />
 		</include>
-		<include content="SwanShortcuts_SetShutdownmenuItem_CommonButton">
+		<include content="SwanShortcuts_SetShutdownmenuItem_CommonButton" condition="System.ShowExitButton">
 			<param name="button_id" value="83" />
 			<param name="action" value="quit()" />
 			<param name="label" value="$LOCALIZE[13012]" />
@@ -3144,14 +3144,22 @@ System.ExecWait(script.sh)
 			<visible>!Window.IsVisible(loginscreen) + System.HasLocks + !System.IsMaster</visible>
 		</item>
 		<item>
-			<label>$LOCALIZE[13017]</label>
-			<onclick>InhibitIdleShutdown(true)</onclick>
-			<visible>System.HasShutdown + !System.IsInhibit</visible>
+			<description>Allow idle shutdown / Ausschalten bei Leerlauf erlauben ~ System.IsInhibit : when shutdown on idle is disabled; System.HasShutdown is not false ??</description>
+			<label>$LOCALIZE[13018]</label>
+			<icon>resource://resource.images.skin.swan/tempfoldersqaurethumbs/shutdown-timer.png</icon>
+			<onclick>Dialog.Close(all,true)</onclick>
+			<onclick>InhibitIdleShutdown(false)</onclick>
+			<!-- <visible>System.IsInhibit + !System.HasShutdown</visible> -->
+			<visible>!Window.IsVisible(loginscreen) + System.IsInhibit</visible>
 		</item>
 		<item>
-			<label>$LOCALIZE[13018]</label>
-			<onclick>InhibitIdleShutdown(false)</onclick>
-			<visible>System.HasShutdown + System.IsInhibit</visible>
+			<description>Inhibit idle shutdown / Ausschalten bei Leerlauf verhindern , System.HasShutdown is not true??</description>
+			<label>$LOCALIZE[13017]</label>
+			<icon>resource://resource.images.skin.swan/tempfoldersqaurethumbs/shutdown-timer.png</icon>
+			<onclick>Dialog.Close(all,true)</onclick>
+			<onclick>InhibitIdleShutdown(true)</onclick>
+			<!-- <visible>!System.IsInhibit + System.HasShutdown</visible> -->
+			<visible>!Window.IsVisible(loginscreen) + !System.IsInhibit</visible>
 		</item>
 	</content>
 </include>
