@@ -405,21 +405,39 @@
 			<param name="label" value="$LOCALIZE[13010]" />
 			<param name="thumb" value="icons/hibernate.png" />
 		</include>
-		<include content="SwanShortcuts_SetShutdownmenuItem_CommonButton">
+		<include content="SwanShortcuts_SetShutdownmenuItem_CommonButton" condition="true">
 			<param name="button_id" value="89" />
+			<param name="action" value="system.logoff" />
+			<param name="label" value="$LOCALIZE[20126] current user" />
+			<param name="thumb" value="icons/profilelogoff.png" />
+		</include>
+		<include content="SwanShortcuts_SetShutdownmenuItem_CommonButton" condition="true">
+			<param name="button_id" value="90" />
+			<param name="action" value="mastermode" />
+			<param name="label" value="$LOCALIZE[20046]" />
+			<param name="thumb" value="resource://resource.images.skin.swan/tempfoldersqaurethumbs/mastermode.png" />
+		</include>
+		<include content="SwanShortcuts_SetShutdownmenuItem_CommonButton" condition="true">
+			<param name="button_id" value="91" />
+			<param name="action" value="inhibitidleshutdown(false)" />
+			<param name="label" value="$LOCALIZE[13018]" />
+			<param name="thumb" value="resource://resource.images.skin.swan/tempfoldersqaurethumbs/shutdown-timer.png" />
+		</include>
+		<include content="SwanShortcuts_SetShutdownmenuItem_CommonButton">
+			<param name="button_id" value="92" />
 			<param name="action" value="reloadskin()" />
 			<param name="label" value="$LOCALIZE[20183]" />
 			<param name="thumb" value="resource://resource.images.skin.swan/tempfoldersqaurethumbs/synchronize.png" />
 		</include>
 		<include content="SwanShortcuts_SetShutdownmenuItem_CommonButton" condition="System.HasMediadvd">
-			<param name="button_id" value="90" />
-			<param name="action" value="EjectTray()" />
+			<param name="button_id" value="93" />
+			<param name="action" value="ejecttray()" />
 			<param name="label" value="$LOCALIZE[13276] $LOCALIZE[427] • $LOCALIZE[13391]" />
 			<param name="thumb" value="" />
 		</include>
 		<include content="SwanShortcuts_SetShutdownmenuItem_CommonButton" condition="System.HasMediadvd">
-			<param name="button_id" value="91" />
-			<param name="action" value="PlayDisc()" />
+			<param name="button_id" value="94" />
+			<param name="action" value="playdisc()" />
 			<param name="label" value="Play Disc" />
 			<param name="thumb" value="" />
 		</include>
@@ -3126,41 +3144,6 @@ System.ExecWait(script.sh)
 		<include content="shutdownmenu_item">
 			<param name="nr" value="20" />
 		</include>
-		<item>
-			<label>$LOCALIZE[20126][CR]$INFO[system.profilename]</label>
-			<icon>icons/profilelogoff.png</icon>
-			<onclick>Dialog.Close(all,true)</onclick>
-			<onclick>System.LogOff</onclick>
-			<visible>[System.HasLoginScreen | Integer.IsGreater(System.ProfileCount,1)] + System.Loggedon</visible>
-		</item>
-		<item>
-			<label>$LOCALIZE[20046]</label>
-			<onclick>mastermode</onclick>
-			<visible>!Window.IsVisible(loginscreen) + System.HasLocks + System.IsMaster</visible>
-		</item>
-		<item>
-			<label>$LOCALIZE[20045]</label>
-			<onclick>mastermode</onclick>
-			<visible>!Window.IsVisible(loginscreen) + System.HasLocks + !System.IsMaster</visible>
-		</item>
-		<item>
-			<description>Allow idle shutdown / Ausschalten bei Leerlauf erlauben ~ System.IsInhibit : when shutdown on idle is disabled; System.HasShutdown is not false ??</description>
-			<label>$LOCALIZE[13018]</label>
-			<icon>resource://resource.images.skin.swan/tempfoldersqaurethumbs/shutdown-timer.png</icon>
-			<onclick>Dialog.Close(all,true)</onclick>
-			<onclick>InhibitIdleShutdown(false)</onclick>
-			<!-- <visible>System.IsInhibit + !System.HasShutdown</visible> -->
-			<visible>!Window.IsVisible(loginscreen) + System.IsInhibit</visible>
-		</item>
-		<item>
-			<description>Inhibit idle shutdown / Ausschalten bei Leerlauf verhindern , System.HasShutdown is not true??</description>
-			<label>$LOCALIZE[13017]</label>
-			<icon>resource://resource.images.skin.swan/tempfoldersqaurethumbs/shutdown-timer.png</icon>
-			<onclick>Dialog.Close(all,true)</onclick>
-			<onclick>InhibitIdleShutdown(true)</onclick>
-			<!-- <visible>!System.IsInhibit + System.HasShutdown</visible> -->
-			<visible>!Window.IsVisible(loginscreen) + !System.IsInhibit</visible>
-		</item>
 	</content>
 </include>
 	
