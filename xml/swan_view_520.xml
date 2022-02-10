@@ -24,164 +24,6 @@
 		<value condition="$EXP[IsTVShow]">$INFO[Window(home).Property(totalseasons)] $VAR[Season_PluSing] | $INFO[Window(home).Property(totalepisodes)] $VAR[Episode_PluSing] $INFO[Window(home).Property(status),  | [B],[/B]]</value>
 		<!-- maybe optional <value condition="!String.IsEmpty(ListItem.TagLine)">$INFO[ListItem.TagLine]</value> -->
 	</variable>	
-	<!-- 
-	<include name="520_episodelayout">
-		<param name="color" default="$VAR[color_spotlightlib_background_layer1]" />
-		<param name="tc" default="$VAR[color_spotlightlib_main]" />
-		<param name="is_focused" default="true" />
-		
-		<definition>
-			<control type="group">
-				<top>3</top>
-				<nested />
-				
-				<control type="image">
-					<description>focus frame bad if item bg match global bg</description>
-					<texture colordiffuse="$VAR[color_spotlightlib_itemframe_fo]">colors/white.png</texture>
-					<top>0</top>
-					<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
-					<visible>$PARAM[is_focused]</visible>
-				</control>
-				<control type="image">
-					<description>focus frame bad if item bg match global bg</description>
-					<texture colordiffuse="$VAR[color_spotlightlib_itemframe_nf]">colors/white.png</texture>
-					<top>0</top>
-					<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
-					<visible>!$PARAM[is_focused]</visible>
-				</control>
-				<control type="image">
-					<description>tile bg</description>
-					<texture colordiffuse="$PARAM[color]">colors/white.png</texture>
-					<top>0</top>
-					<bordersize>5</bordersize>
-					<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
-				</control>
-				
-				<control type="group">
-					<animation type="focus">
-						<effect type="zoom" center="50%,50%" start="100" end="101.3,102.5" time="150" easing="inout" />
-					</animation>
-					<animation type="unfocus">
-						<effect type="zoom" center="50%,50%" start="101.3,102.5" end="100" time="150" easing="inout" />
-					</animation>
-					<top>10</top>
-					<left>10</left>
-					<bottom>10</bottom>
-					<right>10</right>
-					<control type="image">
-						<texture background="true">$VAR[ImageLayout_fanart]</texture>
-					</control>
-					<control type="image">
-						<decscription>better use hardcoded</decscription>
-						<top>45%</top>
-						<texture colordiffuse="ff131313">diffuse/episodeinfogradient.png</texture>
-					</control>
-					
-					
-				</control>
-					
-				<control type="group">
-					<bottom>3</bottom>
-					<include content="var_rating_workaraound">
-						<param name="rating" value="tvdb" />
-						<param name="rating_image" value="tvdb" />
-					</include>
-					<include content="var_rating_workaraound">
-						<param name="rating" value="themoviedb" />
-						<param name="rating_image" value="themoviedb" />
-					</include>
-					<include content="var_rating_workaraound">
-						<param name="rating" value="imdb" />
-						<param name="rating_image" value="imdb" />
-					</include>
-					<control type="image">
-						<visible>
-						 !String.IsEmpty(ListItem.Rating) + [
-						 String.IsEmpty(ListItem.Rating(tvdb)) + 
-						 String.IsEmpty(ListItem.Rating(themoviedb)) + 
-						 String.IsEmpty(ListItem.Rating(imdb)) + 
-						 String.IsEmpty(ListItem.Rating(metacritic)) + 
-						 String.IsEmpty(ListItem.Rating(tomatometerallaudience)) + 
-						 String.IsEmpty(ListItem.Rating(tomatometerallcritics)) + 
-						 String.IsEmpty(ListItem.Rating(tomatometeravgaudience)) + 
-						 String.IsEmpty(ListItem.Rating(tomatometeravgcritics))
-						 ]
-						</visible>
-						<bottom>15</bottom>
-						<right>60</right>
-						<width>100</width>
-						<height>25</height>
-						<texture>flags/ratings/star.png</texture>
-						<aspectratio align="right">keep</aspectratio>
-					</control>
-				</control>
-				<control type="button">
-					<visible>!String.IsEmpty(Container(50352).ListItem(0).Genre)</visible>
-					<align>center</align>
-					<textoffsetx>10</textoffsetx>
-					
-					<textcolor>white</textcolor>
-					<disabledcolor>white</disabledcolor>
-					<texturefocus border="2" colordiffuse="white">frames/frame.png</texturefocus>
-					<texturenofocus border="2" colordiffuse="white">frames/frame.png</texturenofocus>
-					<enable>false</enable>
-					<bottom>15</bottom>
-					<left>15</left>
-					<width min="32">auto</width>
-					<height>30</height>
-					<font>notosans_16_bold</font>
-					<label>$INFO[ListItem.Genre]</label>
-				</control>
-				<control type="label">
-					<bottom>80</bottom>
-					<left>15</left>
-					<width>auto</width>
-					<height>30</height>
-					<font>notosans_18_bold</font>
-					<textcolor>white</textcolor>
-					<label>Nächste Folge : $INFO[ListItem.Season,$LOCALIZE[20373]  [B],[/B]]$INFO[ListItem.Episode,   $LOCALIZE[20359]  [B],[/B]]</label>
-				</control>
-				<control type="label">
-					<bottom>55</bottom>
-					<left>15</left>
-					<width>auto</width>
-					<height>30</height>
-					<font>notosans_18_bold</font>
-					<textcolor>white</textcolor>
-					<label>$INFO[ListItem.Title,[B],[/B]]</label>
-				</control>
-				<control type="progress">
-					<visible>Integer.IsGreater(ListItem.PercentPlayed,0) + ListItem.IsResumable</visible>
-					<visible>!Container.Content(sets)</visible>
-					<bottom>52</bottom>
-					<left>13</left>
-					<width>460</width>
-					<height>2</height>
-					<align>left</align>
-					<info>ListItem.PercentPlayed</info>
-				</control>
-				
-				
-				<include condition="$PARAM[is_focused]" content="FocusOverlay">
-					<param name="bordersize" value="5" />
-				</include>
-			</control>
-				
-			
-		</definition>
-	</include>
-	-->
-	<!-- <itemlayout height="150" width="290" condition="Container.Content(episodes)">
-		<include content="520_episodelayout">
-			<param name="is_focused" value="false" />
-		</include>
-	</itemlayout>
-	<focusedlayout height="150" width="290" condition="Container.Content(episodes)">
-		<include content="520_episodelayout">
-			<param name="is_focused" value="true" />
-		</include>
-	</focusedlayout>
-	 -->
 	
 	<include name="view_520">
 		<control type="group">
@@ -518,7 +360,7 @@ ListItem.TotalDiscs 	The total amount of discs belonging to an album
 								<right>2</right>
 								<font>notosans_12_semibold</font>
 								<textcolor>white</textcolor>
-								<label>$INFO[ListItem.Episode,  $LOCALIZE[20359] [B],[/B]]</label>
+								<label>$INFO[ListItem.Episode,  $LOCALIZE[20359] ,]</label>
 							</control>
 							<control type="label">
 								<visible>Container.Content(episodes) + String.Contains(container.folderpath,/-1/)</visible>
@@ -528,7 +370,7 @@ ListItem.TotalDiscs 	The total amount of discs belonging to an album
 								<right>2</right>
 								<font>notosans_12_semibold</font>
 								<textcolor>white</textcolor>
-								<label>$INFO[ListItem.Season,$LOCALIZE[20373] [B],[/B]]$INFO[ListItem.Episode,  $LOCALIZE[20359] [B],[/B]]</label>
+								<label>$INFO[ListItem.Season,$LOCALIZE[20373] ,]$INFO[ListItem.Episode,  $LOCALIZE[20359] ,]</label>
 							</control>
 					</control>
 				</itemlayout>
@@ -563,7 +405,7 @@ ListItem.TotalDiscs 	The total amount of discs belonging to an album
 								<right>2</right>
 								<font>notosans_12_semibold</font>
 								<textcolor>white</textcolor>
-								<label>$INFO[ListItem.Episode,  $LOCALIZE[20359] [B],[/B]]</label>
+								<label>$INFO[ListItem.Episode,  $LOCALIZE[20359] ,]</label>
 							</control>
 							<control type="label">
 								<visible>Container.Content(episodes) + String.Contains(container.folderpath,/-1/)</visible>
@@ -573,7 +415,7 @@ ListItem.TotalDiscs 	The total amount of discs belonging to an album
 								<right>2</right>
 								<font>notosans_12_semibold</font>
 								<textcolor>white</textcolor>
-								<label>$INFO[ListItem.Season,$LOCALIZE[20373] [B],[/B]]$INFO[ListItem.Episode,  $LOCALIZE[20359] [B],[/B]]</label>
+								<label>$INFO[ListItem.Season,$LOCALIZE[20373] ,]$INFO[ListItem.Episode,  $LOCALIZE[20359] ,]</label>
 							</control>
 						</control>
 						
