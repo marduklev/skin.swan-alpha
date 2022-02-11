@@ -28,13 +28,10 @@
 	<include name="view_520">
 		<control type="group">
 			<visible>Control.IsVisible(520)</visible>
-					
-				
-					<control type="image">
-						<visible>Player.HasVideo + !$EXP[TrailerIsPlaying]</visible>
-						<texture colordiffuse="ff131313">colors/white90.png</texture>
-					</control>
-			
+				<control type="image">
+					<visible>Player.HasVideo + !$EXP[TrailerIsPlaying]</visible>
+					<texture colordiffuse="ff131313">colors/white90.png</texture>
+				</control>
 				<include content="Fanart_Diffused">
 					<animation effect="fade" start="100" end="25" time="350" easing="inout" reversible="true" condition="true">conditional</animation>
 					<right>0</right>
@@ -43,20 +40,12 @@
 					<param name="diffuse" value="diffuse/spotlightleftdiffuse.png" />
 					<param name="visible" value="$PARAM[spotlight_artwork_visible_right]" />
 				</include>
-				<include condition="false" content="spotlight_trailer_overlay">
-					<param name="trailer_visible_right" value="true" />
-					<param name="trailer_visible_left" value="false" />
-					<param name="diffusetexture" value="diffuse/spotlighttraileroverlayleft.png" />
-				</include>
 				
 				<control type="group">
-					<description>may other pos x - thumb : info : videowindow</description>
-						<!-- <animation effect="slide" start="0,0" end="600,0" time="350" easing="inout" reversible="true" condition="[Player.HasVideo + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))]">conditional</animation> -->
-					
+					<description>trailer preview videowindow</description>
 					<animation effect="zoom" start="0,100" end="100,100" time="250" easing="inout" reversible="true">VisibleChange</animation>
 					<visible>[Player.HasVideo + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))]</visible>
 					<left>410</left>
-					<!-- <right>50</right> -->
 					<top>200</top>
 					<width>612</width>
 					<height>350</height>
@@ -71,15 +60,11 @@
 						<bottom>2</bottom>
 						<left>9</left>
 						<width>97%</width>
-						
 					</control>
 				</control>
 			
 			
 			<control type="group">
-				
-				
-				
 				<description>metadata n button top</description>
 				<visible>Control.IsVisible(520)</visible>
 				<orientation>horizontal</orientation>
@@ -88,8 +73,10 @@
 				<top>200</top>
 				<height>380</height>
 				
+				
+				<!-- to indicate 'poalaroid width' for  metadata group itemgap 50 and make wholöe meta group to a grouplist  -->
 				<control type="image">
-					<visible>!String.StartsWith(ListItem.Icon,default) | Container.Content(tvshows)</visible>
+					<visible>!String.StartsWith(ListItem.Icon,default) | String.IsEqual(ListItem.Icon,defaultfolder.png)</visible>
 					<description>polaroid thumb</description>
 					<height>350</height>
 					<width>350</width>
@@ -99,7 +86,7 @@
 					<aspectratio scalediffuse="true" align="left" aligny="top">keep</aspectratio>
 				</control>
 				<control type="image">
-					<visible>String.StartsWith(ListItem.Icon,default) + !Container.Content(tvshows)</visible>
+					<visible>String.StartsWith(ListItem.Icon,default) + !String.IsEqual(ListItem.Icon,defaultfolder.png)</visible>
 					<description>polaroid thumb</description>
 					<height>350</height>
 					<width>350</width>
@@ -110,10 +97,12 @@
 				</control>
 				
 				<control type="group">
-					<animation effect="slide" start="0,0" end="530,0" time="350" easing="inout" reversible="true" condition="[Player.HasVideo + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))]">conditional</animation>
-						 <!-- trailer right -<animation effect="slide" start="0,0" end="-100,0" time="350" easing="inout" reversible="true" condition="[Player.HasVideo + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))]">conditional</animation> -->
-						
 					<description>metadata</description>
+					
+					<animation effect="slide" start="0,0" end="530,0" time="350" easing="inout" reversible="true" condition="[Player.HasVideo + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))]">conditional</animation>
+					<!-- indicate 'poalaroid width' possibillity ? - variable ?? based on art, dont slide if 1:1  -->
+					<!-- ok, but may issues with addons  -->
+					<!-- <animation effect="slide" start="0,0" end="-80,0" time="0" condition="!String.IsEmpty(ListItem.Art(poster)) + !String.EndsWith(ListItem.Icon, fanart.png) + !String.EndsWith(ListItem.Icon, -1.png)">conditional</animation> -->
 					<visible>Control.IsVisible(520)</visible>
 					<orientation>vertical</orientation>
 					<aligny>top</aligny>
@@ -284,7 +273,7 @@ ListItem.TotalDiscs 	The total amount of discs belonging to an album
 				</control>
 				<include content="footer">
 					<animation effect="zoom" start="100" end="75" center="1500,270" condition="true">conditional</animation>
-					<animation effect="slide" start="0,0" end="0,-100" time="350" easing="inout" reversible="true" condition="!Skin.HasSetting(View_520_Hide_Touch_Controls) + !Skin.HasSetting(View_520_DisableFooter)">conditional</animation>
+					<animation effect="slide" start="0,0" end="0,-95" time="350" easing="inout" reversible="true" condition="!Skin.HasSetting(View_520_Hide_Touch_Controls) + !Skin.HasSetting(View_520_DisableFooter)">conditional</animation>
 					<width>1450</width>
 					<param name="view_id" value="520" />
 					<param name="footer_mediaflag_offsetleft" value="10" />
@@ -355,8 +344,8 @@ ListItem.TotalDiscs 	The total amount of discs belonging to an album
 						</include>
 							<control type="image">
 								<visible>Container.Content(episodes)</visible>
-								<decscription>better use hardcoded</decscription>
 								<height>50</height>
+								<!-- <bottom>8.5</bottom> -->
 								<bottom>9</bottom>
 								<left>8</left>
 								<right>8</right>
