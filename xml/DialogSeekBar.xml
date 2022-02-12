@@ -5,10 +5,9 @@ ID 		Type 	Description
 401 	slider 	Marker representing the current seek position ~ ?? is it supposed to equal Player.SeekBar 	Time to which the user is seeking as a percentage (for use in slider controls)
 402 	label 	Time label displaying current seek position ~ ?? is it supposed to equal Player.SeekTime 	Time to which the user is seeking
 -->
-	
+	<zorder>0</zorder>
 	<visible>Window.IsActive(fullscreenvideo)</visible>
-	<visible>!$EXP[embinfodialogactive] + !Window.IsVisible(1104) + !Window.IsVisible(1193)</visible>	
-	
+	<visible>!$EXP[embinfodialogactive] + !Window.IsVisible(1104) + !Window.IsVisible(1193)</visible>
 	<animation effect="fade" end="100" time="200">WindowOpen</animation>
 	<animation effect="fade" start="100" end="0" time="200">WindowClose</animation>
 		
@@ -18,7 +17,9 @@ ID 		Type 	Description
 			
 			<animation effect="fade" start="100" end="0" time="0" condition="Window.IsTopMost(sliderdialog) | Window.IsVisible(shutdownmenu) | Window.IsVisible(osdvideosettings) | Window.IsVisible(osdaudiosettings) | Window.IsVisible(osdsubtitlesettings) | Window.IsVisible(osdcmssettings) | Window.IsVisible(pvrosdchannels) | Window.IsVisible(teletext) | !String.IsEmpty(Window(home).Property(service.upnext.dialog))">Conditional</animation>
 			
-			
+			<!-- zorder workaround : seekbar zorder 0,other keep def 1
+			<animation effect="fade" start="100" end="0" time="0" condition="$EXP[embinfodialogactive] | Window.IsVisible(1104) | Window.IsVisible(1193)">Conditional</animation>
+			-->
 		
 			<control type="group">
 				<description>SeekNumeric</description>
