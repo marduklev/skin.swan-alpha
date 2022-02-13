@@ -164,7 +164,7 @@
 					hide some control, other wh values
 					<visible>!Skin.HasSetting(musicinfo_hide_randomsongs) + [Integer.IsGreater(Container(3110).NumItems,0) + !Container(3110).IsUpdating]</visible>
 					-->	
-					<include content="musicinfo_song_sheet">
+					<include content="songsheet_colums">
 						<param name="visible" value="!Skin.HasSetting(musicinfo_hide_randomsongs) + Control.IsVisible(3110) + [Integer.IsGreater(Container(3110).NumItems,0) + !Container(3110).IsUpdating]"/>
 						<param name="top" value="820"/>
 					</include>					
@@ -507,7 +507,7 @@
 					
 					
 				<!-- BIG LIST default -->
-					<include content="musicinfo_song_sheet">
+					<include content="songsheet_colums">
 						<param name="visible" value="Integer.IsGreater(Container(3201).NumItems,0) + !Container(3201).IsUpdating + ![Container.Content(artists) | String.IsEqual(ListItem.DBType,artist)]"/>
 					</include>
 					
@@ -543,7 +543,7 @@
 						<ondown condition="!Control.IsVisible(3301)">3202</ondown>
 						
 						<itemlayout height="50" condition="Container.Content(albums) | String.IsEqual(ListItem.DBType,album)">
-							<include content="music_list_1row">
+							<include content="songsheet_row_container">
 								<param name="focsed" value="false"/>
 								<param name="text_main" value="$VAR[color_lib_text_secondary]"/>
 								<param name="text_secondary" value="$VAR[color_lib_text_secondary]"/>
@@ -551,7 +551,7 @@
 							</include>
 						</itemlayout>
 						<focusedlayout height="50" condition="Container.Content(albums) | String.IsEqual(ListItem.DBType,album)">
-							<include content="music_list_1row">
+							<include content="songsheet_row_container">
 								<param name="focsed" value="true"/>
 								<param name="text_main" value="$VAR[color_lib_text_main]"/>
 								<param name="text_secondary" value="$VAR[color_lib_text_secondary]"/>
@@ -999,7 +999,7 @@
 			</control>
 		</focusedlayout>
 		<itemlayout height="50" condition="Container.Content(albums) | String.IsEqual(ListItem.DBType,album)">
-			<include content="music_list_1row">
+			<include content="songsheet_row_container">
 				<param name="focsed" value="false"/>
 				<param name="text_main" value="$VAR[color_lib_text_secondary]"/>
 				<param name="text_secondary" value="$VAR[color_lib_text_secondary]"/>
@@ -1007,7 +1007,7 @@
 			</include>
 		</itemlayout>
 		<focusedlayout height="50" condition="Container.Content(albums) | String.IsEqual(ListItem.DBType,album)">
-			<include content="music_list_1row">
+			<include content="songsheet_row_container">
 				<param name="focsed" value="true"/>
 				<param name="text_main" value="$VAR[color_lib_text_main]"/>
 				<param name="text_secondary" value="$VAR[color_lib_text_secondary]"/>
@@ -1041,10 +1041,11 @@
 </include>
 	
 	
-<include name="musicinfo_song_sheet">
+<include name="songsheet_colums">
 	<param name="top" default="120"/>
 	<param name="left" default="200"/>
-	
+	<param name="right" default="200"/>
+	<param name="color_main" default="$VAR[color_lib_text_main]"/>
 	<definition>
 	
 	
@@ -1052,18 +1053,18 @@
 			<visible>$PARAM[visible]</visible>
 			<top>$PARAM[top]</top>
 			<left>$PARAM[left]</left>
-			<right>200</right>
+			<right>$PARAM[right]</right>
 			<height>50</height>
 				
 			<control type="image">
 				<top>43</top>
 				<left>-10</left>
 				<height>1</height>
-				<texture colordiffuse="$VAR[color_lib_text_main]" background="true">colors/white40.png</texture>
+				<texture colordiffuse="$PARAM[color_main]" background="true">colors/white40.png</texture>
 			</control>
 			
 			<control type="label">
-				<description>disc</description>
+				<description>discnr , or better append after albumname ?</description>
 				<visible>false</visible>
 				<left>-60</left>
 				<top>3</top>
@@ -1071,7 +1072,7 @@
 				<width>50</width>
 				<font>notosans_16_bold</font>
 				<align>left</align>
-				<textcolor>$VAR[color_lib_text_main]</textcolor>
+				<textcolor>$PARAM[color_main]</textcolor>
 				<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
 				<label>Disc</label>
 			</control>
@@ -1084,11 +1085,10 @@
 				<width>50</width>
 				<font>notosans_16_bold</font>
 				<align>left</align>
-				<textcolor>$VAR[color_lib_text_main]</textcolor>
+				<textcolor>$PARAM[color_main]</textcolor>
 				<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
 				<label>#</label>
 			</control>
-		
 			<control type="label">
 				<description>title</description>
 				<left>50</left>
@@ -1097,114 +1097,185 @@
 				<width>450</width>
 				<font>notosans_16_bold</font>
 				<align>left</align>
-				<textcolor>$VAR[color_lib_text_main]</textcolor>
+				<textcolor>$PARAM[color_main]</textcolor>
 				<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
 				<label>T I T L E</label>
 			</control>
-			<control type="label">
-				<description>artist</description>
+			<control type="image">
 				<top>3</top>
-				<left>510</left>
+				<bordersize>3</bordersize>
+				<left>495</left>
+				<width>30</width>
+				<height>30</height>
+				<texture colordiffuse="$PARAM[color_main]">resource://resource.images.skin.swan/tempfoldersqaurethumbs/time.png</texture>
+				<aspectratio>keep</aspectratio>
+			</control>
+			<control type="label">
+				<description>artist - 2 rows ?</description>
+				<top>3</top>
+				<left>610</left>
 				<height>30</height>
 				<width>300</width>
 				<font>notosans_16_bold</font>
 				<align>left</align>
-				<textcolor>$VAR[color_lib_text_main]</textcolor>
+				<textcolor>$PARAM[color_main]</textcolor>
 				<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
 				<label>A R T I S T</label>
 			</control>
 			<control type="label">
+				<description>year</description>
 				<top>3</top>
-				<left>820</left>
-				<width>220</width>
+				<left>920</left>
+				<width>100</width>
 				<height>30</height>
 				<font>notosans_16_bold</font>
 				<align>left</align>
-				<textcolor>$VAR[color_lib_text_main]</textcolor>
+				<textcolor>$PARAM[color_main]</textcolor>
+				<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+				<label>Y E A R</label>
+			</control>
+			<control type="label">
+				<visible>[String.IsEqual(Container.SortMethod,$LOCALIZE[570]) | String.IsEqual(Container.SortMethod,$LOCALIZE[558])]</visible>
+				<visible>false</visible>
+				<top>3</top>
+				<left>1020</left>
+				<width>420</width>
+				<height>30</height>
+				<font>notosans_16_bold</font>
+				<align>left</align>
+				<textcolor>$PARAM[color_main]</textcolor>
+				<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+				<label>[UPPERCASE]$INFO[container.sortmethod][/UPPERCASE]</label>
+			</control>
+			<control type="label">
+				<top>3</top>
+				<left>1020</left>
+				<width>270</width>
+				<height>30</height>
+				<font>notosans_16_bold</font>
+				<align>left</align>
+				<textcolor>$PARAM[color_main]</textcolor>
 				<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
 				<label>G E N R E</label>
 			</control>
 			<control type="label">
 				<top>3</top>
-				<right>100</right>
-				<width>200</width>
+				<right>0</right>
+				<width>110</width>
 				<height>30</height>
 				<font>notosans_16_bold</font>
-				<align>left</align>
-				<textcolor>$VAR[color_lib_text_main]</textcolor>
+				<align>right</align>
+				<textcolor>$PARAM[color_main]</textcolor>
 				<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
-				<label>D U R A T I O N</label>
+				<label>R A T I N G</label>
 			</control>
 		</control>
 	</definition>				
 </include>
 
-view_50 , hub_box_[foo] layout(s) - merging for cleanup
-- param[label(s)]
-- focus
-- colors
-<include name="music_list_1row">
+<include name="songsheet_row_container">
 	<control type="group">
 		<centertop>50%</centertop>
-			
 		<control type="image">
+			<visible>!Window.IsActive(musicinformation)</visible>
 			<description>test best pract for reduce colors</description>
-			<visible>false</visible>
-			<bordertexture colordiffuse="$PARAM[text_main]">colors/white40.png</bordertexture>
-			<texture colordiffuse="$VAR[color_global_background_layer2]" background="true">colors/white40.png</texture>
-			<bordersize>3</bordersize>
+			<!-- <texture colordiffuse="$PARAM[text_main]">colors/white10.png</texture> -->
+			<texture colordiffuse="$VAR[color_spotlightlib_background_layer1]">colors/white40.png</texture>
+			<bordersize>2</bordersize>
 		</control>
 		<control type="image">
 			<visible>$PARAM[focsed]</visible>
-			<bordertexture colordiffuse="$PARAM[text_main]" background="true">colors/white20.png</bordertexture>
-			<texture colordiffuse="ff202020" background="true">colors/white40.png</texture>
-			<bordersize>4</bordersize>
+			<bordertexture colordiffuse="$PARAM[text_main]" border="2" background="true">frames/frame.png</bordertexture>
+			<texture colordiffuse="$VAR[color_spotlightlib_background_layer1]" background="true">colors/white10.png</texture>
+			<bordersize>1</bordersize>
 		</control>
+		<control type="image">
+			<visible>false</visible>
+			<visible>$PARAM[focsed]</visible>
+			<!-- <animation effect="zoom" start="100,100" end="103,100" center="100%,50%" time="200" tween="cubic" easing="in">Focus</animation> -->
+			<bordertexture colordiffuse="$PARAM[text_main]" background="true">colors/white20.png</bordertexture>
+			<texture colordiffuse="$VAR[color_spotlightlib_background_layer1]" background="true">colors/white40.png</texture>
+			<bordersize>3</bordersize>
+		</control>
+		<control type="image">
+			<visible>false</visible>
+			
+			<visible>$PARAM[focsed]</visible>
+			<animation effect="slide" start="0,0" end="-35,0" time="0" tween="cubic" easing="in">Focus</animation>
+			<texture colordiffuse="$PARAM[text_main]" diffuse="overlay/overlayplay.png" background="true">colors/white40.png</texture>
+			<centertop>50%</centertop>
+			<width>30</width>
+			<height>30</height>
+			<bordersize>3</bordersize>
+			<aspectratio aligny="center" align="center">kepp</aspectratio>
+		</control>
+		
 		<control type="label">
 			<left>10</left>
 			<width>500</width>
-			<font>notosans_16_bold</font>
+			<font>notosans_15_semibold</font>
 			<align>left</align>
 			<aligny>center</aligny>
 			<textcolor>$PARAM[text_main]</textcolor>
 			<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
 			<label>$INFO[ListItem.Tracknumber]</label>
 		</control>
-		<control type="label">
+		<control type="textbox">
 			<left>50</left>
-			<width>450</width>
-			<font>notosans_16_bold</font>
+			<width>445</width>
+			<font>notosans_15_semibold</font>
 			<align>left</align>
 			<textcolor>$PARAM[text_main]</textcolor>
 			<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
 			<label>$INFO[ListItem.Title]</label>
 		</control>
 		<control type="label">
-			<left>510</left>
-			<width>200</width>
-			<font>notosans_16_bold</font>
+			<left>500</left>
+			<width>100</width>
+			<font>notosans_15_semibold</font>
+			<align>left</align>
+			<textcolor>$PARAM[text_main]</textcolor>
+			<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+			<label>$INFO[ListItem.Duration]</label>
+		</control>
+		<control type="textbox">
+			<left>610</left>
+			<width>300</width>
+			<font>notosans_15_semibold</font>
 			<align>left</align>
 			<textcolor>$PARAM[text_main]</textcolor>
 			<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
 			<label>$INFO[ListItem.Artist]</label>
 		</control>
 		<control type="label">
-			<left>820</left>
-			<width>220</width>
-			<font>roboto_22_condensedregular</font>
+			<left>920</left>
+			<width>100</width>
+			<font>notosans_15_semibold</font>
 			<align>left</align>
 			<textcolor>$PARAM[text_main]</textcolor>
 			<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
-			<label>$INFO[ListItem.genre,,     ]</label>
+			<label>$INFO[ListItem.Year]</label>
 		</control>
 		<control type="label">
-			<right>100</right>
+			<description>container sortmethod  if not: duration,artist etc, need also workaround for dialogmusicinfo - as songsheet is shown on album level, where else is showing on container.content=songs</description>
+			<visible>[String.IsEqual(Container.SortMethod,$LOCALIZE[570]) | String.IsEqual(Container.SortMethod,$LOCALIZE[558])]</visible>
+			<visible>false</visible>
+			<left>1020</left>
 			<width>200</width>
-			<font>roboto_22_condensedregular</font>
+			<font>notosans_15_semibold</font>
 			<align>left</align>
 			<textcolor>$PARAM[text_main]</textcolor>
 			<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
-			<label>$INFO[ListItem.Duration,[B],[/B]]</label>
+			<label>$INFO[ListItem.Label2]</label>
+		</control>
+		<control type="textbox">
+			<left>1020</left>
+			<width>270</width>
+			<font>notosans_15_semibold</font>
+			<align>left</align>
+			<textcolor>$PARAM[text_main]</textcolor>
+			<selectedcolor>$VAR[color_lib_selected]</selectedcolor>
+			<label>$INFO[ListItem.genre]</label>
 		</control>
 		<include content="stars_rating">
 			<centertop>50%</centertop>
