@@ -13,13 +13,15 @@
 		incl w|h|font|colors|cond vis
 	-->
 	<variable name="list_item_rootinfo">
+		<value condition="String.StartsWith(Container.Folderpath,library) | Container.Content()">$INFO[System.CurrentWindow,[B],[/B]]</value>
 		<value condition="$EXP[IsEpisode]">$INFO[Container.ListItem.TVShowTitle,[B],[/B]]</value>
 		<value condition="$EXP[IsSeason]">$INFO[Container.ListItem.TVShowTitle,[B],[/B]]</value>
 		<value condition="!String.IsEmpty(ListItem.Artist)">$INFO[ListItem.Artist,[B],[/B]]</value>
 		<value>$INFO[ListItem.Label,[B],[/B]]$INFO[ListItem.Year,   (,)]</value>
 	</variable>
-	<expression name="mediatitem_subinfo">$EXP[IsEpisode] | $EXP[IsSeason] | $EXP[IsTVShow]</expression> <!--  | !String.IsEmpty(ListItem.TagLine) -->
+	<expression name="mediatitem_subinfo">$EXP[IsEpisode] | $EXP[IsSeason] | $EXP[IsTVShow] | [String.StartsWith(Container.Folderpath,library) | Container.Content()]</expression> <!--  | !String.IsEmpty(ListItem.TagLine) -->
 	<variable name="list_item_subinfo">
+		<value condition="String.StartsWith(Container.Folderpath,library) | Container.Content()">[COLOR $VAR[color_spotlightlib_accent]]$INFO[ListItem.Label][/COLOR]</value>
 		<value condition="$EXP[IsEpisode]">$INFO[ListItem.Season,$LOCALIZE[20373] ,]$INFO[Container.ListItem.Year,  ([LIGHT],[/LIGHT])]  | $INFO[ListItem.Episode,[CAPITALIZE]$LOCALIZE[20452][/CAPITALIZE] ,]$INFO[ListItem.Title, : ,]</value>
 		<value condition="$EXP[IsSeason]">$INFO[ListItem.Label]$INFO[Container.ListItem.Year,  ([LIGHT],[/LIGHT])]</value>
 		<value condition="$EXP[IsTVShow]">$INFO[Window(home).Property(totalseasons)] $VAR[Season_PluSing] | $INFO[Window(home).Property(totalepisodes)] $VAR[Episode_PluSing] $INFO[Window(home).Property(status),  | [B],[/B]]</value>
@@ -170,7 +172,7 @@
 						</control>
 						<control type="textbox">
 							<visible>String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
-							<height>120</height>
+							<height min="50" max="120">auto</height>
 							<width>80%</width>
 							<label>$VAR[plot]</label>
 							<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
@@ -178,7 +180,7 @@
 						</control>
 						<control type="textbox">
 							<visible>!String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
-							<height>120</height>
+							<height min="50" max="120">auto</height>
 								<width>50%</width> <!-- trailer left -->
 								<!-- <width>46%</width> trailer right -->
 							<label>$VAR[plot]</label>

@@ -548,7 +548,7 @@ FilterSMS<2-9> 	Filter a list in music or videos using SMS-style input.
 			
 			<onfocus condition="!Window.IsActive(movieinformation) + [String.IsEmpty(listitem.trailer) + !String.IsEmpty(listitem.FolderName)] + [String.IsEqual(ListItem.DBtype,tvshow) | String.IsEqual(ListItem.DBtype,movie)]">RunScript(script.embuary.helper,action=lookforfile,file='"$INFO[listitem.path]$INFO[listitem.FolderName,,-trailer.mp4]"',prop=trailer_avail)</onfocus>
 			<onfocus condition="!Window.IsActive(movieinformation) + !String.IsEmpty(listitem.trailer)">SetProperty(trailer_avail,listitem,home)</onfocus>
-				
+			
 			<onfocus condition="!Window.IsActive(movieinformation) + String.IsEmpty(listitem.trailer) + [String.IsEqual(ListItem.DBtype,tvshow) | String.IsEqual(ListItem.DBtype,movie)]">SetProperty(listitemtrailer,$INFO[listitem.path]$INFO[listitem.FolderName,,-trailer.mp4],home)</onfocus>
 			<onfocus condition="!Window.IsActive(movieinformation) + !String.IsEmpty(listitem.trailer)">SetProperty(listitemtrailer,$INFO[listitem.trailer],home)</onfocus>
 			
@@ -558,6 +558,10 @@ FilterSMS<2-9> 	Filter a list in music or videos using SMS-style input.
 			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.Property(totalseasons))">SetProperty(totalseasons,$INFO[listitem.Property(totalseasons)],home)</onfocus>
 			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.Property(totalepisodes))">SetProperty(totalepisodes,$INFO[listitem.Property(totalepisodes)],home)</onfocus>
 			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.status)">SetProperty(status,$INFO[listitem.status],home)</onfocus>
+			
+			<onfocus condition="String.IsEqual(ListItem.DBtype,album) + !string.IsEmpty(ListItem.Property(Album_Description))">SetProperty(Album_Description,$ESCINFO[ListItem.Property(Album_Description)])</onfocus>
+			<onfocus condition="[String.IsEqual(ListItem.DBtype,album) + string.IsEmpty(ListItem.Property(Album_Description))] | [!String.IsEqual(ListItem.DBtype,song) + !String.IsEqual(ListItem.DBtype,album)] + !String.IsEmpty(Window(music).Property(Album_Description))">ClearProperty(Album_Description,music)</onfocus>
+			
 			
 			<onfocus condition="!String.IsEmpty(Window(home).Property(movie_tmdbid))">ClearProperty(movie_tmdbid,home)</onfocus>
 			<onfocus condition="!String.IsEmpty(Window(home).Property(tvshow_tmdbid))">ClearProperty(tvshow_tmdbid,home)</onfocus>
