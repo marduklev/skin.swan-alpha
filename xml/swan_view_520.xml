@@ -100,95 +100,101 @@
 				</control>
 				
 				<control type="group">
+					<visible>Control.IsVisible(520)</visible>
 					<description>metadata</description>
 					
 					<animation effect="slide" start="0,0" end="530,0" time="350" easing="inout" reversible="true" condition="[Player.HasVideo + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))]">conditional</animation>
 					<!-- indicate 'poalaroid width' possibillity ? - variable ?? based on art, dont slide if 1:1  -->
 					<!-- ok, but may issues with addons  -->
 					<!-- <animation effect="slide" start="0,0" end="-80,0" time="0" condition="!String.IsEmpty(ListItem.Art(poster)) + !String.EndsWith(ListItem.Icon, fanart.png) + !String.EndsWith(ListItem.Icon, -1.png)">conditional</animation> -->
-					<visible>Control.IsVisible(520)</visible>
-					<orientation>vertical</orientation>
-					<aligny>top</aligny>
-					<itemgap>10</itemgap>
+					<!-- <orientation>vertical</orientation> -->
+					<!-- <aligny>top</aligny> -->
+					<!-- <itemgap>10</itemgap> -->
 					<top>35</top>
 					<left>380</left>
 					<width>1200</width>
 					<height>30</height>
 					
 					<control type="grouplist">
-						<visible>true</visible>
 						<visible>Control.IsVisible(520)</visible>
+						<orientation>vertical</orientation>
 						<height>295</height>
 						<align>left</align>
 						<aligny>bottom</aligny>
-						<orientation>vertical</orientation>
 						<animation effect="slide" start="0,0" end="0,-40" time="350" easing="inout" reversible="true" condition="!Skin.HasSetting(View_520_Hide_Touch_Controls) + !Skin.HasSetting(View_520_DisableFooter)">conditional</animation>
-						<control type="label">
+							
+							<!-- strange plot height count even if not visible ? -->
+							<animation effect="slide" start="0,0" end="0,170" time="350" easing="inout" reversible="true" condition="Skin.HasSetting(view_520_hideplot)">conditional</animation>
+							<animation effect="slide" start="0,0" end="0,80" time="350" easing="inout" reversible="true" condition="Skin.HasSetting(view_520_hideplot) + Skin.HasSetting(View_520_DisableFooter)">conditional</animation>
+						
+						<control type="textbox">
 							<visible>String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
-							<height>40</height>
+							<height min="40" max="85">auto</height>
 							<label>$VAR[list_item_rootinfo]</label>
 							<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 							<font>notosans_30_semibold</font>
 						</control>
 						<control type="textbox">
 							<visible>!String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
-							<height>85</height>
+							<height min="40" max="85">auto</height>
 							<width>60%</width>
 							<label>$VAR[list_item_rootinfo]</label>
 							<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 							<font>notosans_30_semibold</font>
 						</control>
-							
-						<!-- till variable -->
+						<control type="label">
+							<visible>[String.IsEqual(ListItem.dbtype,movie) | String.IsEqual(ListItem.dbtype,musicvideo)] + !String.IsEmpty(ListItem.Duration)</visible>
+							<top>-33</top>
+							<height>30</height>
+							<label>[COLOR none]$VAR[list_item_rootinfo]$VAR[list_item_rootinfo][/COLOR]$VAR[ListItemDuration]</label>
+							<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
+							<font>notosans_16_bold</font>
+						</control>
+						<control type="label">
+							<height>13</height>
+							<textcolor>$VAR[color_spotlightlib_accent]</textcolor>
+							<label>$INFO[listitem.genre]</label>
+							<font>notosans_16_bold</font>
+						</control>
 						<control type="label">
 							<visible>$EXP[mediatitem_subinfo]</visible>
+							<top>25</top>
 							<height>20</height>
 							<label>$VAR[list_item_subinfo]</label>
 							<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 							<font>notosans_21_semibold</font>
 						</control>
-						
 						<control type="label">
-							<height>25</height>
 							<visible>Container.Content(songs) | Container.Content(albums)</visible>
+							<height>25</height>
 							<label>$INFO[ListItem.Album,[B],[/B]]$INFO[ListItem.Year,    (,)]</label>
 							<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
 							<font>notosans_21_semibold</font>
 						</control>
-						
 						<control type="label">
-							<height>25</height>
 							<visible>Integer.IsGreater(ListItem.TotalDiscs,1) + [!String.IsEmpty(ListItem.DiscNumber) | !String.IsEmpty(ListItem.DiscTitle)]</visible>
+							<height>25</height>
 							<label>[B]∟[/B]$INFO[ListItem.DiscNumber, $LOCALIZE[427]   ,]$INFO[ListItem.DiscTitle,   [B]•[/B]   ,]</label>
 							<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
 							<font>notosans_16_regular</font>
 						</control>
-						<control type="label">
-							<height>40</height>
-							<textcolor>$VAR[color_spotlightlib_accent]</textcolor>
-							<label>$INFO[listitem.genre]</label>
-							<font>notosans_16_bold</font>
-						</control>
 						<control type="textbox">
-							<visible>String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
-							<height min="50" max="120">auto</height>
+							<top>20</top>
+							<visible>String.IsEmpty(Window(Home).Property(TrailerIsPlaying)) + !Skin.HasSetting(view_520_hideplot)</visible>
+							<height>120</height>
 							<width>80%</width>
 							<label>$VAR[plot]</label>
 							<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
 							<font>notosans_22_regular_lowlined</font>
 						</control>
 						<control type="textbox">
-							<visible>!String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
-							<height min="50" max="120">auto</height>
-								<width>50%</width> <!-- trailer left -->
-								<!-- <width>46%</width> trailer right -->
+							<visible>!String.IsEmpty(Window(Home).Property(TrailerIsPlaying)) + !Skin.HasSetting(view_520_hideplot)</visible>
+							<height>120</height>
+							<width>50%</width>
 							<label>$VAR[plot]</label>
 							<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
 							<font>notosans_22_regular_lowlined</font>
 						</control>
-						
-						
-					
 						
 						<!-- another listing - flags 
 ListItem.DiscTitle 	The disc title of the currently selected album or song 	v19
@@ -196,9 +202,8 @@ ListItem.TotalDiscs 	The total amount of discs belonging to an album
 	ListItem.Duration[(format)] 					
 						-->
 						<control type="label">	
-						<!-- container.content.albums $INFO[ListItem.Duration(hh:mm)]
-						,$INFO[container.content] -->
-							<visible>false</visible>
+							<description>container.content.albums $INFO[ListItem.Duration(hh:mm)],$INFO[container.content]</description>
+							<visible>Window.IsActive(music)</visible>
 							<top>10</top>
 							<height>20</height>
 							<align>left</align>
@@ -206,19 +211,24 @@ ListItem.TotalDiscs 	The total amount of discs belonging to an album
 							<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 							<label>[B]$INFO[container.numitems, $LOCALIZE[132]:,]$INFO[ListItem.Duration(hh:mm),     $LOCALIZE[180]: ,][/B]</label>
 						</control>
-						
-						
-						
+						<control type="label">	
+							<description>container.content.albums $INFO[ListItem.Duration(hh:mm)],$INFO[container.content]</description>
+							<visible>false</visible>
+							<visible>!Window.IsActive(music)</visible>
+							<top>10</top>
+							<height>20</height>
+							<align>left</align>
+							<font>notosans_18_bold</font>
+							<textcolor>$VAR[color_spotlightlib_main]</textcolor>
+							<label>$VAR[ListItemDuration]</label>
+						</control>
 					</control>
 					
 					<control type="grouplist">
 						<visible>!Skin.HasSetting(View_520_Hide_Touch_Controls)</visible>
 						<animation effect="fade" start="100" end="0" time="350" easing="inout" reversible="true" condition="[Player.HasVideo + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))]">conditional</animation>
-					
-						
 						<description>TOUCH CONTROL  - other just usefull if 1 row hor list</description>
 						
-					
 						<top>260</top>
 						<visible>Control.IsVisible(520)</visible>
 						<animation effect="slide" start="0,0" end="0,-10" time="0" condition="true">conditional</animation>
