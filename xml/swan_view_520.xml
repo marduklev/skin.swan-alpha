@@ -26,12 +26,17 @@
 		<value condition="$EXP[IsSeason]">$INFO[ListItem.Label]$INFO[Container.ListItem.Year,  ([LIGHT],[/LIGHT])]</value>
 		<value condition="$EXP[IsTVShow]">$INFO[Window(home).Property(totalseasons)] $VAR[Season_PluSing] | $INFO[Window(home).Property(totalepisodes)] $VAR[Episode_PluSing] $INFO[Window(home).Property(status),  | [B],[/B]]</value>
 		<!-- maybe optional <value condition="!String.IsEmpty(ListItem.TagLine)">$INFO[ListItem.TagLine]</value> -->
-	</variable>	
+	</variable>
+	<variable name="520_Album_Song_Durations">
+		<value condition="String.IsEqual(listitem.dbtype,album)">$INFO[ListItem.Property(Album_Duration),$LOCALIZE[180] : ,]</value>
+		<value condition="String.IsEqual(listitem.dbtype,song)">$INFO[container.numitems,$LOCALIZE[134]: ,]$INFO[ListItem.TotalDiscs, |  $LOCALIZE[14087]: , ]$INFO[Container.Totaltime, | $LOCALIZE[558] $LOCALIZE[180] : ,]</value>
+	</variable>
 	
 	<include name="view_520">
 		<control type="group">
 			<visible>Control.IsVisible(520)</visible>
 				<control type="image">
+					<description>BG curr polaying, to do: go over Backgroundbuilding</description>
 					<visible>Player.HasVideo + !$EXP[TrailerIsPlaying]</visible>
 					<texture colordiffuse="ff131313">colors/white90.png</texture>
 				</control>
@@ -77,7 +82,7 @@
 				<height>380</height>
 				
 				
-				<!-- to indicate 'poalaroid width' for  metadata group itemgap 50 and make wholöe meta group to a grouplist  -->
+				<!-- to indicate 'poalaroid width' for  metadata group itemgap 50 and make whole meta group to a grouplist  -->
 				<control type="image">
 					<visible>!String.StartsWith(ListItem.Icon,default) | String.IsEqual(ListItem.Icon,defaultfolder.png)</visible>
 					<description>polaroid thumb</description>
@@ -142,30 +147,41 @@
 							<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 							<font>notosans_30_semibold</font>
 						</control>
-						<control type="label">
-							<visible>[String.IsEqual(ListItem.dbtype,movie) | String.IsEqual(ListItem.dbtype,musicvideo)] + !String.IsEmpty(ListItem.Duration)</visible>
-							<top>-33</top>
-							<height>30</height>
-							<label>[COLOR none]$VAR[list_item_rootinfo]$VAR[list_item_rootinfo][/COLOR]$VAR[ListItemDuration]</label>
-							<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
-							<font>notosans_16_bold</font>
-						</control>
+							<control type="label">
+								<visible>[String.IsEqual(ListItem.dbtype,movie) | String.IsEqual(ListItem.dbtype,musicvideo)] + !String.IsEmpty(ListItem.Duration)</visible>
+								<top>-33</top>
+								<height>30</height>
+								<label>[COLOR none]$VAR[list_item_rootinfo]$VAR[list_item_rootinfo][/COLOR]$VAR[ListItemDuration]</label>
+								<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
+								<font>notosans_16_bold</font>
+							</control>
 						<control type="label">
 							<height>13</height>
-							<visible>window.isactive(videos)</visible>
+							<visible>window.isactive(videos) | String.IsEqual(listitem.dbtype,artist)</visible>
 							<textcolor>$VAR[color_spotlightlib_accent]</textcolor>
-							<label>$INFO[listitem.genre]</label>
+							<label fallback="">$INFO[listitem.genre]</label>
 							<font>notosans_16_bold</font>
 						</control>
+						<include content="spacer_h" condition="window.isactive(music)">
+							<param name="gap" value="13" />
+						</include>
+						<include content="spacer_h">
+							<param name="gap" value="25" />
+							<param name="visible" value="$EXP[IsEpisode] | $EXP[IsSeason] | $EXP[IsTVShow]" />
+						</include>
+						<include content="spacer_h" description="height can use negative values, therefore dont use a nested top -25">
+							<param name="gap" value="-15" />
+							<param name="visible" value="String.StartsWith(Container.Folderpath,library) | Container.Content()" />
+						</include>
 						<control type="label">
 							<visible>$EXP[mediatitem_subinfo]</visible>
-							<top>25</top>
 							<height>20</height>
 							<label>$VAR[list_item_subinfo]</label>
 							<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 							<font>notosans_21_semibold</font>
 						</control>
 						<control type="label">
+							<!-- <animation effect="fade" end="70" time="0" condition="true">conditional</animation> -->
 							<visible>Container.Content(songs) | Container.Content(albums)</visible>
 							<height>25</height>
 							<label>$INFO[ListItem.Album,[B],[/B]]$INFO[ListItem.Year,    (,)]</label>
@@ -181,13 +197,11 @@
 						</control>
 						<control type="label">
 							<height>30</height>
-							<visible>window.isactive(music)</visible>
+							<visible>window.isactive(music) + !String.IsEqual(listitem.dbtype,artist)</visible>
 							<textcolor>$VAR[color_spotlightlib_accent]</textcolor>
 							<label>$INFO[listitem.genre]</label>
 							<font>notosans_16_bold</font>
 						</control>
-						
-						
 						<control type="textbox">
 							<top>20</top>
 							<visible>String.IsEmpty(Window(Home).Property(TrailerIsPlaying)) + !Skin.HasSetting(view_520_hideplot)</visible>
@@ -212,15 +226,13 @@ ListItem.TotalDiscs 	The total amount of discs belonging to an album
 	ListItem.Duration[(format)] 					
 						-->
 						<control type="label">	
-							<description>container.content.albums $INFO[ListItem.Duration(hh:mm)],$INFO[container.content]</description>
-							<visible>false</visible>
 							<visible>Window.IsActive(music)</visible>
-							<top>10</top>
+							<animation effect="fade" end="50" time="0" condition="true">conditional</animation>
 							<height>20</height>
 							<align>left</align>
-							<font>notosans_18_bold</font>
-							<textcolor>$VAR[color_spotlightlib_main]</textcolor>
-							<label>[B]$INFO[container.numitems, $LOCALIZE[132]:,]$INFO[ListItem.Duration(hh:mm),     $LOCALIZE[180]: ,][/B]</label>
+							<font>notosans_16_bold</font>
+							<textcolor>$VAR[color_spotlightlib_accent]</textcolor>
+							<label>$VAR[520_Album_Song_Durations]</label>
 						</control>
 						<control type="label">	
 							<description>container.content.albums $INFO[ListItem.Duration(hh:mm)],$INFO[container.content]</description>
@@ -278,10 +290,7 @@ ListItem.TotalDiscs 	The total amount of discs belonging to an album
 								
 						</control>
 						
-						
 						<!-- info, play , play random,  -->
-						
-						
 						<control type="radiobutton" id="52004">
 							<include content="HUB_ContainerButtons">
 								<param name="texture" value="defaultaddoninfoprovider.png" />
