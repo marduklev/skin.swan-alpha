@@ -23,6 +23,28 @@ ID 	Type 			Description
 -->
 	<include>Animation_OpenClose_Zoom</include>
 	<controls>
+		
+		<control type="button" id="9002">
+			<description>delete rule</description>
+			<font />
+			<label />
+			<onright>9001</onright>
+			<onleft>10</onleft>
+			<onup condition="String.IsEmpty(Container(10).ListItemNoWrap(-1).Label)">SetFocus(10)</onup>
+			<onup condition="String.IsEmpty(Container(10).ListItemNoWrap(-1).Label)">SetFocus(10)</onup>
+			<onup condition="!String.IsEmpty(Container(10).ListItemNoWrap(-1).Label)">Control.Move(10,-1)</onup>
+			<onup condition="!String.IsEmpty(Container(10).ListItemNoWrap(-1).Label)">SetFocus(9002)</onup>
+			<ondown condition="String.IsEqual(Container(10).ListItem(1).Label,$LOCALIZE[21423])">SetFocus(10)</ondown>
+			<ondown condition="String.IsEqual(Container(10).ListItem(1).Label,$LOCALIZE[21423])">SetFocus(10)</ondown>
+			<ondown condition="!String.IsEqual(Container(10).ListItem(1).Label,$LOCALIZE[21423])">Control.Move(10,1)</ondown>
+			<ondown condition="!String.IsEqual(Container(10).ListItem(1).Label,$LOCALIZE[21423])">SetFocus(9002)</ondown>
+			<onclick>SetFocus(10)</onclick>
+			<onclick>AlarmClock(delayedaction,SendClick(ContextMenu,1001),00:00,silent)</onclick>
+			<onclick>ContextMenu</onclick>
+			<!-- <onclick>AlarmClock(delayedaction,Action(ContextMenu),00:00)</onclick> -->
+			<!-- <onclick>AlarmClock(delayedaction2,Action(Select),00:01)</onclick> -->
+		</control>
+		
 		<include>Dialog_Fullscreen_BGPanel</include>
 		
 		<control type="image">
@@ -81,7 +103,10 @@ ID 	Type 			Description
 					<description>Rules List Control</description>
 					<height>360</height>
 					<onleft>500</onleft>
-					<onright>9001</onright>
+					<onright condition="!String.IsEqual(container(10).listitem.label,$LOCALIZE[21423])">9002</onright>
+					<onright condition="String.IsEqual(container(10).listitem.label,$LOCALIZE[21423])">9001</onright>
+						<!-- <onleft>9001</onleft> -->
+					
 					<orientation>vertical</orientation>
 					<itemlayout height="60">
 						<control type="group">
@@ -89,6 +114,16 @@ ID 	Type 			Description
 								<param name="color_panel" value="$VAR[color_global_button_panel_nf]" />
 								<param name="color_text" value="$VAR[color_global_button_text_nf]" />
 							</include>
+						</control>
+						<control type="image">
+							<animation effect="slide" end="110,0" condition="true">conditional</animation>
+							<visible>!String.IsEqual(container(10).listitem.label,$LOCALIZE[21423])</visible>
+							<right>0</right>
+							<centertop>50%</centertop>
+							<bordersize>10</bordersize>
+							<height>60</height>
+							<aspectratio align="right" aligny="center">keep</aspectratio>
+							<texture colordiffuse="$VAR[color_global_button_text_nf]">buttons/delete.png</texture>
 						</control>
 					</itemlayout>
 					<focusedlayout height="60">
@@ -105,6 +140,27 @@ ID 	Type 			Description
 								<param name="color_panel" value="$VAR[color_global_button_panel_nf]" />
 								<param name="color_text" value="$VAR[color_global_button_text_nf]" />
 							</include>
+						</control>
+						<control type="image">
+							<animation effect="slide" end="110,0" condition="true">conditional</animation>
+							<visible>!String.IsEqual(container(10).listitem.label,$LOCALIZE[21423]) + !Control.HasFocus(9002)</visible>
+							<right>0</right>
+							<centertop>50%</centertop>
+							<bordersize>10</bordersize>
+							<height>60</height>
+							<aspectratio align="right" aligny="center">keep</aspectratio>
+							<texture colordiffuse="$VAR[color_global_button_text_nf]">buttons/delete.png</texture>
+						</control>
+						<control type="image">
+							<animation effect="slide" end="110,0" condition="true">conditional</animation>
+							<visible>!String.IsEqual(container(10).listitem.label,$LOCALIZE[21423]) + Control.HasFocus(9002)</visible>
+							<right>0</right>
+							<centertop>50%</centertop>
+							<bordersize>10</bordersize>
+							<height>50</height>
+							<aspectratio align="right" aligny="center">keep</aspectratio>
+							<bordertexture>artworkdiffuse/circleborder.png</bordertexture>
+							<texture colordiffuse="$VAR[color_global_button_text_fo]">buttons/delete.png</texture>
 						</control>
 					</focusedlayout>
 				</control>
