@@ -61,7 +61,7 @@
 	
 				<control type="image">
 					<description>thumb real border</description>
-					<visible>Container.Content(studios) + [String.IsEmpty(listitem.art(poster)) + String.IsEmpty(listitem.art(season.poster))] + [String.StartsWith(ListItem.Icon,default) + !String.IsEqual(ListItem.Icon,defaultfolder.png)]</visible>
+					<visible>!String.EndsWith(ListItem.Icon, -1.png) + Container.Content(studios) + [String.IsEmpty(listitem.art(poster)) + String.IsEmpty(listitem.art(season.poster))] + [String.StartsWith(ListItem.Icon,default) + !String.IsEqual(ListItem.Icon,defaultfolder.png)]</visible>
 					<height>350</height>
 					<width>350</width>
 					<bordersize>10</bordersize>
@@ -71,7 +71,7 @@
 				</control>
 				<control type="image">
 					<description>polaroid square</description>
-					<visible>!Container.Content(studios) + [String.IsEmpty(listitem.art(poster)) + String.IsEmpty(listitem.art(season.poster))] + [!String.StartsWith(ListItem.Icon,default) | String.IsEqual(ListItem.Icon,defaultfolder.png)]</visible>
+					<visible>!String.EndsWith(ListItem.Icon, -1.png) + !Container.Content(studios) + [String.IsEmpty(listitem.art(poster)) + String.IsEmpty(listitem.art(season.poster))] + [!String.StartsWith(ListItem.Icon,default) | String.IsEqual(ListItem.Icon,defaultfolder.png)]</visible>
 					<height>350</height>
 					<width>350</width>
 					<bordersize>10</bordersize>
@@ -83,7 +83,7 @@
 				
 				<control type="image">
 					<description>polaroid  w 243 POSTER , polaroid poster - may scale it as it'll be better for the eyes - in compromise of cropping- curr best get a static with instead of keep to w+h</description>
-					<visible>!String.EndsWith(ListItem.Icon,fanart.png) + [[!String.IsEmpty(listitem.art(poster)) | !String.IsEmpty(listitem.art(season.poster))] | [String.Contains(listitem.icon,amazon.com) + $EXP[IsMovie]]]</visible>
+					<visible>!String.EndsWith(ListItem.Icon, -1.png) + !String.EndsWith(ListItem.Icon,fanart.png) + [[!String.IsEmpty(listitem.art(poster)) | !String.IsEmpty(listitem.art(season.poster))] + !String.Contains(listitem.icon,amazon.com)] | [String.Contains(listitem.icon,amazon.com) + $EXP[IsMovie]]</visible>
 					
 					<bottom>30</bottom>
 					<width>243</width>
@@ -94,7 +94,7 @@
 				</control>
 				<control type="image">
 					<description>polaroid w 350</description>
-					<visible>String.EndsWith(ListItem.Icon,fanart.png) | [[!String.IsEmpty(listitem.art(poster)) | !String.IsEmpty(listitem.art(season.poster))] + String.Contains(listitem.icon,amazon.com) + !$EXP[IsMovie]]</visible>
+					<visible>String.EndsWith(ListItem.Icon,fanart.png) | [[!String.IsEmpty(listitem.art(poster)) | !String.IsEmpty(listitem.art(season.poster))] + String.Contains(listitem.icon,amazon.com) + !String.IsEqual(listitem.dbtype,movie)]</visible>
 					
 					<top>5</top>
 					<width>350</width>
