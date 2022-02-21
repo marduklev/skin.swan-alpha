@@ -817,21 +817,15 @@ static const TypeMapping types[] =
 						<onclick condition="String.IsEmpty(Skin.String(texturepath_userdefined))">Skin.SetImage(texture_categorywidget,resource://resource.images.skin.swan/backgroundimages)</onclick>
 						<onclick condition="!String.IsEmpty(Skin.String(texturepath_userdefined))">Skin.SetImage(texture_categorywidget,$INFO[Skin.String(texturepath_userdefined)])</onclick>
 					</control>
-					<control type="radiobutton" id="$PARAM[id]999">
-						<description>Skin.SelectBool(zz, yy|widget_action_episode_all, xx|widget_action_episode_seasons)</description>
-						<label>Use Alt select Action for Episode Widgets (go to all episodes by TV Show)</label>
-						<label2>i will merged into one setting later</label2>
-						<onclick>Skin.ToggleSetting(widget_action_episode_all)</onclick>
-						<onclick condition="Skin.HasSetting(widget_action_episode_seasons)">Skin.ToggleSetting(widget_action_episode_seasons)</onclick>
-						<selected>Skin.HasSetting(widget_action_episode_all)</selected>
-					</control>
-					<control type="radiobutton" id="$PARAM[id]998">
-						<description>Skin.SelectBool(zz, yy|widget_action_episode_all, xx|widget_action_episode_seasons)</description>
-						<label>Use Alt select Action for Episode Widgets (go seasons by TV Show)</label>
-						<label2>i will merged into one setting later</label2>
-						<onclick>Skin.ToggleSetting(widget_action_episode_seasons)</onclick>
-						<onclick condition="Skin.HasSetting(widget_action_episode_all)">Skin.ToggleSetting(widget_action_episode_all)</onclick>
-						<selected>Skin.HasSetting(widget_action_episode_seasons)</selected>
+					<control type="radiobutton" id="$PARAM[id]200">
+						<description>widgets reserved ids[001]-[099]</description>
+						<include content="SkinSettings_SettingsRadioButton">
+							<param name="label" value="Use Alt select Action for Episode Widgets" />
+							<param name="label2" value="$VAR[setting_episodeoverrideaction_label2]" />
+						</include>
+						<onclick condition="!skin.hassetting(widget_action_episode_seasons) + !skin.hassetting(widget_action_episode_all)">Skin.SelectBool(Use Alt select Action for Episode Widgets, 31191|widget_action_episode_all, 31192|widget_action_episode_seasons)</onclick>
+						<onclick condition="skin.hassetting(widget_action_episode_seasons)">Skin.Reset(widget_action_episode_seasons)</onclick>
+						<onclick condition="skin.hassetting(widget_action_episode_all)">Skin.Reset(widget_action_episode_all)</onclick>
 					</control>
 					<!--
 					<include content="spacer_h">
