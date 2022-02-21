@@ -27,85 +27,37 @@
 		<value condition="$EXP[IsTVShow]">$INFO[Window(home).Property(totalseasons)] $VAR[Season_PluSing] | $INFO[Window(home).Property(totalepisodes)] $VAR[Episode_PluSing]$INFO[Window(home).Property(status), | ,]</value>
 	</variable>
 	<variable name="520_Album_Song_Durations">
-		<value condition="String.IsEqual(listitem.dbtype,artist)">$INFO[ListItem.Property(Artist_Formed),   ,]$INFO[ListItem.Property(Artist_Disbanded),    ,]$INFO[ListItem.Property(Artist_YearsActive),    ,]</value>
-		<value condition="String.IsEqual(listitem.dbtype,album)">$VAR[ListItemDuration,$LOCALIZE[180] : ,]$INFO[ListItem.DateAdded,  |  $LOCALIZE[570] : ,]</value>
-		<value condition="String.IsEqual(listitem.dbtype,song)">$INFO[container.numitems,$LOCALIZE[134]: ,]$INFO[ListItem.TotalDiscs, |  $LOCALIZE[14087]: , ]$INFO[Container.Totaltime, | $LOCALIZE[558] $LOCALIZE[180] : ,]$INFO[ListItem.DateAdded,  |  $LOCALIZE[570] : ,]</value>
+		<value condition="String.IsEqual(listitem.dbtype,album)">$INFO[ListItem.Property(Album_Duration),$LOCALIZE[180] : ,]</value>
+		<value condition="String.IsEqual(listitem.dbtype,song)">$INFO[container.numitems,$LOCALIZE[134]: ,]$INFO[ListItem.TotalDiscs, |  $LOCALIZE[14087]: , ]$INFO[Container.Totaltime, | $LOCALIZE[558] $LOCALIZE[180] : ,]</value>
 	</variable>
 	
 	<include name="view_520">
 		<control type="group">
-			<description>todo: dont use for genres,years,tags,years,directors - or use labels within item/focusedlayouts - </description>
-		
 			<visible>Control.IsVisible(520)</visible>
-			<control type="image">
-				<description>BG curr playing, to do: go over Backgroundbuilding</description>
-				<visible>$EXP[IsCurrentyPlayingCommon]</visible>
-				<texture colordiffuse="$VAR[color_spotlightlib_background_layer1]">colors/white90.png</texture>
-			</control>
-			<include content="Fanart_Diffused">
-				<animation effect="fade" start="100" end="25" time="350" easing="inout" reversible="true" condition="true">conditional</animation>
-				<right>0</right>
-				<param name="width" value="1267" />
-				<param name="height" value="731" />
-				<param name="diffuse" value="diffuse/spotlightleftdiffuse.png" />
-				<param name="visible" value="$PARAM[spotlight_artwork_visible_right]" />
-			</include>
+				<control type="image">
+					<description>BG curr polaying, to do: go over Backgroundbuilding</description>
+					<visible>Player.HasVideo + !$EXP[TrailerIsPlaying]</visible>
+					<texture colordiffuse="ff131313">colors/white90.png</texture>
+				</control>
+				<include content="Fanart_Diffused">
+					<animation effect="fade" start="100" end="25" time="350" easing="inout" reversible="true" condition="true">conditional</animation>
+					<right>0</right>
+					<param name="width" value="1267" />
+					<param name="height" value="731" />
+					<param name="diffuse" value="diffuse/spotlightleftdiffuse.png" />
+					<param name="visible" value="$PARAM[spotlight_artwork_visible_right]" />
+				</include>
 				
-			<control type="grouplist">
-				<visible>Control.IsVisible(520)</visible>
-				<orientation>horizontal</orientation>
-				<itemgap>20</itemgap>
-				<left>150</left>
-				<top>200</top>
-				<height>385</height>
-	
-				<control type="image">
-					<description>thumb real border</description>
-					<visible>Container.Content(studios) | [String.IsEmpty(listitem.art(poster)) + String.IsEmpty(listitem.art(season.poster))] + [String.StartsWith(ListItem.Icon,default) + !String.IsEqual(ListItem.Icon,defaultfolder.png)]</visible>
-					<height>350</height>
-					<width>350</width>
-					<bordersize>10</bordersize>
-					<bordertexture>artworkdiffuse_unthemed/thumbborder.png</bordertexture>
-					<texture diffuse="colors/white80.png">$VAR[ImageLayout_poster]</texture>
-					<aspectratio scalediffuse="true" align="left" aligny="top">keep</aspectratio>
-				</control>
-				<control type="image">
-					<description>polaroid square</description>
-					<visible>!Container.Content(studios) + [String.IsEmpty(listitem.art(poster)) + String.IsEmpty(listitem.art(season.poster))] + [!String.StartsWith(ListItem.Icon,default) | String.IsEqual(ListItem.Icon,defaultfolder.png)]</visible>
-					<height>350</height>
-					<width>350</width>
-					<bordersize>10</bordersize>
-					<bordertexture>colors/white.png</bordertexture>
-					<texture diffuse="colors/white80.png">$VAR[ImageLayout_poster]</texture>
-					<aspectratio scalediffuse="true" align="left" aligny="top">keep</aspectratio>
-				</control>
-				<control type="image">
-					<visible>[!String.IsEmpty(listitem.art(poster)) | !String.IsEmpty(listitem.art(season.poster))] + !String.Contains(listitem.icon,amazon.com) + !String.EndsWith(ListItem.Icon,fanart.png)</visible>
-					<description>polaroid poster - may scale it as it'll be better for the eyes - in compromise of cropping- curr best get a static with instead of keep to w+h</description>
-					<bottom>30</bottom>
-					<width>243</width>
-					<bordersize>10</bordersize>
-					<bordertexture>colors/white.png</bordertexture>
-					<texture diffuse="colors/white80.png">$VAR[ImageLayout_poster]</texture>
-					<aspectratio scalediffuse="true" align="left" aligny="bottom">keep</aspectratio>
-				</control>
-				<control type="image">
-					<top>5</top>
-					<visible>[!String.IsEmpty(listitem.art(poster)) | !String.IsEmpty(listitem.art(season.poster))] + String.Contains(listitem.icon,amazon.com) | String.EndsWith(ListItem.Icon,fanart.png)</visible>
-					<description>polaroid poster</description>
-					<width>350</width>
-					<bordersize>10</bordersize>
-					<bordertexture>colors/white.png</bordertexture>
-					<texture diffuse="colors/white80.png">$VAR[ImageLayout_poster]</texture>
-					<aspectratio scalediffuse="true" align="left" aligny="top">keep</aspectratio>
-				</control>
 				<control type="group">
-					<animation effect="zoom" start="0,100" end="100,100" time="250" easing="inout" reversible="true">VisibleChange</animation>
+	<!-- <animation effect="slide" start="0,0" end="-20,0" time="0" condition="!String.IsEmpty(ListItem.Art(poster)) + !String.EndsWith(ListItem.Icon, fanart.png) + !String.EndsWith(ListItem.Icon, -1.png)">conditional</animation> -->
 					<description>trailer preview videowindow</description>
+					<animation effect="zoom" start="0,100" end="100,100" time="250" easing="inout" reversible="true">VisibleChange</animation>
 					<visible>$EXP[TrailerIsPlaying]</visible>
+					<left>410</left>
+					<top>200</top>
 					<width>612</width>
 					<height>350</height>
-					<bottom>29</bottom>
+					<bottom>100</bottom>
 					<control type="image">
 						<texture>colors/black.png</texture>
 						<bordersize>2</bordersize>
@@ -118,24 +70,66 @@
 						<width>97%</width>
 					</control>
 				</control>
+			
+			<control type="group">
+			
+				<description>metadata n button top</description>
+				<visible>Control.IsVisible(520)</visible>
+				<orientation>horizontal</orientation>
+				<itemgap>0</itemgap>
+				<left>150</left>
+				<top>200</top>
+				<height>380</height>
 				
+				<control type="image">
+					<visible>!String.StartsWith(ListItem.Icon,default) | String.IsEqual(ListItem.Icon,defaultfolder.png)</visible>
+					<description>polaroid thumb</description>
+					<height>350</height>
+					<width>350</width>
+					<bordersize>10</bordersize>
+					<bordertexture>colors/white.png</bordertexture>
+					<texture diffuse="colors/white80.png">$VAR[ImageLayout_poster]</texture>
+					<aspectratio scalediffuse="true" align="left" aligny="top">keep</aspectratio>
+				</control>
+				<control type="image">
+					<visible>String.StartsWith(ListItem.Icon,default) + !String.IsEqual(ListItem.Icon,defaultfolder.png)</visible>
+					<description>thumb real border</description>
+					<height>350</height>
+					<width>350</width>
+					<bordersize>10</bordersize>
+					<bordertexture>artworkdiffuse_unthemed/thumbborder.png</bordertexture>
+					<texture diffuse="colors/white80.png">$VAR[ImageLayout_poster]</texture>
+					<aspectratio scalediffuse="true" align="left" aligny="top">keep</aspectratio>
+				</control>
 				
+				<control type="group">
+					<visible>Control.IsVisible(520)</visible>
+					<description>metadata</description>
+					
+<!-- indicate 'poalaroid width' possibillity ? - variable ?? based on art, dont slide if 1:1  -->
+	<!-- ok, but may issues with addons provided poster art e.g. amazon is wider  -->
+	<!-- <animation effect="slide" start="0,0" end="-90,0" time="0" condition="!String.IsEmpty(ListItem.Art(poster)) + !String.EndsWith(ListItem.Icon, fanart.png) + !String.EndsWith(ListItem.Icon, -1.png)">conditional</animation> -->
+					<top>35</top>
+					<left>380</left>
+			        <width>1090</width>
+					
 					<control type="grouplist">
 						<visible>Control.IsVisible(520)</visible>
 						<orientation>vertical</orientation>
-						<top>35</top>
-						<left>30</left>
-						<right>200</right>
-						<width>1166</width>
-						<height>350</height>
+						<height>295</height>
+						<align>left</align>
 						<aligny>bottom</aligny>
+	<!-- if  align depending on poster vs square <animation effect="slide" start="0,0" end="620,0" time="350" easing="inout" reversible="true" condition="$EXP[TrailerIsPlaying]">conditional</animation> -->
+	                    <animation effect="slide" start="0,0" end="530,0" time="350" easing="inout" reversible="true" condition="$EXP[TrailerIsPlaying]">conditional</animation>
 						<animation effect="slide" start="0,0" end="0,-40" time="350" easing="inout" reversible="true" condition="!Skin.HasSetting(View_520_Hide_Touch_Controls) + !Skin.HasSetting(View_520_DisableFooter)">conditional</animation>
-						
-						<animation effect="slide" start="0,0" end="0,170" time="350" easing="inout" reversible="true" condition="Skin.HasSetting(view_520_hideplot)">conditional</animation>
-						<animation effect="slide" start="0,0" end="0,80" time="350" easing="inout" reversible="true" condition="Skin.HasSetting(view_520_hideplot) + Skin.HasSetting(View_520_DisableFooter)">conditional</animation>
+							
+							<!-- strange plot height count even if not visible ? -->
+							<animation effect="slide" start="0,0" end="0,170" time="350" easing="inout" reversible="true" condition="Skin.HasSetting(view_520_hideplot)">conditional</animation>
+							<animation effect="slide" start="0,0" end="0,80" time="350" easing="inout" reversible="true" condition="Skin.HasSetting(view_520_hideplot) + Skin.HasSetting(View_520_DisableFooter)">conditional</animation>
 						
 						<control type="textbox">
 							<description>TITLE def</description>
+							
 							<visible>String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
 							<height min="40" max="85">auto</height>
 							<label>$VAR[list_item_rootinfo]</label>
@@ -144,6 +138,7 @@
 						</control>
 						<control type="textbox">
 							<description>TITLE low width when trailer playing</description>
+							
 							<visible>!String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
 							<height min="40" max="85">auto</height>
 							<width>71%</width>
@@ -153,6 +148,7 @@
 						</control>
 							<control type="label">
 								<description>DURATION VIDEO placement, append TITLE</description>
+								
 								<visible>[String.IsEqual(ListItem.dbtype,movie) | String.IsEqual(ListItem.dbtype,musicvideo)] + !String.IsEmpty(ListItem.Duration)</visible>
 								<top>-33</top>
 								<height>30</height>
@@ -230,7 +226,7 @@
 						<control type="label">	
 							<visible>Window.IsActive(music)</visible>
 							<animation effect="fade" end="50" time="0" condition="true">conditional</animation>
-							<height>25</height>
+							<height>20</height>
 							<align>left</align>
 							<font>notosans_16_bold</font>
 							<textcolor>$VAR[color_spotlightlib_accent]</textcolor>
@@ -246,38 +242,36 @@
 							<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 							<label>$VAR[ListItemDuration]</label>
 						</control>
-						 <include content="MediaFlagGroup_Footer">
-							<visible>Control.IsVisible(520) + !Skin.HasSetting(View_520_DisableFooter)</visible>
-							<animation effect="slide" start="0,90" end="0,0" time="350" tween="quadratic" easing="out" delay="100">VisibleChange</animation>
-							<animation effect="zoom" start="100" end="80" center="-10,480" condition="![$EXP[IsTVShow] | $EXP[IsSeason] | $EXP[IsEpisode]]">conditional</animation>
-							<animation effect="zoom" start="100" end="80" center="-10,270" condition="[$EXP[IsTVShow] | $EXP[IsSeason] | $EXP[IsEpisode]]">conditional</animation>
-		´					<animation effect="slide" start="0,0" end="-645,65" time="0" condition="$EXP[TrailerIsPlaying]">conditional</animation>
-							<param name="mediaflag_offset_left" value="0"/>
+					</control>
+					<control type="group">
+						<visible>Control.IsVisible(520) + !Skin.HasSetting(View_520_DisableFooter)</visible>
+						<animation effect="slide" start="0,90" end="0,0" time="350" tween="quadratic" easing="out" delay="100">VisibleChange</animation>
+					    <animation effect="slide" start="0,0" end="0,-95" time="350" easing="inout" reversible="true" condition="!Skin.HasSetting(View_520_Hide_Touch_Controls) + !Skin.HasSetting(View_520_DisableFooter)">conditional</animation>
+					    <height>110</height>
+					    <bottom>10</bottom>
+					    
+					    <include content="MediaFlagGroup_Footer">
+						    <animation effect="zoom" start="100" end="75" center="-10,80" condition="true">conditional</animation>
+					  <animation effect="slide" start="0,0" end="50,80" time="350" easing="inout" reversible="true" condition="$EXP[TrailerIsPlaying]">conditional</animation>
+						    <param name="mediaflag_offset_left" value="0"/>
 				            <param name="mediaflag_offset_align" value="left" />
 				            <param name="mediaflag_width" value="500" />
 			            </include>
-					</control>
-				</control>	
-					
-				<control type="group">
-					<visible>Control.IsVisible(520) + !Skin.HasSetting(View_520_DisableFooter)</visible>
-					<animation effect="slide" start="0,90" end="0,0" time="350" tween="quadratic" easing="out" delay="100">VisibleChange</animation>
-					<animation effect="slide" start="0,0" end="0,-50" time="350" easing="inout" reversible="true" condition="!Skin.HasSetting(View_520_Hide_Touch_Controls) + !Skin.HasSetting(View_520_DisableFooter)">conditional</animation>
-					<height>110</height>
-					<top>470</top>
-					<right>300</right>
-						
-						<include content="Ratings_Footer">
-							<animation effect="zoom" start="100" end="80" center="1590,100" condition="true">conditional</animation>
+				    
+		                <include content="Ratings_Footer">
+			                <animation effect="zoom" start="100" end="75" center="1050,80" condition="true">conditional</animation>
 							<visible>!$EXP[TrailerIsPlaying]</visible>
-				            <param name="rating_offset_left" value="0" />
+				            
+		<!-- <animation effect="slide" start="0,0" end="110,0" time="0" condition="!String.IsEmpty(ListItem.Art(poster)) + !String.EndsWith(ListItem.Icon, fanart.png) + !String.EndsWith(ListItem.Icon, -1.png)">conditional</animation> -->
+	                        <param name="rating_offset_left" value="0" />
 	                        <param name="rating_offset_right" value="0" />
 	                        <param name="rating_align" value="right" />
                         </include>
 						<include content="Ratings_Footer">
-			                <animation effect="zoom" start="100" end="80" center="5300,100" condition="true">conditional</animation>
+			                <animation effect="zoom" start="100" end="75" center="1050,80" condition="true">conditional</animation>
 							<visible>$EXP[TrailerIsPlaying]</visible>
-							<param name="rating_offset_left" value="0" />
+		<!-- <animation effect="slide" start="0,0" end="110,0" time="0" condition="!String.IsEmpty(ListItem.Art(poster)) + !String.EndsWith(ListItem.Icon, fanart.png) + !String.EndsWith(ListItem.Icon, -1.png)">conditional</animation> -->
+	                        <param name="rating_offset_left" value="355" />
 	                        <param name="rating_offset_right" value="0" />
 	                        <param name="rating_align" value="left" />
                         </include>
@@ -291,7 +285,7 @@
 						
 						<itemgap>10</itemgap>
 						
-						<bottom>0</bottom>
+						<top>250</top>
 						<width>80%</width>
 						<height>80</height>
 						<orientation>horizontal</orientation>
@@ -304,9 +298,6 @@
 							<include content="HUB_ContainerButtons">
 								<description>Order Direction</description>
 								<param name="texture" value="defaultmusicvideotitle.png" />
-								<param name="frame_radius" value="50" />
-								<param name="button_radius" value="40" />
-								<param name="button_offsetadd" value="5" />
 							</include>
 							<onclick>SendClick(4)</onclick>
 							<onclick>Notification([B]$INFO[Container.Content][/B] [I]Sort Order[/I],$INFO[Container.SortOrder])</onclick>
@@ -316,9 +307,6 @@
 							<include content="HUB_ContainerButtons">
 								<description>Method</description>
 								<param name="texture" value="defaultmusicvideotitle.png" />
-								<param name="frame_radius" value="50" />
-								<param name="button_radius" value="40" />
-								<param name="button_offsetadd" value="5" />
 							</include>
 							<onclick>SendClick(3)</onclick>
 							<onclick>Notification([B]$INFO[Container.Content][/B] [I]Sort Method[/I],$INFO[Container.SortMethod])</onclick>
@@ -330,9 +318,6 @@
 						<control type="radiobutton" id="52004">
 							<include content="HUB_ContainerButtons">
 								<param name="texture" value="defaultaddoninfoprovider.png" />
-								<param name="frame_radius" value="50" />
-								<param name="button_radius" value="40" />
-								<param name="button_offsetadd" value="5" />
 							</include>
 							<onclick>SetFocus(520)</onclick>
 							<onclick>Action(info)</onclick>
@@ -340,17 +325,14 @@
 						<control type="radiobutton" id="52005">
 							<include content="HUB_ContainerButtons">
 								<param name="texture" value="defaultmusicplaylists.png" />
-								<param name="frame_radius" value="50" />
-								<param name="button_radius" value="40" />
-								<param name="button_offsetadd" value="5" />
 							</include>
 						</control>
 					</control>
 					
+				</control>
 				
 				
-				
-			
+			</control>
 			
 			
 			
@@ -365,7 +347,7 @@
 				
 				<animation effect="fade" start="100" end="0" time="350" easing="inout" reversible="true" condition="$EXP[TrailerIsPlaying]">conditional</animation>
 					
-				<description>genres,years,tags,years,directors ??</description>
+				
 				<preloaditems>2</preloaditems>
 				<orientation>vertical</orientation>
 				<onup condition="Control.IsVisible(19)">SetFocus(19)</onup>
@@ -409,7 +391,7 @@
 							<control type="image">
 								<visible>Container.Content(episodes)</visible>
 								<height>50</height>
-								<animation effect="slide" end="0,1" condition="String.IsEqual(ListItem.Overlay,OverlayUnWatched.png) + !ListItem.IsResumable">conditional</animation>
+								<!-- <bottom>8.5</bottom> -->
 								<bottom>9</bottom>
 								<left>8</left>
 								<right>8</right>

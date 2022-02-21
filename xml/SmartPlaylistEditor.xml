@@ -1,48 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
 	<defaultcontrol always="true">500</defaultcontrol>
-<!-- 	
-1.56 SmartPlaylistEditor.xml
-smartplaylisteditor 	WINDOW_DIALOG_SMART_PLAYLIST_EDITOR 10136 	SmartPlaylistEditor.xml 
-ID 	Type 			Description
-2 	label 			Heading label
-10 	container 		List of playlist rules
-12 	button 			Name of the playlist
-13 	button 			Add a rule
-14 	button 			Remove a rule
-15 	button 			Edit a rule
-16 	button 			Match rules option (match all rules / match one or more rules)
-17 	button 			Limit rules option (number of results: 10, 25, 50, 100, etc... items)
-18 	button 			Sort rules option (order the results by: title, genre, random, etc...)
-19 	button 			Sort direction option (ascending / descending)
-20 	button 			OK button
-21 	button 			Cancel button
-22 	button 			Set Playlist type (movies, episodes, mixed, etc...)
-23 	button 			Group by
-24 	radiobutton 	Mixed  
--->
 	<include>Animation_OpenClose_Zoom</include>
 	<controls>
 		
 		<control type="button" id="9002">
 			<description>delete rule</description>
-			<font />
-			<label />
+			<include>HiddenObject</include>
 			<onright>9001</onright>
 			<onleft>10</onleft>
 			<onup condition="String.IsEmpty(Container(10).ListItemNoWrap(-1).Label)">SetFocus(10)</onup>
-			<onup condition="String.IsEmpty(Container(10).ListItemNoWrap(-1).Label)">SetFocus(10)</onup>
 			<onup condition="!String.IsEmpty(Container(10).ListItemNoWrap(-1).Label)">Control.Move(10,-1)</onup>
 			<onup condition="!String.IsEmpty(Container(10).ListItemNoWrap(-1).Label)">SetFocus(9002)</onup>
-			<ondown condition="String.IsEqual(Container(10).ListItem(1).Label,$LOCALIZE[21423])">SetFocus(10)</ondown>
 			<ondown condition="String.IsEqual(Container(10).ListItem(1).Label,$LOCALIZE[21423])">SetFocus(10)</ondown>
 			<ondown condition="!String.IsEqual(Container(10).ListItem(1).Label,$LOCALIZE[21423])">Control.Move(10,1)</ondown>
 			<ondown condition="!String.IsEqual(Container(10).ListItem(1).Label,$LOCALIZE[21423])">SetFocus(9002)</ondown>
 			<onclick>SetFocus(10)</onclick>
 			<onclick>AlarmClock(delayedaction,SendClick(ContextMenu,1001),00:00,silent)</onclick>
 			<onclick>ContextMenu</onclick>
-			<!-- <onclick>AlarmClock(delayedaction,Action(ContextMenu),00:00)</onclick> -->
-			<!-- <onclick>AlarmClock(delayedaction2,Action(Select),00:01)</onclick> -->
 		</control>
 		
 		<include>Dialog_Fullscreen_BGPanel</include>
@@ -66,13 +41,6 @@ ID 	Type 			Description
 			<animation effect="fade" start="100" end="20" time="350" condition="window.isactive(10137)">conditional</animation>
 			<top>190</top>
 			<width>100%</width>
-			<!-- need set type if custom call 
-			
-			create xml and write to fs, how far should i go
-				- create full custom
-				- custom prreset type - xbmc do the other tags - replace custom type in xbmc generated xml type tag
-			
-			-->
 			<control type="grouplist" id="500">
 				<orientation>vertical</orientation>
 				<centerleft>50%</centerleft>
@@ -102,11 +70,9 @@ ID 	Type 			Description
 					<top>-5</top>
 					<description>Rules List Control</description>
 					<height>360</height>
-					<onleft>500</onleft>
+					<onleft>9001</onleft>
 					<onright condition="!String.IsEqual(container(10).listitem.label,$LOCALIZE[21423])">9002</onright>
 					<onright condition="String.IsEqual(container(10).listitem.label,$LOCALIZE[21423])">9001</onright>
-						<!-- <onleft>9001</onleft> -->
-					
 					<orientation>vertical</orientation>
 					<itemlayout height="60">
 						<control type="group">
