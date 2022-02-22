@@ -71,10 +71,8 @@
 	
 				<control type="image">
 					<description>polaroid square</description>
-					
 					<visible>!string.isempty(listitem.dbtype) + !Container.Content() + !Container.Content(directors) + !Container.Content(actors) + !Container.Content(studios) + !Container.Content(genres) + !Container.Content(years) + !Container.Content(tags) + !Container.Content(countries) + !String.StartsWith(ListItem.Icon,defaultartist)</visible>
 					<visible>[String.IsEmpty(listitem.art(poster)) + String.IsEmpty(listitem.art(season.poster))] | [string.contains(Container.PluginName,amazon) + [$EXP[IsTVShow] | $EXP[IsSeason] | $EXP[IsEpisode]] + String.Contains(listitem.icon,amazon.com)]</visible>
-					
 					<height>350</height>
 					<width>350</width>
 					<bordersize>10</bordersize>
@@ -85,18 +83,15 @@
 				
 				<control type="image">
 					<description>polaroid  w 243 POSTER , polaroid poster - may scale it as it'll be better for the eyes - in compromise of cropping- curr best get a static with instead of keep to w+h</description>
-					<aspectratio scalediffuse="true" align="left" aligny="bottom">keep</aspectratio>
-					<top>0</top>
 					<bottom>30</bottom>
-					<!-- <fadetime>200</fadetime> -->
-					
+					<!-- <fadetime>350</fadetime> -->
 					<visible>!string.isempty(listitem.dbtype) + !Container.Content() + !Container.Content(studios) + !Container.Content(genres) + !Container.Content(years) + !Container.Content(tags) + !Container.Content(countries) + !String.StartsWith(ListItem.Icon,defaultartist)</visible>
 					<visible>[!string.contains(Container.PluginName,amazon) + [!String.IsEmpty(listitem.art(poster)) | !String.IsEmpty(listitem.art(season.poster))]] | [$EXP[IsMovie] + String.Contains(listitem.icon,amazon.com)] | [[$EXP[IsTVShow] | $EXP[IsSeason] | $EXP[IsEpisode]] + !String.Contains(listitem.icon,amazon.com)] | [Container.Content(directors) + System.HasAddon(resource.images.moviedirectorthumbs)] | [Container.Content(actors) + !String.IsEqual(ListItem.Icon,defaultactor.png)]</visible>
-					<width>243</width>
+						<width>252</width>
 					<bordersize>10</bordersize>
 					<bordertexture>colors/white.png</bordertexture>
+					<aspectratio scalediffuse="true" align="left" aligny="top">keep</aspectratio>
 					<texture background="true" diffuse="colors/white80.png">$VAR[ImageLayout_poster]</texture>
-					<!-- <aspectratio scalediffuse="true" align="left" aligny="top">keep</aspectratio> -->
 				</control>
 				<control type="image">
 					<visible>[Container.Content(actors) + String.IsEqual(ListItem.Icon,defaultactor.png)] | String.StartsWith(ListItem.Icon,defaultartist)</visible>
@@ -115,7 +110,7 @@
 					<visible>$EXP[TrailerIsPlaying]</visible>
 					<width>612</width>
 					<height>350</height>
-					<bottom>29</bottom>
+					<bottom>34</bottom>
 					<control type="image">
 						<texture>colors/black.png</texture>
 						<bordersize>2</bordersize>
@@ -147,6 +142,7 @@
 						<description>TITLE def</description>
 						<visible>String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
 						<height min="40" max="85">auto</height>
+						<aligny>bottom</aligny>
 						<label>$VAR[list_item_rootinfo]</label>
 						<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 						<font>notosans_30_semibold</font>
@@ -156,12 +152,15 @@
 						<visible>!String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
 						<height min="40" max="85">auto</height>
 						<width>71%</width>
+						<aligny>top</aligny>
 						<label>$VAR[list_item_rootinfo]</label>
 						<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 						<font>notosans_30_semibold</font>
 					</control>
+					
 					<control type="label">
 						<description>DURATION VIDEO placement, append TITLE</description>
+						 <visible>false</visible> 
 						<visible>[String.IsEqual(ListItem.dbtype,movie) | String.IsEqual(ListItem.dbtype,musicvideo)] + !String.IsEmpty(ListItem.Duration)</visible>
 						<top>-33</top>
 						<height>30</height>
@@ -204,7 +203,6 @@
 						<font>notosans_60_bold</font>
 					</control>
 					<control type="label">
-						<!-- <animation effect="fade" end="70" time="0" condition="true">conditional</animation> -->
 						<visible>Container.Content(songs) | Container.Content(albums)</visible>
 						<height>25</height>
 						<label>$INFO[ListItem.Album,[B],[/B]]$INFO[ListItem.Year,    (,)]</label>
@@ -252,17 +250,32 @@
 						<textcolor>$VAR[color_spotlightlib_accent]</textcolor>
 						<label>$VAR[520_Album_Song_Durations]</label>
 					</control>
-					<control type="label">	
-						<visible>false</visible>
-						<visible>!Window.IsActive(music)</visible>
-						<top>10</top>
-						<height>20</height>
-						<align>left</align>
-						<font>notosans_18_bold</font>
-						<textcolor>$VAR[color_spotlightlib_main]</textcolor>
-						<label>$VAR[ListItemDuration]</label>
+					
+					<control type="group">
+						<top>20</top> <!-- get offset current-->
+						<height>-20</height> <!-- set offset next -->
+						<visible>!Window.IsActive(music) + !String.IsEmpty(ListItem.Duration) + !Skin.HasSetting(view_520_hideplot)</visible>
+						<control type="image">
+							<bordersize>4</bordersize>
+							<width>30</width>
+							<height>30</height>
+							<texture colordiffuse="$PARAM[color_main]">resource://resource.images.skin.swan/tempfoldersqaurethumbs/time.png</texture>
+							<aspectratio>keep</aspectratio>
+						</control>
+						<control type="label">	
+							<left>35</left>
+							<height>30</height>
+							<!-- <visible>false</visible> -->
+							
+							<align>left</align>
+							<font>notosans_18_bold</font>
+							<textcolor>$VAR[color_spotlightlib_main]</textcolor>
+							<label>$VAR[ListItemDuration]</label>
+						</control>
 					</control>
-					 <include content="MediaFlagGroup_Footer">
+					
+					<!-- mööp, i need align to the art, so i need to stay in the grouplist, but grouplist force me to move if TITLE got 2 rows -->
+					<include content="MediaFlagGroup_Footer">
 						<visible>Control.IsVisible(520) + !Skin.HasSetting(View_520_DisableFooter)</visible>
 						<animation effect="slide" start="0,90" end="0,0" time="350" tween="quadratic" easing="out" delay="100">VisibleChange</animation>
 						<animation effect="zoom" start="100" end="80" center="-10,480" condition="![$EXP[IsTVShow] | $EXP[IsSeason] | $EXP[IsEpisode]]">conditional</animation>
@@ -422,7 +435,7 @@
 							<control type="image">
 								<visible>Container.Content(episodes) | [String.IsEmpty(ListItem.dbtype) + Container.Content()]</visible>
 								<height>50</height>
-								<animation effect="slide" end="0,1" condition="String.IsEqual(ListItem.Overlay,OverlayUnWatched.png) + !ListItem.IsResumable">conditional</animation>
+								<animation effect="slide" end="0,1" condition="[String.IsEqual(ListItem.Overlay,OverlayUnWatched.png) + !ListItem.IsResumable] | [String.IsEmpty(ListItem.dbtype) + Container.Content()]">conditional</animation>
 								<bottom>9</bottom>
 								<left>8</left>
 								<right>8</right>
