@@ -85,8 +85,9 @@
 				
 				<control type="image">
 					<description>polaroid  w 243 POSTER , polaroid poster - may scale it as it'll be better for the eyes - in compromise of cropping- curr best get a static with instead of keep to w+h</description>
-					<!-- <aspectratio scalediffuse="true" align="left" aligny="top">keep</aspectratio> -->
-					<!-- <bottom>30</bottom> -->
+					<aspectratio scalediffuse="true" align="left" aligny="bottom">keep</aspectratio>
+					<top>0</top>
+					<bottom>30</bottom>
 					<!-- <fadetime>200</fadetime> -->
 					
 					<visible>!string.isempty(listitem.dbtype) + !Container.Content() + !Container.Content(studios) + !Container.Content(genres) + !Container.Content(years) + !Container.Content(tags) + !Container.Content(countries) + !String.StartsWith(ListItem.Icon,defaultartist)</visible>
@@ -95,7 +96,7 @@
 					<bordersize>10</bordersize>
 					<bordertexture>colors/white.png</bordertexture>
 					<texture background="true" diffuse="colors/white80.png">$VAR[ImageLayout_poster]</texture>
-					<aspectratio scalediffuse="true" align="left" aligny="top">keep</aspectratio>
+					<!-- <aspectratio scalediffuse="true" align="left" aligny="top">keep</aspectratio> -->
 				</control>
 				<control type="image">
 					<visible>[Container.Content(actors) + String.IsEqual(ListItem.Icon,defaultactor.png)] | String.StartsWith(ListItem.Icon,defaultartist)</visible>
@@ -380,8 +381,12 @@
 				<include content="view_locking" condition="skin.hassetting(skin_locked_views)">
 					<param name="view_id" value="520" />
 				</include>
-				<include>Media_Values_ContainerNavigation</include>
+				<include content="Media_Values_ContainerNavigation">
+					<param name="pagecontrol" value="52060" />
+				</include>
 				<viewtype label="$LOCALIZE[31263]">icon</viewtype>
+				
+				
 				
 				<top>570</top>
 				<left>150</left>
@@ -415,7 +420,7 @@
 							<param name="artwork_overlay_landscape" value="![$EXP[IsEpisode]]" />
 						</include>
 							<control type="image">
-								<visible>Container.Content(episodes)</visible>
+								<visible>Container.Content(episodes) | [String.IsEmpty(ListItem.dbtype) + Container.Content()]</visible>
 								<height>50</height>
 								<animation effect="slide" end="0,1" condition="String.IsEqual(ListItem.Overlay,OverlayUnWatched.png) + !ListItem.IsResumable">conditional</animation>
 								<bottom>9</bottom>
@@ -452,6 +457,17 @@
 								<font>notosans_12_semibold</font>
 								<textcolor>white</textcolor>
 								<label>$INFO[ListItem.Duration(mm),, min.]</label>
+							</control>
+							<control type="label">
+								<visible>String.IsEmpty(ListItem.dbtype) + Container.Content()</visible>
+								<height>20</height>
+								<bottom>10</bottom>
+								<left>12</left>
+								<right>2</right>
+								<font>notosans_12_semibold</font>
+								<textcolor>white</textcolor>
+								<label>$INFO[ListItem.Label]</label>
+								<align>center</align>
 							</control>
 					</control>
 				</itemlayout>
@@ -507,6 +523,17 @@
 								<font>notosans_12_semibold</font>
 								<textcolor>white</textcolor>
 								<label>$INFO[ListItem.Duration(mm),, min.]</label>
+							</control>
+							<control type="label">
+								<visible>String.IsEmpty(ListItem.dbtype) + Container.Content()</visible>
+								<height>20</height>
+								<bottom>10</bottom>
+								<left>12</left>
+								<right>2</right>
+								<font>notosans_12_semibold</font>
+								<textcolor>white</textcolor>
+								<label>$INFO[ListItem.Label]</label>
+								<align>center</align>
 							</control>
 						</control>
 						
@@ -615,8 +642,39 @@
 						</focusedlayout>
 						
 						
-					</control>
+			</control>
 			
+			<control type="scrollbar" id="52060">
+				<animation effect="fade" start="100" end="0" time="250" condition="Control.HasFocus(520600)">conditional</animation>
+				<animation effect="fade" start="0" end="100" time="250" condition="Control.HasFocus(52060)">conditional</animation>
+				<visible>Control.IsVisible(520)</visible>
+				<right>285</right>
+				<top>575</top>
+				<height>440</height>
+				<onup>52060</onup>
+				<ondown>52060</ondown>
+				<onleft>50</onleft>
+				<width>2</width>
+				<onright condition="Control.IsVisible(520600)">520600</onright>
+				<onright condition="!Control.IsVisible(520600) + Control.IsVisible(19)">19</onright>
+				<onright condition="!Control.IsVisible(520600) + !Control.IsVisible(19)">520</onright>
+			</control>
+			<include condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" content="ScrollBar_Alphabet">
+				<right>10</right>
+				<width>250</width>
+				<top>650</top>
+				<height>260</height>
+				<param name="id" value="520600" />
+				<param name="visible" value="String.IsEqual(Container.ViewMode,$LOCALIZE[31263])" />
+				<param name="orientation" value="vertical" />
+				<param name="panel_width" value="130" />
+				<param name="height" value="260" />
+				<param name="item_hw" value="32.5" />
+				<param name="bg_texture_visible" value="true" />
+				<param name="is_vertical" value="true" />
+				<param name="color_1" value="ff131313" />
+				<param name="color_2" value="ffffffff" />
+			</include>
 			
 			<include content="Cast_Contents" condition="Window.IsActive(videos)" />
 			

@@ -259,6 +259,7 @@
 		<control type="scrollbar" id="60">
 			<animation effect="fade" start="100" end="0" time="250" condition="Control.HasFocus(600)">conditional</animation>
 			<visible>!$EXP[Scrollbar_Lib_Horizontal]</visible>
+			<visible>!String.IsEqual(Container.ViewMode,$LOCALIZE[31263])</visible>
 			<right>45</right>
 			<top>160</top>
 			<height>74%</height>
@@ -464,10 +465,13 @@ FilterSMS<2-9> 	Filter a list in music or videos using SMS-style input.
 	<!-- <include>Oninfo_MovieSetInfo</include> shouldnt be needed in MATRIX -->
 	
 	<include name="Media_Values_ContainerNavigation">
-		<pagecontrol>60</pagecontrol>
-		<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
-		<onleft condition="Control.IsVisible(8999)">8999</onleft>
-		<onright condition="Control.IsVisible(60)">60</onright>
+		<param name="pagecontrol" value="60" />
+		<definition>
+			<pagecontrol>$PARAM[pagecontrol]</pagecontrol>
+			<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
+			<onleft condition="Control.IsVisible(8999)">8999</onleft>
+			<onright condition="Control.IsVisible($PARAM[pagecontrol])">$PARAM[pagecontrol]</onright>
+		</definition>
 	</include>
 	
 	<!-- 
