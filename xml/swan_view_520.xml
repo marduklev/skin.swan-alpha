@@ -78,8 +78,8 @@
 					<!-- <bottom>30</bottom> -->
 					
 					<!-- <fadetime>200</fadetime> -->
-					<visible>!string.isempty(listitem.dbtype) + !Container.Content() + !Container.Content(studios) | [Container.Content(actors) + !String.IsEqual(ListItem.Icon,defaultactor.png)] + !Container.Content(genres)</visible>
-					<visible>[!string.contains(Container.PluginName,amazon) + [!String.IsEmpty(listitem.art(poster)) | !String.IsEmpty(listitem.art(season.poster))]] | [$EXP[IsMovie] + String.Contains(listitem.icon,amazon.com)] | [[$EXP[IsTVShow] | $EXP[IsSeason] | $EXP[IsEpisode]] + !String.Contains(listitem.icon,amazon.com)] | [Container.Content(directors) + System.HasAddon(resource.images.moviedirectorthumbs)]</visible>
+					<visible>!string.isempty(listitem.dbtype) + !Container.Content() + !Container.Content(studios) + !Container.Content(genres)</visible>
+					<visible>[!string.contains(Container.PluginName,amazon) + [!String.IsEmpty(listitem.art(poster)) | !String.IsEmpty(listitem.art(season.poster))]] | [$EXP[IsMovie] + String.Contains(listitem.icon,amazon.com)] | [[$EXP[IsTVShow] | $EXP[IsSeason] | $EXP[IsEpisode]] + !String.Contains(listitem.icon,amazon.com)] | [Container.Content(directors) + System.HasAddon(resource.images.moviedirectorthumbs)] | [Container.Content(actors) + !String.IsEqual(ListItem.Icon,defaultactor.png)]</visible>
 					<width>243</width>
 					<bordersize>10</bordersize>
 					<bordertexture>colors/white.png</bordertexture>
@@ -516,6 +516,25 @@
 							<param name="artwork_diffuse_override" value="false" />
 							<param name="artwork_overlay_landscape" value="![$EXP[IsEpisode]]" />
 						</include>
+						<control type="image">
+							<visible>[Container.Content(actors) + !String.IsEqual(ListItem.Icon,defaultactor.png)]</visible>
+							<height>50</height>
+							<bottom>8.5</bottom>
+							<left>8</left>
+							<right>8</right>
+							<texture colordiffuse="ff131313">diffuse/episodeinfogradient.png</texture>
+						</control>
+						<control type="label">
+							<visible>[Container.Content(actors) + !String.IsEqual(ListItem.Icon,defaultactor.png)]</visible>
+							<height>20</height>
+							<bottom>10</bottom>
+							<left>12</left>
+							<right>2</right>
+							<font>notosans_12_semibold</font>
+							<textcolor>white</textcolor>
+							<align>center</align>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
 					</control>
 				</itemlayout>
 				<focusedlayout height="225" width="225" condition="Container.Content(albums) | Container.Content(actors)">
@@ -541,19 +560,36 @@
 								<param name="artwork_overlay_landscape" value="![$EXP[IsEpisode]]" />
 							</include>
 						</control>
+						<control type="image">
+							<visible>[Container.Content(actors) + !String.IsEqual(ListItem.Icon,defaultactor.png)]</visible>
+							<height>50</height>
+							<bottom>8.5</bottom>
+							<left>8</left>
+							<right>8</right>
+							<texture colordiffuse="ff131313">diffuse/episodeinfogradient.png</texture>
+						</control>
+						<control type="label">
+							<visible>[Container.Content(actors) + !String.IsEqual(ListItem.Icon,defaultactor.png)]</visible>
+							<height>20</height>
+							<bottom>10</bottom>
+							<left>12</left>
+							<right>2</right>
+							<font>notosans_12_semibold</font>
+							<textcolor>white</textcolor>
+							<label>$INFO[ListItem.Label]</label>
+							<align>center</align>
+						</control>
 					</control>
 				</focusedlayout>
-				
-				<!-- future inverted colors n bg panel -->
-						<itemlayout height="38" condition="Container.Content(songs)">
-							<include content="songsheet_row_container">
-								<param name="focsed" value="false"/>
-								<param name="text_main" value="$VAR[color_lib_text_secondary]"/>
-								<param name="text_secondary" value="$VAR[color_lib_text_secondary]"/>
-								<param name="text_accent" value="$VAR[color_lib_text_secondary]"/>
-							</include>
-						</itemlayout>
-						<focusedlayout height="38" condition="Container.Content(songs)">
+				<itemlayout height="38" condition="Container.Content(songs)">
+					<include content="songsheet_row_container">
+						<param name="focsed" value="false"/>
+						<param name="text_main" value="$VAR[color_lib_text_secondary]"/>
+						<param name="text_secondary" value="$VAR[color_lib_text_secondary]"/>
+						<param name="text_accent" value="$VAR[color_lib_text_secondary]"/>
+					</include>
+				</itemlayout>
+				<focusedlayout height="38" condition="Container.Content(songs)">
 							<include content="songsheet_row_container">
 								<param name="focsed" value="true"/>
 								<param name="text_main" value="$VAR[color_lib_text_main]"/>

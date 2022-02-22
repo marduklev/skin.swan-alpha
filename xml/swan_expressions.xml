@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
+
+	<!-- ?? String.IsEmpty(ListItem.dbtype) + !String.IsEmpty(ListItem.label) -->
+	
+	<!-- layouts bg + text --> 
+	<expression name="label_content">Container.Content(playlists) | Container.Content(years) | String.IsEqual(ListItem.dbtype,year) | String.IsEqual(ListItem.dbtype,originalyear) | String.IsEqual(ListItem.dbtype,genre) | String.IsEqual(ListItem.dbtype,tag) | String.IsEqual(ListItem.dbtype,director) | [String.IsEqual(ListItem.dbtype,actor) + String.IsEqual(ListItem.Icon,defaultactor.png)] | String.IsEqual(ListItem.dbtype,studio) | !String.IsEmpty(ListItem.ChannelName)</expression>
+	
+
+	<!-- tags true  - ? + !Container.Content(Directors) + !Container.Content(Actors)  ? -->
+		<!-- !container.content(playlists) + !container.content(studios) + !container.content(tags) + !container.content(genres) + !container.content(years) -->
+	
+	<!-- tags false -->
+	<expression name="DisableTags">container.content(playlists) | container.content(studios) | container.content(tags) | container.content(genres) | container.content(years)</expression>
+	
+	
+<!-- 
+!(A + B) = !A | !B
+!(A | B) = !A + !B
+-->
+	
 	<expression name="osd_video_noinfo">String.IsEmpty(VideoPlayer.Plot) | [!String.IsEmpty(VideoPlayer.Plot) + Player.ShowInfo + !Window.IsActive(fullscreeninfo)]</expression>
 	
 	<expression name="Has_Trailer">!String.IsEmpty(ListItem.Trailer) | [!String.IsEmpty(Window(home).Property(listitemtrailer)) + !String.IsEmpty(Window(home).Property(trailer_avail))]</expression>
