@@ -76,6 +76,8 @@
 				<left>150</left>
 				<top>200</top>
 				<height>385</height>
+				
+	<animation effect="slide" end="-50,-80" time="150" condition="String.IsEqual(Container.ViewMode,$LOCALIZE[31263]) + String.IsEmpty(Container.PluginName) + String.IsEmpty(dbtype) + Container.Content()">conditional</animation>
 	
 				<control type="image">
 					<description>polaroid square</description>
@@ -428,13 +430,21 @@
 			</control>
 			
 			<control type="group">
-				<description>something usefull ,using templates</description>
-				<top>200</top>
+				<description>something usefull ,using templates later on </description>
 				<height>350</height>
 				<width>1600</width>
+				
+				<top>200</top>
+				<left>650</left>
+				
+				
+				<top>200</top>
 				<left>450</left>
-				<visible>String.IsEmpty(dbtype) + Container.Content()</visible>
-					
+				
+				
+				
+				<visible>String.IsEqual(Container.ViewMode,$LOCALIZE[31263]) + String.IsEmpty(Container.PluginName) + String.IsEmpty(dbtype) + Container.Content()</visible>
+				<animation effect="fade" end="50" condition="true">conditional</animation>
 	
 				<control type="image">
 					<description>debug bg spacing</description>
@@ -444,20 +454,21 @@
 				
 				<control type="grouplist">
 					<description>1</description>
-					<animation effect="fade" end="70" condition="true">conditional</animation>
 					<animation effect="zoom" start="100" end="75" time="0" easing="inout" tween="cubic" condition="true">conditional</animation>
-					<animation effect="zoom" start="105" end="75" time="250" easing="out" tween="cubic" condition="!Container(520).Position(1) + !Container(520).Position(4)">conditional</animation>
+					<!-- <animation effect="zoom" start="105" end="75" time="250" easing="out" tween="cubic" condition="!Container(520).Position(1) + !Container(520).Position(4)">conditional</animation> -->
 					<animation effect="slide" end="0,30" condition="true">conditional</animation>
 					<top>150</top>
 					
 					<orientation>horizontal</orientation>
 					<visible>String.IsEmpty(dbtype) + Container.Content()</visible>
 					
-					<control type="label">
+					<control type="textbox">
 						<description>property like new movie numvbers n name blabla as info when ROOT LIB is visible (root lib nodes)</description>
-						<height>150</height>
+						<height>200</height>
 						<width>400</width>
-						<label>[COLOR $VAR[color_spotlightlib_main]]new movies :[/COLOR]$INFO[Window(home).Property(LatestMovie.1.Title),[CR]   ,]$INFO[Window(home).Property(LatestMovie.2.Title),[CR]   ,]$INFO[Window(home).Property(LatestMovie.3.Title),[CR]   ,]$INFO[Window(home).Property(LatestMovie.4.Title),[CR]   ,]$INFO[Window(home).Property(LatestMovie.5.Title),[CR]   ,][CR][CR]Total Movies : 578758[CR]Unwatched: 445</label>
+						<align>right</align>
+						<autoscroll>false</autoscroll>
+						<label>[COLOR $VAR[color_spotlightlib_main]][B]$LOCALIZE[20386][/B][/COLOR]        $INFO[Window(home).Property(LatestMovie.1.Title),[CR]   ,]$INFO[Window(home).Property(LatestMovie.2.Title),[CR]   ,    ]$INFO[Window(home).Property(LatestMovie.3.Title),[CR]   ,         ]$INFO[Window(home).Property(LatestMovie.4.Title),[CR]   ,   ]$INFO[Window(home).Property(LatestMovie.5.Title),[CR]   ,        ][CR]Total Movies : 578758[CR]Unwatched: 445</label>
 						<textcolor>$VAR[color_spotlightlib_accent]</textcolor>
 						<font>notosans_22_regular_lowlined</font>
 					</control>
@@ -477,7 +488,7 @@
 						<height>200</height>
 						<width>200</width>
 						<bordertexture colordiffuse="$VAR[color_spotlightlib_accent]">artworkdiffuse/circleborder.png</bordertexture>
-						<texture background="true" diffuse="artworkdiffuse/circle.png" fallback="defaultactor.png">$INFO[Window(home).Property(LatestMovie.2.Thumb)]</texture>
+						<texture background="true" diffuse="artworkdiffuse/circle.png" fallback="defaultactor.png">$INFO[Window(home).Property(LatestMovie.1.Poster)]</texture>
 						<aspectratio scalediffuse="false" aligny="top" align="center">scale</aspectratio>
 						<bordersize>10</bordersize>
 					</control>
@@ -486,20 +497,22 @@
 				<control type="grouplist">
 					<description>2</description>
 					
-					<animation effect="fade" end="60" condition="true">conditional</animation>
-					<animation effect="zoom" end="60" condition="true">conditional</animation>
-					<animation effect="zoom" start="105" end="60" time="250" easing="out" tween="cubic" condition="!Container(520).Position(2) + !Container(520).Position(6)">conditional</animation>
+					
+					<animation effect="zoom" end="75" condition="true">conditional</animation>
+					<!-- <animation effect="zoom" start="105" end="80" time="250" easing="out" tween="cubic" condition="!Container(520).Position(2) + !Container(520).Position(6)">conditional</animation> -->
 					<top>10</top>
-					<left>270</left>
+					<left>240</left>
 					
 					<orientation>horizontal</orientation>
 					<visible>String.IsEmpty(dbtype) + Container.Content()</visible>
 					
-					<control type="label">
+					<control type="textbox">
 						<description>property like new movie numvbers n name blabla as info when ROOT LIB is visible (root lib nodes)</description>
-						<height>150</height>
+						<height>200</height>
 						<width>400</width>
-						<label>[COLOR $VAR[color_spotlightlib_main]]new TV Shows :[/COLOR]$INFO[Window(home).Property(LatestEpisode.1.ShowTitle),[CR]   ,]$INFO[Window(home).Property(LatestEpisode.2.ShowTitle),[CR]   ,]$INFO[Window(home).Property(LatestEpisode.3.ShowTitle),[CR]   ,]$INFO[Window(home).Property(LatestEpisode.4.ShowTitle),[CR]   ,]$INFO[Window(home).Property(LatestEpisode.5.ShowTitle),[CR]   ,][CR][CR]Total Movies : 578758[CR]Unwatched: 445</label>
+						<align>right</align>
+						<autoscroll>false</autoscroll>
+						<label>[COLOR $VAR[color_spotlightlib_main]][B]$LOCALIZE[20387][/B][/COLOR]        $INFO[Window(home).Property(LatestEpisode.1.ShowTitle),[CR]   ,       ]$INFO[Window(home).Property(LatestEpisode.2.ShowTitle),[CR]   ,    ]$INFO[Window(home).Property(LatestEpisode.3.ShowTitle),[CR]   ,         ]$INFO[Window(home).Property(LatestEpisode.4.ShowTitle),[CR]   ,   ]$INFO[Window(home).Property(LatestEpisode.5.ShowTitle),[CR]   ,        ][CR][CR]Total Movies : 578758[CR]Unwatched: 445</label>
 						<textcolor>$VAR[color_spotlightlib_accent]</textcolor>
 						<font>notosans_22_regular_lowlined</font>
 					</control>
@@ -527,20 +540,21 @@
 				
 				<control type="grouplist">
 					<description>3</description>
-					<animation effect="fade" end="65" condition="true">conditional</animation>
-					<animation effect="zoom" end="75" condition="true">conditional</animation>
-					<animation effect="zoom" start="105" end="75" time="250" easing="out" tween="cubic" condition="!Container(520).Position(3) + !Container(520).Position(7)">conditional</animation>
-					
-					<left>700</left>
-					<top>140</top>
+					<animation effect="zoom" end="65" condition="true">conditional</animation>
+					<!-- <animation effect="zoom" start="105" end="75" time="250" easing="out" tween="cubic" condition="!Container(520).Position(3) + !Container(520).Position(7)" center="right">conditional</animation> -->
+					<animation effect="slide" end="0,40" condition="true">conditional</animation>
+					<left>660</left>
+					<top>150</top>
 					<orientation>horizontal</orientation>
 					<visible>String.IsEmpty(dbtype) + Container.Content()</visible>
 					
-					<control type="label">
+					<control type="textbox">
 						<description>property like new movie numvbers n name blabla as info when ROOT LIB is visible (root lib nodes)</description>
-						<height>150</height>
+						<height>200</height>
 						<width>400</width>
-						<label>[COLOR $VAR[color_spotlightlib_main]]new MusicVideos :[/COLOR]$INFO[Window(home).Property(LatestMusicvideo.1.Title),[CR]   ,]$INFO[Window(home).Property(LatestMusicvideo.2.Title),[CR]   ,]$INFO[Window(home).Property(LatestMusicvideo.3.Title),[CR]   ,]$INFO[Window(home).Property(LatestMusicvideo.4.Title),[CR]   ,]$INFO[Window(home).Property(LatestMusicvideo.5.Title),[CR]   ,][CR][CR]Total Movies : 578758[CR]Unwatched: 445</label>
+						<align>right</align>
+						<autoscroll>false</autoscroll>
+						<label>[COLOR $VAR[color_spotlightlib_main]][B]$LOCALIZE[20390][/B][/COLOR]        $INFO[Window(home).Property(LatestMusicvideo.1.Title),[CR]   ,  ]$INFO[Window(home).Property(LatestMusicvideo.2.Title),[CR]   ,      ]$INFO[Window(home).Property(LatestMusicvideo.3.Title),[CR]   ,         ]$INFO[Window(home).Property(LatestMusicvideo.4.Title),[CR]   ,   ]$INFO[Window(home).Property(LatestMusicvideo.5.Title),[CR]   ,        ][CR]Total Movies : 578758[CR]Unwatched: 445</label>
 						<textcolor>$VAR[color_spotlightlib_accent]</textcolor>
 						<font>notosans_22_regular_lowlined</font>
 					</control>
@@ -560,8 +574,8 @@
 						<height>200</height>
 						<width>200</width>
 						<bordertexture colordiffuse="$VAR[color_spotlightlib_accent]">artworkdiffuse/circleborder.png</bordertexture>
-						<texture background="true" diffuse="artworkdiffuse/circle.png" fallback="defaultactor.png">$INFO[Window(home).Property(LatestMusicvideo.1.Thumb)]</texture>
-						<aspectratio scalediffuse="false" aligny="top" align="center">scale</aspectratio>
+						<texture background="true" diffuse="artworkdiffuse/circle.png" fallback="$INFO[Window(home).Property(LatestMusicvideo.2.Thumb)]">$INFO[Window(home).Property(LatestMusicvideo.2.Fanart)]</texture>
+						<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
 						<bordersize>10</bordersize>
 					</control>
 				</control>
@@ -627,7 +641,7 @@
 				
 				<viewtype label="music list">icon</viewtype>
 				<scrolltime tween="quadratic">400</scrolltime>
-				<itemlayout height="150" width="290" condition="!Container.Content(albums) + !Container.Content(songs) + !Container.Content(actors)">
+				<itemlayout height="150" width="290" condition="!Container.Content(albums) + !Container.Content(songs) + !Container.Content(actors) + !Container.Content(images)">
 					<control type="group">
 						<width>296</width>
 						<height>150</height>
@@ -647,7 +661,7 @@
 							<param name="artwork_overlay_landscape" value="![$EXP[IsEpisode]]" />
 						</include>
 							<control type="image">
-								<visible>Container.Content(episodes) | [String.IsEmpty(ListItem.dbtype) + Container.Content()]</visible>
+								<visible>Container.Content(episodes) | [String.IsEmpty(ListItem.dbtype) + [Container.Content() | Container.Content(images)]]</visible>
 								<height>50</height>
 								<animation effect="slide" end="0,1" condition="[String.IsEqual(ListItem.Overlay,OverlayUnWatched.png) + !ListItem.IsResumable] | [String.IsEmpty(ListItem.dbtype) + Container.Content()]">conditional</animation>
 								<bottom>9</bottom>
@@ -686,7 +700,7 @@
 								<label>$INFO[ListItem.Duration(mm),, min.]</label>
 							</control>
 							<control type="label">
-								<visible>String.IsEmpty(ListItem.dbtype) + Container.Content()</visible>
+								<visible>String.IsEmpty(ListItem.dbtype) + [Container.Content() | Container.Content(images)]</visible>
 								<height>20</height>
 								<bottom>10</bottom>
 								<left>12</left>
@@ -698,7 +712,7 @@
 							</control>
 					</control>
 				</itemlayout>
-				<focusedlayout height="150" width="290" condition="!Container.Content(albums) + !Container.Content(songs) + !Container.Content(actors)">
+				<focusedlayout height="150" width="290" condition="!Container.Content(albums) + !Container.Content(songs) + !Container.Content(actors) + !Container.Content(images)">
 					<include content="hiddenbutton_manage_skinpropertys" />
 					<control type="group">
 						<width>296</width>
@@ -752,7 +766,7 @@
 								<label>$INFO[ListItem.Duration(mm),, min.]</label>
 							</control>
 							<control type="label">
-								<visible>String.IsEmpty(ListItem.dbtype) + Container.Content()</visible>
+								<visible>String.IsEmpty(ListItem.dbtype) + [Container.Content() | Container.Content(images)]</visible>
 								<height>20</height>
 								<bottom>10</bottom>
 								<left>12</left>
@@ -767,7 +781,7 @@
 					</control>
 							
 				</focusedlayout>
-				<itemlayout height="225" width="225" condition="Container.Content(albums) | Container.Content(actors)">
+				<itemlayout height="225" width="225" condition="Container.Content(albums) | Container.Content(actors) | Container.Content(images)">
 					<control type="group">
 						<width>230</width>
 						<height>230</height>
@@ -787,7 +801,7 @@
 							<param name="artwork_overlay_landscape" value="![$EXP[IsEpisode]]" />
 						</include>
 						<control type="image">
-							<visible>[Container.Content(actors) + !String.IsEqual(ListItem.Icon,defaultactor.png)]</visible>
+							<visible>[Container.Content(actors) + !String.IsEqual(ListItem.Icon,defaultactor.png)] | [String.IsEmpty(ListItem.dbtype) + [Container.Content() | Container.Content(images)]]</visible>
 							<height>50</height>
 							<bottom>8.5</bottom>
 							<left>8</left>
@@ -795,7 +809,7 @@
 							<texture colordiffuse="ff131313">diffuse/episodeinfogradient.png</texture>
 						</control>
 						<control type="label">
-							<visible>[Container.Content(actors) + !String.IsEqual(ListItem.Icon,defaultactor.png)]</visible>
+							<visible>[Container.Content(actors) + !String.IsEqual(ListItem.Icon,defaultactor.png)] | [String.IsEmpty(ListItem.dbtype) + [Container.Content() | Container.Content(images)]]</visible>
 							<height>20</height>
 							<bottom>10</bottom>
 							<left>12</left>
@@ -807,7 +821,7 @@
 						</control>
 					</control>
 				</itemlayout>
-				<focusedlayout height="225" width="225" condition="Container.Content(albums) | Container.Content(actors)">
+				<focusedlayout height="225" width="225" condition="Container.Content(albums) | Container.Content(actors) | Container.Content(images)">
 					<include content="hiddenbutton_manage_skinpropertys" />
 					<control type="group">
 						<width>230</width>
@@ -831,7 +845,7 @@
 							</include>
 						</control>
 						<control type="image">
-							<visible>[Container.Content(actors) + !String.IsEqual(ListItem.Icon,defaultactor.png)]</visible>
+							<visible>[Container.Content(actors) + !String.IsEqual(ListItem.Icon,defaultactor.png)] | [String.IsEmpty(ListItem.dbtype) + [Container.Content() | Container.Content(images)]]</visible>
 							<height>50</height>
 							<bottom>8.5</bottom>
 							<left>8</left>
@@ -839,7 +853,7 @@
 							<texture colordiffuse="ff131313">diffuse/episodeinfogradient.png</texture>
 						</control>
 						<control type="label">
-							<visible>[Container.Content(actors) + !String.IsEqual(ListItem.Icon,defaultactor.png)]</visible>
+							<visible>[Container.Content(actors) + !String.IsEqual(ListItem.Icon,defaultactor.png)] | [String.IsEmpty(ListItem.dbtype) + [Container.Content() | Container.Content(images)]]</visible>
 							<height>20</height>
 							<bottom>10</bottom>
 							<left>12</left>
