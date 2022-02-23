@@ -1274,7 +1274,7 @@
 			</control>
 			
 			<control type="group" id="9555">
-				<height>650</height>
+				<height>640</height>
 				<control type="list" id="930">
 					<onfocus condition="!String.IsEqual(Window(Home).Property(menucontrol_active),common)">SetProperty(menucontrol_active,common,Home)</onfocus>
 					<scrolltime tween="quadratic">400</scrolltime>
@@ -1593,6 +1593,7 @@
 				<font>notosans_25_regular_l</font>
 				<textcolor>$VAR[color_lib_menu_item_fo]</textcolor>
 			</control> -->
+			
 			<control type="radiobutton" id="4007">
 				<include>Menucontrol_RadioButton</include>
 				<visible>Container(930).HasFocus(9302)</visible>
@@ -1636,20 +1637,23 @@
 			</control>
 			
 			<control type="radiobutton" id="4207">
+				<description>currently hidden may delet or differ between music and video</description>
 				<include>Menucontrol_RadioButton</include>
 				<label>Disable Fanart</label>
 				<visible>Container(930).HasFocus(9302)</visible>
-				<visible>Control.IsVisible(510) | Control.IsVisible(511) | Control.IsVisible(512) | Control.IsVisible(513)</visible>
+				<visible>Control.IsVisible(510) | Control.IsVisible(511) | Control.IsVisible(512) | Control.IsVisible(513) | Control.IsVisible(520)</visible>
 				<onclick condition="Control.IsVisible(510)">Skin.ToggleSetting(View_510_disabledart)</onclick>
 				<onclick condition="Control.IsVisible(511)">Skin.ToggleSetting(View_511_disabledart)</onclick>
 				<onclick condition="Control.IsVisible(512)">Skin.ToggleSetting(View_512_disabledart)</onclick>
 				<onclick condition="Control.IsVisible(513)">Skin.ToggleSetting(View_513_disabledart)</onclick>
+				<onclick condition="Control.IsVisible(520) + !window.isactive(music)">Skin.ToggleSetting(View_520_disabledart_video)</onclick>
 				<selected>
 				[
 				 Control.IsVisible(510) + Skin.HasSetting(View_510_disabledart) | 
 			 	 Control.IsVisible(511) + Skin.HasSetting(View_511_disabledart) | 
 				 Control.IsVisible(512) + Skin.HasSetting(View_512_disabledart) | 
-				 Control.IsVisible(513) + Skin.HasSetting(View_513_disabledart)
+				 Control.IsVisible(513) + Skin.HasSetting(View_513_disabledart) | 
+				 Control.IsVisible(520) + !window.isactive(music) + Skin.HasSetting(View_520_disabledart_video)
 				]
 				</selected>
 			</control>

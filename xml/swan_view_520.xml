@@ -17,7 +17,6 @@
 		<value condition="$EXP[IsEpisode]">$INFO[Container.ListItem.TVShowTitle,[B],[/B]]</value>
 		<value condition="$EXP[IsSeason]">$INFO[Container.ListItem.TVShowTitle,[B],[/B]]</value>
 		<value condition="!String.IsEmpty(Container.ListItem.Artist)">$INFO[Container.ListItem.Artist,[B],[/B]]</value>
-		
 		<value condition="Container.Content(playlists) | Container.Content(genres) | Container.Content(studios) | Container.Content(tags) | Container.Content(countries) | Container.Content(years)">[UPPERCASE][B]$INFO[Container.FolderName][/B][/UPPERCASE]</value>
 		<value condition="Container.Content(actors) | Container.Content(directors)">[COLOR $VAR[color_spotlightlib_accent]]$INFO[Container.ListItem.Label,[B],[/B]][/COLOR]</value>
 		<value condition="!Container.Content(years) + String.EndsWith(Container.ListItem.Label, Container.ListItem.Year)">$INFO[Container.ListItem.Label,[B],[/B]]</value>
@@ -60,7 +59,16 @@
 				<param name="diffuse" value="diffuse/spotlightleftdiffuse.png" />
 				<param name="visible" value="$PARAM[spotlight_artwork_visible_right]" />
 			</include>
-				
+	
+	<control type="image">
+		
+		<visible>false</visible>
+		<left>150</left>
+		<top>190</top>
+		<height>385</height>
+		<texture colordiffuse="red">colors/white20.png</texture>
+	</control>
+			
 			<control type="grouplist">
 				<visible>Control.IsVisible(520)</visible>
 				<orientation>horizontal</orientation>
@@ -71,6 +79,7 @@
 	
 				<control type="image">
 					<description>polaroid square</description>
+					<visible>[!window.isactive(music) + !Skin.HasSetting(View_520_disabledart_video)] | !Window.IsActive(videos)</visible>
 					<visible>!string.isempty(listitem.dbtype) + !Container.Content() + !Container.Content(directors) + !Container.Content(actors) + !Container.Content(studios) + !Container.Content(genres) + !Container.Content(years) + !Container.Content(tags) + !Container.Content(countries) + !String.StartsWith(ListItem.Icon,defaultartist)</visible>
 					<visible>[String.IsEmpty(listitem.art(poster)) + String.IsEmpty(listitem.art(season.poster))] | [string.contains(Container.PluginName,amazon) + [$EXP[IsTVShow] | $EXP[IsSeason] | $EXP[IsEpisode]] + String.Contains(listitem.icon,amazon.com)]</visible>
 					<height>350</height>
@@ -84,16 +93,18 @@
 				<control type="image">
 					<description>polaroid  w 243 POSTER , polaroid poster - may scale it as it'll be better for the eyes - in compromise of cropping- curr best get a static with instead of keep to w+h</description>
 					<bottom>30</bottom>
+					<visible>[!window.isactive(music) + !Skin.HasSetting(View_520_disabledart_video)] | !Window.IsActive(videos)</visible>
 					<!-- <fadetime>350</fadetime> -->
 					<visible>!string.isempty(listitem.dbtype) + !Container.Content() + !Container.Content(studios) + !Container.Content(genres) + !Container.Content(years) + !Container.Content(tags) + !Container.Content(countries) + !String.StartsWith(ListItem.Icon,defaultartist)</visible>
 					<visible>[!string.contains(Container.PluginName,amazon) + [!String.IsEmpty(listitem.art(poster)) | !String.IsEmpty(listitem.art(season.poster))]] | [$EXP[IsMovie] + String.Contains(listitem.icon,amazon.com)] | [[$EXP[IsTVShow] | $EXP[IsSeason] | $EXP[IsEpisode]] + !String.Contains(listitem.icon,amazon.com)] | [Container.Content(directors) + System.HasAddon(resource.images.moviedirectorthumbs)] | [Container.Content(actors) + !String.IsEqual(ListItem.Icon,defaultactor.png)]</visible>
-						<width>252</width>
+					<width>252</width>
 					<bordersize>10</bordersize>
 					<bordertexture>colors/white.png</bordertexture>
-					<aspectratio scalediffuse="true" align="left" aligny="top">keep</aspectratio>
+					<aspectratio scalediffuse="true" align="left" aligny="bottom">stretch</aspectratio>
 					<texture background="true" diffuse="colors/white80.png">$VAR[ImageLayout_poster]</texture>
 				</control>
 				<control type="image">
+					<visible>[!window.isactive(music) + !Skin.HasSetting(View_520_disabledart_video)] | !Window.IsActive(videos)</visible>
 					<visible>[Container.Content(actors) + String.IsEqual(ListItem.Icon,defaultactor.png)] | String.StartsWith(ListItem.Icon,defaultartist)</visible>
 					<description>thumb real border</description>
 					<height>350</height>
@@ -109,8 +120,8 @@
 					<description>trailer preview videowindow</description>
 					<visible>$EXP[TrailerIsPlaying]</visible>
 					<width>612</width>
-					<height>350</height>
-					<bottom>34</bottom>
+					<height>355</height>
+					<bottom>30</bottom>
 					<control type="image">
 						<texture>colors/black.png</texture>
 						<bordersize>2</bordersize>
@@ -124,170 +135,246 @@
 					</control>
 				</control>
 				
-				<control type="grouplist">
-					<visible>Control.IsVisible(520)</visible>
-					<orientation>vertical</orientation>
-					<top>35</top>
-					<left>30</left>
-					<right>200</right>
-					<width>1166</width>
-					<height>350</height>
-					<aligny>bottom</aligny>
-					
-					<animation effect="slide" start="0,0" end="0,200" time="350" easing="inout" reversible="true" condition="Skin.HasSetting(view_520_hideplot) + Skin.HasSetting(View_520_Hide_Touch_Controls)">conditional</animation>
-					<animation effect="slide" start="0,0" end="0,130" time="350" easing="inout" reversible="true" condition="Skin.HasSetting(view_520_hideplot) + !Skin.HasSetting(View_520_Hide_Touch_Controls)">conditional</animation>
-					<animation effect="slide" start="0,0" end="0,80" time="350" easing="inout" reversible="true" condition="Skin.HasSetting(view_520_hideplot) + Skin.HasSetting(View_520_DisableFooter)">conditional</animation>
-					
-					<control type="textbox">
-						<description>TITLE def</description>
-						<visible>String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
-						<height min="40" max="85">auto</height>
+				<control type="group">
+				
+					<control type="grouplist">
+						<visible>Control.IsVisible(520)</visible>
+						<orientation>vertical</orientation>
+						<top>35</top>
+						<left>30</left>
+						<right>200</right>
+						<width>1166</width>
+						<height>350</height>
 						<aligny>bottom</aligny>
-						<label>$VAR[list_item_rootinfo]</label>
-						<textcolor>$VAR[color_spotlightlib_main]</textcolor>
-						<font>notosans_30_semibold</font>
-					</control>
-					<control type="textbox">
-						<description>TITLE low width when trailer playing</description>
-						<visible>!String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
-						<height min="40" max="85">auto</height>
-						<width>71%</width>
-						<aligny>bottom</aligny>
-						<label>$VAR[list_item_rootinfo]</label>
-						<textcolor>$VAR[color_spotlightlib_main]</textcolor>
-						<font>notosans_30_semibold</font>
-					</control>
-					<control type="label">
-						<description>GENRE - videos, else if not a subitem</description>
-						<height>13</height>
-						<visible>window.isactive(videos) | String.IsEqual(listitem.dbtype,artist)</visible>
-						<textcolor>$VAR[color_spotlightlib_accent]</textcolor>
-						<label fallback="">$INFO[listitem.genre]</label>
-						<font>notosans_16_bold</font>
-					</control>
-					<include content="spacer_h" condition="window.isactive(music)">
-						<param name="gap" value="13" />
-						<param name="visible" value="!String.IsEqual(listitem.dbtype,artist)" />
-					</include>
-					<include content="spacer_h">
-						<param name="gap" value="25" />
-						<param name="visible" value="$EXP[IsEpisode] | $EXP[IsSeason] | $EXP[IsTVShow]" />
-					</include>
-					<include content="spacer_h" description="height can use negative values, therefore dont use a nested top -25">
-						<param name="gap" value="-15" />
-						<param name="visible" value="String.StartsWith(Container.Folderpath,library) | Container.Content()" />
-					</include>
-					<control type="label">
-						<visible>[[$EXP[IsEpisode] | $EXP[IsSeason] | $EXP[IsTVShow]] + !String.StartsWith(Container.Folderpath,library) + !Container.Content() + !String.IsEmpty(listitem.dbtype)] | Container.Content(genres) | Container.Content(studios) | Container.Content(tags) | Container.Content(countries) | Container.Content(actors) | Container.Content(directors) | Container.Content(years) | Container.Content(playlists)</visible>
-						<height>20</height>
-						<label>$VAR[list_item_subinfo]</label>
-						<textcolor>$VAR[color_spotlightlib_main]</textcolor>
-						<font>notosans_21_semibold</font>
-					</control>
-					<control type="label">
-						<visible>String.StartsWith(Container.Folderpath,library) | Container.Content()</visible>
-						<height>50</height>
-						<label>$VAR[list_item_subinfo]</label>
-						<textcolor>$VAR[color_spotlightlib_main]</textcolor>
-						<font>notosans_60_bold</font>
-					</control>
-					<control type="label">
-						<visible>Container.Content(songs) | Container.Content(albums)</visible>
-						<height>25</height>
-						<label>$INFO[ListItem.Album,[B],[/B]]$INFO[ListItem.Year,    (,)]</label>
-						<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
-						<font>notosans_21_semibold</font>
-					</control>
-					<control type="label">
-						<visible>Integer.IsGreater(ListItem.TotalDiscs,1) + [!String.IsEmpty(ListItem.DiscNumber) | !String.IsEmpty(ListItem.DiscTitle)]</visible>
-						<height>25</height>
-						<label>[B]∟[/B]$INFO[ListItem.DiscNumber, $LOCALIZE[427]   ,]$INFO[ListItem.DiscTitle,   [B]•[/B]   ,]</label>
-						<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
-						<font>notosans_16_regular</font>
-					</control>
-					<control type="label">
-						<height>30</height>
-						<visible>window.isactive(music) + !String.IsEqual(listitem.dbtype,artist)</visible>
-						<textcolor>$VAR[color_spotlightlib_accent]</textcolor>
-						<label>$INFO[listitem.genre]</label>
-						<font>notosans_16_bold</font>
-					</control>
-					<control type="textbox">
-						<top>20</top>
-						<visible>String.IsEmpty(Window(Home).Property(TrailerIsPlaying)) + !Skin.HasSetting(view_520_hideplot)</visible>
-						<height>120</height>
-						<width>80%</width>
-						<label>$VAR[plot]</label>
-						<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
-						<font>notosans_22_regular_lowlined</font>
-					</control>
-					<control type="textbox">
-						<top>20</top>
-						<visible>!String.IsEmpty(Window(Home).Property(TrailerIsPlaying)) + !Skin.HasSetting(view_520_hideplot)</visible>
-						<height>120</height>
-						<width>50%</width>
-						<label>$VAR[plot]</label>
-						<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
-						<font>notosans_22_regular_lowlined</font>
-					</control>
-					<control type="label">	
-						<visible>Window.IsActive(music)</visible>
-						<animation effect="fade" end="50" time="0" condition="true">conditional</animation>
-						<height>25</height>
-						<align>left</align>
-						<font>notosans_16_bold</font>
-						<textcolor>$VAR[color_spotlightlib_accent]</textcolor>
-						<label>$VAR[520_Album_Song_Durations]</label>
-					</control>
-					
-					<control type="group">
-						<top>20</top> <!-- get offset current-->
-						<height>-20</height> <!-- set offset next -->
-						<visible>!Window.IsActive(music) + !String.IsEmpty(ListItem.Duration) + !Skin.HasSetting(view_520_hideplot)</visible>
-						<control type="image">
-							<bordersize>4</bordersize>
-							<width>30</width>
-							<height>30</height>
-							<texture colordiffuse="$PARAM[color_main]">resource://resource.images.skin.swan/tempfoldersqaurethumbs/time.png</texture>
-							<aspectratio>keep</aspectratio>
-						</control>
-						<control type="label">	
-							<left>35</left>
-							<height>30</height>
-							<!-- <visible>false</visible> -->
-							
-							<align>left</align>
-							<font>notosans_18_bold</font>
-							<textcolor>$VAR[color_spotlightlib_main]</textcolor>
-							<label>$VAR[ListItemDuration]</label>
-						</control>
-					</control>
-					
-					<!-- mööp, i need align to the art, so i need to stay in the grouplist, but grouplist force me to move if TITLE got 2 rows -->
-					<include content="MediaFlagGroup_Footer">
-						<visible>Control.IsVisible(520) + !Skin.HasSetting(View_520_DisableFooter)</visible>
-						<animation effect="slide" start="0,90" end="0,0" time="350" tween="quadratic" easing="out" delay="100">VisibleChange</animation>
-						<animation effect="zoom" start="100" end="80" center="-10,480" condition="![$EXP[IsTVShow] | $EXP[IsSeason] | $EXP[IsEpisode]]">conditional</animation>
-						<animation effect="zoom" start="100" end="80" center="-10,270" condition="[$EXP[IsTVShow] | $EXP[IsSeason] | $EXP[IsEpisode]]">conditional</animation>
-	´					<animation effect="slide" start="0,0" end="-645,65" time="0" condition="$EXP[TrailerIsPlaying]">conditional</animation>
 						
-						<animation effect="slide" start="0,0" end="0,-75" time="350" easing="inout" reversible="true" condition="Skin.HasSetting(view_520_hideplot) + Skin.HasSetting(View_520_Hide_Touch_Controls)">conditional</animation>
-						<animation effect="slide" start="0,0" end="0,15" time="350" easing="inout" reversible="true" condition="Skin.HasSetting(view_520_hideplot) + !Skin.HasSetting(View_520_Hide_Touch_Controls)">conditional</animation>
-						<param name="mediaflag_offset_left" value="0"/>
-						<param name="mediaflag_offset_align" value="left" />
-						<param name="mediaflag_width" value="500" />
-					</include>
-		
+						
+						<animation effect="slide" start="0,0" end="0,-30" time="350" easing="inout" reversible="true" condition="!Skin.HasSetting(view_520_hideplot) + !Skin.HasSetting(View_520_Hide_Touch_Controls) + !Skin.HasSetting(View_520_DisableFooter)">conditional</animation>
+						
+						
+						<animation effect="slide" start="0,0" end="0,200" time="350" easing="inout" reversible="true" condition="Skin.HasSetting(view_520_hideplot) + Skin.HasSetting(View_520_Hide_Touch_Controls)">conditional</animation>
+						<animation effect="slide" start="0,0" end="0,130" time="350" easing="inout" reversible="true" condition="Skin.HasSetting(view_520_hideplot) + !Skin.HasSetting(View_520_Hide_Touch_Controls)">conditional</animation>
+						<animation effect="slide" start="0,0" end="0,80" time="350" easing="inout" reversible="true" condition="Skin.HasSetting(view_520_hideplot) + Skin.HasSetting(View_520_DisableFooter)">conditional</animation>
+						
+						<control type="textbox">
+							<description>TITLE def</description>
+							<visible>String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
+							<height min="40" max="85">auto</height>
+							<aligny>bottom</aligny>
+							<label>$VAR[list_item_rootinfo]</label>
+							<textcolor>$VAR[color_spotlightlib_main]</textcolor>
+							<font>notosans_30_semibold</font>
+						</control>
+						<control type="textbox">
+							<description>TITLE low width when trailer playing</description>
+							<visible>!String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
+							<height min="40" max="85">auto</height>
+							<width>71%</width>
+							<aligny>bottom</aligny>
+							<label>$VAR[list_item_rootinfo]</label>
+							<textcolor>$VAR[color_spotlightlib_main]</textcolor>
+							<font>notosans_30_semibold</font>
+						</control>
+						<control type="label">
+							<description>GENRE - videos, else if not a subitem</description>
+							<height>13</height>
+							<visible>window.isactive(videos) | String.IsEqual(listitem.dbtype,artist)</visible>
+							<textcolor>$VAR[color_spotlightlib_accent]</textcolor>
+							<label fallback="">$INFO[listitem.genre]</label>
+							<font>notosans_16_bold</font>
+						</control>
+						
+						<include content="spacer_h" condition="window.isactive(music)">
+							<param name="gap" value="13" />
+							<param name="visible" value="!String.IsEqual(listitem.dbtype,artist)" />
+						</include>
+						<include content="spacer_h">
+							<param name="gap" value="25" />
+							<param name="visible" value="$EXP[IsEpisode] | $EXP[IsSeason] | $EXP[IsTVShow]" />
+						</include>
+						<include content="spacer_h" description="height can use negative values, therefore dont use a nested top -25">
+							<param name="gap" value="-15" />
+							<param name="visible" value="String.StartsWith(Container.Folderpath,library) | Container.Content()" />
+						</include>
+						<control type="label">
+							<visible>[[$EXP[IsEpisode] | $EXP[IsSeason] | $EXP[IsTVShow]] + !String.StartsWith(Container.Folderpath,library) + !Container.Content() + !String.IsEmpty(listitem.dbtype)] | Container.Content(genres) | Container.Content(studios) | Container.Content(tags) | Container.Content(countries) | Container.Content(actors) | Container.Content(directors) | Container.Content(years) | Container.Content(playlists)</visible>
+							<height>20</height>
+							<label>$VAR[list_item_subinfo]</label>
+							<textcolor>$VAR[color_spotlightlib_main]</textcolor>
+							<font>notosans_21_semibold</font>
+						</control>
+						<control type="label">
+							<visible>String.StartsWith(Container.Folderpath,library) | Container.Content()</visible>
+							<height>50</height>
+							<label>$VAR[list_item_subinfo]</label>
+							<textcolor>$VAR[color_spotlightlib_main]</textcolor>
+							<font>notosans_60_bold</font>
+						</control>
+						<control type="label">
+							<visible>Container.Content(songs) | Container.Content(albums)</visible>
+							<height>25</height>
+							<label>$INFO[ListItem.Album,[B],[/B]]$INFO[ListItem.Year,    (,)]</label>
+							<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
+							<font>notosans_21_semibold</font>
+						</control>
+						<control type="label">
+							<visible>Integer.IsGreater(ListItem.TotalDiscs,1) + [!String.IsEmpty(ListItem.DiscNumber) | !String.IsEmpty(ListItem.DiscTitle)]</visible>
+							<height>25</height>
+							<label>[B]∟[/B]$INFO[ListItem.DiscNumber, $LOCALIZE[427]   ,]$INFO[ListItem.DiscTitle,   [B]•[/B]   ,]</label>
+							<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
+							<font>notosans_16_regular</font>
+						</control>
+						<control type="label">
+							<height>30</height>
+							<visible>window.isactive(music) + !String.IsEqual(listitem.dbtype,artist)</visible>
+							<textcolor>$VAR[color_spotlightlib_accent]</textcolor>
+							<label>$INFO[listitem.genre]</label>
+							<font>notosans_16_bold</font>
+						</control>
+						<control type="textbox">
+							<top>20</top>
+							<!-- <visible>!String.IsEmpty(listitem.plot)</visible><visible>!String.IsEmpty(listitem.plot)</visible> -->
+							<visible>String.IsEmpty(Window(Home).Property(TrailerIsPlaying)) + !Skin.HasSetting(view_520_hideplot)</visible>
+							<visible>!String.IsEmpty(dbtype) + !Container.Content()</visible>
+							<height>113</height>
+							<width>80%</width>
+							<label>$VAR[plot]</label>
+							<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
+							<font>notosans_22_regular_lowlined</font>
+						</control>
+						<control type="textbox">
+							<top>20</top>
+							<visible>!String.IsEmpty(Window(Home).Property(TrailerIsPlaying)) + !Skin.HasSetting(view_520_hideplot)</visible>
+							<visible>!String.IsEmpty(dbtype) + !Container.Content()</visible>
+							<height>113</height>
+							<width>50%</width>
+							<label>$VAR[plot]</label>
+							<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
+							<font>notosans_22_regular_lowlined</font>
+						</control>
+						
+						<control type="textbox">
+							<top>20</top>
+							<description>property like new movie numvbers n name blabla as info when ROOT LIB is visible (root lib nodes)</description>
+							
+							<visible>String.IsEmpty(dbtype) + Container.Content()</visible>
+							<height>113</height>
+							<width>50%</width>
+							<label>new movie :[CR]phantastische tierwesen 666[CR]Total Movies : 578758[CR]Unwatched: 445</label>
+							<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
+							<font>notosans_22_regular_lowlined</font>
+						</control>
+						
+						<control type="label">	
+							<visible>Window.IsActive(music)</visible>
+							<animation effect="fade" end="50" time="0" condition="true">conditional</animation>
+							<height>25</height>
+							<align>left</align>
+							<font>notosans_16_bold</font>
+							<textcolor>$VAR[color_spotlightlib_accent]</textcolor>
+							<label>$VAR[520_Album_Song_Durations]</label>
+						</control>
+						
+						<control type="group">
+							<top>10</top> <!-- get offset current-->
+							<height>40</height> <!-- set offset next -->
+							<visible>!Window.IsActive(music) + !String.IsEmpty(ListItem.Duration) + !Skin.HasSetting(view_520_hideplot)</visible>
+							<visible>![$EXP[IsTVShow] | $EXP[IsSeason] | $EXP[IsEpisode]]</visible>
+							<control type="image">
+								<bordersize>4</bordersize>
+								<width>30</width>
+								<height>30</height>
+								<texture colordiffuse="$PARAM[color_main]">resource://resource.images.skin.swan/tempfoldersqaurethumbs/time.png</texture>
+								<aspectratio>keep</aspectratio>
+							</control>
+							<control type="label">	
+								<left>35</left>
+								<height>30</height>
+								<!-- <visible>false</visible> -->
+								
+								<align>left</align>
+								<font>notosans_18_bold</font>
+								<textcolor>$VAR[color_spotlightlib_main]</textcolor>
+								<label>$VAR[ListItemDuration]</label>
+							</control>
+						</control>
+						
+						<control type="grouplist">
+							<description>TOUCH CONTROL  - other just usefull if 1 row hor list</description>
+							<animation effect="fade" start="100" end="0" time="350" easing="inout" reversible="true" condition="$EXP[TrailerIsPlaying]">conditional</animation>
+							<animation effect="slide" start="0,0" end="0,50" time="0" condition="Skin.HasSetting(View_520_DisableFooter)">conditional</animation>
+							
+							<height>50</height>
+							<visible>Control.IsVisible(520)</visible>
+							<visible>!Skin.HasSetting(View_520_Hide_Touch_Controls)</visible>
+							<itemgap>10</itemgap>
+							<orientation>horizontal</orientation>
+							<onup></onup>
+							<ondown></ondown>
+							<control type="radiobutton" id="52001">
+								<include content="HUB_ContainerButtons">
+									<description>Order Direction</description>
+									<param name="texture" value="defaultmusicvideotitle.png" />
+									<param name="frame_radius" value="50" />
+									<param name="button_radius" value="40" />
+									<param name="button_offsetadd" value="5" />
+								</include>
+								<onclick>SendClick(4)</onclick>
+								<onclick>Notification([B]$INFO[Container.Content][/B] [I]Sort Order[/I],$INFO[Container.SortOrder])</onclick>
+								<onclick>SetFocus(520)</onclick>
+							</control>
+							<control type="radiobutton" id="52002">
+								<include content="HUB_ContainerButtons">
+									<description>Sort Method</description>
+									<param name="texture" value="buttons/advancedfiltermethod.png" />
+									<param name="frame_radius" value="50" />
+									<param name="button_radius" value="40" />
+									<param name="button_offsetadd" value="5" />
+								</include>
+								<onclick>SendClick(3)</onclick>
+								<onclick>Notification([B]$INFO[Container.Content][/B] [I]Sort Method[/I],$INFO[Container.SortMethod])</onclick>
+								<onclick>SetFocus(520)</onclick>
+							</control>
+							<control type="radiobutton" id="52004">
+								<include content="HUB_ContainerButtons">
+									<description>Open Info</description>
+									
+									<param name="texture" value="defaultaddoninfoprovider.png" />
+									<param name="frame_radius" value="50" />
+									<param name="button_radius" value="40" />
+									<param name="button_offsetadd" value="5" />
+								</include>
+								<onclick>SetFocus(520)</onclick>
+								<onclick>Action(info)</onclick>
+							</control>
+							<control type="radiobutton" id="52005">
+								<include content="HUB_ContainerButtons">
+									<param name="texture" value="defaultmusicplaylists.png" />
+									<param name="frame_radius" value="50" />
+									<param name="button_radius" value="40" />
+									<param name="button_offsetadd" value="5" />
+								</include>
+								<onclick>playlist</onclick>
+							</control>
+							
+							<!-- play , play random, slide playlist container from right in -->
+								
+						</control>
+						
+			
+					</control>
+					<!-- fixed x,y ? -->
 					<control type="grouplist">
 						<description>TOUCH CONTROL  - other just usefull if 1 row hor list</description>
-						<height>80</height>
 						<animation effect="fade" start="100" end="0" time="350" easing="inout" reversible="true" condition="$EXP[TrailerIsPlaying]">conditional</animation>
+						<animation effect="slide" start="0,0" end="0,50" time="0" condition="Skin.HasSetting(View_520_DisableFooter)">conditional</animation>
+						<visible>false</visible>
+						<top>255</top>
+						<left>25</left>
+						<height>50</height>
 						<visible>Control.IsVisible(520)</visible>
 						<visible>!Skin.HasSetting(View_520_Hide_Touch_Controls)</visible>
-						<top>10</top>
 						<itemgap>10</itemgap>
 						<orientation>horizontal</orientation>
-						<animation effect="slide" start="0,0" end="0,-10" time="0" condition="!Skin.HasSetting(View_520_Hide_Touch_Controls) + !Skin.HasSetting(View_520_DisableFooter) + [$EXP[IsEpisode] | $EXP[IsSeason] | $EXP[IsTVShow]]">conditional</animation>
 						<onup></onup>
 						<ondown></ondown>
 						<control type="radiobutton" id="52001">
@@ -337,8 +424,19 @@
 						</control>
 						
 						<!-- play , play random, slide playlist container from right in -->
-						
+							
 					</control>
+					<include content="MediaFlagGroup_Footer">
+						<visible>String.IsEqual(Container.ViewMode,$LOCALIZE[31263]) + !Skin.HasSetting(View_520_DisableFooter)</visible>
+						<bottom>-265</bottom>
+						<animation effect="slide" start="0,90" end="0,0" time="350" tween="quadratic" easing="out" delay="100">VisibleChange</animation>
+						<animation effect="zoom" start="100" end="80" center="-10,350" condition="true">conditional</animation>
+						<animation effect="slide" start="0,0" end="-645,0" time="0" condition="$EXP[TrailerIsPlaying]">conditional</animation>
+						<!-- <animation effect="slide" start="0,0" end="-480,0" time="0" condition="$EXP[IsEpisode] + String.Contains(listitem.icon,amazon.com)">conditional</animation> -->
+						<param name="mediaflag_offset_left" value="30"/>
+						<param name="mediaflag_offset_align" value="left" />
+						<param name="mediaflag_width" value="500" />
+					</include>
 				</control>
 			</control>	
 					
