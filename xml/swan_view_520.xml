@@ -44,18 +44,27 @@
 	<include name="view_520">
 		<control type="group">
 			<description>todo: dont use for genres,years,tags,years,directors - or use labels within item/focusedlayouts - </description>
-		
 			<visible>Control.IsVisible(520)</visible>
+			
 			<control type="image">
-				<description>BG curr playing, to do: go over Backgroundbuilding</description>
 				<visible>Player.HasVideo + String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
 				<texture colordiffuse="$VAR[color_spotlightlib_background_layer1]">colors/white90.png</texture>
 			</control>
 			<include content="Fanart_Diffused">
 				<animation effect="fade" start="100" end="25" time="350" easing="inout" reversible="true" condition="true">conditional</animation>
+				<visible>!Skin.HasSetting(View_520_FanartBG)</visible>
 				<right>0</right>
 				<param name="width" value="1267" />
 				<param name="height" value="731" />
+				<param name="diffuse" value="diffuse/spotlightleftdiffuse.png" />
+				<param name="visible" value="$PARAM[spotlight_artwork_visible_right]" />
+			</include>
+			<include content="Fanart_Diffused">
+				<animation effect="fade" start="100" end="10" time="350" easing="inout" reversible="true" condition="true">conditional</animation>
+				<visible>Skin.HasSetting(View_520_FanartBG)</visible>
+				<right>0</right>
+				<param name="width" value="1820" />
+				<param name="height" value="950" />
 				<param name="diffuse" value="diffuse/spotlightleftdiffuse.png" />
 				<param name="visible" value="$PARAM[spotlight_artwork_visible_right]" />
 			</include>
@@ -865,15 +874,13 @@
 					</include>
 				</itemlayout>
 				<focusedlayout height="38" condition="Container.Content(songs)">
-							<include content="songsheet_row_container">
-								<param name="focsed" value="true"/>
-								<param name="text_main" value="$VAR[color_lib_text_main]"/>
-								<param name="text_secondary" value="$VAR[color_lib_text_secondary]"/>
-								<param name="text_accent" value="$VAR[color_lib_accent]"/>
-							</include>
-						</focusedlayout>
-						
-						
+					<include content="songsheet_row_container">
+						<param name="focsed" value="true"/>
+						<param name="text_main" value="$VAR[color_lib_text_main]"/>
+						<param name="text_secondary" value="$VAR[color_lib_text_secondary]"/>
+						<param name="text_accent" value="$VAR[color_lib_accent]"/>
+					</include>
+				</focusedlayout>
 			</control>
 			
 			<control type="scrollbar" id="52060">
