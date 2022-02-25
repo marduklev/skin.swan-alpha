@@ -3,9 +3,19 @@
 	<animation effect="fade" start="0" end="100" time="250">WindowOpen</animation>
 	<animation effect="fade" start="100" end="0" time="250">WindowClose</animation>
 	<!-- <onload condition="!String.IsEmpty(Window(Home).Property(culrc.running))">Dialog.Close(script-cu-lrclyrics-main.xml)</onload> -->
-	<defaultcontrol>499</defaultcontrol>
+	<defaultcontrol>7000</defaultcontrol>
+	<onunload>ClearProperty(CurrentPlaylistVisible,home)</onunload>
 	<controls>
-	<include condition="!Skin.HasSetting(MusicOSD_SmallPlaylist) + [[Window.IsActive(home) + !String.IsEqual(Skin.String(HomeLayout),MenuTiles)] | !Window.IsActive(home)]">MusicOSD_CommonPlaylist</include>
-	<include condition="Skin.HasSetting(MusicOSD_SmallPlaylist) | [!Skin.HasSetting(MusicOSD_SmallPlaylist) + [Window.IsActive(home) + String.IsEqual(Skin.String(HomeLayout),MenuTiles)]]">MusicOSD_SmallPlaylist</include>
+	
+	<!-- <param name="forcecolor" value="colors_playlistbar_media" /> better define glabal variables? -->
+	<include condition="String.IsEqual(Window(home).Property(CurrentPlaylistVisible),mediawindow)" content="MediaWindow_Playlist">
+		<param name="posy" value="0" />
+		<param name="onleft" value="50" />
+		<param name="onright" value="50" />
+		<animation effect="slide" start="0,0" end="-480,0" time="300" tween="cubic" easing="in">WindowOpen</animation>
+		<animation effect="slide" end="0,0" start="-480,0" time="250" tween="cubic" easing="in">WindowClose</animation>
+	</include>
+	<include condition="String.IsEmpty(Window(home).Property(CurrentPlaylistVisible)) + !Skin.HasSetting(MusicOSD_SmallPlaylist)">MusicOSD_CommonPlaylist</include>
+	<include condition="[String.IsEmpty(Window(home).Property(CurrentPlaylistVisible)) + Skin.HasSetting(MusicOSD_SmallPlaylist)] | String.IsEqual(Window(home).Property(CurrentPlaylistVisible),small)">MusicOSD_SmallPlaylist</include>
 	</controls>
 </window>

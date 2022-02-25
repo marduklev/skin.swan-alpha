@@ -263,7 +263,7 @@ default
 			<control type="button" id="8006">
 				<visible>Player.HasAudio</visible>
 				<include content="Hub_PlayerCtrl">
-					<param name="action" value="SetProperty(CurrentPlaylistVisible,true)"/>
+					<param name="action" value="SetProperty(CurrentPlaylistVisible,mediawindow,home)"/>
 					<param name="button_img" value="playlist_fo"/>
 				</include>
 				<onclick>SetFocus(7000)</onclick>
@@ -286,7 +286,7 @@ default
 		
 	<control type="group">
 		<description>H U B   B A C K G R O U N D</description>
-		<animation effect="slide" start="0,0" end="-310,0" time="300" tween="cubic" easing="in" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),true)">conditional</animation>
+		<animation effect="slide" start="0,0" end="-310,0" time="300" tween="cubic" easing="in" condition="String.IsEqual(Window(home).Property(CurrentPlaylistVisible),mediawindow)">conditional</animation>
 		<right>0</right>
 		<top>100</top>
 		<width>84%</width>
@@ -348,7 +348,7 @@ default
 	<control type="group">
 		<description>S I D E    B A R    L E F T</description>
 		
-		<animation effect="slide" start="0,0" end="-450,0" time="300" tween="cubic" easing="inout" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),true)">conditional</animation>
+		<animation effect="slide" start="0,0" end="-450,0" time="300" tween="cubic" easing="inout" condition="String.IsEqual(Window(home).Property(CurrentPlaylistVisible),mediawindow)">conditional</animation>
 		<height>100%</height>
         <width>16%</width>
 		<posy>100</posy>
@@ -609,7 +609,7 @@ default
 	
 	<!-- multiple gouplist based on visible by prop ? -->
 	<control type="grouplist" id="6666">
-		<animation effect="slide" start="0,0" end="-300,0" time="300" tween="cubic" easing="in" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),true)">conditional</animation>
+		<animation effect="slide" start="0,0" end="-300,0" time="300" tween="cubic" easing="in" condition="String.IsEqual(Window(home).Property(CurrentPlaylistVisible),mediawindow)">conditional</animation>
 		<description>fucking scrollbar issue drives me nuts</description>
 		<top>150</top>
 		<bottom>5</bottom>
@@ -2346,133 +2346,11 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 		</control>
 	</control>
 		<!-- main grouplist 6666 end here -->
-	<control type="group">
-		<description>P L A Y L I S T    C O N T A I N E R    S I D E B A R     R I G H T</description>
-		<height>100%</height>
-        <width>480</width>
-		<posy>100</posy>
-		<right>-480</right>
-		<animation effect="slide" start="0,0" end="-480,0" time="300" tween="cubic" easing="in" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),true)">conditional</animation>
-		
-		<include content="bg_gradientmulticolor" />
-		
-		<control type="label">
-			<right>30</right>
-			<top>0</top>
-			<height>50</height>
-			<label>Current Playlist</label>
-			<font>notosans_36_bold</font>
-			<align>right</align>
-		</control>
-		<control type="panel" id="7000">
-			<left>25</left>
-			<top>50</top>
-			<height>890</height>
-			<width>440</width>
-			
-			<preloaditems>2</preloaditems>
-			<orientation>vertical</orientation>
-			<pagecontrol>700060</pagecontrol>
-			<scrolltime tween="quadratic">400</scrolltime>
-			<onfocus>SetProperty(CurrentPlaylistVisible,true)</onfocus>
-			<onleft>ClearProperty(CurrentPlaylistVisible)</onleft>
-			<onleft>6666</onleft>
-			
-			<onright condition="Control.IsVisible(700060)">700060</onright>
-			
-			<onright condition="!Control.IsVisible(700060)">ClearProperty(CurrentPlaylistVisible)</onright>
-			<onright condition="!Control.IsVisible(700060)">8008</onright>
-			
-			<onup>7000</onup>
-			<ondown>7000</ondown>
-			
-			<include>playlist_container_atts</include>
-			
-			<itemlayout height="100">
-				<control type="group">
-					<height>90</height>
-					<control type="image">
-						<centertop>50%</centertop>
-						<left>5</left>
-						<width>70</width>
-						<height>70</height>
-						<texture background="true">$INFO[ListItem.Icon]</texture>
-					</control>
-					<control type="image">
-						<centertop>50%</centertop>
-						<left>15</left>
-						<width>50</width>
-						<height>50</height>
-						<texture background="true" colordiffuse="$VAR[color_hub_accent]">special://skin/extras/song_gifs/playingsong.gif</texture>
-						<bordersize>4</bordersize>
-						<visible>ListItem.IsPlaying</visible>
-						<bordertexture colordiffuse="cc000000">artworkdiffuse/circle.png</bordertexture>
-					</control>
-					<control type="label">
-						<aligny>center</aligny>
-						<left>100</left>
-						<font>notosans_16_bold</font>
-						<textcolor>$VAR[color_hub_menu_text_nf]</textcolor>
-						<selectedcolor>$VAR[color_hub_menu_text_nf]</selectedcolor>
-						<label>$VAR[listitem_discortitle]$INFO[ListItem.TrackNumber,[B],[/B]  •  ]$INFO[listitem.title]$INFO[listitem.duration,   (,)][CR]$INFO[listitem.artist][CR]$INFO[listitem.album]$INFO[listitem.year,  (,)]</label>
-					</control>
-				</control>
-			</itemlayout>
-			<focusedlayout height="100">
-				<control type="group">
-					<height>90</height>
-					<control type="image">
-						<top>10</top>
-						<left>10</left>
-						<height>1</height>
-						<right>10</right>
-						<texture background="true">colors/white.png</texture>
-						<colordiffuse>$VAR[color_hub_accent]</colordiffuse>
-					</control>
-					<control type="image">
-						<bottom>10</bottom>
-						<left>10</left>
-						<height>1</height>
-						<right>10</right>
-						<texture background="true">colors/white.png</texture>
-						<colordiffuse>$VAR[color_hub_accent]</colordiffuse>
-					</control>
-					<control type="image">
-						<centertop>50%</centertop>
-						<left>5</left>
-						<width>70</width>
-						<height>70</height>
-						<texture background="true">$INFO[ListItem.Icon]</texture>
-					</control>
-					<control type="image">
-						<centertop>50%</centertop>
-						<left>15</left>
-						<width>50</width>
-						<height>50</height>
-						<texture background="true" colordiffuse="$VAR[color_hub_accent]">special://skin/extras/song_gifs/playingsong.gif</texture>
-						<colordiffuse>white</colordiffuse>
-						<bordersize>4</bordersize>
-						<visible>ListItem.IsPlaying</visible>
-						<bordertexture colordiffuse="cc000000">artworkdiffuse/circle.png</bordertexture>
-					</control>
-					<control type="label">
-						<aligny>center</aligny>
-						<left>100</left>
-						<font>notosans_16_bold</font>
-						<textcolor>$VAR[color_hub_accent]</textcolor>
-						<selectedcolor>$VAR[color_hub_accent]</selectedcolor>
-						<label>$VAR[listitem_discortitle]$INFO[ListItem.TrackNumber,[B],[/B]  •  ]$INFO[listitem.title]$INFO[listitem.duration,   (,)][CR][COLOR=$VAR[color_hub_menu_text_fo]]$INFO[listitem.artist][CR]$INFO[listitem.album]$INFO[listitem.year,  (,)][/COLOR]</label>
-					</control>
-				</control>
-			</focusedlayout>
-			<content target="music">$VAR[playlistmusic]</content>
-		</control>
-
-	</control>
+		<include>MediaWindow_Playlist</include>
 	
 		
 		<control type="scrollbar" id="666660">
-			<animation effect="slide" start="0,0" end="-300,0" time="200" tween="cubic" easing="in" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),true)">conditional</animation>
+			<animation effect="slide" start="0,0" end="-300,0" time="200" tween="cubic" easing="in" condition="String.IsEqual(Window(home).Property(CurrentPlaylistVisible),mediawindow)">conditional</animation>
 			<description>prop common all content LeftScrollBar</description>
 			<showonepage>true</showonepage>
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),common) | String.IsEqual(Window(home).Property(HUB_Music),compilations)</visible>
@@ -2485,22 +2363,8 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<onright>6666</onright>
 		</control>
 		
-		<control type="scrollbar" id="700060">
-			<description>Playlist ScrollBar</description>
-			<visible>String.IsEqual(Window.Property(CurrentPlaylistVisible),true)</visible>
-			<right>5</right>
-			<top>150</top>
-			<height>890</height>
-			<width>2</width>
-			<onup>700060</onup>
-			<ondown>700060</ondown>
-			<onleft>7000</onleft>
-			<onright>8006</onright>
-			<onright>ClearProperty(CurrentPlaylistVisible)</onright>
-		</control>
-		
 		<control type="scrollbar" id="500160">
-			<animation effect="slide" start="0,0" end="-480,0" time="300" tween="cubic" easing="in" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),true)">conditional</animation>
+			<animation effect="slide" start="0,0" end="-480,0" time="300" tween="cubic" easing="in" condition="String.IsEqual(Window(home).Property(CurrentPlaylistVisible),mediawindow)">conditional</animation>
 			<description>common artist container</description>
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),common) + Control.IsVisible(5001)</visible>
 			<visible>String.IsEqual(Window.Property(Scrollbar),500160)</visible>
@@ -2510,7 +2374,7 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<onup>500160</onup>
 			<ondown>500160</ondown>
 			
-			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetProperty(CurrentPlaylistVisible,true)</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onright>
 			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetFocus(7000)</onright>
 			<onright condition="!Integer.IsGreater(Container(7000).NumItems,0)">5001</onright>
 			<onleft>6666</onleft>
@@ -2518,7 +2382,7 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 		</control>
 		
 		<control type="scrollbar" id="500260">
-			<animation effect="slide" start="0,0" end="-480,0" time="300" tween="cubic" easing="in" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),true)">conditional</animation>
+			<animation effect="slide" start="0,0" end="-480,0" time="300" tween="cubic" easing="in" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),mediawindow)">conditional</animation>
 			<description>common album</description>
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),common) + Control.IsVisible(5002)</visible>
 			<visible>String.IsEqual(Window.Property(Scrollbar),500260)</visible>
@@ -2528,7 +2392,7 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<onup>500260</onup>
 			<ondown>500260</ondown>
 			
-			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetProperty(CurrentPlaylistVisible,true)</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onright>
 			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetFocus(7000)</onright>
 			<onright condition="!Integer.IsGreater(Container(7000).NumItems,0)">5002</onright>
 			<onleft>6666</onleft>
@@ -2536,7 +2400,7 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 		</control>
 		
 		<control type="scrollbar" id="500460">
-			<animation effect="slide" start="0,0" end="-480,0" time="300" tween="cubic" easing="in" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),true)">conditional</animation>
+			<animation effect="slide" start="0,0" end="-480,0" time="300" tween="cubic" easing="in" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),mediawindow)">conditional</animation>
 			<description>common songs</description>
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),common) + Control.IsVisible(5004)</visible>
 			<visible>String.IsEqual(Window.Property(Scrollbar),500460)</visible>
@@ -2546,7 +2410,7 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<onup>500460</onup>
 			<ondown>500460</ondown>
 			
-			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetProperty(CurrentPlaylistVisible,true)</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onright>
 			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetFocus(7000)</onright>
 			<onright condition="!Integer.IsGreater(Container(7000).NumItems,0)">5004</onright>
 			<onleft>6666</onleft>
@@ -2554,7 +2418,7 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 		</control>
 		
 		<control type="scrollbar" id="500760">
-			<animation effect="slide" start="0,0" end="-480,0" time="300" tween="cubic" easing="in" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),true)">conditional</animation>
+			<animation effect="slide" start="0,0" end="-480,0" time="300" tween="cubic" easing="in" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),mediawindow)">conditional</animation>
 			<description>common musicvideo</description>
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),common) + Control.IsVisible(5007)</visible>
 			<visible>String.IsEqual(Window.Property(Scrollbar),500760)</visible>
@@ -2565,7 +2429,7 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<onup>500760</onup>
 			<ondown>500760</ondown>
 			
-			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetProperty(CurrentPlaylistVisible,true)</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onright>
 			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetFocus(7000)</onright>
 			<onright condition="!Integer.IsGreater(Container(7000).NumItems,0)">5007</onright>
 			<onleft>6666</onleft>
@@ -2573,7 +2437,7 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 		</control>
 		
 		<control type="scrollbar" id="502060">
-			<animation effect="slide" start="0,0" end="-480,0" time="300" tween="cubic" easing="in" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),true)">conditional</animation>
+			<animation effect="slide" start="0,0" end="-480,0" time="300" tween="cubic" easing="in" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),mediawindow)">conditional</animation>
 			<description>album</description>
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),albums) + Control.IsVisible(5020)</visible>
 			<visible>String.IsEqual(Window.Property(Scrollbar),502060)</visible>
@@ -2584,7 +2448,7 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<onup>501560</onup>
 			<ondown>501560</ondown>
 			
-			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetProperty(CurrentPlaylistVisible,true)</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onright>
 			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetFocus(7000)</onright>
 			<onright condition="!Integer.IsGreater(Container(7000).NumItems,0)">5020</onright>
 			<onleft>6666</onleft>
@@ -2592,7 +2456,7 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 		</control>
 		
 		<control type="scrollbar" id="502660">
-			<animation effect="slide" start="0,0" end="-480,0" time="300" tween="cubic" easing="in" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),true)">conditional</animation>
+			<animation effect="slide" start="0,0" end="-480,0" time="300" tween="cubic" easing="in" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),mediawindow)">conditional</animation>
 			<description>soundtracks</description>
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),compilations) + Control.IsVisible(5026)</visible>
 			<visible>String.IsEqual(Window.Property(Scrollbar),502660)</visible>
@@ -2603,7 +2467,7 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<onup>502660</onup>
 			<ondown>502660</ondown>
 			
-			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetProperty(CurrentPlaylistVisible,true)</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onright>
 			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetFocus(7000)</onright>
 			<onright condition="!Integer.IsGreater(Container(7000).NumItems,0)">5026</onright>
 			<onleft>6666</onleft>
@@ -2611,7 +2475,7 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 		</control>
 		
 		<control type="scrollbar" id="501860">
-			<animation effect="slide" start="0,0" end="-480,0" time="300" tween="cubic" easing="in" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),true)">conditional</animation>
+			<animation effect="slide" start="0,0" end="-480,0" time="300" tween="cubic" easing="in" condition="String.IsEqual(Window.Property(CurrentPlaylistVisible),mediawindow)">conditional</animation>
 			<description>songs</description>
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),songs) + Control.IsVisible(5018)</visible>
 			<visible>String.IsEqual(Window.Property(Scrollbar),501860)</visible>
@@ -2622,7 +2486,7 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<onup>501860</onup>
 			<ondown>501860</ondown>
 			
-			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetProperty(CurrentPlaylistVisible,true)</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onright>
 			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetFocus(7000)</onright>
 			<onright condition="!Integer.IsGreater(Container(7000).NumItems,0)">5018</onright>
 			<onleft>6666</onleft>
@@ -2639,7 +2503,7 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<onup>7060</onup>
 			<ondown>7060</ondown>
 			<onleft>5121</onleft>
-			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetProperty(CurrentPlaylistVisible,true)</onright>
+			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onright>
 			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetFocus(7000)</onright>
 			<onright condition="!Integer.IsGreater(Container(7000).NumItems,0)">5121</onright>
 			<height>675</height>

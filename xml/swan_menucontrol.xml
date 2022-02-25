@@ -952,6 +952,15 @@
 				<onclick>RunScript(script.embuary.info,$VAR[embuaryinfo_listitem])</onclick>
 			</control>
 			<control type="radiobutton" id="8010">
+				<visible>!String.IsEqual(Window(Home).Property(menucontrol_active),common) + !Skin.HasSetting(premenu_hide_slideplaylist)</visible>
+				<visible>MusicPlayer.Offset(-1).Exists | MusicPlayer.Offset(1).Exists</visible>
+				<include content="PreMenucontrol_RadioButton">
+					<param name="radiotexture" value="defaultmusicplaylists" />
+				</include>
+				<onclick>SetProperty(CurrentPlaylistVisible,mediawindow,home)</onclick>
+				<onclick>activatewindow(1140)</onclick>
+			</control>
+			<control type="radiobutton" id="8011">
 				<visible>!String.IsEqual(Window(Home).Property(menucontrol_active),common) + !Skin.HasSetting(premenu_hide_trakt)</visible>
 				<visible>!String.IsEmpty(Window(home).Property(movie_tmdbid)) | !String.IsEmpty(Window(home).Property(tvshow_tmdbid)) | !String.IsEmpty(Window(home).Property(episodetvshow_tmdbid))</visible>
 				<radiowidth>40</radiowidth>
@@ -2898,7 +2907,8 @@ plugin://script.embuary.helper/?info=getbyargs&filter_args='"{"field": "playcoun
 						<label />
 						<texturefocus colordiffuse="$VAR[color_osdmusic_accent]">buttons/osd/playlist_fo.png</texturefocus>
 						<texturenofocus colordiffuse="$VAR[color_osdmusic_secondary]">buttons/osd/playlist_fo.png</texturenofocus>
-						<onclick>ActivateWindow(1140,return)</onclick>
+						<onclick>SetProperty(CurrentPlaylistVisible,small,home)</onclick>
+						<onclick>ActivateWindow(1140)</onclick>
 					</control>
 					
 					<control type="button" id="6013">

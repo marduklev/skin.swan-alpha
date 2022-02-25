@@ -35,7 +35,7 @@
 		<value condition="Container.Content(genres) | Container.Content(studios) | Container.Content(tags) | Container.Content(countries) | Container.Content(years)">[COLOR $VAR[color_spotlightlib_accent]]$INFO[Container.ListItem.Label,[B],[/B]][/COLOR]</value>
 	</variable>
 	
-	<variable name="520_Album_Song_Durations">
+	<variable name="520_music_infobottom">
 		<value condition="String.IsEqual(listitem.dbtype,artist)">$INFO[Container.ListItem.Property(Artist_Formed),$LOCALIZE[21894] : ,  ]$INFO[Container.ListItem.Property(Artist_Disbanded),$LOCALIZE[21896] : ,]$INFO[Container.ListItem.Property(Artist_YearsActive),  •   $LOCALIZE[21898] : ,]</value>
 		<value condition="String.IsEqual(listitem.dbtype,album)">$VAR[ListItemDuration,$LOCALIZE[180] : ,]$INFO[Container.ListItem.DateAdded,  |  $LOCALIZE[570] : ,]</value>
 		<value condition="String.IsEqual(listitem.dbtype,song)">$INFO[container.numitems,$LOCALIZE[134]: ,]$INFO[Container.ListItem.TotalDiscs, |  $LOCALIZE[14087]: , ]$INFO[Container.Totaltime, | $LOCALIZE[558] $LOCALIZE[180] : ,]$INFO[Container.ListItem.DateAdded,  |  $LOCALIZE[570] : ,]</value>
@@ -43,7 +43,8 @@
 	
 	<include name="view_520">
 		<control type="group">
-			<description>todo: dont use for genres,years,tags,years,directors - or use labels within item/focusedlayouts - </description>
+			<!-- <animation effect="slide" start="0,0" end="200,0" time="0" condition="Window.IsVisible(1140)">conditional</animation> -->
+			
 			<visible>Control.IsVisible(520)</visible>
 			
 			<control type="image">
@@ -57,7 +58,7 @@
 				<param name="width" value="1267" />
 				<param name="height" value="731" />
 				<param name="diffuse" value="diffuse/spotlightleftdiffuse.png" />
-				<param name="visible" value="$PARAM[spotlight_artwork_visible_right]" />
+				<param name="visible" value="true" />
 			</include>
 			<include content="Fanart_Diffused">
 				<animation effect="fade" start="100" end="10" time="350" easing="inout" reversible="true" condition="true">conditional</animation>
@@ -66,7 +67,7 @@
 				<param name="width" value="1820" />
 				<param name="height" value="950" />
 				<param name="diffuse" value="diffuse/spotlightleftdiffuse.png" />
-				<param name="visible" value="$PARAM[spotlight_artwork_visible_right]" />
+				<param name="visible" value="true" />
 			</include>
 	
 			<control type="grouplist">
@@ -76,8 +77,9 @@
 				<left>150</left>
 				<top>200</top>
 				<height>385</height>
-				
-	<animation effect="slide" end="-50,-80" time="150" condition="String.IsEqual(Container.ViewMode,$LOCALIZE[31263]) + String.IsEmpty(Container.PluginName) + String.IsEmpty(dbtype) + Container.Content()">conditional</animation>
+	
+	
+	<animation effect="slide" end="-50,-80" time="150" condition="String.IsEqual(Container.ViewMode,$LOCALIZE[31263]) + String.IsEmpty(Container.PluginName) + String.IsEmpty(listitem.dbtype) + Container.Content()">conditional</animation>
 	
 				<control type="image">
 					<description>polaroid square</description>
@@ -96,7 +98,6 @@
 					<description>polaroid  w 243 POSTER , polaroid poster - may scale it as it'll be better for the eyes - in compromise of cropping- curr best get a static with instead of keep to w+h</description>
 					<bottom>30</bottom>
 					<visible>[!window.isactive(music) + !Skin.HasSetting(View_520_disabledart_video)] | !Window.IsActive(videos)</visible>
-					<!-- <fadetime>350</fadetime> -->
 					<visible>!string.isempty(listitem.dbtype) + !Container.Content() + !Container.Content(studios) + !Container.Content(genres) + !Container.Content(years) + !Container.Content(tags) + !Container.Content(countries) + !String.StartsWith(ListItem.Icon,defaultartist)</visible>
 					<visible>[!string.contains(Container.PluginName,amazon) + [!String.IsEmpty(listitem.art(poster)) | !String.IsEmpty(listitem.art(season.poster))]] | [$EXP[IsMovie] + String.Contains(listitem.icon,amazon.com)] | [[$EXP[IsTVShow] | $EXP[IsSeason] | $EXP[IsEpisode]] + !String.Contains(listitem.icon,amazon.com)] | [Container.Content(directors) + System.HasAddon(resource.images.moviedirectorthumbs)] | [Container.Content(actors) + !String.IsEqual(ListItem.Icon,defaultactor.png)]</visible>
 					<width>252</width>
@@ -151,8 +152,6 @@
 						
 						
 						<animation effect="slide" start="0,0" end="0,-30" time="350" easing="inout" reversible="true" condition="!Skin.HasSetting(view_520_hideplot) + !Skin.HasSetting(View_520_Hide_Touch_Controls) + !Skin.HasSetting(View_520_DisableFooter)">conditional</animation>
-						
-						
 						<animation effect="slide" start="0,0" end="0,200" time="350" easing="inout" reversible="true" condition="Skin.HasSetting(view_520_hideplot) + Skin.HasSetting(View_520_Hide_Touch_Controls)">conditional</animation>
 						<animation effect="slide" start="0,0" end="0,130" time="350" easing="inout" reversible="true" condition="Skin.HasSetting(view_520_hideplot) + !Skin.HasSetting(View_520_Hide_Touch_Controls)">conditional</animation>
 						<animation effect="slide" start="0,0" end="0,80" time="350" easing="inout" reversible="true" condition="Skin.HasSetting(view_520_hideplot) + Skin.HasSetting(View_520_DisableFooter)">conditional</animation>
@@ -198,14 +197,15 @@
 							<param name="visible" value="String.StartsWith(Container.Folderpath,library) | Container.Content()" />
 						</include>
 						<control type="label">
-							<visible>[[$EXP[IsEpisode] | $EXP[IsSeason] | $EXP[IsTVShow]] + !String.StartsWith(Container.Folderpath,library) + !Container.Content() + !String.IsEmpty(listitem.dbtype)] | Container.Content(genres) | Container.Content(studios) | Container.Content(tags) | Container.Content(countries) | Container.Content(actors) | Container.Content(directors) | Container.Content(years) | Container.Content(playlists)</visible>
+	                        <visible>!String.IsEmpty(listitem.dbtype) + !Container.Content()</visible>
+                            <visible>$EXP[IsEpisode] | $EXP[IsSeason] | $EXP[IsTVShow]  | Container.Content(genres) | Container.Content(studios) | Container.Content(tags) | Container.Content(countries) | Container.Content(actors) | Container.Content(directors) | Container.Content(years) | Container.Content(playlists)</visible>
 							<height>20</height>
 							<label>$VAR[list_item_subinfo]</label>
 							<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 							<font>notosans_21_semibold</font>
 						</control>
 						<control type="label">
-							<visible>String.StartsWith(Container.Folderpath,library) | Container.Content()</visible>
+							<visible>String.IsEmpty(listitem.dbtype) + Container.Content()</visible>
 							<height>50</height>
 							<label>$VAR[list_item_subinfo]</label>
 							<textcolor>$VAR[color_spotlightlib_main]</textcolor>
@@ -229,12 +229,11 @@
 							<height>30</height>
 							<visible>window.isactive(music) + !String.IsEqual(listitem.dbtype,artist)</visible>
 							<textcolor>$VAR[color_spotlightlib_accent]</textcolor>
-							<label>$INFO[listitem.genre]</label>
+							<label fallback="">$INFO[listitem.genre]</label>
 							<font>notosans_16_bold</font>
 						</control>
 						<control type="textbox">
 							<top>20</top>
-							<!-- <visible>!String.IsEmpty(listitem.plot)</visible><visible>!String.IsEmpty(listitem.plot)</visible> -->
 							<visible>String.IsEmpty(Window(Home).Property(TrailerIsPlaying)) + !Skin.HasSetting(view_520_hideplot)</visible>
 							<height>113</height>
 							<width>80%</width>
@@ -252,7 +251,6 @@
 							<font>notosans_22_regular_lowlined</font>
 						</control>
 						
-						
 						<control type="label">	
 							<visible>Window.IsActive(music)</visible>
 							<animation effect="fade" end="50" time="0" condition="true">conditional</animation>
@@ -260,12 +258,12 @@
 							<align>left</align>
 							<font>notosans_16_bold</font>
 							<textcolor>$VAR[color_spotlightlib_accent]</textcolor>
-							<label>$VAR[520_Album_Song_Durations]</label>
+							<label>$VAR[520_music_infobottom]</label>
 						</control>
 						
 						<control type="group">
-							<top>10</top> <!-- get offset current-->
-							<height>40</height> <!-- set offset next -->
+							<top>10</top>
+							<height>40</height>
 							<visible>!Window.IsActive(music) + !String.IsEmpty(ListItem.Duration) + !Skin.HasSetting(view_520_hideplot)</visible>
 							<visible>![$EXP[IsTVShow] | $EXP[IsSeason] | $EXP[IsEpisode]]</visible>
 							<control type="image">
@@ -278,8 +276,6 @@
 							<control type="label">	
 								<left>35</left>
 								<height>30</height>
-								<!-- <visible>false</visible> -->
-								
 								<align>left</align>
 								<font>notosans_18_bold</font>
 								<textcolor>$VAR[color_spotlightlib_main]</textcolor>
@@ -288,13 +284,14 @@
 						</control>
 						
 						<control type="grouplist">
-							<description>TOUCH CONTROL  - other just usefull if 1 row hor list</description>
+							<description>TOUCH CONTROL  Buttons</description>
+							<visible>Control.IsVisible(520)</visible>
+							<visible>!Skin.HasSetting(View_520_Hide_Touch_Controls)</visible>
+							
 							<animation effect="fade" start="100" end="0" time="350" easing="inout" reversible="true" condition="$EXP[TrailerIsPlaying]">conditional</animation>
 							<animation effect="slide" start="0,0" end="0,50" time="0" condition="Skin.HasSetting(View_520_DisableFooter)">conditional</animation>
 							
 							<height>50</height>
-							<visible>Control.IsVisible(520)</visible>
-							<visible>!Skin.HasSetting(View_520_Hide_Touch_Controls)</visible>
 							<itemgap>10</itemgap>
 							<orientation>horizontal</orientation>
 							<onup></onup>
@@ -323,10 +320,25 @@
 								<onclick>Notification([B]$INFO[Container.Content][/B] [I]Sort Method[/I],$INFO[Container.SortMethod])</onclick>
 								<onclick>SetFocus(520)</onclick>
 							</control>
+							
+							<!-- play  WIP  -->
+							<control type="radiobutton" id="52005">
+								<left>20</left>
+								<description>later on ? | container.content(tvshows) | container.content(seasons) | *all albums...</description>
+								<visible>window.isactive(music) + [!string.isempty(container.listitem.dbtype) | [container.content(albums) + string.startswith(listitem.label, *)]] + [container.content(artists) | container.content(albums) | container.content(playlists) | container.content(genres) | container.content(years)]</visible>
+				                <include content="HUB_ContainerButtons">
+									<param name="texture" value="buttons/osd/play.png" />
+									<param name="frame_radius" value="50" />
+									<param name="button_radius" value="40" />
+									<param name="button_offsetadd" value="5" />
+								</include>
+								<onclick>setfocus(520)</onclick>
+								<onclick>RunScript(script.playlist.helper,action=select)</onclick>
+								
+			                </control>
 							<control type="radiobutton" id="52004">
 								<include content="HUB_ContainerButtons">
 									<description>Open Info</description>
-									
 									<param name="texture" value="defaultaddoninfoprovider.png" />
 									<param name="frame_radius" value="50" />
 									<param name="button_radius" value="40" />
@@ -335,18 +347,34 @@
 								<onclick>SetFocus(520)</onclick>
 								<onclick>Action(info)</onclick>
 							</control>
-							<control type="radiobutton" id="52005">
+							
+							<!-- slide playlist in, from right, 1140 need viewtype adjustments  -->
+							<control type="radiobutton" id="52009">
 								<include content="HUB_ContainerButtons">
 									<param name="texture" value="defaultmusicplaylists.png" />
 									<param name="frame_radius" value="50" />
 									<param name="button_radius" value="40" />
 									<param name="button_offsetadd" value="5" />
 								</include>
-								<onclick>playlist</onclick>
+								<visible>MusicPlayer.Offset(-1).Exists | MusicPlayer.Offset(1).Exists</visible>
+								<onclick>SetProperty(CurrentPlaylistVisible,mediawindow,home)</onclick>
+								<onclick>activatewindow(1140)</onclick>
 							</control>
-							
-							<!-- play , play random, slide playlist container from right in -->
-								
+							<!-- toggle playlist states (random,repeatone etc  -->
+							<control type="radiobutton" id="52010">
+								<left>20</left>
+								<include content="HUB_ContainerButtons">
+									<param name="texture" value="buttons/osd/repeat.png" />
+									<param name="frame_radius" value="50" />
+									<param name="button_radius" value="40" />
+									<param name="button_offsetadd" value="5" />
+								</include>
+								<visible>Player.HasMedia</visible>
+								<onclick>PlayerControl(Repeat)</onclick>
+					            <onclick condition="!Playlist.IsRepeatOne + !Playlist.IsRepeat">Notification(Repeat,[B]A l l[/B],10,buttons/osd/repeatall.png)</onclick>
+					            <onclick condition="Playlist.IsRepeat">Notification(Repeat,[B]T i t l e[/B],10,buttons/osd/repeatone.png)</onclick>
+					            <onclick condition="Playlist.IsRepeatOne">Notification(Repeat,[B]D i s a b l e d[/B],10,buttons/osd/repeatoff.png)</onclick>
+							</control>
 						</control>
 						
 			
@@ -898,14 +926,21 @@
 				<onleft>50</onleft>
 				<width>2</width>
 				<onright condition="Control.IsVisible(520600)">520600</onright>
-				<onright condition="!Control.IsVisible(520600) + Control.IsVisible(19)">19</onright>
-				<onright condition="!Control.IsVisible(520600) + !Control.IsVisible(19)">520</onright>
+				<onright condition="!Control.IsVisible(520600) + !Window.IsActive(musicplaylist) + [MusicPlayer.Offset(-1).Exists | MusicPlayer.Offset(1).Exists]">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onright>
+				<onright condition="!Control.IsVisible(520600) + !Window.IsActive(musicplaylist) + [MusicPlayer.Offset(-1).Exists | MusicPlayer.Offset(1).Exists]">activatewindow(1140)</onright>
+				<onright condition="!Control.IsVisible(520600) + Control.IsVisible(19) + !Window.IsActive(musicplaylist) + !MusicPlayer.Offset(-1).Exists + !MusicPlayer.Offset(1).Exists">19</onright>
+			    <onright condition="!Control.IsVisible(520600) + !Control.IsVisible(19) + !MusicPlayer.Offset(-1).Exists + !MusicPlayer.Offset(1).Exists">50</onright>
 			</control>
 			<include condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" content="ScrollBar_Alphabet">
 				<right>110</right>
 				<width>150</width>
 				<top>650</top>
 				<height>260</height>
+				<onright condition="!Window.IsActive(musicplaylist) + [MusicPlayer.Offset(-1).Exists | MusicPlayer.Offset(1).Exists]">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onright>
+				<onright condition="!Window.IsActive(musicplaylist) + [MusicPlayer.Offset(-1).Exists | MusicPlayer.Offset(1).Exists]">activatewindow(1140)</onright>
+				<onright condition="!MusicPlayer.Offset(-1).Exists + !MusicPlayer.Offset(1).Exists">19</onright>
+			    <onright condition="!MusicPlayer.Offset(-1).Exists + !MusicPlayer.Offset(1).Exists">50</onright>
+				
 				<param name="id" value="520600" />
 				<param name="visible" value="String.IsEqual(Container.ViewMode,$LOCALIZE[31263])" />
 				<param name="orientation" value="vertical" />
