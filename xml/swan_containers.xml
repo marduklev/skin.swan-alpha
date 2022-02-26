@@ -56,10 +56,6 @@
 			<orientation>horizontal</orientation>
 			<scrolltime tween="quadratic">400</scrolltime>
 			
-			<include condition="!Window.IsVisible(shutdownmenu)" content="Animation_BounceRight">
-				<param name="id">$PARAM[id]</param>
-			</include>
-			<onright condition="!Window.IsVisible(shutdownmenu)">SetProperty(BounceRight,1,home)</onright>
 						
 			<itemlayout height="$PARAM[height]" width="$PARAM[width]">
 				<control type="group">
@@ -433,243 +429,41 @@ FilterSMS<2-9> 	Filter a list in music or videos using SMS-style input.
 		</control>
 	</include>
 		
-	<include name="media_window_attributes">
-		<param name="defaultcontrol" default="50" />
-		<param name="view_ids" default="50" />
-		<definition>
-			<defaultcontrol always="true">$PARAM[defaultcontrol]</defaultcontrol>
-			<backgroundcolor>$VAR[color_global_background_layer1]</backgroundcolor>
-			<views>$PARAM[view_ids]</views>
-			<onunload condition="!String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">ClearProperty(shortcutaction_inprogress,home)</onunload>
-			<onunload condition="!String.IsEmpty(Window(home).Property(shortcutitem_nr))">ClearProperty(shortcutitem_nr,home)</onunload>
-			<include>media_menucontrol</include>
-			<include content="Animation_OpenClose_MediaWindow" condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" />
-		</definition>
-	</include>
-	
-	<!-- temp solution slide down with footer instead of using botton 0 -->
-	<include name="Media_Container_Attributes">
-		<param name="left" default="BackgroundPanelLeft" />
-		<param name="right" default="BackgroundPanelRight" />
-		<param name="bottom" default="Footer" />
-		<definition>
-			<animation effect="slide" start="0,0" end="0,90" time="350" tween="quadratic" easing="in" delay="100" condition="Skin.HasSetting(View_$PARAM[view_id]_DisableFooter)">conditional</animation>
-           
-			<orientation>vertical</orientation>
-			<preloaditems>2</preloaditems>
-			<scrolltime tween="quadratic">400</scrolltime>
-            
-			<top>Header</top>
-			<left>$PARAM[left]</left>
-			<right>$PARAM[right]</right>
-			<bottom>$PARAM[bottom]</bottom>
-		</definition>
-	</include>
-	
-	<!-- use me inside Media_Container_Attributes later - when uncommon param usage is defined -->
-	<!-- <include>Oninfo_MovieSetInfo</include> shouldnt be needed in MATRIX -->
-	
-	<include name="Media_Values_ContainerNavigation">
-		<param name="pagecontrol" value="60" />
-		<definition>
-			<pagecontrol>$PARAM[pagecontrol]</pagecontrol>
-			<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
-			<onleft condition="Control.IsVisible(8999)">8999</onleft>
-			<onright condition="Control.IsVisible($PARAM[pagecontrol])">$PARAM[pagecontrol]</onright>
-		</definition>
-	</include>
-	
-	<!-- 
-	
-	footer zoom tests
-	<animation effect="zoom" start="100,100" end="50,50" time="0" condition="Control.IsVisible(503)">Conditional</animation> -->
-					
-			<!-- <animation effect="zoom" start="100,100" end="80,80" time="0" condition="Control.IsVisible(503) + Container.Content(episodes)">Conditional</animation>
-			<animation effect="slide" start="0,0" end="100,30" time="0" condition="Control.IsVisible(503) + Container.Content(episodes)">Conditional</animation>
-			 -->
-		<!-- <param name="footer_rating_offsetleft" default="0" /> use media flag width, maybe spacer needed  -->
-		
-	<!-- 
-				<param name="rating_offset_right" default="100" />
-				<param name="rating_offset_left" default="0" />
-				<param name="rating_offset_right" default="100" /> 
-		-->
-	<include name="Oninfo_MovieSetInfo">
-		<oninfo condition="String.IsEqual(ListItem.dbtype,set)">ActivateWindow(movieinformation,return)</oninfo>
-	</include>
-	<!-- <oninfo condition="String.IsEqual(ListItem.dbtype,set)">SetProperty(movieinformation,set,home)</oninfo> -->
-	
-	
-	<!-- dialog addon info programs,addonsbrowser -->
-	<include name="dialog_addoninfo_buttons_faderight">
-			<include content="ButtonList">
-			<param name="id" value="8000" />
-			<param name="top" value="30%" />
-			<param name="bottom" value="0" />
-			<param name="left" value="68%" />
-			<param name="right" value="0" />
-			<param name="itemgap" value="3" />
-			<param name="onleft" value="9000" />
-			<height>60%</height>
-			<width>30%</width>
-				<control type="radiobutton" id="6">
-					<selected>ListItem.Property(addon.isinstalled) | !Window.IsActive(addonbrowser)</selected>
-					<label />
-				</control>
-				<control type="radiobutton" id="7">
-					<selected>!String.StartsWith(Control.GetLabel(7),$LOCALIZE[24022]) | !Window.IsActive(addonbrowser)</selected>
-					<label />
-				</control>
-				<control type="button" id="8">
-					<label>$LOCALIZE[24069]</label>
-				</control>
-				<control type="button" id="9">
-					<label>$LOCALIZE[24020]</label>
-				</control>
-				<control type="button" id="10">
-					<label>$LOCALIZE[39024]</label>
-				</control>
-				<control type="button" id="12">
-					<label>$LOCALIZE[518]</label>
-				</control>
-				<control type="radiobutton" id="13">
-					<visible>Control.IsEnabled(13)</visible>
-					<label />
-				</control>
-			</include>
-			<control type="panel" id="50">
-				<include>HiddenObject</include>
-			</control>
-		</include>
-	include list 1 row - use includes to hide content on windows instead use vis conditions
-	
-	
-	<!-- dont forget to use nested benefit later, and that onunfucus -->
+	<!-- dont forget benefit of usage: nested , onunfocus  -->
 	<include name="hiddenbutton_manage_skinpropertys">
 		<control type="button">
 			<visible allowhiddenfocus="true">false</visible>
 			<nested />
-			
 			<include condition="Skin.HasSetting(autoplay_trailer_home) + Window.IsActive(home) + String.IsEqual(Skin.String(HomeLayout),WidgetsOnly)">home_listitem_propertys</include>
-			
 			<onfocus condition="!Window.IsActive(movieinformation) + !String.IsEmpty(Window(home).Property(trailer_avail))">ClearProperty(trailer_avail,home)</onfocus>
 			<onfocus condition="!Window.IsActive(movieinformation) + !String.IsEmpty(Window(home).Property(listitemtrailer))">ClearProperty(listitemtrailer,home)</onfocus>
-			
 			<onfocus condition="!Window.IsActive(movieinformation) + [String.IsEmpty(listitem.trailer) + !String.IsEmpty(listitem.FolderName)] + [String.IsEqual(ListItem.DBtype,tvshow) | String.IsEqual(ListItem.DBtype,movie)]">RunScript(script.embuary.helper,action=lookforfile,file='"$INFO[listitem.path]$INFO[listitem.FolderName,,-trailer.mp4]"',prop=trailer_avail)</onfocus>
 			<onfocus condition="!Window.IsActive(movieinformation) + !String.IsEmpty(listitem.trailer)">SetProperty(trailer_avail,listitem,home)</onfocus>
-			
 			<onfocus condition="!Window.IsActive(movieinformation) + String.IsEmpty(listitem.trailer) + [String.IsEqual(ListItem.DBtype,tvshow) | String.IsEqual(ListItem.DBtype,movie)]">SetProperty(listitemtrailer,$INFO[listitem.path]$INFO[listitem.FolderName,,-trailer.mp4],home)</onfocus>
 			<onfocus condition="!Window.IsActive(movieinformation) + !String.IsEmpty(listitem.trailer)">SetProperty(listitemtrailer,$INFO[listitem.trailer],home)</onfocus>
-			
 			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.dbid)">SetProperty(dbid,$INFO[listitem.dbid],home)</onfocus>
 			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.rating)">SetProperty(rating,$INFO[listitem.rating],home)</onfocus>
 			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + [string.IsEmpty(listitem.rating) + !string.IsEmpty(listitem.userrating)]">SetProperty(rating,$INFO[listitem.userrating],home)</onfocus>
 			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.Property(totalseasons))">SetProperty(totalseasons,$INFO[listitem.Property(totalseasons)],home)</onfocus>
 			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.Property(totalepisodes))">SetProperty(totalepisodes,$INFO[listitem.Property(totalepisodes)],home)</onfocus>
 			<onfocus condition="String.IsEqual(ListItem.DBtype,tvshow) + !string.IsEmpty(listitem.status)">SetProperty(status,$INFO[listitem.status],home)</onfocus>
-			
 			<onfocus condition="String.IsEqual(ListItem.DBtype,album) + !string.IsEmpty(ListItem.Property(Album_Description))">SetProperty(Album_Description,$ESCINFO[ListItem.Property(Album_Description)])</onfocus>
 			<onfocus condition="[String.IsEqual(ListItem.DBtype,album) + string.IsEmpty(ListItem.Property(Album_Description))] | [!String.IsEqual(ListItem.DBtype,song) + !String.IsEqual(ListItem.DBtype,album)] + !String.IsEmpty(Window(music).Property(Album_Description))">ClearProperty(Album_Description,music)</onfocus>
-			
-			
 			<onfocus condition="!String.IsEmpty(Window(home).Property(movie_tmdbid))">ClearProperty(movie_tmdbid,home)</onfocus>
 			<onfocus condition="!String.IsEmpty(Window(home).Property(tvshow_tmdbid))">ClearProperty(tvshow_tmdbid,home)</onfocus>
 			<onfocus condition="!String.IsEmpty(Window(home).Property(episodetvshow_tmdbid))">ClearProperty(episodetvshow_tmdbid,home)</onfocus>	
-			
 			<onfocus condition="String.IsEqual(ListItem.DBType,movie) + !String.IsEmpty(listitem.uniqueid(tmdb))">SetProperty(movie_tmdbid,$INFO[listitem.uniqueid(tmdb)],home)</onfocus>
 			<onfocus condition="String.IsEqual(ListItem.DBType,movie) + [String.IsEmpty(listitem.uniqueid(tmdb)) + !String.IsEmpty(ListItem.Property(tmdb_id))]">SetProperty(movie_tmdbid,$INFO[ListItem.Property(tmdb_id)],home)</onfocus>
 			<onfocus condition="String.IsEqual(ListItem.DBType,movie) + [String.IsEmpty(listitem.uniqueid(tmdb)) + String.IsEmpty(ListItem.Property(tmdb_id))] + !String.IsEmpty(ListItem.Property(id))">SetProperty(movie_tmdbid,$INFO[ListItem.Property(id)],home)</onfocus>
-			
 			<onfocus condition="String.IsEqual(ListItem.DBType,tvshow) + !String.IsEmpty(listitem.uniqueid(tmdb))">SetProperty(tvshow_tmdbid,$INFO[listitem.uniqueid(tmdb)],home)</onfocus>
 			<onfocus condition="String.IsEqual(ListItem.DBType,tvshow) + [String.IsEmpty(listitem.uniqueid(tmdb)) + !String.IsEmpty(ListItem.Property(tmdb_id))]">SetProperty(tvshow_tmdbid,$INFO[ListItem.Property(tmdb_id)],home)</onfocus>
 			<onfocus condition="String.IsEqual(ListItem.DBType,tvshow) + [String.IsEmpty(listitem.uniqueid(tmdb)) + String.IsEmpty(ListItem.Property(tmdb_id))] + !String.IsEmpty(ListItem.Property(id))">SetProperty(tvshow_tmdbid,$INFO[ListItem.Property(id)],home)</onfocus>
-			
 			<onfocus condition="String.IsEqual(ListItem.DBType,episode) + !String.IsEmpty(ListItem.Property(tvshow.tmdb_id))">SetProperty(episodetvshow_tmdbid,$INFO[ListItem.Property(tvshow.tmdb_id)],home)</onfocus>
 			<onunfocus condition="!Window.IsActive(movieinformation) + !String.IsEmpty(Window(home).Property(TrailerIsPlaying))">PlayerControl(Stop)</onunfocus>
-			
 		</control>
 	</include>
-	
-	<!-- MEDIA Windows xmls 
-	
-	<animation effect="slide" start="0,0" end="1400,610" time="100" easing="inout" reversible="true" condition="Control.HasFocus(610) + [!Skin.HasSetting(view_503_fanart_left) + Control.IsVisible(503)] | [!Skin.HasSetting(view_504_fanart_left) + Control.IsVisible(504)]">conditional</animation>
-	
-
-what a shit to do
-		<animation effect="slide" start="0,0" end="1400,0" time="0" reversible="true" condition="![Control.HasFocus(610) | Control.HasFocus(19) | Control.HasFocus(199)] + [[!Skin.HasSetting(view_503_fanart_left) + Control.IsVisible(503)] | [!Skin.HasSetting(view_504_fanart_left) + Control.IsVisible(504)]]">conditional</animation>
-		<animation effect="slide" start="0,0" end="1400,610" time="0" reversible="true" condition="[[Control.IsVisible(503) + !Skin.HasSetting(View_503_DisableFooter)] | [Control.IsVisible(504) + !Skin.HasSetting(View_504_DisableFooter)]] + [Control.HasFocus(610) | Control.HasFocus(19) | Control.HasFocus(199)]">conditional</animation>
 		
-	-->
-	<include name="NativeString_Filter">
-		<control type="group">
-		<animation effect="slide" start="0,0" end="1400,0" time="0" reversible="true" condition="[[!Skin.HasSetting(view_503_fanart_left) + Control.IsVisible(503)] | [!Skin.HasSetting(view_504_fanart_left) + Control.IsVisible(504)]]">conditional</animation>
-		
-		<control type="edit" id="19">
-			<visible>!$EXP[Infodialog_IsActive] + !Window.IsActive(shutdownmenu) + !Control.IsVisible(58)</visible>
-			<top>15</top>
-			<left>110</left>
-			<height>60</height>
-			<width>360</width>
-			<hinttext>$LOCALIZE[587]...</hinttext>
-			<texturefocus colordiffuse="$VAR[color_header_backgroundpanel]" diffuse="buttons/button_6to1_Trans.png">colors/white70.png</texturefocus>	
-			<texturenofocus diffuse="buttons/button_6to1_Trans.png">colors/white10.png</texturenofocus>
-			<font>notosans_24_regular</font>
-			<textoffsetx>20</textoffsetx>
-			<textoffsety>15</textoffsety>
-			<textcolor>$VAR[color_header_text_main]</textcolor>
-			<focusedcolor>$VAR[color_header_text_main]</focusedcolor>
-			<disabledcolor />
-			<invalidcolor />
-			<aligny>center</aligny>
-			<pulseonselect>no</pulseonselect>
-			<onup>50</onup>
-			<ondown>50</ondown>
-			<onright condition="Control.IsVisible(199)">199</onright>
-			<onright condition="!Control.IsVisible(199)">50</onright>
-			
-			<onleft>menu</onleft>
-			<label />
-		</control>
-		<control type="button">
-			<description>touch mode workaround</description>
-			<visible>!$EXP[Infodialog_IsActive] + !Window.IsActive(shutdownmenu) + !Control.IsVisible(58)</visible>
-			<visible>!String.IsEmpty(Window(home).Property(menucontrol_active))</visible>
-			<animation effect="slide" start="0,0" end="90,0" time="250" tween="sine" condition="!ControlGroup(9000).HasFocus() + [!Skin.HasSetting(HideProfile_Header) + Control.IsVisible(97)]">Conditional</animation>
-			<height>110</height>
-			<texturefocus  />	
-			<texturenofocus  />
-			<onfocus>ClearProperty(menucontrol_active,home)</onfocus>
-			<onfocus>SetFocus(19)</onfocus>
-		</control>
-		<control type="button" id="199">
-			<visible>Container.CanFilterAdvanced</visible>
-			<visible>!$EXP[Infodialog_IsActive] + !Window.IsActive(shutdownmenu) + !Control.IsVisible(58)</visible>
-			<include>Animation_Item_Focus</include>
-			<texturefocus diffuse="buttons/advancedfiltermethod.png" colordiffuse="$VAR[color_header_text_accent]">colors/white70.png</texturefocus>	
-			<texturenofocus diffuse="buttons/advancedfiltermethod.png" colordiffuse="$VAR[color_header_text_main]">colors/white50.png</texturenofocus>
-			<top>20</top>
-			<left>415</left>
-			<width>50</width>
-			<height>50</height>
-			<font>notosans_23_regular_l</font>
-			<onup>50</onup>
-			<ondown>50</ondown>
-			<onright>50</onright>
-			<onleft>19</onleft>
-			<onclick>Filter</onclick>
-			<onfocus>ClearProperty(menucontrol_active,home)</onfocus>
-		</control>
-		</control>
-	</include>
 	
-	<!-- PAGES - view_58,musicinfo -->
-	<include name="page_attribute">
-		<param name="top" default="0" />
-		<definition>
-			<top>$PARAM[top]</top>
-			<height>1080</height>
-		</definition>
-	</include>
 	
 	<!-- AddonBrowser.xml , DialogSelect.xml -->
 	<include name="Dialog_Containers">
@@ -838,7 +632,7 @@ what a shit to do
 		</control>
 		</definition>
 	</include>
-	<!-- AddonBrowser.xml , DialogSelect.xml -->
+	
 	<include name="Dialog_CommonInfo">
 		<param name="Def_Icon" default="$INFO[ListItem.Icon]" />
 		<param name="Header_posy" default="140" />
@@ -857,7 +651,7 @@ what a shit to do
 				<posy>$PARAM[Header_posy]</posy>
 				<label>$PARAM[Header_label]</label>
 				<textcolor>$VAR[color_global_button_text_fo]</textcolor>
-				
+				<visible>!Window.IsActive(addonbrowser) + !Window.IsActive(programs)</visible>
 				<left>33.3%</left>
 				<width>33.3%</width>
 				<height>120</height>
@@ -1138,7 +932,6 @@ what a shit to do
 					<width>$PARAM[itemwidth]</width>
 					<height>$PARAM[itemheight]</height>
 					<include condition="true">Animation_Item_Focus</include>
-					<include condition="false">AltAnimation_Item_Focus</include>
 					<control type="group">
 						<include content="universal_itemlayout">
 							

@@ -15,15 +15,14 @@
 			</animation>
 		</definition>
 	</include>
-	
-	<include name="Animation_OpenClose_Zoom">
+	<include name="Animation_OpenClose_FadeZoom">
 		<animation type="WindowOpen">
-			<effect type="fade" start="0" end="100" time="300" tween="sine" easing="out" />
-			<effect type="zoom" center="50%,50%" start="10" end="100" time="400" tween="cubic" easing="out" />
+			<effect type="fade" end="100" time="300" />
+			<effect type="zoom" center="50%,50%" start="0" end="100" time="250" tween="cubic" easing="out" />
 		</animation>
 		<animation type="WindowClose">
-			<effect type="fade" start="100" end="0" time="300" tween="sine" easing="out" />
-			<effect type="zoom" center="50%,50%" start="100" end="0" time="300" tween="cubic" easing="out" />
+			<effect type="fade" end="0" time="200" />
+			<effect type="zoom" center="50%,50%" start="100" end="0" time="200" tween="cubic" easing="out" />
 		</animation>
 	</include>
 	
@@ -37,71 +36,31 @@
 			<effect type="fade" start="100" end="0" time="240" />
 		</animation>
 	</include>
-	<include name="Animation_VisibleHidden_Fade">
-		<animation type="Visible" reversible="false">
-			<effect type="fade" delay="160" end="100" time="300" />
-		</animation>
-		<animation type="Hidden" reversible="false">
-			<effect type="fade" delay="160" start="100" end="0" time="300" />
-		</animation>
-	</include>
 	
 	<include name="Animation_TransitionFadeOut">
 		<animation effect="fade" start="100" end="0" time="250" tween="sine" condition="$PARAM[condition]">Conditional</animation>
 	</include>
-	<include name="Animation_TransitionZoomOut">
-		<animation effect="zoom" center="50%,50%" start="100" end="0" time="250" tween="cubic" easing="out" condition="$PARAM[condition]">Conditional</animation>
-	</include>
 	
-	<include name="Animation_OpenClose_MediaWindow">
-		<animation type="WindowOpen">
-			<effect type="fade" end="100" time="400" />
-		</animation>
-		<animation type="WindowClose">
-			<effect type="fade" end="0" time="200" />
-		</animation>
-	</include>
-	<include name="Animation_OpenClose_MediaWindow_replace">
-		<animation type="WindowOpen">
-			<effect type="fade" end="100" time="300" />
-			<effect type="zoom" center="50%,50%" start="0" end="100" time="250" tween="cubic" easing="out" />
-		</animation>
-		<animation type="WindowClose">
-			<effect type="fade" end="0" time="200" />
-			<effect type="zoom" center="50%,50%" start="100" end="0" time="200" tween="cubic" easing="out" />
-		</animation>
-	</include>
 	<include name="Animation_ButtonFocusSlide">
+		<param name="slide_posx" default="-440" />
+		<param name="slide_posy" default="0" />
+		<definition>
 		<animation type="focus" reversible="false">
-			<effect type="slide" start="0" end="-440" easing="in" tween="quadratic" time="300" />
+			<effect type="slide" start="0,0" end="$PARAM[slide_posx],$PARAM[slide_posy]" easing="in" tween="quadratic" time="300" />
 		</animation>
 		<animation type="unfocus" reversible="false">
-			<effect type="slide" start="-440" end="0" easing="in" tween="quadratic" time="300" />
+			<effect type="slide" start="$PARAM[slide_posx],$PARAM[slide_posy]" end="0,0" easing="in" tween="quadratic" time="300" />
 		</animation>
+		</definition>
 	</include>
 	
-	<include name="Animation_Close_MediaContainer">
-		<animation type="WindowClose">
-			<effect type="slide" start="0" end="-2000,0" time="500" tween="cubic" easing="out" />
-		</animation>
-	</include>
-	
+	<!-- https://kodi.wiki/view/Tweeners -->
 	<include name="Animation_Item_Focus">
 		<animation type="Focus" reversible="false">
 			<effect type="zoom" end="115,115" time="200" tween="sine" easing="out" center="auto" />
 			<effect type="zoom" end="93,93" time="150" tween="sine" delay="200" easing="out" center="auto" />
 		</animation>
 	</include>
-	<!-- https://kodi.wiki/view/Tweeners -->
-	<include name="AltAnimation_Item_Focus">
-		<!-- 
-		<animation type="Focus" reversible="false">
-			<effect type="zoom" end="113,113" time="250" tween="cubic" easing="inout" center="auto" />
-		</animation>
-		-->
-		<animation effect="zoom" center="auto" start="100" end="110" time="250" tween="cubic" easing="inout">Focus</animation>
-	</include>
-	
 	<include name="Animation_Item_Focus_rightalign">
 		<animation type="Focus" reversible="false">
 			<effect alignx="true" type="zoom" end="115,115" time="200" tween="sine" easing="out" center="auto" />
@@ -109,18 +68,4 @@
 			<effect alignx="true" type="zoom" end="93,93" time="150" tween="sine" delay="200" easing="out" center="auto" />
 		</animation>
 	</include>
-	
-	<include name="Animation_BounceRight">
-		<animation condition="Window.IsVisible(1198) + Control.HasFocus($PARAM[id])" reversible="false" type="Conditional">
-			<effect easing="out" end="-30,0" start="0,0" time="60" tween="sine" type="slide" />
-			<effect delay="80" easing="out" end="30,0" start="0,0" time="120" tween="sine" type="slide" />
-		</animation>
-	</include>
-	<include name="Animation_BounceLeft">
-		<animation condition="Window.IsVisible(1198) + Control.HasFocus($PARAM[id])" reversible="false" type="Conditional">
-			<effect easing="out" end="30,0" start="0,0" time="60" tween="sine" type="slide" />
-			<effect delay="80" easing="out" end="-30,0" start="0,0" time="120" tween="sine" type="slide" />
-		</animation>
-	</include>
-
 </includes>

@@ -760,12 +760,9 @@
 	<!-- musicinfo-->
 	<include name="IconButton">
 		<control type="radiobutton" id="$PARAM[id]">
-			<animation type="focus" reversible="false">
-				<effect type="slide" start="0" end="350" easing="in" tween="quadratic" time="300" />
-			</animation>
-			<animation type="unfocus" reversible="false">
-				<effect type="slide" start="350" end="0" easing="in" tween="quadratic" time="300" />
-			</animation>
+			<include content="Animation_ButtonFocusSlide">
+				<param name="slide_posx" value="350" />
+			</include>
 			<textoffsetx>50</textoffsetx>
 			<height>65</height>
 			<width>400</width>
@@ -776,7 +773,7 @@
 			<textureradioofffocus colordiffuse="white">$PARAM[radiobutton_texture].png</textureradioofffocus>
 			<textureradiooffnofocus colordiffuse="5cC6C6C8">$PARAM[radiobutton_texture].png</textureradiooffnofocus>
 			<texturefocus colordiffuse="white">diffuse/gradientborderleft.png</texturefocus>
-			<texturenofocus colordiffuse="5cC6C6C8">diffuse/gradientborderleft.png</texturenofocus>		 
+			<texturenofocus colordiffuse="white">diffuse/gradientborderleft.png</texturenofocus>		 
 			<label>$PARAM[label]</label>
 			<nested />
 		</control>
@@ -785,8 +782,6 @@
 	
 	<!-- game osd - future global ? - revisit alpha chanel n colors -->
 	<include name="IconButton_games">
-			
-			
 			<radioposx>10</radioposx>
 			<textoffsetx>90</textoffsetx>
 			
@@ -1035,33 +1030,7 @@
 		<value condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">$VAR[color_lib_menu_item_nf]</value>
 		<value>$VAR[color_lib_text_secondary]</value>
 	</variable>
-
 	
-
-	<!-- 
-	is failing
-	<variable name="media_menucontrol">
-		<value condition="false">9000</value>
-		<value condition="true">8999</value>
-	</variable>
-	
-	is also failing
-	<include name="media_menucontrol">
-		<param name="forced_menu_id" default="9000" />
-		<menucontrol>$PARAM[forced_menu_id]</menucontrol>
-	</include>
-	
-	-->
-	<include name="media_menucontrol">
-		<include content="media_menucontrol_9000" condition="!Skin.HasSetting(menucontrol_forcedfocus_premenu)" />
-		<include content="media_menucontrol_8999" condition="Skin.HasSetting(menucontrol_forcedfocus_premenu)" />
-	</include>
-	<include name="media_menucontrol_9000">
-		<menucontrol>9000</menucontrol>
-	</include>
-	<include name="media_menucontrol_8999">
-		<menucontrol>8999</menucontrol>
-	</include>
 	
 	
 	<!-- ERROR if changed to default menu control is premenu 

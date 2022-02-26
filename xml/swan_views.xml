@@ -1,6 +1,116 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
+	<include name="media_window_attributes">
+		<param name="defaultcontrol" default="50" />
+		<param name="view_ids" default="50" />
+		<definition>
+			<defaultcontrol always="true">$PARAM[defaultcontrol]</defaultcontrol>
+			<backgroundcolor>$VAR[color_global_background_layer1]</backgroundcolor>
+			<views>$PARAM[view_ids]</views>
+			<onunload condition="!String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">ClearProperty(shortcutaction_inprogress,home)</onunload>
+			<onunload condition="!String.IsEmpty(Window(home).Property(shortcutitem_nr))">ClearProperty(shortcutitem_nr,home)</onunload>
+			<include>media_menucontrol</include>
+			<include content="Animation_OpenClose_FadeZoom" condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" />
+		</definition>
+	</include>
+	<include name="media_menucontrol">
+		<include content="media_menucontrol_9000" condition="!Skin.HasSetting(menucontrol_forcedfocus_premenu)" />
+		<include content="media_menucontrol_8999" condition="Skin.HasSetting(menucontrol_forcedfocus_premenu)" />
+	</include>
+	<include name="media_menucontrol_9000">
+		<menucontrol>9000</menucontrol>
+	</include>
+	<include name="media_menucontrol_8999">
+		<menucontrol>8999</menucontrol>
+	</include>
 	
+	<include name="Media_Container_Attributes">
+		<param name="left" default="BackgroundPanelLeft" />
+		<param name="right" default="BackgroundPanelRight" />
+		<param name="bottom" default="Footer" />
+		<definition>
+			<animation effect="slide" start="0,0" end="0,90" time="350" tween="quadratic" easing="in" delay="100" condition="Skin.HasSetting(View_$PARAM[view_id]_DisableFooter)">conditional</animation>
+           <orientation>vertical</orientation>
+			<preloaditems>2</preloaditems>
+			<scrolltime tween="quadratic">400</scrolltime>
+            <top>Header</top>
+			<left>$PARAM[left]</left>
+			<right>$PARAM[right]</right>
+			<bottom>$PARAM[bottom]</bottom>
+		</definition>
+	</include>
+	
+	<include name="Media_Values_ContainerNavigation">
+		<param name="pagecontrol" value="60" />
+		<definition>
+			<pagecontrol>$PARAM[pagecontrol]</pagecontrol>
+			<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
+			<onleft condition="Control.IsVisible(8999)">8999</onleft>
+			<onright condition="Control.IsVisible($PARAM[pagecontrol])">$PARAM[pagecontrol]</onright>
+		</definition>
+	</include>
+	
+	<include name="NativeString_Filter">
+		<control type="group">
+		<animation effect="slide" start="0,0" end="1400,0" time="0" reversible="true" condition="[[!Skin.HasSetting(view_503_fanart_left) + Control.IsVisible(503)] | [!Skin.HasSetting(view_504_fanart_left) + Control.IsVisible(504)]]">conditional</animation>
+		
+		<control type="edit" id="19">
+			<visible>!$EXP[Infodialog_IsActive] + !Window.IsActive(shutdownmenu) + !Control.IsVisible(58)</visible>
+			<top>15</top>
+			<left>110</left>
+			<height>60</height>
+			<width>360</width>
+			<hinttext>$LOCALIZE[587]...</hinttext>
+			<texturefocus colordiffuse="$VAR[color_header_backgroundpanel]" diffuse="buttons/button_6to1_Trans.png">colors/white70.png</texturefocus>	
+			<texturenofocus diffuse="buttons/button_6to1_Trans.png">colors/white10.png</texturenofocus>
+			<font>notosans_24_regular</font>
+			<textoffsetx>20</textoffsetx>
+			<textoffsety>15</textoffsety>
+			<textcolor>$VAR[color_header_text_main]</textcolor>
+			<focusedcolor>$VAR[color_header_text_main]</focusedcolor>
+			<disabledcolor />
+			<invalidcolor />
+			<aligny>center</aligny>
+			<pulseonselect>no</pulseonselect>
+			<onup>50</onup>
+			<ondown>50</ondown>
+			<onright condition="Control.IsVisible(199)">199</onright>
+			<onright condition="!Control.IsVisible(199)">50</onright>
+			
+			<onleft>menu</onleft>
+			<label />
+		</control>
+		<control type="button">
+			<description>touch mode workaround</description>
+			<visible>!$EXP[Infodialog_IsActive] + !Window.IsActive(shutdownmenu) + !Control.IsVisible(58)</visible>
+			<visible>!String.IsEmpty(Window(home).Property(menucontrol_active))</visible>
+			<animation effect="slide" start="0,0" end="90,0" time="250" tween="sine" condition="!ControlGroup(9000).HasFocus() + [!Skin.HasSetting(HideProfile_Header) + Control.IsVisible(97)]">Conditional</animation>
+			<height>110</height>
+			<texturefocus  />	
+			<texturenofocus  />
+			<onfocus>ClearProperty(menucontrol_active,home)</onfocus>
+			<onfocus>SetFocus(19)</onfocus>
+		</control>
+		<control type="button" id="199">
+			<visible>Container.CanFilterAdvanced</visible>
+			<visible>!$EXP[Infodialog_IsActive] + !Window.IsActive(shutdownmenu) + !Control.IsVisible(58)</visible>
+			<include>Animation_Item_Focus</include>
+			<texturefocus diffuse="buttons/advancedfiltermethod.png" colordiffuse="$VAR[color_header_text_accent]">colors/white70.png</texturefocus>	
+			<texturenofocus diffuse="buttons/advancedfiltermethod.png" colordiffuse="$VAR[color_header_text_main]">colors/white50.png</texturenofocus>
+			<top>20</top>
+			<left>415</left>
+			<width>50</width>
+			<height>50</height>
+			<font>notosans_23_regular_l</font>
+			<onup>50</onup>
+			<ondown>50</ondown>
+			<onright>50</onright>
+			<onleft>19</onleft>
+			<onclick>Filter</onclick>
+			<onfocus>ClearProperty(menucontrol_active,home)</onfocus>
+		</control>
+		</control>
+	</include>
 	<!-- System.HasVisibleModalDialog Activate of window '11110' refused because there are active modal dialogs -->
 	
 	<variable name="debug_trailer_available">
@@ -200,7 +310,6 @@ music					 		!Container.Content(songs) + !Container.Content(sources) +
 			<control type="group">
 				<description>viewtypes</description>
 				<visible>Integer.IsGreater(Container().NumItems,0) | Window.IsActive(busydialog)</visible>
-				<include content="Animation_Close_MediaContainer" condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" />
 				<animation type="Conditional" condition="$EXP[Infodialog_IsActive] | Window.IsActive(mediasource) | [Window.IsActive(shutdownmenu) + !$EXP[Spotlight_ViewType]] | Window.IsActive(1104)">
 					<effect type="fade" start="100" end="0" time="250" tween="sine" easing="out" />
 					<effect type="zoom" center="50%,50%" start="100" end="0" time="300" tween="cubic" easing="out" />
@@ -270,6 +379,8 @@ music					 		!Container.Content(songs) + !Container.Content(sources) +
 		</control>
 		<include condition="Skin.HasSetting(window_frame)" content="window_frame" />
 	</include>
+	
+	
 	
 	<include name="rules_listcontainer">
 		<left>40</left>

@@ -8,8 +8,6 @@ ID 	Type 			Description
 4 	togglebutton 	Select sortmode (ascending or descending)
 12 	label 			Number of items in the list 
 -->
-	
-	
 	<controls>
 		<!-- native GUI Ctrls -->
 		<control type="button" id="2">
@@ -32,7 +30,6 @@ ID 	Type 			Description
 			<include content="DialogBackground_TriplePanel" />
 		</control>
 		
-		
 		<!-- Shortcut -->
 		<include content="SwanShortcuts_Container" condition="!string.isempty(window(home).property(shortcutitem_nr))" />
 			
@@ -41,7 +38,6 @@ ID 	Type 			Description
 				<param name="Header_posy" value="50" />
 				<param name="Item_Description" value="$INFO[ListItem.AddonName,[B]$LOCALIZE[551]:[/B] ,]$INFO[ListItem.AddonCreator,[CR][B]$LOCALIZE[21863]:[/B] ,]$INFO[ListItem.AddonDescription,[CR][CR][B]$LOCALIZE[31171][/B][CR],]" />
 			</include>
-			
 			<include condition="string.isempty(window(home).property(shortcutitem_nr))" content="Dialog_Containers">
 				<param name="id" value="50" />
 				<param name="Container_Height" value="70%" />
@@ -51,19 +47,17 @@ ID 	Type 			Description
 			</include>
 		</control>
 		
-		<include content="menucontrol_background_layer"/>
-		
+		<include content="HeaderBar">
+			<param name="HasBGPanel" value="Skin.HasSetting(MediaWindow_UseHeaderBG) + !control.isvisible(520)" />
+		</include>
+		<include content="PreMenucontrol" />
 		<control type="group">
 			<animation effect="slide" start="-450,0" end="0,0" time="300" tween="cubic" easing="inout">VisibleHidden</animation>
 			<visible>String.IsEqual(Window(Home).Property(menucontrol_active),common)</visible>
-			<include content="menucontrol_global" condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">
-				<param name="has_premenu" value="false" />
-				<param name="has_no_premenu" value="true" />
-			</include>
+			<include content="menucontrol_global" condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" />
 		</control>
-		
+		<include condition="[[Window.IsActive(videos) | Window.IsActive(music)] + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))]" content="NativeString_Filter" />
+		<include condition="Skin.HasSetting(window_frame)" content="window_frame" />
 		<include content="swan_debug_overlay" />
 	</controls>
-
-
 </window>
