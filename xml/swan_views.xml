@@ -357,4 +357,235 @@
 			<label>$INFO[ListItem.Label]</label>
 		</control>
 	</include>
+	<include name="spotlight_hor_list_navigation_common">
+		<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
+		<onfocus condition="!String.IsEmpty(Window(Home).Property(view_forcefocus))">SetFocus($INFO[Window(Home).Property(view_forcefocus)])</onfocus>
+		<onleft condition="Control.IsVisible(8999)">8999</onleft>
+		<onup condition="Control.IsVisible(61)">61</onup>
+		<onup condition="!Control.IsVisible(61) + Control.IsVisible(610)">610</onup>
+		<onup condition="$EXP[Has_Trailer] + [!Control.IsVisible(61) + !Control.IsVisible(610)]">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onup>
+		<onup condition="$EXP[Has_Trailer] + [!Control.IsVisible(61) + !Control.IsVisible(610)]">SetProperty(TrailerIsPlaying,true,home)</onup>
+		<onup condition="$EXP[Has_Trailer] + [!Control.IsVisible(61) + !Control.IsVisible(610)] + [!String.IsEmpty(ListItem.dbtype) + String.IsEmpty(Window.Property(Spotlight_Cast))]">SetProperty(Spotlight_Cast,visible)</onup>
+		<onup condition="!$EXP[Has_Trailer] + [!Control.IsVisible(610) + !Control.IsVisible(61)] + Control.IsVisible(19)">19</onup>
+		<ondown condition="!Window.IsActive(music) + !String.IsEmpty(ListItem.dbtype) + String.IsEmpty(Window.Property(Spotlight_Cast))">SetProperty(Spotlight_Cast,visible)</ondown>	
+		<ondown condition="!Window.IsActive(music) + !String.IsEmpty(Window.Property(Spotlight_Cast)) + [!String.IsEqual(ListItem.dbtype,set) | !String.IsEqual(ListItem.dbtype,tvshow)]">ClearProperty(Spotlight_Cast)</ondown>		 
+		<ondown condition="!Window.IsActive(music) + !Skin.HasSetting(view_503_focusable_cast) + Control.IsVisible(50352) + [String.IsEqual(ListItem.dbtype,tvshow) | String.IsEqual(ListItem.dbtype,season) | String.IsEqual(ListItem.dbtype,set) | !String.IsEmpty(ListItem.SetId)]">SetFocus(50352,0,absolute)</ondown>
+		<ondown condition="!Window.IsActive(music) + Skin.HasSetting(view_503_focusable_cast) + [!String.IsEmpty(ListItem.dbtype) + Control.IsVisible(50350) + String.IsEmpty(Window.Property(Spotlight_Cast))]">SetFocus(50350,0,absolute)</ondown>
+		<ondown condition="!Window.IsActive(music) + Skin.HasSetting(view_503_focusable_cast) + [!String.IsEmpty(ListItem.dbtype) + Control.IsVisible(50352) + !String.IsEmpty(Window.Property(Spotlight_Cast))]">SetFocus(50352,0,absolute)</ondown>
+	</include>
+	
+	<include name="spotlight_hor_list_navigation_cast">
+		<include>Action_CastMemberSearchForceOption</include>
+		<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
+		<onfocus condition="String.IsEmpty(Window.Property(Spotlight_Cast))">SetProperty(Spotlight_Cast,focused)</onfocus>
+		<onback condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">ClearProperty(Spotlight_Sets)</onback>
+		<onback condition="!String.IsEmpty(Window.Property(Spotlight_Cast))">ClearProperty(Spotlight_Cast)</onback>
+		<onback>SetFocus(50)</onback>
+		<onup condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">ClearProperty(Spotlight_Sets)</onup>
+		<onup condition="!String.IsEmpty(Window.Property(Spotlight_Cast))">ClearProperty(Spotlight_Cast)</onup>
+		<onup>50</onup>
+		<ondown condition="[Control.IsVisible(50352) + [String.IsEqual(ListItem.dbtype,tvshow) | String.IsEqual(ListItem.dbtype,season) | String.IsEqual(ListItem.dbtype,set) | !String.IsEmpty(ListItem.SetId)]]">SetFocus(50352,0,absolute)</ondown>
+		<ondown condition="![Control.IsVisible(50352) + [String.IsEqual(ListItem.dbtype,tvshow) | String.IsEqual(ListItem.dbtype,season) | String.IsEqual(ListItem.dbtype,set) | !String.IsEmpty(ListItem.SetId)]]">ClearProperty(Spotlight_Cast)</ondown>
+		<ondown condition="![Control.IsVisible(50352) + [String.IsEqual(ListItem.dbtype,tvshow) | String.IsEqual(ListItem.dbtype,season) | String.IsEqual(ListItem.dbtype,set) | !String.IsEmpty(ListItem.SetId)]]">50</ondown>
+		<onleft condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">50350</onleft>
+		<onleft condition="String.IsEmpty(Window.Property(Spotlight_Sets))">50</onleft>
+	</include>
+	
+	<include name="spotlight_hor_list_navigation_nextup">
+		<onfocus condition="!String.IsEmpty(Window(Home).Property(view_forcefocus))">ClearProperty(view_forcefocus,home)</onfocus>
+		<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
+		<onfocus condition="String.IsEmpty(Window.Property(Spotlight_Sets))">SetProperty(Spotlight_Sets,true)</onfocus>
+		<onback condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">ClearProperty(Spotlight_Sets)</onback>
+		<onback condition="!String.IsEmpty(Window.Property(Spotlight_Cast))">ClearProperty(Spotlight_Cast)</onback>
+		<onback>SetFocus(50)</onback>
+		<onclick>SetProperty(view_forcefocus,$INFO[System.CurrentControlID],home)</onclick>
+		<onclick>PlayMedia($INFO[ListItem.FilenameAndPath],resume)</onclick>
+		<onup condition="Skin.HasSetting(view_503_focusable_cast) + Control.IsVisible(50350)">SetFocus(50350)</onup>
+		<onup condition="!Skin.HasSetting(view_503_focusable_cast) | !Control.IsVisible(50350)">ClearProperty(Spotlight_Sets)</onup>
+		<onup condition="!Skin.HasSetting(view_503_focusable_cast) | !Control.IsVisible(50350)">ClearProperty(Spotlight_Cast)</onup>
+		<onup condition="!Skin.HasSetting(view_503_focusable_cast) | !Control.IsVisible(50350)">50</onup>
+		<ondown>ClearProperty(Spotlight_Sets)</ondown>
+		<ondown>ClearProperty(Spotlight_Cast)</ondown>
+		<ondown>50</ondown>
+		<onleft condition="Control.IsVisible(50353)">50353</onleft>
+		<onleft condition="!Control.IsVisible(50353)">50352</onleft>
+		<onright condition="Control.IsVisible(50353)">50353</onright>
+		<onright condition="!Control.IsVisible(50353)">50352</onright>
+	</include>
+	
+	<include name="spotlight_hor_list_navigation_folderpath">
+		<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
+		<onfocus condition="String.IsEmpty(Window.Property(Spotlight_Sets))">SetProperty(Spotlight_Sets,true)</onfocus>
+		<onback condition="!String.IsEmpty(Window.Property(Spotlight_Sets))">ClearProperty(Spotlight_Sets)</onback>
+		<onback condition="!String.IsEmpty(Window.Property(Spotlight_Cast))">ClearProperty(Spotlight_Cast)</onback>
+		<onback>SetFocus(50)</onback>
+		<onup condition="Skin.HasSetting(view_503_focusable_cast) + Control.IsVisible(50350)">SetFocus(50350)</onup>
+		<onup condition="!Skin.HasSetting(view_503_focusable_cast) | !Control.IsVisible(50350)">ClearProperty(Spotlight_Sets)</onup>
+		<onup condition="!Skin.HasSetting(view_503_focusable_cast) | !Control.IsVisible(50350)">ClearProperty(Spotlight_Cast)</onup>
+		<onup condition="!Skin.HasSetting(view_503_focusable_cast) | !Control.IsVisible(50350)">50</onup>
+		<ondown>ClearProperty(Spotlight_Sets)</ondown>
+		<ondown>ClearProperty(Spotlight_Cast)</ondown>
+		<ondown>50</ondown>
+		<onleft condition="Control.IsVisible(50352)">50352</onleft>
+		<onleft condition="!Control.IsVisible(50352) + Control.IsVisible(8999)">8999</onleft>
+		<onright condition="Integer.IsGreater(Container(50353).NumItems,1)">50353</onright>
+		<onright condition="Integer.IsEqual(Container(50353).NumItems,1)">50352</onright>
+	</include>
+
+	<include name="Scrollbar_Lib_vertical">
+		<control type="scrollbar" id="60">
+			<animation effect="fade" start="100" end="0" time="250" condition="Control.HasFocus(600)">conditional</animation>
+			<visible>!$EXP[Scrollbar_Lib_Horizontal]</visible>
+			<visible>!String.IsEqual(Container.ViewMode,$LOCALIZE[31263])</visible>
+			<right>45</right>
+			<top>160</top>
+			<height>74%</height>
+			<onup>60</onup>
+			<ondown>60</ondown>
+			<onleft>50</onleft>
+			<onright condition="Control.IsVisible(600)">600</onright>
+			<onright condition="!Control.IsVisible(600) + !Window.IsActive(musicplaylist) + [MusicPlayer.Offset(-1).Exists | MusicPlayer.Offset(1).Exists]">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onright>
+			<onright condition="!Control.IsVisible(600) + !Window.IsActive(musicplaylist) + [MusicPlayer.Offset(-1).Exists | MusicPlayer.Offset(1).Exists]">activatewindow(1140)</onright>
+			<onright condition="!Control.IsVisible(600) + Control.IsVisible(19) + !Window.IsActive(musicplaylist) + !MusicPlayer.Offset(-1).Exists + !MusicPlayer.Offset(1).Exists">19</onright>
+			<onright condition="!Control.IsVisible(600) + !Control.IsVisible(19) + !MusicPlayer.Offset(-1).Exists + !MusicPlayer.Offset(1).Exists">50</onright>
+		</control>
+	</include>
+	
+	<include name="Scrollbar_Lib_horizontal">
+		<control type="scrollbar" id="61">
+			<animation effect="slide" start="0,0" end="0,50" time="350" easing="inout" reversible="true" condition="container.content(episodes)">conditional</animation>
+			<animation effect="fade" start="100" end="0" time="200" easing="inout" reversible="true" condition="!Control.HasFocus(61)">conditional</animation>
+			<orientation>horizontal</orientation>
+			<texturesliderbackground colordiffuse="$VAR[color_global_scrollbar_panel]">colors/white.png</texturesliderbackground>
+			<texturesliderbar colordiffuse="$VAR[color_global_scrollbar_slider_nf]">colors/white.png</texturesliderbar>
+			<texturesliderbarfocus colordiffuse="$VAR[color_global_scrollbar_slider_fo]">colors/white.png</texturesliderbarfocus>
+			<visible>$EXP[Scrollbar_Lib_Horizontal]</visible>
+			<bottom>380</bottom>
+			<height>5</height>
+			<left>110</left>
+			<width>1810</width>
+			<onleft>61</onleft>
+			<onright>61</onright>
+			<onup condition="Control.IsVisible(610)">610</onup>
+			<onup condition="$EXP[Has_Trailer] + !Control.IsVisible(610)">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onup>
+			<onup condition="$EXP[Has_Trailer] + !Control.IsVisible(610)">SetProperty(TrailerIsPlaying,true,home)</onup>
+			<onup condition="$EXP[Has_Trailer] + !Control.IsVisible(610)">SetProperty(Spotlight_Cast,visible)</onup>
+			<onup condition="[$EXP[Has_Trailer] + !Control.IsVisible(610)] | [!$EXP[Has_Trailer] + !Control.IsVisible(610) + !Control.IsVisible(19)]">50</onup>
+			<onup condition="!$EXP[Has_Trailer] + !Control.IsVisible(610) + Control.IsVisible(19)">19</onup>
+			<ondown>50</ondown>
+		</control>
+	</include>
+	<!-- 
+	 NextLetter 	Move to the next letter in a list or thumb panel. Note that SHIFT-B on the keyboard will take you to the B's.
+	 PrevLetter 	Move to the previous letter in a list or thumb panel. Note that SHIFT-Z on the keyboard will take you to the Z's.
+	 JumpSMS<2-9> 	Jump through a list using SMS-style input (eg press 2 twice to jump to the B's.)
+	 FilterSMS<2-9> 	Filter a list in music or videos using SMS-style input. 
+	-->
+	<include name="ScrollBar_Alphabet">
+		<control type="group">
+			<nested />
+			<animation effect="fade" start="100" end="0" time="200" easing="inout" reversible="true" condition="!Control.HasFocus($PARAM[id])">conditional</animation>
+			<height>$PARAM[height]</height>
+			<control type="image">
+				<description>may just use as nested element for hor bar</description>
+				<texture colordiffuse="$PARAM[color_1]">$VAR[texture_alphbaetbar_bg]</texture>
+				<visible>$PARAM[bg_texture_visible]</visible>
+			</control>
+			<control type="panel" id="$PARAM[id]">
+				<visible>[$PARAM[visible] + [Container.HasNext | Container.HasPrevious] + [[Container.Content(movies) | Container.Content(sets) | Container.Content(tvshows) | Container.Content(seasons) | Container.Content(episodes) | Container.Content(artists) | Container.Content(albums) | Container.Content(songs)] + [String.IsEqual(Container.SortMethod,$LOCALIZE[551]) | String.IsEqual(Container.SortMethod,$LOCALIZE[561]) | String.IsEqual(Container.SortMethod,$LOCALIZE[558]) | String.IsEqual(Container.SortMethod,$LOCALIZE[557]) | String.IsEqual(Container.SortMethod,$LOCALIZE[556])]]]</visible>
+				<orientation>$PARAM[orientation]</orientation>
+				<scrolltime />
+				<width>$PARAM[panel_width]</width>
+				<include condition="$PARAM[is_vertical]">ScrollBar_Alphabet_ver</include>
+				<include condition="!$PARAM[is_vertical]">ScrollBar_Alphabet_hor</include>
+				<focusedlayout height="$PARAM[item_hw]" width="$PARAM[item_hw]">
+					<control type="group">
+						<control type="image">
+							<texture colordiffuse="$PARAM[color_2]">colors/white.png</texture>
+						</control>
+						<control type="textbox">
+							<font>montserrat_16_semibold</font>
+							<align>center</align>
+							<aligny>center</aligny>
+							<textcolor>$PARAM[color_1]</textcolor>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+					</control>
+				</focusedlayout>
+				<itemlayout height="$PARAM[item_hw]" width="$PARAM[item_hw]">
+					<control type="group">
+						<control type="image">
+							<visible>$PARAM[is_vertical]</visible>
+							<texture colordiffuse="$PARAM[color_1]">colors/white.png</texture>
+						</control>
+						<control type="textbox">
+							<font>montserrat_16_extrabold</font>
+							<align>center</align>
+							<aligny>center</aligny>
+							<textcolor>$PARAM[color_2]</textcolor>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+					</control>
+				</itemlayout>
+				<content>plugin://script.embuary.helper/?info=jumptoletter&amp;showall=true&amp;reload=$INFO[Container.NumItems]</content>
+			</control>
+		</control>
+	</include>
+	<include name="ScrollBar_Alphabet_ver">
+		<width>60</width>
+		<left>36</left>
+		<onup>600</onup>
+		<ondown>600</ondown>
+		<onleft>50</onleft>
+		<onright condition="!Window.IsActive(musicplaylist) + [MusicPlayer.Offset(-1).Exists | MusicPlayer.Offset(1).Exists]">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onright>
+		<onright condition="!Window.IsActive(musicplaylist) + [MusicPlayer.Offset(-1).Exists | MusicPlayer.Offset(1).Exists]">activatewindow(1140)</onright>
+		<onright condition="Control.IsVisible(19) + !MusicPlayer.Offset(-1).Exists + !MusicPlayer.Offset(1).Exists">19</onright>
+		<onright condition="!Control.IsVisible(19) + !MusicPlayer.Offset(-1).Exists + !MusicPlayer.Offset(1).Exists">50</onright>
+		<centertop>50%</centertop>
+	</include>
+	<include name="ScrollBar_Alphabet_hor">
+		<left>110</left>
+		<top>15</top>	
+		<height>75</height>
+		<onup condition="$EXP[Has_Trailer]">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onup>
+		<onup condition="$EXP[Has_Trailer]">SetProperty(TrailerIsPlaying,true,home)</onup>
+		<onup condition="$EXP[Has_Trailer] + String.IsEmpty(Window.Property(Spotlight_Cast))">SetProperty(Spotlight_Cast,visible)</onup>
+		<onup condition="$EXP[Has_Trailer]">50</onup>
+		<onup condition="!$EXP[Has_Trailer] + Control.IsVisible(19)">19</onup>
+		<ondown>50</ondown>
+		<onleft>$PARAM[id]</onleft>
+		<onright>$PARAM[id]</onright>
+	</include>
+	<variable name="texture_alphbaetbar_bg">
+		<value condition="[Control.IsVisible(503) + Skin.HasSetting(View_503_DisableFooter)] | [Control.IsVisible(504) + Skin.HasSetting(View_504_DisableFooter)]">diffuse/gradientright.png</value>
+		<value>colors/white.png</value>
+	</variable>
+
+	<include name="Fanart_Diffused">
+		<param name="visible" default="true" />
+		<param name="width" default="1344" />
+		<param name="height" default="770" />
+		<definition>
+		<control type="image">
+			<description>WRONG FADEOUT CONDITIONS - REVISIT</description>
+			<visible>$PARAM[visible]</visible>
+			<fadetime>350</fadetime>
+			<nested />
+			<top>0</top>
+			<width>$PARAM[width]</width>
+			<height>$PARAM[height]</height>         
+			<texture background="true" diffuse="$PARAM[diffuse]">$VAR[ArtworkThumb]</texture>
+			<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
+			<animation effect="zoom" start="110" end="130" center="auto" time="12000" tween="cubic" easing="inout" pulse="true" condition="Skin.HasSetting(BackgroundAnimation)">Conditional</animation>
+			<animation effect="slide" start="-10,-10" end="10,10" time="8000" tween="cubic" easing="inout" pulse="true" condition="Skin.HasSetting(BackgroundAnimation)">Conditional</animation>
+			<animation effect="fade" start="100" end="0" delay="200" time="800" pulse="false" condition="[Player.HasVideo + String.IsEmpty(Window(Home).Property(TrailerIsPlaying))] | [[[Window.IsActive(home) + !Skin.HasSetting(home_trailer_showwidget)] | [!Window.IsActive(home) + !Control.IsVisible(520)]] + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))]">Conditional</animation>
+		</control>
+		</definition>
+	</include>
+	<variable name="ArtworkThumb">
+		<value condition="!String.IsEmpty(ListItem.Art(animatedfanart)) + Skin.HasSetting(AnimatedFanart)">$INFO[ListItem.Art(animatedfanart)]</value>
+		<value condition="Control.IsVisible(99007)">$INFO[Control.GetLabel(99007)]</value>					 
+		<value condition="Control.IsVisible(99006) + !String.IsEmpty(Control.GetLabel(99006))">$INFO[Control.GetLabel(99006)]</value>
+		<value condition="!String.IsEmpty(Container.ListItem.Art(fanart))">$INFO[Container.ListItem.Art(fanart)]</value>
+	</variable>
 </includes>

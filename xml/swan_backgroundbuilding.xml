@@ -268,6 +268,7 @@
 				<visible>[[$EXP[Spotlight_Layout]] + Skin.HasSetting(spotlight_blur)] | !$EXP[Spotlight_Layout]</visible>
 				<control type="image">
 					<animation effect="fade" end="40" condition="Control.IsVisible(503) | Control.IsVisible(504)">conditional</animation>
+					<animation effect="fade" end="10" condition="Control.IsVisible(520)">conditional</animation>
 					<description>conditional diffuse - blurred bg overlay img</description>
 					<include condition="!Skin.HasSetting(bg_use_coloredglass)" content="colordiffuse_layer2_tint" />
 					<texture>$INFO[Window(home).Property(listitem_blurred)]</texture>
@@ -325,12 +326,15 @@
 		</control>
 		
     </include>
+	
+	<!-- blur img id <value condition="Control.IsVisible(99005) + !String.IsEmpty(Control.GetLabel(99005))">$INFO[Control.GetLabel(99006)]</value> -->
+	<!-- <value condition="Control.IsVisible(99006) + !String.IsEmpty(Control.GetLabel(99006)) + !Skin.HasSetting(BlurEnabled)">$INFO[Control.GetLabel(99006)]</value> -->
 	<variable name="layer2_image">
 		<value condition="$EXP[IsCurrentyPlayingCommon] + !Skin.HasSetting(bg_use_coloredglass)">colors/white70.png</value>
 		<value condition="$EXP[IsCurrentyPlayingCommon] + Skin.HasSetting(bg_use_coloredglass)">colors/none.png</value>
 		<value condition="!String.IsEmpty(ListItem.Art(animatedfanart)) + Skin.HasSetting(animatedfanart)">$INFO[ListItem.Art(animatedfanart)]</value>
 		<value condition="Control.IsVisible(99007) + !String.IsEmpty(Control.GetLabel(99007))">$INFO[Control.GetLabel(99007)]</value>
-		<value condition="Control.IsVisible(99006) + !String.IsEmpty(Control.GetLabel(99006)) + !Skin.HasSetting(BlurEnabled)">$INFO[Control.GetLabel(99006)]</value>
+		<value condition="Control.IsVisible(99006) + !String.IsEmpty(Control.GetLabel(99006))">$INFO[Control.GetLabel(99006)]</value>
 		<value condition="Window.IsActive(weather) + [!Skin.HasSetting(weather_background_multiimage) + !Skin.HasSetting(weather_background_singleimage)]">special://skin/extras/weather/clouds.gif</value>
 		<value condition="Window.IsActive(weather) + Skin.HasSetting(weather_background_multiimage)"></value>
 		<value condition="Window.IsActive(weather) + Skin.HasSetting(weather_background_singleimage)">$INFO[Weather.FanartCode,resource://resource.images.weatherfanart.single/,.jpg]</value>
@@ -544,7 +548,7 @@
 	
 	<include name="common_player_fanartbackground">
 		<control type="image">
-			<texture background="true">$VAR[musicplayer_fanartbackground]</texture>
+			<texture background="true">$VAR[musicplayer_fanart]</texture>
 			<visible>Window.IsActive(visualisation)</visible>
 		</control>
 	</include>
@@ -600,7 +604,7 @@
 			<scrollout>false</scrollout>
 		</control>
 	</include>
-	<variable name="musicplayer_fanartbackground">
+	<variable name="musicplayer_fanart">
 		<value condition="Skin.HasSetting(Rotating_MusicPlayerFanart)">$INFO[Control.GetLabel(77707)]</value>
 		<value condition="!Skin.HasSetting(Rotating_MusicPlayerFanart)">$VAR[musicplayer_fanart]</value>
 	</variable>
