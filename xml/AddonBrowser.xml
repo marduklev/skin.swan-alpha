@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <window>
 	<include content="media_window_attributes">
 		<param name="view_ids" value="50" />
 	</include>
 	
 	<controls>
-		
 		<control type="togglebutton" id="4">
 			<description>Select sortmode (ascending or descending)</description>
 			<visible>Control.IsEnabled(4)</visible>
@@ -17,11 +16,9 @@
 		</control>
 		<control type="group">
 			<description>BG</description>
-			<include content="DialogBackground_TriplePanel" />
+			<include content="dialog_background_triplepanel" />
 		</control>
-		
 		<include content="SwanShortcuts_Container" condition="!string.isempty(window(home).property(shortcutitem_nr))" />
-			
 		<control type="group">
 			<include condition="string.isempty(window(home).property(shortcutitem_nr))" content="Dialog_CommonInfo">
 				<param name="Item_Description" value="$INFO[ListItem.AddonName,[B]$LOCALIZE[551]:[/B] ,]$INFO[ListItem.AddonCreator,[CR][B]$LOCALIZE[21863]:[/B] ,]$INFO[ListItem.AddonDescription,[CR][CR][B]$LOCALIZE[31171][/B][CR],]" />
@@ -34,19 +31,17 @@
 				<param name="layout_height" value="110" />
 			</include>
 		</control>
-		
 		<include content="menucontrol_background_layer"/>
-		
-			<include content="HeaderBar">
-				<param name="HasBGPanel" value="Skin.HasSetting(MediaWindow_UseHeaderBG) + !control.isvisible(520)" />
-			</include>
-			<include content="PreMenucontrol" />
-			<control type="group">
-				<animation effect="slide" start="-450,0" end="0,0" time="300" tween="cubic" easing="inout">VisibleHidden</animation>
-				<visible>String.IsEqual(Window(Home).Property(menucontrol_active),common)</visible>
-				<include content="menucontrol_global" condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" />
-			</control>
-			<include condition="[[Window.IsActive(videos) | Window.IsActive(music)] + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))]" content="NativeString_Filter" />
+		<include condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" content="HeaderBar">
+			<param name="HasBGPanel" value="Skin.HasSetting(MediaWindow_UseHeaderBG) + !control.isvisible(520)" />
+		</include>
+		<include content="PreMenucontrol" />
+		<control type="group">
+			<animation effect="slide" start="-450,0" end="0,0" time="300" tween="cubic" easing="inout">VisibleHidden</animation>
+			<visible>String.IsEqual(Window(Home).Property(menucontrol_active),common)</visible>
+			<include content="menucontrol_global" condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" />
+		</control>
+		<include condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))]" content="media_filter" />
 		
 		<include condition="Skin.HasSetting(window_frame)" content="window_frame" />
 		<include content="swan_debug_overlay">
