@@ -1374,7 +1374,7 @@
 			<description>PlaybackCtrl</description>
 			<width>98%</width>
 			<height>500</height>
-			<visible>$EXP[IsCurrentyPlayingCommon]</visible>
+			<visible>[String.IsEmpty(Window(Home).Property(TrailerIsPlaying)) + [Player.HasVideo | Player.HasGame | Player.HasAudio]]</visible>
 			
 			<control type="label">
 				<left>10</left>
@@ -2735,7 +2735,7 @@ plugin://script.embuary.helper/?info=getbyargs&filter_args='"{"field": "playcoun
 		
 		<control type="group">
 			<description>in future template for currently playing bar - ref musci_hub n skinsetting for use it at top</description>
-			<visible>$EXP[IsCurrentyPlayingCommon] + !$EXP[Infodialog_IsActive]</visible>
+			<visible>[String.IsEmpty(Window(Home).Property(TrailerIsPlaying)) + [Player.HasVideo | Player.HasGame | Player.HasAudio]] + !$EXP[Infodialog_IsActive]</visible>
 			<bottom>0</bottom>
 			<height>215</height>
 			<width>100%</width>
@@ -3130,20 +3130,14 @@ plugin://script.embuary.helper/?info=getbyargs&filter_args='"{"field": "playcoun
 				<width>120</width>
 				<height>120</height>
 				<centerleft>50%</centerleft>
-				<visible allowhiddenfocus="true">!$EXP[IsCurrentyPlayingCommon]</visible>
-				<onfocus condition="$EXP[IsCurrentyPlayingCommon]">SetFocus(605)</onfocus>
+				<visible allowhiddenfocus="true">![Player.HasVideo | Player.HasGame | Player.HasAudio]</visible>
+				<onfocus condition="Player.HasVideo | Player.HasGame | Player.HasAudio">SetFocus(605)</onfocus>
 				
-				<textureradioonfocus colordiffuse="$VAR[color_profilelogin_text_main]">icons/shutdown.png</textureradioonfocus> 
-				<textureradioonnofocus colordiffuse="ff131313">icons/shutdown.png</textureradioonnofocus>
-				<textureradioofffocus colordiffuse="$VAR[color_profilelogin_text_main]">icons/shutdown.png</textureradioofffocus>
-				<textureradiooffnofocus colordiffuse="ff131313">icons/shutdown.png</textureradiooffnofocus>
+				<textureradioonfocus colordiffuse="$VAR[color_home_menu_item_fo]">icons/shutdown.png</textureradioonfocus>
+				<textureradioofffocus colordiffuse="$VAR[color_home_menu_item_fo]">icons/shutdown.png</textureradioofffocus>
+				<textureradioonnofocus colordiffuse="$VAR[color_home_menu_item_nf]">icons/shutdown.png</textureradioonnofocus>
+				<textureradiooffnofocus colordiffuse="$VAR[color_home_menu_item_nf]">icons/shutdown.png</textureradiooffnofocus>
 				
-				<!-- 
-				<textureradioonfocus colordiffuse="$VAR[color_home_menu_itempanel_fo]">icons/shutdown.png</textureradioonfocus>
-				<textureradioonnofocus colordiffuse="$VAR[color_home_menu_itempanel_nf]">icons/shutdown.png</textureradioonnofocus>
-				<textureradioofffocus colordiffuse="$VAR[color_home_menu_itempanel_fo]">icons/shutdown.png</textureradioofffocus>
-				<textureradiooffnofocus colordiffuse="$VAR[color_home_menu_itempanel_nf]">icons/shutdown.png</textureradiooffnofocus>
-				-->
 				<textoffsetx />
 				<radiowidth>120</radiowidth>
 				<radioheight>120</radioheight>

@@ -20,17 +20,13 @@
 			
 			<control type="group">
 				<include>HiddenObject</include>
-				<control type="image" id="77706">
-					<texture background="true">$VAR[MusicPlayerBackgroundVar]</texture>
-					<visible>Window.IsActive(visualisation)</visible>
-					<visible>!Skin.HasSetting(Rotating_MusicPlayerFanart)</visible>
-				</control>
+				<include condition="!Skin.HasSetting(Rotating_MusicPlayerFanart)">common_player_fanartbackground</include>
 				<include condition="Skin.HasSetting(Rotating_MusicPlayerFanart)">rotating_player_fanartbackground</include>
 			</control>
 		
 			<control type="group">
-				<control type="image" id="77704">
-					<texture diffuse="colors/white.png" background="true">$VAR[MusicPlayerBackground]</texture>
+				<control type="image">
+					<texture diffuse="colors/white.png" background="true">$VAR[musicplayer_fanartbackground]</texture>
 					<aspectratio align="center" aligny="center">scale</aspectratio>
 					<fadetime>600</fadetime>
 					<animation effect="zoom" start="110" end="130" center="auto" time="9000" tween="cubic" easing="inout" pulse="true" condition="Skin.HasSetting(MusicPlayer_BackgroundAnimation)">Conditional</animation>
@@ -288,10 +284,13 @@
 		<include condition="Skin.HasSetting(window_frame)" content="window_frame" />
 		
 		<include content="swan_debug_overlay">
-			<param name="textleft" value="$VAR[debugPlayerShowInfo]
+			<param name="textleft" value="$VAR[debug_PlayerShowInfo]
 $INFO[Player.Time(ss),Player.Time(ss)  ,]
 $INFO[Window(home).Property(PlayerShowInfo),home Property PlayerShowInfo  :,]
 $INFO[Window(musicosd).Property(Scrollbar_ctrl),musicosd Property Scrollbar_ctrl  :,]
+
+$VAR[musicplayer_fanartbackground]
+
 "/>
 </include>
 	</controls>

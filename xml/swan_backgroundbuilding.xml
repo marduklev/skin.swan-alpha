@@ -15,6 +15,7 @@
 				<height>110</height>	
 				<control type="image">
 					<description>BG PANEL</description>
+					<visible>!control.isvisible(520)</visible>
 					<visible>$PARAM[HasBGPanel]</visible>
 					<width>100%</width>
 					<height>100%</height>
@@ -202,6 +203,10 @@
 			</control>
 		</definition>
 	</include>
+	<variable name="texture_global_headerbar">
+		<value condition="!String.IsEmpty(Skin.String(texture_global_headerbar))">$INFO[Skin.String(texture_global_headerbar)]</value>
+		<value>colors/white.png</value>
+	</variable>
 	<variable name="Header_InfoTop">
 		<value condition="Window.Is(1120)">[UPPERCASE][B]$LOCALIZE[283][/B][/UPPERCASE]</value>
 		<value condition="Window.IsActive(1122)">$LOCALIZE[20410]</value>
@@ -248,45 +253,40 @@
 		<value>$LOCALIZE[16101] : [COLOR=$VAR[color_header_text_accent]]$INFO[Container.TotalUnWatched][/COLOR]</value>
 	</variable>
 	
-	<include name="dialog_background_triplepanel">
-		<control type="image">
-			<description>fs bg center,use cdiffuse global middle layer</description>
-			<left>0</left>
-			<top>0</top>
-			<width>100%</width>
-			<height>100%</height>
-			<texture>colors/white.png</texture>
-			<colordiffuse>$VAR[color_global_background_layer2]</colordiffuse>
-		</control>
-		<control type="image">
-			<description>leftbg alpha60</description>
-			<left>0</left>
-			<top>0</top>
-			<width>33.3%</width>
-			<height>100%</height>
-            <texture border="2">colors/white60.png</texture>
-            <colordiffuse>ff000000</colordiffuse>
-		</control>
-		<control type="image">
-			<description>center alpha80</description>
-			<left>33.3%</left>
-			<top>0</top>
-			<width>33.3%</width>
-			<height>100%</height>
-            <texture border="2">colors/white80.png</texture>
-            <colordiffuse>ff000000</colordiffuse>
-		</control>
-		<control type="image">
-			<description>right alpha100</description>
-			<left>66.6%</left>
-			<top>0</top>
-			<width>33.4%</width>
-			<height>100%</height>
-            <texture>colors/white.png</texture>
-            <colordiffuse>FF000000</colordiffuse>
-		</control>
-	</include>
+	<!-- note CLEANUP - go over blurr include and merge -->
+	<!-- <value condition="Control.IsVisible(99006) + !String.IsEmpty(Control.GetLabel(99006)) + Skin.HasSetting(BlurEnabled)">$INFO[Window(home).Property(listitem_blurred)]</value> -->
+	<!-- not needed <value condition="$EXP(IsHome) + Skin.String(texture_home_background_layer2)">$INFO[Skin.String(texture_home_background_layer2)]</value> -->
 	
+    <include name="blurred_background">
+			<control type="image" id="99005">
+				<include>HiddenObject</include>
+				<description>blur container</description>
+				<texture background="true">$VAR[blurred_fanartbackground]</texture>
+			</control>
+			<control type="group">
+				<include>video_background</include>
+				<visible>[[$EXP[Spotlight_Layout]] + Skin.HasSetting(spotlight_blur)] | !$EXP[Spotlight_Layout]</visible>
+				<control type="image">
+					<animation effect="fade" end="40" condition="Control.IsVisible(503) | Control.IsVisible(504)">conditional</animation>
+					<description>conditional diffuse - blurred bg overlay img</description>
+					<include condition="!Skin.HasSetting(bg_use_coloredglass)" content="colordiffuse_layer2_tint" />
+					<texture>$INFO[Window(home).Property(listitem_blurred)]</texture>
+				</control>
+				<control type="image">
+					<description>Layer2 Artwork Overlay - if artwork tint is unwished</description>
+					<depth>DepthBackground</depth>
+					<visible>Skin.HasSetting(bg_use_coloredglass)</visible>
+					<visible>!$EXP[Spotlight_Layout]</visible>
+					<colordiffuse>$VAR[color_global_background_layer2]</colordiffuse>
+					<texture>colors/white70.png</texture>
+				</control>
+				<include condition="[!Window.IsActive(home) + !String.IsEmpty(Skin.String(texture_global_background_layer3))] | [Window.IsActive(home) + !String.IsEmpty(Skin.String(texture_home_background_layer3))]" content="backgroundbuilding_layer3" />
+			</control>
+    </include>
+	<variable name="blurred_fanartbackground">
+		<value condition="Skin.HasSetting(ShowFanartBackground)">$VAR[common_fanartbackground]</value>
+		<value condition="!Skin.HasSetting(ShowFanartBackground) + !String.IsEmpty(Skin.String(texture_global_background_layer2))">$INFO[Skin.String(texture_global_background_layer2)]</value>
+	</variable>
 	<include name="global_background">
 		<control type="group">
 			<include>HiddenObject</include>
@@ -298,8 +298,7 @@
 		</control>
 				
 		<control type="group">
-			<include content="VideoFullscreenBG" />
-			
+			<include>video_background</include>
 			<control type="image">
 				<description>Layer2 Artwork - optional tint - if fanart bg enabled fetch by hidden control may get rid of 2nd ctrl - use backgroundtexture and texture vars</description>
 				<visible>!$EXP[Spotlight_Layout]</visible>
@@ -326,9 +325,26 @@
 		</control>
 		
     </include>
+	<variable name="layer2_image">
+		<value condition="$EXP[IsCurrentyPlayingCommon] + !Skin.HasSetting(bg_use_coloredglass)">colors/white70.png</value>
+		<value condition="$EXP[IsCurrentyPlayingCommon] + Skin.HasSetting(bg_use_coloredglass)">colors/none.png</value>
+		<value condition="!String.IsEmpty(ListItem.Art(animatedfanart)) + Skin.HasSetting(animatedfanart)">$INFO[ListItem.Art(animatedfanart)]</value>
+		<value condition="Control.IsVisible(99007) + !String.IsEmpty(Control.GetLabel(99007))">$INFO[Control.GetLabel(99007)]</value>
+		<value condition="Control.IsVisible(99006) + !String.IsEmpty(Control.GetLabel(99006)) + !Skin.HasSetting(BlurEnabled)">$INFO[Control.GetLabel(99006)]</value>
+		<value condition="Window.IsActive(weather) + [!Skin.HasSetting(weather_background_multiimage) + !Skin.HasSetting(weather_background_singleimage)]">special://skin/extras/weather/clouds.gif</value>
+		<value condition="Window.IsActive(weather) + Skin.HasSetting(weather_background_multiimage)"></value>
+		<value condition="Window.IsActive(weather) + Skin.HasSetting(weather_background_singleimage)">$INFO[Weather.FanartCode,resource://resource.images.weatherfanart.single/,.jpg]</value>
+		<value condition="!$EXP(IsHome) + Skin.String(texture_global_background_layer2)">$INFO[Skin.String(texture_global_background_layer2)]</value>
+		<value>resource://resource.images.skin.swan/backgroundimages/gradienta-bKESVqfxass-unsplash.jpg</value>
+	</variable>
 	<include name="colordiffuse_layer2_tint">
 		<colordiffuse>$VAR[color_universal_background_layer2]</colordiffuse>
 	</include>
+	<variable name="texture_layer2_coloredglassoverlay">
+		<value condition="!Window.IsActive(MyPVRGuide.xml) + $EXP[IsCurrentyPlayingCommon]">colors/white70.png</value>
+		<value condition="Window.IsActive(weather) + [Skin.HasSetting(weather_background_multiimage) | Skin.HasSetting(weather_background_singleimage)]">colors/white40.png</value>
+		<value>colors/white80.png</value>
+	</variable>
 	<include name="backgroundbuilding_layer3">
 		<control type="image">
 			<description>temp disabled for spotligth views, else share same image, maybe just optional share or disable in lib</description>
@@ -346,7 +362,33 @@
 		<value condition="$EXP[IsHome] + !String.IsEmpty(Skin.String(texture_home_background_layer3))">$VAR[color_home_background_layer3]</value>
 		<value condition="!$EXP[IsHome]">$VAR[color_global_background_layer3]</value>
 	</variable>
-		
+	<include name="backgroundbuilding_layer4">
+		<control type="image">
+			<description>optional panel</description>
+			<left>0</left>
+			<right>0</right>
+			<width>100%</width>
+			<top>0</top>
+			<bottom>0</bottom>
+			<texture colordiffuse="$VAR[color_lib_backgroundlayer4]">colors/white50.png</texture>
+		</control>
+		<control type="image">
+			<description>optional panel left</description>
+			<left>0</left>
+			<width>$PARAM[width2]</width>
+			<top>0</top>
+			<bottom>0</bottom>
+			<texture colordiffuse="$VAR[color_lib_backgroundlayer4]">colors/white50.png</texture>
+		</control>
+		<control type="image">
+			<description>optional panel right</description>
+			<right>0</right>
+			<width>$PARAM[width3]</width>
+			<top>0</top>
+			<bottom>0</bottom>
+			<texture colordiffuse="$VAR[color_lib_backgroundlayer4]">colors/white50.png</texture>
+		</control>
+	</include>	
 	<variable name="common_fanartbackground">
 		<value condition="[[$EXP[IsEpisode]] | [$EXP[IsSeason]]] + [!String.IsEmpty(ListItem.Art(fanart)) + !String.IsEqual(ListItem.Art(tvshow.fanart), ListItem.Art(fanart))]">$INFO[ListItem.Art(fanart)]</value>
 		<value condition="!String.IsEmpty(ListItem.Art(Season.Fanart))">$INFO[ListItem.Art(season.fanart)]</value>
@@ -408,27 +450,7 @@
 			<info>Container.ListItem.Art(tvshow.fanart18)</info>
 			<info>Container.ListItem.Art(tvshow.fanart19)</info>
 			<info>Container.ListItem.Art(tvshow.fanart20)</info>
-			<info>Container.ListItem.Art(set.fanart)</info>
-			<info>Container.ListItem.Art(set.fanart1)</info>
-			<info>Container.ListItem.Art(set.fanart2)</info>
-			<info>Container.ListItem.Art(set.fanart3)</info>
-			<info>Container.ListItem.Art(set.fanart4)</info>
-			<info>Container.ListItem.Art(set.fanart5)</info>
-			<info>Container.ListItem.Art(set.fanart6)</info>
-			<info>Container.ListItem.Art(set.fanart7)</info>
-			<info>Container.ListItem.Art(set.fanart8)</info>
-			<info>Container.ListItem.Art(set.fanart9)</info>
-			<info>Container.ListItem.Art(set.fanart10)</info>
-			<info>Container.ListItem.Art(set.fanart11)</info>
-			<info>Container.ListItem.Art(set.fanart12)</info>
-			<info>Container.ListItem.Art(set.fanart13)</info>
-			<info>Container.ListItem.Art(set.fanart14)</info>
-			<info>Container.ListItem.Art(set.fanart15)</info>
-			<info>Container.ListItem.Art(set.fanart16)</info>
-			<info>Container.ListItem.Art(set.fanart17)</info>
-			<info>Container.ListItem.Art(set.fanart18)</info>
-			<info>Container.ListItem.Art(set.fanart19)</info>
-			<info>Container.ListItem.Art(set.fanart20)</info>
+			
 			<info>Container.ListItem.Art(artist.fanart)</info>
 			<info>Container.ListItem.Art(artist.fanart1)</info>
 			<info>Container.ListItem.Art(artist.fanart2)</info>
@@ -457,6 +479,13 @@
 		</control>
 	</include>
 	
+	<include name="video_background">
+		<control type="videowindow">
+			<visible>![Control.IsVisible(503) | Control.IsVisible(504)]</visible>
+			<visible>$EXP[IsCurrentyPlayingCommon]</visible>
+		</control>
+	</include>
+	
 	<include name="window_frame">
 		<control type="image">
 			<visible>Skin.HasSetting(window_frame)</visible>
@@ -470,115 +499,56 @@
 		<value>00ffffff</value>
 	</variable>
 	
-    <include name="GlobalBlurredBackground">
-			
-			<control type="image" id="99005">
-				<include>HiddenObject</include>
-				<description>blur container</description>
-				<texture background="true">$VAR[BlurFanartBackground]</texture>
-			</control>
-			
-			<control type="group">
-				<include>VideoFullscreenBG</include>
-				<visible>[$EXP[Spotlight_Layout] + Skin.HasSetting(spotlight_blur)] | !$EXP[Spotlight_Layout]</visible>
-				<control type="image">
-				<animation effect="fade" end="40" condition="Control.IsVisible(503) | Control.IsVisible(504)">conditional</animation>
-					<description>conditional diffuse - blurred bg overlay img</description>
-					<include condition="!Skin.HasSetting(bg_use_coloredglass)" content="colordiffuse_layer2_tint" />
-					<texture>$INFO[Window(home).Property(listitem_blurred)]</texture>
-				</control>
-				
-				<control type="image">
-					<description>Layer2 Artwork Overlay - if artwork tint is unwished</description>
-					<depth>DepthBackground</depth>
-					<visible>Skin.HasSetting(bg_use_coloredglass)</visible>
-					<visible>!$EXP[Spotlight_Layout]</visible>
-					<colordiffuse>$VAR[color_global_background_layer2]</colordiffuse>
-					<texture>colors/white70.png</texture>
-				</control>
-				<include condition="[!Window.IsActive(home) + !String.IsEmpty(Skin.String(texture_global_background_layer3))] | [Window.IsActive(home) + !String.IsEmpty(Skin.String(texture_home_background_layer3))]" content="backgroundbuilding_layer3" />
-			</control>
-    </include>
-	
+	<include name="dialog_background_triplepanel">
+		<control type="image">
+			<description>fs bg center,use cdiffuse global middle layer</description>
+			<left>0</left>
+			<top>0</top>
+			<width>100%</width>
+			<height>100%</height>
+			<texture>colors/white.png</texture>
+			<colordiffuse>$VAR[color_global_background_layer2]</colordiffuse>
+		</control>
+		<control type="image">
+			<description>leftbg alpha60</description>
+			<left>0</left>
+			<top>0</top>
+			<width>33.3%</width>
+			<height>100%</height>
+            <texture border="2">colors/white60.png</texture>
+            <colordiffuse>ff000000</colordiffuse>
+		</control>
+		<control type="image">
+			<description>center alpha80</description>
+			<left>33.3%</left>
+			<top>0</top>
+			<width>33.3%</width>
+			<height>100%</height>
+            <texture border="2">colors/white80.png</texture>
+            <colordiffuse>ff000000</colordiffuse>
+		</control>
+		<control type="image">
+			<description>right alpha100</description>
+			<left>66.6%</left>
+			<top>0</top>
+			<width>33.4%</width>
+			<height>100%</height>
+            <texture>colors/white.png</texture>
+            <colordiffuse>FF000000</colordiffuse>
+		</control>
+	</include>
 	<variable name="texture_profilelogin_background">
 		<value condition="Skin.String(texture_profilelogin_background)">$INFO[Skin.String(texture_profilelogin_background)]</value>
 		<value>resource://resource.images.skin.swan/backgroundimages/76256.jpg</value>
 	</variable>	
 	
-	
-	
-	<!-- 
-	backgroundbuilding_layer3 unerheblich <animation effect="fade" start="100" end="0" time="300" condition="[Window.IsActive(home) + String.IsEqual(Skin.String(HomeLayout),Spotlight) + Player.HasVideo] | [!Window.IsActive(home) + $EXP[Spotlight_Layout] + Player.HasVideo]">Conditional</animation>
-	backgroundbuilding_layer3 temp enabled - also check traileroverlayspotlight img var <visible>![$EXP[Spotlight_ViewType]]</visible>
-	-->
-				
-	
-	<!--  image cond if string not set it'll not be visible
-	exception is spotlight trailer which needs a texture none if not set
-	<variable name="backgroundbuilding_layer3_texture">
-		<value condition="$EXP[IsHome] + !String.IsEmpty(Skin.String(texture_home_background_layer3))">$INFO[Skin.String(texture_home_background_layer3)]</value>
-		<value condition="!$EXP[IsHome] + !String.IsEmpty(Skin.String(texture_global_background_layer3))">$INFO[Skin.String(texture_global_background_layer3)]</value>
-		<value>colors/none.png</value>
-	</variable>
-	-->
-	
-	
-
-	<!-- 99006 -->
-	<!-- actors,years,studio,genre...
-		"Container.Content(Genres) + Skin.String(moviegenrefanart.path)" $INFO[Skin.String(moviegenrefanartpath)]/$INFO[ListItem.Label].jpg
-		studio dont stretch
-		"Container.Content(Studios)" $INFO[Skin.String(moviegenrefanartpath)]/$INFO[ListItem.Label].jpg
-	-->
-	
-		
-	
-	
-	<!-- 99005 -->
-	<variable name="BlurFanartBackground">
-		<value condition="Skin.HasSetting(ShowFanartBackground)">$VAR[common_fanartbackground]</value>
-		<value condition="!Skin.HasSetting(ShowFanartBackground) + !String.IsEmpty(Skin.String(texture_global_background_layer2))">$INFO[Skin.String(texture_global_background_layer2)]</value>
-	</variable>
-	
-	<include name="VideoFullscreenBG">
-		<control type="videowindow">
-			<visible>![Control.IsVisible(503) | Control.IsVisible(504)]</visible>
-			<visible>$EXP[IsCurrentyPlayingCommon]</visible>
+	<include name="common_player_fanartbackground">
+		<control type="image">
+			<texture background="true">$VAR[musicplayer_fanartbackground]</texture>
+			<visible>Window.IsActive(visualisation)</visible>
 		</control>
 	</include>
-	
-	
-	<!-- note CLEANUP - go over blurr include and merge -->
-	
-	<!-- <value condition="Control.IsVisible(99006) + !String.IsEmpty(Control.GetLabel(99006)) + Skin.HasSetting(BlurEnabled)">$INFO[Window(home).Property(listitem_blurred)]</value> -->
-	<!-- not needed <value condition="$EXP(IsHome) + Skin.String(texture_home_background_layer2)">$INFO[Skin.String(texture_home_background_layer2)]</value> -->
-		
-	<variable name="layer2_image">
-		<value condition="$EXP[IsCurrentyPlayingCommon] + !Skin.HasSetting(bg_use_coloredglass)">colors/white70.png</value>
-		<value condition="$EXP[IsCurrentyPlayingCommon] + Skin.HasSetting(bg_use_coloredglass)">colors/none.png</value>
-		<value condition="!String.IsEmpty(ListItem.Art(animatedfanart)) + Skin.HasSetting(animatedfanart)">$INFO[ListItem.Art(animatedfanart)]</value>
-		<value condition="Control.IsVisible(99007) + !String.IsEmpty(Control.GetLabel(99007))">$INFO[Control.GetLabel(99007)]</value>
-		<value condition="Control.IsVisible(99006) + !String.IsEmpty(Control.GetLabel(99006)) + !Skin.HasSetting(BlurEnabled)">$INFO[Control.GetLabel(99006)]</value>
-		<value condition="Window.IsActive(weather) + [!Skin.HasSetting(weather_background_multiimage) + !Skin.HasSetting(weather_background_singleimage)]">special://skin/extras/weather/clouds.gif</value>
-		<value condition="Window.IsActive(weather) + Skin.HasSetting(weather_background_multiimage)"></value>
-		<value condition="Window.IsActive(weather) + Skin.HasSetting(weather_background_singleimage)">$INFO[Weather.FanartCode,resource://resource.images.weatherfanart.single/,.jpg]</value>
-		<value condition="!$EXP(IsHome) + Skin.String(texture_global_background_layer2)">$INFO[Skin.String(texture_global_background_layer2)]</value>
-		<value>resource://resource.images.skin.swan/backgroundimages/gradienta-bKESVqfxass-unsplash.jpg</value>
-	</variable>
-	
-	<variable name="texture_layer2_coloredglassoverlay">
-		<value condition="!Window.IsActive(MyPVRGuide.xml) + $EXP[IsCurrentyPlayingCommon]">colors/white70.png</value>
-		<value condition="Window.IsActive(weather) + [Skin.HasSetting(weather_background_multiimage) | Skin.HasSetting(weather_background_singleimage)]">colors/white40.png</value>
-		<value>colors/white80.png</value>
-	</variable>
-	
-	<variable name="texture_global_headerbar">
-		<value condition="!String.IsEmpty(Skin.String(texture_global_headerbar))">$INFO[Skin.String(texture_global_headerbar)]</value>
-		<value>colors/white.png</value>
-	</variable>
-	
 	<include name="rotating_player_fanartbackground">
-		
 		<control type="fadelabel" id="77707">
 			<visible>Window.Is(visualisation) | Window.IsActive(home)</visible>
 			<info>Player.Art(artist.fanart)</info>
@@ -630,44 +600,18 @@
 			<scrollout>false</scrollout>
 		</control>
 	</include>
-	
-	<variable name="MusicPlayerBackground">
-		<value condition="Control.IsVisible(77707) + !String.IsEmpty(Control.GetLabel(77707))">$INFO[Control.GetLabel(77707)]</value>
-		<value condition="Control.IsVisible(77706) + !String.IsEmpty(Control.GetLabel(77706))">$INFO[Control.GetLabel(77706)]</value>
-		<value>resource://resource.images.skin.swan/backgroundimages/pattern1.jpg</value>
+	<variable name="musicplayer_fanartbackground">
+		<value condition="Skin.HasSetting(Rotating_MusicPlayerFanart)">$INFO[Control.GetLabel(77707)]</value>
+		<value condition="!Skin.HasSetting(Rotating_MusicPlayerFanart)">$VAR[musicplayer_fanart]</value>
 	</variable>
-	<variable name="MusicPlayerBackgroundVar">
+	<variable name="musicplayer_fanart">
 		<value condition="!String.IsEmpty(Player.Art(artist.fanart))">$INFO[Player.Art(artist.fanart)]</value>
 		<value condition="!String.IsEmpty(Player.Art(albumartist.fanart))">$INFO[Player.Art(albumartist.fanart)]</value>
 		<value condition="!String.IsEmpty(Player.Art(fanart))">$INFO[Player.Art(fanart)]</value>
 		<value condition="!String.IsEmpty(Player.Art(album.thumb))">$INFO[Player.Art(album.thumb)]</value>
 		<value>resource://resource.images.skin.swan/backgroundimages/pattern1.jpg</value>
 	</variable>
-	<include name="View_BGPanel">
-		<control type="image">
-			<description>optional panel</description>
-			<left>0</left>
-			<right>0</right>
-			<width>100%</width>
-			<top>0</top>
-			<bottom>0</bottom>
-			<texture colordiffuse="$VAR[color_lib_backgroundlayer4]">colors/white50.png</texture>
-		</control>
-		<control type="image">
-			<description>optional panel left</description>
-			<left>0</left>
-			<width>$PARAM[width2]</width>
-			<top>0</top>
-			<bottom>0</bottom>
-			<texture colordiffuse="$VAR[color_lib_backgroundlayer4]">colors/white50.png</texture>
-		</control>
-		<control type="image">
-			<description>optional panel right</description>
-			<right>0</right>
-			<width>$PARAM[width3]</width>
-			<top>0</top>
-			<bottom>0</bottom>
-			<texture colordiffuse="$VAR[color_lib_backgroundlayer4]">colors/white50.png</texture>
-		</control>
-	</include>
+	
+	
+	
 </includes>
