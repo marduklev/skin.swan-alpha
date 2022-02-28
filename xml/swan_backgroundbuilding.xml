@@ -295,7 +295,7 @@
 				<texture background="true">$VAR[common_fanartbackground]</texture>
 				<visible>Skin.HasSetting(ShowFanartBackground) | $EXP[Spotlight_Layout] | Window.IsActive(filebrowser)</visible>
 			</control>
-			<include condition="Skin.HasSetting(ShowFanartBackground) + Skin.HasSetting(EnableRotatingExtraFanart)">rotating_fanartbackground</include>
+			<include condition="[Skin.HasSetting(ShowFanartBackground) + Skin.HasSetting(EnableRotatingExtraFanart)] | [[Window.IsActive(videos) + Skin.HasSetting(RotatingFanart_videocontent)] | [Window.IsActive(music) + Skin.HasSetting(RotatingFanart_musiccontent)]]">rotating_fanartbackground</include>
 		</control>
 				
 		<control type="group">
@@ -409,8 +409,20 @@
 	</variable>
 	<include name="rotating_fanartbackground">
 		<control type="fadelabel" id="99007">
-			<visible>Window.IsMedia</visible>
+			<visible>Window.IsMedia | Window.IsActive(home)</visible>
 			
+			<include condition="Skin.HasSetting(ShowFanartBackground)" content="sub_rotating_fanartbackground" />
+			<include condition="!Skin.HasSetting(ShowFanartBackground) + Window.IsActive(music) + Skin.HasSetting(RotatingFanart_musiccontent)" content="sub_rotating_fanartbackground_music" />
+			<include condition="!Skin.HasSetting(ShowFanartBackground) + Window.IsActive(videos) + Skin.HasSetting(RotatingFanart_videocontent)" content="sub_rotating_fanartbackground_videos" />
+	
+			<randomize>true</randomize>
+			<pauseatend>5000</pauseatend>
+			<scroll>false</scroll>
+			<scrollout>false</scrollout>
+		</control>
+	</include>
+	
+	<include name="sub_rotating_fanartbackground">
 			<info>Container.ListItem.Art(fanart)</info>
 			<info>Container.ListItem.Art(fanart1)</info>
 			<info>Container.ListItem.Art(fanart2)</info>
@@ -432,7 +444,6 @@
 			<info>Container.ListItem.Art(fanart18)</info>
 			<info>Container.ListItem.Art(fanart19)</info>
 			<info>Container.ListItem.Art(fanart20)</info>
-			
 			<info>Container.ListItem.Art(tvshow.fanart)</info>
 			<info>Container.ListItem.Art(tvshow.fanart1)</info>
 			<info>Container.ListItem.Art(tvshow.fanart2)</info>
@@ -454,7 +465,6 @@
 			<info>Container.ListItem.Art(tvshow.fanart18)</info>
 			<info>Container.ListItem.Art(tvshow.fanart19)</info>
 			<info>Container.ListItem.Art(tvshow.fanart20)</info>
-			
 			<info>Container.ListItem.Art(artist.fanart)</info>
 			<info>Container.ListItem.Art(artist.fanart1)</info>
 			<info>Container.ListItem.Art(artist.fanart2)</info>
@@ -476,11 +486,50 @@
 			<info>Container.ListItem.Art(artist.fanart18)</info>
 			<info>Container.ListItem.Art(artist.fanart19)</info>
 			<info>Container.ListItem.Art(artist.fanart20)</info>
-			<randomize>true</randomize>
-			<pauseatend>5000</pauseatend>
-			<scroll>false</scroll>
-			<scrollout>false</scrollout>
-		</control>
+		</include>
+	<include name="sub_rotating_fanartbackground_music">
+		<info>Window(Home).Property(LatestAlbum.1.Fanart)</info>
+		<info>Window(Home).Property(LatestAlbum.2.Fanart)</info>
+		<info>Window(Home).Property(LatestAlbum.3.Fanart)</info>
+		<info>Window(Home).Property(LatestAlbum.4.Fanart)</info>
+		<info>Window(Home).Property(LatestAlbum.5.Fanart)</info>
+		<info>Window(Home).Property(LatestAlbum.6.Fanart)</info>
+		<info>Window(Home).Property(LatestAlbum.7.Fanart)</info>
+		<info>Window(Home).Property(LatestAlbum.8.Fanart)</info>
+		<info>Window(Home).Property(LatestAlbum.9.Fanart)</info>
+		<info>Window(Home).Property(LatestAlbum.10.Fanart)</info>	
+	</include>
+	<include name="sub_rotating_fanartbackground_videos">
+		<info>Window(Home).Property(LatestMovie.1.Fanart)</info>
+		<info>Window(Home).Property(LatestMovie.2.Fanart)</info>
+		<info>Window(Home).Property(LatestMovie.3.Fanart)</info>
+		<info>Window(Home).Property(LatestMovie.4.Fanart)</info>
+		<info>Window(Home).Property(LatestMovie.5.Fanart)</info>
+		<info>Window(Home).Property(LatestMovie.6.Fanart)</info>
+		<info>Window(Home).Property(LatestMovie.7.Fanart)</info>
+		<info>Window(Home).Property(LatestMovie.8.Fanart)</info>
+		<info>Window(Home).Property(LatestMovie.9.Fanart)</info>
+		<info>Window(Home).Property(LatestMovie.10.Fanart)</info>
+		<info>Window(Home).Property(LatestMusicVideo.1.Fanart)</info>
+		<info>Window(Home).Property(LatestMusicVideo.2.Fanart)</info>
+		<info>Window(Home).Property(LatestMusicVideo.3.Fanart)</info>
+		<info>Window(Home).Property(LatestMusicVideo.4.Fanart)</info>
+		<info>Window(Home).Property(LatestMusicVideo.5.Fanart)</info>
+		<info>Window(Home).Property(LatestMusicVideo.6.Fanart)</info>
+		<info>Window(Home).Property(LatestMusicVideo.7.Fanart)</info>
+		<info>Window(Home).Property(LatestMusicVideo.8.Fanart)</info>
+		<info>Window(Home).Property(LatestMusicVideo.9.Fanart)</info>
+		<info>Window(Home).Property(LatestMusicVideo.10.Fanart)</info>
+		<info>Window(Home).Property(LatestEpisode.1.Fanart)</info>
+		<info>Window(Home).Property(LatestEpisode.2.Fanart)</info>
+		<info>Window(Home).Property(LatestEpisode.3.Fanart)</info>
+		<info>Window(Home).Property(LatestEpisode.4.Fanart)</info>
+		<info>Window(Home).Property(LatestEpisode.5.Fanart)</info>
+		<info>Window(Home).Property(LatestEpisode.6.Fanart)</info>
+		<info>Window(Home).Property(LatestEpisode.7.Fanart)</info>
+		<info>Window(Home).Property(LatestEpisode.8.Fanart)</info>
+		<info>Window(Home).Property(LatestEpisode.9.Fanart)</info>
+		<info>Window(Home).Property(LatestEpisode.10.Fanart)</info>
 	</include>
 	
 	<include name="video_background">
