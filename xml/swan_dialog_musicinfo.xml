@@ -902,16 +902,26 @@
 					<param name="label" value="textviever_showinfo_big" />
 					<param name="radiobutton_texture" value="buttons/info" />
 				</include>
-				<include content="IconButton">
+				<include condition="System.HasAddon(script.artwork.beef)" content="IconButton">
 					<param name="id" value="78" />
-					<param name="label" value="ab_get images" />
+					<param name="label" value="$INFO[System.AddonTitle(script.artwork.beef)]" />
 					<param name="radiobutton_texture" value="icons/artworkbeef" />
-					<onclick condition="String.IsEqual(ListItem.DBType,artist) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=artist, dbid=$INFO[ListItem.DBID])</onclick>
-					<onclick condition="String.IsEqual(ListItem.DBType,album) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=album, dbid=$INFO[ListItem.DBID])</onclick>
-					<onclick condition="String.IsEqual(ListItem.DBType,song) + System.HasAddon(script.artwork.beef)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=song, dbid=$INFO[ListItem.DBID])</onclick>
-					<visible>[String.IsEqual(ListItem.DBType,album) | String.IsEqual(ListItem.DBType,song) | String.IsEqual(ListItem.DBType,artist)] + system.hasaddon(script.artwork.beef)</visible>
-			
+					<onclick condition="String.IsEqual(ListItem.DBType,artist)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=artist, dbid=$INFO[ListItem.DBID])</onclick>
+					<onclick condition="String.IsEqual(ListItem.DBType,album)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=album, dbid=$INFO[ListItem.DBID])</onclick>
+					<onclick condition="String.IsEqual(ListItem.DBType,song)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=song, dbid=$INFO[ListItem.DBID])</onclick>
+					<visible>String.IsEqual(ListItem.DBType,album) | String.IsEqual(ListItem.DBType,song) | String.IsEqual(ListItem.DBType,artist)</visible>
 				</include>
+				<include condition="false + System.HasAddon(script.artwork.dump)" content="IconButton">
+					<param name="id" value="79" />
+					<param name="label" value="$INFO[System.AddonTitle(script.artwork.dump)]" />
+					<param name="radiobutton_texture" value="icons/artworkbeef" />
+					<onclick condition="String.IsEqual(ListItem.DBType,artist)">XBMC.RunScript(script.artwork.dump, mode=gui, mediatype=artist, dbid=$INFO[ListItem.DBID])</onclick>
+					<onclick condition="String.IsEqual(ListItem.DBType,album)">XBMC.RunScript(script.artwork.dump, mode=gui, mediatype=album, dbid=$INFO[ListItem.DBID])</onclick>
+					<onclick condition="String.IsEqual(ListItem.DBType,song)">XBMC.RunScript(script.artwork.dump, mode=gui, mediatype=song, dbid=$INFO[ListItem.DBID])</onclick>
+					<visible>String.IsEqual(ListItem.DBType,album) | String.IsEqual(ListItem.DBType,song) | String.IsEqual(ListItem.DBType,artist)</visible>
+				</include>
+				
+				
 				
 			</control>
 </include>
