@@ -617,6 +617,8 @@
 	
 	<include name="rotating_player_fanartbackground">
 		<control type="fadelabel" id="77707">
+			<visible>!Skin.String(texturepath_playerartwork)</visible>
+			<visible>!string.isempty(Player.Art(artist.fanart)) | !string.isempty(Player.Art(albumartist.fanart)) | !string.isempty(player.art(album.thumb))</visible>
 			<info>Player.Art(artist.fanart)</info>
 			<info>Player.Art(artist.fanart1)</info>
 			<info>Player.Art(artist.fanart2)</info>
@@ -667,7 +669,9 @@
 		</control>
 		<control type="fadelabel" id="77708">
 			<description>fallback if no player artowrk exist, later non hiden group of album thumbs which fades at different times and change source differently to each other - lib thumbs</description>
-			<visible>string.isempty(Player.Art(artist.fanart)) + string.isempty(Player.Art(albumartist.fanart)) + !string.isempty(player.art(album.thumb))</visible>
+			<visible>!Skin.String(texturepath_playerartwork)</visible>
+			<visible>Library.HasContent(music) | Library.HasContent(musicvideo)</visible>
+			<visible>string.isempty(Player.Art(artist.fanart)) + string.isempty(Player.Art(albumartist.fanart)) + string.isempty(player.art(album.thumb))</visible>
 			<info>Window(Home).Property(LatestMusicVideo.1.Fanart)</info>
 	        <info>Window(Home).Property(LatestAlbum.1.Fanart)</info>
 	        <info>Window(home).Property(EmbuaryBackgroundMusic)</info>
@@ -684,6 +688,11 @@
 			<imagepath>$INFO[Skin.String(texturepath_playerartwork)]</imagepath>
 		</control>
 	</include>
+		<!-- 
+		sub_77708_lib: 		Library.HasContent(music) | Library.HasContent(musicvideo)
+		sub_77708_nolib:	!Library.HasContent(music) + !Library.HasContent(musicvideo)
+		-->
+	
 	<variable name="musicplayer_fanart">
 		<value condition="Control.IsVisible(77709) + !String.IsEmpty(Control.GetLabel(77709))">$INFO[Control.GetLabel(77709)]</value>
 		<value condition="Skin.HasSetting(Rotating_MusicPlayerFanart) + [!string.isempty(Player.Art(artist.fanart)) | !string.isempty(Player.Art(albumartist.fanart)) | !string.isempty(player.art(album.thumb))]">$INFO[Control.GetLabel(77707)]</value>
