@@ -73,6 +73,7 @@ ID 	Type 	Description
 	</include> 
 	
 	<include name="videoinfo_buttons">
+		
 		<control type="button" id="8">
 			<description>play native</description>
 			<visible>!Skin.HasSetting(VideoInfo_Button_play)</visible>
@@ -96,7 +97,12 @@ ID 	Type 	Description
 			<label>$LOCALIZE[207]</label>
 			<onclick>RunScript(script.embuary.helper,action=textviewer,header='$ESCINFO[ListItem.Title]',message='$ESCINFO[ListItem.Plot]')</onclick>
 		</control>
-		
+		<control type="button" id="878">
+			<visible>true</visible>
+			<include>Button_VideoInfo</include>
+			<label>$LOCALIZE[20445] $LOCALIZE[129]</label>
+			<onclick>activatewindow(1121)</onclick>
+		</control>
 		<control type="togglebutton" id="21">
 			<description>Play Trailer</description>
 			<visible>!Skin.HasSetting(VideoInfo_Button_Trailer) + $EXP[Has_Trailer]</visible>
@@ -195,7 +201,7 @@ ID 	Type 	Description
 			<visible>!Window.IsActive(filebrowser)</visible>
 			<visible>String.IsEmpty(Window(home).Property(movieinformation))</visible>
 			<include content="Animation_TransitionFadeOut">
-				<param name="condition" value="[Control.HasFocus(8903) | Window.IsActive(textviewer) | Window.IsVisible(script-embuary-video.xml) | Window.IsVisible(script-embuary-person.xml) | Window.IsVisible(script-embuary-image.xml) | Window.IsVisible(1104)]" />
+				<param name="condition" value="[Control.HasFocus(8903) | Window.IsActive(textviewer) | Window.IsVisible(script-embuary-video.xml) | Window.IsVisible(script-embuary-person.xml) | Window.IsVisible(script-embuary-image.xml) | Window.IsVisible(1104) | window.IsVisible(1121)]" />
 			</include>
 			<control type="group">
 				<description>bottom info fade studio + folderpath</description>
@@ -1158,6 +1164,8 @@ ID 	Type 	Description
 		<value>defaultdirector.png</value>
 	</variable>
 	
+	
+	<!-- HOW TO BE ABLE TO SLIDE via touch ?? -->
 	<include name="ArtworkSlideshow">
 		<param name="id" default="1"/>
 		<param name="pagecontrol_id" default="2"/>
@@ -1170,13 +1178,12 @@ ID 	Type 	Description
 		</control>
 		<control type="list" id="$PARAM[id]">
 			<include content="Animation_OpenClose_FadeZoom"/>
-			<description>REQUIRED: The list of images</description>
 			<width>1920</width>
 			<height>1080</height>
 			<orientation>horizontal</orientation>
 			<pagecontrol>$PARAM[pagecontrol_id]</pagecontrol>
-			<scrolltime tween="quadratic">400</scrolltime>
-			<itemlayout>
+			<scrolltime tween="back" easing="in">400</scrolltime>
+			<itemlayout width="1920" height="1080">
 				<control type="image">
 					<width>1920</width>
 					<height>1080</height>
@@ -1184,7 +1191,7 @@ ID 	Type 	Description
 					<texture>$PARAM[artwork]</texture>
 				</control>
 			</itemlayout>
-			<focusedlayout>
+			<focusedlayout width="1920" height="1080">
 				<control type="image">
 					<width>1920</width>
 					<height>1080</height>
@@ -1498,8 +1505,6 @@ ID 	Type 	Description
 				<param name="parentfolder" value="$PARAM[prefix]" />
 				<param name="type" value="clearlogo" />
 			</include>
-			
-			
 			<include content="ItemArtTemplate">
 				<param name="postfix" value="" />
 				<param name="parentfolder" value="$PARAM[prefix]" />
@@ -1541,10 +1546,6 @@ ID 	Type 	Description
 				<param name="parentfolder" value="$PARAM[prefix]" />
 				<param name="type" value="booklet" />
 			</include>
-			
-			
-			
-			
 			<include content="ItemArtTemplate">
 				<param name="postfix" value="" />
 				<param name="parentfolder" value="$PARAM[prefix]" />
@@ -1873,7 +1874,6 @@ ID 	Type 	Description
 		</definition>
 	</include>
 	
-	get cond visibility based on content? e.g. albums 
 	<include name="ItemArtTemplate">
 		<param name="type" default="fanart" />
 		<definition>

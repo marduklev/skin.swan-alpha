@@ -43,7 +43,7 @@
 <!-- PAGES	 -->
 		<control type="grouplist" id="3000">
 				<include>FullScreenDimensions</include>
-				<animation effect="fade" start="100" end="0" time="250" condition="Control.HasFocus(8903)">conditional</animation>
+				<animation effect="fade" start="100" end="0" time="250" condition="Control.HasFocus(8903) | Window.IsVisible(1121)">conditional</animation>
 			
 		<!-- PAGE 1 -->
 				<control type="group">
@@ -800,7 +800,12 @@
 					<onclick condition="Skin.HasSetting(UseExtraFanartFolder)">SetFocus(8901)</onclick>
 					<onclick condition="!Skin.HasSetting(UseExtraFanartFolder)">SetFocus(8903)</onclick>
 					
-					<include condition="!Skin.HasSetting(UseExtraFanartFolder)" content="ExtrafanartSource" />
+					
+					
+					<include condition="!Skin.HasSetting(UseExtraFanartFolder) + [[!Container.Content(albums) + !Container.Content(songs)]]" content="ExtrafanartSource" />
+					<include condition="[Container.Content(albums) | Container.Content(songs)]" content="ExtrafanartSource">
+						<param name="prefix" value="artist." />
+					</include>
 					<include condition="Skin.HasSetting(UseExtraFanartFolder)" ontent="ExtrafanartFolderPath" />
 				</include>
 					
@@ -902,8 +907,16 @@
 					<param name="label" value="textviever_showinfo_big" />
 					<param name="radiobutton_texture" value="buttons/info" />
 				</include>
-				<include condition="System.HasAddon(script.artwork.beef)" content="IconButton">
+				
+				<include content="IconButton">
 					<param name="id" value="78" />
+					<param name="label" value="$LOCALIZE[20445] $LOCALIZE[129]" />
+					<param name="radiobutton_texture" value="buttons/info" />
+					<onclick condition="Control.IsVisible(3101)">SetFocus(3101)</onclick>
+					<onclick>ActivateWindow(1121)</onclick>
+				</include>
+				<include condition="System.HasAddon(script.artwork.beef)" content="IconButton">
+					<param name="id" value="80" />
 					<param name="label" value="$INFO[System.AddonTitle(script.artwork.beef)]" />
 					<param name="radiobutton_texture" value="icons/artworkbeef" />
 					<onclick condition="String.IsEqual(ListItem.DBType,artist)">XBMC.RunScript(script.artwork.beef, mode=gui, mediatype=artist, dbid=$INFO[ListItem.DBID])</onclick>
@@ -912,7 +925,7 @@
 					<visible>String.IsEqual(ListItem.DBType,album) | String.IsEqual(ListItem.DBType,song) | String.IsEqual(ListItem.DBType,artist)</visible>
 				</include>
 				<include condition="false + System.HasAddon(script.artwork.dump)" content="IconButton">
-					<param name="id" value="79" />
+					<param name="id" value="81" />
 					<param name="label" value="$INFO[System.AddonTitle(script.artwork.dump)]" />
 					<param name="radiobutton_texture" value="icons/artworkbeef" />
 					<onclick condition="String.IsEqual(ListItem.DBType,artist)">XBMC.RunScript(script.artwork.dump, mode=gui, mediatype=artist, dbid=$INFO[ListItem.DBID])</onclick>
