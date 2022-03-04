@@ -2,14 +2,42 @@
 <window type="dialog" id="1121">
     <defaultcontrol always="true">7000</defaultcontrol>
 	<menucontrol>7060</menucontrol>
-	<onunload condition="!String.IsEmpty(Window(home).Property(FanartType))">ClearProperty(FanartType,home)</onunload>
 	<onload>SetFocus(7000,0,absolute)</onload>
+	<!-- <onload>SetFocus(7000,$INFO[window(home).property(slideoshow_currentitemnum)],absolute)</onload> -->
 	<include>Animation_OpenClose_FadeZoom</include>
+	<onunload condition="!String.IsEmpty(window(home).property(slideoshow_currentitemnum))">ClearProperty(slideoshow_currentitemnum)</onunload>
 	<controls>
+		
+		<!-- 
+		<control type="button" id="200">
+			<description>control 2 objects</description>
+			<include content="HiddenObject" />
+			<onfocus>SetProperty(slideoshow_currentitemnum,$INFO[container(7000).currentitem],home)</onfocus>
+			
+			<onleft>Control.Move(7000,-1)</onleft>
+			<onright>Control.Move(7000,1)</onright>
+			
+			<onleft>SetProperty(slideoshow_currentitemnum,$INFO[container(7000).currentitem],home)</onleft>
+			<onright>SetProperty(slideoshow_currentitemnum,$INFO[container(7000).currentitem],home)</onright>
+			<onleft>SendClick(movieinformation,7099)</onleft><onright>SendClick(movieinformation,7099)</onright>
+			
+			 - dislike control move as it is restricted to hor=1columnlimit,ver=1rowlimit, will issue when artwork container used as multirow layouts in future
+			need do math , also other restrictions seems infodialog not focusing setfocus(containerid,absolute_itemid)
+		</control>
+		-->
+		<!-- <control type="button" id="200"> -->
+			<!-- <include content="HiddenObject" /> -->
+			<!-- <onfocus>ClearProperty(slideoshow_currentitemnum,home)</onfocus> -->
+			<!-- <onleft>Control.Move(7000,-1)</onleft><onright>Control.Move(7000,1)</onright> -->
+			<!-- remote control dialogvideoinfo fanart container is failing  -->
+			<!-- <onleft>SetProperty(slideoshow_currentitemnum,-$NUMBER[1],home)</onleft><onright>SetProperty(slideoshow_currentitemnum,$NUMBER[1],home)</onright> -->
+			<!-- <onleft>SendClick(movieinformation,7099)</onleft><onright>SendClick(movieinformation,7099)</onright> -->
+			<!-- <onleft>Control.Message(7099,click,movieinformation)</onleft><onright>Control.Message(7099,click,movieinformation)</onright> -->
+		<!-- </control> -->
+		
 		<include content="ArtworkSlideshow">
 			<param name="id" value="7000"/>
 			<param name="pagecontrol_id" value="7060"/>
-			
 			<include condition="Container.Content(songs) | String.IsEqual(listitem.dbtype,song)" content="ExtrafanartSource">
 				<param name="prefix" value="album." />
 			</include>
@@ -22,5 +50,11 @@
 				<param name="get_thumb" value="false" />
 			</include>
 		</include>
+		<include content="swan_debug_overlay">
+			<param name="textleft" value="
+slideoshow_currentitemnum $INFO[window(home).property(slideoshow_currentitemnum)]
+container(id).currentitem  $INFO[container(7000).currentitem]
+"/>
+</include>
 	</controls>
 </window>
