@@ -643,7 +643,7 @@ ID 	Type 	Description
 					<param name="label" value="$INFO[ListItem.Set,&quot; , &quot;]" />
 					<visible>Control.IsVisible(8601)</visible>
 				</include>
-				<include condition="Skin.HasSetting(VideoInfo_Content_SetItems) + !String.IsEmpty(ListItem.SetId)" content="Universal_Container">
+				<include condition="!Skin.HasSetting(VideoInfo_Content_SetItems) + !String.IsEmpty(ListItem.SetId)" content="Universal_Container">
 					<param name="id" value="8601" />
 					<param name="visible" value="Integer.IsGreater(Container(8601).NumItems,0) | Container(8601).IsUpdating" />
 					<param name="type_height" value="380" />
@@ -726,7 +726,7 @@ ID 	Type 	Description
 					<param name="groupid" value="8504" />
 					<param name="id" value="8604" />
 					<param name="label" value="$LOCALIZE[342] &amp; $LOCALIZE[20343] $LOCALIZE[1441] [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$INFO[Container(8603).ListItem.Label, &quot; , &quot;][/COLOR]" />
-					<visible>Control.IsVisible(8604)</visible>
+					<visible>Control.IsVisible(8604) + [Integer.IsGreater(Container(8604).NumItems,0) | Container(8604).IsUpdating]</visible>
 				</include>
 				<include condition="!Skin.HasSetting(VideoInfo_Content_ItemsByCastMember)" content="Universal_Container">
 					<param name="id" value="8604" />
@@ -782,7 +782,7 @@ ID 	Type 	Description
 					<param name="label" value="Crew [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$INFO[ListItem.Title,  &quot; , &quot;][/COLOR]" />
 					<visible>Control.IsVisible(8622)</visible>
 				</include>
-				<include condition="[!Window.IsActive(pvrguideinfo) + !Window.IsActive(PVRRecordingInfo)] + [!String.IsEqual(ListItem.dbtype,musicvideo) + !$EXP[IsOfflineMode] + System.HasAddon(plugin.video.themoviedb.helper)] + !Skin.HasSetting(VideoInfo_Content_tmdbhelper_crew)" content="Universal_Container">
+				<include condition="!Skin.HasSetting(VideoInfo_Content_tmdbhelper_crew) + [!Window.IsActive(pvrguideinfo) + !Window.IsActive(PVRRecordingInfo) + !String.IsEqual(ListItem.dbtype,musicvideo) + System.HasAddon(plugin.video.themoviedb.helper) + !$EXP[IsOfflineMode]]" content="Universal_Container">
 					<param name="id" value="8622" />
 					<param name="visible" value="Integer.IsGreater(Container(8622).NumItems,0) | Container(8622).IsUpdating" />
 					<param name="type_height" value="380" />
@@ -850,7 +850,7 @@ ID 	Type 	Description
 					<visible>Control.IsVisible(8621)</visible>
 				</include>
 				
-				<include condition="!Skin.HasSetting(VideoInfo_Content_Youtube_OST) + [!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.youtube)]" content="Universal_Container">
+				<include condition="!Skin.HasSetting(VideoInfo_Content_Youtube_OST) + [System.HasAddon(plugin.video.youtube) + !$EXP[IsOfflineMode]]" content="Universal_Container">
 					<param name="id" value="8621" />
 					<param name="visible" value="!Integer.IsGreater(Container(8999).NumItems,0) + [Integer.IsGreater(Container(8621).NumItems,0) | Container(8621).IsUpdating]" />
 					<param name="type_height" value="365" />
@@ -871,7 +871,7 @@ ID 	Type 	Description
 					<param name="label" value="YouTube Results for [COLOR=$INFO[Skin.String(ViewDetailsHighlightTextColor)]]$VAR[Title,  &quot; , &quot;][/COLOR]" />
 					<visible>Control.IsVisible(8611)</visible>
 				</include>
-				<include condition="!$EXP[IsOfflineMode] + [System.HasAddon(plugin.video.youtube) + !Skin.HasSetting(VideoInfo_Content_Youtube)]" content="Universal_Container">
+				<include condition="!Skin.HasSetting(VideoInfo_Content_Youtube) + [System.HasAddon(plugin.video.youtube) + !$EXP[IsOfflineMode]]" content="Universal_Container">
 					<param name="id" value="8611" />
 					<param name="visible" value="Integer.IsGreater(Container(8611).NumItems,0) | Container(8611).IsUpdating" />
 					<param name="type_height" value="365" />
@@ -961,28 +961,65 @@ ID 	Type 	Description
 					<param name="label" value="Bonusmaterial" />
 					<visible>Control.IsVisible(8609)</visible>
 				</include>
-				<include condition="!Window.IsActive(pvrguideinfo) + !Window.IsActive(PVRRecordingInfo)" content="Universal_Container">
-					<param name="type" value="panel" />
-					<param name="id" value="8609" />
-					<param name="visible" value="!String.IsEmpty(Window(home).Property(bonuscontentavail)) + [Integer.IsGreater(Container(8609).NumItems,0) | Container(8609).IsUpdating]" />
-					<param name="tagbottom" value="false" />
-					<param name="type_height" value="150" />
-					<param name="layout_height" value="150" />
-					<param name="layout_width" value="450" />
-					<param name="itemheight" value="140" />
-					<param name="itemwidth" value="440" />
-					<param name="item_overlay_banner" value="true" />
-					<param name="item_artwork_name" value="banner" />
-					<param name="item_artwork_diffuse_themed" value="true" />
-					<param name="item_artwork_diffuse_override" value="false" />
-					
-					
-					<!--need  play media windowed - fake fullscreen -->
+				
+				<control type="panel" id="8609">
+					<top>50</top>
+					<height>370</height>
+					<visible>!String.IsEmpty(Window(home).Property(bonuscontentavail)) + [Integer.IsGreater(Container(8609).NumItems,0) | Container(8609).IsUpdating]</visible>
 					
 					<onclick>Close</onclick>
+					
+					<itemlayout height="130" width="450">
+						<control type="group">
+							<height>120</height>
+							<width>440</width>
+							<control type="image">
+								<texture diffuse="artworkdiffuse/banner.png" colordiffuse="ff131313">colors/white.png</texture>
+								<aspectratio scalediffuse="false" aligny="center" align="center">stretch</aspectratio>
+								<bordersize>8</bordersize>
+							</control>
+							<control type="textbox">
+								<info>listitem.label</info>
+								<centertop>50%</centertop>
+								<align>center</align>
+								<wrapmultiline>true</wrapmultiline>
+								<left>10</left>
+								<right>10</right>
+								<font>notosans_18_bold</font>
+							</control>
+						</control>
+					</itemlayout>
+					<focusedlayout height="130" width="450">
+						<control type="group">
+							<include condition="true">Animation_Item_Focus</include>
+							<height>120</height>
+							<width>440</width>
+							<control type="image">
+								<texture diffuse="artworkdiffuse/banner.png" colordiffuse="white">colors/white.png</texture>
+								<aspectratio scalediffuse="false" aligny="center" align="center">stretch</aspectratio>
+								<bordersize>4</bordersize>
+							</control>
+							<control type="image">
+								<texture diffuse="artworkdiffuse/banner.png" colordiffuse="ff131313">colors/white.png</texture>
+								<aspectratio scalediffuse="false" aligny="center" align="center">stretch</aspectratio>
+								<bordersize>8</bordersize>
+							</control>
+							<control type="textbox">
+								<info>listitem.label</info>
+								<centertop>50%</centertop>
+								<align>center</align>
+								<wrapmultiline>true</wrapmultiline>
+								<left>10</left>
+								<right>10</right>
+								<font>notosans_18_bold</font>
+							</control>
+						</control>
+					</focusedlayout>
 					<onclick>PlayMedia($INFO[ListItem.FilenameAndPath],noresume)</onclick>
-					<content>$VAR[extrasLocation_contentpath]</content>
-				</include>
+					<content>$VAR[extrasLocation_lookup]</content>
+					
+					
+				</control>
 			</control>
 			
 			<!--  INFOS TOP -->
@@ -1363,13 +1400,6 @@ ID 	Type 	Description
 		<value condition="String.Contains(listitem.filenameandpath,VIDEO_TS)">$INFO[listitem.path,,VIDEO_TS\extras/]</value>
 		<value condition="String.Contains(listitem.filenameandpath,BDMV)">$INFO[listitem.path,,BDMV\extras/]</value>
 		<value>$INFO[listitem.path,,extras/]</value>
-	</variable>
-	
-	<!-- disablefor plugin ? -->
-	<variable name="extrasLocation_contentpath">
-		<value condition="String.Contains(listitem.filenameandpath,VIDEO_TS) + !String.IsEmpty(Window(home).Property(bonuscontentavail))">$INFO[listitem.path,,VIDEO_TS\extras/]</value>
-		<value condition="String.Contains(listitem.filenameandpath,BDMV) + !String.IsEmpty(Window(home).Property(bonuscontentavail))">$INFO[listitem.path,,BDMV\extras/]</value>
-		<value condition="!String.IsEmpty(Window(home).Property(bonuscontentavail))">$INFO[listitem.path,,extras/]</value>
 	</variable>
 	
 	<include name="panel_100">

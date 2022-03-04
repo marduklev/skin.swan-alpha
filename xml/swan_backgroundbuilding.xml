@@ -616,7 +616,7 @@
 	</variable>
 	
 	<include name="rotating_player_fanartbackground">
-		<control type="fadelabel" description="player.item realated" id="77707">
+		<control type="fadelabel" id="77707">
 			<visible>!Skin.HasSetting(musicplayer_force_unrelatedart)</visible>
 			<visible>!string.isempty(Player.Art(artist.fanart)) | !string.isempty(Player.Art(albumartist.fanart)) | !string.isempty(player.art(album.thumb))</visible>
 			<info>Player.Art(artist.fanart)</info>
@@ -641,37 +641,15 @@
 			<info>Player.Art(artist.fanart19)</info>
 			<info>Player.Art(artist.fanart20)</info>
 			<info>Player.Art(album.thumb)</info>
-			<info>Player.Art(albumartist.fanart)</info>
-			<info>Player.Art(albumartist.fanart1)</info>
-			<info>Player.Art(albumartist.fanart2)</info>
-			<info>Player.Art(albumartist.fanart3)</info>
-			<info>Player.Art(albumartist.fanart4)</info>
-			<info>Player.Art(albumartist.fanart5)</info>
-			<info>Player.Art(albumartist.fanart6)</info>
-			<info>Player.Art(albumartist.fanart7)</info>
-			<info>Player.Art(albumartist.fanart8)</info>
-			<info>Player.Art(albumartist.fanart9)</info>
-			<info>Player.Art(albumartist.fanart10)</info>
-			<info>Player.Art(albumartist.fanart11)</info>
-			<info>Player.Art(albumartist.fanart12)</info>
-			<info>Player.Art(albumartist.fanart13)</info>
-			<info>Player.Art(albumartist.fanart14)</info>
-			<info>Player.Art(albumartist.fanart15)</info>
-			<info>Player.Art(albumartist.fanart16)</info>
-			<info>Player.Art(albumartist.fanart17)</info>
-			<info>Player.Art(albumartist.fanart18)</info>
-			<info>Player.Art(albumartist.fanart19)</info>
-			<info>Player.Art(albumartist.fanart20)</info>
 			<randomize>true</randomize>
 			<pauseatend>5000</pauseatend>
 			<scroll>false</scroll>
 			<scrollout>false</scrollout>
 		</control>
-		<control type="fadelabel" description="player.content realated" id="77708">
+		<control type="fadelabel" id="77708">
 			<description>fallback if no player artowrk exist, later non hiden group of album thumbs which fades at different times and change source differently to each other - lib thumbs</description>
-			<visible>!Skin.HasSetting(musicplayer_force_unrelatedart)</visible>
-			<visible>Library.HasContent(music) | Library.HasContent(musicvideo)</visible>
-			<visible>string.isempty(Player.Art(artist.fanart)) + string.isempty(Player.Art(albumartist.fanart)) + string.isempty(player.art(album.thumb))</visible>
+			<visible>!Skin.HasSetting(musicplayer_force_unrelatedart) + [Library.HasContent(music) | Library.HasContent(musicvideo)]</visible>
+			<visible>string.isempty(Player.Art(artist.fanart)) + string.isempty(player.art(album.thumb))</visible>
 			<info>Window(Home).Property(LatestMusicVideo.1.Fanart)</info>
 	        <info>Window(Home).Property(LatestAlbum.1.Fanart)</info>
 	        <info>Window(home).Property(EmbuaryBackgroundMusic)</info>
@@ -680,9 +658,9 @@
 			<scroll>false</scroll>
 			<scrollout>false</scrollout>
 		</control>
-		<control type="multiimage" description="ALWAYS FORCED user nominated folder" id="77709">
+		<control type="multiimage" id="77709">
 			<description>forced fallback, future some more</description>
-			<visible>Skin.HasSetting(musicplayer_force_unrelatedart) | [string.isempty(Player.Art(artist.fanart)) + string.isempty(Player.Art(albumartist.fanart)) + string.isempty(player.art(album.thumb)) + !Library.HasContent(music) + !Library.HasContent(musicvideo)]</visible>
+			<visible>Skin.HasSetting(musicplayer_force_unrelatedart) | [string.isempty(Player.Art(artist.fanart)) + string.isempty(player.art(album.thumb)) + !Library.HasContent(music) + !Library.HasContent(musicvideo)]</visible>
 			<depth>DepthBackground</depth>
 			<fadetime>3000</fadetime>
 			<imagepath>$VAR[musicplayer_unrelatedart]</imagepath>
@@ -694,9 +672,9 @@
 		<value>resource://resource.images.skin.swan/musicplayer_fallback/</value>
 	</variable>
 	<variable name="musicplayer_fanart">
-		<value condition="Control.IsVisible(77709) + !String.IsEmpty(Control.GetLabel(77709))">$INFO[Control.GetLabel(77709)]</value>
-		<value condition="Skin.HasSetting(Rotating_MusicPlayerFanart) + [!string.isempty(Player.Art(artist.fanart)) | !string.isempty(Player.Art(albumartist.fanart)) | !string.isempty(player.art(album.thumb))]">$INFO[Control.GetLabel(77707)]</value>
-		<value condition="Skin.HasSetting(Rotating_MusicPlayerFanart) + [string.isempty(Player.Art(artist.fanart)) + string.isempty(Player.Art(albumartist.fanart)) + string.isempty(player.art(album.thumb))]">$INFO[Control.GetLabel(77708)]</value> 
+		<value condition="Skin.HasSetting(Rotating_MusicPlayerFanart) + Control.IsVisible(77707) + !String.IsEmpty(Control.GetLabel(77707))">$INFO[Control.GetLabel(77707)]</value>
+		<value condition="Skin.HasSetting(Rotating_MusicPlayerFanart) + Control.IsVisible(77708) + !String.IsEmpty(Control.GetLabel(77708))">$INFO[Control.GetLabel(77708)]</value>
+		<value condition="Skin.HasSetting(Rotating_MusicPlayerFanart) + Control.IsVisible(77709) + !String.IsEmpty(Control.GetLabel(77709))">$INFO[Control.GetLabel(77709)]</value>
 		<value condition="!Skin.HasSetting(Rotating_MusicPlayerFanart)">$VAR[common_player_fanartbackground]</value>
 	</variable>
 	<variable name="common_player_fanartbackground">

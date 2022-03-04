@@ -4,7 +4,7 @@
 	<onload>ClearProperty(AdditionalInfo)</onload>
 	<onload>RunScript(script.embuary.helper,action=resetposition,container=8601||8602||8603||8604||8605||8606||8607||8608||8609||8622)</onload>
 	<onload>RunScript(script.embuary.helper,action=encode,string='"$VAR[EncodeTitle]"',prop=EncodedTitle)</onload>
-	<onload condition="!string.isempty(listitem.dbid) + [container.content(movies) | String.IsEqual(ListItem.DBTYPE,movie)]">RunScript(script.embuary.helper,action=lookforfile,file='"$VAR[extrasLocation_lookup]"',prop=bonuscontentavail)</onload>
+	<onload condition="[!Window.IsActive(pvrguideinfo) + !Window.IsActive(PVRRecordingInfo)] + String.IsEmpty(Container.PluginName) + !string.isempty(listitem.dbid) + [container.content(movies) | String.IsEqual(listitem.dbtype,movie)]">RunScript(script.embuary.helper,action=lookforfile,file='"$VAR[extrasLocation_lookup]"',prop=bonuscontentavail)</onload>
 	
 	<onunload>ClearProperty(AdditionalInfo)</onunload>
 	<onunload>ClearProperty(EncodedTitle,home)</onunload>
@@ -74,13 +74,7 @@
 		</control>
 		
 		<include content="swan_debug_overlay">
-			<param name="textleft" value="
-  helper  ListItem.Property(tmdb_id) $INFO[ListItem.Property(tmdb_id)]
-  helper  ListItem.Property(tvshow.tmdb_id) $INFO[ListItem.Property(tvshow.tmdb_id)]
-  
-native listitem.uniquiid() • imdb :  $INFO[listitem.uniqueid(imdb)]  -  themoviedb :  $INFO[listitem.uniqueid(themoviedb)]  -  tmdb :  $INFO[listitem.uniqueid(tmdb)]  -  anidb :  $INFO[listitem.uniqueid(anidb)]  -  tvdb :  $INFO[listitem.uniqueid(tvdb)]  -  trakt :  $INFO[listitem.uniqueid(trakt)]  - tvrage :  $INFO[listitem.uniqueid(tvrage)]  -  tvmaze :  $INFO[listitem.uniqueid(tvmaze)]		
-
-"/>
+			<param name="textleft" value=""/>
 </include>
 	</controls>
 </window>
