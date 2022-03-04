@@ -800,11 +800,13 @@
 					<onclick condition="Skin.HasSetting(UseExtraFanartFolder)">SetFocus(8901)</onclick>
 					<onclick condition="!Skin.HasSetting(UseExtraFanartFolder)">SetFocus(8903)</onclick>
 					
-					
-					
-					<include condition="!Skin.HasSetting(UseExtraFanartFolder) + [[!Container.Content(albums) + !Container.Content(songs)]]" content="ExtrafanartSource" />
-					<include condition="[Container.Content(albums) | Container.Content(songs)]" content="ExtrafanartSource">
+					<include condition="!Skin.HasSetting(UseExtraFanartFolder) + [Container.Content(songs) | String.IsEqual(listitem.dbtype,song)]" content="ExtrafanartSource">
+						<param name="prefix" value="album." />
+					</include>
+					<include condition="!Skin.HasSetting(UseExtraFanartFolder)" content="ExtrafanartSource" />
+					<include condition="!Skin.HasSetting(UseExtraFanartFolder) + [Container.Content(albums) | String.IsEqual(listitem.dbtype,album) | Container.Content(songs) | String.IsEqual(listitem.dbtype,song)]" content="ExtrafanartSource">
 						<param name="prefix" value="artist." />
+						<param name="get_thumb" value="false" />
 					</include>
 					<include condition="Skin.HasSetting(UseExtraFanartFolder)" ontent="ExtrafanartFolderPath" />
 				</include>

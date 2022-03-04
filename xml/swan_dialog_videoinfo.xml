@@ -256,7 +256,7 @@ ID 	Type 	Description
 				<right>50</right>
 				<top>150</top>
 				
-				<include content="DiscArt">
+				<control type="image">
 					<width>440</width>
 					<height>440</height>
 					<texture background="true" diffuse="diffuse/compactdisk.png">$VAR[ListItemArt_Discart]</texture>
@@ -265,7 +265,7 @@ ID 	Type 	Description
 					<top>120</top>
 					<animation effect="slide" start="0" end="-420,0" tween="cubic" easing="inout" time="500" delay="100">VisibleChange</animation>
 					<visible>String.IsEqual(Window.Property(AdditionalInfo),infolist)</visible>
-				</include>
+				</control>
 				<control type="image">
 					<visible>!String.IsEqual(ListItem.DBType,musicvideo) + !Window.IsActive(pvrguideinfo)</visible>
 					<height>660</height>
@@ -919,10 +919,14 @@ ID 	Type 	Description
 					<!-- missed LOCAL fanart path for episodes -->
 					<onclick condition="Skin.HasSetting(UseExtraFanartFolder)">SetFocus(8901)</onclick>
 					<onclick condition="!Skin.HasSetting(UseExtraFanartFolder)">SetFocus(8903)</onclick>
-					<include condition="!Skin.HasSetting(UseExtraFanartFolder) + [Container.Content(seasons) | Container.Content(episodes)]" content="ExtrafanartSource">
+					
+					<include condition="!Skin.HasSetting(UseExtraFanartFolder)" content="ExtrafanartSource" />
+					<include condition="!Skin.HasSetting(UseExtraFanartFolder) + [Container.Content(seasons) | String.IsEqual(listitem.dbtype,season) | Container.Content(episodes) | String.IsEqual(listitem.dbtype,episode)]" content="ExtrafanartSource">
 						<param name="prefix" value="tvshow." />
 					</include>
-					<include condition="!Skin.HasSetting(UseExtraFanartFolder) + ![Container.Content(seasons) | Container.Content(episodes)]" content="ExtrafanartSource" />
+					<include condition="!Skin.HasSetting(UseExtraFanartFolder) + [Container.Content(musicvideos) | String.IsEqual(listitem.dbtype,musicvideo)]" content="ExtrafanartSource">
+						<param name="prefix" value="artist." />
+					</include>
 					<include condition="Skin.HasSetting(UseExtraFanartFolder)">ExtrafanartFolderPath</include>
 				</include>
 				
@@ -1499,6 +1503,7 @@ ID 	Type 	Description
 	
 	<include name="ExtrafanartSource">
 		<param name="prefix" />
+		<param name="get_thumb" default="true" />
 		<definition>
 		<content>
 			<include content="ItemArtTemplate">
@@ -1506,7 +1511,7 @@ ID 	Type 	Description
 				<param name="parentfolder" value="$PARAM[prefix]" />
 				<param name="type" value="clearlogo" />
 			</include>
-			<include content="ItemArtTemplate">
+			<include condition="$PARAM[get_thumb]" content="ItemArtTemplate">
 				<param name="postfix" value="" />
 				<param name="parentfolder" value="$PARAM[prefix]" />
 				<param name="type" value="thumb" />
@@ -1521,7 +1526,6 @@ ID 	Type 	Description
 				<param name="parentfolder" value="$PARAM[prefix]" />
 				<param name="type" value="spine" />
 			</include>
-			
 			<include content="ItemArtTemplate">
 				<param name="postfix" value="1" />
 				<param name="parentfolder" value="$PARAM[prefix]" />
