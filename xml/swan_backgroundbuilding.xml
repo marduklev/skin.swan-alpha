@@ -616,8 +616,8 @@
 	</variable>
 	
 	<include name="rotating_player_fanartbackground">
-		<control type="fadelabel" id="77707">
-			<visible>!Skin.String(texturepath_playerartwork)</visible>
+		<control type="fadelabel" description="player.item realated" id="77707">
+			<visible>!Skin.HasSetting(musicplayer_force_unrelatedart)</visible>
 			<visible>!string.isempty(Player.Art(artist.fanart)) | !string.isempty(Player.Art(albumartist.fanart)) | !string.isempty(player.art(album.thumb))</visible>
 			<info>Player.Art(artist.fanart)</info>
 			<info>Player.Art(artist.fanart1)</info>
@@ -667,9 +667,9 @@
 			<scroll>false</scroll>
 			<scrollout>false</scrollout>
 		</control>
-		<control type="fadelabel" id="77708">
+		<control type="fadelabel" description="player.content realated" id="77708">
 			<description>fallback if no player artowrk exist, later non hiden group of album thumbs which fades at different times and change source differently to each other - lib thumbs</description>
-			<visible>!Skin.String(texturepath_playerartwork)</visible>
+			<visible>!Skin.HasSetting(musicplayer_force_unrelatedart)</visible>
 			<visible>Library.HasContent(music) | Library.HasContent(musicvideo)</visible>
 			<visible>string.isempty(Player.Art(artist.fanart)) + string.isempty(Player.Art(albumartist.fanart)) + string.isempty(player.art(album.thumb))</visible>
 			<info>Window(Home).Property(LatestMusicVideo.1.Fanart)</info>
@@ -680,19 +680,19 @@
 			<scroll>false</scroll>
 			<scrollout>false</scrollout>
 		</control>
-		<control type="multiimage" id="77709">
+		<control type="multiimage" description="ALWAYS FORCED user nominated folder" id="77709">
 			<description>forced fallback, future some more</description>
-			<visible>Skin.String(texturepath_playerartwork)</visible>
+			<visible>Skin.HasSetting(musicplayer_force_unrelatedart) | [string.isempty(Player.Art(artist.fanart)) + string.isempty(Player.Art(albumartist.fanart)) + string.isempty(player.art(album.thumb)) + !Library.HasContent(music) + !Library.HasContent(musicvideo)]</visible>
 			<depth>DepthBackground</depth>
 			<fadetime>3000</fadetime>
-			<imagepath>$INFO[Skin.String(texturepath_playerartwork)]</imagepath>
+			<imagepath>$VAR[musicplayer_unrelatedart]</imagepath>
 		</control>
 	</include>
-		<!-- 
-		sub_77708_lib: 		Library.HasContent(music) | Library.HasContent(musicvideo)
-		sub_77708_nolib:	!Library.HasContent(music) + !Library.HasContent(musicvideo)
-		-->
 	
+	<variable name="musicplayer_unrelatedart">
+		<value condition="Skin.String(texturepath_playerartwork)">$INFO[Skin.String(texturepath_playerartwork)]</value>
+		<value>resource://resource.images.skin.swan/musicplayer_fallback/</value>
+	</variable>
 	<variable name="musicplayer_fanart">
 		<value condition="Control.IsVisible(77709) + !String.IsEmpty(Control.GetLabel(77709))">$INFO[Control.GetLabel(77709)]</value>
 		<value condition="Skin.HasSetting(Rotating_MusicPlayerFanart) + [!string.isempty(Player.Art(artist.fanart)) | !string.isempty(Player.Art(albumartist.fanart)) | !string.isempty(player.art(album.thumb))]">$INFO[Control.GetLabel(77707)]</value>
@@ -701,10 +701,10 @@
 	</variable>
 	<variable name="common_player_fanartbackground">
 		<value condition="!String.IsEmpty(Player.Art(artist.fanart))">$INFO[Player.Art(artist.fanart)]</value>
-		<value condition="!String.IsEmpty(Player.Art(albumartist.fanart))">$INFO[Player.Art(albumartist.fanart)]</value>
-		<value condition="!String.IsEmpty(Player.Art(fanart))">$INFO[Player.Art(fanart)]</value>
+		<value condition="!String.IsEmpty(Player.Art(albumartist.fanart)) + !String.Contains(Player.Art(albumartist.fanart),various-artists)">$INFO[Player.Art(albumartist.fanart)]</value>
+		<value condition="!String.IsEmpty(Player.Art(albumartist.thumb)) + !String.Contains(Player.Art(albumartist.thumb),various-artists)">$INFO[Player.Art(albumartist.thumb)]</value>
+		<value condition="!String.IsEmpty(Player.Art(fanart)) + !String.Contains(Player.Art(fanart),various-artists)">$INFO[Player.Art(fanart)]</value>
 		<value condition="!String.IsEmpty(Player.Art(album.thumb))">$INFO[Player.Art(album.thumb)]</value>
-		<!-- <value>an image ,which shows album panels??</value> -->
-		<value>special://skin/extras/_temp/fallback_single2.jpg</value>
+		<value>resource://resource.images.skin.swan/musicplayer_fallback/fallback_single2.jpg</value>
 	</variable>
 </includes>
