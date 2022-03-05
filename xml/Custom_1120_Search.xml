@@ -562,10 +562,10 @@
 				<include condition="!Skin.HasSetting(SkinSearch_Content_netflix) + [!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.netflix)]" content="Universal_ContainerHeader">
                     <param name="groupid" value="7531" />
                     <param name="id" value="5031" />
-                    <param name="label" value="$INFO[Skin.String(SearchTerm),$ADDON[plugin.video.amazon-test 30050] $LOCALIZE[36913] $LOCALIZE[1411] &quot; , &quot;]" />
+                    <param name="label" value="$INFO[System.AddonTitle(plugin.video.netflix)] $INFO[Skin.String(SearchTerm), $LOCALIZE[36913] $LOCALIZE[1411] &quot; , &quot;]" />
                     <visible>Control.IsVisible(5031)</visible>
                 </include>
-                <include condition="false + !Skin.HasSetting(SkinSearch_Content_netflix) + [!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.netflix)]" content="Universal_Container">
+                <include condition="!Skin.HasSetting(SkinSearch_Content_netflix) + [!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.netflix)]" content="Universal_Container">
 					<param name="id" value="5031" />
 					<param name="visible" value="Integer.IsGreater(Container(5031).NumItems,0) | Container(5031).IsUpdating" />
 					<param name="type_height" value="365" />
@@ -582,10 +582,10 @@
 							<label2>$ADDON[plugin.video.amazon-test 30050]</label2>
 							<icon>$INFO[System.AddonIcon(plugin.video.amazon-test)]</icon>
 							<thumb>$INFO[Window(home).Property(CastMemberThumb)]</thumb>
-							<onclick>ReplaceWindow(videos,plugin://plugin.video.amazon-test/?mode=Search&amp;searchstring=$INFO[Skin.String(SearchTerm)])</onclick>
+							<onclick>ReplaceWindow(videos,plugin://plugin.video.netflix/directory/search/)</onclick>
 						</item>
 					</content>
-					<content target="videos" sortby="file" limit="25">plugin://plugin.video.netflix/directory/search/search/$INFO[Skin.String(SearchTerm)]/</content>
+					<!-- <content target="videos" sortby="file" limit="25">plugin://plugin.video.netflix/directory/search/search/$INFO[Skin.String(SearchTerm)]/</content> -->
                 </include>
 					
 		
@@ -612,31 +612,9 @@
         </control>
 		<include condition="Skin.HasSetting(window_frame)" content="window_frame" />
 		<include content="swan_debug_overlay">
-			<param name="textleft" value="
-0  Winrop for vis conds came from xmlfile LibTargetSearch  :    $INFO[Window(home).Property(LibTargetSearch)]
-1  Search String   $INFO[Skin.String(SearchTerm)]
-
-2 placeholder
-
-3  istitem.filenameandpath :    $INFO[listitem.filenameandpath]
-4  listitem.path :    $INFO[listitem.path]
-5  listitem.folderpath :    $INFO[listitem.folderpath]
-6  container().FolderPath   $INFO[container().folderpath]
-7  ListItem.FileExtension	$INFO[ListItem.FileExtension]
-8  $INFO[Container.FolderPath] and $INFO[ListItemAbsolute(0).label]
-
-9  container().FolderPath   $INFO[container().folderpath]
-
-10  $INFO[listitem.dbid,current dbid :    ,    ]
-11  $INFO[listitem.DBTYPE,current DBTYPE :    ,    ]
-12 $INFO[listitem.label,label:    ,    ]
-
-13 ListItem.Overlay  $INFO[ListItem.Overlay]
-
-$INFO[container.listitem.dbid,container dbid :    ,    ]
-$INFO[container.listitem.dbtype,container dbtype :    ,    ]
-$INFO[container.listitem.label,container label :    ,    ]
-$INFO[container.listitem.label2,container.label2 :    ,    ]
+			<param name="nested_debuginfo" value="
+Winrop for vis conds came from xmlfile LibTargetSearch  :    $INFO[Window(home).Property(LibTargetSearch)]
+Search String   $INFO[Skin.String(SearchTerm)]
 "/>
 		</include>
     </controls>

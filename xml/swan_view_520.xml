@@ -30,15 +30,23 @@
 		<value condition="String.StartsWith(Container.Folderpath,library) | Container.Content() | [String.IsEmpty(listitem.dbtype) + !Container.Content(years)]">[COLOR $VAR[color_spotlightlib_accent]]$INFO[Container.ListItem.Label][/COLOR]</value>
 		<value condition="$EXP[IsEpisode]">$INFO[Container.ListItem.Season,$LOCALIZE[20373] ,]$INFO[Container.ListItem.Year,  ([LIGHT],[/LIGHT])]  | $INFO[Container.ListItem.Episode,[CAPITALIZE]$LOCALIZE[20452][/CAPITALIZE] ,]$INFO[Container.ListItem.Title, : ,]</value>
 		<value condition="$EXP[IsSeason]">$INFO[Container.ListItem.Label]$INFO[Container.ListItem.Year,  ([LIGHT],[/LIGHT])]</value>
-		<value condition="$EXP[IsTVShow]">$INFO[Window(home).Property(totalseasons)] $VAR[Season_PluSing] | $INFO[Window(home).Property(totalepisodes)] $VAR[Episode_PluSing]$INFO[Window(home).Property(status), | ,]</value>
+		<value condition="$EXP[IsTVShow]">$VAR[TVShow_Propertys]</value>
+		
+		
 		<value condition="Container.Content(actors) | Container.Content(directors)">[B]$INFO[Container.FolderName][/B]</value>
 		<value condition="Container.Content(genres) | Container.Content(studios) | Container.Content(tags) | Container.Content(countries) | Container.Content(years)">[COLOR $VAR[color_spotlightlib_accent]]$INFO[Container.ListItem.Label,[B],[/B]][/COLOR]</value>
+	</variable>
+	
+	<variable name="TVShow_Propertys">
+		<value condition="!String.IsEmpty(Window(home).Property(totalseasons)) + !String.IsEmpty(Window(home).Property(totalepisodes))">$INFO[Window(home).Property(totalseasons)] $VAR[Season_PluSing] | $INFO[Window(home).Property(totalepisodes)] $VAR[Episode_PluSing]$INFO[Window(home).Property(status), | ,]</value>
+		<value condition="!String.IsEmpty(Window(home).Property(totalseasons)) + !String.IsEmpty(Window(home).Property(totalepisodes))">$INFO[Window(home).Property(totalseasons)] $VAR[Season_PluSing] | $INFO[Window(home).Property(totalepisodes)] $VAR[Episode_PluSing]$INFO[Window(home).Property(status), | ,]</value>
+		<value condition="String.IsEmpty(Window(home).Property(totalseasons)) + !String.IsEmpty(Window(home).Property(totalepisodes))">$INFO[Window(home).Property(totalseasons)] $VAR[Season_PluSing] | $INFO[Window(home).Property(totalepisodes)] $VAR[Episode_PluSing]$INFO[Window(home).Property(status), | ,]</value>
 	</variable>
 	
 	<variable name="520_music_infobottom">
 		<value condition="String.IsEqual(listitem.dbtype,artist)">$INFO[Container.ListItem.Property(Artist_Formed),$LOCALIZE[21894] : ,  ]$INFO[Container.ListItem.Property(Artist_Disbanded),$LOCALIZE[21896] : ,]$INFO[Container.ListItem.Property(Artist_YearsActive),  •   $LOCALIZE[21898] : ,]</value>
 		<value condition="String.IsEqual(listitem.dbtype,album)">$VAR[ListItemDuration,$LOCALIZE[180] : ,]$INFO[Container.ListItem.DateAdded,  |  $LOCALIZE[570] : ,]</value>
-		<value condition="String.IsEqual(listitem.dbtype,song)">$INFO[container.numitems,$LOCALIZE[134]: ,]$INFO[Container.ListItem.TotalDiscs, |  $LOCALIZE[14087]: , ]$INFO[Container.Totaltime, | $LOCALIZE[558] $LOCALIZE[180] : ,]$INFO[Container.ListItem.DateAdded,  |  $LOCALIZE[570] : ,]</value>
+		<value condition="String.IsEqual(listitem.dbtype,song)">$INFO[container.numitems,$LOCALIZE[134]: ,]$INFO[Container.ListItem.TotalDiscs, |  $LOCALIZE[14087]: , ]$INFO[Container.Totaltime, | $LOCALIZE[558] $LOCALIZE[180] : ,]$INFO[Container.ListItem.DateAdded,  |  $LOCALIZE[570] : ,]$INFO[ListItem.AlbumStatus,  |  $LOCALIZE[38081] : ,]</value>
 	</variable>
 	
 	<include name="view_520">
