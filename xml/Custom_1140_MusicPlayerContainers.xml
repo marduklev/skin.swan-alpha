@@ -6,19 +6,213 @@
 	<defaultcontrol>7000</defaultcontrol>
 	<onunload>ClearProperty(CurrentPlaylistVisible,home)</onunload>
 	<controls>
-	
+	<control type="list" id="699">
+			<description>getinfo</description>
+			<include>HiddenContainer</include>
+			<onup>600</onup>
+			<ondown>600</ondown>
+			<onleft>600</onleft>
+			<onright>600</onright>
+			<ondown>600</ondown>
+			<content limit="1">$VAR[CurrentlyPlayingItem]</content>
+		</control>
 	<!-- <param name="forcecolor" value="colors_playlistbar_media" /> better define glabal variables? -->
 	<include condition="String.IsEqual(Window(home).Property(CurrentPlaylistVisible),mediawindow) + !Window.IsActive(1110)" content="MediaWindow_Playlist">
 		<param name="posy" value="0" />
-		<param name="onleft" value="50" />
+		<param name="onleft" value="600" />
 		<param name="onright" value="50" />
 		<param name="top" value="20%" />
 		<param name="height" value="80%" />
 		<param name="container_height" value="90%" />
-	</include>
-	<include condition="String.IsEqual(Window(home).Property(CurrentPlaylistVisible),mediawindow) + Window.IsActive(1110)" content="MediaWindow_Playlist">
 		
+		
+		<control type="group">
+			<width>100</width>
+			<height>100%</height>
+			<right>0</right>
+			<animation effect="slide" start="0,0" end="-480,0" time="300" tween="cubic" easing="in">WindowOpen</animation>
+			<animation effect="slide" end="0,0" start="-480,0" time="250" tween="cubic" easing="in">WindowClose</animation>
+			
+			
+			<!-- <animation effect="zoom" start="0,100" end="100,100" center="auto" time="1000" tween="cubic" easing="in" condition="ControlGroup(600).HasFocus()">conditional</animation> -->
+			<animation effect="fade" start="0" end="100" time="100" tween="quadratic" easing="inout" condition="ControlGroup(600).HasFocus()">conditional</animation>
+			<animation effect="slide" start="0,0" end="100,0" time="300" tween="cubic" easing="in" condition="!ControlGroup(600).HasFocus()">conditional</animation>
+			<control type="image">
+				<top>-25%</top>
+				<height>150%</height>
+				<bordersize>1,0,1,0</bordersize>
+				<bordertexture colordiffuse="$VAR[color_spotlightlib_accent]">diffuse/gradientcenter.png</bordertexture>
+				<texture colordiffuse="$VAR[color_global_background_layer1]">diffuse/gradientcenter.png</texture>
+			</control>
+			<control type="grouplist" id="600">
+					<top>10%</top>
+					<description>player controls</description>
+					<orientation>vertical</orientation>
+					<aligny>center</aligny>
+					<align>center</align>
+					<itemgap>15</itemgap>
+					<usecontrolcoords>true</usecontrolcoords>
+					<onup>600</onup>
+					<ondown>600</ondown>
+					<onright>7000</onright>
+					<onleft>ClearProperty(CurrentPlaylistVisible,home)</onleft>
+					<onleft>close</onleft>
+					<onright>7000</onright>
+					<centerleft>51%</centerleft>
+					<width>50</width>
+					<control type="button" id="6009">
+						<width>45</width>
+						<height>45</height>
+						<visible>player.hasaudio</visible>
+						<texturefocus colordiffuse="$VAR[color_osdmusic_accent]">buttons/osd/userrating_fo.png</texturefocus>
+						<texturenofocus colordiffuse="$VAR[color_osdmusic_secondary]">buttons/osd/userrating_fo.png</texturenofocus>
+						<onclick>SetRating</onclick>
+					</control>
+					<control type="button" id="6011">
+						<visible>!Container(699).IsUpdating + Integer.IsEqual(Container(699).NumItems,1)</visible>
+						<width>45</width>
+						<height>45</height>
+						<label />
+						<texturefocus colordiffuse="$VAR[color_osdmusic_accent]">buttons/osd/infonoborder.png</texturefocus>
+						<texturenofocus colordiffuse="$VAR[color_osdmusic_secondary]">buttons/osd/infonoborder.png</texturenofocus>
+						<onclick condition="true">setfocus(699)</onclick>
+						<onclick condition="true">action(info)</onclick>
+					</control>
+					<control type="button" id="6012">
+						<description>get playlist</description>
+						<visible>MusicPlayer.HasPrevious | MusicPlayer.HasNext</visible>
+						<width>45</width>
+						<height>45</height>
+						<label />
+						<texturefocus colordiffuse="$VAR[color_osdmusic_accent]">buttons/osd/playlist_fo.png</texturefocus>
+						<texturenofocus colordiffuse="$VAR[color_osdmusic_secondary]">buttons/osd/playlist_fo.png</texturenofocus>
+						<onclick>SetProperty(CurrentPlaylistVisible,small,home)</onclick>
+						<onclick>ActivateWindow(1140)</onclick>
+					</control>
+					<control type="button" id="6013">
+						<width>45</width>
+						<height>45</height>
+						<label />
+						<texturefocus colordiffuse="$VAR[color_osdmusic_accent]">buttons/osd/fullscreen.png</texturefocus>
+						<texturenofocus colordiffuse="$VAR[color_osdmusic_secondary]">buttons/osd/fullscreen.png</texturenofocus>
+						<onclick>dialog.close(all,true)</onclick>
+						<onclick>fullscreen</onclick>
+					</control>
+					<include content="spacer_h">
+						<param name="visible" value="Player.HasAudio"/>
+						<param name="id" value="603"/>
+						<param name="gap" value="5"/>
+					</include>
+					<control type="button" id="604">
+						<visible>MusicPlayer.HasPrevious | Playlist.IsRepeat</visible>
+						<width>45</width>
+						<height>45</height>
+						<label />
+						<texturefocus colordiffuse="$VAR[color_osdmusic_accent]">buttons/osd/previous_fo.png</texturefocus>
+						<texturenofocus colordiffuse="$VAR[color_osdmusic_secondary]">buttons/osd/previous_fo.png</texturenofocus>
+						<onclick>PlayerControl(previous)</onclick>
+					</control>
+					<control type="togglebutton" id="605">
+						<width>45</width>
+						<height>45</height>
+						<label />
+						<altlabel />
+						<texturefocus colordiffuse="$VAR[color_osdmusic_accent]">buttons/osd/play_fo.png</texturefocus>
+						<texturenofocus colordiffuse="$VAR[color_osdmusic_secondary]">buttons/osd/play_fo.png</texturenofocus>
+						<alttexturefocus colordiffuse="$VAR[color_osdmusic_accent]">buttons/osd/pause_fo.png</alttexturefocus>
+						<alttexturenofocus colordiffuse="$VAR[color_osdmusic_secondary]">buttons/osd/pause_fo.png</alttexturenofocus>
+						<usealttexture>!Player.Paused</usealttexture>
+						<onclick>PlayerControl(play)</onclick>
+					</control>
+					<control type="button" id="606">
+						<width>45</width>
+						<height>45</height>
+						<label />
+						<texturefocus colordiffuse="$VAR[color_osdmusic_accent]">buttons/osd/stop_fo.png</texturefocus>
+						<texturenofocus colordiffuse="$VAR[color_osdmusic_secondary]">buttons/osd/stop_fo.png</texturenofocus>
+						<onclick>PlayerControl(stop)</onclick>
+					</control>
+					<control type="button" id="608">
+						<visible>MusicPlayer.HasNext | Playlist.IsRepeat</visible>
+						<width>45</width>
+						<height>45</height>
+						<label />
+						<texturefocus colordiffuse="$VAR[color_osdmusic_accent]">buttons/osd/next_fo.png</texturefocus>
+						<texturenofocus colordiffuse="$VAR[color_osdmusic_secondary]">buttons/osd/next_fo.png</texturenofocus>
+						<onclick>PlayerControl(next)</onclick>
+					</control>
+					<include content="spacer_h">
+						<param name="id" value="609"/>
+						<param name="gap" value="5" />
+					</include>
+					<control type="button" id="6092">
+						<visible>MusicPlayer.HasNext | Playlist.IsRepeat</visible>
+						<width>45</width>
+						<height>45</height>
+						<label />
+						<texturefocus colordiffuse="$VAR[color_osdmusic_accent]">buttons/osd/repeat.png</texturefocus>
+						<texturenofocus colordiffuse="$VAR[color_osdmusic_secondary]">buttons/osd/repeat.png</texturenofocus>
+						<onclick>PlayerControl(Repeat)</onclick>
+						<onclick condition="!Playlist.IsRepeatOne + !Playlist.IsRepeat">Notification(Repeat,[B]A l l[/B],10,buttons/osd/repeatall.png)</onclick>
+						<onclick condition="Playlist.IsRepeat">Notification(Repeat,[B]T i t l e[/B],10,buttons/osd/repeatone.png)</onclick>
+						<onclick condition="Playlist.IsRepeatOne">Notification(Repeat,[B]D i s a b l e d[/B],10,buttons/osd/repeatoff.png)</onclick>
+					</control>
+					<control type="button" id="6096">
+						<description>toggle vs common, currently looks lika a bad symbol</description>
+						<visible>MusicPlayer.HasNext | Playlist.IsRepeat</visible>
+						<width>45</width>
+						<height>45</height>
+						<label />
+						<texturefocus colordiffuse="$VAR[color_osdmusic_accent]">buttons/osd/random.png</texturefocus>
+						<texturenofocus colordiffuse="$VAR[color_osdmusic_secondary]">buttons/osd/random.png</texturenofocus>
+						<onclick>PlayerControl(Random)</onclick>
+						<onclick condition="!Playlist.IsRandom">Notification(Random,[B]O n[/B],10,buttons/osd/random.png)</onclick>
+						<onclick condition="Playlist.IsRandom">Notification(Random,[B]O f f[/B],10,buttons/osd/randomoff.png)</onclick>
+					</control>
+				</control>
+		</control>
+		<control type="group">
+			<width>480</width>
+			<height>20%</height>
+			<right>-480</right>
+			<animation effect="slide" start="0,0" end="-480,0" time="300" tween="cubic" easing="in">WindowOpen</animation>
+			<animation effect="slide" end="0,0" start="-480,0" time="250" tween="cubic" easing="in">WindowClose</animation>
+			<control type="image">
+				<texture>colors/black.png</texture>
+			</control>
+			<control type="image">
+				<bordersize>5,5,5,0</bordersize>
+				<bordertexture colordiffuse="$VAR[color_global_background_layer1]">colors/white.png</bordertexture>
+				<texture diffuse="colors/white20.png">$INFO[player.art(fanart)]</texture>
+				<aspectratio aligny="top">scale</aspectratio>
+			</control>
+			<control type="label">
+				<description> | [COLOR grey]$INFO[MusicPlayer.Album]$INFO[MusicPlayer.Year, (,)][/COLOR]</description>
+				<animation effect="fade" end="40" condition="true">conditional</animation>
+				<right>5</right>
+				<left>5</left>
+				<align>right</align>
+				<height>20</height>
+				<aligny>top</aligny>
+				<textcolor>$VAR[color_spotlightlib_main]</textcolor>
+				<label>$INFO[MusicPlayer.Artist] • $INFO[Player.Title]</label>
+				<font>montserrat_14_extrabold</font>
+			</control>
+			<control type="textbox">
+				<animation effect="fade" end="40" condition="true">conditional</animation>
+				<right>5</right>
+				<height>25</height>
+				<bottom>2</bottom>
+				<align>right</align>
+				<width>100</width>
+				<textcolor>$VAR[color_spotlightlib_main]</textcolor>
+				<label>$INFO[Player.Time(mm:ss)]$INFO[Player.Duration(mm:ss), / ,]</label>
+				<font>montserrat_14_extrabold</font>
+			</control>
+			
+		</control>
 	</include>
+	<include condition="String.IsEqual(Window(home).Property(CurrentPlaylistVisible),mediawindow) + Window.IsActive(1110)" content="MediaWindow_Playlist" />
 	<include condition="String.IsEmpty(Window(home).Property(CurrentPlaylistVisible)) + !Skin.HasSetting(MusicOSD_SmallPlaylist)">MusicOSD_CommonPlaylist</include>
 	<include condition="[String.IsEmpty(Window(home).Property(CurrentPlaylistVisible)) + Skin.HasSetting(MusicOSD_SmallPlaylist)] | String.IsEqual(Window(home).Property(CurrentPlaylistVisible),small)">MusicOSD_SmallPlaylist</include>
 	

@@ -26,7 +26,7 @@
 		<param name="height" default="100%" />
 		<param name="container_height" default="890" />
 		<definition>
-			
+			<nested />
 			<control type="group">
 				<description>P L A Y L I S T    C O N T A I N E R    S I D E B A R     R I G H T</description>
 				<top>$PARAM[top]</top>
@@ -37,27 +37,30 @@
 				<animation effect="slide" start="0,0" end="-480,0" time="300" tween="cubic" easing="in">WindowOpen</animation>
 				<animation effect="slide" end="0,0" start="-480,0" time="250" tween="cubic" easing="in">WindowClose</animation>
 				
-				<nested />
-				
 				<include condition="Window.IsActive(1150)" content="bg_gradientmulticolor" />
-				
-				<include condition="!Window.IsActive(1150)" content="bg_gradientmulticolor">
+				<include condition="false + !Window.IsActive(1150)" content="bg_gradientmulticolor">
 					<param name="layer1_top" value="$VAR[color_global_background_layer1]" />
 					<param name="layer1_bottom" value="10ffffff" />
 					<param name="layer2" value="none" />
 				</include>
-				
-				
-				<animation effect="slide" start="0,0" end="-480,0" time="200" tween="cubic" easing="inout" condition="!Window.IsActive(1140) + String.IsEqual(Window(home).Property(CurrentPlaylistVisible),mediawindow)">conditional</animation>
-		
+				<control type="image">
+					<visible>!Window.IsActive(1150)</visible>
+					<texture border="2" colordiffuse="$VAR[color_global_background_layer1]">colors/white.png</texture>
+				</control>
 				
 				<control type="label">
 					<right>30</right>
 					<top>0</top>
 					<height>50</height>
-					<label>Current Playlist</label>
-					<font>notosans_36_bold</font>
+					<label>  $LOCALIZE[13350]</label>
+					<align>left</align>
+					<font>montserrat_24_extrabold</font>
 					<align>right</align>
+				</control>
+				<control type="image">
+					<texture border="0" colordiffuse="white">diffuse/gradientleftsoft.png</texture>
+					<top>48</top>
+					<height>1</height>
 				</control>
 				<control type="panel" id="$PARAM[id]">
 					<left>25</left>
@@ -70,17 +73,14 @@
 					<pagecontrol>700060</pagecontrol>
 					<scrolltime tween="quadratic">400</scrolltime>
 					
-					<onfocus>SetProperty(CurrentPlaylistVisible,mediawindow,home)</onfocus>
-					<onleft>ClearProperty(CurrentPlaylistVisible,home)</onleft>
+					<onfocus condition="String.IsEmpty(wondow(home).property(CurrentPlaylistVisible))">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onfocus>
 					
-								
-							<onleft condition="Window.IsActive(1140)">Close</onleft>
+							<onleft condition="Window.IsActive(1110)">ClearProperty(CurrentPlaylistVisible,home)</onleft>
 							<onleft>$PARAM[onleft]</onleft>
-							
 							<onright condition="Control.IsVisible($PARAM[id]60)">$PARAM[id]60</onright>
 							<onright condition="!Control.IsVisible($PARAM[id]60)">ClearProperty(CurrentPlaylistVisible,home)</onright>
 							<onright condition="!Control.IsVisible($PARAM[id]60)">$PARAM[onright]</onright>
-							<onright condition="!Control.IsVisible($PARAM[id]60) + Window.IsActive(1140)">Close</onright>
+							<onright condition="!Control.IsVisible($PARAM[id]60)">Close</onright>
 							
 							<onup>$PARAM[id]</onup>
 							<ondown>$PARAM[id]</ondown>
@@ -180,7 +180,24 @@
 					<onright>ClearProperty(CurrentPlaylistVisible,home)</onright>
 					<onright condition="Window.IsActive(1140)">close</onright>
 				</control>
-			</control>		
+			</control>
+			<control type="progress">
+				<visible>!Window.IsActive(1110) + !Window.IsActive(1111)</visible>
+				<animation effect="slide" start="0,0" end="-480,0" time="300" tween="cubic" easing="in">WindowOpen</animation>
+				<animation effect="slide" end="0,0" start="-480,0" time="250" tween="cubic" easing="in">WindowClose</animation>
+				<right>-480</right>
+				<width>480</width>
+				<top>20%</top>
+				<height>2</height>
+				
+				<texturebg colordiffuse="$VAR[color_hub_menu_text_nf]">colors/white50.png</texturebg>
+				<midtexture colordiffuse="$VAR[color_hub_accent]">colors/white.png</midtexture>
+				<lefttexture />
+				<righttexture />
+				<overlaytexture />
+				<info>Player.Progress</info>
+			</control>
+			
 		</definition>
 	</include>
 	
@@ -340,7 +357,7 @@
 				<align>left</align>
 				<font>notosans_20_regular</font>
 				<textcolor>$VAR[color_osdmusic_accent]</textcolor>
-				<label>Current Playlist :</label>
+				<label>$LOCALIZE[13350] :</label>
 			</control>
 			
 			<control type="panel" id="7000">
@@ -914,7 +931,7 @@
 	<!-- Infos -->
 	<variable name="VideoPlayerInfo">
 		<value condition="window.isactive(videobookmarks) + String.IsEmpty(Window(home).Property(VideoBookmarks))">$INFO[System.CurrentWindow,[B],[/B]]</value>
-		<value condition="window.isactive(videobookmarks) + !String.IsEmpty(Window(home).Property(VideoBookmarks))">[B]Current Playlist[/B]</value>
+		<value condition="window.isactive(videobookmarks) + !String.IsEmpty(Window(home).Property(VideoBookmarks))">[B]$LOCALIZE[13350][/B]</value>
 		<value condition="!window.isactive(videobookmarks) + Player.HasVideo + VideoPlayer.Content(episodes)">[B]$INFO[VideoPlayer.TVShowTitle,,  •  ]$LOCALIZE[20373]$INFO[VideoPlayer.Season, ,]  $LOCALIZE[20359] $INFO[VideoPlayer.Episode, ,][/B]$INFO[Player.Title,[B]  |  ,[/B]]</value>
 		<value condition="!window.isactive(videobookmarks) + Player.HasVideo + !String.IsEmpty(VideoPlayer.Artist)">[B]$INFO[VideoPlayer.Artist]$INFO[Player.Title,[B]  •  ,[/B]]$INFO[VideoPlayer.year,  (,)]$INFO[VideoPlayer.Album,[CR],]</value>
 		
