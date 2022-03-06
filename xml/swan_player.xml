@@ -19,12 +19,12 @@
 	
 	<include name="MediaWindow_Playlist">
 		<param name="id" default="7000" />
-		<param name="onleft" default="6666" />
-		<param name="onright" default="8008" />
-		<param name="forcecolor" default="" />
 		<param name="top" default="100" />
 		<param name="height" default="100%" />
 		<param name="container_height" default="890" />
+		<param name="color_main" default="$VAR[color_hub_menu_text_fo]" /> $VAR[color_spotlightlib_main]
+		<param name="color_secondary" default="$VAR[color_hub_menu_text_nf]" /> $VAR[color_spotlightlib_secondary]
+		<param name="color_accent" default="$VAR[color_hub_accent]" /> $VAR[color_spotlightlib_accent]
 		<definition>
 			<nested />
 			<control type="group">
@@ -55,10 +55,11 @@
 					<label>  $LOCALIZE[13350]</label>
 					<align>left</align>
 					<font>montserrat_24_extrabold</font>
+					<textcolor>$PARAM[color_main]</textcolor>
 					<align>right</align>
 				</control>
 				<control type="image">
-					<texture border="0" colordiffuse="white">diffuse/gradientleftsoft.png</texture>
+					<texture border="0" colordiffuse="$PARAM[color_main]">diffuse/gradientleftsoft.png</texture>
 					<top>48</top>
 					<height>1</height>
 				</control>
@@ -67,23 +68,18 @@
 					<top>50</top>
 					<height>$PARAM[container_height]</height>
 					<width>440</width>
-					
 					<preloaditems>2</preloaditems>
 					<orientation>vertical</orientation>
 					<pagecontrol>700060</pagecontrol>
-					<scrolltime tween="quadratic">400</scrolltime>
-					
+					<scrolltime tween="quadratic">250</scrolltime>
 					<onfocus condition="String.IsEmpty(wondow(home).property(CurrentPlaylistVisible))">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onfocus>
-					
-							<onleft condition="Window.IsActive(1110)">ClearProperty(CurrentPlaylistVisible,home)</onleft>
-							<onleft>$PARAM[onleft]</onleft>
-							<onright condition="Control.IsVisible($PARAM[id]60)">$PARAM[id]60</onright>
-							<onright condition="!Control.IsVisible($PARAM[id]60)">ClearProperty(CurrentPlaylistVisible,home)</onright>
-							<onright condition="!Control.IsVisible($PARAM[id]60)">$PARAM[onright]</onright>
-							<onright condition="!Control.IsVisible($PARAM[id]60)">Close</onright>
-							
-							<onup>$PARAM[id]</onup>
-							<ondown>$PARAM[id]</ondown>
+					<onleft condition="Window.IsActive(1110)">ClearProperty(CurrentPlaylistVisible,home)</onleft>
+					<onleft condition="Window.IsActive(1110)">Close</onleft>
+					<onright condition="Control.IsVisible($PARAM[id]60)">$PARAM[id]60</onright>
+					<onright condition="!Control.IsVisible($PARAM[id]60)">ClearProperty(CurrentPlaylistVisible,home)</onright>
+					<onright condition="!Control.IsVisible($PARAM[id]60)">Close</onright>
+					<onup>$PARAM[id]</onup>
+					<ondown>$PARAM[id]</ondown>
 					
 					<include>playlist_container_atts</include>
 					
@@ -102,7 +98,7 @@
 								<left>15</left>
 								<width>50</width>
 								<height>50</height>
-								<texture background="true" colordiffuse="$VAR[color_hub_accent]">special://skin/extras/song_gifs/playingsong.gif</texture>
+								<texture background="true" colordiffuse="$PARAM[color_accent]">special://skin/extras/song_gifs/playingsong.gif</texture>
 								<bordersize>4</bordersize>
 								<visible>ListItem.IsPlaying</visible>
 								<bordertexture colordiffuse="cc000000">artworkdiffuse/circle.png</bordertexture>
@@ -111,8 +107,8 @@
 								<aligny>center</aligny>
 								<left>100</left>
 								<font>notosans_16_bold</font>
-								<textcolor>$VAR[color_hub_menu_text_nf]</textcolor>
-								<selectedcolor>$VAR[color_hub_menu_text_nf]</selectedcolor>
+								<textcolor>$PARAM[color_secondary]</textcolor>
+								<selectedcolor>$PARAM[color_secondary]</selectedcolor>
 								<label>$VAR[listitem_discortitle]$INFO[ListItem.TrackNumber,[B],[/B]  •  ]$INFO[listitem.title]$INFO[listitem.duration,   (,)][CR]$INFO[listitem.artist][CR]$INFO[listitem.album]$INFO[listitem.year,  (,)]</label>
 							</control>
 						</control>
@@ -126,7 +122,7 @@
 								<height>1</height>
 								<right>10</right>
 								<texture background="true">colors/white.png</texture>
-								<colordiffuse>$VAR[color_hub_accent]</colordiffuse>
+								<colordiffuse>$PARAM[color_accent]</colordiffuse>
 							</control>
 							<control type="image">
 								<bottom>10</bottom>
@@ -134,7 +130,7 @@
 								<height>1</height>
 								<right>10</right>
 								<texture background="true">colors/white.png</texture>
-								<colordiffuse>$VAR[color_hub_accent]</colordiffuse>
+								<colordiffuse>$PARAM[color_accent]</colordiffuse>
 							</control>
 							<control type="image">
 								<centertop>50%</centertop>
@@ -148,7 +144,7 @@
 								<left>15</left>
 								<width>50</width>
 								<height>50</height>
-								<texture background="true" colordiffuse="$VAR[color_hub_accent]">special://skin/extras/song_gifs/playingsong.gif</texture>
+								<texture background="true" colordiffuse="$PARAM[color_accent]">special://skin/extras/song_gifs/playingsong.gif</texture>
 								<colordiffuse>white</colordiffuse>
 								<bordersize>4</bordersize>
 								<visible>ListItem.IsPlaying</visible>
@@ -158,9 +154,9 @@
 								<aligny>center</aligny>
 								<left>100</left>
 								<font>notosans_16_bold</font>
-								<textcolor>$VAR[color_hub_accent]</textcolor>
-								<selectedcolor>$VAR[color_hub_accent]</selectedcolor>
-								<label>$VAR[listitem_discortitle]$INFO[ListItem.TrackNumber,[B],[/B]  •  ]$INFO[listitem.title]$INFO[listitem.duration,   (,)][CR][COLOR=$VAR[color_hub_menu_text_fo]]$INFO[listitem.artist][CR]$INFO[listitem.album]$INFO[listitem.year,  (,)][/COLOR]</label>
+								<textcolor>$PARAM[color_accent]</textcolor>
+								<selectedcolor>$PARAM[color_accent]</selectedcolor>
+								<label>$VAR[listitem_discortitle]$INFO[ListItem.TrackNumber,[B],[/B]  •  ]$INFO[listitem.title]$INFO[listitem.duration,   (,)][CR][COLOR $PARAM[color_main]]$INFO[listitem.artist][CR]$INFO[listitem.album]$INFO[listitem.year,  (,)][/COLOR]</label>
 							</control>
 						</control>
 					</focusedlayout>
@@ -168,7 +164,11 @@
 				</control>
 				<control type="scrollbar" id="$PARAM[id]60">
 					<description>Playlist ScrollBar</description>
+					<animation effect="fade" start="100" end="0" time="250" condition="!Control.HasFocus($PARAM[id]60)">conditional</animation>
 					<visible>String.IsEqual(Window(home).Property(CurrentPlaylistVisible),mediawindow)</visible>
+					<texturesliderbackground colordiffuse="$PARAM[color_main]" diffuse="colors/white10.png">colors/white.png</texturesliderbackground>
+					<texturesliderbar colordiffuse="$PARAM[color_main]" diffuse="colors/white20.png">colors/white.png</texturesliderbar>
+					<texturesliderbarfocus colordiffuse="$PARAM[color_accent]">colors/white.png</texturesliderbarfocus>
 					<right>10</right>
 					<top>60</top>
 					<height>$PARAM[container_height]</height>
@@ -189,19 +189,15 @@
 				<width>480</width>
 				<top>20%</top>
 				<height>2</height>
-				
-				<texturebg colordiffuse="$VAR[color_hub_menu_text_nf]">colors/white50.png</texturebg>
-				<midtexture colordiffuse="$VAR[color_hub_accent]">colors/white.png</midtexture>
+				<texturebg colordiffuse="$PARAM[color_secondary]">colors/white20.png</texturebg>
+				<midtexture colordiffuse="$PARAM[color_accent]">colors/white.png</midtexture>
 				<lefttexture />
 				<righttexture />
 				<overlaytexture />
 				<info>Player.Progress</info>
 			</control>
-			
 		</definition>
 	</include>
-	
-	
 	
 	<include name="MusicOSD_CommonPlaylist">
 		<control type="group">
