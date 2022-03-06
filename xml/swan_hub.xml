@@ -242,20 +242,21 @@
 				<onback>9000</onback>
 				<onleft>666660</onleft>
 				<onfocus>SetProperty(Scrollbar,$PARAM[id]60)</onfocus>
-				
-				<onright condition="Control.IsVisible($PARAM[id]60)">$PARAM[id]60</onright>
-				
-				
 				<pagecontrol>$PARAM[id]60</pagecontrol>
 				
-				<onright condition="!Control.IsVisible($PARAM[id]60) + [Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onright>
-				<onright condition="!Control.IsVisible($PARAM[id]60) + [Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">SetFocus(7000)</onright>
-				<onright condition="!Control.IsVisible($PARAM[id]60) + [!Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">$PARAM[id]</onright>
+				<onright condition="Control.IsVisible($PARAM[id]60)">$PARAM[id]60</onright>
+				<onright condition="!Control.IsVisible($PARAM[id]60) + [MusicPlayer.Offset(-1).Exists | MusicPlayer.Offset(1).Exists]">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onright>
+				<onright condition="!Control.IsVisible($PARAM[id]60) + [MusicPlayer.Offset(-1).Exists | MusicPlayer.Offset(1).Exists]">activatewindow(1140)</onright>
+				<onright condition="!Control.IsVisible($PARAM[id]60) + [!MusicPlayer.Offset(-1).Exists + !MusicPlayer.Offset(1).Exists]">$PARAM[id]</onright>
 				<nested />
 			</control>
 		</definition>
 	</include>
-	
+	<include name="hubscrollbar_onright">
+		<onright condition="MusicPlayer.Offset(-1).Exists | MusicPlayer.Offset(1).Exists">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onright>
+		<onright condition="MusicPlayer.Offset(-1).Exists | MusicPlayer.Offset(1).Exists">activatewindow(1140)</onright>
+		<onright condition="!MusicPlayer.Offset(-1).Exists + !MusicPlayer.Offset(1).Exists">$PARAM[origin_container]</onright>
+	</include>
 	<include name="Hub_PlayerCtrl">
 		<include>Animation_Item_Focus</include>
 		<top>10</top>
@@ -280,13 +281,13 @@
 			<onback>9000</onback>
 			<onleft>666660</onleft>
 			<onfocus>SetProperty(Scrollbar,$PARAM[id]60)</onfocus>
-			<onright condition="Control.IsVisible($PARAM[id]60)">$PARAM[id]60</onright>
 			
 			<pagecontrol>$PARAM[id]60</pagecontrol>
 			
-			<onright condition="!Control.IsVisible($PARAM[id]60) + [Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onright>
-			<onright condition="!Control.IsVisible($PARAM[id]60) + [Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">SetFocus(7000)</onright>
-			<onright condition="!Control.IsVisible($PARAM[id]60) + [!Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">$PARAM[id]</onright>
+			<onright condition="Control.IsVisible($PARAM[id]60)">$PARAM[id]60</onright>
+			<onright condition="!Control.IsVisible($PARAM[id]60) + [MusicPlayer.Offset(-1).Exists | MusicPlayer.Offset(1).Exists]">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onright>
+			<onright condition="!Control.IsVisible($PARAM[id]60) + [MusicPlayer.Offset(-1).Exists | MusicPlayer.Offset(1).Exists]">activatewindow(1140)</onright>
+			<onright condition="!Control.IsVisible($PARAM[id]60) + [!MusicPlayer.Offset(-1).Exists + !MusicPlayer.Offset(1).Exists]">$PARAM[id]</onright>
 			<nested />
 		</control>
 	</include>
@@ -333,11 +334,9 @@
 			<scrolltime tween="quadratic">400</scrolltime>
 			<onback>9000</onback>
 			<onleft>$PARAM[onleft]</onleft>
-			
-			<onright condition="[Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onright>
-			<onright condition="[Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">SetFocus(7000)</onright>
-			<onright condition="[!Integer.IsGreater(Container(7000).NumItems,0) | Container(7000).IsUpdating]">$PARAM[id]</onright>
-			
+			<include content="hubscrollbar_onright">
+				<param name="origin_container" value="$PARAM[id]" />
+			</include>
 			<nested />
 		</control>
 	</include>
@@ -426,7 +425,7 @@
 	<!-- JUST TESTING merge later -->
 	<include name="HUB_Landscape">
 		<control type="image">	
-			<description>BG (FAKE) FRAME : fullfilled layer 0 , instead of using 'artworkdiffuse/**border.png'</description>
+			<description>BG (FAKE) FRAME : fullfilled layer 0 , instead of using artworkdiffuse/**border.png</description>
 			<texture>artworkdiffuse/landscape.png</texture>
 			<colordiffuse>$PARAM[colordiffuse]</colordiffuse>
 			<bordersize>$PARAM[artwork_bg_bordersize]</bordersize>
@@ -1199,122 +1198,4 @@
 		<value condition="String.IsEqual(Window(home).Property(HUB_Music),albums)">$VAR[HUB_content_albums_title]</value>
 		<value condition="String.IsEqual(Window(home).Property(HUB_Music),songs)">$VAR[HUB_content_songs_title]</value>
 	</variable>
-	
-	<!-- 
-	albums by artist
-	musicdb://artists/[artistdbid]/?albumartistsonly=false
-	all songs by artist 
-	musicdb://artists/[artistdbid]/?albumartistsonly=false&amp;artistid=[artistdbid]
-	all songs from album with albumdbid 
-	musicdb://artists/[artistdbid]/[albumdbid]/?albumartistsonly=false&amp;artistid=[artistdbid]
-	-->
-	<!-- 3 List of sort methods
-
-These ID's can be used with the Container.SetSortMethod(id) function as listed here:
-ID 	Description
-1 	Name
-2 	Date
-3 	Size
-4 	File
-5 	Path
-6 	DriveType
-7 	Title
-8 	TrackNumber
-9 	Time
-10 	Artist
-11 	ArtistThenYear !=artistyear
-12 	Album
-13 	AlbumType
-14 	Genre
-15 	Country
-16 	Year
-17 	Rating
-18 	UserRating
-19 	Votes
-20 	Top250
-21 	ProgramCount
-22 	PlaylistOrder
-23 	EpisodeNumber
-24 	Season
-25 	NumberOfEpisodes
-26 	NumberOfWatchedEpisodes
-27 	TvShowStatus
-28 	TvShowTitle
-29 	SortTitle
-30 	ProductionCode
-31 	MPAA
-32 	VideoResolution
-33 	VideoCodec
-34 	VideoAspectRatio
-35 	AudioChannels
-36 	AudioCodec
-37 	AudioLanguage
-38 	SubtitleLanguage
-39 	Studio
-40 	DateAdded
-41 	LastPlayed
-42 	Playcount
-43 	Listeners
-44 	Bitrate
-45 	Random
-46 	Channel
-47 	ChannelNumber
-48 	DateTaken
-49 	Relevance
-50 	InstallDate
-51 	LastUpdated
-52 	LastUsed  
--->
-
-<!-- 
-
-Player.HasMedia 	Returns true if the player has an audio or video file. 	
-Player.HasAudio 	Returns true if the player has an audio file. 	
-Player.HasDuration 	Returns true if Media isn't a true stream 	
-Player.HasVideo 	Returns true if the player has a video file. 	
-Player.Passthrough 	Returns true if the player is using audio passthrough. 	
-Player.Playing 	Returns true if the player is currently playing (ie not ffwding, rewinding or paused.) 	
-Player.Paused 	Returns true if the player is paused. 	
-Player.Forwarding 	Returns true if the player is fast forwarding. 	
-Player.Forwarding2x 	Returns true if the player is fast forwarding at 2x. 	
-Player.Forwarding4x 	Returns true if the player is fast forwarding at 4x. 	
-Player.Forwarding8x 	Returns true if the player is fast forwarding at 8x. 	
-Player.Forwarding16x 	Returns true if the player is fast forwarding at 16x. 	
-Player.Forwarding32x 	Returns true if the player is fast forwarding at 32x. 	
-Player.Rewinding 	Returns true if the player is rewinding. 	
-Player.Rewinding2x 	Returns true if the player is rewinding at 2x. 	
-Player.Rewinding4x 	Returns true if the player is rewinding at 4x. 	
-Player.Rewinding8x 	Returns true if the player is rewinding at 8x. 	
-Player.Rewinding16x 	Returns true if the player is rewinding at 16x. 	
-Player.Rewinding32x 	Returns true if the player is rewinding at 32x. 	
-Player.PauseEnabled 	Returns true if the currently playing stream can be paused. 	
-Player.Caching 	Returns true if the player is current re-caching data (internet based video playback). 	
-Player.DisplayAfterSeek 	Returns true for the first 2.5 seconds after a seek. 	
-Player.Seeking 	Returns true if a seek is in progress 	
-Player.SeekEnabled 	Returns true if player can seek 	
-Player.ShowTime 	Returns true if the user has requested the time to show (occurs in video fullscreen) 	
-Player.ShowInfo 	Returns true if the user has requested the song info to show (occurs in visualisation fullscreen and slideshow) 	
-Player.IsInternetStream 	Returns true if the player is playing an internet stream. 	
-Player.Muted 	Returns true if the volume is muted. 	
-Player.Process(videohwdecoder) 	Returns true if the currently playing video is decoded in hardware 	v17 addition
-Player.TempoEnabled 	Returns true if the current player supports changing the playback speed 	v17 addition
-Player.IsTempo 	Returns true if the current playbackspeed is not equal to 1 	v17 addition
-Player.HasGame 	Returns true if the player is playing a game 	v18
-Player.HasResolutions 	Returns true when multiple resolutions are available 	v18
-Player.FrameAdvance 	Returns true if player is in frame advance mode 	v18 
-
-MusicPlayer.HasNext 	Returns true if the music player has a next song queued in the Playlist. 	
-MusicPlayer.HasPrevious 	Returns true if the music player has a a Previous Song in the Playlist . 	
-MusicPlayer.Offset(number).Exists 	Returns true if the music players playlist has a song queued in position (number). 	
-MusicPlayer.Content(parameter) 	Returns true if the current audio you are playing matches the specified content. The following values are accepted: files, livetv 	
-MusicPartyMode.Enabled
-
-Playlist.IsRandom 	Returns true if the player is in random mode. 	
-Playlist.IsRepeat 	Returns true if the player is in repeat all mode. 	
-Playlist.IsRepeatOne 	Returns true if the player is in repeat one mode.
-
--->
-	
-	
-	
 </includes>

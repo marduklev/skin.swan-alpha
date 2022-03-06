@@ -22,38 +22,33 @@
 		<param name="onleft" default="6666" />
 		<param name="onright" default="8008" />
 		<param name="forcecolor" default="" />
+		<param name="top" default="100" />
+		<param name="height" default="100%" />
+		<param name="container_height" default="890" />
 		<definition>
 			
 			<control type="group">
-				<visible>Window.IsActive(1140) + false</visible>
-				<height>100%</height>
-				<width>480</width>
-				<right>-480</right>
-				<animation effect="slide" start="0,0" end="-460,0" time="200" tween="cubic" easing="inout" condition="Window.IsActive(1140) + String.IsEqual(Window(home).Property(CurrentPlaylistVisible),mediawindow)">conditional</animation>
-				<include condition="Window.IsActive(1140)" content="bg_gradientmulticolor">
-					<param name="layer1_top" value="$VAR[color_global_background_layer1]" />
-					<param name="layer1_bottom" value="0fffffff" />
-					<param name="layer2" value="none" />
-				</include>
-			</control>
-			<control type="group">
 				<description>P L A Y L I S T    C O N T A I N E R    S I D E B A R     R I G H T</description>
-				<height>100%</height>
+				<top>$PARAM[top]</top>
+				<height>$PARAM[height]</height>
 				<width>480</width>
-				<posy>100</posy>
 				<right>-480</right>
+				
+				<animation effect="slide" start="0,0" end="-480,0" time="300" tween="cubic" easing="in">WindowOpen</animation>
+				<animation effect="slide" end="0,0" start="-480,0" time="250" tween="cubic" easing="in">WindowClose</animation>
 				
 				<nested />
 				
-				<include condition="!Window.IsActive(1140)" content="bg_gradientmulticolor" />
-				<include condition="Window.IsActive(1140)" content="bg_gradientmulticolor">
+				<include condition="Window.IsActive(1150)" content="bg_gradientmulticolor" />
+				
+				<include condition="!Window.IsActive(1150)" content="bg_gradientmulticolor">
 					<param name="layer1_top" value="$VAR[color_global_background_layer1]" />
 					<param name="layer1_bottom" value="10ffffff" />
 					<param name="layer2" value="none" />
 				</include>
 				
 				
-				<animation effect="slide" start="0,0" end="-460,0" time="200" tween="cubic" easing="inout" condition="!Window.IsActive(1140) + String.IsEqual(Window(home).Property(CurrentPlaylistVisible),mediawindow)">conditional</animation>
+				<animation effect="slide" start="0,0" end="-480,0" time="200" tween="cubic" easing="inout" condition="!Window.IsActive(1140) + String.IsEqual(Window(home).Property(CurrentPlaylistVisible),mediawindow)">conditional</animation>
 		
 				
 				<control type="label">
@@ -67,7 +62,7 @@
 				<control type="panel" id="$PARAM[id]">
 					<left>25</left>
 					<top>50</top>
-					<height>890</height>
+					<height>$PARAM[container_height]</height>
 					<width>440</width>
 					
 					<preloaditems>2</preloaditems>
@@ -171,23 +166,21 @@
 					</focusedlayout>
 					<content target="music">$VAR[playlistmusic]</content>
 				</control>
-
-			</control>
-			
-		<control type="scrollbar" id="$PARAM[id]60">
-			<description>Playlist ScrollBar</description>
-			<visible>String.IsEqual(Window(home).Property(CurrentPlaylistVisible),mediawindow)</visible>
-			<right>5</right>
-			<top>150</top>
-			<height>890</height>
-			<width>2</width>
-			<onup>$PARAM[id]60</onup>
-			<ondown>$PARAM[id]60</ondown>
-			<onleft>$PARAM[id]</onleft>
-			<onright>$PARAM[onright]</onright>
-			<onright>ClearProperty(CurrentPlaylistVisible,home)</onright>
-			<onright condition="Window.IsActive(1140)">close</onright>
-		</control>
+				<control type="scrollbar" id="$PARAM[id]60">
+					<description>Playlist ScrollBar</description>
+					<visible>String.IsEqual(Window(home).Property(CurrentPlaylistVisible),mediawindow)</visible>
+					<right>10</right>
+					<top>60</top>
+					<height>$PARAM[container_height]</height>
+					<width>2</width>
+					<onup>$PARAM[id]60</onup>
+					<ondown>$PARAM[id]60</ondown>
+					<onleft>$PARAM[id]</onleft>
+					<onright>$PARAM[onright]</onright>
+					<onright>ClearProperty(CurrentPlaylistVisible,home)</onright>
+					<onright condition="Window.IsActive(1140)">close</onright>
+				</control>
+			</control>		
 		</definition>
 	</include>
 	
@@ -1088,8 +1081,6 @@
 	</include>
 	<variable name="playlist_foldercontent">
 		<value condition="Integer.IsGreater(VideoPlayer.PlaylistLength,1)">playlistvideo://</value>
-		<!-- <value condition="!String.IsEmpty(VideoPlayer.TvShowDBID) + !String.IsEmpty(VideoPlayer.Season)">videodb://tvshows/titles/$INFO[VideoPlayer.TvShowDBID]/$INFO[VideoPlayer.Season]/?tvshowid=$INFO[VideoPlayer.TvShowDBID]</value> -->
-		<!-- pers preference dont show previous but just curr season -->
 		<value condition="!String.IsEmpty(VideoPlayer.Episode) + !String.IsEmpty(VideoPlayer.Season)">videodb://tvshows/titles/-1/-1/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22tvshow%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[VideoPlayer.TVShowTitle]%22%5D%7D%2C%7B%22field%22%3A%22season%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[VideoPlayer.Season]%22%5D%7D%2C%7B%22field%22%3A%22episode%22%2C%22operator%22%3A%22greaterthan%22%2C%22value%22%3A%5B%22$INFO[VideoPlayer.Episode]%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</value>
 	</variable>
 	

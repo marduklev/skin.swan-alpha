@@ -1,86 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <window type="window" id="1110">
-
-<!-- 
-
-menucontrol / left bar 9000
- - items  90*id*
- - playlists  9042
-current playlist container / right bar  7000
-player ctrl / top bar  8000
-
-REscommendation container based on..
-Window(Home).Property(key) 	
-
-	LatestMusicVideo.[1-10].Title, LatestMusicVideo.[1-10].Thumb, LatestMusicVideo.[1-10].Year, LatestMusicVideo.[1-10].Plot, LatestMusicVideo.[1-10].RunningTime, LatestMusicVideo.[1-10].Path, LatestMusicVideo.[1-10].Artist, LatestMusicVideo.[1-10].Fanart
-	LatestSong.[1-10].Title, LatestSong.[1-10].Artist, LatestSong.[1-10].Album, LatestSong.[1-10].Year, LatestSong.[1-10].Rating, LatestSong.[1-10].Thumb, LatestSong.[1-10].Fanart, LatestSong.[1-10].Path
-	LatestAlbum.[1-10].Title, LatestAlbum.[1-10].Artist, LatestAlbum.[1-10].Year, LatestAlbum.[1-10].Rating, LatestAlbum.[1-10].Thumb, LatestAlbum.[1-10].Fanart, LatestAlbum.[1-10].Path 
-
-
-- get hidden container linked to videos,musicvideos/artist to fetch videodb id of artist ? 
-						
-
-prop containers 6666 - pagecontrol 666660
-
-default 
-		
-		header			id  49**
-		container		id  50**
-		emptywidget id 9****
-		
-	- common			A R T I S T S							5001 / 500160		- filter artist contain ; onclick override 'set IsHub*artist*Content'
-						
-						A L B U M S								5002 / 500260		- filter albumtitle or albumartist contain  ; onclick override 'set IsHub*album*Content'	
-						S O N G S								5004 / 500460		- filter songtitle or songartist contain
-						M U S I C V I D E O S		  			5007 / 500760		- filter musicvideotitle or musicvideoartist contain
-								 
-								
-	- artist			A R T I S T S							5010 / -			- filter artist contain ; onclick override 'set IsHub*artist*Content'	
-							ALBUMS - Artist Folderpath			5011 / -			- none	  ; onclick override 'set IsHub*album*Content'	
-				reserved	MUSICVIDEOS - Artist Folderpath		5012 / -			- none
-							 or
-				reserved		linked focused Album
-				reserved	ARTWORK								5014
-				reserved	INFO								5015
-
-	- songs				S O N G S								5018 / 501860		- filter songtitle contain
-	
-	- albums			A L B U M S								5020 / 502060		- filter albumtitle contain		; onclick override 'set IsHub*album*Content'		
-											5021 genres
-	
-	- compilations	  S O U N D T R A C K S		   				5026  / -		- currently none	; onclick override 'set IsHub*album*Content'		
-	- compilations	  C O M P I L A T I O N S 		 			5027 / -		- currently none	; onclick override 'set IsHub*album*Content'	
-	
-	
-	- new Albums 												5028 / -	
-	- recently played Albums 									5029 / -	
-
-- genres using id												5030 / -	
-		root		musicdb://genres/
-		artists		musicdb://genres/[genre id]/
-		albums  	musicdb://genres/[genre id]/-1/?genreid=[genre id]
-		songs		musicdb://genres/[genre id]/-1/-1/?genreid=[genre id]
-		
-- years															5035 / -	
-		root		musicdb://years/
-		albums  	musicdb://years/[genre id]/
-		songs		musicdb://years/[year num]/-1/?year=[year num]
-
-	- musicaddons	Music Addons				  				5060
-	
-	- playlist		[playlist name]						 		5040 conditionial layout needed (video,album,song)
-	
-	special
-	- IsHUB[artist/album]Content 	group 6020
-		
-			- info text 6021, 6022
-				grouplist 6023 can lead to double usage need fix
-				album left	5120
-				songs right 5121
-				
-	
--->
-	
 	<backgroundcolor>$VAR[color_hub_backgroundlayer1]</backgroundcolor>
 	<menucontrol>9000</menucontrol>
 	<defaultcontrol always="true">9000</defaultcontrol>
@@ -93,8 +12,6 @@ default
 		<effect type="fade" start="100" end="0" time="300" tween="sine" easing="out" />
 		<effect type="zoom" center="50%,50%" start="100" end="0" time="300" tween="cubic" easing="out" />
 	</animation>
-	
-	<!-- Window.Previous|Next(**) dont get wished result, no 'real window change perform' idkw -->
 	<onload condition="!Skin.HasSetting(MusicHUB_StartUprecommendation) + String.IsEmpty(Window(home).Property(HUB_Music))">SetProperty(HUB_Music,common,home)</onload>
 	<onload condition="Skin.HasSetting(MusicHUB_StartUprecommendation) + String.IsEmpty(Window(home).Property(HUB_Music))">SetProperty(HUB_Music,recommendation,home)</onload>
 	
@@ -103,9 +20,6 @@ default
 	<onload condition="!String.IsEqual(Window(home).Property(HUB_Music),SongsByAlbum) + !String.IsEmpty(Window(home).Property(HUB_containerpath_songs))">ClearProperty(HUB_containerpath_songs,home)</onload>
 		<onload condition="String.IsEqual(Window(home).Property(HUB_Music),SongsByAlbum) + !String.IsEmpty(Window(home).Property(HUB_containerpath_albums))">AlarmClock(delayedfocus,SetFocus(5120),00:00,silent)</onload>
 		<onload condition="String.IsEqual(Window(home).Property(HUB_Music),SongsByAlbum) + !String.IsEmpty(Window(home).Property(HUB_containerpath_songs))">AlarmClock(delayedfocus,SetFocus(5121),00:00,silent)</onload>
-	
-	
-	<!-- Next is working - onunaload clear can be used -->
 	<controls>
 	
 	<control type="group">
@@ -259,12 +173,12 @@ default
 				<param name="visible" value="Player.HasAudio"/>
 			</include>
 			<control type="button" id="8006">
-				<visible>Player.HasAudio</visible>
+				<visible>MusicPlayer.Offset(-1).Exists | MusicPlayer.Offset(1).Exists</visible>
 				<include content="Hub_PlayerCtrl">
 					<param name="action" value="SetProperty(CurrentPlaylistVisible,mediawindow,home)"/>
 					<param name="button_img" value="playlist_fo"/>
 				</include>
-				<onclick>SetFocus(7000)</onclick>
+				<onclick>activatewindow(1140)</onclick>
 			</control>
 			<control type="button" id="8012">
 				<visible>Player.HasMedia</visible>
@@ -1248,77 +1162,6 @@ default
 			<content sortby="title" sortorder="ascending">$VAR[filtercontent_songs_contains_title]</content>
 		</include>
 		
-		
-		<!-- no filter try hubsesrch string , conditional set string button instead 
-			or hidden control to set $INFO[Control.GetLabel(8001).index(1)] as skin.string -->
-		<!-- may force run plugin before to get contents
-		<include content="HUB_ContainerHeader">
-			<param name="id" value="41" />
-			<param name="label" value="Soundcloud Album Search" />
-		</include>
-		<control type="panel" id="5041">
-			<description>Soundcloud Search</description>
-			<visible>String.IsEqual(Window(home).Property(HUB_Music),soundcloud)</visible>
-			<visible>System.HasAddon(***.soundcloud)</visible>
-			
-			<left>5</left>
-			<top>50</top>
-			<width>1600</width>
-			<height>850</height>
-			
-			<preloaditems>2</preloaditems>
-			<orientation>vertical</orientation>
-			
-			<onleft>666660</onleft>
-			<onright>700060</onright>
-			<pagecontrol>700060</pagecontrol>
-			
-			<onup>5009</onup>
-			<ondown>5009</ondown>
-			
-			<scrolltime tween="quadratic">400</scrolltime>
-			
-			<itemlayout height="300" width="420">
-				<control type="group">
-					<height>243</height>
-					<width>405</width>
-					<include content="HUB_Landscape">
-						<param name="colordiffuse" value="$VAR[color_hub_widget_frame_nf]" />
-						<param name="infotags_autoscroll" value="false" />
-						<param name="artwork_bg_bordersize" value="6" />
-					</include>
-				</control>
-			</itemlayout>
-			<focusedlayout height="300" width="420">
-				<control type="group">
-					<height>243</height>
-					<width>405</width>
-					<include>Animation_Item_Focus</include>
-					<control type="group">
-						<include content="HUB_Landscape">
-							<param name="colordiffuse" value="$VAR[color_hub_widget_frame_fo]" />
-							<param name="infotags_autoscroll" value="true" />
-							<param name="artwork_bg_bordersize" value="4" />
-						</include>
-						<include>layout_overlay_dimmer</include>
-					</control>
-				</control>
-			</focusedlayout>
-			<include content="emptywidget">
-				<param name="id" value="$PARAM[id]" />
-			</include>
-			
-			<content>plugin://plugin.audio.soundcloud/charts/?action=top</content>
-			<content>plugin://plugin.audio.soundcloud/discover/?selection=soundcloud%3Aselections%3Aplaylist-dicovery%3Achill</content>
-		</control>
-		 -->
-		<!-- 
-		<include content="HUB_ContainerHeader">
-			<param name="id" value="30" />
-			<param name="label" value="G E N R E S" />
-			<param name="filter_label" value="none" />
-		</include>
-		-->
 		<control type="group" id="4930">
 			<visible>String.IsEqual(Window(home).Property(HUB_Music),genres) | String.IsEqual(Window(home).Property(HUB_Music),years)</visible>
 			<!-- <visible>Control.IsVisible(5030) + [Container(5030).IsUpdating | Integer.IsGreater(Container(5030).NumItems,0)]</visible> -->
@@ -1986,82 +1829,6 @@ default
 			<content target="music">addons://sources/audio/</content>
 		</include>
 		
-		<!-- 
-		<include content="HUB_ContainerHeader">
-			<param name="id" value="50" />
-			<param name="label" value="You Tube" />
-		</include>
-		<control type="panel" id="5050">
-			<description>YouTube no filter</description>
-			<visible>String.IsEqual(Window(home).Property(HUB_Music),youtube)</visible>
-			
-			<left>5</left>
-			<top>50</top>
-			<width>1600</width>
-			<height>850</height>
-			
-			<preloaditems>2</preloaditems>
-			<orientation>vertical</orientation>
-			
-			<onleft>666660</onleft>
-			<onright>700060</onright>
-			<pagecontrol>700060</pagecontrol>
-			
-			<onup>5009</onup>
-			<ondown>5009</ondown>
-			
-			<scrolltime tween="quadratic">400</scrolltime>
-			
-			<itemlayout height="300" width="420">
-				<control type="group">
-					<height>243</height>
-					<width>405</width>
-					<include content="HUB_Landscape">
-						<param name="colordiffuse" value="$VAR[color_hub_widget_frame_nf]" />
-						<param name="infotags_autoscroll" value="false" />
-						<param name="artwork_bg_bordersize" value="6" />
-					</include>
-				</control>
-			</itemlayout>
-			<focusedlayout height="300" width="420">
-				<control type="group">
-					<height>243</height>
-					<width>405</width>
-					<include>Animation_Item_Focus</include>
-					<control type="group">
-						<include content="HUB_Landscape">
-							<param name="colordiffuse" value="$VAR[color_hub_widget_frame_fo]" />
-							<param name="infotags_autoscroll" value="true" />
-							<param name="artwork_bg_bordersize" value="4" />
-						</include>
-						<include content="layout_overlay_dimmer">
-							<param name="diffusedimtext" value="artworkdiffuse/landscape.png" />
-							<param name="bordersize" value="8" />
-						</include>
-					</control>
-				</control>
-			</focusedlayout>
-			<include content="emptywidget">
-				<param name="id" value="$PARAM[id]" />
-			</include>
-			<content target="videos" sortby="file" limit="25">plugin://plugin.video.youtube/search/?q=$INFO[Control.GetLabel(8001).index(1)]</content>
-		</control> -->
-		<!-- ~ container content 5040
-= variable
-current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is equal focused "$INFO[container(9042).listitem.label]"
- else focused playlist (default)
-
-~ onclick
-" ,playoffset=xx " failure? - even if its a xsp file
-= if 
-5040title equals 9042label/xsp
-,song (play song, playlist got no info labels, playoffset not working even if its a xsp file)
-,album (isdir is workin, but just play album, add album to list)
-, artist (isdir not working, playmedia not working)
-, misicvideo
- -->
-
-
 		<include content="HUB_ContainerHeader">
 			<param name="id" value="40" />
 			<param name="label" value="$INFO[Container(9042).ListItem.Label]" />
@@ -2371,10 +2138,9 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			
 			<onup>500160</onup>
 			<ondown>500160</ondown>
-			
-			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onright>
-			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetFocus(7000)</onright>
-			<onright condition="!Integer.IsGreater(Container(7000).NumItems,0)">5001</onright>
+			<include content="hubscrollbar_onright">
+				<param name="origin_container" value="5001" />
+			</include>
 			<onleft>6666</onleft>
 			<height>800</height>
 		</control>
@@ -2389,10 +2155,9 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			
 			<onup>500260</onup>
 			<ondown>500260</ondown>
-			
-			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onright>
-			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetFocus(7000)</onright>
-			<onright condition="!Integer.IsGreater(Container(7000).NumItems,0)">5002</onright>
+			<include content="hubscrollbar_onright">
+				<param name="origin_container" value="5002" />
+			</include>
 			<onleft>6666</onleft>
 			<height>800</height>
 		</control>
@@ -2407,10 +2172,9 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<height>800</height>
 			<onup>500460</onup>
 			<ondown>500460</ondown>
-			
-			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onright>
-			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetFocus(7000)</onright>
-			<onright condition="!Integer.IsGreater(Container(7000).NumItems,0)">5004</onright>
+			<include content="hubscrollbar_onright">
+				<param name="origin_container" value="5004" />
+			</include>
 			<onleft>6666</onleft>
 			
 		</control>
@@ -2426,10 +2190,9 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			
 			<onup>500760</onup>
 			<ondown>500760</ondown>
-			
-			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onright>
-			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetFocus(7000)</onright>
-			<onright condition="!Integer.IsGreater(Container(7000).NumItems,0)">5007</onright>
+			<include content="hubscrollbar_onright">
+				<param name="origin_container" value="5007" />
+			</include>
 			<onleft>6666</onleft>
 			
 		</control>
@@ -2445,10 +2208,9 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			
 			<onup>501560</onup>
 			<ondown>501560</ondown>
-			
-			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onright>
-			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetFocus(7000)</onright>
-			<onright condition="!Integer.IsGreater(Container(7000).NumItems,0)">5020</onright>
+			<include content="hubscrollbar_onright">
+				<param name="origin_container" value="5020" />
+			</include>
 			<onleft>6666</onleft>
 			
 		</control>
@@ -2465,9 +2227,9 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<onup>502660</onup>
 			<ondown>502660</ondown>
 			
-			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onright>
-			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetFocus(7000)</onright>
-			<onright condition="!Integer.IsGreater(Container(7000).NumItems,0)">5026</onright>
+			<include content="hubscrollbar_onright">
+				<param name="origin_container" value="5026" />
+			</include>
 			<onleft>6666</onleft>
 			
 		</control>
@@ -2484,9 +2246,9 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 			<onup>501860</onup>
 			<ondown>501860</ondown>
 			
-			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onright>
-			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetFocus(7000)</onright>
-			<onright condition="!Integer.IsGreater(Container(7000).NumItems,0)">5018</onright>
+			<include content="hubscrollbar_onright">
+				<param name="origin_container" value="5018" />
+			</include>
 			<onleft>6666</onleft>
 			
 		</control>
@@ -2495,15 +2257,15 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
 		
 		<control type="scrollbar" id="7060">
 			<description>current artist view,scroll albumtitles</description>
-			<visible>!String.IsEmpty(Window(home).Property(HUB_containerpath_albums)) + !Control.HasFocus(7000)</visible>
+			<visible>!String.IsEmpty(Window(home).Property(HUB_containerpath_albums)) + !Window.IsActive(1140)</visible>
 			<right>50</right>
 			<top>400</top>
 			<onup>7060</onup>
 			<ondown>7060</ondown>
 			<onleft>5121</onleft>
-			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onright>
-			<onright condition="Integer.IsGreater(Container(7000).NumItems,0)">SetFocus(7000)</onright>
-			<onright condition="!Integer.IsGreater(Container(7000).NumItems,0)">5121</onright>
+			<include content="hubscrollbar_onright">
+				<param name="origin_container" value="5121" />
+			</include>
 			<height>675</height>
 		</control>
 		<include condition="Skin.HasSetting(window_frame)" content="window_frame" />
@@ -2517,8 +2279,6 @@ current playlist if NAME  "$INFO[Window(home).Property(current_xsp_Title)]" is e
  HUB_containerpath_albums $INFO[Window(home).Property(HUB_containerpath_albums),[COLOR cyan][B],[/B][/COLOR]]
 playlist_itemcontrol $INFO[window(home).property(playlist_itemcontrol)]
 [COLOR orange]CURRENT[/COLOR]
-Container(7000).Position   $INFO[Container(7000).Position]
-Container(7000).CurrentItem $INFO[Container(7000).CurrentItem]
 
   $INFO[System.CurrentControlID,Container(,).CurrentItem] : $INFO[ListItem.CurrentItem,[COLOR cyan][B],[/B][/COLOR]]
   ListItem.dbtype  $INFO[ListItem.dbtype,[COLOR cyan][B],[/B][/COLOR]]  |   ListItem.dbid  $INFO[ListItem.dbid,[COLOR cyan][B],[/B][/COLOR]] 
@@ -2531,10 +2291,7 @@ Container(7000).CurrentItem $INFO[Container(7000).CurrentItem]
   ListItem.FolderPath : $INFO[ListItem.FolderPath,[COLOR cyan][B],[/B][/COLOR]]
   ListItem.FileExtension : $INFO[ListItem.FileExtension,[COLOR cyan][B],[/B][/COLOR]]
 
-playlistmusic://  FileNameAndPath = Container(7000).ListItem.FileNameAndPath : $INFO[Container(7000).ListItem.FileNameAndPath,[COLOR cyan][B],[/B][/COLOR]]
-playlistmusic://  Path  = Container(7000).ListItem.Path : $INFO[Container(7000).ListItem.Path,[COLOR cyan][B],[/B][/COLOR]]
-playlistmusic://  FolderName = Container(7000).ListItem.FolderName : $INFO[Container(7000).ListItem.FolderName,[COLOR cyan][B],[/B][/COLOR]]
-playlistmusic://  FolderPath = Container(7000).ListItem.FolderPath : $INFO[Container(7000).ListItem.FolderPath,[COLOR cyan][B],[/B][/COLOR]]
+
 
 local xsp   Container(9042).ListItem.Folderpath  :  $INFO[Container(9042).ListItem.Folderpath]
 local xsp   Container(9042).ListItem.FileNameAndPath  :  $INFO[Container(9042).ListItem.FileNameAndPath]

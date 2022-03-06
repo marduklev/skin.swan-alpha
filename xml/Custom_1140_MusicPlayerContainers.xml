@@ -8,14 +8,19 @@
 	<controls>
 	
 	<!-- <param name="forcecolor" value="colors_playlistbar_media" /> better define glabal variables? -->
-	<include condition="String.IsEqual(Window(home).Property(CurrentPlaylistVisible),mediawindow)" content="MediaWindow_Playlist">
+	<include condition="String.IsEqual(Window(home).Property(CurrentPlaylistVisible),mediawindow) + !Window.IsActive(1110)" content="MediaWindow_Playlist">
 		<param name="posy" value="0" />
 		<param name="onleft" value="50" />
 		<param name="onright" value="50" />
-		<animation effect="slide" start="0,0" end="-480,0" time="300" tween="cubic" easing="in">WindowOpen</animation>
-		<animation effect="slide" end="0,0" start="-480,0" time="250" tween="cubic" easing="in">WindowClose</animation>
+		<param name="top" value="20%" />
+		<param name="height" value="80%" />
+		<param name="container_height" value="90%" />
+	</include>
+	<include condition="String.IsEqual(Window(home).Property(CurrentPlaylistVisible),mediawindow) + Window.IsActive(1110)" content="MediaWindow_Playlist">
+		
 	</include>
 	<include condition="String.IsEmpty(Window(home).Property(CurrentPlaylistVisible)) + !Skin.HasSetting(MusicOSD_SmallPlaylist)">MusicOSD_CommonPlaylist</include>
 	<include condition="[String.IsEmpty(Window(home).Property(CurrentPlaylistVisible)) + Skin.HasSetting(MusicOSD_SmallPlaylist)] | String.IsEqual(Window(home).Property(CurrentPlaylistVisible),small)">MusicOSD_SmallPlaylist</include>
+	
 	</controls>
 </window>

@@ -2,6 +2,7 @@
 	##############   reminder   ######################################################
 	##################################################################################
 
+Window.Property(IsRadio) 	Returns "true" if the window is a radio window, empty string otherwise (for use in the PVR windows) 
 
 cleanupnotes /reminder
 !(A + B) = !A | !B
@@ -10,16 +11,6 @@ Window.IsVisible - includes fade out time on dialogs
 Window.IsActive  - e fade out time on dialogs 
 
 always ? ListItem.IsParentFolder = String.IsEqual(ListItem.label,..)
-
-
-	https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent
-	decode
-	console.log(`decodedpath: ${encodeURIComponent('{"rules":{"and":[{"field":"album","operator":"contains","value":["INFOLABEL"]}]},"type":"albums"}')}`);
-	console.log(`decodedpath: ${encodeURIComponent('{"limit":1,"order":{"direction":"ascending","method":"playcount"},"rules":{"and":[{"field":"playcount","operator":"is","value":["0"]},{"field":"tvshow","operator":"is","value":["INFOLABEL"]}]},"type":"episodes"}')}`);
-
-	encode
-	console.log(`encodedpath: ${decodeURIComponent('%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22album%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22INFOLABEL%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D')}`);
-	
 
   REFACTOR CODE FOR container(itemlayout|focusedlayout) - test in 1150
   REFACTOR MUSIC HUB
@@ -33,14 +24,10 @@ always ? ListItem.IsParentFolder = String.IsEqual(ListItem.label,..)
 						- album artist (center??)
 						NOTE: expect 'long/multirow labels'
 	- item tag color circle panels (need revisit) textcolor hc white|shadowcolor hc black
-	- custom shutdown menu
-	- home mainmenu - submenu usage/or just *.folderpath
 	- go over content call variables  [ERROR: XFILE::CDirectory::GetDirectory - Error getting -] "-" 
-	- watched indicator +/| progressbar go over usage places , get better handle,overlay
-	- emuary info lookups : adjust call/queries, reduce dialogselect popups
 	
-	- videofullscreeninfo - handle of albums|musicvideos if content(musicvideo)
-							
+	- emuary info lookups : adjust/fix call/queries, reduce dialogselect popups
+	
 	- blur issue
 		- e.g. if COMMON view switch to spotlight view all is fine, if switch FROM spotlight view to COMMON BLUR IMAGE NOT 'REFRESHING' till reload skin - just if Spotlight Views make use of blur fct
 	
@@ -49,19 +36,15 @@ always ? ListItem.IsParentFolder = String.IsEqual(ListItem.label,..)
 						-  weather : current,weekly,dayly items)
 						-  search :	 edit control + widget groups, search container filtered - options : disable whole group, disable specific containers (similiar to search window)
 						-  PVR? : 
-						- favourites : check option to differ
+						- favourites : check option to differ content
 			
 			keep in mind - integer can be used
 	
 	
 	KODI LOG ERRORs
-			Trying to add unsupported control type 16 (~MyVideoNav.xml)
-			Trying to add unsupported control type 1  (~Home.xml)
+			Trying to add unsupported control type 16 (~MyVideoNav.xml) - addon or skin related ?
+			Trying to add unsupported control type 1  (~Home.xml) - addon or skin related ?
 			
-			some dynamic Contaners - DIRECTORY ERROR GETTING
-			
-			PVR TO DO : vertical layout and other things
-
 	- bring in options: create *title*-fanart.png if not existing - TakeScreenshot([filenameandpath,sync]) 	Takes a Screenshot. You can optionally specify the filename (including the path). Note: only .png files are supported. Add "sync" parameter to run synchronously (slow). 
 
 
@@ -70,6 +53,9 @@ always ? ListItem.IsParentFolder = String.IsEqual(ListItem.label,..)
 ##################################################################################
 ########################               1.43      ########################
 ##################################################################################
+		
+		• dialogselect
+			- got tickmark/roundbox indicator
 		
 		• nextup continue watching dialog
 			- triangle ( re-add missing images )
@@ -80,10 +66,14 @@ always ? ListItem.IsParentFolder = String.IsEqual(ListItem.label,..)
 		• cleanup/add some localized infolabels here and there, adjust skinsettings (startup - go into kodi core election, adjust initial start settings/strings)
 		
 		• view520:
-			- label for 'total seasons|episodes' 'tvshow status' count value - use themoviedb helper as fallback
+			- label for 'total seasons|episodes' 'tvshow status' count value - use themoviedb.helper property labels as fallback
 			- be able to focus currently playing playlist on click 'right' when no scrollbar visible
+			- differ lates content overlay music | video
 
-		:: 
+		• dialogmusicinfo | dialogfullscreeninfo 
+			- sort musicvideo content by year 
+		
+		::
 			TODO
 				• view520 stuff
 				
