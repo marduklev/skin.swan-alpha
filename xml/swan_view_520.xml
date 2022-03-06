@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <includes>
 	
-	<!-- NOTE:
-	go over views, info'panels', get consistency in labels
-		rootlabel~head
-		subhead 
-			flagsm*
-		description
-		*bottominfo
-		flagsm* | flagsr
-		
-		incl w|h|font|colors|cond vis
-	-->
 	<variable name="list_item_rootinfo">
 		<value condition="String.StartsWith(Container.Folderpath,library) | Container.Content()">$INFO[System.CurrentWindow,[B],[/B]]</value>
 		<value condition="$EXP[IsEpisode]">$INFO[Container.ListItem.TVShowTitle,[B],[/B]]</value>
@@ -23,16 +12,10 @@
 		<value>$INFO[Container.ListItem.Label,[B],[/B]]$INFO[Container.ListItem.Year,   (,)]</value>
 	</variable>
 	<variable name="list_item_subinfo">
-		<!--
-		<value condition="string.contains(Container.PluginName,amazon)">[COLOR $VAR[color_spotlightlib_accent]]Amazon[/COLOR]</value>
-		<value condition="string.contains(Container.PluginName,netflix)">[COLOR $VAR[color_spotlightlib_accent]]$INFO[Container.PluginName]Netflix[/COLOR]</value>
-		-->
 		<value condition="String.StartsWith(Container.Folderpath,library) | Container.Content() | [String.IsEmpty(listitem.dbtype) + !Container.Content(years)]">[COLOR $VAR[color_spotlightlib_accent]]$INFO[Container.ListItem.Label][/COLOR]</value>
 		<value condition="$EXP[IsEpisode]">$INFO[Container.ListItem.Season,$LOCALIZE[20373] ,]$INFO[Container.ListItem.Year,  ([LIGHT],[/LIGHT])]  | $INFO[Container.ListItem.Episode,[CAPITALIZE]$LOCALIZE[20452][/CAPITALIZE] ,]$INFO[Container.ListItem.Title, : ,]</value>
 		<value condition="$EXP[IsSeason]">$INFO[Container.ListItem.Label]$INFO[Container.ListItem.Year,  ([LIGHT],[/LIGHT])]</value>
 		<value condition="$EXP[IsTVShow]">$VAR[TVShow_Propertys]</value>
-		
-		
 		<value condition="Container.Content(actors) | Container.Content(directors)">[B]$INFO[Container.FolderName][/B]</value>
 		<value condition="Container.Content(genres) | Container.Content(studios) | Container.Content(tags) | Container.Content(countries) | Container.Content(years)">[COLOR $VAR[color_spotlightlib_accent]]$INFO[Container.ListItem.Label,[B],[/B]][/COLOR]</value>
 	</variable>
@@ -57,10 +40,7 @@
 	
 	<include name="view_520">
 		<control type="group">
-			<!-- <animation effect="slide" start="0,0" end="200,0" time="0" condition="Window.IsVisible(1140)">conditional</animation> -->
-			
 			<visible>Control.IsVisible(520)</visible>
-			
 			<control type="image">
 				<visible>Player.HasVideo + String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
 				<texture colordiffuse="$VAR[color_spotlightlib_background_layer1]">colors/white90.png</texture>
@@ -152,7 +132,6 @@
 				</control>
 				
 				<control type="group">
-				
 					<control type="grouplist">
 						<visible>Control.IsVisible(520)</visible>
 						<orientation>vertical</orientation>

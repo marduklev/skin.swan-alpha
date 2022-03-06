@@ -6,6 +6,8 @@
 	<backgroundcolor>$VAR[color_global_background_layer1]</backgroundcolor>
 	<onload condition="!String.IsEmpty(window(skinsettings).property(refocus_shortcut_id))">SetFocus($INFO[window(skinsettings).property(refocus_shortcut_id)])</onload>
 	<onload condition="!String.IsEmpty(window(skinsettings).property(refocus_shortcut_id))">ClearProperty(refocus_shortcut_id)</onload>
+	<onload condition="String.IsEqual(Window(home).Property(addon_forcedaction),done)">ClearProperty(addon_forcedaction,home)</onload>
+	
 	<controls>
 		<include>global_background</include>
 		<include>HeaderBar</include>
@@ -150,41 +152,25 @@
 					<param name="id" value="$PARAM[id]010"/>
 					<param name="label" value="S T A R T     W I N D O W"/>
 				</include>
-				<control type="radiobutton" id="$PARAM[id]011">
-					<label>$LOCALIZE[10000]</label>
-					<onclick condition="!String.IsEmpty(Skin.String(custom_startup))">Skin.Reset(custom_startup)</onclick>
-					<selected>String.IsEmpty(Skin.String(custom_startup))</selected>
+				<control type="button" id="$PARAM[id]011">
+					<description>go into core startup appearancesettings - dialogselect - back skinsettings </description>
+					<label>Choose a Kodi Core $LOCALIZE[512]</label>
+					<label2>$INFO[System.StartupWindow]      </label2>
+					<onclick>ActivateWindowAndFocus(appearancesettings,return)</onclick>
+					<onclick>Action(down)</onclick>
+					<onclick>Action(down)</onclick>
+					<onclick>Action(down)</onclick>
+					<onclick>Action(down)</onclick>
+					<onclick>SendClick(-78)</onclick>
+					<onclick>SetProperty(addon_forcedaction,dialogselect,home)</onclick>
+					<visible>!skin.string(custom_startup)</visible>
 				</control>
 				<control type="radiobutton" id="$PARAM[id]014">
 					<description>custom 1110 Music Hub</description>
 					<include content="SkinSettings_StartupRadioButton">
 						<param name="visible" value="Library.HasContent(Music)" /> 
-						<param name="label" value="Music Hub" /> 
+						<param name="label" value="$LOCALIZE[636]  [B][I]Music Hub[/I][/B]   $LOCALIZE[512]" /> 
 						<param name="windowid" value="1110" />
-					</include>
-				</control>
-				<control type="radiobutton" id="$PARAM[id]015">
-					<description>videos</description>
-					<include content="SkinSettings_StartupRadioButton">
-						<param name="visible" value="Library.HasContent(Video)" /> 
-						<param name="label" value="$LOCALIZE[10025]" /> 
-						<param name="windowid" value="10025" />
-					</include>
-				</control>
-				<control type="radiobutton" id="$PARAM[id]016">
-					<description>music</description>
-					<include content="SkinSettings_StartupRadioButton">
-						<param name="visible" value="Library.HasContent(Music)" /> 
-						<param name="label" value="$LOCALIZE[10502]" /> 
-						<param name="windowid" value="10502" />
-					</include>
-				</control>
-				<control type="radiobutton" id="$PARAM[id]017">
-					<description>filebrowser</description>
-					<include content="SkinSettings_StartupRadioButton">
-						<param name="visible" value="true" /> 
-						<param name="label" value="$LOCALIZE[10126]" /> 
-						<param name="windowid" value="10126" />
 					</include>
 				</control>
 			</include>
@@ -3411,7 +3397,7 @@
 			<animation effect="fade" start="100" end="0" time="200">Unfocus</animation>
 		</control>
 		<include content="window_frame" />
-		<include content="swan_debug_overlay">
+		<include condition="Skin.HasSetting(SwanDebug)" content="swan_debug_overlay">
 			<param name="nested_debug_infotop" value="
 refocus_shortcut_id $INFO[window(skinsettings).property(refocus_shortcut_id)]
 [B]SHUTDOWNMENU[/B]
