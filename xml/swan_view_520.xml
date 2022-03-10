@@ -3,8 +3,8 @@
 	
 	<variable name="list_item_rootinfo">
 		<value condition="String.StartsWith(Container.Folderpath,library) | Container.Content()">$INFO[System.CurrentWindow,[B],[/B]]</value>
-		<value condition="$EXP[IsEpisode]">$INFO[Container.ListItem.TV$PARAM[cat_2_value],[B],[/B]]</value>
-		<value condition="$EXP[IsSeason]">$INFO[Container.ListItem.TV$PARAM[cat_2_value],[B],[/B]]</value>
+		<value condition="$EXP[IsEpisode]">$INFO[Container.ListItem.TVShowTitle,[B],[/B]]</value>
+		<value condition="$EXP[IsSeason]">$INFO[Container.ListItem.TVShowTitle,[B],[/B]]</value>
 		<value condition="!String.IsEmpty(Container.ListItem.Artist)">$INFO[Container.ListItem.Artist,[B],[/B]]</value>
 		<value condition="Container.Content(playlists) | Container.Content(genres) | Container.Content(studios) | Container.Content(tags) | Container.Content(countries) | Container.Content(years)">[UPPERCASE][B]$INFO[Container.FolderName][/B][/UPPERCASE]</value>
 		<value condition="Container.Content(actors) | Container.Content(directors)">[COLOR $VAR[color_spotlightlib_accent]]$INFO[Container.ListItem.Label,[B],[/B]][/COLOR]</value>
@@ -74,7 +74,7 @@
 	
 				<control type="image">
 					<description>polaroid square</description>
-					<visible>[!window.isactive(music) + !Skin.HasSetting(View_520_disabledart_video)] | !Window.IsActive(videos)</visible>
+					<visible>!String.StartsWith(container().listitem.label,*) + [!window.isactive(music) + !Skin.HasSetting(View_520_disabledart_video)] | !Window.IsActive(videos)</visible>
 					<visible>!string.isempty(listitem.dbtype) + !Container.Content() + !Container.Content(directors) + !Container.Content(actors) + !Container.Content(studios) + !Container.Content(genres) + !Container.Content(years) + !Container.Content(tags) + !Container.Content(countries)  + !Container.Content(sources) + !String.StartsWith(ListItem.Icon,defaultartist)</visible>
 					<visible>[String.IsEmpty(listitem.art(poster)) + String.IsEmpty(listitem.art(season.poster))] | [string.contains(Container.PluginName,amazon) + [$EXP[IsTVShow] | $EXP[IsSeason] | $EXP[IsEpisode]] + String.Contains(listitem.icon,amazon.com)]</visible>
 					<height>350</height>
