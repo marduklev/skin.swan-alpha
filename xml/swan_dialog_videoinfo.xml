@@ -654,8 +654,12 @@ ID 	Type 	Description
 					<param name="itemwidth" value="207" />
 					<param name="itemheight" value="310" />
 					<param name="item_artwork_name" value="poster" />
-					<include condition="!Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceInfo"/>
-					<include condition="Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceSelect"/>
+					<include condition="!Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceInfo">
+						<param name="id" value="8601" />
+					</include>
+					<include condition="Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceSelect">
+						<param name="id" value="8601" />
+					</include>
 					<content target="videos" sortby="year" >videodb://movies/sets/$INFO[ListItem.SetId]/?setid=$INFO[ListItem.SetId]</content>
 				</include>
 				
@@ -740,8 +744,12 @@ ID 	Type 	Description
 					<param name="itemheight" value="310" />
 					<param name="item_artwork_name" value="poster" />
 					
-					<include condition="!Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceInfo"/>
-					<include condition="Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceSelect"/>
+					<include condition="!Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceInfo">
+						<param name="id" value="8604" />
+					</include>
+					<include condition="Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceSelect">
+						<param name="id" value="8604" />
+					</include>
 									
 					<content target="videos" sortby="year" sortorder="descending">videodb://movies/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22actor%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$VAR[videoinfo_cast_container_id]%22%5D%7D%2C%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
 					<content target="videos" sortby="year" sortorder="descending">videodb://tvshows/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22actor%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$VAR[videoinfo_cast_container_id]%22%5D%7D%2C%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D</content>
@@ -764,8 +772,12 @@ ID 	Type 	Description
 					<param name="itemheight" value="310" />
 					<param name="item_artwork_name" value="poster" />
 					
-					<include condition="!Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceInfo"/>
-					<include condition="Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceSelect"/>
+					<include condition="!Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceInfo">
+						<param name="id" value="8605" />
+					</include>
+					<include condition="Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceSelect">
+						<param name="id" value="8605" />
+					</include>
 					<content>
 						<item>
 							<visible>System.HasAddon(resource.images.moviedirectorthumbs)</visible>
@@ -794,8 +806,6 @@ ID 	Type 	Description
 					<param name="itemheight" value="310" />
 					<param name="item_artwork_name" value="poster" />
 					
-					<include condition="!Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceInfo"/>
-					<include condition="Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceSelect"/>
 					<include>Action_CastMemberSearchForceOption</include>
 					<content limit="15" target="videos">plugin://plugin.video.themoviedb.helper/?info=crew&amp;$VAR[videoinfo_tmdb_helper_type]&amp;$VAR[videoinfo_tmdb_helper_query]</content>
 				</include>
@@ -817,8 +827,12 @@ ID 	Type 	Description
 					<param name="itemheight" value="310" />
 					<param name="item_artwork_name" value="poster" />
 					
-					<include condition="!Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceInfo"/>
-					<include condition="Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceSelect"/>
+					<include condition="!Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceInfo">
+						<param name="id" value="8601" />
+					</include>
+					<include condition="Skin.HasSetting(Dialog_ItemsForceSelect)" content="Action_ItemForceSelect">
+						<param name="id" value="8601" />
+					</include>
 					
 					<content target="videos">plugin://script.embuary.helper/?info=getsimilar&amp;dbid=$INFO[ListItem.DBID]&amp;type=$INFO[ListItem.DBType]</content>
 				</include>
@@ -1181,11 +1195,25 @@ ID 	Type 	Description
 	</include>
 	<include name="Action_ItemForceInfo">
 		<onclick>Dialog.Close(all,true)</onclick>
-		<onclick condition="!string.startswith(System.BuildVersion,18.) + [String.IsEqual(Container($PARAM[id]).ListItem.dbtype,movie) + [!System.GetBool(videolibrary.groupmoviesets) | [System.GetBool(videolibrary.groupmoviesets) + String.IsEmpty(Container($PARAM[id]).ListItem.SetId)]]]">Container.Update(videodb://movies/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22Title%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[Container($PARAM[id]).ListItem.Label]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D)</onclick>
-		<onclick condition="string.startswith(System.BuildVersion,18.) + [String.IsEqual(Container($PARAM[id]).ListItem.dbtype,movie) + [!System.GetBool(videolibrary.groupmoviesets) | [System.GetBool(videolibrary.groupmoviesets) + String.IsEmpty(Container($PARAM[id]).ListItem.SetId)]]]">ReplaceWindow(Videos,videodb://movies/titles/$INFO[Container($PARAM[id]).ListItem.dbid])</onclick>
+		<include condition="string.startswith(System.BuildVersion,18.)" content="Action_ItemForceInfo_leia">
+			<param name="id" value="$PARAM[id]" />
+		</include>
+		<include condition="!string.startswith(System.BuildVersion,18.)" content="Action_ItemForceInfo_current">
+			<param name="id" value="$PARAM[id]" />
+		</include>
+		<onclick condition="true">Notification($INFO[Container($PARAM[id]).ListItem.dbid] $NUMBER[$PARAM[id]],$NUMBER[$PARAM[id]]  $PARAM[id])</onclick>
+		<onclick>AlarmClock(delayedaction,Action(info),00:00)</onclick>
+	</include>
+	
+	<include name="Action_ItemForceInfo_leia">
+		<onclick condition="String.IsEqual(Container($PARAM[id]).ListItem.dbtype,movie) + [!System.GetBool(videolibrary.groupmoviesets) | [System.GetBool(videolibrary.groupmoviesets) + String.IsEmpty(Container($PARAM[id]).ListItem.SetId)]]">ReplaceWindow(Videos,videodb://movies/titles/$INFO[Container($PARAM[id]).ListItem.dbid])</onclick>
 		<onclick condition="String.IsEqual(Container($PARAM[id]).ListItem.dbtype,movie) + System.GetBool(videolibrary.groupmoviesets) + !String.IsEmpty(Container($PARAM[id]).ListItem.SetId)">ReplaceWindow(Videos,videodb://movies/sets/$INFO[Container($PARAM[id]).ListItem.SetId]/$INFO[Container($PARAM[id]).ListItem.dbid]?setid=$INFO[Container($PARAM[id]).ListItem.SetId])</onclick>
 		<onclick condition="String.IsEqual(Container($PARAM[id]).ListItem.dbtype,tvshow)">ReplaceWindow(Videos,videodb://tvshows/titles/$INFO[Container($PARAM[id]).ListItem.dbid])</onclick>
-		<onclick>AlarmClock(delayedaction,Action(info),00:00,silent)</onclick>
+	</include>
+	
+	<include name="Action_ItemForceInfo_current">
+		<onclick>Dialog.Close(all,true)</onclick>
+		<onclick>ReplaceWindow(Videos,videodb://$INFO[Container($PARAM[id]).ListItem.dbtype]s/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[Container($PARAM[id]).ListItem.Title]%22%5D%7D%5D%7D%2C%22type%22%3A%22$INFO[Container($PARAM[id]).ListItem.dbtype]s%22%7D)</onclick>
 	</include>
 	
 	
