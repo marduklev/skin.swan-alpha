@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <window>
     <defaultcontrol always="true">3</defaultcontrol>
-	<onload condition="!String.IsEmpty(Window(home).Property(SwanShortcut_LinkWidget))">SetFocus(9000)</onload>
-	<onload condition="!String.IsEmpty(Window(home).Property(ShortcutPlaylistContent))">SetFocus(40)</onload>
 	<onload condition="String.IsEqual(Window(home).Property(addon_forcedaction),dialogselect)">SetProperty(addon_forcedaction,done,home)</onload>
 	<onunload condition="!String.IsEmpty(Window(home).Property(addon_forcedaction))">Action(back)</onunload>
-	<onunload condition="!String.IsEmpty(Window(home).Property(SwanShortcut_LinkWidget))">ClearProperty(SwanShortcut_LinkWidget,home)</onunload>
-	<onunload condition="!String.IsEmpty(Window(home).Property(ShortcutPlaylistContent))">ClearProperty(ShortcutPlaylistContent,home)</onunload>
 	<onunload condition="!String.IsEmpty(Window(home).Property(shortcutitem_name))">ClearProperty(shortcutitem_name,home)</onunload>
 	<onunload condition="!String.IsEmpty(Window(home).Property(userwidgetLayout))">ClearProperty(userwidgetLayout,home)</onunload>
 	<onunload condition="!String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">ClearProperty(shortcutaction_inprogress,home)</onunload>
@@ -33,7 +29,6 @@
 
         <control type="group">
             <visible>!Window.IsVisible(yesnodialog) + !Window.IsVisible(virtualkeyboard) + !Window.IsVisible(numericinput)</visible>
-            <visible>String.IsEmpty(Window(home).Property(ShortcutPlaylistContent))</visible>
 			<include content="Dialog_CommonInfo">
                 <param name="Def_Icon" value="$VAR[image_dialogselect]" />
                 <param name="Header_label" value="$INFO[Control.GetLabel(1),[B],[/B]]" />
@@ -116,11 +111,6 @@
 					<font>montserrat_22_semibold</font>
 				</control>
 			</control>
-			
-        </control>
-		
-		<include content="SwanShortcuts_DialogSelect_Contents" condition="!String.IsEmpty(Window(home).Property(ShortcutPlaylistContent))" />
-		<include content="SwanShortcuts_DialogSelect_LinkWidget" condition="!String.IsEmpty(Window(home).Property(SwanShortcut_LinkWidget))" />
-		
+		</control>
 	</controls>
 </window>
