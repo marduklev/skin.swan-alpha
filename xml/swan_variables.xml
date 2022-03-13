@@ -464,6 +464,51 @@ $INFO[ListItem.PictureResolution]  -->
 	<!-- ######### -->
 	<!--   DIALOG  -->
 	<!-- ######### -->
+	
+	<include name="DialogSelect_Container">
+		<control type="group">
+			<include content="Dialog_CommonInfo">
+				<param name="Def_Icon" value="$INFO[Container(40).ListItem.Icon]" />
+				<param name="Header_label" value="Choose Homelayout" />
+				<param name="Item_Description" value="$INFO[Container(40).ListItem.Label2]" />
+			</include>
+			<control type="group">
+				<control type="panel" id="40">
+					<include content="SwanShortcuts_PanelList" />
+					
+					<include condition="String.IsEqual(Window(home).Property(select),homelayout)" content="DialogSelect_HomeLayoutContent" />
+					
+					
+				</control>
+			</control>
+		</control>
+	</include>
+	
+	<!-- or nested ? -->
+	<include name="DialogSelect_HomeLayoutContent">
+		<content>
+			<item>
+				<label>Spotlight</label>
+				<icon>special://skin/extras/selectdialog/homelayout_spotlight.jpg</icon>
+				<onclick>Skin.SetString(HomeLayout,Spotlight)</onclick>
+				<onclick>Dialog.Close(all,true)</onclick>
+			</item>
+			<item>
+				<label>WidgetsOnly</label>
+				<icon>special://skin/extras/selectdialog/homelayout_widgetsonly.jpg</icon>
+				<onclick>Skin.SetString(HomeLayout,WidgetsOnly)</onclick>
+				<onclick>Dialog.Close(all,true)</onclick>
+			</item>
+			<item>
+				<label>MenuTiles</label>
+				<icon>special://skin/extras/selectdialog/homelayout_menutiles.jpg</icon>
+				<onclick>Skin.SetString(HomeLayout,MenuTiles)</onclick>
+				<onclick>Dialog.Close(all,true)</onclick>
+			</item>
+		</content>
+	</include>
+		
+	
 	<variable name="image_dialogselect">
 		<value condition="!String.IsEmpty(Container(6).ListItem.Icon)">$INFO[Container(6).ListItem.Icon]</value>
 		<value condition="!String.IsEmpty(Container(3).ListItem.Icon)">$INFO[Container(3).ListItem.Icon]</value>
@@ -476,12 +521,7 @@ $INFO[ListItem.PictureResolution]  -->
 		<value condition="String.IsEqual(Control.GetLabel(1),Set default Pallete) + Container(3).Position(1)">special://skin/extras/selectdialog/colorpalette_rainbow.jpg</value>
 		<value condition="String.IsEqual(Control.GetLabel(1),Set default Pallete) + Container(3).Position(2)">special://skin/extras/selectdialog/colorpalette_materialdesign.jpg</value>
 		<value condition="String.IsEqual(Control.GetLabel(1),Set default Pallete) + Container(3).Position(3)">special://skin/extras/selectdialog/colorpalette_webcolors.jpg</value>
-	<!-- Home Layout -->
-		<value condition="String.IsEqual(Control.GetLabel(1),Choose Homelayout) + Container(3).Position(0)">special://skin/extras/selectdialog/homelayout_spotlight.jpg</value>
-		<value condition="String.IsEqual(Control.GetLabel(1),Choose HomeLayout) + Container(3).Position(1)">special://skin/extras/selectdialog/homelayout_widgetsonly.jpg</value>
-		
-		<value condition="String.IsEqual(Control.GetLabel(1),Choose Homelayout) + Container(3).Position(2)">special://skin/extras/selectdialog/homelayout_menutiles.jpg</value>
-		
+	
 	<!-- Widget Layout Type -->
 		<value condition="String.IsEqual(Control.GetLabel(1),$LOCALIZE[21858]) + Container(3).Position(0)">special://skin/extras/selectdialog/widgetlayout_poster.jpg</value>
 		<value condition="String.IsEqual(Control.GetLabel(1),$LOCALIZE[21858]) + Container(3).Position(1)">special://skin/extras/selectdialog/widgetlayout_landscape.jpg</value>
