@@ -659,13 +659,13 @@
 				<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),widget) + [String.IsEmpty(Container.Folderpath) + !String.IsEmpty(ListItem.Path)]">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_path,$INFO[ListItem.Path])</onclick>
 				<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),widget) + !String.IsEmpty(Container.Folderpath)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_path,$INFO[Container.Folderpath])</onclick>
 				<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),widget) + String.IsEmpty(Window(home).Property(shortcutitem_name))">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_name,$INFO[System.CurrentWindow,, • ]$INFO[Container.FolderName])</onclick>
-				<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),widget) + String.IsEmpty(Window(home).Property(userwidgetLayout))">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout,$VAR[ContainerViewmode])</onclick>
-				<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),widget) + String.IsEmpty(Window(home).Property(userwidgetLayout))">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout.label,$VAR[ContainerViewmode])</onclick>
+				<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),widget)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout,$VAR[ContainerViewmode])</onclick>
+				<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),widget)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout.label,$VAR[ContainerViewmode])</onclick>
 				<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),widget)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_sortby,$VAR[ContainerSortMethods])</onclick>
 				<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),widget)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_sortby.label,$INFO[Container.SortMethod])</onclick>
 				<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),widget)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_sortorder,$VAR[ContainerSortOrder])</onclick>
 				<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),widget)">Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_sortorder.label,$INFO[Container.SortOrder])</onclick>
-				<onclick condition="String.IsEqual(Window(home).Property(shortcutaction_inprogress),widget)">ClearProperty(userwidgetLayout,home)</onclick>
+				
 				<onclick condition="!String.IsEmpty(Window(home).Property(shortcutitem_name))">ClearProperty(shortcutitem_name,home)</onclick>
 				<onclick>ClearProperty(shortcutaction_inprogress,home)</onclick>
 				<onclick>ClearProperty(shortcutitem_nr,home)</onclick>
@@ -717,7 +717,7 @@
 				<onclick>SetProperty(Dialog.6.BuiltIn,Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout,poster_to_fanart)||Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout.label,$LOCALIZE[20021] &amp; $LOCALIZE[31205]))</onclick>
 				
 				<onclick>RunScript(script.embuary.helper,action=createselect,header=$LOCALIZE[21858])</onclick>
-				<onclick>SetProperty(userwidgetLayout,true,home)</onclick>
+				
 			</control>
 			
 			<control type="radiobutton" id="113">
@@ -2667,27 +2667,11 @@
 		</control>
 		<control type="button" id="11033">
 			<description>Set Layout</description>
-			<onclick>SetProperty(Dialog.1.Label,$LOCALIZE[31200])</onclick>
-			<onclick>SetProperty(Dialog.1.BuiltIn,Skin.SetString(userwidget$PARAM[nr]_layout,poster)||Skin.SetString(userwidget$PARAM[nr]_layout.label,$LOCALIZE[20021]))</onclick>
-			
-			<onclick>SetProperty(Dialog.2.Label,$LOCALIZE[31201])</onclick>
-			<onclick>SetProperty(Dialog.2.BuiltIn,Skin.SetString(userwidget$PARAM[nr]_layout,landscape)||Skin.SetString(userwidget$PARAM[nr]_layout.label,$LOCALIZE[31205]))</onclick>
-			
-			<onclick>SetProperty(Dialog.3.Label,$LOCALIZE[31202])</onclick>
-			<onclick>SetProperty(Dialog.3.BuiltIn,Skin.SetString(userwidget$PARAM[nr]_layout,square)||Skin.SetString(userwidget$PARAM[nr]_layout.label,$LOCALIZE[31206]))</onclick>
-			
-			<onclick>SetProperty(Dialog.4.Label,$LOCALIZE[31203])</onclick>
-			<onclick>SetProperty(Dialog.4.BuiltIn,Skin.SetString(userwidget$PARAM[nr]_layout,circle)||Skin.SetString(userwidget$PARAM[nr]_layout.label,$LOCALIZE[31207]))</onclick>
-			
-			<onclick>SetProperty(Dialog.5.Label,$LOCALIZE[31204])</onclick>
-			<onclick>SetProperty(Dialog.5.BuiltIn,Skin.SetString(userwidget$PARAM[nr]_layout,banner)||Skin.SetString(userwidget$PARAM[nr]_layout.label,$LOCALIZE[20020]))</onclick>
-			
-			<onclick>SetProperty(Dialog.6.Label,$LOCALIZE[31200]   &amp;   $LOCALIZE[31201])</onclick>
-			<onclick>SetProperty(Dialog.6.BuiltIn,Skin.SetString(userwidget$PARAM[nr]_layout,poster_to_fanart)||Skin.SetString(userwidget$PARAM[nr]_layout.label,$LOCALIZE[20021] &amp; $LOCALIZE[31205]))</onclick>
-				
-			<onclick>RunScript(script.embuary.helper,action=createselect,header=$LOCALIZE[21858])</onclick>
-			<label>Layout</label>
-			<label2>$INFO[Skin.String(userwidget$PARAM[nr]_layout.label)]</label2>
+			<label>Choose Layout</label>
+			<label2>$INFO[Skin.String(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout.label)]</label2>
+			<onclick>SetProperty(shortcutitem_nr,$PARAM[nr],home)</onclick>
+			<onclick>SetProperty(select,userwidgetlayout,home)</onclick>
+			<onclick>ActivateWindow(1102)</onclick>
 		</control>
 		<control type="radiobutton" id="11034">
 			<description>Set fixed</description>
