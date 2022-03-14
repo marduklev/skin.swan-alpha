@@ -470,11 +470,15 @@ $INFO[ListItem.PictureResolution]  -->
 	<!-- cleanup check include 'Dialog_Containers' -->
 		<!-- i am the new dialog select -->
 	<include name="DialogSelect_Container">
+		<param name="id" default="40" />
+		<param name="icon" default="icons/swanglow.png" />
+		<param name="onleft" default="200" />
+		
+		<definition>
 		<control type="group">
 			<control type="group">
-				<include>Dialog_Fullscreen_BGPanel</include>
 				<control type="image">
-					<bordersize>0,0,0,10</bordersize>
+					<bordersize>0,0,0,2</bordersize>
 					<texture colordiffuse="$VAR[color_spotlightlib_accent]">colors/white40.png</texture>
 	                <bordertexture colordiffuse="$VAR[color_spotlightlib_background_layer1]">colors/white.png</bordertexture>
 	            </control>
@@ -505,7 +509,7 @@ $INFO[ListItem.PictureResolution]  -->
 						<bordersize>8</bordersize>
 						<height>200</height>
 						<width>200</width>
-						<texture background="true" diffuse="artworkdiffuse/circle.png" colordiffuse="$VAR[color_spotlightlib_main]">icons/swanglow.png</texture>
+						<texture background="true" diffuse="artworkdiffuse/circle.png" colordiffuse="$VAR[color_spotlightlib_main]">$PARAM[icon]</texture>
 						<aspectratio scalediffuse="false" aligny="center" align="left">keep</aspectratio>
 					</control>
 					<control type="textbox">
@@ -533,20 +537,21 @@ $INFO[ListItem.PictureResolution]  -->
 						<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 					</control>
 	            </control>
-	<control type="button">
-		<description>need do stuff on phone</description>
-		<texturefocus></texturefocus>
-		<texturenofocus></texturenofocus>
-		<onclick>ReloadSkin()</onclick>
-		<height>100%</height>
-		<width>100%</width>
-	</control>
-				<control type="panel" id="40">
+				<control type="panel" id="$PARAM[id]">
 					<top>450</top>
 			        <left>200</left>
 			        <height>620</height>
-			        <onright>200</onright>
-			        <onleft>200</onleft>
+			       
+					<onleft>$PARAM[onleft]</onleft>
+					<onright condition="Control.IsVisible($PARAM[id]60)">$PARAM[id]60</onright>
+					<onright condition="!Control.IsVisible($PARAM[id]60)">$PARAM[onleft]</onright>
+					<onup condition="Control.IsVisible(8999)">8999</onup>
+					<onup condition="!Control.IsVisible(8999)">$PARAM[id]</onup>
+					<ondown>$PARAM[id]</ondown>
+					
+					<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
+					
+					
 			        <scrolltime tween="cubic" easing="out">300</scrolltime>
 			
                     <itemlayout height="310" width="330" condition="$PARAM[fanart_panel]">
@@ -613,7 +618,7 @@ $INFO[ListItem.PictureResolution]  -->
 			        </focusedlayout>
 					
 					<!-- futre default dselect later on -->
-					<itemlayout height="50" width="450" condition="!$PARAM[fanart_panel]">
+					<itemlayout height="80" width="450" condition="!$PARAM[fanart_panel]">
 				        <control type="group">
 							<left>50</left>
 			                <height>50</height>
@@ -634,7 +639,7 @@ $INFO[ListItem.PictureResolution]  -->
 						</control>
 						
 			        </itemlayout>
-			        <focusedlayout height="50" width="450" condition="!$PARAM[fanart_panel]">
+			        <focusedlayout height="80" width="450" condition="!$PARAM[fanart_panel]">
 				        <control type="group">
 							<left>50</left>
 			                <height>50</height>
@@ -665,20 +670,24 @@ $INFO[ListItem.PictureResolution]  -->
 							</control>
 						</control>
 					</focusedlayout>
-					<!-- fanart  --> 
-					<content>
-						<include condition="String.IsEqual(Window(home).Property(select),homelayout)" content="DialogSelect_homelayout" />
-						<include condition="String.IsEqual(Window(home).Property(select),defaultcolorpalette)" content="DialogSelect_defaultcolorpalette" />
-						<include condition="String.IsEqual(Window(home).Property(select),userwidgetlayout)" content="DialogSelect_userwidgetlayout" />
-						<include condition="String.IsEqual(Window(home).Property(select),nextuplayout)" content="DialogSelect_nextuplayout" />
-						<include condition="String.IsEqual(Window(home).Property(select),stillwatchinglayout)" content="DialogSelect_stillwatchinglayout" />
-						<!-- no images -->
-						<include condition="String.IsEqual(Window(home).Property(select),spotlight_metadata_alignx)" content="DialogSelect_spotlight_metadata_alignx" />
-					</content>
+					<include condition="!String.IsEmpty(Window(home).Property(select))" content="dialogselect_skin" />
 				</control>
 			</control>
 		</control>
+		</definition>
 	</include>
+	
+	<include name="dialogselect_skin">
+		<content>
+			<include condition="String.IsEqual(Window(home).Property(select),homelayout)" content="DialogSelect_homelayout" />
+			<include condition="String.IsEqual(Window(home).Property(select),defaultcolorpalette)" content="DialogSelect_defaultcolorpalette" />
+			<include condition="String.IsEqual(Window(home).Property(select),userwidgetlayout)" content="DialogSelect_userwidgetlayout" />
+			<include condition="String.IsEqual(Window(home).Property(select),nextuplayout)" content="DialogSelect_nextuplayout" />
+			<include condition="String.IsEqual(Window(home).Property(select),stillwatchinglayout)" content="DialogSelect_stillwatchinglayout" />
+			<include condition="String.IsEqual(Window(home).Property(select),spotlight_metadata_alignx)" content="DialogSelect_spotlight_metadata_alignx" />
+		</content>
+	</include>	
+		
 	
 	<include name="DialogSelect_stillwatchinglayout">
 		<item>
