@@ -16,13 +16,18 @@
 	
 	<controls>
         <control type="group">
-            <include content="dialog_background_triplepanel" />
+            <include content="dialog_background_triplepanel" condition="String.IsEmpty(Window(home).Property(select))" />
         </control>
         
 		<include content="SwanShortcuts_DialogSelect_Contents" condition="!String.IsEmpty(Window(home).Property(ShortcutPlaylistContent))" />
 		<include content="SwanShortcuts_DialogSelect_LinkWidget" condition="!String.IsEmpty(Window(home).Property(SwanShortcut_LinkWidget))" />
 		
-		<include content="DialogSelect_Container" condition="!String.IsEmpty(Window(home).Property(select))" />
+		<!-- <param name="fanart_panel" value="String.IsEqual(Window(home).Property(select),**)"  -->
+		<include content="DialogSelect_Container" condition="!String.IsEmpty(Window(home).Property(select))">
+			<param name="fanart_panel" value="!String.IsEqual(Window(home).Property(select),spotlight_metadata_alignx)" />
+		</include>
 		
+		
+		<include condition="Skin.HasSetting(window_frame)" content="window_frame" />
 	</controls>
 </window>

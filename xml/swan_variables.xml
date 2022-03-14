@@ -467,160 +467,396 @@ $INFO[ListItem.PictureResolution]  -->
 	
 	
 	<!-- widgetlayout $LOCALIZE[21858] -->
-	
+	<!-- cleanup check include 'Dialog_Containers' -->
+		<!-- i am the new dialog select -->
 	<include name="DialogSelect_Container">
 		<control type="group">
-			<include content="Dialog_CommonInfo">
-				<param name="Def_Icon" value="$INFO[Container(40).ListItem.property(fanart)]" />
-				<param name="Header_label" value="$INFO[Window(home).Property(select)]" />
-				<param name="Item_Description" value="$INFO[Container(40).ListItem.Label2]" />
-			</include>
 			<control type="group">
+				<include>Dialog_Fullscreen_BGPanel</include>
+				<control type="image">
+					<bordersize>0,0,0,10</bordersize>
+					<texture colordiffuse="$VAR[color_spotlightlib_accent]">colors/white40.png</texture>
+	                <bordertexture colordiffuse="$VAR[color_spotlightlib_background_layer1]">colors/white.png</bordertexture>
+	            </control>
+				<control type="image">
+					<top>300</top>
+	                <texture colordiffuse="$VAR[color_spotlightlib_background_layer1]">colors/white.png</texture>
+				</control>
+                
+                <control type="group">
+                    <left>200</left>
+					<control type="image">
+						<description>slide left icon overlay</description>
+						<left>0</left>
+						<top>200</top>
+						<bottom>8</bottom>
+						<bordersize>8</bordersize>
+						<height>200</height>
+						<width>200</width>
+						<bordertexture colordiffuse="$VAR[color_spotlightlib_main]">artworkdiffuse/circle.png</bordertexture>
+						<texture background="true" colordiffuse="ff131313">artworkdiffuse/circle.png</texture>
+						<aspectratio scalediffuse="false" aligny="center" align="left">keep</aspectratio>
+					</control>
+					<control type="image">
+						<description>NEED VARIABEL IMG BASED ON SETTING / PARAM - slide left icon overlay</description>
+						<left>0</left>
+						<top>200</top>
+						<bottom>8</bottom>
+						<bordersize>8</bordersize>
+						<height>200</height>
+						<width>200</width>
+						<texture background="true" diffuse="artworkdiffuse/circle.png" colordiffuse="$VAR[color_spotlightlib_main]">icons/swanglow.png</texture>
+						<aspectratio scalediffuse="false" aligny="center" align="left">keep</aspectratio>
+					</control>
+					<control type="textbox">
+						<top>200</top>
+						<left>300</left>
+						<width>700</width>
+						<height>100</height>
+						<align>center</align>
+						<aligny>center</aligny>
+						<wrapmultiline>true</wrapmultiline>
+						<font>notosans_38_bold_lowlined</font>
+						<label>[I]C H O O S E   [/I]$INFO[Window(home).Property(select)]</label>
+						<textcolor>$VAR[color_spotlightlib_main]</textcolor>
+					</control>
+					<control type="textbox">
+						<top>305</top>
+						<left>300</left>
+						<width>700</width>
+						<height>100</height>
+						<align>center</align>
+						<aligny>top</aligny>
+						<wrapmultiline>true</wrapmultiline>
+						<font>liberationsans_23_bold</font>
+						<label>$INFO[listitem.label]</label>
+						<textcolor>$VAR[color_spotlightlib_main]</textcolor>
+					</control>
+	            </control>
+	<control type="button">
+		<description>need do stuff on phone</description>
+		<texturefocus></texturefocus>
+		<texturenofocus></texturenofocus>
+		<onclick>ReloadSkin()</onclick>
+		<height>100%</height>
+		<width>100%</width>
+	</control>
 				<control type="panel" id="40">
-					<include content="SwanShortcuts_PanelList" />
+					<top>450</top>
+			        <left>200</left>
+			        <height>620</height>
+			        <onright>200</onright>
+			        <onleft>200</onleft>
+			        <scrolltime tween="cubic" easing="out">300</scrolltime>
+			
+                    <itemlayout height="310" width="330" condition="$PARAM[fanart_panel]">
+				        <control type="group">
+			                <height>190</height>
+				            <width>320</width>
+			                <control type="image">
+				                <bordersize>8</bordersize>
+				                <texture>$INFO[listitem.property(fanart)]</texture>
+								<bordertexture colordiffuse="ff131313">colors/white90.png</bordertexture>
+				                <aspectratio scalediffuse="true" aligny="center" align="center">keep</aspectratio>
+				            </control>
+						</control>
+						<control type="textbox">
+							<animation effect="fade" end="10" condition="true">conditional</animation>
+							<top>180</top>
+			                <height>100</height>
+							<align>center</align>
+							<font>liberationsans_23_bold</font>
+							<textcolor>$VAR[color_spotlightlib_main]</textcolor>
+							<label>$INFO[Listitem.Label]</label>
+						</control>
+			        </itemlayout>
+			        <focusedlayout height="310" width="330" condition="$PARAM[fanart_panel]">
+				        <control type="group">
+			                <height>190</height>
+				            <width>320</width>
+							<control type="image">
+					            <bordersize>8</bordersize>
+					            <texture>$INFO[listitem.property(fanart)]</texture>
+					            <aspectratio scalediffuse="true" aligny="center" align="center">keep</aspectratio>
+				            </control>
+				            <control type="image">
+					            <animation type="Focus" reversible="false">
+			                        <effect type="fade" start="0" end="100" time="250" tween="cubic" easing="in" />
+		                        </animation>
+								<bordersize>8</bordersize>
+				                <bordertexture diffuse="colors/white90.png" colordiffuse="$VAR[color_spotlightlib_main]">artworkdiffuse/fanartborder.png</bordertexture>
+				                <texture diffuse="colors/none.png">$INFO[listitem.property(fanart)]</texture>
+				                <aspectratio scalediffuse="true" aligny="center" align="center">keep</aspectratio>
+							</control>
+						</control>
+						<control type="textbox">
+							<animation effect="fade" end="10" condition="true">conditional</animation>
+							<top>180</top>
+			                <height>100</height>
+							<align>center</align>
+							<font>liberationsans_23_bold</font>
+							<textcolor>$VAR[color_spotlightlib_main]</textcolor>
+							<label>$INFO[Listitem.Label]</label>
+						</control>
+						<!--
+						<control type="textbox">
+							<animation type="Focus" reversible="false">
+								<effect type="fade" start="0" end="100" time="350" tween="cubic" easing="in" />
+							</animation>
+							<top>180</top>
+			                <height>100</height>
+							<align>center</align>
+							<font>liberationsans_23_bold</font>
+							<textcolor>$VAR[color_spotlightlib_main]</textcolor>
+							<label>$INFO[Listitem.Label]</label>
+						</control> -->
+			        </focusedlayout>
 					
-					<include condition="String.IsEqual(Window(home).Property(select),homelayout)" content="DialogSelect_HomeLayoutContent" />
-					<include condition="String.IsEqual(Window(home).Property(select),defaultcolorpalette)" content="DialogSelect_ColorPaletteContent" />
-					<include condition="String.IsEqual(Window(home).Property(select),userwidgetlayout)" content="DialogSelect_WidgetLayoutContent" />
-					
-					
+					<!-- futre default dselect later on -->
+					<itemlayout height="50" width="450" condition="!$PARAM[fanart_panel]">
+				        <control type="group">
+							<left>50</left>
+			                <height>50</height>
+				            <width>390</width>
+							<control type="image">
+					            <bordersize>2</bordersize>
+								<bordertexture colordiffuse="$VAR[color_spotlightlib_main]">colors/white10.png</bordertexture>
+					            <texture colordiffuse="$VAR[color_spotlightlib_background_layer1]">artworkdiffuse/fanart.png</texture>
+					        </control>
+							<control type="textbox">
+								<centertop>50%</centertop>
+								<height>50</height>
+								<align>center</align>
+								<font>liberationsans_23_bold</font>
+								<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
+								<label>$INFO[Listitem.Label]</label>
+							</control>
+						</control>
+						
+			        </itemlayout>
+			        <focusedlayout height="50" width="450" condition="!$PARAM[fanart_panel]">
+				        <control type="group">
+							<left>50</left>
+			                <height>50</height>
+				            <width>390</width>
+							<control type="image">
+					            <bordersize>2</bordersize>
+								<bordertexture colordiffuse="$VAR[color_spotlightlib_main]">colors/white.png</bordertexture>
+					            <texture colordiffuse="$VAR[color_spotlightlib_background_layer1]">artworkdiffuse/fanart.png</texture>
+					        </control>
+						    <control type="textbox">
+						 		<centertop>50%</centertop>
+								<height>50</height>
+								<align>center</align>
+								<font>liberationsans_23_bold</font>
+								<textcolor>$VAR[color_spotlightlib_secondary]</textcolor>
+								<label>$INFO[Listitem.Label]</label>
+							</control>
+							<control type="textbox">
+								<animation type="Focus" reversible="false">
+									<effect type="fade" start="0" end="100" time="350" tween="cubic" easing="in" />
+								</animation>
+								<centertop>50%</centertop>
+								<height>50</height>
+								<align>center</align>
+								<font>liberationsans_23_bold</font>
+								<textcolor>$VAR[color_spotlightlib_main]</textcolor>
+								<label>$INFO[Listitem.Label]</label>
+							</control>
+						</control>
+					</focusedlayout>
+					<!-- fanart  --> 
+					<content>
+						<include condition="String.IsEqual(Window(home).Property(select),homelayout)" content="DialogSelect_homelayout" />
+						<include condition="String.IsEqual(Window(home).Property(select),defaultcolorpalette)" content="DialogSelect_defaultcolorpalette" />
+						<include condition="String.IsEqual(Window(home).Property(select),userwidgetlayout)" content="DialogSelect_userwidgetlayout" />
+						<include condition="String.IsEqual(Window(home).Property(select),nextuplayout)" content="DialogSelect_nextuplayout" />
+						<include condition="String.IsEqual(Window(home).Property(select),stillwatchinglayout)" content="DialogSelect_stillwatchinglayout" />
+						<!-- no images -->
+						<include condition="String.IsEqual(Window(home).Property(select),spotlight_metadata_alignx)" content="DialogSelect_spotlight_metadata_alignx" />
+					</content>
 				</control>
 			</control>
 		</control>
 	</include>
 	
+	<include name="DialogSelect_stillwatchinglayout">
+		<item>
+			<label>$LOCALIZE[31305]</label>
+			<property name="fanart">special://skin/extras/selectdialog/un_still_fancy.jpg</property>
+			<onclick>Skin.SetString(stillwatchinglayout,fancy)</onclick>
+			<onclick>Dialog.Close(all,true)</onclick>
+		</item>
+		<item>
+			<label>$LOCALIZE[1438]</label>
+			<property name="fanart">special://skin/extras/selectdialog/un_still_simple.jpg</property>
+			<onclick>Skin.SetString(stillwatchinglayout,simple)</onclick>
+			<onclick>Dialog.Close(all,true)</onclick>
+		</item>
+		<item>
+			<label>$LOCALIZE[31299] $ADDON[service.upnext 30038]</label>
+			<property name="fanart">special://skin/extras/selectdialog/un_still_default.jpg</property>
+			<onclick>Skin.SetString(stillwatchinglayout,addonfancy)</onclick>
+			<onclick>Dialog.Close(all,true)</onclick>
+		</item>
+	</include>
+	
+	<include name="DialogSelect_nextuplayout">
+		<item>
+			<label>$LOCALIZE[39114]</label>
+			<property name="fanart">special://skin/extras/selectdialog/un_fancy_common.jpg</property>
+			<onclick>Skin.SetString(nextuplayout,fancy_common)</onclick>
+			<onclick>Dialog.Close(all,true)</onclick>
+		</item>
+		<item>
+			<label>$LOCALIZE[31303]</label>
+			<property name="fanart">special://skin/extras/selectdialog/un_fancy_triangle.jpg</property>
+			<onclick>Skin.SetString(nextuplayout,fancy_triangle)</onclick>
+			<onclick>Dialog.Close(all,true)</onclick>
+		</item>
+		<item>
+			<label>$LOCALIZE[31299] $ADDON[service.upnext 30039]</label>
+			<property name="fanart">special://skin/extras/selectdialog/un_fancy_default.jpg</property>
+			<onclick>Skin.SetString(nextuplayout,fancy_default)</onclick>
+			<onclick>Dialog.Close(all,true)</onclick>
+		</item>
+		<item>
+			<label>$LOCALIZE[544]</label>
+			<property name="fanart">special://skin/extras/selectdialog/un_simple_common.jpg</property>
+			<onclick>Skin.SetString(nextuplayout,simple_common)</onclick>
+			<onclick>Dialog.Close(all,true)</onclick>
+		</item>
+		<item>
+			<label>$LOCALIZE[31304]</label>
+			<property name="fanart">special://skin/extras/selectdialog/un_simple_small.jpg</property>
+			<onclick>Skin.SetString(nextuplayout,simple_small)</onclick>
+			<onclick>Dialog.Close(all,true)</onclick>
+		</item>
+		<item>
+			<label>$LOCALIZE[31299] $ADDON[service.upnext 30038]</label>
+			<property name="fanart">special://skin/extras/selectdialog/un_simple_default.jpg</property>
+			<onclick>Skin.SetString(nextuplayout,simple_default)</onclick>
+		</item>
+	</include>
+	
 	<!-- or nested ? -->
-	<include name="DialogSelect_HomeLayoutContent">
-		<content>
-			<item>
-				<label>Spotlight</label>
-				<property name="fanart">special://skin/extras/selectdialog/homelayout_spotlight.jpg</property>
-				<icon>defaultstudios.png</icon>
-				<onclick>Skin.SetString(HomeLayout,Spotlight)</onclick>
-				<onclick>Dialog.Close(all,true)</onclick>
-			</item>
-			<item>
-				<label>WidgetsOnly</label>
-				<property name="fanart">special://skin/extras/selectdialog/homelayout_widgetsonly.jpg</property>
-				<icon>defaultstudios.png</icon>
-				<onclick>Skin.SetString(HomeLayout,WidgetsOnly)</onclick>
-				<onclick>Dialog.Close(all,true)</onclick>
-			</item>
-			<item>
-				<label>MenuTiles</label>
-				<property name="fanart">special://skin/extras/selectdialog/homelayout_menutiles.jpg</property>
-				<icon>defaultstudios.png</icon>
-				<onclick>Skin.SetString(HomeLayout,MenuTiles)</onclick>
-				<onclick>Dialog.Close(all,true)</onclick>
-			</item>
-		</content>
+	<include name="DialogSelect_homelayout">
+		<item>
+			<label>Spotlight</label>
+			<property name="fanart">special://skin/extras/selectdialog/homelayout_spotlight.jpg</property>
+			<onclick>Skin.SetString(HomeLayout,Spotlight)</onclick>
+			<onclick>Dialog.Close(all,true)</onclick>
+		</item>
+		<item>
+			<label>WidgetsOnly</label>
+			<property name="fanart">special://skin/extras/selectdialog/homelayout_widgetsonly.jpg</property>
+			<onclick>Skin.SetString(HomeLayout,WidgetsOnly)</onclick>
+			<onclick>Dialog.Close(all,true)</onclick>
+		</item>
+		<item>
+			<label>MenuTiles</label>
+			<property name="fanart">special://skin/extras/selectdialog/homelayout_menutiles.jpg</property>
+			<onclick>Skin.SetString(HomeLayout,MenuTiles)</onclick>
+			<onclick>Dialog.Close(all,true)</onclick>
+		</item>
 	</include>
 	
-	<include name="DialogSelect_ColorPaletteContent">
-		<content>
-			<item>
-				<label>basic</label>
-				<property name="fanart">special://skin/extras/selectdialog/colorpalette_basic.jpg</property>
-				<icon>defaultstudios.png</icon>
-				<onclick>Skin.SetString(defaultcolorpalette,basic)</onclick>
-				<onclick>Dialog.Close(all,true)</onclick>
-			</item>
-			<item>
-				<label>rainbow</label>
-				<property name="fanart">special://skin/extras/selectdialog/colorpalette_rainbow.jpg</property>
-				<icon>defaultstudios.png</icon>
-				<onclick>Skin.SetString(defaultcolorpalette,rainbow)</onclick>
-				<onclick>Dialog.Close(all,true)</onclick>
-			</item>
-			<item>
-				<label>material-design</label>
-				<property name="fanart">special://skin/extras/selectdialog/colorpalette_materialdesign.jpg</property>
-				<icon>defaultstudios.png</icon>
-				<onclick>Skin.SetString(defaultcolorpalette,material-design)</onclick>
-				<onclick>Dialog.Close(all,true)</onclick>
-			</item>
-			<item>
-				<label>webcolors</label>
-				<property name="fanart">special://skin/extras/selectdialog/colorpalette_webcolors.jpg</property>
-				<icon>defaultstudios.png</icon>
-				<onclick>Skin.SetString(defaultcolorpalette,webcolors)</onclick>
-				<onclick>Dialog.Close(all,true)</onclick>
-			</item>
-		</content>
+	<include name="DialogSelect_defaultcolorpalette">
+		<item>
+			<label>basic</label>
+			<property name="fanart">special://skin/extras/selectdialog/colorpalette_basic.jpg</property>
+			<onclick>Skin.SetString(defaultcolorpalette,basic)</onclick>
+			<onclick>Dialog.Close(all,true)</onclick>
+		</item>
+		<item>
+			<label>rainbow</label>
+			<property name="fanart">special://skin/extras/selectdialog/colorpalette_rainbow.jpg</property>
+			<onclick>Skin.SetString(defaultcolorpalette,rainbow)</onclick>
+			<onclick>Dialog.Close(all,true)</onclick>
+		</item>
+		<item>
+			<label>material-design</label>
+			<property name="fanart">special://skin/extras/selectdialog/colorpalette_materialdesign.jpg</property>
+			<onclick>Skin.SetString(defaultcolorpalette,material-design)</onclick>
+			<onclick>Dialog.Close(all,true)</onclick>
+		</item>
+		<item>
+			<label>webcolors</label>
+			<property name="fanart">special://skin/extras/selectdialog/colorpalette_webcolors.jpg</property>
+			<onclick>Skin.SetString(defaultcolorpalette,webcolors)</onclick>
+			<onclick>Dialog.Close(all,true)</onclick>
+		</item>
 	</include>
 	
-	<include name="DialogSelect_WidgetLayoutContent">
-		<content>
-			<item>
-				<label>$LOCALIZE[31200]</label>
-				<property name="fanart">special://skin/extras/selectdialog/widgetlayout_poster.jpg</property>
-				<icon>defaultstudios.png</icon>
-				<onclick>Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout.label,$LOCALIZE[20021])</onclick>
-				<onclick>Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout,poster)</onclick>
-				<onclick>Dialog.Close(all,true)</onclick>
-			</item>
-			<item>
-				<label>$LOCALIZE[31201]</label>
-				<property name="fanart">special://skin/extras/selectdialog/widgetlayout_landscape.jpg</property>
-				<icon>defaultstudios.png</icon>
-				<onclick>Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout.label,$LOCALIZE[31205])</onclick>
-				<onclick>Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout,landscape)</onclick>
-				<onclick>Dialog.Close(all,true)</onclick>
-			</item>
-			<item>
-				<label>$LOCALIZE[31202]</label>
-				<property name="fanart">special://skin/extras/selectdialog/widgetlayout_square.jpg</property>
-				<icon>defaultstudios.png</icon>
-				<onclick>Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout.label,$LOCALIZE[31206])</onclick>
-				<onclick>Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout,square)</onclick>
-				<onclick>Dialog.Close(all,true)</onclick>
-			</item>
-			<item>
-				<label>$LOCALIZE[31203]</label>
-				<property name="fanart">special://skin/extras/selectdialog/widgetlayout_circle.jpg</property>
-				<icon>defaultstudios.png</icon>
-				<onclick>Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout.label,$LOCALIZE[31207])</onclick>
-				<onclick>Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout,circle)</onclick>
-				<onclick>Dialog.Close(all,true)</onclick>
-			</item>
-			<item>
-				<label>$LOCALIZE[31204]</label>
-				<property name="fanart">special://skin/extras/selectdialog/widgetlayout_banner.jpg</property>
-				<icon>defaultstudios.png</icon>
-				<onclick>Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout.label,$LOCALIZE[20020])</onclick>
-				<onclick>Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout,banner)</onclick>
-				<onclick>Dialog.Close(all,true)</onclick>
-			</item>
-			<item>
-				<label>$LOCALIZE[31200]   &amp;   $LOCALIZE[31201]</label>
-				<property name="fanart">special://skin/extras/selectdialog/widgetlayout_poster_to_fanart.jpg</property>
-				<icon>defaultstudios.png</icon>
-				<onclick>Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout.label,$LOCALIZE[20021] &amp; $LOCALIZE[31205])</onclick>
-				<onclick>Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout,poster_to_fanart)</onclick>
-				<onclick>Dialog.Close(all,true)</onclick>
-			</item>
-		</content>
+	<include name="DialogSelect_userwidgetlayout">
+		<item>
+			<label>$LOCALIZE[31200]</label>
+			<property name="fanart">special://skin/extras/selectdialog/widgetlayout_poster.jpg</property>
+			<onclick>Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout.label,$LOCALIZE[20021])</onclick>
+			<onclick>Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout,poster)</onclick>
+			<onclick>Dialog.Close(all,true)</onclick>
+		</item>
+		<item>
+			<label>$LOCALIZE[31201]</label>
+			<property name="fanart">special://skin/extras/selectdialog/widgetlayout_landscape.jpg</property>
+			<onclick>Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout.label,$LOCALIZE[31205])</onclick>
+			<onclick>Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout,landscape)</onclick>
+			<onclick>Dialog.Close(all,true)</onclick>
+		</item>
+		<item>
+			<label>$LOCALIZE[31202]</label>
+			<property name="fanart">special://skin/extras/selectdialog/widgetlayout_square.jpg</property>
+			<onclick>Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout.label,$LOCALIZE[31206])</onclick>
+			<onclick>Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout,square)</onclick>
+			<onclick>Dialog.Close(all,true)</onclick>
+		</item>
+		<item>
+			<label>$LOCALIZE[31203]</label>
+			<property name="fanart">special://skin/extras/selectdialog/widgetlayout_circle.jpg</property>
+			<onclick>Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout.label,$LOCALIZE[31207])</onclick>
+			<onclick>Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout,circle)</onclick>
+			<onclick>Dialog.Close(all,true)</onclick>
+		</item>
+		<item>
+			<label>$LOCALIZE[31204]</label>
+			<property name="fanart">special://skin/extras/selectdialog/widgetlayout_banner.jpg</property>
+			<onclick>Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout.label,$LOCALIZE[20020])</onclick>
+			<onclick>Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout,banner)</onclick>
+			<onclick>Dialog.Close(all,true)</onclick>
+		</item>
+		<item>
+			<label>$LOCALIZE[31200]   &amp;   $LOCALIZE[31201]</label>
+			<property name="fanart">special://skin/extras/selectdialog/widgetlayout_poster_to_fanart.jpg</property>
+			<onclick>Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout.label,$LOCALIZE[20021] &amp; $LOCALIZE[31205])</onclick>
+			<onclick>Skin.SetString(userwidget$INFO[Window(home).Property(shortcutitem_nr)]_layout,poster_to_fanart)</onclick>
+			<onclick>Dialog.Close(all,true)</onclick>
+		</item>
+	</include>
+	
+	<include name="DialogSelect_spotlight_metadata_alignx">
+		<item>
+			<label>left</label>
+			<property name="fanart">special://skin/extras/selectdialog/widgetlayout_poster.jpg</property>
+			<onclick>Skin.SetString(spotlight_home_metadata_align,left)</onclick>
+			<onclick>Dialog.Close(all,true)</onclick>
+		</item>
+		<item>
+			<label>right</label>
+			<property name="fanart">special://skin/extras/selectdialog/widgetlayout_landscape.jpg</property>
+			<onclick>Skin.SetString(spotlight_home_metadata_align,right)</onclick>
+			<onclick>Dialog.Close(all,true)</onclick>
+		</item>
+		<item>
+			<label>center</label>
+			<onclick>Skin.SetString(spotlight_home_metadata_align,center)</onclick>
+			<onclick>Dialog.Close(all,true)</onclick>
+		</item>
 	</include>
 	
 	<variable name="image_dialogselect">
 		<value condition="!String.IsEmpty(Container(6).ListItem.Icon)">$INFO[Container(6).ListItem.Icon]</value>
 		<value condition="!String.IsEmpty(Container(3).ListItem.Icon)">$INFO[Container(3).ListItem.Icon]</value>
 		<value condition="String.IsEmpty(Container(3).ListItem.Icon) + String.IsEmpty(Container(6).ListItem.Icon)">$VAR[imagedialogselectfallbacks]</value>
-	</variable>
-	
-	<variable name="imagedialogselectfallbacks">
-		
-	
-	<!-- UpNext -->	
-		<value condition="String.IsEqual(Control.GetLabel(1),Choose Continue Watching Dialog Layout) + Container(3).Position(0)">special://skin/extras/selectdialog/un_fancy_common.jpg</value>
-		<value condition="String.IsEqual(Control.GetLabel(1),Choose Continue Watching Dialog Layout) + Container(3).Position(1)">special://skin/extras/selectdialog/un_fancy_triangle.jpg</value>
-		<value condition="String.IsEqual(Control.GetLabel(1),Choose Continue Watching Dialog Layout) + Container(3).Position(2)">special://skin/extras/selectdialog/un_fancy_default.jpg</value>
-		<value condition="String.IsEqual(Control.GetLabel(1),Choose Continue Watching Dialog Layout) + Container(3).Position(3)">special://skin/extras/selectdialog/un_simple_common.jpg</value>
-		<value condition="String.IsEqual(Control.GetLabel(1),Choose Continue Watching Dialog Layout) + Container(3).Position(4)">special://skin/extras/selectdialog/un_simple_small.jpg</value>
-		<value condition="String.IsEqual(Control.GetLabel(1),Choose Continue Watching Dialog Layout) + Container(3).Position(5)">special://skin/extras/selectdialog/un_simple_default.jpg</value>
-		<value condition="String.IsEqual(Control.GetLabel(1),Choose Still There Dialog Layout) + Container(3).Position(0)">special://skin/extras/selectdialog/un_still_fancy.jpg</value>
-		<value condition="String.IsEqual(Control.GetLabel(1),Choose Still There Dialog Layout) + Container(3).Position(1)">special://skin/extras/selectdialog/un_still_simple.jpg</value>
-		<value condition="String.IsEqual(Control.GetLabel(1),Choose Still There Dialog Layout) + Container(3).Position(2)">special://skin/extras/selectdialog/un_still_default.jpg</value>
 	</variable>
 	
 	<!-- ADDONS -->
