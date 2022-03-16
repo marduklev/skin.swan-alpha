@@ -6,6 +6,7 @@
 	<onload>RunScript(script.embuary.helper,action=encode,string='"$VAR[EncodeTitle]"',prop=EncodedTitle)</onload>
 	<onload condition="[!Window.IsActive(pvrguideinfo) + !Window.IsActive(PVRRecordingInfo)] + String.IsEmpty(Container.PluginName) + !string.isempty(listitem.dbid) + [container.content(movies) | String.IsEqual(listitem.dbtype,movie)]">RunScript(script.embuary.helper,action=lookforfile,file='"$VAR[extrasLocation_lookup]"',prop=bonuscontentavail)</onload>
 	
+	<onunload condition="!String.IsEmpty(Window(home).Property(dialog_select))">ClearProperty(dialog_select,home)</onunload>
 	<onunload>ClearProperty(AdditionalInfo)</onunload>
 	<onunload>ClearProperty(EncodedTitle,home)</onunload>
 	<onunload condition="!String.IsEmpty(Window(home).Property(bonuscontentavail))">ClearProperty(bonuscontentavail,home)</onunload>	
@@ -20,7 +21,13 @@
 	</animation>
    
     <controls>
-	
+		
+		<control type="button" id="10">
+			<description>native get Thumb</description>
+			<visible>!Skin.HasSetting(VideoInfo_Button_KodiGetThumb)</visible>
+			<include content="HiddenObject" />
+		</control>
+		
 		<include content="videoinfo_fetch_OST_local" condition="!Skin.HasSetting(VideoInfo_Content_Library_OST)" />
 			
 		<include condition="Window.IsActive(1110)" content="global_background" />

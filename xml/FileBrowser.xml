@@ -2,6 +2,9 @@
 <window>
 	<defaultcontrol always="true">450</defaultcontrol>
 	<onunload condition="!String.IsEmpty(Window(home).Property(DialogHeader))">ClearProperty(DialogHeader,home)</onunload>
+	
+	<onunload condition="!String.IsEmpty(Window(home).Property(dialog_select_currentthumb))">ClearProperty(dialog_select_currentthumb,home)</onunload>
+	
 <!--
 filebrowser 	WINDOW_DIALOG_FILE_BROWSER 	10126 	FileBrowser.xml 
 ID 		Type 			Description
@@ -17,6 +20,9 @@ ID 		Type 			Description
 	<controls>
 	
 		<control type="label" id="411">
+            <include content="HiddenObject" />
+        </control>
+		<control type="label" id="412">
             <include content="HiddenObject" />
         </control>
 		
@@ -39,6 +45,7 @@ ID 		Type 			Description
 		</control>
 		
 		<control type="group">
+			<visible>String.IsEmpty(Window(home).Property(dialog_select))</visible>
 			<bottom>0</bottom>
 			<centerleft>50%</centerleft>
 			
@@ -62,19 +69,18 @@ ID 		Type 			Description
 				<texture colordiffuse="$VAR[color_global_button_panel_nf]">colors/white50.png</texture>
 			</control> 
 			
-			<control type="label" id="411">
+			<control type="label">
 				<bottom>49%</bottom>
 				<centerleft>55%</centerleft>
 				<width>60%</width>
 				<height>10%</height>
-				
 				<align>left</align>
 				<aligny>bottom</aligny>
 				<textcolor>$VAR[color_global_dialog_accent]</textcolor>
 				<label>$VAR[DialogHeader]</label>
 			</control>
 			
-			<control type="label" id="412">
+			<control type="label">
 				<bottom>50%</bottom>
 				<centerleft>55%</centerleft>
 				<width>60%</width>
@@ -83,6 +89,7 @@ ID 		Type 			Description
 				<aligny>center</aligny>
 				<haspath>true</haspath>
 				<font>notosans_22_regular</font>
+				<info>cotrol.getlabel(412)</info>
 				<textcolor>$VAR[color_global_button_text_nf]</textcolor>
 			</control>
 			
@@ -90,19 +97,18 @@ ID 		Type 			Description
 				<param name="id" value="450" />
 				<param name="onup" value="450" />
 				<onleft>9000</onleft>
-				<onright condition="Control.IsVisible($PARAM[id]60)">$PARAM[id]60</onright>
-				<onright condition="!Control.IsVisible($PARAM[id]60)">9000</onright>
+				<onright condition="Control.IsVisible60)">60</onright>
+				<onright condition="!Control.IsVisible(60)">9000</onright>
 			</include>
-			<include content="Simple_container_IconLabel">
+			<include condition="String.IsEmpty(window(home).Property(dialog_select))" content="Simple_container_IconLabel">
 				<param name="id" value="451" />
 				<param name="onup" value="451" />
 				<onleft>9000</onleft>
-				<onright condition="Control.IsVisible($PARAM[id]60)">$PARAM[id]60</onright>
-				<onright condition="!Control.IsVisible($PARAM[id]60)">9000</onright>
+				<onright condition="Control.IsVisible60)">60</onright>
+				<onright condition="!Control.IsVisible(60)">9000</onright>
 			</include>
 			
-			<control type="scrollbar" id="45060">
-				<visible>Control.IsVisible(450)</visible>
+			<control type="scrollbar" id="60">
 				<bottom>4%</bottom>
 				<height>40%</height>
 				<centerleft>74%</centerleft>
@@ -110,17 +116,6 @@ ID 		Type 			Description
 				<onright>9000</onright>
 				<orientation>vertical</orientation>
 			</control>
-			
-			<control type="scrollbar" id="45160">
-				<visible>Control.IsVisible(451)</visible>
-				<bottom>4%</bottom>
-				<height>40%</height>
-				<centerleft>74%</centerleft>
-				<onleft>450</onleft>
-				<onright>9000</onright>
-				<orientation>vertical</orientation>
-			</control>
-			
 			
 			<include content="Dialog_Percent_Buttongrouplist">
 				<param name="bgpanel_height" value="48%" />
@@ -159,6 +154,16 @@ ID 		Type 			Description
 				</control>
 			</include>
 		</control>
+		
+		<include condition="!String.IsEmpty(window(home).Property(dialog_select))" content="DialogSelect_Container">
+			<param name="id" value="451" />
+			<param name="icon" value="$INFO[Container(6).ListItem.Icon]" />
+			<param name="header" value="$INFO[Control.GetLabel(411)]" />
+			<param name="fanart_panel" value="true" />
+			<param name="fanart" value="$INFO[listitem.Icon]" />
+			<param name="onleft" value="9000" />
+		</include>
+		
 		<include condition="Skin.HasSetting(window_frame)" content="window_frame" />
 	</controls>
 </window>

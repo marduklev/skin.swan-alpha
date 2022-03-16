@@ -1,17 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <window>
-    <defaultcontrol always="true">3</defaultcontrol>
+    
+	<include condition="![Window.IsActive(gamestretchmode) | Window.IsActive(gamevideofilter) | Window.IsActive(gamevideorotation)]" content="i_nested">
+		<defaultcontrol always="true">3</defaultcontrol>
+	</include>
+	<include condition="Window.IsActive(gamestretchmode) | Window.IsActive(gamevideofilter) | Window.IsActive(gamevideorotation)" content="i_nested">
+		<defaultcontrol always="true">11</defaultcontrol>
+	</include>
 	<onload condition="String.IsEqual(Window(home).Property(addon_forcedaction),dialogselect)">SetProperty(addon_forcedaction,done,home)</onload>
 	<onunload condition="!String.IsEmpty(Window(home).Property(addon_forcedaction))">Action(back)</onunload>
+	
+	<!-- <onunload condition="!String.IsEmpty(Window(home).Property(dialog_select))">ClearProperty(dialog_select,home)</onunload> -->
 	
 	<onunload condition="!String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">ClearProperty(shortcutaction_inprogress,home)</onunload>
 	<onunload condition="!String.IsEmpty(Window(home).Property(shortcutitem_nr))">ClearProperty(shortcutitem_nr,home)</onunload>
 	
-	
 	<include>Animation_OpenClose_FadeZoom</include>
     <menucontrol>8000</menucontrol>
 	
-	<!-- selectdialog - get diff layout if previous action was "SetRating" -->
+<!-- 
+
+3 	container	List of available options
+6 	container	List of available add-ons
+11   container	List with game video thumbnails
+
+5	button	OK (on multiple selection) or Manual/Get More... button
+
+7	button	Cancel button
+8	button	Add/Get More... button
+
+1	label	Heading label
+2	label	Number of items in the list
+12  textbox	Description of the currently-selected video filter
+
+ selectdialog - get diff layout if previous action was "SetRating" -->
 	
 	<controls>
         <control type="group">
@@ -36,7 +58,7 @@
 				<visible>Control.IsVisible(3)</visible>
                 <include content="DialogSelect_Container">
 					<param name="id" value="3" />
-					<param name="icon" value="defaultaddonservice.png" />
+					<param name="header" value="$INFO[control.getlabel(1)]" />
 					<param name="fanart_panel" value="false" />
 					<param name="onleft" value="8000" />
 				</include>
@@ -46,7 +68,7 @@
                 <visible>Control.IsVisible(6)</visible>
                 <include content="DialogSelect_Container">
 					<param name="id" value="6" />
-					<param name="icon" value="$INFO[Container(6).ListItem.Icon]" />
+					<param name="header" value="$INFO[control.getlabel(1)]" />
 					<param name="fanart_panel" value="true" />
 					<param name="fanart" value="$INFO[listitem.Icon]" />
 					<param name="onleft" value="8000" />
@@ -58,13 +80,15 @@
                <visible>Control.IsVisible(11) + [Window.IsActive(gamestretchmode) | Window.IsActive(gamevideofilter) | Window.IsActive(gamevideorotation)]</visible>
                <include content="DialogSelect_Container">
 					<param name="id" value="11" />
-					<param name="icon" value="defaultgames.png" />
-					<param name="fanart_panel" value="false" />
+					<param name="header" value="$INFO[control.getlabel(1)]" />
+					<param name="fanart_panel" value="true" />
 					<param name="fanart" value="$INFO[listitem.Icon]" />
 					<param name="onleft" value="8000" />
 				</include>
             </control>
+			
 			<control type="image">	
+				<visible>Control.IsVisible(5) | Control.IsVisible(7) | Control.IsVisible(8)</visible>
 				<bottom>0</bottom>
 				<height>100</height>
 				<bordersize>0,2,0,0</bordersize>
@@ -77,20 +101,21 @@
                 <align>center</align>
                 <orientation>horizontal</orientation>
                 <itemgap>75</itemgap>
-                <onup condition="Control.IsVisible(6)">6</onup>
-                <onup condition="!Control.IsVisible(6)">3</onup>
-                <ondown condition="Control.IsVisible(6)">6</ondown>
-                <ondown condition="!Control.IsVisible(6)">3</ondown>
-                <onleft>8000</onleft>
+                <onup condition="!Control.IsVisible(11)">3</onup>
+                <ondown condition="!Control.IsVisible(11)">3</ondown>
+				<onup condition="Control.IsVisible(11)">11</onup>
+                <ondown condition="Control.IsVisible(11)">11</ondown>
+				<onleft>8000</onleft>
                 <onright>8000</onright>
                 <control type="button" id="5">
 					<include>Animation_Item_Focus</include>
                     <description>Accept</description>
+					<label />
                     <left>0</left>
-                    <label />
-					<width>auto</width>
+                    <width>auto</width>
                     <height>60</height>
 					<font>montserrat_22_semibold</font>
+					<visible>!String.IsEmpty(Control.GetLabel(5))</visible>
                 </control>
 				<control type="button" id="8">
 					<include>Animation_Item_Focus</include>
@@ -104,7 +129,7 @@
 				<control type="button" id="7">
 					<include>Animation_Item_Focus</include>
                     <description>Close</description>
-                    <label />
+					<label />
 					<width>auto</width>
                     <height>60</height>
                     <visible>!String.IsEmpty(Control.GetLabel(7))</visible>
