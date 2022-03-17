@@ -2,7 +2,6 @@
 <window>
 	<defaultcontrol always="true">450</defaultcontrol>
 	<onunload condition="!String.IsEmpty(Window(home).Property(DialogHeader))">ClearProperty(DialogHeader,home)</onunload>
-	
 	<onunload condition="!String.IsEmpty(Window(home).Property(dialog_select_currentthumb))">ClearProperty(dialog_select_currentthumb,home)</onunload>
 	
 <!--
@@ -25,7 +24,6 @@ ID 		Type 			Description
 		<control type="label" id="412">
             <include content="HiddenObject" />
         </control>
-		
 		<control type="button" id="413">
             <include content="HiddenObject" />
         </control>
@@ -45,7 +43,6 @@ ID 		Type 			Description
 		</control>
 		
 		<control type="group">
-			<visible>String.IsEmpty(Window(home).Property(dialog_select))</visible>
 			<bottom>0</bottom>
 			<centerleft>50%</centerleft>
 			
@@ -93,7 +90,7 @@ ID 		Type 			Description
 				<textcolor>$VAR[color_global_button_text_nf]</textcolor>
 			</control>
 			
-			<include content="Simple_container_IconLabel">
+			<include condition="String.IsEmpty(window(home).Property(dialog_select))" content="Simple_container_IconLabel">
 				<param name="id" value="450" />
 				<param name="onup" value="450" />
 				<onleft>9000</onleft>
@@ -107,17 +104,23 @@ ID 		Type 			Description
 				<onright condition="Control.IsVisible60)">60</onright>
 				<onright condition="!Control.IsVisible(60)">9000</onright>
 			</include>
-			
-			<control type="scrollbar" id="60">
-				<bottom>4%</bottom>
-				<height>40%</height>
-				<centerleft>74%</centerleft>
-				<onleft>450</onleft>
-				<onright>9000</onright>
-				<orientation>vertical</orientation>
-			</control>
-			
-			<include content="Dialog_Percent_Buttongrouplist">
+			<include condition="!String.IsEmpty(window(home).Property(dialog_select))" content="DialogSelect_Container">
+				<param name="id" value="451" />
+				<param name="header" value="$INFO[Control.GetLabel(411)]" />
+				<param name="fanart_panel" value="true" />
+				<param name="fanart" value="$INFO[listitem.Icon]" />
+				<param name="onleft" value="9000" />
+				<animation effect="fade" start="100" end="0" time="250" tween="sine" condition="Control.IsVisible(450)">Conditional</animation>
+			</include>
+			<include condition="!String.IsEmpty(window(home).Property(dialog_select))" content="DialogSelect_Container">
+				<param name="id" value="450" />
+				<param name="header" value="$INFO[Control.GetLabel(411)]" />
+				<param name="fanart_panel" value="false" />
+				<param name="fanart" value="$INFO[listitem.Icon]" />
+				<param name="onleft" value="9000" />
+				<animation effect="fade" start="100" end="0" time="250" tween="sine" condition="Control.IsVisible(451)">Conditional</animation>
+			</include>
+			<include condition="String.IsEmpty(window(home).Property(dialog_select))" content="Dialog_Percent_Buttongrouplist">
 				<param name="bgpanel_height" value="48%" />
 				<param name="grouplist_height" value="38%" />
 				<param name="pos_right" value="18%" />
@@ -153,16 +156,8 @@ ID 		Type 			Description
 					</include>
 				</control>
 			</include>
+			
 		</control>
-		
-		<include condition="!String.IsEmpty(window(home).Property(dialog_select))" content="DialogSelect_Container">
-			<param name="id" value="451" />
-			<param name="icon" value="$INFO[Container(6).ListItem.Icon]" />
-			<param name="header" value="$INFO[Control.GetLabel(411)]" />
-			<param name="fanart_panel" value="true" />
-			<param name="fanart" value="$INFO[listitem.Icon]" />
-			<param name="onleft" value="9000" />
-		</include>
 		
 		<include condition="Skin.HasSetting(window_frame)" content="window_frame" />
 	</controls>

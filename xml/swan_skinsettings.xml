@@ -5,13 +5,6 @@
 		<value condition="!Skin.String(stillwatching_idle_action)">Enable still watching Dialog and define your wished action (pop up after idle time of 10 min when video is paused in fullscreen)</value>
 	</variable>
 				
-	<include name="SkinSettings_StartupRadioButton">
-		<visible>$PARAM[visible]</visible>
-		<label>$PARAM[label]</label>
-		<onclick condition="!String.IsEmpty(Skin.String(custom_startup))">Skin.Reset(custom_startup)</onclick>
-		<onclick condition="String.IsEmpty(Skin.String(custom_startup)) | [!String.IsEmpty(Skin.String(custom_startup)) + !String.IsEqual(Skin.String(custom_startup),$PARAM[windowid])]">Skin.SetString(custom_startup,$PARAM[windowid])</onclick>
-		<selected>String.IsEqual(Skin.String(custom_startup),$PARAM[windowid])</selected>
-	</include>
 	
 	<variable name="ProfileLoginHinttext">
 		<value condition="!System.HasLoginScreen">Need eneble Profile on Startup in Profile Settings</value>
@@ -330,24 +323,6 @@
 		</include>
 	</include>
 	
-	<include name="BlurRadioButton">
-			<control type="radiobutton" id="1103$PARAM[blur_strength]">
-				<onclick>Skin.SetString(BlurRadius,$PARAM[blur_strength])</onclick>
-				<onclick>RunScript(script.embuary.helper,action=restartservice)</onclick>
-				<onclick>Action(close)</onclick>
-				<selected>String.IsEqual(Skin.String(BlurRadius,$PARAM[blur_strength]))</selected>
-				<label>$NUMBER[$PARAM[blur_strength]]</label>
-				<height>150</height>
-				<textoffsetx>250</textoffsetx>
-				<radiowidth>238</radiowidth>
-				<radioheight>130</radioheight>
-				<textureradioonfocus>special://skin/extras/blur/strenght$PARAM[blur_strength].jpg</textureradioonfocus>
-				<textureradioonnofocus>special://skin/extras/blur/strenght$PARAM[blur_strength].jpg</textureradioonnofocus>
-				<textureradioofffocus>special://skin/extras/blur/strenght$PARAM[blur_strength].jpg</textureradioofffocus>
-				<textureradiooffnofocus>special://skin/extras/blur/strenght$PARAM[blur_strength].jpg</textureradiooffnofocus>
-			
-			</control>
-	</include>
 		
 	<!-- Skinsettings-  -->
 	<include name="Settings_InfoBottom">
@@ -364,48 +339,8 @@
 		</control>
 	</include>
 	
-	<include name="KeyboardButton">
-		<param name="width" default="60" />
-		<param name="aligny" default="center" />
-		<definition>
-			<width>$PARAM[width]</width>
-			<height>60</height>
-			<textoffsetx>0</textoffsetx>
-			<texturefocus colordiffuse="$VAR[color_global_button_text_fo]">colors/white.png</texturefocus>
-			<texturenofocus border="2" colordiffuse="$VAR[color_global_button_panel_nf]">frames/frame.png</texturenofocus>
-			<focusedcolor>$VAR[color_global_dialog_background]</focusedcolor>
-			<textcolor>$VAR[color_global_button_text_nf]</textcolor>
-			<align>center</align>
-			<aligny>$PARAM[aligny]</aligny>
-			<font>notosans_25_bold</font>
-			<onclick condition="string.isequal(Window(skinsettings).Property(force_num_singledigit),timeout_close_videoosd)">SendClick(21)</onclick>
-			<onclick condition="string.isequal(Window(skinsettings).Property(force_num_singledigit),timeout_close_videoosd)">ClearProperty(force_num_singledigit,skinsettings)</onclick>
-		</definition>
-	</include>
-	<include name="Dialog_RadioButton">
-		<param name="onfo" default="$VAR[color_global_button_text_fo]" />
-		<param name="onnf" default="$VAR[color_global_button_text_nf]" />
-		<definition>
-			<width>60</width>
-			<height>60</height>
-			<textoffsetx />
-			<textoffsetx />
-			<texturefocus />
-			<texturenofocus />
-			<focusedcolor />
-			<textcolor />
-			<align>center</align>
-			<aligny>center</aligny>
-			<font />
-			<textureradioonfocus colordiffuse="$PARAM[onfo]">buttons/$PARAM[symbol].png</textureradioonfocus>
-			<textureradioonnofocus colordiffuse="$PARAM[onnf]">buttons/$PARAM[symbol].png</textureradioonnofocus>
-			<textureradioofffocus colordiffuse="$VAR[color_global_button_text_fo]">buttons/$PARAM[symbol].png</textureradioofffocus>
-			<textureradiooffnofocus colordiffuse="$VAR[color_global_button_text_nf]">buttons/$PARAM[symbol].png</textureradiooffnofocus>
-			<radioposx>0</radioposx>
-			<radiowidth>40</radiowidth>
-			<radioheight>40</radioheight>
-		</definition>
-	</include>
+	
+	
 	<!-- DANGER hardcoded colors -->
 	<include name="Event_log_Item">
 		<control type="image">
@@ -509,7 +444,160 @@
 			</control>
 		</definition>
 	</include>
-
+	
+	
+	<!-- button chaos cleanup -->
+	<!-- need cleanup : button def includes , there are to many -->
+	
+	<include name="BlurRadioButton">
+		<control type="radiobutton" id="1103$PARAM[blur_strength]">
+			<onclick>Skin.SetString(BlurRadius,$PARAM[blur_strength])</onclick>
+			<onclick>RunScript(script.embuary.helper,action=restartservice)</onclick>
+			<onclick>Action(close)</onclick>
+			<selected>String.IsEqual(Skin.String(BlurRadius,$PARAM[blur_strength]))</selected>
+			<label>$NUMBER[$PARAM[blur_strength]]</label>
+			<height>150</height>
+			<textoffsetx>250</textoffsetx>
+			<radiowidth>238</radiowidth>
+			<radioheight>130</radioheight>
+			<textureradioonfocus>special://skin/extras/blur/strenght$PARAM[blur_strength].jpg</textureradioonfocus>
+			<textureradioonnofocus>special://skin/extras/blur/strenght$PARAM[blur_strength].jpg</textureradioonnofocus>
+			<textureradioofffocus>special://skin/extras/blur/strenght$PARAM[blur_strength].jpg</textureradioofffocus>
+			<textureradiooffnofocus>special://skin/extras/blur/strenght$PARAM[blur_strength].jpg</textureradiooffnofocus>
+		
+		</control>
+	</include>
+	<include name="KeyboardButton">
+		<param name="width" default="60" />
+		<param name="aligny" default="center" />
+		<definition>
+			<width>$PARAM[width]</width>
+			<height>60</height>
+			<textoffsetx>0</textoffsetx>
+			<texturefocus colordiffuse="$VAR[color_global_button_text_fo]">colors/white.png</texturefocus>
+			<texturenofocus border="2" colordiffuse="$VAR[color_global_button_panel_nf]">frames/frame.png</texturenofocus>
+			<focusedcolor>$VAR[color_global_dialog_background]</focusedcolor>
+			<textcolor>$VAR[color_global_button_text_nf]</textcolor>
+			<align>center</align>
+			<aligny>$PARAM[aligny]</aligny>
+			<font>notosans_25_bold</font>
+			<onclick condition="string.isequal(Window(skinsettings).Property(force_num_singledigit),timeout_close_videoosd)">SendClick(21)</onclick>
+			<onclick condition="string.isequal(Window(skinsettings).Property(force_num_singledigit),timeout_close_videoosd)">ClearProperty(force_num_singledigit,skinsettings)</onclick>
+		</definition>
+	</include>
+	
+	<include name="Dialog_RadioButton">
+		<param name="onfo" default="$VAR[color_global_button_text_fo]" />
+		<param name="onnf" default="$VAR[color_global_button_text_nf]" />
+		<definition>
+			<width>60</width>
+			<height>60</height>
+			<textoffsetx />
+			<textoffsetx />
+			<texturefocus />
+			<texturenofocus />
+			<focusedcolor />
+			<textcolor />
+			<align>center</align>
+			<aligny>center</aligny>
+			<font />
+			<textureradioonfocus colordiffuse="$PARAM[onfo]">buttons/$PARAM[symbol].png</textureradioonfocus>
+			<textureradioonnofocus colordiffuse="$PARAM[onnf]">buttons/$PARAM[symbol].png</textureradioonnofocus>
+			<textureradioofffocus colordiffuse="$VAR[color_global_button_text_fo]">buttons/$PARAM[symbol].png</textureradioofffocus>
+			<textureradiooffnofocus colordiffuse="$VAR[color_global_button_text_nf]">buttons/$PARAM[symbol].png</textureradiooffnofocus>
+			<radioposx>0</radioposx>
+			<radiowidth>40</radiowidth>
+			<radioheight>40</radioheight>
+		</definition>
+	</include>
+	
+	<include name="PreferArt_Button">
+		<control type="radiobutton" id="$PARAM[button_id]">
+			<include>Menucontrol_RadioButton</include>
+			<label>Prefer : $PARAM[artwork_localized_id]</label>
+			<visible>$PARAM[visible]</visible>
+			<visible>Container(930).HasFocus(9302)</visible>
+			<onclick condition="Control.IsVisible(50)">Skin.ToggleSetting(View_50_Prefer_$PARAM[artwork])</onclick>
+			<onclick condition="Control.IsVisible(56)">Skin.ToggleSetting(View_56_Prefer_$PARAM[artwork])</onclick>
+			<selected>[Control.IsVisible(50) + Skin.HasSetting(View_50_Prefer_$PARAM[artwork]) | Control.IsVisible(56) + Skin.HasSetting(View_56_Prefer_$PARAM[artwork])]
+			</selected>
+			<nested />
+		</control>
+	</include>
+	
+	<include name="Menucontrol_Button">
+		<param name="section" default="lib" />
+		<definition>
+			<animation effect="fade" start="0" end="100" time="150" tween="quadratic" easing="in">Visible</animation>
+			<font>notosans_23_regular_l</font>
+			<height>40</height>
+			<onfocus condition="!String.IsEqual(Window(Home).Property(menucontrol_active),common)">SetProperty(menucontrol_active,common,Home)</onfocus>
+			<texturefocus colordiffuse="$VAR[color_$PARAM[section]_menu_itempanel_fo]">colors/white.png</texturefocus>
+			<texturenofocus colordiffuse="$VAR[color_$PARAM[section]_menu_itempanel_nf]">colors/white.png</texturenofocus>
+			<focusedcolor>$VAR[color_$PARAM[section]_menu_item_fo]</focusedcolor>
+			<textcolor>$VAR[color_$PARAM[section]_menu_item_nf]</textcolor>
+		</definition>
+	</include>
+	<!-- Menucontrol_RadioButton - SkinSettings_SettingsRadioButton-->
+	<include name="Menucontrol_RadioButton">
+		<param name="section" default="lib" />
+		<param name="radio_on_texture" default="buttons/radioonfo.png" />
+		<param name="radio_off_texture" default="buttons/radioofffo.png" />
+		<definition>
+			<animation effect="fade" start="0" end="100" time="150" tween="quadratic" easing="in">Visible</animation>
+			<font>notosans_23_regular_l</font>
+			<height>40</height>
+			<radiowidth>30</radiowidth>
+			<radioheight>25</radioheight>
+			<onfocus condition="!String.IsEqual(Window(Home).Property(menucontrol_active),common)">SetProperty(menucontrol_active,common,Home)</onfocus>
+			<texturefocus colordiffuse="$VAR[color_$PARAM[section]_menu_itempanel_fo]">colors/white.png</texturefocus>
+			<texturenofocus colordiffuse="$VAR[color_$PARAM[section]_menu_itempanel_nf]">colors/white.png</texturenofocus>
+			<focusedcolor>$VAR[color_$PARAM[section]_menu_item_fo]</focusedcolor>
+			<textcolor>$VAR[color_$PARAM[section]_menu_item_nf]</textcolor>
+			<textureradioonfocus colordiffuse="$VAR[color_$PARAM[section]_menu_item_fo]">$PARAM[radio_on_texture]</textureradioonfocus>
+			<textureradioonnofocus colordiffuse="$VAR[color_$PARAM[section]_menu_item_fo]">$PARAM[radio_on_texture]</textureradioonnofocus>
+			<textureradioofffocus colordiffuse="$VAR[color_$PARAM[section]_menu_item_fo]">$PARAM[radio_off_texture]</textureradioofffocus>
+			<textureradiooffnofocus colordiffuse="$VAR[color_$PARAM[section]_menu_item_nf]">$PARAM[radio_off_texture]</textureradiooffnofocus>
+			<textureradioondisabled colordiffuse="disabled">$PARAM[radio_on_texture]</textureradioondisabled>
+			<textureradiooffdisabled colordiffuse="disabled">$PARAM[radio_off_texture]</textureradiooffdisabled>
+		</definition>
+	</include>
+	
+	<include name="icon_button">
+		<param name="color_fo" default="$VAR[color_profilelogin_text_main]" />
+		<param name="color_nf" default="$VAR[color_profilelogin_text_secondary]" />
+		<definition>
+		<focusedcolor />
+		<textcolor />
+		<disabledcolor />
+		<label />
+		<width>$PARAM[diameter]</width>
+		<height>$PARAM[diameter]</height>
+		<texturefocus colordiffuse="$PARAM[color_fo]">$PARAM[texture]</texturefocus>
+		<texturenofocus colordiffuse="$PARAM[color_nf]">$PARAM[texture]</texturenofocus>
+		</definition>
+	</include>
+	
+	<include name="DefaultDialogButton">
+		<param name="width" default="300" />
+		<param name="height" default="100" />
+		<param name="wrapmultiline" default="false" />
+		<param name="font" default="notosans_25_bold" />
+		<param name="visible" default="true" />
+		<definition>
+			<control type="button" id="$PARAM[id]">
+				<width>$PARAM[width]</width>
+				<height>$PARAM[height]</height>
+				<label>$PARAM[label]</label>
+				<font>$PARAM[font]</font>
+				<textoffsetx>30</textoffsetx>
+				<wrapmultiline>$PARAM[wrapmultiline]</wrapmultiline>
+				<align>center</align>
+				<visible>$PARAM[visible]</visible>
+			</control>
+		</definition>
+	</include>
+	
 	<include name="SkinSettings_SettingsRadioButton">
 		<radiowidth>47</radiowidth>
 		<radioheight>25</radioheight>
@@ -523,6 +611,26 @@
 		<label2>$PARAM[label2]   </label2>
 	</include>
 	
+	<include name="1104_button">
+		<param name="height" default="75" />
+		<param name="icon_height" default="50" />
+		<param name="label" default="" />
+		<param name="label2" default="" />
+		<definition>
+			<height>$PARAM[height]</height>
+			<radioheight>$PARAM[icon_height]</radioheight>
+			<textoffsetx>50</textoffsetx>
+			<textureradioonfocus colordiffuse="$VAR[color_global_button_text_fo]">$PARAM[icon]</textureradioonfocus>
+			<textureradioonnofocus colordiffuse="$VAR[color_global_button_text_nf]">$PARAM[icon]</textureradioonnofocus>
+			<textureradioofffocus colordiffuse="$VAR[color_global_button_text_fo]">$PARAM[icon]</textureradioofffocus>
+			<textureradiooffnofocus colordiffuse="$VAR[color_global_button_text_nf]">$PARAM[icon]</textureradiooffnofocus>
+			<textureradioondisabled colordiffuse="disabled">$PARAM[icon]</textureradioondisabled>
+			<textureradiooffdisabled colordiffuse="disabled">$PARAM[icon]</textureradiooffdisabled>
+			<font>notosans_45_regular_l</font>
+			<label>$PARAM[label]</label>
+			<label2>$PARAM[label2]</label2>
+		</definition>
+	</include>
 	<!-- - overthink, cant use var in radiobutton
 	<include name="SkinSettings_ImagePreviewRadioButton">
 		<control type="group" id="$PARAM[id]01">

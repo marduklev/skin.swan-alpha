@@ -57,26 +57,7 @@
 		<value condition="!String.IsEmpty(Window(home).Property(movie_tmdbid)) | !String.IsEmpty(Window(home).Property(tvshow_tmdbid))">Manage TRAKT</value>
 	</variable>
 	
-	<include name="1104_button">
-		<param name="height" default="75" />
-		<param name="icon_height" default="50" />
-		<param name="label" default="" />
-		<param name="label2" default="" />
-		<definition>
-			<height>$PARAM[height]</height>
-			<radioheight>$PARAM[icon_height]</radioheight>
-			<textoffsetx>50</textoffsetx>
-			<textureradioonfocus colordiffuse="$VAR[color_global_button_text_fo]">$PARAM[icon]</textureradioonfocus>
-			<textureradioonnofocus colordiffuse="$VAR[color_global_button_text_nf]">$PARAM[icon]</textureradioonnofocus>
-			<textureradioofffocus colordiffuse="$VAR[color_global_button_text_fo]">$PARAM[icon]</textureradioofffocus>
-			<textureradiooffnofocus colordiffuse="$VAR[color_global_button_text_nf]">$PARAM[icon]</textureradiooffnofocus>
-			<textureradioondisabled colordiffuse="disabled">$PARAM[icon]</textureradioondisabled>
-			<textureradiooffdisabled colordiffuse="disabled">$PARAM[icon]</textureradiooffdisabled>
-			<font>notosans_45_regular_l</font>
-			<label>$PARAM[label]</label>
-			<label2>$PARAM[label2]</label2>
-		</definition>
-	</include>
+	
 	
 	<!-- pvr stuff revisit later - IMPORTANT FOR SHORTCUTS -->
 	<variable name="systemcurrentwindow_internalname">
@@ -464,51 +445,45 @@ $INFO[ListItem.PictureResolution]  -->
 	<!-- ######### -->
 	<!--   DIALOG  -->
 	<!-- ######### -->
-	<include name="i_nested">
-		<nested />
-	</include>
+	
 	
 	
 	<include name="DialogSelect_Container">
 		<param name="id" default="40" />
+		<param name="type" default="panel" />
 		<param name="header" default="[I]C H O O S E   [/I]$INFO[Window(home).Property(select)]" />
 		<param name="onleft" default="200" />
 		<param name="fanart" default="$INFO[listitem.property(fanart)]" />
 		<definition>
 		
 			<control type="group">
-				<control type="image">
-					<visible>false</visible>
-					<top>300</top>
-	                <texture colordiffuse="$VAR[color_spotlightlib_background_layer1]">colors/white.png</texture>
-				</control>
-				<control type="image">
-					<bordersize>0,0,0,2</bordersize>
-					<texture colordiffuse="$VAR[color_spotlightlib_accent]">colors/white40.png</texture>
-	                <bordertexture colordiffuse="$VAR[color_spotlightlib_background_layer1]">colors/white.png</bordertexture>
-	            </control>
-				<control type="image">
-					<top>300</top>
-	                <texture colordiffuse="$VAR[color_spotlightlib_background_layer1]">colors/white.png</texture>
-				</control>
+				<nested />
 				
-				<control type="group">
-                    <left>200</left>
-					<control type="image">
+				<control type="image">
+					<description>BG may invert - bs 0,300,0,0 , current 0,0,0,780</description>
+					<bordersize>0,0,0,780</bordersize>
+					<bordertexture colordiffuse="$VAR[color_spotlightlib_background_layer1]">colors/white.png</bordertexture>
+	                <texture colordiffuse="$VAR[color_spotlightlib_accent]">colors/white50.png</texture>
+				</control>
+			    
+			    <control type="group">
+                    <include>Animation_OpenClose_Slide</include>
+					
+
+				   <control type="image">
 						<visible>!window.isactive(filebrowser)</visible>
 						<description>slide left icon overlay</description>
-						<left>0</left>
+						<left>200</left>
 						<top>200</top>
 						<bordersize>8</bordersize>
 						<height>200</height>
 						<width>200</width>
 						<bordertexture colordiffuse="$VAR[color_spotlightlib_main]">artworkdiffuse/circle.png</bordertexture>
 						<texture colordiffuse="ff131313">artworkdiffuse/circle.png</texture>
-						
-					</control>
+			        </control>
 					<control type="image">
 						<visible>!window.isactive(filebrowser)</visible>
-						<left>0</left>
+						<left>200</left>
 						<top>200</top>
 						<bordersize>8</bordersize>
 						<height>200</height>
@@ -516,34 +491,10 @@ $INFO[ListItem.PictureResolution]  -->
 						<texture background="true" diffuse="artworkdiffuse/circle.png" colordiffuse="$VAR[color_spotlightlib_main]">$VAR[dialogselect_headicon]</texture>
 						<aspectratio scalediffuse="false" aligny="center" align="center">scale</aspectratio>
 					</control>
-					
-					<control type="image">
-						<visible>window.isactive(filebrowser)</visible>
-				        <left>-100</left>
-						<top>25</top>
-						<width>450</width>
-						<height>350</height>
-						<bordersize>2</bordersize>
-						<bordertexture border="2" colordiffuse="$VAR[color_spotlightlib_main]">frames/framefilled_b.png</bordertexture>
-				        <texture>$INFO[window(home).property(dialog_select_currentthumb)]</texture>
-						<aspectratio align="left" aligny="bottom">keep</aspectratio>
-					</control>
-					<control type="image">
-						<left>1100</left>
-						<visible>window.isactive(filebrowser)</visible>
-				        <left>-100</left>
-						<top>25</top>
-						<width>450</width>
-						<height>350</height>
-						<bordersize>2</bordersize>
-						<bordertexture border="2" colordiffuse="$VAR[color_spotlightlib_main]">frames/framefilled.png</bordertexture>
-				        <texture>$INFO[Container().ListItem.Icon]</texture>
-						<aspectratio align="left" aligny="bottom">keep</aspectratio>
-					</control>
-					
 					<control type="textbox">
+						<visible>!window.isactive(filebrowser)</visible>
 						<top>210</top>
-						<left>300</left>
+						<left>500</left>
 						<width>700</width>
 						<height>100</height>
 						<align>center</align>
@@ -553,21 +504,10 @@ $INFO[ListItem.PictureResolution]  -->
 						<label>$PARAM[header]</label>
 						<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 					</control>
-					
 					<control type="textbox">
-						<visible>false + window.isactive(selectdialog)</visible>
-						<top>305</top>
-						<left>300</left>
-						<width>1400</width>
-						<height>100</height>
-						<align>center</align>
-						<aligny>top</aligny>
-						<label>$INFO[ListItem.AddonCreator,[B]$LOCALIZE[21863]:[/B] ,][CR]$INFO[ListItem.AddonDescription,[B]$LOCALIZE[31171][/B] :,]</label>
-						<align>right</align>
-					</control>
-					<control type="textbox">
+						<visible>!window.isactive(filebrowser)</visible>
 						<top>310</top>
-						<left>300</left>
+						<left>500</left>
 						<width>700</width>
 						<height>110</height>
 						<align>center</align>
@@ -577,12 +517,82 @@ $INFO[ListItem.PictureResolution]  -->
 						<label>$INFO[listitem.label]</label>
 						<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 					</control>
-	            </control>
-				<control type="panel" id="$PARAM[id]">
+					
+					<control type="textbox">
+						<visible>window.isactive(filebrowser)</visible>
+						<top>210</top>
+						<left>550</left>
+						<width>820</width>
+						<height>100</height>
+						<align>center</align>
+						<aligny>center</aligny>
+						<wrapmultiline>true</wrapmultiline>
+						<font>notosans_52_bold</font>
+						<label>$PARAM[header]</label>
+						<textcolor>$VAR[color_spotlightlib_main]</textcolor>
+					</control>
+					<control type="textbox">
+						<visible>window.isactive(filebrowser)</visible>
+						<top>310</top>
+						<left>550</left>
+						<width>820</width>
+						<height>110</height>
+						<align>center</align>
+						<aligny>top</aligny>
+						<wrapmultiline>true</wrapmultiline>
+						<font>liberationsans_30_regular</font>
+						<label>$INFO[listitem.label]</label>
+						<textcolor>$VAR[color_spotlightlib_main]</textcolor>
+					</control>
+					<control type="image">
+						<animation effect="fade" start="0" end="100" time="350" tween="cubic" easing="in">visible</animation>
+						<right>300</right>
+						<visible>window.isactive(filebrowser) + control.hasfocus(451)</visible>
+						<top>375</top>
+						<width>2</width>
+						<height>351</height>
+						<texture colordiffuse="$VAR[color_spotlightlib_accent]">colors/white50.png</texture>
+					</control>
+					<control type="image">
+						<animation effect="fade" start="0" end="100" time="350" tween="cubic" easing="in" delay="150">visible</animation>
+						<right>300</right>
+						<visible>window.isactive(filebrowser) + control.hasfocus(451)</visible>
+						<top>725</top>
+						<width>40</width>
+						<height>2</height>
+						<texture colordiffuse="$VAR[color_spotlightlib_accent]">colors/white50.png</texture>
+					</control>
+					<control type="image">
+						<visible>window.isactive(filebrowser) + Control.IsVisible(451)</visible>
+				        <left>100</left>
+						<top>25</top>
+						<width>450</width>
+						<height>350</height>
+						<bordersize>2</bordersize>
+						<bordertexture border="2" colordiffuse="$VAR[color_spotlightlib_main]">frames/framefilled_b.png</bordertexture>
+				        <texture>$INFO[window(home).property(dialog_select_currentthumb)]</texture>
+						<aspectratio align="center" aligny="bottom">keep</aspectratio>
+					</control>
+					<control type="image">
+						<right>100</right>
+						<visible>window.isactive(filebrowser) + Control.IsVisible(451)</visible>
+						<top>25</top>
+						<width>450</width>
+						<height>350</height>
+						<bordersize>2</bordersize>
+						<bordertexture border="2" colordiffuse="$VAR[color_spotlightlib_accent]">frames/framefilled_b.png</bordertexture>
+				        <texture>$INFO[Container().ListItem.Icon]</texture>
+						<aspectratio align="center" aligny="bottom">keep</aspectratio>
+					</control>
+				</control>
+				
+				<control type="$PARAM[type]" id="$PARAM[id]">
+					<include>Animation_OpenClose_Slide</include>
 					<top>450</top>
 			        <left>200</left>
 			        <height>620</height>
 					<pagecontrol>$PARAM[id]60</pagecontrol>
+					<orientation>vertical</orientation>
 					<onright condition="Control.IsVisible($PARAM[id]60)">$PARAM[id]60</onright>
 					<onright condition="!Control.IsVisible($PARAM[id]60)">$PARAM[onleft]</onright>
 					<onleft>$PARAM[onleft]</onleft>
@@ -590,12 +600,8 @@ $INFO[ListItem.PictureResolution]  -->
 					<onup condition="!Control.IsVisible(8999)">$PARAM[id]</onup>
 					<ondown>$PARAM[id]</ondown>
 					<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
-					
 					<scrolltime tween="cubic" easing="out">300</scrolltime>
-			
-			
-			<include>Animation_OpenClose_Slide</include>
-			
+
                     <itemlayout height="280" width="350" condition="$PARAM[fanart_panel]">
 				        <control type="group">
 			                <height>190</height>
@@ -603,27 +609,23 @@ $INFO[ListItem.PictureResolution]  -->
 			                <control type="image">
 				                <bordersize>8</bordersize>
 				                <texture>$PARAM[fanart]</texture>
-								<bordertexture colordiffuse="ff131313">colors/white90.png</bordertexture>
+								<bordertexture border="8" colordiffuse="ff131313">frames/b8_frame.png</bordertexture>
 				                <aspectratio scalediffuse="true" aligny="center" align="center">keep</aspectratio>
 				            </control>
 				            <control type="image">
 								<visible>String.IsEmpty(ListItem.Icon) + Window.IsActive(selectdialog)</visible>
-					            <animation type="Focus" reversible="false">
-			                        <effect type="fade" start="0" end="100" time="250" tween="cubic" easing="in" />
-		                        </animation>
-								<bordersize>8</bordersize>
+					            <bordersize>8</bordersize>
 								<bordertexture border="2" colordiffuse="$VAR[color_spotlightlib_secondary]">frames/frame.png</bordertexture>
 								<texture colordiffuse="$VAR[color_spotlightlib_secondary]">defaultaddonimages.png</texture>
 				                <aspectratio scalediffuse="true" aligny="center" align="center">keep</aspectratio>
 							</control>
 						</control>
-						
 						<include content="dialog_select_gamewindow" condition="Window.IsActive(gamestretchmode) | Window.IsActive(gamevideofilter) | Window.IsActive(gamevideorotation)">
 							<param name="bg_color" value="cc131313" />
 						</include>
 						<control type="textbox">
 							<animation effect="fade" end="10" condition="true">conditional</animation>
-							<top>180</top>
+							<top>175</top>
 							<width>320</width>
 			                <height>100</height>
 							<align>center</align>
@@ -647,22 +649,20 @@ $INFO[ListItem.PictureResolution]  -->
 			                        <effect type="fade" start="0" end="100" time="250" tween="cubic" easing="in" />
 		                        </animation>
 								<bordersize>8</bordersize>
-				                <!-- <bordertexture border="1" diffuse="colors/white90.png" colordiffuse="$VAR[color_spotlightlib_main]">frames/frame.png</bordertexture> -->
-								<bordertexture colordiffuse="$VAR[color_spotlightlib_main]">artworkdiffuse/fanartborder.png</bordertexture>
-								<texture diffuse="colors/none.png">$PARAM[fanart]</texture>
+				                <bordertexture border="8" colordiffuse="$VAR[color_spotlightlib_main]">frames/b8_frame.png</bordertexture>
+								<texture>$PARAM[fanart]</texture>
 				                <aspectratio scalediffuse="true" aligny="center" align="center">keep</aspectratio>
 							</control>
 							<control type="image">
 					            <bordersize>8</bordersize>
+								<bordertexture colordiffuse="$VAR[color_spotlightlib_main]">colors/none.png</bordertexture>
 					            <texture>$PARAM[fanart]</texture>
+								 
 					            <aspectratio scalediffuse="true" aligny="center" align="center">keep</aspectratio>
 				            </control>
 							<control type="image">
 								<visible>String.IsEmpty(ListItem.Icon) + Window.IsActive(selectdialog)</visible>
-					            <animation type="Focus" reversible="false">
-			                        <effect type="fade" start="0" end="100" time="250" tween="cubic" easing="in" />
-		                        </animation>
-								<bordersize>8</bordersize>
+					            <bordersize>8</bordersize>
 								<bordertexture border="2" colordiffuse="$VAR[color_spotlightlib_main]">frames/frame.png</bordertexture>
 								<texture colordiffuse="$VAR[color_spotlightlib_main]">defaultaddonimages.png</texture>
 				                <aspectratio scalediffuse="true" aligny="center" align="center">keep</aspectratio>
@@ -674,7 +674,7 @@ $INFO[ListItem.PictureResolution]  -->
 						</include>
 						<control type="textbox">
 							<animation effect="fade" end="10" condition="true">conditional</animation>
-							<top>180</top>
+							<top>175</top>
 							<width>320</width>
 			                <height>100</height>
 							<align>center</align>
@@ -846,6 +846,7 @@ $INFO[ListItem.PictureResolution]  -->
 					</focusedlayout>
 					<include condition="!String.IsEmpty(Window(home).Property(select))" content="dialogselect_skinitems" />
 				</control>
+			
 				<control type="scrollbar" id="$PARAM[id]60">
 					<animation effect="fade" start="100" end="0" time="250" condition="!Control.HasFocus($PARAM[id]60)">conditional</animation>
 					<right>10</right>
