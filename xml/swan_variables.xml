@@ -6,19 +6,7 @@
 		<value>$LOCALIZE[13278]</value>
 	</variable>
 	
-	<variable name="Player.DisplayAfterSeek">
-		<value condition="Player.DisplayAfterSeek">Player.DisplayAfterSeek : TRUE</value>
-		<value>Player.DisplayAfterSeek: false</value>
-	</variable>
-	
-	<variable name="Player.Seeking">
-		<value condition="Player.Seeking">Player.Seeking : TRUE</value>
-		<value>Player.Seeking: false</value>
-	</variable>
-	<variable name="Player.SeekEnabled">
-		<value condition="Player.SeekEnabled">Player.SeekEnabled : TRUE</value>
-		<value>Player.SeekEnabled: false</value>
-	</variable>
+
 	
 	<variable name="seekbar_img">
 		<value condition="Player.Forwarding">buttons/osd/fforward_fo.png</value>
@@ -445,32 +433,36 @@ $INFO[ListItem.PictureResolution]  -->
 	<!-- ######### -->
 	<!--   DIALOG  -->
 	<!-- ######### -->
-	
-	
-	
 	<include name="DialogSelect_Container">
 		<param name="id" default="40" />
-		<param name="type" default="panel" />
 		<param name="header" default="[I]C H O O S E   [/I]$INFO[Window(home).Property(select)]" />
 		<param name="onleft" default="200" />
 		<param name="fanart" default="$INFO[listitem.property(fanart)]" />
 		<definition>
-		
 			<control type="group">
 				<nested />
-				
 				<control type="image">
-					<description>BG may invert - bs 0,300,0,0 , current 0,0,0,780</description>
+					<visible>!Skin.HasSetting(dialogselect_switchcolors1) + !Skin.HasSetting(dialogselect_switchcolors2)</visible>
 					<bordersize>0,0,0,780</bordersize>
+					<bordertexture colordiffuse="$VAR[color_spotlightlib_background_layer1]">colors/white.png</bordertexture>
+	                <texture colordiffuse="$VAR[color_spotlightlib_accent]">colors/white50.png</texture>
+				</control>
+				<control type="image">
+					<visible>Skin.HasSetting(dialogselect_switchcolors1)</visible>
+					<bordersize>0,300,0,0</bordersize>
+					<bordertexture colordiffuse="$VAR[color_spotlightlib_background_layer1]">colors/white.png</bordertexture>
+	                <texture colordiffuse="$VAR[color_spotlightlib_accent]">colors/white50.png</texture>
+				</control>
+				<control type="image">
+					<visible>Skin.HasSetting(dialogselect_switchcolors2)</visible>
+					<bordersize>0,302,0,780</bordersize>
 					<bordertexture colordiffuse="$VAR[color_spotlightlib_background_layer1]">colors/white.png</bordertexture>
 	                <texture colordiffuse="$VAR[color_spotlightlib_accent]">colors/white50.png</texture>
 				</control>
 			    
 			    <control type="group">
                     <include>Animation_OpenClose_Slide</include>
-					
-
-				   <control type="image">
+					<control type="image">
 						<visible>!window.isactive(filebrowser)</visible>
 						<description>slide left icon overlay</description>
 						<left>200</left>
@@ -495,25 +487,25 @@ $INFO[ListItem.PictureResolution]  -->
 						<visible>!window.isactive(filebrowser)</visible>
 						<top>210</top>
 						<left>500</left>
-						<width>700</width>
+						<width>800</width>
 						<height>100</height>
 						<align>center</align>
 						<aligny>center</aligny>
 						<wrapmultiline>true</wrapmultiline>
-						<font>notosans_52_bold</font>
-						<label>$PARAM[header]</label>
+						<font>notosans_42_semibold_lowline</font>
+						<label>[B]$PARAM[header][/B]</label>
 						<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 					</control>
 					<control type="textbox">
 						<visible>!window.isactive(filebrowser)</visible>
 						<top>310</top>
 						<left>500</left>
-						<width>700</width>
+						<width>800</width>
 						<height>110</height>
 						<align>center</align>
 						<aligny>top</aligny>
 						<wrapmultiline>true</wrapmultiline>
-						<font>liberationsans_30_regular</font>
+						<font>notosans_30_semibold</font>
 						<label>$INFO[listitem.label]</label>
 						<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 					</control>
@@ -544,49 +536,53 @@ $INFO[ListItem.PictureResolution]  -->
 						<label>$INFO[listitem.label]</label>
 						<textcolor>$VAR[color_spotlightlib_main]</textcolor>
 					</control>
-					<control type="image">
-						<animation effect="fade" start="0" end="100" time="350" tween="cubic" easing="in">visible</animation>
-						<right>300</right>
-						<visible>window.isactive(filebrowser) + control.hasfocus(451)</visible>
-						<top>375</top>
-						<width>2</width>
-						<height>351</height>
-						<texture colordiffuse="$VAR[color_spotlightlib_accent]">colors/white50.png</texture>
-					</control>
-					<control type="image">
-						<animation effect="fade" start="0" end="100" time="350" tween="cubic" easing="in" delay="150">visible</animation>
-						<right>300</right>
-						<visible>window.isactive(filebrowser) + control.hasfocus(451)</visible>
-						<top>725</top>
-						<width>40</width>
-						<height>2</height>
-						<texture colordiffuse="$VAR[color_spotlightlib_accent]">colors/white50.png</texture>
-					</control>
-					<control type="image">
-						<visible>window.isactive(filebrowser) + Control.IsVisible(451)</visible>
-				        <left>100</left>
-						<top>25</top>
-						<width>450</width>
-						<height>350</height>
-						<bordersize>2</bordersize>
-						<bordertexture border="2" colordiffuse="$VAR[color_spotlightlib_main]">frames/framefilled_b.png</bordertexture>
-				        <texture>$INFO[window(home).property(dialog_select_currentthumb)]</texture>
-						<aspectratio align="center" aligny="bottom">keep</aspectratio>
-					</control>
-					<control type="image">
-						<right>100</right>
-						<visible>window.isactive(filebrowser) + Control.IsVisible(451)</visible>
-						<top>25</top>
-						<width>450</width>
-						<height>350</height>
-						<bordersize>2</bordersize>
-						<bordertexture border="2" colordiffuse="$VAR[color_spotlightlib_accent]">frames/framefilled_b.png</bordertexture>
-				        <texture>$INFO[Container().ListItem.Icon]</texture>
-						<aspectratio align="center" aligny="bottom">keep</aspectratio>
-					</control>
+					
+					<control type="group">
+						<visible>window.isactive(filebrowser)</visible>
+						<control type="image">
+							<animation effect="fade" start="0" end="100" time="350" tween="cubic" easing="in">visible</animation>
+							<right>300</right>
+							<visible>control.hasfocus(451) + [!String.contains(container().ListItem.Label,$LOCALIZE[20439)]) + !String.contains(container().ListItem.Label,$LOCALIZE[20153]) + !String.contains(container().ListItem.Label,$LOCALIZE[13515])]</visible>
+							<top>375</top>
+							<width>2</width>
+							<height>351</height>
+							<texture colordiffuse="$VAR[color_spotlightlib_accent]">colors/white50.png</texture>
+						</control>
+						<control type="image">
+							<animation effect="fade" start="0" end="100" time="350" tween="cubic" easing="in" delay="150">visible</animation>
+							<right>300</right>
+							<visible>control.hasfocus(451) + [!String.contains(container().ListItem.Label,$LOCALIZE[20439)]) + !String.contains(container().ListItem.Label,$LOCALIZE[20153]) + !String.contains(container().ListItem.Label,$LOCALIZE[13515])]</visible>
+							<top>725</top>
+							<width>40</width>
+							<height>2</height>
+							<texture colordiffuse="$VAR[color_spotlightlib_accent]">colors/white50.png</texture>
+						</control>
+						<control type="image">
+							<visible>Control.IsVisible(451)</visible>
+							<left>100</left>
+							<top>25</top>
+							<width>450</width>
+							<height>350</height>
+							<bordersize>2</bordersize>
+							<bordertexture border="2" colordiffuse="$VAR[color_spotlightlib_main]">frames/framefilled_b.png</bordertexture>
+							<texture>$INFO[window(home).property(dialog_select_currentthumb)]</texture>
+							<aspectratio align="center" aligny="bottom">keep</aspectratio>
+						</control>
+						<control type="image">
+							<right>100</right>
+							<visible>Control.IsVisible(451) + [!String.contains(container().ListItem.Label,$LOCALIZE[20439)]) + !String.contains(container().ListItem.Label,$LOCALIZE[20153]) + !String.contains(container().ListItem.Label,$LOCALIZE[13515])]</visible>
+							<top>25</top>
+							<width>450</width>
+							<height>350</height>
+							<bordersize>2</bordersize>
+							<bordertexture border="2" colordiffuse="$VAR[color_spotlightlib_accent]">frames/framefilled_b.png</bordertexture>
+							<texture>$INFO[Container().ListItem.Icon]</texture>
+							<aspectratio align="center" aligny="bottom">keep</aspectratio>
+						</control>
+						</control>
 				</control>
 				
-				<control type="$PARAM[type]" id="$PARAM[id]">
+				<control type="panel" id="$PARAM[id]">
 					<include>Animation_OpenClose_Slide</include>
 					<top>450</top>
 			        <left>200</left>
@@ -602,7 +598,12 @@ $INFO[ListItem.PictureResolution]  -->
 					<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
 					<scrolltime tween="cubic" easing="out">300</scrolltime>
 
-                    <itemlayout height="280" width="350" condition="$PARAM[fanart_panel]">
+				<oninfo condition="!Skin.HasSetting(dialogselect_switchcolors1) + !Skin.HasSetting(dialogselect_switchcolors2)">Skin.SetBool(dialogselect_switchcolors1)</oninfo>
+				<oninfo condition="Skin.HasSetting(dialogselect_switchcolors1)">Skin.Reset(dialogselect_switchcolors1)</oninfo>
+				<oninfo condition="Skin.HasSetting(dialogselect_switchcolors1)">Skin.SetBool(dialogselect_switchcolors2)</oninfo>
+				<oninfo condition="Skin.HasSetting(dialogselect_switchcolors2)">Skin.Reset(dialogselect_switchcolors2)</oninfo>
+				
+					<itemlayout height="280" width="350" condition="$PARAM[fanart_panel]">
 				        <control type="group">
 			                <height>190</height>
 				            <width>320</width>
@@ -637,9 +638,11 @@ $INFO[ListItem.PictureResolution]  -->
 			        <focusedlayout height="280" width="350" condition="$PARAM[fanart_panel]">
 						<control type="button">
 							<visible allowhiddenfocus="true">false</visible>
+							<onfocus condition="window.isactive(filebrowser) + [!string.isequal(control.getlabel(411),$LOCALIZE[13511]) + !string.isequal(control.getlabel(411),$LOCALIZE[20437]) + !string.isequal(control.getlabel(1),$LOCALIZE[13521])] + !String.IsEmpty(Window(home).Property(dialog_select))">ClearProperty(dialog_select,home)</onfocus>
+							<onfocus condition="window.isactive(selectdialog) + [string.isequal(control.getlabel(1),$LOCALIZE[13511]) | string.isequal(control.getlabel(1),$LOCALIZE[20437]) | string.isequal(control.getlabel(1),$LOCALIZE[13521])]">SetProperty(dialog_select,thumbs,home)</onfocus>
 							<onfocus condition="!String.IsEmpty(Window(home).Property(dialog_select_currentthumb)) + !String.IsEmpty(listitem.icon) + !Window.IsActive(filebrowser)">ClearProperty(dialog_select_currentthumb,home)</onfocus>
-							<onfocus condition="String.IsEqual(Window(home).Property(dialog_select),thumbs) + !String.IsEmpty(container($PARAM[id]).listitem.icon) + !Window.IsActive(filebrowser)">SetProperty(dialog_select_currentthumb,$INFO[container($PARAM[id]).listitem.icon],home)</onfocus>
-							<onfocus condition="String.IsEqual(Window(home).Property(dialog_select),thumbs) + String.IsEmpty(container($PARAM[id]).listitem.icon) + !Window.IsActive(filebrowser)">SetProperty(dialog_select_currentthumb,defaultaddonimages.png,home)</onfocus>
+							<onfocus condition="!String.IsEmpty(container($PARAM[id]).listitem.icon) + !Window.IsActive(filebrowser)">SetProperty(dialog_select_currentthumb,$INFO[container($PARAM[id]).listitem.icon],home)</onfocus>
+							<onfocus condition="String.IsEmpty(container($PARAM[id]).listitem.icon) + !Window.IsActive(filebrowser)">SetProperty(dialog_select_currentthumb,defaultaddonimages.png,home)</onfocus>
 						</control>						
 						<control type="group">
 			                <height>190</height>
@@ -668,7 +671,6 @@ $INFO[ListItem.PictureResolution]  -->
 				                <aspectratio scalediffuse="true" aligny="center" align="center">keep</aspectratio>
 							</control>
 						</control>
-						
 						<include content="dialog_select_gamewindow" condition="Window.IsActive(gamestretchmode) | Window.IsActive(gamevideofilter) | Window.IsActive(gamevideorotation)">
 							<param name="bg_color" value="$VAR[color_spotlightlib_main]" />
 						</include>
@@ -727,29 +729,17 @@ $INFO[ListItem.PictureResolution]  -->
 								<label>$INFO[Listitem.Label]</label>
 							</control>
 						</control>
-						<control type="group">
+						<control type="image">
+							<width>35</width>
+							<height>35</height>
 							<left>33</left>
-			                <height>70</height>
-							<control type="image">
-								<centertop>50%</centertop>
-								<width>35</width>
-								<height>35</height>
-								<visible>Window.IsActive(selectdialog) + ListItem.IsSelected</visible>
-								<bordertexture colordiffuse="$VAR[color_spotlightlib_background_layer1]">buttons/circle-filled.png</bordertexture>
-								<texture colordiffuse="$VAR[color_spotlightlib_secondary]">buttons/check-circle-outline.png</texture>
-								<aspectratio align="center" aligy="center">keep</aspectratio>
-							</control>
-							<control type="image">
-								<centertop>50%</centertop>
-								<width>35</width>
-								<height>35</height>
-								<visible>Window.IsActive(selectdialog) + !ListItem.IsSelected</visible>
-								<bordertexture colordiffuse="$VAR[color_spotlightlib_background_layer1]">buttons/circle-filled.png</bordertexture>
-								<texture colordiffuse="$VAR[color_spotlightlib_secondary]">buttons/circle-outline.png</texture>
-								<aspectratio align="center" aligy="center">keep</aspectratio>
-							</control>
+							<top>17</top>
+							<visible>Window.IsActive(selectdialog) + ListItem.IsSelected</visible>
+							<bordertexture colordiffuse="$VAR[color_spotlightlib_background_layer1]">buttons/circle-filled.png</bordertexture>
+							<texture colordiffuse="$VAR[color_spotlightlib_secondary]">buttons/check-circle-outline.png</texture>
+							<aspectratio align="center" aligy="center">keep</aspectratio>
 						</control>
-			        </itemlayout>
+					</itemlayout>
 			        <focusedlayout height="90" width="500" condition="!$PARAM[fanart_panel]">
 						<control type="group">
 							<visible>!ListItem.IsSelected</visible>
@@ -821,27 +811,15 @@ $INFO[ListItem.PictureResolution]  -->
 								<label>$INFO[Listitem.Label]</label>
 							</control>
 						</control>
-						<control type="group">
+						<control type="image">
+							<width>35</width>
+							<height>35</height>
 							<left>33</left>
-			                <height>70</height>
-							<control type="image">
-								<centertop>50%</centertop>
-								<width>35</width>
-								<height>35</height>
-								<visible>Window.IsActive(selectdialog) + ListItem.IsSelected</visible>
-								<bordertexture colordiffuse="$VAR[color_spotlightlib_background_layer1]">buttons/circle-filled.png</bordertexture>
-								<texture colordiffuse="$VAR[color_spotlightlib_main]">buttons/check-circle-outline.png</texture>
-								<aspectratio align="center" aligy="center">keep</aspectratio>
-							</control>
-							<control type="image">
-								<centertop>50%</centertop>
-								<width>35</width>
-								<height>35</height>
-								<visible>Window.IsActive(selectdialog) + !ListItem.IsSelected</visible>
-								<bordertexture colordiffuse="$VAR[color_spotlightlib_background_layer1]">buttons/circle-filled.png</bordertexture>
-								<texture colordiffuse="$VAR[color_spotlightlib_main]">buttons/circle-outline.png</texture>
-								<aspectratio align="center" aligy="center">keep</aspectratio>
-							</control>
+							<top>17</top>
+							<visible>Window.IsActive(selectdialog) + ListItem.IsSelected</visible>
+							<bordertexture colordiffuse="$VAR[color_spotlightlib_background_layer1]">buttons/circle-filled.png</bordertexture>
+							<texture colordiffuse="$VAR[color_spotlightlib_main]">buttons/check-circle-outline.png</texture>
+							<aspectratio align="center" aligy="center">keep</aspectratio>
 						</control>
 					</focusedlayout>
 					<include condition="!String.IsEmpty(Window(home).Property(select))" content="dialogselect_skinitems" />
@@ -849,9 +827,10 @@ $INFO[ListItem.PictureResolution]  -->
 			
 				<control type="scrollbar" id="$PARAM[id]60">
 					<animation effect="fade" start="100" end="0" time="250" condition="!Control.HasFocus($PARAM[id]60)">conditional</animation>
-					<right>10</right>
+					<right>300</right>
 					<top>450</top>
 					<height>500</height>
+					<width>2</width>
 					<onleft>$PARAM[id]</onleft>
 					<onright>$PARAM[id]</onright>
 				</control>
