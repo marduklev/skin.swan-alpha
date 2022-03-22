@@ -15,8 +15,8 @@
 				<viewtype label="$LOCALIZE[31260]">spotlight season info</viewtype>
 				
 				<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
-				<onfocus>RunScript(script.embuary.helper,action=encode,string='"$INFO[ListItem.TVShowTitle]"',prop=EncodedTitle)</onfocus>
-				<onfocus condition="!String.IsEmpty(Window.Property(refreshtrailer))">RunScript(script.embuary.helper,action=lookforfile,file='"$INFO[container.listitem.path]$INFO[container.listitem.FolderName,,-trailer.mp4]"',prop=trailer_avail)</onfocus>
+				<onfocus>RunScript(script.swan.helper,action=encode,string='"$INFO[ListItem.TVShowTitle]"',property=view58_encoded_title)</onfocus>
+				<onfocus condition="!String.IsEmpty(Window.Property(refreshtrailer))">RunScript(script.swan.helper,action=checkexist,file='"$INFO[container.listitem.path]$INFO[container.listitem.FolderName,,-trailer.mp4]"',prop=trailer_avail)</onfocus>
 				<onfocus condition="!String.IsEmpty(Window.Property(refreshtrailer))">SetProperty(listitemtrailer,$INFO[container.listitem.path]$INFO[container.listitem.FolderName,,-trailer.mp4],home)</onfocus>
 				<onfocus condition="!String.IsEmpty(Window.Property(refreshtrailer))">ClearProperty(refreshtrailer)</onfocus>
 				<onfocus>SetFocus(58001)</onfocus>
@@ -65,7 +65,7 @@
 					
 					<texturefocus />
 					<texturenofocus />
-					<onfocus condition="Control.IsVisible(58)">RunScript(script.embuary.helper,action=lookforfile,file='"$INFO[listitem.path]$INFO[listitem.FolderName,,-trailer.mp4]"',prop=trailer_avail)</onfocus>
+					<onfocus condition="Control.IsVisible(58)">RunScript(script.swan.helper,action=checkexist,file='"$INFO[listitem.path]$INFO[listitem.FolderName,,-trailer.mp4]"',property=trailer_avail)</onfocus>
 					
 					<onleft condition="Control.IsVisible(58)">menu</onleft>
 					<onright condition="Control.IsVisible(58)">menu</onright>
@@ -878,7 +878,7 @@
 	<variable name="view_58_Content_NextUp">
 		<value condition="String.IsEqual(Container.ViewMode,$LOCALIZE[31260]) + !String.IsEmpty(ListItem.TvShowDBID)">videodb://tvshows/titles/$INFO[ListItem.TvShowDBID]/-1/?xsp=%7B%22limit%22%3A1%2C%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22playcount%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22season%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%220%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</value>
 		<value condition="String.IsEqual(Container.ViewMode,$LOCALIZE[31260]) + String.IsEmpty(ListItem.TvShowDBID) + !String.IsEmpty(Window(home).Property(dbid))">videodb://tvshows/titles/$INFO[Window(home).Property(dbid)]/-1/?xsp=%7B%22limit%22%3A1%2C%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22ignorefolders%22%3A0%2C%22method%22%3A%22playcount%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22season%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%220%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</value>
-		<value condition="String.IsEqual(Container.ViewMode,$LOCALIZE[31260]) + String.IsEmpty(ListItem.TvShowDBID) + String.IsEmpty(Window(home).Property(dbid)) + !String.IsEmpty(Window(home).Property(EncodedTitle))">videodb://inprogresstvshows/-1/-1/?xsp=%7B%22limit%22%3A1%2C%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22method%22%3A%22playcount%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22tvshow%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(EncodedTitle)]%22%5D%7D%2C%7B%22field%22%3A%22season%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%220%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</value>
+		<value condition="String.IsEqual(Container.ViewMode,$LOCALIZE[31260]) + String.IsEmpty(ListItem.TvShowDBID) + String.IsEmpty(Window(home).Property(dbid)) + !String.IsEmpty(Window(home).Property(view58_encoded_title))">videodb://inprogresstvshows/-1/-1/?xsp=%7B%22limit%22%3A1%2C%22order%22%3A%7B%22direction%22%3A%22ascending%22%2C%22method%22%3A%22playcount%22%7D%2C%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22tvshow%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22$INFO[Window(home).Property(view58_encoded_title)]%22%5D%7D%2C%7B%22field%22%3A%22season%22%2C%22operator%22%3A%22isnot%22%2C%22value%22%3A%5B%220%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</value>
 	</variable>
 	<variable name="view_58_Content_Seasons">
 		<value condition="String.IsEqual(Container.ViewMode,$LOCALIZE[31260]) + !String.IsEmpty(Container.Folderpath)">$INFO[Container.Folderpath]</value>

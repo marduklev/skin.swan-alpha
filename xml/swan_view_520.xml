@@ -718,6 +718,17 @@
 				<width>90%</width>
 				<align>center</align>
 				<orientation>horizontal</orientation>
+					<control type="button" id="8880">
+						<label>quoting</label>
+						<width>300</width>
+						<height>100</height>
+		                <texturefocus colordiffuse="black">colors/white.png</texturefocus>
+		                <texturenofocus colordiffuse="white">colors/white.png</texturenofocus>
+		                <focusedcolor>white</focusedcolor>
+		                <textcolor>black</textcolor>
+						<onclick>SetFocus(520)</onclick>
+						<onclick>RunScript(script.swan.helper,action=test,paramkey1='"$INFO[listitem.label]"',paramvalue2=trailer_avail)</onclick>
+					</control>
 					<control type="button" id="8881">
 						<label>checkexist</label>
 						<width>300</width>
@@ -726,10 +737,8 @@
 		                <texturenofocus colordiffuse="white">colors/white.png</texturenofocus>
 		                <focusedcolor>white</focusedcolor>
 		                <textcolor>black</textcolor>
-						
 						<onclick>SetFocus(520)</onclick>
-						<!-- <onclick>RunScript(script.swan.helper,action=lookforfile,file="test",property=trailer_avail)</onclick> -->
-						<onclick>RunScript(script.swan.helper,action=checkexist,file=$INFO[listitem.path]$INFO[listitem.FolderName,,-trailer.mp4],property=trailer_avail)</onclick>
+						<onclick>RunScript(script.swan.helper,action=checkexist,file='"$INFO[listitem.path]$INFO[listitem.FolderName,,-trailer.mp4]"',property=trailer_avail)</onclick>
 					</control>
 					<control type="button" id="8882">
 						<label>encode</label>
@@ -740,11 +749,7 @@
 		                <focusedcolor>white</focusedcolor>
 		                <textcolor>black</textcolor>
 						<onclick>SetFocus(520)</onclick>
-						<!-- <onclick>RunScript(script.swan.helper,action=encode,string='"$INFO[ListItem.Label]"',property=propexist_name)</onclick> -->
-						<!-- <onclick>RunScript(script.swan.helper,action=encode,string='$ESCINFO[ListItem.Label]',property=propexist_name)</onclick> -->
-						<onclick>RunScript(script.swan.helper,action=encode,string=$INFO[ListItem.Label],property=encoded_string)</onclick>
-						
-						<!-- <onclick>RunScript(script.swan.helper,action=encode,string='"$INFO[MusicPlayer.Artist]"',prop=MusicPlayer_EncodedArtist)</onclick> -->
+						<onclick>RunScript(script.swan.helper,action=encode,string='"$INFO[ListItem.Label]"',property=encoded_string)</onclick>
 					</control>
 					<control type="button" id="8883">
 						<label>decode</label>
@@ -755,7 +760,7 @@
 		                <focusedcolor>white</focusedcolor>
 		                <textcolor>black</textcolor>
 						<onclick>SetFocus(520)</onclick>
-						<onclick>RunScript(script.swan.helper,action=decode,string=$INFO[ListItem.Label],property=decoded_string)</onclick>
+						<onclick>RunScript(script.swan.helper,action=decode,string='$ESCINFO[Container.Folderpath]',property=encoded_string)</onclick>
 					</control>
 					<control type="button" id="8884">
 						<label>textviewer</label>
@@ -766,15 +771,12 @@
 		                <focusedcolor>white</focusedcolor>
 		                <textcolor>black</textcolor>
 						<onclick>SetFocus(520)</onclick>
-						<onclick>RunScript(script.swan.helper,action=textviewer,header=$INFO[ListItem.Label],text='$ESCINFO[ListItem.Plot]')</onclick> 
+						<onclick>RunScript(script.swan.helper,action=textviewer,header='"$INFO[ListItem.Label]"',text='$ESCINFO[ListItem.Plot]')</onclick> 
 					</control>
 			</control>
 			
-			
 			<control type="scrollbar" id="52060">
-				
 				<hitrect x="1625" y="575" w="100" h="440" />
-				
 				<animation effect="slide" start="0,0" end="100,0" time="0" condition="Container.Content(albums) | Container.Content(actors) | Container.Content(images)">conditional</animation>
 				<animation effect="slide" start="0,0" end="120,50" time="0" condition="Container.Content(songs)">conditional</animation>
 				<animation effect="fade" start="100" end="0" time="250" condition="!Control.HasFocus(52060) | Window.IsActive(1140)">conditional</animation>

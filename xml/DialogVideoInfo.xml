@@ -2,13 +2,13 @@
 <window>
 	<defaultcontrol always="true">8000</defaultcontrol>
 	<onload>ClearProperty(AdditionalInfo)</onload>
-	<onload>RunScript(script.embuary.helper,action=resetposition,container=8601||8602||8603||8604||8605||8606||8607||8608||8609||8622)</onload>
-	<onload>RunScript(script.embuary.helper,action=encode,string='"$VAR[EncodeTitle]"',prop=EncodedTitle)</onload>
-	<onload condition="[!Window.IsActive(pvrguideinfo) + !Window.IsActive(PVRRecordingInfo)] + String.IsEmpty(Container.PluginName) + !string.isempty(listitem.dbid) + [container.content(movies) | String.IsEqual(listitem.dbtype,movie)]">RunScript(script.embuary.helper,action=lookforfile,file='"$VAR[extrasLocation_lookup]"',prop=bonuscontentavail)</onload>
+	<onload>RunScript(script.swan.helper,action=encode,string='"$VAR[EncodeTitle]"',property=videoinfo_encoded_title)</onload>
+	
+	<onload condition="[!Window.IsActive(pvrguideinfo) + !Window.IsActive(PVRRecordingInfo)] + String.IsEmpty(Container.PluginName) + !string.isempty(listitem.dbid) + [container.content(movies) | String.IsEqual(listitem.dbtype,movie)]">RunScript(script.swan.helper,action=checkexist,file='"$VAR[extrasLocation_lookup]"',property=bonuscontentavail)</onload>
 	
 	<onunload condition="!String.IsEmpty(Window(home).Property(dialog_select))">ClearProperty(dialog_select,home)</onunload>
 	<onunload>ClearProperty(AdditionalInfo)</onunload>
-	<onunload>ClearProperty(EncodedTitle,home)</onunload>
+	<onunload>ClearProperty(videoinfo_encoded_title,home)</onunload>
 	<onunload condition="!String.IsEmpty(Window(home).Property(bonuscontentavail))">ClearProperty(bonuscontentavail,home)</onunload>	
 		
 	<animation type="WindowOpen">
