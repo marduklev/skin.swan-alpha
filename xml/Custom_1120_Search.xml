@@ -559,34 +559,7 @@
 						</item>
 					</content>
                 </include>
-				<include condition="!Skin.HasSetting(SkinSearch_Content_netflix) + [!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.netflix)]" content="Universal_ContainerHeader">
-                    <param name="groupid" value="7531" />
-                    <param name="id" value="5031" />
-                    <param name="label" value="$INFO[System.AddonTitle(plugin.video.netflix)] $INFO[Skin.String(SearchTerm), $LOCALIZE[36913] $LOCALIZE[1411] &quot; , &quot;]" />
-                    <visible>Control.IsVisible(5031)</visible>
-                </include>
-                <include condition="!Skin.HasSetting(SkinSearch_Content_netflix) + [!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.netflix)]" content="Universal_Container">
-					<param name="id" value="5031" />
-					<param name="visible" value="Integer.IsGreater(Container(5031).NumItems,0) | Container(5031).IsUpdating" />
-					<param name="type_height" value="365" />
-					
-					<param name="layout_height" value="355" />
-					<param name="layout_width" value="490" />
-					<param name="itemheight" value="280" />
-					<param name="itemwidth" value="476" />
-					<param name="item_artwork_name" value="landscape" />
-					<content>
-						<item>
-							<visible>!Container(5031).IsUpdating</visible>
-							<label>More Results for $INFO[Skin.String(SearchTerm),&quot; , &quot;] on</label>
-							<label2>$ADDON[plugin.video.amazon-test 30050]</label2>
-							<icon>$INFO[System.AddonIcon(plugin.video.amazon-test)]</icon>
-							<thumb>$INFO[Window(home).Property(CastMemberThumb)]</thumb>
-							<onclick>ReplaceWindow(videos,plugin://plugin.video.netflix/directory/search/)</onclick>
-						</item>
-					</content>
-					<!-- <content target="videos" sortby="file" limit="25">plugin://plugin.video.netflix/directory/search/search/$INFO[Skin.String(SearchTerm)]/</content> -->
-                </include>
+				
 					
 		
 				<!-- Addons -->
@@ -609,7 +582,87 @@
 					<content target="addons" sortby="label">addons://search/$INFO[Skin.String(SearchTerm)]</content>
                 </include>
             </control>
+			
+			
+			
+			
         </control>
+		<!-- future -->
+			<control type="edit" id="19">
+				<visible>false</visible>
+				
+				<visible>!$EXP[Infodialog_IsActive] + !Window.IsActive(shutdownmenu)</visible>
+				<top>15</top>
+				<centerleft>50%</centerleft>
+				<height>60</height>
+				<width>360</width>
+				<hinttext>$LOCALIZE[587]...</hinttext>
+				<texturefocus colordiffuse="$VAR[color_header_backgroundpanel]" diffuse="buttons/button_6to1_Trans.png">colors/white70.png</texturefocus>	
+				<texturenofocus diffuse="buttons/button_6to1_Trans.png">colors/white10.png</texturenofocus>
+				<font>notosans_24_regular</font>
+				<textoffsetx>20</textoffsetx>
+				<textoffsety>15</textoffsety>
+				<textcolor>$VAR[color_header_text_main]</textcolor>
+				<focusedcolor>$VAR[color_header_text_main]</focusedcolor>
+				<disabledcolor />
+				<invalidcolor />
+				<onup>50</onup>
+				<ondown>50</ondown>
+				<onright condition="Control.IsVisible(199)">199</onright>
+				<onright condition="!Control.IsVisible(199)">50</onright>
+				<onleft>menu</onleft>
+				<label />
+			</control>
+			<control type="grouplist" id="8999">
+				<visible>false</visible>
+				<visible>!$EXP[Infodialog_IsActive]</visible>
+				<visible>!Window.IsActive(shutdownmenu)</visible>
+				<centertop>50%</centertop>
+				<align>center</align>
+				<aligny>center</aligny>
+				<width>110</width>
+				<height>90%</height>
+				<orientation>vertical</orientation>
+				<itemgap>10</itemgap>
+				<usecontrolcoords>true</usecontrolcoords>
+				
+				<onright>SEARCHCONTAINERS</onright>
+				<onleft>SEARCHCONTAINERS</onleft>
+				
+				<!-- <onup>FILTERCONTROL</onup> -->
+				
+				
+				
+				<!-- vis cond control.isvisible(belonging HEADER ID) -->
+				<control type="radiobutton" id="8001">
+					<include content="PreMenucontrol_RadioButton">
+						<param name="radiotexture" value="defaultaddonpvrclient" />
+					</include>
+					<visible>true</visible>
+					<onclick>Action(back)</onclick>
+				</control>
+				<control type="radiobutton" id="8001">
+					<include content="PreMenucontrol_RadioButton">
+						<param name="radiotexture" value="defaultaddonmusic" />
+					</include>
+					<visible>true</visible>
+					<onclick>Action(back)</onclick>
+				</control>
+				<control type="radiobutton" id="8001">
+					<include content="PreMenucontrol_RadioButton">
+						<param name="radiotexture" value="defaultaddonpicture" />
+					</include>
+					<visible>true</visible>
+					<onclick>Action(back)</onclick>
+				</control>
+				<control type="radiobutton" id="8001">
+					<include content="PreMenucontrol_RadioButton">
+						<param name="radiotexture" value="defaultgames" />
+					</include>
+					<visible>true</visible>
+					<onclick>Action(back)</onclick>
+				</control>
+			</control>
 		<include condition="Skin.HasSetting(window_frame)" content="window_frame" />
 		<include condition="Skin.HasSetting(SwanDebug)" content="swan_debug_overlay">
 			<param name="nested_debuginfo" value="
