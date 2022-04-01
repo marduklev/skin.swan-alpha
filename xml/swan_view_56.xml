@@ -15,7 +15,7 @@
 			
 			<control type="image">
 				<description>revisit alpha stuff cdiffuse and img bg texture</description>
-				<visible>control.hasfocus(56)</visible>
+				<visible>Control.IsVisible(56)</visible>
 				<bordertexture border="2" colordiffuse="$VAR[color_lib_text_main]">frames/frame.png</bordertexture>
 				<texture colordiffuse="cc202020" background="true">colors/white50.png</texture>
 				<bordersize>3</bordersize>
@@ -50,6 +50,7 @@
 						<height>270</height>
 						
 						<include content="listcontainer_infolayout">
+							<param name="id" value="56" />
 							<param name="artwork_w" value="400" />
 							<param name="artwork_h" value="236" />
 							<param name="artwork_posx" value="50" />
@@ -74,11 +75,13 @@
 					
 					<control type="group">
 						<height>270</height>
-						<include content="listcontainer_infolayout_focused">
-							<param name="bordertexture" value="frames/frame.png" />
-						</include>
-						
+						<animation type="Focus" reversible="false">
+							<effect type="zoom" end="103,103" time="200" tween="sine" easing="out" center="auto" />
+							<effect type="zoom" end="99,99" time="150" tween="sine" delay="200" easing="out" center="auto" />
+						</animation>
+						<include>hiddenbutton_manage_skinpropertys</include>
 						<include content="listcontainer_infolayout">
+							<param name="id" value="56" />
 							<param name="artwork_w" value="400" />
 							<param name="artwork_h" value="236" />
 							<param name="artwork_posx" value="63" />
@@ -100,16 +103,13 @@
 								<effect type="fade" start="0" end="100" time="350" delay="100" tween="sine" easing="out" center="auto" />
 							</animation>
 							<centertop>50%</centertop>
-							<visible>Control.HasFocus(56)</visible>
-							<visible>!String.Contains(ListItem.Icon,default)</visible>
-							<visible>!ListItem.IsPlaying</visible>
+							<visible>Control.HasFocus(56) + !String.Contains(ListItem.Icon,default) + !ListItem.IsPlaying + !string.isempty(listitem.dbid)</visible>
 							<left>30</left>
 							<width>60</width>
 							<height>60</height>
 							<bordertexture colordiffuse="ff131313">artworkdiffuse/circle.png</bordertexture>
 							<texture colordiffuse="$VAR[color_lib_widgetitem_overlayicon]" diffuse="artworkdiffuse/circle.png" background="true">overlay/overlayplay.png</texture>
 						</control>
-						
 					</control>
 					<control type="group">
 						<visible>Player.HasMedia + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
@@ -218,16 +218,4 @@
 		</control>
 	</include>
 	
-	<variable name="PreferedThumb_Sourcing56">
-	
-		<value condition="Skin.HasSetting(View_56_Prefer_Discart_Song) + !String.IsEmpty(ListItem.Art(album.discart)) + String.IsEqual(ListItem.dbtype,song)">$INFO[ListItem.Art(album.discart)]</value>
-		<value condition="!String.IsEmpty(ListItem.Art(discart)) + [[String.IsEqual(ListItem.dbtype,album) + Skin.HasSetting(View_56_Prefer_Discart_Album)] | [Window.IsActive(videos) + Skin.HasSetting(View_56_Prefer_Disc_Video)]]">$INFO[ListItem.Art(discart)]</value>
-		
-		<value condition="Skin.HasSetting(View_56_Prefer_clearart) + !String.IsEmpty(ListItem.Art(clearart))">$INFO[ListItem.Art(clearart)]</value>
-		<value condition="Skin.HasSetting(View_56_Prefer_clearart) + String.IsEmpty(ListItem.Art(clearart)) + !String.IsEmpty(ListItem.Art(characterart))">$INFO[ListItem.Art(characterart)]</value>
-		<value condition="[Skin.HasSetting(View_56_Prefer_clearlogo) | [Skin.HasSetting(View_56_Prefer_clearart) + String.IsEmpty(ListItem.Art(clearart)) + String.IsEmpty(ListItem.Art(characterart))]] + !String.IsEmpty(ListItem.Art(clearlogo))">$INFO[ListItem.Art(clearlogo)]</value>
-		
-		<value condition="Skin.HasSetting(View_56_Prefer_animatedfanart) + !String.IsEmpty(ListItem.Art(animatedfanart))">$INFO[ListItem.Art(animatedfanart)]</value>
-		<value>$VAR[ImageLayout_landscape]</value>
-	</variable>	
 </includes>
