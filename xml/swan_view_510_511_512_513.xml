@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <includes>
-
-	
-
-	<!-- the higher the transparency the lesser the transparency to diffuse - if using blur -->
-	<variable name="infopanel_bg_plot">
-		<value condition="!Skin.HasSetting(BlurEnabled) | [Skin.HasSetting(BlurEnabled) + $EXP[TrailerIsPlaying]]">colors/white70.png</value>
-		<value condition="Skin.HasSetting(BlurEnabled) + !$EXP[TrailerIsPlaying] + [!Skin.String(color_lib_infopanel_frame) | [Skin.String(color_lib_infopanel_frame) + String.StartsWith(Skin.String(color_lib_infopanel_frame),ff)]]">colors/white40.png</value>
-		<value condition="Skin.HasSetting(BlurEnabled) + !$EXP[TrailerIsPlaying] + [Skin.String(color_lib_infopanel_frame) + !String.StartsWith(Skin.String(color_lib_infopanel_frame),ff)]">colors/white60.png</value>
-	</variable>
-	
 	<!-- align to scrollbarright with no gaps <param name="right" default="99" /> -->
 	<include name="Media_Container_Infopanel">
 		<param name="width" default="590" />
@@ -19,7 +9,6 @@
 		<control type="group">
 			<animation effect="slide" start="0,0" end="0,90" time="350" tween="quadratic" easing="in" delay="100" condition="[Control.IsVisible(510) + Skin.HasSetting(View_510_DisableFooter)] | [Control.IsVisible(511) + Skin.HasSetting(View_511_DisableFooter)] | [Control.IsVisible(512) + Skin.HasSetting(View_512_DisableFooter)] | [Control.IsVisible(513) + Skin.HasSetting(View_513_DisableFooter)]">conditional</animation>
 			<visible>Control.IsVisible(510) | Control.IsVisible(511) | Control.IsVisible(512) | Control.IsVisible(513)</visible>
-			
 			
 			<control type="image">
 				<description>fullscrreen fade bg</description>
@@ -53,6 +42,7 @@
 				
 				<control type="image">
 					<description>ROTATING ARTWORK - with fade anim, optional</description>
+					<visible>[Control.IsVisible(510) + !Skin.HasSetting(View_510_disabledart)] | [Control.IsVisible(511) + !Skin.HasSetting(View_511_disabledart)] | [Control.IsVisible(512) + !Skin.HasSetting(View_512_disabledart)] | [Control.IsVisible(513) + !Skin.HasSetting(View_513_disabledart)]</visible>
 					<visible>Control.IsVisible(99007) + !String.IsEmpty(Control.GetLabel(99007))</visible>
 					<description>Dimmed Art DONE _ EXCEPT COLORS - need get diffusor for blur plot - need  new color for artwork frame/bg - color_lib_infopanelframe</description>
 					<bordersize>20</bordersize>
@@ -72,26 +62,23 @@
 					<visible>Skin.HasSetting(BlurEnabled)</visible>
 					<bordersize>20,0,20,0</bordersize>
 					<description>l,t,r,b</description>
-					<texture diffuse="diffuse/infopanelblur.png">$INFO[Window(home).Property(listitem_blurred)]</texture>
-					<aspectratio align="center">scale</aspectratio>
+					<texture diffuse="diffuse/infopanel_blur.png">$INFO[Window(home).Property(listitem_blurred)]</texture>
+					<aspectratio scalediffuse="false" align="center" aligny="center">scale</aspectratio>
 					<animation effect="fade" start="100" end="0" time="150" condition="$EXP[TrailerIsPlaying]">conditional</animation>
 				</control>
 				
 				<control type="group">
-					<description>Metadats</description>
+					<description>Metadata</description>
 					<top>200</top>	
 					<animation effect="slide" start="0,0" end="0,-200" condition="$EXP[TrailerIsPlaying]">conditional</animation>
 					
 					<control type="image">
 						<description>bg header infos - NO BLURRING - wished overlay for some clearart , temp Skin.HasSetting(BlurEnabled) or generell h80 - better for meta flags top row</description>
 						
-						<!-- no_gap zoom equals height80 , -->
-						<animation effect="zoom" start="100,100" end="100,113" condition="!$EXP[InfoPanel_gap_enabled]">conditional</animation>
-						
 						<left>20</left>
 						<right>20</right>
 						<top>300</top>
-						<height>70</height>
+						<height>80</height>
 						<texture colordiffuse="$VAR[color_lib_infopanel_frame]">colors/white.png</texture>
 					</control>
 					<control type="grouplist">
@@ -173,8 +160,7 @@
 							<param name="watched_size" value="25" />
 							<param name="folderind_size" value="60" />
 							<right>30</right>
-							<top>10</top>
-							<animation effect="slide" start="0,0" end="0,10" condition="!$EXP[InfoPanel_gap_enabled]">conditional</animation>
+							<top>20</top>
 						</include>
 						
 					<control description="meta2" type="group">
@@ -228,8 +214,6 @@
 							<bottom>20</bottom>
 							<height>90</height>
 							<control type="image">
-								<!-- gap -->    <animation effect="slide" start="0,0" end="0,10" condition="$EXP[InfoPanel_gap_enabled]">conditional</animation>
-												<animation effect="zoom" start="100,100" end="100,85" condition="$EXP[InfoPanel_gap_enabled]">conditional</animation>
 								<description>method3 - diffusesblurred flag bg | plot bg - top height just for get diffuse template creation</description>
 								<left>10</left>
 								<right>10</right>
@@ -240,8 +224,7 @@
 							<description> TEMP - ITS  TOO LARGE</description>
 							
 							<control type="grouplist">
-								<!-- no_gap --> <animation effect="zoom" start="100" end="65" center="315,20" condition="!$EXP[InfoPanel_gap_enabled]">conditional</animation>
-								<!-- gap -->	<animation effect="zoom" start="100" end="65" center="315,30" condition="$EXP[InfoPanel_gap_enabled]">conditional</animation>
+								<animation effect="zoom" start="100" end="65" center="315,20" condition="true">conditional</animation>
 								<description>neg offset to circumstance group width tag - just good n needed if using shrink animation</description>
 								<orientation>horizontal</orientation>
 								<align>center</align>
@@ -311,7 +294,7 @@
 					<control type="label">
 						<animation effect="fade" start="100" end="80" condition="false">conditional</animation>
 						<description>description to tiny for 10-foot UI</description>
-						<visible>!String.IsEmpty(ListItem.Genre) + !$EXP[InfoPanel_gap_enabled]</visible>
+						<visible>!String.IsEmpty(ListItem.Genre)</visible>
 						<width>auto</width>
 						<top>352</top>
 						<height>30</height>
@@ -340,6 +323,17 @@
 		</definition>
 	
 	</include>
+	<!-- the higher the transparency the lesser the transparency to diffuse - if using blur -->
+	<variable name="infopanel_bg_plot">
+		<value condition="!Skin.HasSetting(BlurEnabled) | [Skin.HasSetting(BlurEnabled) + $EXP[TrailerIsPlaying]]">colors/white70.png</value>
+		<value condition="Skin.HasSetting(BlurEnabled) + !$EXP[TrailerIsPlaying] + [!Skin.String(color_lib_infopanel_frame) | [Skin.String(color_lib_infopanel_frame) + String.StartsWith(Skin.String(color_lib_infopanel_frame),ff)]]">colors/white40.png</value>
+		<value condition="Skin.HasSetting(BlurEnabled) + !$EXP[TrailerIsPlaying] + [Skin.String(color_lib_infopanel_frame) + !String.StartsWith(Skin.String(color_lib_infopanel_frame),ff)]">colors/white60.png</value>
+	</variable>
+	<variable name="infopanel_fanart">
+		<value condition="!String.IsEmpty(Container().ListItem.Art(keyart)) + !Skin.HasSetting(BlurEnabled)">$INFO[Container().ListItem.Art(keyart)]</value>
+		<value>$VAR[ImageLayout_fanart]</value>
+	</variable>
+	
 	<include name="view_510">
 		<control type="group">
 			<visible>Control.IsVisible(510)</visible>
@@ -457,7 +451,6 @@
 			</include>
 		</control>
 	</include>
-	
 	<include name="view_511">
 		<control type="group">
 			<visible>Control.IsVisible(511)</visible>
@@ -498,7 +491,6 @@
 			</include>
 		</control>
 	</include>
-	
 	<include name="view_512">
 		<control type="group">
 			<visible>Control.IsVisible(512)</visible>
@@ -731,8 +723,6 @@
 			</include>
 		</control>
 	</include>
-	<variable name="infopanel_fanart">
-		<value condition="!String.IsEmpty(Container().ListItem.Art(keyart)) + !Skin.HasSetting(BlurEnabled)">$INFO[Container().ListItem.Art(keyart)]</value>
-		<value>$VAR[ImageLayout_fanart]</value>
-	</variable>
+	
+	
 </includes>
