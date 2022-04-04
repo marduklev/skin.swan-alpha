@@ -984,10 +984,6 @@
 		</control>
 	</include>
 	
-	<include name="WatchedIndicatorLayout">
-		<top>0</top>
-		<right>0</right>
-    </include>
 	<include name="ProgressBarOverlay">
 		<control type="progress">
 			<description>common</description>
@@ -1065,6 +1061,75 @@
 			<label>$INFO[ListItem.Label,[B],[/B]]</label>
 		</control>
 	</include>
+	
+	<include name="ListItem_Indicators">
+        <control type="group">
+			<description>changed watched.png to buttons/enter.png, test/circle-outline.png</description>
+            <visible>!String.IsEqual(ListItem.Label,..)</visible>
+            <nested />
+			<control description="watched" type="image">
+				<visible>!String.IsEqual(ListItem.dbtype,Set) + Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable</visible>
+				<centertop>50%</centertop>
+				<centerright>5%</centerright>
+				<width>$PARAM[watched_size]</width>
+				<height>$PARAM[watched_size]</height>
+				<texture colordiffuse="$VAR[color_lib_watchedoverlay_watched]" diffuse="buttons/enter.png">colors/white.png</texture>
+				<bordersize>2</bordersize>
+				<bordertexture colordiffuse="$VAR[color_lib_watchedoverlay_frame]" diffuse="colors/white70.png">frames/bordercircler25.png</bordertexture>
+			</control>
+            <control description="unwatched" type="image">
+				<visible>!String.IsEqual(ListItem.dbtype,Set) + [String.IsEqual(ListItem.Overlay,OverlayUnWatched.png) + !ListItem.IsResumable]</visible>
+				<visible>$PARAM[show_unwatchedindicator]</visible>
+				<centertop>50%</centertop>
+				<centerright>5%</centerright>
+				<width>$PARAM[watched_size]</width>
+				<height>$PARAM[watched_size]</height>
+				<texture colordiffuse="$VAR[color_lib_watchedoverlay_frame]" diffuse="colors/white70.png">frames/bordercircler25.png</texture>
+			</control>
+			<control description="in progress" type="image">
+				<visible>[!String.IsEqual(ListItem.dbtype,Set) + [String.IsEqual(ListItem.Overlay,OverlayUnWatched.png) + ListItem.IsResumable]] | [$EXP[IsSeason] | [$EXP[IsTVShow]]] + [String.IsEqual(ListItem.Overlay,OverlayUnWatched.png) + !String.IsEqual(ListItem.Property(TotalEpisodes), ListItem.Property(UnWatchedEpisodes))]</visible>
+				<centertop>50%</centertop>
+				<centerright>5%</centerright>
+				<width>$PARAM[watched_size]</width>
+				<height>$PARAM[watched_size]</height>
+				<texture colordiffuse="$VAR[color_lib_watchedoverlay_resumeable]" diffuse="progress.png">colors/white.png</texture>
+				<bordersize>2</bordersize>
+				<bordertexture colordiffuse="$VAR[color_lib_watchedoverlay_frame]" diffuse="colors/white70.png">frames/bordercircler25.png</bordertexture>
+			</control>
+			<control description="set" type="image">
+				<visible>String.IsEqual(ListItem.dbtype,Set)</visible>
+				<centertop>50%</centertop>
+				<centerright>5%</centerright>
+				<width>$PARAM[folderind_size]</width>
+				<height>$PARAM[folderind_size]</height>
+				<texture colordiffuse="$VAR[color_lib_text_main]" diffuse="colors/white40.png">defaultsets.png</texture>
+			</control>
+			
+			<control description="db item - view50,56" type="image">
+				<visible>[!string.isempty(container.pluginname) + !string.isempty(listitem.dbid)] + control.isvisible(50)</visible>
+				
+				<centertop>50%</centertop>
+				<centerright>2%</centerright>
+				<width>25</width>
+				<height>25</height>
+				<bordertexture colordiffuse="$VAR[color_spotlightlib_background_layer1]">buttons/circle-filled.png</bordertexture>
+				<texture colordiffuse="$VAR[color_lib_text_main]">buttons/check-circle-outline.png</texture>
+				<aspectratio align="center" aligy="center">keep</aspectratio>
+			</control>
+			<control description="db item - view50,56" type="image">
+				<visible>[!string.isempty(container.pluginname) + !string.isempty(listitem.dbid)] + control.isvisible(56)</visible>
+				
+				<centertop>50%</centertop>
+				<centerright>1%</centerright>
+				<width>38</width>
+				<height>38</height>
+				<bordertexture colordiffuse="$VAR[color_spotlightlib_background_layer1]">buttons/circle-filled.png</bordertexture>
+				<texture colordiffuse="$VAR[color_lib_text_main]">buttons/check-circle-outline.png</texture>
+				<aspectratio align="center" aligy="center">keep</aspectratio>
+			</control>
+			
+        </control>
+    </include>
 	
 	<variable name="ImageLayout_poster">
 		<value condition="!String.IsEmpty(ListItem.Property(icon))">$INFO[ListItem.Property(icon)]</value>
@@ -1165,4 +1230,83 @@
 	<variable name="ImageLayout_thumb">
 		<value>$VAR[ImageLayout_poster]</value>
 	</variable>
+
+	<include name="rules_listcontainer">
+		<left>40</left>
+		<right>40</right>
+		<top>5</top>
+		<control type="label">
+			<visible>!String.IsEqual(listitem.label,$LOCALIZE[21423])</visible>
+			<top>-10</top>
+			<left>-40</left>
+			<height>60</height>
+			<align>left</align>
+			<font>montserrat_50_extrabold</font>
+			<textcolor>$PARAM[color_panel]</textcolor>
+			<label>[</label>
+		</control>
+		<control type="label">
+			<visible>!String.IsEqual(listitem.label,$LOCALIZE[21423])</visible>
+			<top>-10</top>
+			<right>-40</right>
+			<height>60</height>
+			<align>right</align>
+			<font>montserrat_50_extrabold</font>
+			<textcolor>$PARAM[color_panel]</textcolor>
+			<label>]</label>
+		</control>
+		<control type="image">
+			<texture colordiffuse="$PARAM[color_panel]">colors/white.png</texture>
+		</control>
+		<control type="label">
+			<visible>String.IsEqual(listitem.label,$LOCALIZE[21423])</visible>
+			<right>20</right>
+			<left>90</left>
+			<height>55</height>
+			<aligny>center</aligny>
+			<font>liberationsans_23_bold</font>
+			<textcolor>$PARAM[color_text]</textcolor>
+			<label>$INFO[ListItem.Label]</label>
+		</control>
+		<control type="label">
+			<description>$LOCALIZE[21435]</description>
+			<visible>!String.IsEqual(listitem.label,$LOCALIZE[21423])</visible>
+			<right>20</right>
+			<left>90</left>
+			<height>50</height>
+			<aligny>center</aligny>
+			<font>liberationsans_23_bold</font>
+			<textcolor>$PARAM[color_text]</textcolor>
+			<label>$INFO[ListItem.CurrentItem,$LOCALIZE[31220]  ,]</label>
+		</control>
+		<control type="image">
+			<visible>String.IsEqual(listitem.label,$LOCALIZE[21423])</visible>
+			<top>-7</top>
+			<left>20</left>
+			<bordersize>10</bordersize>
+			<height>70</height>
+			<aspectratio align="left" aligny="center">keep</aspectratio>
+			<texture colordiffuse="$PARAM[color_text]">defaultaddsource.png</texture>
+		</control>
+		<control type="image">
+			<visible>!String.IsEqual(listitem.label,$LOCALIZE[21423])</visible>
+			<left>25</left>
+			<bordersize>10</bordersize>
+			<height>60</height>
+			<aspectratio align="left" aligny="center">keep</aspectratio>
+			<texture colordiffuse="$PARAM[color_text]">icons/checkbox.png</texture>
+		</control>
+		<control type="label">
+			<visible>!String.IsEqual(listitem.label,$LOCALIZE[21423])</visible>
+			<scroll>String.IsEqual(System.CurrentControl, ListItem.Label)</scroll>
+			<right>20</right>
+			<left>300</left>
+			<height>50</height>
+			<align>right</align>
+			<aligny>center</aligny>
+			<font>liberationsans_23_bold</font>
+			<textcolor>$PARAM[color_text]</textcolor>
+			<label>$INFO[ListItem.Label]</label>
+		</control>
+	</include>
 </includes>
