@@ -42,6 +42,7 @@
 	<include name="view_520">
 		<control type="group">
 			<visible>Control.IsVisible(520)</visible>
+			
 			<control type="image">
 				<visible>Player.HasVideo + String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
 				<texture colordiffuse="$VAR[color_spotlightlib_background_layer1]">colors/white90.png</texture>
@@ -469,7 +470,7 @@
 				
 				<animation effect="slide" start="0,0" end="0,60" time="250" condition="Container.Content(Songs)">conditional</animation>
 				<scrolltime tween="quadratic">400</scrolltime>
-				<itemlayout height="150" width="290" condition="!Container.Content(albums) + !Container.Content(songs) + !Container.Content(actors) + !Container.Content(images)">
+				<itemlayout height="150" width="290" condition="[Container.Content(seasons) + !skin.hassetting(view_520_seasonposterpanel)] + !Container.Content(albums) + !Container.Content(songs) + !Container.Content(actors) + !Container.Content(images)">
 					<control type="group">
 						<width>296</width>
 						<height>150</height>
@@ -489,7 +490,7 @@
 							<param name="artwork_overlay_landscape" value="![$EXP[IsEpisode]]" />
 						</include>
 							<control type="image">
-								<visible>Container.Content(episodes) | [String.IsEmpty(ListItem.dbtype) + [Container.Content() | Container.Content(images)]] | Container.Content(sources)</visible>
+								<visible>Container.Content(seasons) | Container.Content(episodes) | [String.IsEmpty(ListItem.dbtype) + [Container.Content() | Container.Content(images)]] | Container.Content(sources)</visible>
 								<height>50</height>
 								<animation effect="slide" end="0,1" condition="[String.IsEqual(ListItem.Overlay,OverlayUnWatched.png) + !ListItem.IsResumable] | [String.IsEmpty(ListItem.dbtype) + Container.Content()] | Container.Content(sources)">conditional</animation>
 								<bottom>9</bottom>
@@ -528,7 +529,7 @@
 								<label>$INFO[ListItem.Duration(mm),, min.]</label>
 							</control>
 							<control type="label">
-								<visible>[String.IsEmpty(ListItem.dbtype) + [Container.Content() | Container.Content(images)]] | Container.Content(sources)</visible>
+								<visible>Container.Content(seasons) | [String.IsEmpty(ListItem.dbtype) + [Container.Content() | Container.Content(images)]] | Container.Content(sources)</visible>
 								<height>20</height>
 								<bottom>10</bottom>
 								<left>12</left>
@@ -540,7 +541,7 @@
 							</control>
 					</control>
 				</itemlayout>
-				<focusedlayout height="150" width="290" condition="!Container.Content(albums) + !Container.Content(songs) + !Container.Content(actors) + !Container.Content(images)">
+				<focusedlayout height="150" width="290" condition="[Container.Content(seasons) + !skin.hassetting(view_520_seasonposterpanel)] + !Container.Content(albums) + !Container.Content(songs) + !Container.Content(actors) + !Container.Content(images)">
 					<include content="hiddenbutton_manage_skinpropertys" />
 					<control type="group">
 						<width>296</width>
@@ -594,7 +595,7 @@
 								<label>$INFO[ListItem.Duration(mm),, min.]</label>
 							</control>
 							<control type="label">
-								<visible>[String.IsEmpty(ListItem.dbtype) + [Container.Content() | Container.Content(images)]] | Container.Content(sources)</visible>
+								<visible>Container.Content(seasons) | [String.IsEmpty(ListItem.dbtype) + [Container.Content() | Container.Content(images)]] | Container.Content(sources)</visible>
 								<height>20</height>
 								<bottom>10</bottom>
 								<left>12</left>
@@ -607,6 +608,50 @@
 						</control>
 					</control>
 				</focusedlayout>
+				
+				<itemlayout height="225" width="150" condition="Container.Content(seasons) + skin.hassetting(view_520_seasonposterpanel)">
+					<control type="group">
+						<width>150</width>
+						<height>230</height>
+						<include content="universal_itemlayout">
+							<param name="artwork_bordercolor" value="$VAR[color_universalcontainer_itemframe_nf]" />
+							<param name="artwork" value="poster" />
+							<param name="artwork_focusoverlay_visible" value="false" />
+							<param name="infotags_visible" value="false" />
+							<param name="infotags_bgpanel_visible" value="false" />
+							<param name="artwork_bg_bordersize" value="6" />
+							
+							<param name="artwork_diffuse_themed" value="true" />
+							<param name="artwork_diffuse_override" value="false" />
+							<param name="artwork_overlay_landscape" value="![$EXP[IsEpisode]]" />
+						</include>
+							
+					</control>
+				</itemlayout>
+				<focusedlayout height="225" width="150" condition="Container.Content(seasons) + skin.hassetting(view_520_seasonposterpanel)">
+					<include content="hiddenbutton_manage_skinpropertys" />
+					<control type="group">
+						<width>150</width>
+						<height>230</height>
+						<include>Animation_Item_Focus</include>
+						<control type="group">
+							<include content="universal_itemlayout">
+								<param name="artwork_bordercolor" value="$VAR[color_universalcontainer_itemframe_fo]" />
+								<param name="artwork" value="poster" />
+								<param name="artwork_focusoverlay_visible" value="true" />
+								<param name="infotags_visible" value="false" />
+								<param name="infotags_bgpanel_visible" value="false" />
+								<param name="artwork_bg_bordersize" value="4" />
+								
+								<param name="artwork_diffuse_themed" value="true" />
+								<param name="artwork_diffuse_override" value="false" />
+								<param name="artwork_overlay_landscape" value="![$EXP[IsEpisode]]" />
+							</include>
+						</control>
+						
+					</control>
+				</focusedlayout>
+				
 				<itemlayout height="225" width="225" condition="Container.Content(albums) | Container.Content(actors) | Container.Content(images)">
 					<control type="group">
 						<width>230</width>
