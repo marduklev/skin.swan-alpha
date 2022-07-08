@@ -1,0 +1,47 @@
+<timers>
+
+	<!-- label Skin.TimerElapsedSecs([name]) -->
+
+	<!-- https://xbmc.github.io/docs.kodi.tv/master/kodi-base/d4/d8c/_skin__timers.html -->
+	<timer>
+		<name>manualtimerwithactions</name>
+		<description>100% manual timer with actions</description>
+		<onstart>Notification(skintimer, My timer was started, 1000)</onstart>
+		<onstop>Notification(skintimer, My timer was stopped, 1000)</onstop>
+	</timer>
+
+	<!-- automatic timer -->
+	<timer>
+		<name>myautomatictimer</name>
+		<description>Player state checker</description>
+		
+		<!-- The timer is automatically activated or deactivated based on the value of boolean info expressions.  -->
+			<!-- the timer is automatically started whenever the Player is playing a file (if not already running). reset="true" ensures the timer is always reset to 0 on each start operation. -->
+			<start reset="true">Player.Playing</start>
+			
+			<!-- It is stopped if there is no file being played (and of course if previously running). -->
+			<stop>!Player.Playing</stop>
+		
+		<!-- builtins / actions when either started or stopped -->
+		<onstart>Notification(skintimer, Player has started playing a file, 1000)</onstart>
+		<onstop>Notification(skintimer, Player is no longer playing a file, 1000)</onstop>
+	</timer>
+
+	<!-- reset your timer without having to stop and start -->
+
+	
+	<timer>
+		<name>windowtimer</name>
+		<description>Reset on idle</description>
+		<start reset="true">Window.IsActive(mywindow)</start>
+		
+		<!--
+			For instance, if you want to stop the timer after 5 seconds but have the timer resetting to 0 seconds if the user provides some input to Kodi.
+			For such cases the <reset/> condition can be used:
+		-->
+		<reset>Window.IsActive(mywindow) + !System.IdleTime(1) + Integer.IsGreaterOrEqual(Skin.TimerElapsedSecs(windowtimer), 1)</reset>
+		
+		<stop>!Window.IsActive(mywindow) + Integer.IsGreaterOrEqual(Skin.TimerElapsedSecs(windowtimer), 5)</stop>
+		<onstop>Dialog.Close(mywindow)</onstop>
+	</timer>
+</timers>
