@@ -4,8 +4,11 @@
 	<animation effect="fade" start="100" end="0" time="250">WindowClose</animation>
 	<!-- <onload condition="!String.IsEmpty(Window(Home).Property(culrc.running))">Dialog.Close(script-cu-lrclyrics-main.xml)</onload> -->
 	<defaultcontrol>7000</defaultcontrol>
-	<onunload>ClearProperty(CurrentPlaylistVisible,home)</onunload>
+	
+	<onload>SetProperty(playlist_updating,forceonload,home)</onload>
+	<onload>AlarmClock(test,ClearProperty(playlist_updating,home),00:00,silent)</onload>
 	<onunload>ClearProperty(playlist_itemcontrol,home)</onunload>
+	<onunload>ClearProperty(CurrentPlaylistVisible,home)</onunload>
 	<controls>
 	<control type="list" id="6999">
 		<description>getinfo</description>
@@ -217,6 +220,5 @@
 	<include condition="String.IsEqual(Window(home).Property(CurrentPlaylistVisible),mediawindow) + Window.IsActive(1110)" content="MediaWindow_Playlist" />
 	<include condition="String.IsEmpty(Window(home).Property(CurrentPlaylistVisible)) + !Skin.HasSetting(MusicOSD_SmallPlaylist)" content="MusicOSD_CommonPlaylist" />
 	<include condition="[String.IsEmpty(Window(home).Property(CurrentPlaylistVisible)) + Skin.HasSetting(MusicOSD_SmallPlaylist)] | String.IsEqual(Window(home).Property(CurrentPlaylistVisible),small)" content="MusicOSD_SmallPlaylist" />
-	
 	</controls>
 </window>
