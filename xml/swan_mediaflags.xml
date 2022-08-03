@@ -102,7 +102,7 @@
 				</include>
 				
 				<include content="rating_footer_template">
-					<param name="rating" value="trakt"/>
+					<param name="rating" value="trakt" />
 					<param name="rating_prop" value="Trakt_Rating" />
 					<param name="color" value="$PARAM[forcedcolor]" />
 				</include>
@@ -133,6 +133,12 @@
 					<param name="rating_prop" value="TMDb_Rating" />
 					<param name="color" value="$PARAM[forcedcolor]" />
 				</include>
+				<include content="rating_footer_template">
+					<param name="rating" value="tmdb"/>
+					<param name="rating_prop" value="TMDb_Rating" />
+					<param name="color" value="$PARAM[forcedcolor]" />
+				</include>
+				
 				<include content="rating_footer_template">
 					<param name="rating" value="tvdb"/>
 					<param name="rating_prop" value="tvdb_rating" />
@@ -172,7 +178,7 @@ del id="$PARAM[id], if needed better use id="$PARAM[view_id]$PARAM[id]
                    !String.IsEmpty(ListItem.Rating($PARAM[rating]))
 				</visible>
 				<visible>$EXP[NonMusic_ListItem]</visible>
-				<visible>Skin.HasSetting(Show_$PARAM[rating]_Rating) | Window.IsActive(movieinformation)</visible>
+				<visible>[Skin.HasSetting(Show_$PARAM[rating]_Rating) | Skin.HasSetting(Show_themoviedb_Rating)] | Window.IsActive(movieinformation)</visible>
 				<nested />
 				<top>15</top>
 				<bottom>5</bottom>
@@ -379,6 +385,10 @@ del id="$PARAM[id], if needed better use id="$PARAM[view_id]$PARAM[id]
 		<value condition="Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/themoviedb_monochrome.png</value>   
 		<value>flags/ratings/themoviedb_color.png</value>
 	</variable>
+	<variable name="image_tmdb">
+		<value condition="Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/themoviedb_monochrome.png</value>   
+		<value>flags/ratings/themoviedb_color.png</value>
+	</variable>
     <variable name="image_tomatometerallaudience">
 		<value condition="[Integer.IsGreaterOrEqual(Container(2000).ListItem.Rating(tomatometerallaudience),6) | Integer.IsGreaterOrEqual(ListItem.Rating(tomatometerallaudience),6) | Integer.IsGreaterOrEqual(Window(Home).Property(TMDbHelper.ListItem.RottenTomatoes_UserMeter),60)] + Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/audience_fresh_monochrome.png</value>     
 		<value condition="[Integer.IsLess(Container(2000).ListItem.Rating(tomatometerallaudience),6) | Integer.IsLess(ListItem.Rating(tomatometerallaudience),6) | Integer.IsLess(Window(Home).Property(TMDbHelper.ListItem.RottenTomatoes_UserMeter),60)] + Skin.HasSetting(use_monochrome_ratingflags)">flags/ratings/audience_rotten_monochrome.png</value>
@@ -415,11 +425,23 @@ del id="$PARAM[id], if needed better use id="$PARAM[view_id]$PARAM[id]
 		<value condition="String.IsEmpty(ListItem.Rating(imdb)) + [String.IsEmpty(Window(Home).Property(TMDbHelper.IsUpdating)) + Skin.HasSetting(TMDbHelper_Ratings) + Skin.HasSetting(TMDbHelper.Service)] + !String.IsEmpty(Window(Home).Property(TMDbHelper.ListItem.IMDb_Rating))">$INFO[Window(Home).Property(TMDbHelper.ListItem.IMDb_Rating)]</value> 
 	</variable>
 	<variable name="label_listitemrating_themoviedb">
-		<value condition="!String.IsEmpty(ListItem.Rating(themoviedb))">$INFO[ListItem.Rating(themoviedb)]</value>  
-		<value condition="String.IsEmpty(ListItem.Rating(themoviedb)) + [!Container(2000).IsUpdating + !String.IsEmpty(Container(2000).ListItem.Rating(themoviedb))]">$INFO[Container(2000).ListItem.Rating(themoviedb)]</value>
-		<value condition="String.IsEmpty(ListItem.Rating(themoviedb)) + [String.IsEmpty(Window(Home).Property(TMDbHelper.IsUpdating)) + Skin.HasSetting(TMDbHelper_Ratings) + Skin.HasSetting(TMDbHelper.Service)] + !String.IsEmpty(Window(Home).Property(TMDbHelper.ListItem.TMDb_Rating))">$INFO[Window(Home).Property(TMDbHelper.ListItem.TMDb_Rating)]</value> 
+		<value condition="!String.IsEmpty(ListItem.Rating(themoviedb)) + String.IsEmpty(ListItem.Rating(tmdb))">$INFO[ListItem.Rating(themoviedb)]</value>
+		<value condition="!String.IsEmpty(ListItem.Rating(tmdb)) + String.IsEmpty(ListItem.Rating(themoviedb))">$INFO[ListItem.Rating(tmdb)]</value>  
+		
+		<value condition="[String.IsEmpty(ListItem.Rating(themoviedb)) + String.IsEmpty(ListItem.Rating(tmdb))] + [!Container(2000).IsUpdating + !String.IsEmpty(Container(2000).ListItem.Rating(themoviedb))]">$INFO[Container(2000).ListItem.Rating(themoviedb)]</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(themoviedb)) + String.IsEmpty(ListItem.Rating(tmdb))] + [!Container(2000).IsUpdating + !String.IsEmpty(Container(2000).ListItem.Rating(tmdb))]">$INFO[Container(2000).ListItem.Rating(tmdb)]</value>
+		
+		<value condition="[String.IsEmpty(ListItem.Rating(themoviedb)) + String.IsEmpty(ListItem.Rating(tmdb))] + [String.IsEmpty(Window(Home).Property(TMDbHelper.IsUpdating)) + Skin.HasSetting(TMDbHelper_Ratings) + Skin.HasSetting(TMDbHelper.Service)] + !String.IsEmpty(Window(Home).Property(TMDbHelper.ListItem.TMDb_Rating))">$INFO[Window(Home).Property(TMDbHelper.ListItem.TMDb_Rating)]</value>
 	</variable>
-		<!-- <value condition="!String.IsEmpty(ListItem.Rating(themoviedb)) | [String.IsEmpty(ListItem.Rating(themoviedb)) + [!Container(2000).IsUpdating + !String.IsEmpty(Container(2000).ListItem.Rating(themoviedb))]]">$VAR[formatted_rating_themoviedb,,%]</value> -->
+	<variable name="label_listitemrating_tmdb">
+		<value condition="!String.IsEmpty(ListItem.Rating(themoviedb)) + String.IsEmpty(ListItem.Rating(tmdb))">$INFO[ListItem.Rating(themoviedb)]</value>
+		<value condition="!String.IsEmpty(ListItem.Rating(tmdb)) + String.IsEmpty(ListItem.Rating(themoviedb))">$INFO[ListItem.Rating(tmdb)]</value>  
+		
+		<value condition="[String.IsEmpty(ListItem.Rating(themoviedb)) + String.IsEmpty(ListItem.Rating(tmdb))] + [!Container(2000).IsUpdating + !String.IsEmpty(Container(2000).ListItem.Rating(themoviedb))]">$INFO[Container(2000).ListItem.Rating(themoviedb)]</value>
+		<value condition="[String.IsEmpty(ListItem.Rating(themoviedb)) + String.IsEmpty(ListItem.Rating(tmdb))] + [!Container(2000).IsUpdating + !String.IsEmpty(Container(2000).ListItem.Rating(tmdb))]">$INFO[Container(2000).ListItem.Rating(tmdb)]</value>
+		
+		<value condition="[String.IsEmpty(ListItem.Rating(themoviedb)) + String.IsEmpty(ListItem.Rating(tmdb))] + [String.IsEmpty(Window(Home).Property(TMDbHelper.IsUpdating)) + Skin.HasSetting(TMDbHelper_Ratings) + Skin.HasSetting(TMDbHelper.Service)] + !String.IsEmpty(Window(Home).Property(TMDbHelper.ListItem.TMDb_Rating))">$INFO[Window(Home).Property(TMDbHelper.ListItem.TMDb_Rating)]</value>
+	</variable>
 	<variable name="label_listitemrating_metacritic">
 		<value condition="!String.IsEmpty(ListItem.Rating(metacritic)) | [[!Container(2000).IsUpdating + !String.IsEmpty(Container(2000).ListItem.Rating(metacritic))] + String.IsEmpty(ListItem.Rating(metacritic))]">$VAR[formatted_rating_metacritic,,%]</value>  
 		<value condition="String.IsEmpty(ListItem.Rating(metacritic)) + [String.IsEmpty(Window(Home).Property(TMDbHelper.IsUpdating)) + Skin.HasSetting(TMDbHelper_Ratings) + Skin.HasSetting(TMDbHelper.Service)] + !String.IsEmpty(Window(Home).Property(TMDbHelper.ListItem.Metacritic_Rating))">$INFO[Window(Home).Property(TMDbHelper.ListItem.Metacritic_Rating),,%]</value> 
@@ -437,7 +459,9 @@ del id="$PARAM[id], if needed better use id="$PARAM[view_id]$PARAM[id]
 		<value condition="String.IsEmpty(ListItem.Rating(tvdb)) + [!Container(2000).IsUpdating + !String.IsEmpty(Container(2000).ListItem.Rating(tvdb))]">$INFO[Container(2000).ListItem.Rating(tvdb)]</value>
 	</variable>
 	<variable name="label_listitemrating_trakt">
-		<value condition="[String.IsEmpty(Window(Home).Property(TMDbHelper.IsUpdating)) + Skin.HasSetting(TMDbHelper_Ratings) + Skin.HasSetting(TMDbHelper.Service)] + !String.IsEmpty(Window(Home).Property(TMDbHelper.ListItem.Trakt_Rating))">$INFO[Window(Home).Property(TMDbHelper.ListItem.Trakt_Rating)]</value>
+		<value condition="!String.IsEmpty(ListItem.Rating(trakt))">$INFO[ListItem.Rating(trakt)]</value>
+		<value condition="String.IsEmpty(ListItem.Rating(trakt)) + [!Container(2000).IsUpdating + !String.IsEmpty(Container(2000).ListItem.Rating(trakt))]">$INFO[Container(2000).ListItem.Rating(trakt)]</value>
+		<value condition="String.IsEmpty(ListItem.Rating(trakt)) + [String.IsEmpty(Window(Home).Property(TMDbHelper.IsUpdating)) + Skin.HasSetting(TMDbHelper_Ratings) + Skin.HasSetting(TMDbHelper.Service)] + !String.IsEmpty(Window(Home).Property(TMDbHelper.ListItem.Trakt_Rating))">$INFO[Window(Home).Property(TMDbHelper.ListItem.Trakt_Rating)]</value>
 	</variable>
 	
 	<variable name="label_listitemrating_amazon">
