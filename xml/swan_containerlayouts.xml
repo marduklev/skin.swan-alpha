@@ -993,12 +993,21 @@
 			<visible>String.IsEqual(ListItem.Overlay,OverlayUnWatched.png) + ListItem.IsResumable</visible>
 			<info>ListItem.PercentPlayed</info>
 		</control>
+		<control type="progress">
+			<description>common nexus</description>
+			<bottom>0</bottom>
+			<height>3</height>
+			<visible>!String.IsEmpty(ListItem.Property(WatchedEpisodePercent)) + !String.IsEqual(ListItem.Property(WatchedEpisodePercent),0)</visible>
+			<visible>[$EXP[IsSeason] | [$EXP[IsTVShow]]]</visible>
+			<info>ListItem.Property(WatchedEpisodePercent)</info>
+		</control>
 		<control type="image">
 			<description>compromise shows in progress 100 percent=Episodes.Count,calc percent=Episodes.Watched</description>
 			<bottom>0</bottom>
 			<height>3</height>
 			<width>50%</width>
-			<visible>[$EXP[IsSeason] | [$EXP[IsTVShow]]] + [String.IsEqual(ListItem.Overlay,OverlayUnWatched.png) + !String.IsEqual(ListItem.Property(TotalEpisodes), ListItem.Property(UnWatchedEpisodes))]</visible>
+			<visible>String.IsEmpty(ListItem.Property(WatchedEpisodePercent))</visible>
+			<visible>[$EXP[IsSeason] | [$EXP[IsTVShow]] + [String.IsEqual(ListItem.Overlay,OverlayUnWatched.png) + !String.IsEqual(ListItem.Property(TotalEpisodes), ListItem.Property(UnWatchedEpisodes))]</visible>
 			<texture colordiffuse="$VAR[color_universalcontainer_watchedoverlay_progressbar_progress]">colors/white.png</texture>
 		</control>
 		<control type="image">
@@ -1006,6 +1015,7 @@
 			<bottom>0</bottom>
 			<height>3</height>
 			<texture colordiffuse="$VAR[color_universalcontainer_watchedoverlay_progressbar_progress]">colors/white.png</texture>
+			<visible>String.IsEmpty(ListItem.Property(WatchedEpisodePercent))</visible>
 			<visible>$EXP[IsMovie] | $EXP[IsEpisode] | $EXP[IsSeason] | $EXP[IsTVShow]</visible>
 			<visible>String.IsEqual(ListItem.Overlay,OverlayWatched.png) | [Integer.IsGreater(ListItem.PlayCount,0) + !ListItem.IsResumable]</visible>
 		</control>
@@ -1015,6 +1025,7 @@
 			<height>3</height>
 			<visible>false</visible>
 			<texture colordiffuse="$VAR[color_universalcontainer_watchedoverlay_progressbar_remain]">colors/white.png</texture>
+			<visible>String.IsEmpty(ListItem.Property(WatchedEpisodePercent)) | String.IsEqual(ListItem.Property(WatchedEpisodePercent),0)</visible>
 			<visible>$EXP[IsMovie] | $EXP[IsEpisode] | $EXP[IsSeason] | $EXP[IsTVShow]</visible>
 			<visible>String.IsEqual(ListItem.Overlay,OverlayUnWatched.png) + !ListItem.IsResumable</visible>
 		</control>
