@@ -320,7 +320,7 @@ echo themes\
 echo _updater\
 )>"exclude_git_t_wd.txt"
 )
-xcopy "%skin_git_dir%" "%skin_working_dir%\" /d /k /y /v /s /exclude:exclude_git_t_wd.txt
+xcopy "%skin_git_dir%" "%skin_working_dir%\" /k /y /v /s /exclude:exclude_git_t_wd.txt
 xcopy "%skin_git_dir%\_xbt" "%skin_working_dir%\media\" /d /k /y /v /s
 
 
