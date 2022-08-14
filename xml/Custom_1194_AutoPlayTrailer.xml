@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <window type="dialog" id="1194">
+
+	  <!-- changed to just one prop   !String.IsEmpty(Window(home).Property(trailer_avail))  =  !String.IsEmpty(Window(home).Property(trailer_listitem)) -->
+	
+
 	<visible>System.IdleTime(5) + !Player.HasMedia</visible>
 	<visible>[Window.IsActive(videos) + 
 			[String.IsEqual(System.CurrentControlID,50) + Skin.HasSetting(View_50_AutoPlayTrailer)] | 
@@ -13,11 +17,10 @@
 			[String.IsEqual(System.CurrentControlID,513) + Skin.HasSetting(View_513_AutoPlayTrailer)] |
 			[String.IsEqual(System.CurrentControlID,520) + Skin.HasSetting(View_520_AutoPlayTrailer)]] | 
 			[[Window.IsActive(home) + String.StartsWith(System.CurrentControlID,50)] + Skin.HasSetting(autoplay_trailer_home)]</visible>
-	<visible>String.IsEmpty(Window(Home).Property(TrailerIsPlaying)) + !String.IsEmpty(Window(home).Property(trailer_avail))</visible>
-	
+	<visible>String.IsEmpty(Window(Home).Property(trailer_isplaying)) + !String.IsEmpty(Window(home).Property(listitemtrailer))</visible>
 	<onload condition="[Window.IsActive(home) + String.IsEqual(Skin.String(HomeLayout),Spotlight)] | [Window.IsActive(videos) + [Control.IsVisible(503) | Control.IsVisible(504) | Control.IsVisible(520)]]">SetProperty(alt_busyspinner_counter,1,home)</onload>
 	<onload condition="!String.IsEmpty(Window(home).Property(listitemtrailer))">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onload>
-	<onload>SetProperty(TrailerIsPlaying,true,home)</onload>
+	<onload>SetProperty(trailer_isplaying,true,home)</onload>
 	<onload condition="Window.IsActive(home) + !Skin.HasSetting(home_trailer_showwidget) + !String.IsEqual(Skin.String(HomeLayout),Spotlight)">ActivateWindow(1122)</onload>
 	<!-- better would be hide busy loader as personal pref if yt fails it can hang in loader -->
 	<!-- set props to prevent loop, still dont like to use alarm -->

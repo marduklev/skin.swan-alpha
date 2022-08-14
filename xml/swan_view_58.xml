@@ -16,8 +16,10 @@
 				
 				<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
 				<onfocus>RunScript(script.swan.helper,action=encode,string='"$INFO[ListItem.TVShowTitle]"',property=view58_encoded_title)</onfocus>
-				<onfocus condition="!String.IsEmpty(Window.Property(refreshtrailer))">RunScript(script.swan.helper,action=checkexist,file='"$INFO[container.listitem.path]$INFO[container.listitem.FolderName,,-trailer.mp4]"',prop=trailer_avail)</onfocus>
-				<onfocus condition="!String.IsEmpty(Window.Property(refreshtrailer))">SetProperty(listitemtrailer,$INFO[container.listitem.path]$INFO[container.listitem.FolderName,,-trailer.mp4],home)</onfocus>
+
+				<onfocus condition="!string.isempty(listitem.path) + !string.contains(listitem.path,plugin://)">RunScript(script.swan.helper,action=playtrailer,fp='$ESCINFO[container.listitem.path]')</onfocus>
+				<onfocus condition="[!string.isempty(listitem.path) + string.contains(listitem.path,plugin://)] + !string.isempty(listitem.trailer)">SetProperty(listitemtrailer,$INFO[listitem.trailer],home)</onfocus>
+			
 				<onfocus condition="!String.IsEmpty(Window.Property(refreshtrailer))">ClearProperty(refreshtrailer)</onfocus>
 				<onfocus>SetFocus(58001)</onfocus>
 				<include>HiddenContainer</include>
@@ -54,7 +56,7 @@
 			
 			<control type="grouplist" id="58000">
 				<include>FullScreenDimensions</include>
-				<animation reversible="true" time="300" effect="fade" start="100" end="0" condition="$EXP[TrailerIsPlaying]">Conditional</animation>
+				<animation reversible="true" time="300" effect="fade" start="100" end="0" condition="$EXP[trailer_isplaying]">Conditional</animation>
 				<top>110</top>
 					
 				<onup>58000</onup>
@@ -65,7 +67,9 @@
 					
 					<texturefocus />
 					<texturenofocus />
-					<onfocus condition="Control.IsVisible(58)">RunScript(script.swan.helper,action=checkexist,file='"$INFO[listitem.path]$INFO[listitem.FolderName,,-trailer.mp4]"',property=trailer_avail)</onfocus>
+					<onfocus condition="Control.IsVisible(58) + [!string.isempty(listitem.path) + !string.contains(listitem.path,plugin://)]">RunScript(script.swan.helper,action=playtrailer,fp='$ESCINFO[container.listitem.path]')</onfocus>
+					<onfocus condition="Control.IsVisible(58) + [!string.isempty(listitem.path) + string.contains(listitem.path,plugin://)] + !string.isempty(listitem.trailer)">SetProperty(listitemtrailer,$INFO[listitem.trailer],home)</onfocus>
+			
 					
 					<onleft condition="Control.IsVisible(58)">menu</onleft>
 					<onright condition="Control.IsVisible(58)">menu</onright>
@@ -536,7 +540,7 @@
 						
 						<onclick condition="String.IsEqual(Container(580062).ListItem.Property(LocalTrailer),true)">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onclick>
 						<onclick condition="String.IsEmpty(Container(580062).ListItem.Property(LocalTrailer))">PlayMedia($INFO[Container(580062).ListItem.FilenameAndPath],1)</onclick>
-						<onclick>SetProperty(TrailerIsPlaying,true,home)</onclick>
+						<onclick>SetProperty(trailer_isplaying,true,home)</onclick>
 						<onback>SetFocus(50)</onback>
 						
 						<content>
@@ -657,7 +661,7 @@
 				<animation effect="slide" alignx="true" start="0,0" end="0,-310" tween="quadratic" time="400" condition="!Control.HasFocus(58001)">Conditional</animation>
 			</control>
 			<control type="videowindow">
-				<visible>Player.HasMedia + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
+				<visible>Player.HasMedia + !String.IsEmpty(Window(Home).Property(trailer_isplaying))</visible>
 				<height>70%</height>
 				<centerleft>50%</centerleft>
 				<centertop>60%</centertop>
@@ -779,8 +783,8 @@
 	<include name="view_58_ClearLogo_or_Title">
 		<top>240</top>
 		<!--
-		<animation effect="slide" start="0,0" end="600,0" time="100" tween="cubic" condition="!Skin.HasSetting(view_58_FanartLeftAlignment) + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))">conditional</animation>
-		<animation effect="slide" start="0,0" end="-650,0" time="100" tween="cubic" condition="Skin.HasSetting(view_58_FanartLeftAlignment) + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))">conditional</animation>
+		<animation effect="slide" start="0,0" end="600,0" time="100" tween="cubic" condition="!Skin.HasSetting(view_58_FanartLeftAlignment) + !String.IsEmpty(Window(Home).Property(trailer_isplaying))">conditional</animation>
+		<animation effect="slide" start="0,0" end="-650,0" time="100" tween="cubic" condition="Skin.HasSetting(view_58_FanartLeftAlignment) + !String.IsEmpty(Window(Home).Property(trailer_isplaying))">conditional</animation>
 		 -->		
 		<control type="image">
 			<visible>[!String.IsEmpty(ListItem.Art(tvshow.clearlogo)) | !String.IsEmpty(ListItem.Art(clearlogo)) | !String.IsEmpty(Container.Art(tvshow.clearlogo))]</visible>

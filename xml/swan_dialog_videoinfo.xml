@@ -107,10 +107,10 @@ ID 	Type 	Description
 			<visible>!Skin.HasSetting(VideoInfo_Button_Trailer) + $EXP[Has_Trailer]</visible>
 			<include>Button_VideoInfo</include>
 			<label>20410</label>
-			<onclick condition="!String.IsEmpty(ListItem.Trailer)">PlayMedia($INFO[ListItem.Trailer],1)</onclick>
-			<onclick condition="String.IsEmpty(ListItem.Trailer) + [!String.IsEmpty(Window(home).Property(listitemtrailer)) + !String.IsEmpty(Window(home).Property(trailer_avail))]">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onclick>
-			<onclick>SetProperty(TrailerIsPlaying,true,home)</onclick>
-			<usealttexture>!String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</usealttexture>
+			<onclick condition="!String.IsEmpty(Window(home).Property(listitemtrailer))">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onclick>
+					<onclick condition="!String.IsEmpty(ListItem.Trailer) + String.IsEmpty(Window(home).Property(listitemtrailer))">PlayMedia($INFO[ListItem.Trailer],1)</onclick>
+			<onclick condition="$EXP[Has_Trailer]">SetProperty(trailer_isplaying,true,home)</onclick>
+			<usealttexture>!String.IsEmpty(Window(Home).Property(trailer_isplaying))</usealttexture>
 			<alttexturefocus colordiffuse="$VAR[color_global_button_panel_fo]" diffuse="diffuse/gradienttoplinear100.png" border="25">frames/circler25.png</alttexturefocus>
 			<alttexturenofocus colordiffuse="$VAR[color_global_button_panel_nf]" border="25">frames/bordercircler25.png</alttexturenofocus>
 			<altlabel>244</altlabel>
@@ -118,7 +118,7 @@ ID 	Type 	Description
 		</control>
 		
 		<control type="button" id="122">
-			<visible>!String.IsEmpty(Window(Home).Property(TrailerIsPlaying))</visible>
+			<visible>!String.IsEmpty(Window(Home).Property(trailer_isplaying))</visible>
 			<include>Button_VideoInfo</include>
 			<label>36044</label>
 			<onclick>Stop</onclick>
@@ -206,7 +206,7 @@ ID 	Type 	Description
 			</include>
 			<control type="group">
 				<description>bottom info fade studio + folderpath</description>
-				<visible>String.IsEqual(Window.Property(AdditionalInfo),infolist) | $EXP[TrailerIsPlaying]</visible>
+				<visible>String.IsEqual(Window.Property(AdditionalInfo),infolist) | $EXP[trailer_isplaying]</visible>
 				<animation effect="fade" end="30" time="0" condition="true">conditional</animation>
 				<animation effect="fade" start="0" end="100" time="450">VisibleChange</animation>
 				<include content="studiologo_image">
@@ -235,7 +235,7 @@ ID 	Type 	Description
 			</control>
 			
 			<control type="group">
-				<visible>$EXP[TrailerIsPlaying]</visible>
+				<visible>$EXP[trailer_isplaying]</visible>
 				<animation effect="fade" start="0" end="100" time="750">VisibleChange</animation>
 				<left>100</left>
 				<top>260</top>
@@ -308,7 +308,7 @@ ID 	Type 	Description
 				<include content="Ratings_Footer">
 					<visible>!String.IsEqual(Window.Property(AdditionalInfo),infocontainer)</visible>
 					<!-- 
-					<visible>String.IsEqual(Window.Property(AdditionalInfo),infolist) | $EXP[TrailerIsPlaying]</visible>
+					<visible>String.IsEqual(Window.Property(AdditionalInfo),infolist) | $EXP[trailer_isplaying]</visible>
 					<animation effect="fade" start="0" end="100" time="450">VisibleChange</animation>
 					-->
 					<top>815</top>
@@ -372,7 +372,7 @@ ID 	Type 	Description
 				<animation effect="fade" start="100" end="0" time="650" reversible="false" condition="String.IsEqual(Window.Property(AdditionalInfo),infocontainer)">Conditional</animation>
 				<animation effect="slide" end="0,950" time="550" tween="cubic" reversible="true" condition="String.IsEqual(Window.Property(AdditionalInfo),infolist)">Conditional</animation>
 				<animation effect="fade" start="100" end="0" time="650" reversible="false" condition="String.IsEqual(Window.Property(AdditionalInfo),infolist)">Conditional</animation>
-				<animation effect="fade" start="100" end="0" time="600" condition="$EXP[TrailerIsPlaying]">conditional</animation>
+				<animation effect="fade" start="100" end="0" time="600" condition="$EXP[trailer_isplaying]">conditional</animation>
 				
 				<width>1250</width>
 				<height>1000</height>
@@ -533,7 +533,7 @@ ID 	Type 	Description
 			
 			<control type="group">
 				<description>Media Flags</description>
-				<visible>String.IsEqual(Window.Property(AdditionalInfo),infolist) | $EXP[TrailerIsPlaying]</visible>
+				<visible>String.IsEqual(Window.Property(AdditionalInfo),infolist) | $EXP[trailer_isplaying]</visible>
 				<animation effect="fade" start="0" end="100" time="450">VisibleChange</animation>
 				<height>150</height>
 				<bottom>100</bottom>
@@ -548,7 +548,7 @@ ID 	Type 	Description
 			
 			<control type="grouplist" id="8000">
 				<animation effect="fade" start="100" end="0" time="350" reversible="true" condition="String.IsEqual(Window.Property(AdditionalInfo),infocontainer)">Conditional</animation>
-				<animation effect="slide" end="0,100" time="350" reversible="true" condition="String.IsEqual(Window.Property(AdditionalInfo),infolist) | $EXP[TrailerIsPlaying]">Conditional</animation>
+				<animation effect="slide" end="0,100" time="350" reversible="true" condition="String.IsEqual(Window.Property(AdditionalInfo),infolist) | $EXP[trailer_isplaying]">Conditional</animation>
 				<top>850</top>
 				<left>150</left>
 				<right>620</right>
@@ -1044,7 +1044,7 @@ ID 	Type 	Description
 				<animation effect="slide" start="0,1200" end="0,-0" time="800" tween="cubic" reversible="false" condition="!String.IsEqual(Window.Property(AdditionalInfo),infolist)">conditional</animation>
 				<animation effect="fade" start="0" end="100" time="600" reversible="false" condition="String.IsEqual(Window.Property(AdditionalInfo),infolist)">conditional</animation>
 				
-				<animation effect="fade" start="100" end="0" time="600" condition="$EXP[TrailerIsPlaying]">conditional</animation>
+				<animation effect="fade" start="100" end="0" time="600" condition="$EXP[trailer_isplaying]">conditional</animation>
 				
 				<top>-910</top>
 				<!-- 

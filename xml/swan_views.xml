@@ -333,7 +333,7 @@
 		<onup condition="Control.IsVisible(61)">61</onup>
 		<onup condition="!Control.IsVisible(61) + Control.IsVisible(610)">610</onup>
 		<onup condition="$EXP[Has_Trailer] + [!Control.IsVisible(61) + !Control.IsVisible(610)]">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onup>
-		<onup condition="$EXP[Has_Trailer] + [!Control.IsVisible(61) + !Control.IsVisible(610)]">SetProperty(TrailerIsPlaying,true,home)</onup>
+		<onup condition="$EXP[Has_Trailer] + [!Control.IsVisible(61) + !Control.IsVisible(610)]">SetProperty(trailer_isplaying,true,home)</onup>
 		<onup condition="$EXP[Has_Trailer] + [!Control.IsVisible(61) + !Control.IsVisible(610)] + [!String.IsEmpty(ListItem.dbtype) + String.IsEmpty(Window.Property(Spotlight_Cast))]">SetProperty(Spotlight_Cast,visible)</onup>
 		<onup condition="!$EXP[Has_Trailer] + [!Control.IsVisible(610) + !Control.IsVisible(61)] + Control.IsVisible(19)">19</onup>
 		<ondown condition="!Window.IsActive(music) + !String.IsEmpty(ListItem.dbtype) + String.IsEmpty(Window.Property(Spotlight_Cast))">SetProperty(Spotlight_Cast,visible)</ondown>	
@@ -433,7 +433,7 @@
 			<onright>61</onright>
 			<onup condition="Control.IsVisible(610)">610</onup>
 			<onup condition="$EXP[Has_Trailer] + !Control.IsVisible(610)">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onup>
-			<onup condition="$EXP[Has_Trailer] + !Control.IsVisible(610)">SetProperty(TrailerIsPlaying,true,home)</onup>
+			<onup condition="$EXP[Has_Trailer] + !Control.IsVisible(610)">SetProperty(trailer_isplaying,true,home)</onup>
 			<onup condition="$EXP[Has_Trailer] + !Control.IsVisible(610)">SetProperty(Spotlight_Cast,visible)</onup>
 			<onup condition="[$EXP[Has_Trailer] + !Control.IsVisible(610)] | [!$EXP[Has_Trailer] + !Control.IsVisible(610) + !Control.IsVisible(19)]">50</onup>
 			<onup condition="!$EXP[Has_Trailer] + !Control.IsVisible(610) + Control.IsVisible(19)">19</onup>
@@ -444,7 +444,7 @@
 	<include name="ScrollBar_Alphabet">
 		<control type="group">
 			<nested />
-			<animation effect="fade" start="100" end="3" time="200" easing="inout" reversible="true" condition="!Control.HasFocus($PARAM[id])">conditional</animation>
+			<animation effect="fade" start="100" end="0" time="200" easing="inout" reversible="true" condition="!Control.HasFocus($PARAM[id])">conditional</animation>
 			<height>$PARAM[height]</height>
 			<control type="image">
 				<description>may just use as nested element for hor bar</description>
@@ -490,8 +490,7 @@
 				<content>plugin://script.embuary.helper/?info=jumptoletter&amp;showall=true&amp;reload=$INFO[Container.NumItems]</content>
 			</control>
 		</control>
-	</include>	
-	
+	</include>
 	<include name="ScrollBar_Alphabet_ver">
 		<animation effect="fade" start="100" end="0" time="250" condition="Window.IsActive(1140)">conditional</animation>
 		<width>60</width>
@@ -510,7 +509,7 @@
 		<top>15</top>	
 		<height>75</height>
 		<onup condition="$EXP[Has_Trailer]">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onup>
-		<onup condition="$EXP[Has_Trailer]">SetProperty(TrailerIsPlaying,true,home)</onup>
+		<onup condition="$EXP[Has_Trailer]">SetProperty(trailer_isplaying,true,home)</onup>
 		<onup condition="$EXP[Has_Trailer] + String.IsEmpty(Window.Property(Spotlight_Cast))">SetProperty(Spotlight_Cast,visible)</onup>
 		<onup condition="$EXP[Has_Trailer]">50</onup>
 		<onup condition="!$EXP[Has_Trailer] + Control.IsVisible(19)">19</onup>
@@ -540,7 +539,7 @@
 			<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
 			<animation effect="zoom" start="110" end="130" center="auto" time="12000" tween="cubic" easing="inout" pulse="true" condition="Skin.HasSetting(BackgroundAnimation)">Conditional</animation>
 			<animation effect="slide" start="-10,-10" end="10,10" time="8000" tween="cubic" easing="inout" pulse="true" condition="Skin.HasSetting(BackgroundAnimation)">Conditional</animation>
-			<animation effect="fade" start="100" end="0" delay="200" time="800" pulse="false" condition="[Player.HasVideo + String.IsEmpty(Window(Home).Property(TrailerIsPlaying))] | [[[Window.IsActive(home) + !Skin.HasSetting(home_trailer_showwidget)] | [!Window.IsActive(home) + !Control.IsVisible(520)]] + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))]">Conditional</animation>
+			<animation effect="fade" start="100" end="0" delay="200" time="800" pulse="false" condition="[Player.HasVideo + String.IsEmpty(Window(Home).Property(trailer_isplaying))] | [[[Window.IsActive(home) + !Skin.HasSetting(home_trailer_showwidget)] | [!Window.IsActive(home) + !Control.IsVisible(520)]] + !String.IsEmpty(Window(Home).Property(trailer_isplaying))]">Conditional</animation>
 		</control>
 		</definition>
 	</include>

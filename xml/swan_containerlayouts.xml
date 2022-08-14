@@ -169,18 +169,17 @@
 		</control>
 	</include>
 		
-	<!-- dont forget benefit of usage: nested , onunfocus  -->
+	<!-- dont forget benefit of usage: nested , onunfocus -->
 	<include name="hiddenbutton_manage_skinpropertys">
 		<control type="button">
 			<visible allowhiddenfocus="true">false</visible>
 			<nested />
 			<include condition="Skin.HasSetting(autoplay_trailer_home) + Window.IsActive(home) + String.IsEqual(Skin.String(HomeLayout),WidgetsOnly)">home_listitem_propertys</include>
-			<onfocus condition="!Window.IsActive(movieinformation) + !String.IsEmpty(Window(home).Property(trailer_avail))">ClearProperty(trailer_avail,home)</onfocus>
+			
 			<onfocus condition="!Window.IsActive(movieinformation) + !String.IsEmpty(Window(home).Property(listitemtrailer))">ClearProperty(listitemtrailer,home)</onfocus>
-			<onfocus condition="!Window.IsActive(movieinformation) + [String.IsEmpty(listitem.trailer) + !String.IsEmpty(listitem.FolderName) + string.isempty(Container.PluginName)] + [String.IsEqual(ListItem.DBtype,tvshow) | String.IsEqual(ListItem.DBtype,movie)]">RunScript(script.swan.helper,action=checkexist,file='"$INFO[listitem.path]$INFO[listitem.FolderName,,-trailer.mp4]"',property=trailer_avail)</onfocus>
-			<onfocus condition="!Window.IsActive(movieinformation) + !String.IsEmpty(listitem.trailer)">SetProperty(trailer_avail,listitem,home)</onfocus>
-			<onfocus condition="!Window.IsActive(movieinformation) + String.IsEmpty(listitem.trailer) + [String.IsEqual(ListItem.DBtype,tvshow) | String.IsEqual(ListItem.DBtype,movie)]">SetProperty(listitemtrailer,$INFO[listitem.path]$INFO[listitem.FolderName,,-trailer.mp4],home)</onfocus>
-			<onfocus condition="!Window.IsActive(movieinformation) + !String.IsEmpty(listitem.trailer)">SetProperty(listitemtrailer,$INFO[listitem.trailer],home)</onfocus>
+			<onfocus condition="!Window.IsActive(movieinformation) + [!string.isempty(listitem.path) + !string.contains(listitem.path,plugin://)] + [String.IsEqual(ListItem.DBtype,tvshow) | String.IsEqual(ListItem.DBtype,movie)]">RunScript(script.swan.helper,action=playtrailer,fp='$ESCINFO[listitem.path]')</onfocus>
+			<onfocus condition="!Window.IsActive(movieinformation) + [!string.isempty(listitem.path) + string.contains(listitem.path,plugin://)] + !string.isempty(listitem.trailer)">SetProperty(listitemtrailer,$INFO[listitem.trailer],home)</onfocus>
+			
 			<onfocus condition="[!String.IsEqual(ListItem.DBtype,season) + !String.IsEqual(ListItem.DBtype,episode) + !String.IsEqual(ListItem.label,..)] + !String.IsEmpty(Window(home).Property(dbid))">ClearProperty(dbid,home)</onfocus>
 			<onfocus condition="[!String.IsEqual(ListItem.DBtype,season) + !String.IsEqual(ListItem.DBtype,episode) + !String.IsEqual(ListItem.label,..)] + !String.IsEmpty(Window(home).Property(rating))">ClearProperty(rating,home)</onfocus>
 			<onfocus condition="[!String.IsEqual(ListItem.DBtype,season) + !String.IsEqual(ListItem.DBtype,episode) + !String.IsEqual(ListItem.label,..)] + !String.IsEmpty(Window(home).Property(totalseasons))">ClearProperty(totalseasons,home)</onfocus>
@@ -204,7 +203,8 @@
 			<onfocus condition="String.IsEqual(ListItem.DBType,tvshow) + [String.IsEmpty(listitem.uniqueid(tmdb)) + !String.IsEmpty(ListItem.Property(tmdb_id))]">SetProperty(tvshow_tmdbid,$INFO[ListItem.Property(tmdb_id)],home)</onfocus>
 			<onfocus condition="String.IsEqual(ListItem.DBType,tvshow) + [String.IsEmpty(listitem.uniqueid(tmdb)) + String.IsEmpty(ListItem.Property(tmdb_id))] + !String.IsEmpty(ListItem.Property(id))">SetProperty(tvshow_tmdbid,$INFO[ListItem.Property(id)],home)</onfocus>
 			<onfocus condition="String.IsEqual(ListItem.DBType,episode) + !String.IsEmpty(ListItem.Property(tvshow.tmdb_id))">SetProperty(episodetvshow_tmdbid,$INFO[ListItem.Property(tvshow.tmdb_id)],home)</onfocus>
-			<onunfocus condition="!Window.IsActive(movieinformation) + !String.IsEmpty(Window(home).Property(TrailerIsPlaying))">PlayerControl(Stop)</onunfocus>
+			
+			<onunfocus condition="!Window.IsActive(movieinformation) + !String.IsEmpty(Window(home).Property(trailer_isplaying))">PlayerControl(Stop)</onunfocus>
 		</control>
 	</include>
 		

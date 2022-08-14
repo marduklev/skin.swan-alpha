@@ -12,7 +12,7 @@
 			
 			<control type="image">
 				<description>fullscrreen fade bg</description>
-				<visible>$EXP[TrailerIsPlaying]</visible>
+				<visible>$EXP[trailer_isplaying]</visible>
 				<animation effect="fade" start="0" end="100" time="750">VisibleChange</animation>
 				<texture colordiffuse="ff131313">colors/white80.png</texture>
 				<colordiffuse>ff000000</colordiffuse>
@@ -36,7 +36,7 @@
 					<bordertexture colordiffuse="$VAR[color_lib_infopanel_frame]">colors/white.png</bordertexture>
 					<texture diffuse="colors/white80.png">$VAR[infopanel_fanart]</texture> 
 					<aspectratio align="center">scale</aspectratio>
-					<visible>!$EXP[TrailerIsPlaying]</visible>
+					<visible>!$EXP[trailer_isplaying]</visible>
 					<visible>[Control.IsVisible(510) + !Skin.HasSetting(View_510_disabledart)] | [Control.IsVisible(511) + !Skin.HasSetting(View_511_disabledart)] | [Control.IsVisible(512) + !Skin.HasSetting(View_512_disabledart)] | [Control.IsVisible(513) + !Skin.HasSetting(View_513_disabledart)]</visible>
 				</control>
 				
@@ -48,7 +48,7 @@
 					<bordersize>20</bordersize>
 					<texture>$INFO[Control.GetLabel(99007)]</texture>
 					<aspectratio align="center">scale</aspectratio>
-					<visible>!$EXP[TrailerIsPlaying]</visible>
+					<visible>!$EXP[trailer_isplaying]</visible>
 					<animation type="Visible" reversible="false">
 						<effect type="fade" start="0" end="100" time="750" />
 					</animation>
@@ -64,13 +64,13 @@
 					<description>l,t,r,b</description>
 					<texture diffuse="diffuse/infopanel_blur.png">$INFO[Window(home).Property(listitem_blurred)]</texture>
 					<aspectratio scalediffuse="false" align="center" aligny="center">scale</aspectratio>
-					<animation effect="fade" start="100" end="0" time="150" condition="$EXP[TrailerIsPlaying]">conditional</animation>
+					<animation effect="fade" start="100" end="0" time="150" condition="$EXP[trailer_isplaying]">conditional</animation>
 				</control>
 				
 				<control type="group">
 					<description>Metadata</description>
 					<top>200</top>	
-					<animation effect="slide" start="0,0" end="0,-200" condition="$EXP[TrailerIsPlaying]">conditional</animation>
+					<animation effect="slide" start="0,0" end="0,-200" condition="$EXP[trailer_isplaying]">conditional</animation>
 					
 					<control type="image">
 						<description>bg header infos - NO BLURRING - wished overlay for some clearart , temp Skin.HasSetting(BlurEnabled) or generell h80 - better for meta flags top row</description>
@@ -217,7 +217,7 @@
 								<description>method3 - diffusesblurred flag bg | plot bg - top height just for get diffuse template creation</description>
 								<left>10</left>
 								<right>10</right>
-								<visible>!$EXP[TrailerIsPlaying]</visible>
+								<visible>!$EXP[trailer_isplaying]</visible>
 								<height>70</height>
 								<texture flipx="true" colordiffuse="$VAR[color_lib_infopanel_accent]">diffuse/gradientleft.png</texture>
 							</control>
@@ -309,7 +309,7 @@
 			</control>
 			
 			<control type="group">
-				<visible>$EXP[TrailerIsPlaying]</visible>
+				<visible>$EXP[trailer_isplaying]</visible>
 				<animation effect="fade" start="0" end="100" time="750">VisibleChange</animation>
 				<top>0</top>
 				<left>150</left>
@@ -325,9 +325,9 @@
 	</include>
 	<!-- the higher the transparency the lesser the transparency to diffuse - if using blur -->
 	<variable name="infopanel_bg_plot">
-		<value condition="!Skin.HasSetting(BlurEnabled) | [Skin.HasSetting(BlurEnabled) + $EXP[TrailerIsPlaying]]">colors/white70.png</value>
-		<value condition="Skin.HasSetting(BlurEnabled) + !$EXP[TrailerIsPlaying] + [!Skin.String(color_lib_infopanel_frame) | [Skin.String(color_lib_infopanel_frame) + String.StartsWith(Skin.String(color_lib_infopanel_frame),ff)]]">colors/white40.png</value>
-		<value condition="Skin.HasSetting(BlurEnabled) + !$EXP[TrailerIsPlaying] + [Skin.String(color_lib_infopanel_frame) + !String.StartsWith(Skin.String(color_lib_infopanel_frame),ff)]">colors/white60.png</value>
+		<value condition="!Skin.HasSetting(BlurEnabled) | [Skin.HasSetting(BlurEnabled) + $EXP[trailer_isplaying]]">colors/white70.png</value>
+		<value condition="Skin.HasSetting(BlurEnabled) + !$EXP[trailer_isplaying] + [!Skin.String(color_lib_infopanel_frame) | [Skin.String(color_lib_infopanel_frame) + String.StartsWith(Skin.String(color_lib_infopanel_frame),ff)]]">colors/white40.png</value>
+		<value condition="Skin.HasSetting(BlurEnabled) + !$EXP[trailer_isplaying] + [Skin.String(color_lib_infopanel_frame) + !String.StartsWith(Skin.String(color_lib_infopanel_frame),ff)]">colors/white60.png</value>
 	</variable>
 	<variable name="infopanel_fanart">
 		<value condition="!String.IsEmpty(Container().ListItem.Art(keyart)) + !Skin.HasSetting(BlurEnabled)">$INFO[Container().ListItem.Art(keyart)]</value>
@@ -340,7 +340,7 @@
 			
 			<control type="panel" id="510">
 				<viewtype label="$LOCALIZE[31244]">icon</viewtype>
-				<animation effect="fade" start="100" end="0" time="250" tween="quadratic" easing="out" delay="100" condition="Player.HasMedia + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))">conditional</animation>
+				<animation effect="fade" start="100" end="0" time="250" tween="quadratic" easing="out" delay="100" condition="Player.HasMedia + !String.IsEmpty(Window(Home).Property(trailer_isplaying))">conditional</animation>
 			<!-- some accident BUT if ommit width param Media_Container_Infopanel <animation effect="fade" start="100" end="0" time="250" tween="quadratic" easing="out" delay="100" condition="true">conditional</animation> -->
            
 				<include content="view_510_noLocking" condition="!skin.hassetting(skin_locked_views)" />
@@ -457,7 +457,7 @@
 			
 			<include content="Universal_Container">
 				<viewtype label="$LOCALIZE[31245]">icon</viewtype>
-				<animation effect="fade" start="100" end="0" time="250" tween="quadratic" easing="out" delay="100" condition="Player.HasMedia + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))">conditional</animation>
+				<animation effect="fade" start="100" end="0" time="250" tween="quadratic" easing="out" delay="100" condition="Player.HasMedia + !String.IsEmpty(Window(Home).Property(trailer_isplaying))">conditional</animation>
 				<include content="view_511_noLocking" condition="!skin.hassetting(skin_locked_views)" />
 				<include content="view_locking" condition="skin.hassetting(skin_locked_views)">
 					<param name="view_id" value="511" />
@@ -496,7 +496,7 @@
 			<visible>Control.IsVisible(512)</visible>
 			
 			<control type="panel" id="512">
-				<animation effect="fade" start="100" end="0" time="250" tween="quadratic" easing="out" delay="100" condition="Player.HasMedia + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))">conditional</animation>
+				<animation effect="fade" start="100" end="0" time="250" tween="quadratic" easing="out" delay="100" condition="Player.HasMedia + !String.IsEmpty(Window(Home).Property(trailer_isplaying))">conditional</animation>
 				<viewtype label="$LOCALIZE[31246]">icon</viewtype>
 				<include content="view_512_noLocking" condition="!skin.hassetting(skin_locked_views)" />
 				<include content="view_locking" condition="skin.hassetting(skin_locked_views)">
@@ -616,7 +616,7 @@
 			
 			<control type="panel" id="513">
 				<viewtype label="$LOCALIZE[31247]">icon</viewtype>
-				<animation effect="fade" start="100" end="0" time="250" tween="quadratic" easing="out" delay="100" condition="Player.HasMedia + !String.IsEmpty(Window(Home).Property(TrailerIsPlaying))">conditional</animation>
+				<animation effect="fade" start="100" end="0" time="250" tween="quadratic" easing="out" delay="100" condition="Player.HasMedia + !String.IsEmpty(Window(Home).Property(trailer_isplaying))">conditional</animation>
 				<include content="view_513_noLocking" condition="!skin.hassetting(skin_locked_views)" />
 				<include content="view_locking" condition="skin.hassetting(skin_locked_views)">
 					<param name="view_id" value="513" />
