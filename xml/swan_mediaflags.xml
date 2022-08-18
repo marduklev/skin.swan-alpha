@@ -130,10 +130,10 @@
 				</include>
 				
 				<control type="grouplist">
-				    <visible>
-                       [String.IsEmpty(Window(Home).Property(TMDbHelper.IsUpdating)) + Skin.HasSetting(TMDbHelper.Service) + [!String.IsEmpty(Window(Home).Property(TMDbHelper.ListItem.TMDb_Rating)) + [[String.IsEmpty(ListItem.Rating(tmdb)) | String.IsEmpty(ListItem.Rating(themoviedb))]]]] | 
-                       [[Integer.isGreater(Container(2000).NumItems,0) + !Container(2000).IsUpdating] + [[!String.IsEmpty(Container(2000).ListItem.Rating(tmdb)) + String.IsEmpty(ListItem.Rating(tmdb))] | [!String.IsEmpty(Container(2000).ListItem.Rating(themoviedb)) + String.IsEmpty(ListItem.Rating(themoviedb))]]] | 
-                       [!String.IsEmpty(ListItem.Rating(tmdb)) | !String.IsEmpty(ListItem.Rating(themoviedb))]
+				    <visible>[String.IsEmpty(ListItem.Rating(tmdb)) + String.IsEmpty(ListItem.Rating(themoviedb)) + 
+						[[String.IsEmpty(Window(Home).Property(TMDbHelper.IsUpdating)) + Skin.HasSetting(TMDbHelper.Service) + !String.IsEmpty(Window(Home).Property(TMDbHelper.ListItem.TMDb_Rating))] | 
+						 [Control.IsVisible(2000) + [Integer.isGreater(Container(2000).NumItems,0) + !Container(2000).IsUpdating] + [!String.IsEmpty(Container(2000).ListItem.Rating(tmdb)) | !String.IsEmpty(Container(2000).ListItem.Rating(themoviedb))]]]] | 
+                       !String.IsEmpty(ListItem.Rating(tmdb)) | !String.IsEmpty(ListItem.Rating(themoviedb))
 				    </visible>
 				    <visible>$EXP[NonMusic_ListItem]</visible>
 				    <visible>Skin.HasSetting(Show_tmdb_Rating) | Window.IsActive(movieinformation)</visible>
@@ -195,9 +195,9 @@ del id="$PARAM[id], if needed better use id="$PARAM[view_id]$PARAM[id]
 	<include name="rating_footer_template">
 		<definition>
 			<control type="grouplist">
-				<visible>
-                   [String.IsEmpty(Window(Home).Property(TMDbHelper.IsUpdating)) + Skin.HasSetting(TMDbHelper.Service) + [!String.IsEmpty(Window(Home).Property(TMDbHelper.ListItem.$PARAM[rating_prop])) + String.IsEmpty(ListItem.Rating($PARAM[rating]))]] | 
-                   [!Container(2000).IsUpdating + [!String.IsEmpty(Container(2000).ListItem.Rating($PARAM[rating])) + String.IsEmpty(ListItem.Rating($PARAM[rating]))]] | 
+				<visible>[String.IsEmpty(ListItem.Rating($PARAM[rating])) + 
+                   [String.IsEmpty(Window(Home).Property(TMDbHelper.IsUpdating)) + Skin.HasSetting(TMDbHelper.Service) + !String.IsEmpty(Window(Home).Property(TMDbHelper.ListItem.$PARAM[rating_prop]))] | 
+                   [Control.IsVisible(2000) + [Integer.isGreater(Container(2000).NumItems,0) + !Container(2000).IsUpdating] + !String.IsEmpty(Container(2000).ListItem.Rating($PARAM[rating]))]] | 
                    !String.IsEmpty(ListItem.Rating($PARAM[rating]))
 				</visible>
 				<visible>$EXP[NonMusic_ListItem]</visible>
