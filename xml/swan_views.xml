@@ -135,7 +135,7 @@
 				<include condition="String.IsEmpty(Skin.String($PARAM[window]_disabled_view_513)) + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">view_513</include>
 				<include condition="String.IsEmpty(Skin.String($PARAM[window]_disabled_view_520)) + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))">view_520</include>
 				
-				<include condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" content="ScrollBar_Alphabet">
+				<include condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress)) + Skin.HasSetting(enable_alphabetbar)" content="ScrollBar_Alphabet">
 					<right>0</right>
 					<width>100</width>
 					<top>110</top>
@@ -150,7 +150,7 @@
 					<param name="color_1" value="ff131313" />
 					<param name="color_2" value="ffffffff" />
 				</include>
-				<include condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" content="ScrollBar_Alphabet">
+				<include condition="String.IsEmpty(Window(home).Property(shortcutaction_inprogress)) + Skin.HasSetting(enable_alphabetbar)" content="ScrollBar_Alphabet">
 					<bottom>380</bottom>
 					<animation effect="slide" start="0,0" end="380,10" condition="[Control.IsVisible(503) + Skin.HasSetting(View_503_DisableFooter) | Control.IsVisible(504) + Skin.HasSetting(View_504_DisableFooter)]">conditional</animation>
 					<param name="id" value="610" />
@@ -441,86 +441,6 @@
 		</control>
 	</include>
 	
-	<include name="ScrollBar_Alphabet">
-		<control type="group">
-			<nested />
-			<animation effect="fade" start="100" end="0" time="200" easing="inout" reversible="true" condition="!Control.HasFocus($PARAM[id])">conditional</animation>
-			<height>$PARAM[height]</height>
-			<control type="image">
-				<description>may just use as nested element for hor bar</description>
-				<texture colordiffuse="$PARAM[color_1]">$VAR[texture_alphbaetbar_bg]</texture>
-				<visible>$PARAM[bg_texture_visible]</visible>
-			</control>
-			<control type="panel" id="$PARAM[id]">
-				<visible>[$PARAM[visible] + [Container.HasNext | Container.HasPrevious] + [[Container.Content(movies) | Container.Content(sets) | Container.Content(tvshows) | Container.Content(seasons) | Container.Content(episodes) | Container.Content(artists) | Container.Content(albums) | Container.Content(songs)] + [String.IsEqual(Container.SortMethod,$LOCALIZE[551]) | String.IsEqual(Container.SortMethod,$LOCALIZE[561]) | String.IsEqual(Container.SortMethod,$LOCALIZE[558]) | String.IsEqual(Container.SortMethod,$LOCALIZE[557]) | String.IsEqual(Container.SortMethod,$LOCALIZE[556])]]]</visible>
-				<orientation>$PARAM[orientation]</orientation>
-				<scrolltime />
-				<width>$PARAM[panel_width]</width>
-				<include condition="$PARAM[is_vertical]">ScrollBar_Alphabet_ver</include>
-				<include condition="!$PARAM[is_vertical]">ScrollBar_Alphabet_hor</include>
-				<focusedlayout height="$PARAM[item_hw]" width="$PARAM[item_hw]">
-					<control type="group">
-						<control type="image">
-							<texture colordiffuse="$PARAM[color_2]">colors/white.png</texture>
-						</control>
-						<control type="textbox">
-							<font>montserrat_16_semibold</font>
-							<align>center</align>
-							<aligny>center</aligny>
-							<textcolor>$PARAM[color_1]</textcolor>
-							<label>$INFO[ListItem.Label]</label>
-						</control>
-					</control>
-				</focusedlayout>
-				<itemlayout height="$PARAM[item_hw]" width="$PARAM[item_hw]">
-					<control type="group">
-						<control type="image">
-							<visible>$PARAM[is_vertical]</visible>
-							<texture colordiffuse="$PARAM[color_1]">colors/white.png</texture>
-						</control>
-						<control type="textbox">
-							<font>montserrat_16_extrabold</font>
-							<align>center</align>
-							<aligny>center</aligny>
-							<textcolor>$PARAM[color_2]</textcolor>
-							<label>$INFO[ListItem.Label]</label>
-						</control>
-					</control>
-				</itemlayout>
-				<content>plugin://script.embuary.helper/?info=jumptoletter&amp;showall=true&amp;reload=$INFO[Container.NumItems]</content>
-			</control>
-		</control>
-	</include>
-	<include name="ScrollBar_Alphabet_ver">
-		<animation effect="fade" start="100" end="0" time="250" condition="Window.IsActive(1140)">conditional</animation>
-		<width>60</width>
-		<left>36</left>
-		<onup>600</onup>
-		<ondown>600</ondown>
-		<onleft>50</onleft>
-		<onright condition="!Window.IsActive(musicplaylist) + [MusicPlayer.Offset(-1).Exists | MusicPlayer.Offset(1).Exists]">SetProperty(CurrentPlaylistVisible,mediawindow,home)</onright>
-		<onright condition="!Window.IsActive(musicplaylist) + [MusicPlayer.Offset(-1).Exists | MusicPlayer.Offset(1).Exists]">activatewindow(1140)</onright>
-		<onright condition="Control.IsVisible(19) + !MusicPlayer.Offset(-1).Exists + !MusicPlayer.Offset(1).Exists">19</onright>
-		<onright condition="!Control.IsVisible(19) + !MusicPlayer.Offset(-1).Exists + !MusicPlayer.Offset(1).Exists">50</onright>
-		<centertop>50%</centertop>
-	</include>
-	<include name="ScrollBar_Alphabet_hor">
-		<left>110</left>
-		<top>15</top>	
-		<height>75</height>
-		<onup condition="$EXP[Has_Trailer]">PlayMedia($INFO[Window(home).Property(listitemtrailer)],1)</onup>
-		<onup condition="$EXP[Has_Trailer]">SetProperty(trailer_isplaying,true,home)</onup>
-		<onup condition="$EXP[Has_Trailer] + String.IsEmpty(Window.Property(Spotlight_Cast))">SetProperty(Spotlight_Cast,visible)</onup>
-		<onup condition="$EXP[Has_Trailer]">50</onup>
-		<onup condition="!$EXP[Has_Trailer] + Control.IsVisible(19)">19</onup>
-		<ondown>50</ondown>
-		<onleft>$PARAM[id]</onleft>
-		<onright>$PARAM[id]</onright>
-	</include>
-	<variable name="texture_alphbaetbar_bg">
-		<value condition="[Control.IsVisible(503) + Skin.HasSetting(View_503_DisableFooter)] | [Control.IsVisible(504) + Skin.HasSetting(View_504_DisableFooter)]">diffuse/gradientright.png</value>
-		<value>colors/white.png</value>
-	</variable>
 
 	<include name="Fanart_Diffused">
 		<param name="visible" default="true" />

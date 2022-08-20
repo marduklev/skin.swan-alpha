@@ -266,18 +266,41 @@
 									<param name="rating_prop" value="RottenTomatoes_Rating" />
 									<param name="color" value="white" />
 								</include>
-								<include content="rating_footer_template">
-									<param name="rating" value="themoviedb"/>
-									<param name="rating_prop" value="TMDb_Rating" />
-									<param name="color" value="white" />
-									<visible>String.IsEmpty(ListItem.Rating(tmdb)) + String.IsEmpty(Container(2000).ListItem.Rating(tmdb))</visible>
-								</include>
-								<include content="rating_footer_template">
-									<param name="rating" value="tmdb"/>
-									<param name="rating_prop" value="TMDb_Rating" />
-									<param name="color" value="$PARAM[forcedcolor]" />
-									<visible>String.IsEmpty(ListItem.Rating(themoviedb)) + String.IsEmpty(Container(2000).ListItem.Rating(themoviedb))</visible>
-								</include>
+								
+								<control type="grouplist">
+									<visible>[String.IsEmpty(ListItem.Rating(tmdb)) + String.IsEmpty(ListItem.Rating(themoviedb)) + 
+										[[String.IsEmpty(Window(Home).Property(TMDbHelper.IsUpdating)) + Skin.HasSetting(TMDbHelper.Service) + !String.IsEmpty(Window(Home).Property(TMDbHelper.ListItem.TMDb_Rating))] | 
+										 [Control.IsVisible(2000) + [Integer.isGreater(Container(2000).NumItems,0) + !Container(2000).IsUpdating] + [!String.IsEmpty(Container(2000).ListItem.Rating(tmdb)) | !String.IsEmpty(Container(2000).ListItem.Rating(themoviedb))]]]] | 
+									   !String.IsEmpty(ListItem.Rating(tmdb)) | !String.IsEmpty(ListItem.Rating(themoviedb))
+									</visible>
+									<visible>$EXP[NonMusic_ListItem]</visible>
+									<visible>Skin.HasSetting(Show_tmdb_Rating) | Window.IsActive(movieinformation)</visible>
+									<nested />
+									<top>15</top>
+									<bottom>5</bottom>
+									<width>80</width>
+									<height>70</height>
+									<orientation>vertical</orientation>
+									<control type="image">
+										<width>60</width>
+										<height>40</height>
+										<bordersize>2</bordersize>
+										<aspectratio align="center" aligny="bottom">keep</aspectratio>
+										<include condition="Skin.HasSetting(use_monochrome_ratingflags)" content="colordiffuse">
+											<param name="colordiffuse" value="white"/>
+										</include>
+										<texture>$VAR[image_tmdb]</texture>
+									</control>
+									<control type="label">
+										<height>25</height>
+										<width>60</width>
+										<align>center</align>
+										<font>notosans_20_bold</font>
+										<textcolor>white</textcolor>
+										<label>$VAR[label_listitemrating_tmdb]</label>
+									</control>
+								</control>
+								
 								<include content="rating_footer_template">
 									<param name="rating" value="tvdb"/>
 									<param name="rating_prop" value="tvdb_rating" />

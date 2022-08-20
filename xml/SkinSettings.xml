@@ -322,10 +322,12 @@
 					<selected>Skin.HasSetting(EnableRotatingExtraFanart)</selected>
 				</control>
 				<control type="radiobutton" id="$PARAM[id]026">
+					<visible>system.hasaddon(script.embuary.helper)</visible>
 					<label>Enable Blur BG in Media Windows</label>
-					<onclick>Skin.ToggleSetting(BlurEnabled)</onclick>
-					<onclick condition="String.IsEmpty(Skin.String(BlurContainer))">Skin.SetString(BlurContainer,99005)</onclick>
-					<onclick condition="Skin.HasSetting(EnableRotatingExtraFanart)">Skin.ToggleSetting(EnableRotatingExtraFanart)</onclick>
+					<onclick condition="!system.hasaddon(script.embuary.helper)">installaddon(script.embuary.helper)</onclick>
+					<onclick condition="system.hasaddon(script.embuary.helper)">Skin.ToggleSetting(BlurEnabled)</onclick>
+					<onclick condition="system.hasaddon(script.embuary.helper) + String.IsEmpty(Skin.String(BlurContainer))">Skin.SetString(BlurContainer,99005)</onclick>
+					<onclick condition="system.hasaddon(script.embuary.helper) + Skin.HasSetting(EnableRotatingExtraFanart)">Skin.ToggleSetting(EnableRotatingExtraFanart)</onclick>
 					<onclick>RunScript(script.embuary.helper,action=restartservice)</onclick>
 					<selected>Skin.HasSetting(BlurEnabled)</selected>
 				</control>
@@ -1584,13 +1586,20 @@
 				<param name="id" value="6" />
 				<visible>Container(200).HasFocus($PARAM[id])</visible>
 				<description>L I B R A R Y</description>
-				<control type="radiobutton" id="$PARAM[id]00198">
+				<control type="radiobutton" id="$PARAM[id]00199">
 					<include content="SkinSettings_SettingsRadioButton">
 						<param name="label" value="Open View Type Management" />
 						<param name="label2" value="" />
 					</include>
 					<onclick>SetProperty(SettingSection,ViewSelect_MediaWindow,home)</onclick>
 					<onclick>ActivateWindow(1103)</onclick>
+				</control>
+				
+				<control type="radiobutton" id="$PARAM[id]00198">
+					<label>Enable Alphabet Scrollbar</label>
+					<onclick condition="!system.hasaddon(script.embuary.helper)">installaddon(script.embuary.helper)</onclick>
+					<onclick condition="system.hasaddon(script.embuary.helper)">Skin.ToggleSetting(enable_alphabetbar)</onclick>
+					<selected>Skin.HasSetting(enable_alphabetbar)</selected>
 				</control>
 				<control type="radiobutton" id="$PARAM[id]00197">
 					<label>Disable Letter Pop Up on Scroll</label>
