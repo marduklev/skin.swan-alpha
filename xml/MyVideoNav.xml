@@ -3,18 +3,12 @@
     <include content="media_window_attributes">
        <param name="view_ids" value="50,51,52,53,54,56,58,502,503,504,510,511,512,513,520" />
     </include>
-    <onload condition="Skin.HasSetting(TMDbHelper_Ratings) + !Skin.HasSetting(TMDbHelper.Service) + !$EXP[IsOfflineMode]">Skin.SetBool(TMDbHelper.Service)</onload>
-	<onload condition="!Skin.HasSetting(TMDbHelper.DisableArtwork)">Skin.SetBool(TMDbHelper.DisableArtwork)</onload>
-	<onload condition="!Skin.HasSetting(TMDbHelper.DisablePersonStats)">Skin.SetBool(TMDbHelper.DisablePersonStats)</onload>
-	<onload condition="!Skin.HasSetting(TMDbHelper.DisableExtendedProperties)">Skin.SetBool(TMDbHelper.DisableExtendedProperties)</onload>
-	<onunload condition="Skin.HasSetting(TMDbHelper.Service)">Skin.Reset(TMDbHelper.Service)</onunload>
+	<include condition="!$EXP[IsOfflineMode]" content="TMDB_helper_toggleservices" />
 	
 	<controls>
-		<control type="list" id="2000">
-			<include>HiddenContainer</include>
-			<visible>String.IsEmpty(Window(home).Property(shortcutaction_inprogress))</visible>
-			<content limit="1">$VAR[EmbuaryHelper_GetInfo_dbid]</content>
-		</control>
+		
+		<include condition="system.hasaddon(script.embuary.helper) + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" content="embuaryhelper_getbyid_container" />
+		
 		<control type="image" id="2005">
 			<description>get uniqueid for studio img, but keep ability having footer in view ctrls</description>
 			<visible>!Window.IsActive(movieinformation) + [Skin.HasSetting(show_studio_flag) + !String.IsEmpty(ListItem.Studio)]</visible>

@@ -4,6 +4,27 @@
 	<!-- ######### Embuary Helper ######### -->
 	<!-- ####################################### -->
 	
+	<include name="embuaryhelper_getbyid_container">
+		<control type="list" id="2000">
+			<include>HiddenContainer</include>
+			<content limit="1">$VAR[embuaryhelper_getbyid_content]</content>
+		</control>
+	</include>
+	<variable name="embuaryhelper_getbyid_content">
+		<value condition="ListItem.IsParentFolder + String.IsEqual(ListItemAbsolute(1).DBType,movie) + Integer.IsGreater(ListItemAbsolute(1).DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[ListItemAbsolute(1).DBID]&amp;type=movie&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
+		<value condition="ListItem.IsParentFolder + String.IsEqual(ListItemAbsolute(1).DBType,tvshow) + Integer.IsGreater(ListItemAbsolute(1).DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[ListItemAbsolute(1).DBID]&amp;type=tvshow&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
+		<value condition="ListItem.IsParentFolder + String.IsEqual(ListItemAbsolute(1).DBType,season) + Integer.IsGreater(ListItemAbsolute(1).DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[ListItemAbsolute(1).DBID]&amp;type=tvshow&amp;idtype=season</value>
+		<value condition="ListItem.IsParentFolder + String.IsEqual(ListItemAbsolute(1).Label,$LOCALIZE[20366]) + String.IsEqual(ListItemAbsolute(2).DBType,season) + Integer.IsGreater(ListItemAbsolute(2).DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[ListItemAbsolute(2).DBID]&amp;type=tvshow&amp;idtype=season</value>
+		<value condition="!Container.HasParent + String.IsEqual(ListItem.Label,$LOCALIZE[20366]) + String.IsEqual(ListItemAbsolute(1).DBType,season) + Integer.IsGreater(ListItemAbsolute(1).DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[ListItemAbsolute(1).DBID]&amp;type=tvshow&amp;idtype=season&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
+		<value condition="Container.HasParent + String.IsEqual(ListItem.Label,$LOCALIZE[20366]) + String.IsEqual(ListItemAbsolute(2).DBType,season) + Integer.IsGreater(ListItemAbsolute(2).DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[ListItemAbsolute(2).DBID]&amp;type=tvshow&amp;idtype=season&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
+		<value condition="ListItem.IsParentFolder + String.IsEqual(ListItemAbsolute(1).DBType,episode) + Integer.IsGreater(ListItemAbsolute(1).DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[ListItem.DBID]&amp;type=tvshow&amp;idtype=episode&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
+		<value condition="String.IsEqual(ListItem.DBType,movie) + Integer.IsGreater(ListItem.DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[ListItem.DBID]&amp;type=movie&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
+		<value condition="String.IsEqual(ListItem.DBType,tvshow) + Integer.IsGreater(ListItem.DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[ListItem.DBID]&amp;type=tvshow&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
+		<value condition="String.IsEqual(ListItem.DBType,season) + Integer.IsGreater(ListItem.DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[ListItem.DBID]&amp;type=tvshow&amp;idtype=season&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
+		<value condition="String.IsEqual(ListItem.DBType,episode) + Integer.IsGreater(ListItem.DBID,0)">plugin://script.embuary.helper/?info=getbydbid&amp;dbid=$INFO[ListItem.DBID]&amp;type=tvshow&amp;idtype=episode&amp;reload=$INFO[Window(home).Property(EmbuaryWidgetUpdate)]</value>
+		<value>embuaryhelper_getbyid_content</value>
+	</variable>
+	
 	<include name="ScrollBar_Alphabet">
 		<control type="group">
 			<nested />
@@ -50,7 +71,7 @@
 						</control>
 					</control>
 				</itemlayout>
-				<content>plugin://script.embuary.helper/?info=jumptoletter&amp;showall=true&amp;reload=$INFO[Container.NumItems]</content>
+				<content>plugin://script.embuary.helper/?info=jumptoletter&amp;showall=false&amp;reload=$INFO[Container.NumItems]</content>
 			</control>
 		</control>
 	</include>
@@ -85,6 +106,15 @@
 		<value>colors/white.png</value>
 	</variable>
 	
+	<!-- ####################################### -->
+	<!-- ############# TMDB Helper ############# -->
+	<!-- ####################################### -->
 	
-	
+	<include name="TMDB_helper_toggleservices">
+		<onload condition="Skin.HasSetting(TMDbHelper_Ratings) + !Skin.HasSetting(TMDbHelper.Service)">Skin.SetBool(TMDbHelper.Service)</onload>
+		<onload condition="!Skin.HasSetting(TMDbHelper.DisableArtwork)">Skin.SetBool(TMDbHelper.DisableArtwork)</onload>
+		<onload condition="!Skin.HasSetting(TMDbHelper.DisablePersonStats)">Skin.SetBool(TMDbHelper.DisablePersonStats)</onload>
+		<onload condition="!Skin.HasSetting(TMDbHelper.DisableExtendedProperties)">Skin.SetBool(TMDbHelper.DisableExtendedProperties)</onload>
+		<onunload condition="Skin.HasSetting(TMDbHelper.Service)">Skin.Reset(TMDbHelper.Service)</onunload>
+	</include>
 </includes>
