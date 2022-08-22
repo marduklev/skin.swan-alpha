@@ -214,13 +214,13 @@ if "%run_all%" == "false" if "%compile%" == "false" (
 	set "xbt_dir=%skin_git_dir%\_xbt"
 )
 
-START /B /WAIT %texturepacker_executablelocation%TexturePacker.exe -dupecheck -input %skin_git_dir%\media\ -output "%xbt_dir%\TexturesTEST.xbt"
+START /B /WAIT %texturepacker_executablelocation%\TexturePacker.exe -dupecheck -input %skin_git_dir%\media\ -output "%xbt_dir%\Textures.xbt"
 cd %skin_git_dir%\themes\
 	for /d %%t in (*) do (
 	ECHO.
 	ECHO Create ^*Theme^*.xbt from %%~t
 	ECHO.
-	START /B /WAIT %texturepacker_executablelocation%TexturePacker.exe -dupecheck -input %skin_git_dir%\themes\%%~t\ -output %xbt_dir%\%%~tTEST.xbt
+	START /B /WAIT %texturepacker_executablelocation%\TexturePacker.exe -dupecheck -input %skin_git_dir%\themes\%%~t\ -output %xbt_dir%\%%~t.xbt
 	cd %~dp0
 )
 goto :auto_routine
