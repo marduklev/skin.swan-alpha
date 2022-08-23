@@ -296,49 +296,6 @@ $INFO[ListItem.PictureResolution]  -->
 	ListItem.IMDBNumber 	The IMDB iD of the selected Video in a container 
 	ListItem.UniqueID() 	Returns the UniqueID of the selected item in a container 	v19 
 	-->
-	<variable name="content_cast">
-		<value condition="String.IsEqual(ListItem.DBType,set)">plugin://script.embuary.helper?info=getsetcast&amp;type=movie&amp;dbid=$INFO[ListItem.DBID]</value>
-		<value condition="String.IsEqual(ListItem.DBType,movie) + [!String.IsEmpty(ListItem.DBID) + !String.IsEqual(ListItem.DBID,0)]">plugin://script.embuary.helper?info=getcast&amp;type=movie&amp;dbid=$INFO[ListItem.DBID]</value>
-		<value condition="String.IsEqual(ListItem.DBType,movie) + String.IsEqual(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=movie&amp;title='$ESCINFO[ListItem.Title]'</value>
-		<value condition="String.IsEqual(ListItem.DBType,tvshow) + [!String.IsEmpty(ListItem.DBID) + !String.IsEqual(ListItem.DBID,0)]">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[ListItem.DBID]</value>
-		<value condition="[String.IsEqual(ListItem.DBType,tvshow) + String.IsEqual(ListItem.DBID,0)] | [[String.IsEqual(ListItem.DBType,episode) | String.IsEqual(ListItem.DBType,season)] + !String.IsEmpty(ListItem.DBID)]">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem.TVShowTitle]'</value>
-		<value condition="Container.Content(seasons) + !String.IsEmpty(ListItem(1).DBID)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem(1).TVShowTitle]'</value>
-		<value condition="Container.Content(seasons) + !String.IsEmpty(ListItem(2).DBID)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem(2).TVShowTitle]'</value>
-		<value condition="[!$EXP[IsOfflineMode] + [Window.IsActive(movieinformation) | String.IsEmpty(ListItem.DBID)] + System.HasAddon(plugin.video.themoviedb.helper)] + [String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow)]">plugin://plugin.video.themoviedb.helper/?info=cast&amp;$VAR[videoinfo_tmdb_helper_type]&amp;$VAR[videoinfo_tmdb_helper_query]</value>
-		<value>nocast view</value>
-	</variable>
-	<variable name="videoinfo_tmdb_helper_type">
-		<value condition="String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,episode)">type=tv</value>
-		<value>type=movie</value>
-	</variable>
-	<variable name="videoinfo_tmdb_helper_query">
-		<value condition="String.IsEqual(ListItem.DBType,movie) + !String.IsEmpty(ListItem.IMDBNumber) + !String.StartsWith(ListItem.IMDBNumber,xx)">imdb_id=$INFO[ListItem.IMDBNumber]</value>
-		<value condition="String.IsEqual(ListItem.DBType,movie) + !String.IsEmpty(ListItem.Property(tmdb_id))">tmdb_id=$INFO[ListItem.Property(tmdb_id)]</value>
-		<value condition="String.IsEqual(ListItem.DBType,movie) + !String.IsEmpty(ListItem.Property(imdb_id))">imdb_id=$INFO[ListItem.Property(imdb_id)]</value>
-		<value condition="[String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,episode)] + !String.IsEmpty(ListItem.TvShowTitle)">query=$INFO[ListItem.TvShowTitle]</value>
-		<value condition="!String.IsEmpty(ListItem.Title) + !String.IsEmpty(ListItem.Year)">query=$INFO[ListItem.Title]&amp;year=$INFO[ListItem.Year]</value>
-		<value condition="!String.IsEmpty(ListItem.Title)">query=$INFO[ListItem.Title]</value>
-		<value condition="Window.IsTopMost(movieinformation)">query=$INFO[ListItem.Label]</value> 
-	</variable>
-		
-	<variable name="content_cast_video">
-		<value condition="VideoPlayer.Content(movies) + [!String.IsEmpty(VideoPlayer.DBID) + !String.IsEqual(VideoPlayer.DBID,0)]">plugin://script.embuary.helper?info=getcast&amp;type=movie&amp;dbid=$INFO[videoplayer.DBID]</value>
-		<value condition="VideoPlayer.Content(episodes) + [!String.IsEmpty(VideoPlayer.DBID) + !String.IsEqual(VideoPlayer.DBID,0)]">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[VideoPlayer.DBID]&amp;idtype=episode</value>
-		<value condition="!$EXP[IsOfflineMode] + String.IsEmpty(VideoPlayer.DBID) + System.HasAddon(plugin.video.themoviedb.helper)">plugin://plugin.video.themoviedb.helper/?info=cast&amp;$VAR[videofullscreeninfo_tmdb_helper_type]&amp;$VAR[videofullscreeninfo_tmdb_helper_query]</value>
-		<value>-</value>
-	</variable>
-	<variable name="videofullscreeninfo_tmdb_helper_type">
-		<value condition="VideoPlayer.Content(movies)">type=movie</value>
-		<value condition="VideoPlayer.Content(episodes)">type=tv</value>
-	</variable>
-	<variable name="videofullscreeninfo_tmdb_helper_query">
-		<value condition="VideoPlayer.Content(movies) + !String.IsEmpty(VideoPlayer.IMDBNumber) + !String.StartsWith(VideoPlayer.IMDBNumber,xx)">imdb_id=$INFO[VideoPlayer.IMDBNumber]</value>
-		<value condition="VideoPlayer.Content(movies) + !String.IsEmpty(VideoPlayer.Property(tmdb_id))">tmdb_id=$INFO[VideoPlayer.Property(tmdb_id)]</value>
-		<value condition="VideoPlayer.Content(movies) + !String.IsEmpty(VideoPlayer.Property(imdb_id))">imdb_id=$INFO[VideoPlayer.Property(imdb_id)]</value>
-		<value condition="VideoPlayer.Content(episodes) + !String.IsEmpty(VideoPlayer.TvShowTitle)">query=$INFO[VideoPlayer.TvShowTitle]</value>
-		<value condition="!String.IsEmpty(VideoPlayer.Title) + !String.IsEmpty(VideoPlayer.Year)">query=$INFO[VideoPlayer.Title]&amp;year=$INFO[VideoPlayer.Year]</value>
-		<value>query=$INFO[VideoPlayer.Title]</value>
-	</variable>
 	
 			<!-- if using
 					<value>query=$INFO[ListItem.Label]</value> label get false fetched if coming back from tmdb.info.xml -  $INFO[ListItem.Label] will be equal $LOCALIZE[210] 
