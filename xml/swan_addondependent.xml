@@ -113,16 +113,11 @@
 		<value>colors/white.png</value>
 	</variable>
 	
-	
 	<variable name="content_cast">
-		<value condition="[system.hasaddon(script.embuary.helper) + system.addonisenabled(script.embuary.helper)] + String.IsEqual(ListItem.DBType,set)">plugin://script.embuary.helper?info=getsetcast&amp;type=movie&amp;dbid=$INFO[ListItem.DBID]</value>
-		<value condition="[system.hasaddon(script.embuary.helper) + system.addonisenabled(script.embuary.helper)] + String.IsEqual(ListItem.DBType,movie) + [!String.IsEmpty(ListItem.DBID) + !String.IsEqual(ListItem.DBID,0)]">plugin://script.embuary.helper?info=getcast&amp;type=movie&amp;dbid=$INFO[ListItem.DBID]</value>
-		<value condition="[system.hasaddon(script.embuary.helper) + system.addonisenabled(script.embuary.helper)] + String.IsEqual(ListItem.DBType,movie) + String.IsEqual(ListItem.DBID,0)">plugin://script.embuary.helper?info=getcast&amp;type=movie&amp;title='$ESCINFO[ListItem.Title]'</value>
-		<value condition="[system.hasaddon(script.embuary.helper) + system.addonisenabled(script.embuary.helper)] + String.IsEqual(ListItem.DBType,tvshow) + [!String.IsEmpty(ListItem.DBID) + !String.IsEqual(ListItem.DBID,0)]">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[ListItem.DBID]</value>
-		<value condition="[system.hasaddon(script.embuary.helper) + system.addonisenabled(script.embuary.helper)] + [String.IsEqual(ListItem.DBType,tvshow) + String.IsEqual(ListItem.DBID,0)] | [[String.IsEqual(ListItem.DBType,episode) | String.IsEqual(ListItem.DBType,season)] + !String.IsEmpty(ListItem.DBID)]">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem.TVShowTitle]'</value>
-		<value condition="[system.hasaddon(script.embuary.helper) + system.addonisenabled(script.embuary.helper)] + Container.Content(seasons) + !String.IsEmpty(ListItem(1).DBID)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem(1).TVShowTitle]'</value>
-		<value condition="[system.hasaddon(script.embuary.helper) + system.addonisenabled(script.embuary.helper)] + Container.Content(seasons) + !String.IsEmpty(ListItem(2).DBID)">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;title='$ESCINFO[ListItem(2).TVShowTitle]'</value>
-		<value condition="!$EXP[IsOfflineMode] + [Window.IsActive(movieinformation) | [String.IsEmpty(ListItem.DBID) | !system.hasaddon(script.embuary.helper) | !system.addonisenabled(script.embuary.helper)]] + System.HasAddon(plugin.video.themoviedb.helper)">plugin://plugin.video.themoviedb.helper/?info=cast&amp;$VAR[videoinfo_tmdb_helper_type]&amp;$VAR[videoinfo_tmdb_helper_query]</value>
+		<value condition="!window.isactive(movieinformation) + [container.content(seasons) | string.isequal(listitem.dbtype,season)] + !string.isempty(listitem.tvshowdbid)">plugin://script.swan.helper/?action=get_cast&amp;dbtype=tvshow&amp;dbid=$INFO[listitem.tvshowdbid]</value>
+			<value condition="[[container.content(tvshows) | string.isequal(listitem.dbtype,tvshow)] | [container.content(seasons) | string.isequal(listitem.dbtype,season)] | [container.content(episodes) | string.isequal(listitem.dbtype,episode)]] + !string.isempty(window(home).property(dbid))">plugin://script.swan.helper/?action=get_cast&amp;dbtype=tvshow&amp;dbid=$INFO[window(home).property(dbid)]</value>
+		<value condition="!window.isactive(movieinformation) + [!container.content(seasons) + !string.isequal(listitem.dbtype,season)] + !string.isempty(listitem.dbid) + !string.isempty(listitem.dbtype)">plugin://script.swan.helper/?action=get_cast&amp;dbtype=$INFO[listitem.dbtype]&amp;dbid=$INFO[listitem.dbid]</value>
+		<value condition="!$EXP[IsOfflineMode] + [window.isactive(movieinformation) | string.isempty(listitem.dbid)] + system.hasaddon(plugin.video.themoviedb.helper)">plugin://plugin.video.themoviedb.helper/?info=cast&amp;$VAR[videoinfo_tmdb_helper_type]&amp;$VAR[videoinfo_tmdb_helper_query]</value>
 		<value>content_cast</value>
 	</variable>
 	<variable name="videoinfo_tmdb_helper_type">
@@ -140,11 +135,11 @@
 	</variable>
 		
 	<variable name="content_cast_video">
-		<value condition="[system.hasaddon(script.embuary.helper) + system.addonisenabled(script.embuary.helper)] + VideoPlayer.Content(movies) + [!String.IsEmpty(VideoPlayer.DBID) + !String.IsEqual(VideoPlayer.DBID,0)]">plugin://script.embuary.helper?info=getcast&amp;type=movie&amp;dbid=$INFO[videoplayer.DBID]</value>
-		<value condition="[system.hasaddon(script.embuary.helper) + system.addonisenabled(script.embuary.helper)] + VideoPlayer.Content(episodes) + [!String.IsEmpty(VideoPlayer.DBID) + !String.IsEqual(VideoPlayer.DBID,0)]">plugin://script.embuary.helper?info=getcast&amp;type=tvshow&amp;dbid=$INFO[VideoPlayer.DBID]&amp;idtype=episode</value>
-		<value condition="!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.themoviedb.helper)">plugin://plugin.video.themoviedb.helper/?info=cast&amp;$VAR[videofullscreeninfo_tmdb_helper_type]&amp;$VAR[videofullscreeninfo_tmdb_helper_query]</value>
+		<value condition="VideoPlayer.Content(movies) + !string.isempty(videoplayer.dbid)">plugin://script.swan.helper/?action=get_cast&amp;dbtype=movie&amp;dbid=$INFO[videoPlayer.dbid]</value>
+		<value condition="VideoPlayer.Content(episodes) + !string.isempty(videoplayer.dbid) + !string.isempty(videoplayer.Cast)">plugin://script.swan.helper/?action=get_cast&amp;dbtype=episode&amp;dbid=$INFO[videoPlayer.dbid]</value>
+		<value condition="VideoPlayer.Content(episodes) + !string.isempty(videoplayer.dbid) + string.isempty(videoplayer.Cast)">plugin://script.swan.helper/?action=get_cast&amp;dbtype=tvshow&amp;dbid=$INFO[videoPlayer.tvshowdbid]</value>
+		<value condition="!$EXP[IsOfflineMode] + string.isempty(videoplayer.dbid) + system.hasaddon(plugin.video.themoviedb.helper)">plugin://plugin.video.themoviedb.helper/?info=cast&amp;$VAR[videofullscreeninfo_tmdb_helper_type]&amp;$VAR[videofullscreeninfo_tmdb_helper_query]</value>
 		<value>content_cast_video</value>
-		<!-- <value>H:\data\serien\Breaking Bad\.actors</value> -->
 	</variable>
 	<variable name="videofullscreeninfo_tmdb_helper_type">
 		<value condition="VideoPlayer.Content(movies)">type=movie</value>
