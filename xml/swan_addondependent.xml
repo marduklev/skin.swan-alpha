@@ -78,10 +78,14 @@
 						</control>
 					</control>
 				</itemlayout>
-				<content>plugin://script.embuary.helper/?info=jumptoletter&amp;showall=false&amp;reload=$INFO[Container.NumItems]</content>
+				<content sortorder="ascending" sortby="label">$VAR[get_alphabetbar]</content>
 			</control>
 		</control>
 	</include>
+	<variable name="get_alphabetbar">
+		<value condition="string.isempty(container.numitems) | Control.HasFocus(911)">refreshtest_alphabet</value>
+		<value>plugin://script.swan.helper/?action=get_alphabetbar</value>
+	</variable>
 	<include name="ScrollBar_Alphabet_ver">
 		<animation effect="fade" start="100" end="0" time="250" condition="Window.IsActive(1140)">conditional</animation>
 		<width>60</width>
@@ -117,7 +121,7 @@
 		<value condition="!window.isactive(movieinformation) + [container.content(seasons) | string.isequal(listitem.dbtype,season)] + !string.isempty(listitem.tvshowdbid)">plugin://script.swan.helper/?action=get_cast&amp;dbtype=tvshow&amp;dbid=$INFO[listitem.tvshowdbid]</value>
 			<value condition="[[container.content(tvshows) | string.isequal(listitem.dbtype,tvshow)] | [container.content(seasons) | string.isequal(listitem.dbtype,season)] | [container.content(episodes) | string.isequal(listitem.dbtype,episode)]] + !string.isempty(window(home).property(dbid))">plugin://script.swan.helper/?action=get_cast&amp;dbtype=tvshow&amp;dbid=$INFO[window(home).property(dbid)]</value>
 		<value condition="!window.isactive(movieinformation) + [!container.content(seasons) + !string.isequal(listitem.dbtype,season)] + !string.isempty(listitem.dbid) + !string.isempty(listitem.dbtype)">plugin://script.swan.helper/?action=get_cast&amp;dbtype=$INFO[listitem.dbtype]&amp;dbid=$INFO[listitem.dbid]</value>
-		<value condition="!$EXP[IsOfflineMode] + [window.isactive(movieinformation) | string.isempty(listitem.dbid)] + system.hasaddon(plugin.video.themoviedb.helper)">plugin://plugin.video.themoviedb.helper/?info=cast&amp;$VAR[videoinfo_tmdb_helper_type]&amp;$VAR[videoinfo_tmdb_helper_query]</value>
+		<value condition="!$EXP[IsOfflineMode] + !string.isempty(listitem.dbtype) + [window.isactive(movieinformation) | string.isempty(listitem.dbid)] + system.hasaddon(plugin.video.themoviedb.helper)">plugin://plugin.video.themoviedb.helper/?info=cast&amp;$VAR[videoinfo_tmdb_helper_type]&amp;$VAR[videoinfo_tmdb_helper_query]</value>
 		<value>content_cast</value>
 	</variable>
 	<variable name="videoinfo_tmdb_helper_type">
@@ -131,7 +135,7 @@
 		<value condition="[String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,episode)] + !String.IsEmpty(ListItem.TvShowTitle)">query=$INFO[ListItem.TvShowTitle]</value>
 		<value condition="!String.IsEmpty(ListItem.Title) + !String.IsEmpty(ListItem.Year)">query=$INFO[ListItem.Title]&amp;year=$INFO[ListItem.Year]</value>
 		<value condition="!String.IsEmpty(ListItem.Title)">query=$INFO[ListItem.Title]</value>
-		<value condition="Window.IsTopMost(movieinformation)">query=$INFO[ListItem.Label]</value> 
+		<value condition="Window.IsTopMost(movieinformation)">query=$INFO[ListItem.Label]</value>	
 	</variable>
 		
 	<variable name="content_cast_video">
