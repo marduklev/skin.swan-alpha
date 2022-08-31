@@ -321,8 +321,8 @@
 					<onclick>Skin.ToggleSetting(EnableRotatingExtraFanart)</onclick>
 					<selected>Skin.HasSetting(EnableRotatingExtraFanart)</selected>
 				</control>
+				
 				<control type="radiobutton" id="$PARAM[id]026">
-					<visible>system.hasaddon(script.embuary.helper)</visible>
 					<label>Enable Blur BG in Media Windows</label>
 					<onclick condition="!system.hasaddon(script.embuary.helper)">installaddon(script.embuary.helper)</onclick>
 					<onclick condition="system.hasaddon(script.embuary.helper)">Skin.ToggleSetting(BlurEnabled)</onclick>
@@ -331,12 +331,28 @@
 					<onclick>RunScript(script.embuary.helper,action=restartservice)</onclick>
 					<selected>Skin.HasSetting(BlurEnabled)</selected>
 				</control>
+				
+				<!--
+				<control type="radiobutton" id="$PARAM[id]026">
+					<label>Enable Blur BG in Media Windows</label>
+					<onclick condition="!system.hasaddon(script.embuary.helper)">installaddon(plugin.video.themoviedb.helper)</onclick>
+					<onclick condition="system.hasaddon(plugin.video.themoviedb.helper) + Skin.HasSetting(EnableRotatingExtraFanart)">Skin.ToggleSetting(EnableRotatingExtraFanart)</onclick>
+					<onclick condition="system.hasaddon(plugin.video.themoviedb.helper)">Skin.ToggleSetting(TMDbHelper.EnableBlur)</onclick>
+					<onclick condition="system.hasaddon(plugin.video.themoviedb.helper) + !Skin.HasSetting(TMDbHelper.EnableBlur)">setproperty(TMDbHelper.Blur.SourceImage,Art(tvshow.fanart)|Art(fanart),Home)</onclick>
+					<onclick condition="system.hasaddon(plugin.video.themoviedb.helper) + !Skin.HasSetting(TMDbHelper.EnableBlur)">SetProperty(TMDbHelper.Blur.Fallback,$INFO[skin.string(texture_global_background_layer2)],Home)</onclick>
+					<onclick condition="system.hasaddon(plugin.video.themoviedb.helper) + Skin.HasSetting(TMDbHelper.EnableBlur)">clearproperty(TMDbHelper.Blur.SourceImage,Home)</onclick>
+					<onclick condition="system.hasaddon(plugin.video.themoviedb.helper) + Skin.HasSetting(TMDbHelper.EnableBlur)">clearproperty(TMDbHelper.Blur.Fallback,Home)</onclick>
+					<selected>Skin.HasSetting(TMDbHelper.EnableBlur)</selected>
+				</control>
+				-->
+				
 				<control type="radiobutton" id="$PARAM[id]027">
 					<label>Use Dimmed Blurred Fanart in Spotlight Views</label>
 					<onclick>Skin.ToggleSetting(spotlight_blur)</onclick>
 					<selected>Skin.HasSetting(spotlight_blur)</selected>
 					<visible>Skin.HasSetting(BlurEnabled)</visible>
 				</control>
+				
 				
 				<control type="radiobutton" id="$PARAM[id]030">
 					<visible>!Skin.HasSetting(ShowFanartBackground)</visible>
@@ -3139,7 +3155,7 @@
 					<label>Prefer Blurred BG Panel</label>
 					<onclick>Skin.ToggleSetting(Shutdown_BlurBG)</onclick>
 					<selected>Skin.HasSetting(Shutdown_BlurBG)</selected>
-					<visible>System.HasAddon(script.skin.helper.colorpicker)</visible>
+					<visible>[system.hasaddon(script.embuary.helper) + system.addonisenabled(script.embuary.helper)]</visible>
 				</control>
 				<include content="SkinSettings_ColorButton">
 					<param name="id" value="$PARAM[id]002" />

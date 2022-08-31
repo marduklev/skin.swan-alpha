@@ -25,6 +25,15 @@ $INFO[Game.GameClient,Game.GameClient ,] -->
 	</variable>
 <variable name="debug_left">
 <value>
+backgroundbuilding:
+-  hidden sourcing common_fanartbackground = $VAR[common_fanartbackground] 
+-  showing ARTWORK            layer2_image = $VAR[layer2_image]
+-  spotlight_fanartbackground~diffusedart  = $VAR[spotlight_fanartbackground]
+
+- 99005                       BLUR   $INFO[Window(home).Property(listitem_blurred)]
+- 99006              COMMON   $INFO[Control.GetLabel(99006)]
+- 99007    ROTATE EXTRA   $INFO[Control.GetLabel(99007)]
+
 listitem.Path :  $INFO[listitem.path]   |   ListItem.FolderPath :  $INFO[ListItem.FolderPath]   |   ListItem.FolderName :  $INFO[ListItem.FolderName]
 listitem.filenameandpath :  $INFO[listitem.filenameandpath]   |   listitem.fileextension $INFO[listitem.listitem.fileextension]
 listitem.dbid :  $INFO[listitem.dbid]   |   listitem.tvshowdbid :  $INFO[listitem.tvshowdbid]   |   listitem.setid :  $INFO[listitem.setid]
@@ -89,14 +98,14 @@ ratings:  default $INFO[container(2000).listitem.rating(default)]   |   themovie
 </variable>
 
 <variable name="tmdb_helper">
-<value>[COLOR green2]&gt;&gt;  T M d b     H E L P E R
+<value>[COLOR green2]&gt;&gt;  T M d b     H E L P E R          •          $VAR[TMDbHelper.Service]          •          $VAR[TMDbHelper.TMDbHelper.EnableBlur]
 TMDb_Rating $INFO[Window(Home).Property(TMDbHelper.ListItem.TMDb_Rating)]   |   IMDb_Rating $INFO[Window(Home).Property(TMDbHelper.ListItem.IMDb_Rating)]   |   Metacritic_Rating $INFO[Window(Home).Property(TMDbHelper.ListItem.Metacritic_Rating)]   |   RottenTomatoes_UserMeter $INFO[Window(Home).Property(TMDbHelper.ListItem.RottenTomatoes_UserMeter)]   |   RottenTomatoes_Rating $INFO[Window(Home).Property(TMDbHelper.ListItem.RottenTomatoes_Rating)]   |   Top250 $INFO[Window(Home).Property(TMDbHelper.ListItem.Top250)]   |   Trakt_Rating $INFO[Window(Home).Property(TMDbHelper.ListItem.Trakt_Rating)]
 Status $INFO[Window(Home).Property(TMDbHelper.ListItem.Status)]   |   Next_Aired $INFO[Window(Home).Property(TMDbHelper.ListItem.Season)] $INFO[Window(Home).Property(TMDbHelper.ListItem.Episode)][/COLOR]
 </value>
 </variable>
 <variable name="TMDbHelper.Service">
 	<value condition="skin.hassetting(TMDbHelper.Service)">TMDbHelper.Service is [COLOR orange]ON[/COLOR]</value>
-	<value>TMDbHelper.Service is off</value>
+	<value>TMDbHelper.Service is  [COLOR red][B]off[/B][/COLOR]</value>
 </variable>
 <variable name="TMDbHelper.DisableArtwork">
 	<value condition="skin.hassetting(TMDbHelper.DisableArtwork)">TMDbHelper: Artwork Service is [COLOR orange]Disabled[/COLOR]</value>
@@ -110,7 +119,19 @@ Status $INFO[Window(Home).Property(TMDbHelper.ListItem.Status)]   |   Next_Aired
 	<value condition="skin.hassetting(TMDbHelper.DisableExtendedProperties)">TMDbHelper: ExtendedProperties are [COLOR orange]Disabled[/COLOR]</value>
 	<value>TMDbHelper: ExtendedProperties Service is on</value>
 </variable>
-
+<variable name="TMDbHelper.TMDbHelper.EnableBlur">
+	<value condition="!skin.hassetting(TMDbHelper.EnableBlur)">TMDbHelper.EnableBlur [COLOR red][B]Disabled[/B][/COLOR]</value>
+	<value>TMDbHelper.EnableBlur [COLOR orange][B]enabled[/B][/COLOR][CR]     image ListItem.BlurImage: $INFO[Window(Home).Property(TMDbHelper.ListItem.BlurImage)][CR]     image Blur.SourceImage: $INFO[window(home).property(TMDbHelper.Blur.SourceImage)][CR]     image Blur.SourceImage: Blur.Fallback: $INFO[window(home).property(TMDbHelper.Blur.Fallback)]</value>
+</variable>
+<!-- 
+SetProperty(TMDbHelper.WidgetContainer,WIDGET_ID,Home) 	Specify a widget container ID to load info for. Note that the service monitor works automatically for dialogvideoinfo without a container ID specified.
+Skin.ToggleSetting(TMDbHelper.ForceWidgetContainer) 	Forces widget container ID lookup to be used in info dialog
+SetProperty(TMDbHelper.ServicePause,1) 	Pause the service monitor while the current window is active and has focus. Use with <onload> to stop a custom dialog from updating the service monitor. v4.4.34+
+	
+	SetProperty(TMDbHelper.WidgetContainer,WIDGET_ID,Home)
+	SetProperty(TMDbHelper.Blur.SourceImage,poster,Home)
+	SetProperty(TMDbHelper.Blur.Fallback,$INFO[Skin.String(texture_global_background_layer2)],Home)
+-->
 <variable name="trailer_available">
 	<value condition="!String.IsEmpty(Window(home).Property(listitemtrailer)) + !String.IsEqual(Window(home).Property(listitemtrailer), listitem.trailer)">Local Trailer [B]is[/B] available</value>
 	<value condition="!String.IsEmpty(listitem.trailer)">Scraped Trailer [B]is[/B] available</value>
@@ -222,8 +243,8 @@ $INFO[System.GPUTemperature,System.GPUTemperature :     ,]
 Property(xmlfile) :     $INFO[Window.Property(xmlfile)]
 System.CurrentWindow :     $INFO[System.CurrentWindow]
 System.CurrentControl :     $INFO[System.CurrentControl]
-System.CurrentControlID :     $INFO[System.CurrentControlID]
-viewid :     $INFO[window.property(viewid)]
+stored win(*current).Prop viewid :     $INFO[window.property(viewid)]   |   System.CurrentControlID :     $INFO[System.CurrentControlID]
+
 
 $INFO[System.Progressbar,System.Progressbar :     ,]
 • $VAR[OfflineMode]
