@@ -118,12 +118,13 @@
 	</variable>
 	
 	<variable name="content_cast">
-		<value condition="!window.isactive(movieinformation) + [container.content(seasons) | string.isequal(listitem.dbtype,season)] + !string.isempty(listitem.tvshowdbid)">plugin://script.swan.helper/?action=get_cast&amp;dbtype=tvshow&amp;dbid=$INFO[listitem.tvshowdbid]</value>
-			<value condition="[[container.content(tvshows) | string.isequal(listitem.dbtype,tvshow)] | [container.content(seasons) | string.isequal(listitem.dbtype,season)] | [container.content(episodes) | string.isequal(listitem.dbtype,episode)]] + !string.isempty(window(home).property(dbid))">plugin://script.swan.helper/?action=get_cast&amp;dbtype=tvshow&amp;dbid=$INFO[window(home).property(dbid)]</value>
-		<value condition="!window.isactive(movieinformation) + [!container.content(seasons) + !string.isequal(listitem.dbtype,season)] + !string.isempty(listitem.dbid) + !string.isempty(listitem.dbtype)">plugin://script.swan.helper/?action=get_cast&amp;dbtype=$INFO[listitem.dbtype]&amp;dbid=$INFO[listitem.dbid]</value>
-		<value condition="!$EXP[IsOfflineMode] + !string.isempty(listitem.dbtype) + [window.isactive(movieinformation) | string.isempty(listitem.dbid)] + system.hasaddon(plugin.video.themoviedb.helper)">plugin://plugin.video.themoviedb.helper/?info=cast&amp;$VAR[videoinfo_tmdb_helper_type]&amp;$VAR[videoinfo_tmdb_helper_query]</value>
+		<value condition="!string.isempty(listitem.tvshowdbid) + [container.content(seasons) | string.isequal(listitem.dbtype,season)]">plugin://script.swan.helper/?action=get_cast&amp;dbtype=tvshow&amp;dbid=$INFO[listitem.tvshowdbid]</value>
+		<value condition="!string.isempty(window(home).property(dbid)) + [[container.content(tvshows) | string.isequal(listitem.dbtype,tvshow)] | [container.content(seasons) | string.isequal(listitem.dbtype,season)] | [container.content(episodes) | string.isequal(listitem.dbtype,episode)]]">plugin://script.swan.helper/?action=get_cast&amp;dbtype=tvshow&amp;dbid=$INFO[window(home).property(dbid)]</value>
+		<value condition="!string.isempty(listitem.dbid) + !string.isempty(listitem.dbtype) + [!container.content(seasons) + !string.isequal(listitem.dbtype,season)]">plugin://script.swan.helper/?action=get_cast&amp;dbtype=$INFO[listitem.dbtype]&amp;dbid=$INFO[listitem.dbid]</value>
+		<value condition="!$EXP[IsOfflineMode] + [!string.isempty(listitem.dbtype) + string.isempty(listitem.dbid)] + system.hasaddon(plugin.video.themoviedb.helper)">plugin://plugin.video.themoviedb.helper/?info=cast&amp;$VAR[videoinfo_tmdb_helper_type]&amp;$VAR[videoinfo_tmdb_helper_query]</value>
 		<value>content_cast</value>
 	</variable>
+	
 	<variable name="videoinfo_tmdb_helper_type">
 		<value condition="String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,episode)">type=tv</value>
 		<value>type=movie</value>
