@@ -2,44 +2,57 @@
 <window type="window" id="1120">
     <defaultcontrol always="true">5600</defaultcontrol>
 	<menucontrol>99001</menucontrol>
+	
+	<onload condition="true">setfocus(5500)</onload>
+	
 	<onload condition="!Skin.String(SearchTerm)">Back</onload>
 	<onunload condition="!String.IsEmpty(Window(home).Property(CastMemberThumb))">ClearProperty(CastMemberThumb,home)</onunload>
 	<onunload condition="!String.IsEmpty(Window(home).Property(CastMemberLabel))">ClearProperty(CastMemberLabel,home)</onunload>
     <onunload>Skin.Reset(SearchTerm)</onunload>
+	
 	<controls>
         
-		<!-- really need get menu to get cond visablility video vs music vs plugun lib items -->
 		
-		<!-- id s -->
-	<!-- 	https://kodi.wiki/view/List_of_built-in_functions#List_of_sort_methods
-		https://github.com/xbmc/xbmc/blob/master/xbmc/utils/SortUtils.cpp#L529-L577 -->
+		<include condition="false" content="default_search_layout" />
+		
+		
+		
+		<!-- new ,also share with favorites 
+		
+		
+		top horizontal - icon -
+		
+		movies - tv shows - episodes - actors? - amazon - ...
+		
+		-->
+		
+		
+		
 		<control type="group">
-			<visible>String.IsEmpty(Window(home).Property(shortcutaction_inprogress))</visible>
-			<include>global_background</include>
+			<control type="group">
+				<include>HiddenObject</include>
+				<control type="image" id="99006">
+					<texture background="true">$VAR[common_fanartbackground]</texture>
+				</control>
+			</control>
+			<!-- <include>global_background</include> -->
 		</control>
 		
-		<control type="group">
-			<visible>!String.IsEmpty(Window(home).Property(CastMemberThumb)) + !Window.IsActive(movieinformation)</visible>
-			<include content="backgroundbuilding_layer4">
-				<param name="width2" value="33%" />
-				<param name="width3" value="0" />
-			</include>
-		</control>
-		<!-- Header -->
+		
 		<include content="HeaderBar">
 			<param name="HasBGPanel" value="Skin.HasSetting(MediaWindow_UseHeaderBG)" />
 		</include>
-		<!-- <include content="Info_ActorThumb">
-		</include> -->
+		
 		<control type="group">
+			<visible>!String.IsEmpty(Window(home).Property(CastMemberThumb))</visible>
+			
 			<animation effect="fade" start="100" end="0" time="300" condition="$EXP[Infodialog_IsActive]">Conditional</animation>
 			<animation type="WindowOpen">
-					<effect type="slide" start="-2000,0" end="0" time="600" tween="cubic" easing="in" />
-				</animation>
+				<effect type="slide" start="-2000,0" end="0" time="600" tween="cubic" easing="in" />
+			</animation>
 				
 			<left>40</left>
 			<top>135</top>
-			<visible>!String.IsEmpty(Window(home).Property(CastMemberThumb))</visible>
 			<control type="image">
 				<fadetime>350</fadetime>
 				<width>500</width>
@@ -50,7 +63,6 @@
 				<texture background="true">$INFO[Window(home).Property(CastMemberThumb)]</texture>
 				<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
 			</control>
-			
 			<control type="label">
 				<top>750</top>
 				<left>60</left>
@@ -62,106 +74,115 @@
 				<wrapmultiline>true</wrapmultiline>
 				<textcolor>$VAR[color_lib_text_main]</textcolor>
 			</control>
-		
 		</control>
 		
-		<!--Footer -->
-        <control type="button">
-			<animation effect="fade" start="100" end="0" time="300" condition="$EXP[Infodialog_IsActive]">Conditional</animation>
-			<description>just test height for footer groulist</description>
-			<bottom>0</bottom>
-			<height>90</height>
-			<label>PLACEHOLDER   I n s e r t    M e d i a    F l a g s    h e r e</label>
-			<align>center</align>
-			<visible>false</visible>
-		</control>
 		
-		<!-- spotlight info WIP -->
+		
 		<control type="group">
-			<visible>Skin.HasSetting(search_info_spotlight)</visible>
-			<!-- <control type="image">
-				<fadetime>350</fadetime>
-				<width>1152</width>
-				<height>693</height>
-				<left>0</left>
-				<top>0</top>
-				<texture background="true" diffuse="diffuse/spotlightwidetopleftdiffuse.png">$VAR[netflixThumb]</texture>
-				<aspectratio scalediffuse="true" aligny="top">scale</aspectratio>
-			</control> -->
-			<control type="grouplist">
-				<orientation>vertical</orientation>
-				<itemgap>10</itemgap>
-				<usecontrolcoords>true</usecontrolcoords>
-				<width>700</width>
-				<posx>1100</posx>
-				<posy>25</posy>
-					<control type="label">
-						<visible>String.IsEmpty(Control.GetLabel(5888))</visible>
-						<width>auto</width>
-						<visible></visible>
-						<height max="70">auto</height>
-						<font>notosans_30_bold</font>
-						<align>center</align>
-						<aligny>top</aligny>
-						<textcolor>$INFO[Skin.String(ViewDetailsHighlightTextColor)]</textcolor>
-						<selectedcolor>$INFO[Skin.String(ViewDetailsHighlightTextColor)]</selectedcolor>
-						<label>$INFO[ListItem.Label,[B],[/B]]$INFO[ListItem.Year, (,) ]</label>
-					</control>
-					<control type="image" id="5888">
-						<visible>!String.IsEmpty(Control.GetLabel(5888))</visible>
-						<height>120</height>
-						<texture background="true">$VAR[ListItemClearLogo]</texture>
-						<aspectratio align="center" aligny="center">keep</aspectratio>
-					</control>
+			<top>120</top>
+			<height>110</height>
+			<left>80</left>
+			<right>80</right>
+			
+			<control type="image">
+				<texture>colors/white10.png</texture>
+			</control>
+			
+			<include content="Universal_Container">
+				<param name="id" value="5500" />
+				<param name="visible" value="true" />
+				<param name="type_height" value="110" />
+				<param name="type_pos_top" value="5" />
+				<param name="layout_height" value="110" />
+				<param name="layout_width" value="200" />
+				<param name="itemwidth" value="100" />
+				<param name="itemheight" value="100" />
+				<param name="item_artwork_name" value="square" />
+				
+				<param name="item_artwork_bordercolor_fo" value="white" />
+				<param name="item_artwork_bordercolor_nf" value="gray" />
+				<param name="item_artwork_diffuse_themed" value="true" />
+				<param name="item_artwork_diffuse_override" value="false" />
+				<param name="item_infotags_visible" value="true" />
+				<param name="item_infotags_bgpanel_visible" value="false" />
+				
+				<left>35</left>
+				
+				<ondown>5600</ondown>
+				<onup>5600</onup>
+				
+				<content>
+					<item id="100">
+						<thumb>defaultmovies.png</thumb>
+						<label>movies</label>
+					</item>
 					
-					<include content="stars_rating">
-						<param name="id" value="5889" />
-						<param name="width" value="700" />
-						<param name="height" value="35" />
-						<param name="alignx" value="center" />
-						<param name="colordiffuse" value="red" />
-						<visible>!String.IsEmpty(Control.GetLabel(5889))</visible>
-					</include>
+					<item id="101">
+						<thumb>defaulttvshows.png</thumb>
+						<label>tvshows</label>
+					</item>
 					
-					<control type="label">
-						<visible>!String.IsEmpty(Control.GetLabel(5888))</visible>
-						<height>35</height>
-						<width>auto</width>
-						<font>notosans_30_bold</font>
-						<align>center</align>
-						<aligny>top</aligny>
-						<textcolor>$INFO[Skin.String(ViewDetailsTextColor)]</textcolor>
-						<selectedcolor>$INFO[Skin.String(ViewDetailsTextColor)]</selectedcolor>
-						<label>$INFO[ListItem.Year,• , •]</label>
-					</control>
-					<control type="textbox">
-						<width>auto</width>
-						<height max="200">auto</height>
-						<wrapmultiline>true</wrapmultiline>
-						<align>center</align>
-						<aligny>top</aligny>
-						<label>$VAR[SearchInfoWidget_Description]</label>
-						<font>notosans_20_bold</font>
-						<textcolor>$INFO[Skin.String(ViewDetailsTextColor)]</textcolor>
-						<selectedcolor>$INFO[Skin.String(ViewDetailsTextColor)]</selectedcolor>
-						<autoscroll delay="4000" time="4000" repeat="2000">true</autoscroll>
-					</control>
-					<control type="image">
-						<height>130</height>
-						<aspectratio align="center" aligny="center">keep</aspectratio>
-						<colordiffuse>$INFO[Skin.String(ViewDetailsHighlightTextColor)]</colordiffuse>
-						<texture background="true">$INFO[Skin.String(SkinHelper.studiologos.path)]$INFO[ListItem.Studio,,.png]</texture>
-					</control>
-				</control>
+					<item id="102">
+						<thumb>defaultactor.png</thumb>
+						<label>movies</label>
+					</item>
+					
+					
+					<item id="103">
+						<thumb>defaultgenre.png</thumb>
+						<label>genres</label>
+					</item>
+					
+					<item id="104">
+						<thumb>defaultstudios.png</thumb>
+						<label>studios</label>
+					</item>
+					
+					<item id="105">
+						<thumb>defaultaddonwebskin.png</thumb>
+						<label>countries</label>
+					</item>
+					
+					<item id="106">
+						<thumb>music.png</thumb>
+						<label>amazon</label>
+					</item>
+					
+					<item id="107">
+						<thumb>music.png</thumb>
+						<label>netflix</label>
+					</item>
+					
+					<item id="108">
+						<thumb>music.png</thumb>
+						<label>youtube</label>
+					</item>
+					
+					<item id="109">
+						<thumb>defaultgames.png</thumb>
+						<label>games</label>
+					</item>
+					
+					<item id="110">
+						<thumb>defaultaddon.png</thumb>
+						<label>addons</label>
+					</item>
+				
+				</content>
+			</include>
+			
+			
 		</control>
 		
 		<control type="group">
 			<include content="Animation_TransitionFadeOut">
-				<param name="condition" value="$EXP[Infodialog_IsActive] | Window.IsActive(mediasource)" />
+				<param name="condition" value="$EXP[Infodialog_IsActive]" />
 			</include>
 			
-            <top>120</top>
+            <top>320</top>
             <bottom>90</bottom>
+			
+			
 			<include content="pos_left" condition="String.IsEmpty(Window(home).Property(CastMemberThumb))">
 				<param name="left" value="80" />
 			</include>
@@ -188,7 +209,9 @@
 				<control type="group" id="8400">
 					<height>-20</height>
 				</control>
+				<width>65%</width>
 				
+				<!-- FILME -->
 				<include condition="!Skin.HasSetting(SkinSearch_Content_titles_in_movie)" content="Universal_ContainerHeader">
                     <param name="groupid" value="7501" />
                     <param name="id" value="5001" />
@@ -197,7 +220,7 @@
                 </include>
 				<include condition="!Skin.HasSetting(SkinSearch_Content_titles_in_movie)" content="Universal_Container">
 					<param name="id" value="5001" />
-					<param name="visible" value="Integer.IsGreater(Container(5001).NumItems,0) | Container(5001).IsUpdating" />
+					<param name="visible" value="Container(5500).HasFocus(100) + [Integer.IsGreater(Container(5001).NumItems,0) | Container(5001).IsUpdating]" />
 					<param name="type_height" value="365" />
 					<param name="layout_height" value="345" />
 					<param name="layout_width" value="200" />
@@ -207,6 +230,7 @@
 					<content target="videos" sortby="year">videodb://movies/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
 				</include>
 				
+				<!-- SERIEN -->
 				<include condition="!Skin.HasSetting(SkinSearch_Content_titles_in_tvshows)" content="Universal_ContainerHeader">
                     <param name="groupid" value="7502" />
                     <param name="id" value="5002" />
@@ -215,7 +239,7 @@
                 </include>
                 <include condition="!Skin.HasSetting(SkinSearch_Content_titles_in_tvshows)" content="Universal_Container">
 					<param name="id" value="5002" />
-					<param name="visible" value="Integer.IsGreater(Container(5002).NumItems,0) | Container(5002).IsUpdating" />
+					<param name="visible" value="Container(5500).HasFocus(101) + [Integer.IsGreater(Container(5002).NumItems,0) | Container(5002).IsUpdating]" />
 					<param name="type_height" value="365" />
 					<param name="layout_height" value="345" />
 					<param name="layout_width" value="200" />
@@ -225,6 +249,7 @@
 					<content target="videos" sortby="year">videodb://tvshows/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D</content>
                 </include>
 				
+				<!-- Episoden -->
 				<include condition="!Skin.HasSetting(SkinSearch_Content_titles_in_episodes)" content="Universal_ContainerHeader">
                     <param name="groupid" value="7503" />
                     <param name="id" value="5003" />
@@ -233,7 +258,7 @@
                 </include>
 				<include condition="!Skin.HasSetting(SkinSearch_Content_titles_in_episodes)" content="Universal_Container">
 					<param name="id" value="5003" />
-					<param name="visible" value="Integer.IsGreater(Container(5003).NumItems,0) | Container(5003).IsUpdating" />
+					<param name="visible" value="Container(5500).HasFocus(102) + [Integer.IsGreater(Container(5003).NumItems,0) | Container(5003).IsUpdating]" />
 					<param name="type_height" value="365" />
 					<param name="layout_height" value="355" />
 					<param name="layout_width" value="490" />
@@ -243,10 +268,8 @@
 					<param name="item_overlay_fanart" value="true" />
 					<content target="videos" sortby="year">videodb://tvshows/titles/-1/-1/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22title%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22episodes%22%7D</content>
 				</include>
-				<!-- MOVIE and TV SHOW - Actors Named, 
-				msgctxt "#344"
-				msgid "Actors" 
-				-->
+				
+				<!-- MOVIE and TV SHOW - Actors Named, msgctxt "#344" , msgid "Actors" -->
                 <include condition="!Skin.HasSetting(SkinSearch_Content_actors_in_movie_tvshows)" content="Universal_ContainerHeader">
                     <param name="groupid" value="7508" />
                     <param name="id" value="5008" />
@@ -255,7 +278,7 @@
                 </include>
                 <include condition="!Skin.HasSetting(SkinSearch_Content_actors_in_movie_tvshows)" content="Universal_Container">
 					<param name="id" value="5008" />
-					<param name="visible" value="Integer.IsGreater(Container(5008).NumItems,0) | Container(5008).IsUpdating" />
+					<param name="visible" value="Container(5500).HasFocus(103) + [Integer.IsGreater(Container(5008).NumItems,0) | Container(5008).IsUpdating]" />
 					<param name="type_height" value="365" />
 					<param name="layout_height" value="345" />
 					<param name="layout_width" value="200" />
@@ -266,10 +289,8 @@
                     <content target="videos" sortby="year" sortorder="descending">videodb://tvshows/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22actor%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D</content>
                 
 				</include>
-				<!-- MOVIE and TV SHOW By Directors Named
-				msgctxt "#20348"
-				msgid "Directors"
-				msgstr "Regisseure" -->
+				
+				<!-- MOVIE and TV SHOW By Directors Named ,msgctxt "#20348", msgid "Directors", msgstr "Regisseure" -->
                 <include condition="!Skin.HasSetting(SkinSearch_Content_directors_in_movie_tvshows)" content="Universal_ContainerHeader">
                     <param name="groupid" value="7513" />
                     <param name="id" value="5013" />
@@ -278,7 +299,7 @@
                 </include>
 				<include condition="!Skin.HasSetting(SkinSearch_Content_directors_in_movie_tvshows)" content="Universal_Container">
 					<param name="id" value="5013" />
-					<param name="visible" value="Integer.IsGreater(Container(5013).NumItems,0) | Container(5013).IsUpdating" />
+					<param name="visible" value="Container(5500).HasFocus(103) + [Integer.IsGreater(Container(5013).NumItems,0) | Container(5013).IsUpdating]" />
 					<param name="type_height" value="365" />
 					<param name="layout_height" value="345" />
 					<param name="layout_width" value="200" />
@@ -288,6 +309,7 @@
 					<content target="videos" sortby="year" sortorder="descending">videodb://movies/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22director%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22movies%22%7D</content>
                     <content target="videos" sortby="year" sortorder="descending">videodb://tvshows/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22director%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D</content>
                 </include>
+				<!-- Episodes with actors -->
 				<include condition="!Skin.HasSetting(SkinSearch_Content_actors_in_episodes)" content="Universal_ContainerHeader">
                     <param name="groupid" value="7517" />
                     <param name="id" value="5017" />
@@ -296,7 +318,7 @@
                 </include>
 				<include condition="!Skin.HasSetting(SkinSearch_Content_actors_in_episodes)" content="Universal_Container">
 					<param name="id" value="5017" />
-					<param name="visible" value="Integer.IsGreater(Container(5017).NumItems,0) | Container(5017).IsUpdating" />
+					<param name="visible" value="Container(5500).HasFocus(103) + [Integer.IsGreater(Container(5017).NumItems,0) | Container(5017).IsUpdating]" />
 					<param name="type_height" value="365" />
 					<param name="layout_height" value="355" />
 					<param name="layout_width" value="490" />
@@ -426,24 +448,6 @@
 					<param name="item_overlay_fanart" value="true" />
 					<content target="music" sortby="label">musicdb://artists/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Skin.String(SearchTerm)]%22%5D%7D%5D%7D%2C%22type%22%3A%22artists%22%7D</content>
                 </include>
-				<include condition="!Skin.HasSetting(SkinSearch_Content_albums_by_focused_artists)" content="Universal_ContainerHeader">
-                    <param name="groupid" value="7506" />
-                    <param name="id" value="5006" />
-                    <param name="label" value="$INFO[Container(5005).ListItem.Label,$LOCALIZE[132] $LOCALIZE[31071] ,]" />
-                    <visible>Control.IsVisible(5006)</visible>
-                </include>
-				<include condition="!Skin.HasSetting(SkinSearch_Content_albums_by_focused_artists)" content="Universal_Container">
-					<param name="id" value="5006" />
-					<param name="visible" value="!String.IsEmpty(Container(5005).ListItem.Label) + [Integer.IsGreater(Container(5006).NumItems,0) | Container(5006).IsUpdating]" />
-					<param name="type_height" value="365" />
-					
-					<param name="layout_height" value="360" />
-					<param name="layout_width" value="300" />
-					<param name="itemheight" value="290" />
-					<param name="itemwidth" value="290" />
-					<param name="item_artwork_name" value="thumb" />
-					<content target="music" sortby="year">musicdb://albums/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22artist%22%2C%22operator%22%3A%22contains%22%2C%22value%22%3A%5B%22$INFO[Container(5005).ListItem.Label]%22%5D%7D%5D%7D%2C%22type%22%3A%22albums%22%7D</content>
-                </include>
 				
 				<include condition="Skin.HasSetting(SkinSearch_Content_title_in_songs)" content="Universal_ContainerHeader">
                     <param name="groupid" value="7577" />
@@ -505,6 +509,8 @@
 					<content target="videos" sortby="label">videodb://musicvideos/titles/?xsp=%7b%22rules%22%3a%7b%22and%22%3a%5b%7b%22field%22%3a%22artist%22%2c%22operator%22%3a%22contains%22%2c%22value%22%3a%5b%22$INFO[Skin.String(SearchTerm)]%22%5d%7d%5d%7d%2c%22type%22%3a%22musicvideos%22%7d</content>
                 </include>
 				
+				
+				<!-- YOU TUBE
 				<include condition="!Skin.HasSetting(SkinSearch_Content_youtube) + [!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.youtube)]" content="Universal_ContainerHeader">
                     <param name="groupid" value="7509" />
                     <param name="id" value="5009" />
@@ -522,9 +528,9 @@
 					<param name="itemwidth" value="476" />
 					<param name="item_artwork_name" value="landscape" />
 					<content target="videos" sortby="file" limit="25">plugin://plugin.video.youtube/search/?q=$INFO[Skin.String(SearchTerm)]</content>
-                </include>
+                </include> -->
 				
-				
+				<!-- AMAZON 
 				<include condition="!Skin.HasSetting(SkinSearch_Content_amazonVOD) + [!$EXP[IsOfflineMode] + System.HasAddon(plugin.video.amazon-test)]" content="Universal_ContainerHeader">
                     <param name="groupid" value="7530" />
                     <param name="id" value="5030" />
@@ -552,7 +558,7 @@
 							<onclick>ReplaceWindow(videos,plugin://plugin.video.amazon-test/?mode=Search&amp;searchstring=$INFO[Skin.String(SearchTerm)])</onclick>
 						</item>
 					</content>
-                </include>
+                </include> -->
 				
 					
 		
@@ -657,6 +663,9 @@
 					<onclick>Action(back)</onclick>
 				</control>
 			</control>
+		
+		
+		
 		<include condition="Skin.HasSetting(window_frame)" content="window_frame" />
 		<include condition="Skin.HasSetting(SwanDebug)" content="swan_debug_overlay">
 			<param name="nested_debuginfo" value="

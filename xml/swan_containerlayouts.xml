@@ -145,8 +145,9 @@
 	
 	<include name="container_cast_circleframe">
 		<control type="image">
+			<description>Fallback aspect keep</description>
 			<bordertexture colordiffuse="$PARAM[colordiffuse]">artworkdiffuse/circleborder.png</bordertexture>
-			<texture background="true" diffuse="artworkdiffuse/circle.png" fallback="defaultactor.png">$INFO[ListItem.Icon]</texture>
+			<texture background="true" diffuse="artworkdiffuse/circle.png" fallback="defaultactor.png">$INFO[ListItem.Thumb]</texture>
 			<aspectratio scalediffuse="false" aligny="top" align="center">scale</aspectratio>
 			<bordersize>$PARAM[artwork_bg_bordersize]</bordersize>
 		</control>
@@ -222,7 +223,12 @@
 			<height>$PARAM[Container_Height]</height>
 			<onleft>$PARAM[onleft]</onleft>
 			<onright>$PARAM[id]60</onright>
+			<onup condition="Control.IsVisible(8999)">8999</onup>
+			<onup condition="!Control.IsVisible(8999)">$PARAM[id]</onup>
 			<onfocus condition="String.IsEqual(Window(Home).Property(menucontrol_active),common)">ClearProperty(menucontrol_active,home)</onfocus>
+			
+			
+			<ondown>$PARAM[id]</ondown>
 			<pagecontrol>$PARAM[id]60</pagecontrol>
 			<scrolltime tween="cubic" easing="out">300</scrolltime>
 			<itemlayout height="$PARAM[layout_height]">
