@@ -14,6 +14,9 @@
 		<value condition="skin.hassetting(widget_action_episode_all)">$LOCALIZE[31192]</value>
 		<value>$LOCALIZE[13278]</value>
 	</variable>
+	
+	
+	<!-- check needed usecases new Player.HasPerformedSeek(3) - old Player.DisplayAfterSeek -->
 	<variable name="seekbar_img">
 		<value condition="Player.Forwarding">buttons/osd/fforward_fo.png</value>
 		<value condition="Player.Rewinding">buttons/osd/rewind_fo.png</value>
@@ -27,12 +30,12 @@
 		<!-- when seek via osd slider, player.seeking returns false -->
 		<value condition="Player.Playing + [!Window.IsActive(videoosd) | [Window.IsActive(videoosd) + !String.IsEmpty(Player.SeekOffset) + System.IdleTime(1.5)]]">[B][UPPERCASE]$LOCALIZE[208][/UPPERCASE][/B]</value>
 		<value condition="Player.Paused + [!Window.IsActive(videoosd) | [Window.IsActive(videoosd) + !String.IsEmpty(Player.SeekOffset) + System.IdleTime(1.5)]]">[B][UPPERCASE]$LOCALIZE[112][/UPPERCASE][/B]</value>
-		<value condition="Window.IsActive(videoosd) + Player.DisplayAfterSeek">[B][UPPERCASE]$LOCALIZE[773][/UPPERCASE][/B]</value>
+		<value condition="Window.IsActive(videoosd) + [Player.DisplayAfterSeek | Player.HasPerformedSeek(3)]">[B][UPPERCASE]$LOCALIZE[773][/UPPERCASE][/B]</value>
 	</variable>
 	<!-- Player.SeekStepSize got a short visibility therefore extend time -->
 	<variable name="seekbar_stepsize">
 		<value condition="!String.IsEmpty(Player.SeekStepSize)">$INFO[Player.SeekStepSize]</value>
-		<value condition="!String.IsEmpty(Player.SeekOffset) + Player.DisplayAfterSeek">$INFO[Player.SeekOffset]</value>
+		<value condition="!String.IsEmpty(Player.SeekOffset) + [Player.DisplayAfterSeek | Player.HasPerformedSeek(3)]">$INFO[Player.SeekOffset]</value>
 	</variable>
 	
 	<variable name="Player_TimeRemaining_shortformat">

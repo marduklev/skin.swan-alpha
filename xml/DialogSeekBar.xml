@@ -46,8 +46,20 @@ ID 		Type 	Description
 			<control type="group">
 				<description>BIG BOLD</description>
 				<visible>Player.SeekEnabled + !Skin.HasSetting(seek_info_disabled) + [!Window.IsActive(videoosd) | [!Skin.HasSetting(seek_osd_disabled) + Window.IsActive(videoosd)]] + !Window.IsActive(fullscreeninfo) + !Window.IsActive(videobookmarks)</visible>
-			    <visible>Player.Seeking | Player.DisplayAfterSeek</visible>
+			    <visible>Player.Seeking | Player.DisplayAfterSeek | Player.HasPerformedSeek(3)</visible>
 				<!-- leia - bool player.displayafterseek is always true if paused  -->
+				<!-- 
+				2022-05-22 - Removed Player.DisplayAfterSeek boolean condition
+
+The old Player.DisplayAfterSeek boolean condition was a design flaw of Kodi since it was coupling the videoplayer with GUI components. It was removed and replaced by the previously added Player.HasPerformedSeek(interval) boolean condition.
+By default Player.DisplayAfterSeek was valid for 2.5 seconds after a seek. 
+To retain similar behaviour please use Player.HasPerformedSeek(3). 
+Estuary and estouchy were adapted in https://github.com/xbmc/xbmc/pull/21380
+
+				https://forum.kodi.tv/showthread.php?tid=363553&pid=3098753#pid3098753 
+				
+				
+				-->
 					<animation effect="fade" start="100" end="0" time="200" delay="2500" condition="!Player.Seeking + Player.Paused + Player.DisplayAfterSeek + string.startswith(System.BuildVersion,18.)">Conditional</animation>
 				
 				<animation effect="zoom" start="100" end="60" time="0" center="50%,146%" condition="Skin.HasSetting(seek_info_small) + !Window.IsActive(videoosd)">Conditional</animation>
