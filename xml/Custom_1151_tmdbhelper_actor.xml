@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<window id="1151" type="dialog">
+	
+	<!-- reminder , 
+		- decide dialog vs window
+		- get instance when i had to clear ClearProperty(CastMemberLabel,home)
+	
+		- may get rid and workaround via dialogvideoinfo ? https://forum.kodi.tv/showthread.php?tid=345847&pid=3150677#pid3150677
+	-->
+	<include>Animation_OpenClose_FadeZoom</include>
+	<defaultcontrol>100</defaultcontrol>
+	
+		<onload>Skin.SetBool(TMDbHelper.Service)</onload>
+		
+	
+	<controls>
+	
+		<control type="list" id="10051">
+			<include>HiddenContainer</include>
+			<!-- <content>plugin://plugin.video.themoviedb.helper/?info=details&amp;type=person&amp;query=$ESCINFO[Window(home).Property(CastMemberLabel)]</content> -->
+			<content>plugin://plugin.video.themoviedb.helper/?info=details&amp;type=person&amp;query="Brad Pitt"</content>
+		</control>
+		
+		<control type="group">
+			<left>70</left>
+			<top>160</top>
+			<width>500</width>
+			<include content="Animation_TransitionFadeOut">
+				<param name="condition" value="Window.IsActive(textviewer)" />
+			</include>
+			
+			<control type="image">
+				<animation effect="slide" start="0,0" end="0,-120" time="250" tween="sine" condition="!Control.HasFocus(100)">Conditional</animation>
+				<width>500</width>
+				<height>750</height>
+				<bordersize>1</bordersize>
+				<bordertexture border="2" colordiffuse="$VAR[color_lib_text_main]">frames/frame.png</bordertexture>
+				<texture background="true" fallback="defaultactor.png">$INFO[container(10051).ListItem.Icon]</texture>
+				<aspectratio>scale</aspectratio>
+			</control>	
+			<control type="label">
+				<include>Animation_VisibleHidden_Zoom</include>
+				<visible>!Control.HasFocus(100)</visible>
+				<top>690</top>
+				<height>45</height>
+				<wrapmultiline>true</wrapmultiline>
+				<font>notosans_38_bold_lowlined</font>
+				<info>container(10051).listitem.label</info>
+				<textcolor>$VAR[color_lib_text_main]</textcolor>
+				<aligny>bottom</aligny>
+			</control>
+			<control type="textbox">
+				<include>Animation_VisibleHidden_Zoom</include>
+				<visible>!Control.HasFocus(100) + !String.IsEmpty(Container.ListItem.Property(Role))</visible>
+				<height>auto</height>
+				<top>730</top>
+				<left>10</left>
+				<font>notosans_25_bold</font>
+				<label>as :  [COLOR $VAR[color_lib_text_main]]$INFO[Container.ListItem.Property(Role)][/COLOR]</label>
+				<textcolor>$VAR[color_lib_text_secondary]</textcolor>
+			</control>
+			<control type="textbox">
+				<include>Animation_VisibleHidden_Zoom</include>
+				<animation effect="fade" end="15" condition="true">conditional</animation>
+				<visible>!Control.HasFocus(100)</visible>
+				<height>180</height>
+				<bottom>20</bottom>
+				<font>notosans_20_bold</font>
+				<label>$INFO[Container(10052).NumAllItems,[CR][CR][CR][B]$LOCALIZE[342][/B] : ,]$INFO[Container(10053).NumAllItems,    [B]$LOCALIZE[20343][/B] : ,]</label>
+				<textcolor>$VAR[color_lib_text_main]</textcolor>
+			</control>			
+		</control>
+		
+		<control type="grouplist" id="50">
+			<include content="Animation_TransitionFadeOut">
+				<param name="condition" value="Window.IsActive(textviewer) | Window.IsActive(script-embuary-image.xml)" />
+			</include>
+			
+			<left>10</left>
+			<right>10</right>
+			<top>20</top>
+			<bottom>10</bottom>
+			<orientation>vertical</orientation>
+			<usecontrolcoords>true</usecontrolcoords>
+			<scrolltime>250</scrolltime>
+			<itemgap>5</itemgap>
+			
+			<control type="group">
+				<height>1070</height> 
+				<top>140</top>
+				
+				<!-- meta -->
+				<control type="group">
+					
+					<left>660</left>
+					<right>400</right>
+					<!-- name -->
+					<control type="label">
+						<height>40</height>
+						<font>notosans_45_bold</font>
+						<info>container(10051).listitem.label</info>
+						<textcolor>$VAR[color_lib_text_main]</textcolor>
+					</control>
+					<!-- some facts ? 2 lines-->
+					<control type="textbox">
+						<height>40</height>
+						<top>50</top>
+						<font>notosans_20_bold</font>
+						<label>$INFO[Container(10052).NumAllItems,[B]$LOCALIZE[342][/B] : ,   ]$INFO[Container(10053).NumAllItems,[B]$LOCALIZE[20343][/B] : ,   ]</label>
+						<textcolor>$VAR[color_lib_accent]</textcolor>
+					</control>
+					<!-- plot -->
+					<control type="textbox">
+						<top>100</top>
+						<height max="550">auto</height>
+						<align>justify</align>
+						<aligny>top</aligny>
+						<label fallback="19055">$INFO[Container(10051).ListItem.Property(biography)]</label>
+						<font>notosans_24_bold_highlined</font>
+						<textcolor>$VAR[color_lib_text_main]</textcolor>
+						<autoscroll delay="6000" time="3000" repeat="10000">false</autoscroll>
+					</control>
+					<!-- buttons -->
+					<include content="panel_100">
+						<param name="top" value="660" />
+						<content>
+							<item>
+								<visible>!String.IsEmpty(Container(10051).ListItem.Property(biography))</visible>
+								<label>$LOCALIZE[21887]</label>
+								<onclick>RunScript(script.swan.helper,action=textviewer,header='$ESCINFO[Container(10051).ListItem.Label]',text='$ESCINFO[Container(10051).ListItem.Property(biography)]')</onclick>
+							</item>
+							<item>
+								<label>$LOCALIZE[210]</label>
+								<onclick>Action(back)</onclick>
+							</item>
+							<item>
+								<label>$LOCALIZE[15067]</label>
+								<onclick>Dialog.Close(all)</onclick>
+							</item>
+						</content>
+					</include>
+				</control>	
+				
+				<!-- logo -->
+				<include content="EmbInfo_Logo">
+					<param name="top" value="-120" />
+				</include>
+				
+				<!-- facts -->
+				<include content="EmbInfo_Facts" />
+				
+			</control>
+			
+			<control type="label">
+				<height>400</height>
+				<font />
+				<label />
+			</control>
+			
+		<!-- https: //github.com/jurialmunkey/plugin.video.themoviedb.helper/wiki/Detailed-Item#person-specific -->
+		
+		</control>
+		
+		<include content="swan_debug_overlay">
+			<param name="nested_debuginfo" value="Person Specific
+container.folderpath						$INFO[container.folderpath]			
+
+valid return	ListItem.Icon						$INFO[container(10051).ListItem.Icon]
+valid return	ListItem.Label						$INFO[container(10051).ListItem.Label]
+empty			ListItem.Property(Biography)		$INFO[container(10051).ListItem.Property(Biography)]
+empty			ListItem.Property(Age) 				$INFO[container(10051).ListItem.Property(Age)]
+empty			ListItem.Property(Birthday) 		$INFO[container(10051).ListItem.Property(Birthday)]
+empty			ListItem.Property(Deathday) 		$INFO[container(10051).ListItem.Property(Deathday)]
+empty			ListItem.Property(Character) 		$INFO[container(10051).ListItem.Property(Character)]
+valid return	ListItem.Property(Department) 		$INFO[container(10051).ListItem.Property(Department)]
+empty			ListItem.Property(Job) 				$INFO[container(10051).ListItem.Property(Job)]
+valid return	ListItem.Property(Known_For) 		$INFO[container(10051).ListItem.Property(Known_For)]
+empty			ListItem.Property(Role) 			$INFO[container(10051).ListItem.Property(Role)] - get prop from label2 (cast container)
+empty			ListItem.Property(Born) 			$INFO[container(10051).ListItem.Property(Born)]
+valid return	ListItem.Property(Gender) 			$INFO[container(10051).ListItem.Property(Gender)]
+empty			ListItem.Property(Aliases)		    $INFO[container(10051).ListItem.Property(Aliases)]
+
+"/>
+		</include>
+	</controls>
+</window>

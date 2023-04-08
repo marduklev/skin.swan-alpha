@@ -4,12 +4,13 @@
  	<defaultcontrol always="true">99</defaultcontrol>
 	<onload>99</onload>
 	<onload>SetProperty(HideProfiles,true)</onload>
-	<onload>RunScript(script.embuary.helper,action=blurimg,file='"$VAR[texture_profilelogin_background]"',prop=profileloginbg,radius=2)</onload>
-	<onload>RunScript(script.embuary.helper,action=settimer,do='"ClearProperty(HideProfiles)||SetFocus(52)"',time=4000,busydialog=false)</onload>
+	
+	<onload>RunScript(script.swan.helper,action=blur,img='"$VAR[texture_profilelogin_background]'",prop=profileloginbg_blurred)</onload>
+	<!-- <onload>RunScript(script.embuary.helper,action=settimer,do='"ClearProperty(HideProfiles)||SetFocus(52)"',time=4000,busydialog=false)</onload> -->
+	
 	<onunload condition="!String.IsEmpty(Window.Property(HideProfiles))">ClearProperty(HideProfiles)</onunload>
 	<onunload>ClearProperty(profileloginbg_blurred,home)</onunload>
-	<onunload>ClearProperty(profileloginbg_color,home)</onunload>
-
+	
 	<controls>
 		<control type="image">
 			<animation effect="fade" start="0" end="100" time="250" condition="String.IsEmpty(Window.Property(HideProfiles))">conditional</animation>
@@ -163,6 +164,9 @@
 			<onclick>ActivateWindow(shutdownmenu)</onclick>
 		</control>
 	</control>
+		<include condition="true" content="swan_debug_overlay">
+			<param name="nested_debuginfo" value="" />
+		</include>
 	<include condition="Skin.HasSetting(window_frame)" content="window_frame" />
 	</controls>
 </window>

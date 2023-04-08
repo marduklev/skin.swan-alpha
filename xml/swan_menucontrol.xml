@@ -116,7 +116,7 @@
 					<bordersize>3</bordersize>
 					<bordertexture colordiffuse="$VAR[color_lib_menu_item_fo]">colors/white.png</bordertexture>
 					<texture>special://skin/extras/views/$PARAM[view_id].png</texture>
-					<animation effect="fade" start="100" end="40" condition="[String.IsEqual(Window(home).Property(view_disable_mediawindow),music) + !String.IsEmpty(Skin.String(music_disabled_view_$PARAM[view_id]))] | [String.IsEqual(Window(home).Property(view_disable_mediawindow),videos) + !String.IsEmpty(Skin.String(videos_disabled_view_$PARAM[view_id]))] | [String.IsEqual(Window(home).Property(view_disable_mediawindow),pictures) + !String.IsEmpty(Skin.String(pictures_disabled_view_$PARAM[view_id]))] | [String.IsEqual(Window(home).Property(view_disable_mediawindow),games) + !String.IsEmpty(Skin.String(games_disabled_view_$PARAM[view_id]))]">conditional</animation>
+					<animation effect="fade" start="100" end="40" condition="[String.IsEqual(Window(home).Property(view_disable_mediawindow),music) + !String.IsEmpty(Skin.String(music_disabled_view_$PARAM[view_id]))] | [String.IsEqual(Window(home).Property(view_disable_mediawindow),videos) + !String.IsEmpty(Skin.String(videos_disabled_view_$PARAM[view_id]))] | [String.IsEqual(Window(home).Property(view_disable_mediawindow),pictures) + !String.IsEmpty(Skin.String(pictures_disabled_view_$PARAM[view_id]))] | [String.IsEqual(Window(home).Property(view_disable_mediawindow),games) + !String.IsEmpty(Skin.String(games_disabled_view_$PARAM[view_id]))] | [String.IsEqual(Window(home).Property(view_disable_mediawindow),favourites) + !String.IsEmpty(Skin.String(favourites_disabled_view_$PARAM[view_id]))]">conditional</animation>
 				</control>
 				
 				<include content="spacer_w">
@@ -148,6 +148,28 @@
 					<width>75</width>
 					<height>75</height>
 					<usealttexture>
+					[String.IsEqual(Window(home).Property(view_disable_mediawindow),favourites) + 
+						   [String.IsEqual(skin.string(view_locked_movies),$PARAM[view_id]) | 
+							String.IsEqual(skin.string(view_locked_sets),$PARAM[view_id]) | 
+							String.IsEqual(skin.string(view_locked_tvshows),$PARAM[view_id]) | 
+							String.IsEqual(skin.string(view_locked_seasons),$PARAM[view_id]) | 
+							String.IsEqual(skin.string(view_locked_episodes),$PARAM[view_id]) | 
+							String.IsEqual(skin.string(view_locked_musicvideos),$PARAM[view_id]) |
+							String.IsEqual(skin.string(view_locked_artists),$PARAM[view_id]) | 
+							String.IsEqual(skin.string(view_locked_albums),$PARAM[view_id]) | 
+							String.IsEqual(skin.string(view_locked_songs),$PARAM[view_id]) | 
+							String.IsEqual(skin.string(view_locked_actors),$PARAM[view_id]) | 
+							String.IsEqual(skin.string(view_locked_directors),$PARAM[view_id]) | 
+							String.IsEqual(skin.string(view_locked_sources),$PARAM[view_id]) | 
+							String.IsEqual(skin.string(view_locked_tags),$PARAM[view_id]) | 
+							String.IsEqual(skin.string(view_locked_genres),$PARAM[view_id]) | 
+							String.IsEqual(skin.string(view_locked_years),$PARAM[view_id]) | 
+							String.IsEqual(skin.string(view_locked_studios),$PARAM[view_id]) |
+							String.IsEqual(skin.string(view_locked_countries),$PARAM[view_id]) | 
+							String.IsEqual(skin.string(view_locked_playlists),$PARAM[view_id]) | 
+							String.IsEqual(skin.string(view_locked_images),$PARAM[view_id]) | 
+							String.IsEqual(skin.string(view_locked_livetv),$PARAM[view_id])]]
+							| 
 					[String.IsEqual(Window(home).Property(view_disable_mediawindow),videos) + 
 						   [String.IsEqual(skin.string(view_locked_movies),$PARAM[view_id]) | 
 							String.IsEqual(skin.string(view_locked_sets),$PARAM[view_id]) | 
@@ -561,6 +583,7 @@
 		<value condition="String.IsEqual(Window(home).Property(view_disable_mediawindow),music)">music.png</value>
 		<value condition="String.IsEqual(Window(home).Property(view_disable_mediawindow),pictures)">defaultpicture.png</value>
 		<value condition="String.IsEqual(Window(home).Property(view_disable_mediawindow),games)">defaultaddongame.png</value>
+		<value condition="String.IsEqual(Window(home).Property(view_disable_mediawindow),favourites)">favourites.png</value>
 	</variable>
 	<variable name="playlistedit_window_image">
 		<value condition="Window.IsActive(videos)">icons/movie_play.png</value>
@@ -572,6 +595,7 @@
 		<value condition="String.IsEqual(Window(home).Property(view_disable_mediawindow),music)">$LOCALIZE[10502]</value>
 		<value condition="String.IsEqual(Window(home).Property(view_disable_mediawindow),pictures)">$LOCALIZE[10002]</value>
 		<value condition="String.IsEqual(Window(home).Property(view_disable_mediawindow),games)">$LOCALIZE[10821]</value>
+		<value condition="String.IsEqual(Window(home).Property(view_disable_mediawindow),favourites)">$LOCALICE[1036]</value>
 	</variable>
 	
 	<expression name="viewselect_locking_allMedia">
@@ -1162,7 +1186,7 @@
 					</item>
 					<item>
 						<visible>Integer.IsGreaterOrEqual(Container.ViewCount,2)</visible>
-						<visible>[Window.IsActive(videos) | Window.IsActive(music) | Window.IsActive(games) | Window.IsActive(pictures)]</visible>
+						<visible>[Window.IsActive(videos) | Window.IsActive(music) | Window.IsActive(games) | Window.IsActive(pictures) | Window.IsActive(favouritesbrowser)]</visible>
 						<icon>buttons/viewswitch.png</icon>
 						<property name="icon">buttons/viewswitch.png</property>
 						<label>ViewMode Select</label>
@@ -1171,6 +1195,7 @@
 						<onclick condition="Window.IsActive(music)">SetProperty(view_disable_mediawindow,music,home)</onclick>
 						<onclick condition="Window.IsActive(pictures)">SetProperty(view_disable_mediawindow,pictures,home)</onclick>
 						<onclick condition="Window.IsActive(games)">SetProperty(view_disable_mediawindow,games,home)</onclick>
+						<onclick condition="Window.IsActive(favouritesbrowser)">SetProperty(view_disable_mediawindow,favourites,home)</onclick>
 						<onclick>ActivateWindow(1105)</onclick>
 					</item>
 					<item>

@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="utf-8"?>
+<window id="1150">
+	<include>Animation_OpenClose_FadeZoom</include>
+	<defaultcontrol>100</defaultcontrol>
+	<include>EmbInfo_Onunload</include>
+	
+	<controls>
+		<control type="list" id="10051">
+			<include>HiddenContainer</include>
+		</control>
+		
+		<control type="group">
+			<visible>!Window.IsActive(script-embuary-image.xml)</visible>
+			<include content="backgroundbuilding_layer4">
+				<param name="width2" value="0%" />
+				<param name="width3" value="0" />
+			</include>
+		</control>
+		
+		<control type="grouplist" id="50">
+			<include content="Animation_TransitionFadeOut">
+				<param name="condition" value="Window.IsActive(textviewer) | Window.IsActive(script-embuary-image.xml) | Window.IsActive(1104)" />
+			</include>
+			<left>10</left>
+			<right>10</right>
+			<top>20</top>
+			<bottom>10</bottom>
+			<orientation>vertical</orientation>
+			<usecontrolcoords>true</usecontrolcoords>
+			<scrolltime>250</scrolltime>
+			<itemgap>5</itemgap>
+			
+			<control type="group">
+				<height>460</height>
+				<top>60</top>
+				<!-- poster -->
+				<control type="group">
+					<left>70</left>
+					<control type="textbox">
+						<top>10</top>
+						<left>20</left>
+						<width>280</width>
+						<height>394</height>
+						<font>notosans_25_regular_l</font>
+						<textcolor>$VAR[color_lib_text_main]</textcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>$INFO[Container(10051).ListItem.Label]</label>
+						<visible>String.IsEmpty(Container(10051).ListItem.Art(thumb))</visible>
+					</control>
+					<control type="image">
+						<top>-8</top>
+						<width>307</width>
+						<height>460</height>
+						<bordersize>1</bordersize>
+						<bordertexture border="2" colordiffuse="$VAR[color_lib_text_main]">frames/frame.png</bordertexture>
+						<texture background="true" fallback="artworkdiffuse/posterborder.png">$INFO[Container(10051).ListItem.Art(thumb)]</texture>
+						<aspectratio scalediffuse="false">scale</aspectratio>
+					</control>
+					<control type="image">
+						<width>295</width>
+						<top>5</top>
+						<height>35</height>
+						<bordersize>6</bordersize>
+						<bordertexture colordiffuse="$VAR[color_lib_text_main]">frames/bordercircle.png</bordertexture>
+						<texture colordiffuse="$VAR[color_lib_text_main]">overlaywatched.png</texture>
+						<aspectratio scalediffuse="false" aligny="top" align="right">keep</aspectratio>
+						<visible>!String.IsEmpty(Container(10051).ListItem.DBID)</visible>
+					</control>
+				</control>
+				<!-- meta -->
+				<control type="group">
+					<left>400</left>
+					<right>70</right>
+					<control type="label">
+						<right>360</right>
+						<height>30</height>
+						<label>$INFO[Container(10051).ListItem.Label]</label>
+						<font>notosans_45_bold</font>
+						<scroll>true</scroll>
+						<textcolor>$VAR[color_lib_text_main]</textcolor>
+					</control>
+					<control type="label">
+						<top>40</top>
+						<right>360</right>
+						<height>20</height>
+						<label>$INFO[Container(10051).ListItem.Tagline]</label>
+						<font>notosans_20_bold</font>
+						<textcolor>$VAR[color_lib_text_secondary]</textcolor>
+					</control>
+					<control type="group">
+						<top>85</top>
+						<right>360</right>
+						<height>40</height>
+						<control type="grouplist">
+							<height>40</height>
+							<itemgap>15</itemgap>
+							<orientation>horizontal</orientation>
+							<control type="label">
+								<label>$LOCALIZE[16102]</label>
+								<width>auto</width>
+								<font>notosans_25_regular_l</font>
+								<textcolor>$VAR[color_lib_text_main]</textcolor>
+								<visible>Integer.IsGreater(Container(10051).ListItem.Playcount,0)</visible>
+							</control>
+							<control type="label">
+								<label>$INFO[Container(10051).ListItem.Year]</label>
+								<width>auto</width>
+								<font>notosans_20_bold</font>
+								<textcolor>$VAR[color_lib_text_main]</textcolor>
+								<visible>!String.IsEmpty(Container(10051).ListItem.Year)</visible>
+							</control>
+							<include content="framedflag">
+								<param name="color" value="$VAR[color_lib_text_main]" />
+								<visible>!String.IsEmpty(Container(10051).ListItem.Status)</visible>
+								<width min="32">auto</width>
+								<height>40</height>
+								<font>notosans_20_bold</font>
+								<label>$INFO[Container(10051).ListItem.Status]</label>
+							</include>
+							
+							<!-- need variable hours mins -->
+							<control type="label">
+								<label>$INFO[Container(10051).ListItem.Duration(h),,h]$INFO[Container(10051).ListItem.Duration(mm), ,m]</label>
+								<width>auto</width>
+								<font>notosans_20_bold</font>
+								<textcolor>$VAR[color_lib_text_main]</textcolor>
+								<visible>!String.IsEmpty(Container(10051).ListItem.Duration)</visible>
+							</control>
+							<control type="label">
+								<label>$INFO[Container(10051).ListItem.Season,$ADDON[script.embuary.info 32016]: ]</label>
+								<width>auto</width>
+								<font>notosans_20_bold</font>
+								<textcolor>$VAR[color_lib_text_main]</textcolor>
+								<visible>!String.IsEmpty(Container(10051).ListItem.Season) + !String.IsEqual(Container(10051).ListItem.DBType,season)</visible>
+							</control>
+							<control type="label">
+								<label>$INFO[Container(10051).ListItem.Season,$ADDON[script.embuary.info 32040] ]</label>
+								<width>auto</width>
+								<font>notosans_20_bold</font>
+								<textcolor>$VAR[color_lib_text_main]</textcolor>
+								<visible>!String.IsEmpty(Container(10051).ListItem.Season) + String.IsEqual(Container(10051).ListItem.DBType,season)</visible>
+							</control>
+							<control type="label">
+								<label>$INFO[Container(10051).ListItem.Episode,$LOCALIZE[20360]: ]</label>
+								<width>auto</width>
+								<font>notosans_20_bold</font>
+								<textcolor>$VAR[color_lib_text_main]</textcolor>
+								<visible>!String.IsEmpty(Container(10051).ListItem.Episode)</visible>
+							</control>
+							<control type="label">
+								<label>$INFO[Container(10051).ListItem.Property(UnwatchedEpisodes),$LOCALIZE[16101]: ]</label>
+								<width>auto</width>
+								<font>notosans_20_bold</font>
+								<textcolor>$VAR[color_lib_text_main]</textcolor>
+								<visible>!Integer.IsGreater(Container(10051).ListItem.Playcount,0) + Integer.IsGreater(Container(10051).ListItem.Property(UnwatchedEpisodes),0)</visible>
+							</control>
+							<include content="framedflag">
+								<param name="color" value="$VAR[color_lib_text_main]" />
+								<visible>!String.IsEmpty(Container(10051).ListItem.Mpaa)</visible>
+								<width min="32">auto</width>
+								<height>40</height>
+								<font>notosans_20_bold</font>
+								<label>$INFO[Container(10051).ListItem.Mpaa]</label>
+							</include>
+							<include content="Ratings_Hor" />
+							<include content="Ratings_Hor">
+								<param name="texture" value="$VAR[Img_Rotten]" />
+								<param name="rating" value="Property(rating.rotten)" />
+								<param name="ratingpostfix" value=" %" />
+							</include>
+							<include content="Ratings_Hor">
+								<param name="texture" value="metacritic" />
+								<param name="rating" value="Property(rating.metacritic)" />
+								<param name="ratingpostfix" value=" %" />
+							</include>
+							<include content="Ratings_Hor">
+								<param name="texture" value="imdb" />
+								<param name="rating" value="Property(rating.imdb)" />
+							</include>
+						</control>
+					</control>
+					
+					<!-- genre etc -->
+					<control type="textbox">
+						<top>135</top>
+						<right>360</right>
+						<height>auto</height>
+						<align>justify</align>
+						<aligny>top</aligny>
+						<label fallback="19055">$INFO[Container(10051).ListItem.Genre,$LOCALIZE[515]: ,[CR]]$INFO[Container(10051).ListItem.Director,$LOCALIZE[20339]: ,]</label>
+						<font>notosans_20_bold</font>
+						<textcolor>$VAR[color_lib_accent]</textcolor>
+						<shadowcolor>50000000</shadowcolor>
+						<autoscroll delay="6000" time="3000" repeat="10000">true</autoscroll>
+					</control>
+					<!-- plot -->
+					<control type="textbox">
+						<top>200</top>
+						<right>360</right>
+						<height max="170">auto</height>
+						<align>justify</align>
+						<aligny>top</aligny>
+						<label fallback="19055">$INFO[Container(10051).ListItem.Plot]</label>
+						<font>notosans_22_bold_highlined</font>
+						<textcolor>ffffffff</textcolor>
+						<shadowcolor>50000000</shadowcolor>
+						<autoscroll delay="6000" time="6000" repeat="10000">true</autoscroll>
+					</control>
+					<include content="panel_100">
+						<param name="top" value="360" />
+						
+						<content>
+							<item>
+								<visible>!String.IsEmpty(Container(10051).ListItem.Plot)</visible>
+								<label>$LOCALIZE[207]</label>
+								<onclick>RunScript(script.swan.helper,action=textviewer,header='$ESCINFO[Container(10051).ListItem.Label]',text='$ESCINFO[Container(10051).ListItem.Plot]')</onclick>
+							</item>
+							<item>
+								<label>$LOCALIZE[15067]</label>
+								<onclick>Dialog.Close(all)</onclick>
+							</item>
+							<item>
+								<label>$LOCALIZE[210]</label>
+								<visible>Window.IsActive(movieinformation)</visible>
+								<onclick>Action(back)</onclick>
+							</item>
+							<item>
+								<visible>!String.IsEmpty(Container(10051).ListItem.DBID) + !String.IsEmpty(Container(10051).ListItem.Property(file)) + !String.IsEqual(Container(10051).ListItem.Property(call),tv)</visible>
+								<label>$LOCALIZE[208]</label>
+								<onclick>PlayMedia($INFO[Container(10051).ListItem.Property(file)])</onclick>
+								<onclick>Dialog.Close(all)</onclick>
+							</item>
+							<item>
+								<visible>!String.IsEmpty(Container(10051).ListItem.DBID) + String.IsEqual(Container(10051).ListItem.Property(call),tv)</visible>
+								<label>$LOCALIZE[1024]</label>
+								<onclick>Dialog.Close(all)</onclick>
+								<onclick condition="!Window.IsVisible(videos)">ActivateWindow(videos,videodb://tvshows/titles/$INFO[Container(10051).ListItem.DBID]/,return)</onclick>
+								<onclick condition="Window.IsVisible(videos)">Container.Update(videodb://tvshows/titles/$INFO[Container(10051).ListItem.DBID]/)</onclick>
+							</item>
+							<item>
+								<visible>!Skin.HasSetting(VideoInfo_Button_Trakt) + [!String.IsEmpty(Container(10051).ListItem.Property(id)) | !String.IsEmpty(Window(home).Property(movie_tmdbid)) | !String.IsEmpty(Window(home).Property(tvshow_tmdbid)) | !String.IsEmpty(Window(home).Property(episodetvshow_tmdbid))]</visible>
+								<label>Trakt Functions</label>
+								<onclick condition="!string.startswith(System.BuildVersion,18.) + !String.IsEmpty(Window(home).Property(movie_tmdbid))">RunScript(plugin.video.themoviedb.helper,sync_trakt,type=movie,tmdb_id=$INFO[Window(home).Property(movie_tmdbid)])</onclick>
+								<onclick condition="!string.startswith(System.BuildVersion,18.) + !String.IsEmpty(Window(home).Property(tvshow_tmdbid))">RunScript(plugin.video.themoviedb.helper,sync_trakt,type=tv,tmdb_id=$INFO[Window(home).Property(movie_tmdbid)])</onclick>
+								<onclick condition="!string.startswith(System.BuildVersion,18.) + !String.IsEmpty(Window(home).Property(episodetvshow_tmdbid))">RunScript(plugin.video.themoviedb.helper,sync_trakt,type=tv,tmdb_id=$INFO[ListItem.Property(episodetvshow_tmdbid)],season=$INFO[Container(10051).ListItem.Season],episode=$INFO[Container(10051).ListItem.Episode])</onclick>
+								<onclick condition="!string.startswith(System.BuildVersion,18.) + String.IsEmpty(Window(home).Property(movie_tmdbid)) + String.IsEqual(Container(10051).ListItem.dbtype,movie) + !String.IsEmpty(Container(10051).ListItem.Property(id))">RunScript(plugin.video.themoviedb.helper,sync_trakt,type=movie,tmdb_id=$INFO[Container(10051).ListItem.Property(id)])</onclick>
+								<onclick condition="!string.startswith(System.BuildVersion,18.) + String.IsEmpty(Window(home).Property(tvshow_tmdbid)) + String.IsEqual(Container(10051).ListItem.dbtype,tvshow) + !String.IsEmpty(Container(10051).ListItem.Property(id))">RunScript(plugin.video.themoviedb.helper,sync_trakt,type=tv,tmdb_id=$INFO[Container(10051).ListItem.Property(id)])</onclick>
+								<onclick condition="string.startswith(System.BuildVersion,18.) + [!String.IsEmpty(Window(home).Property(movie_tmdbid)) | !String.IsEmpty(Window(home).Property(tvshow_tmdbid)) | !String.IsEmpty(Window(home).Property(episodetvshow_tmdbid))]">ActivateWindow(1104,return)</onclick>
+							</item>
+						</content>
+
+					</include>
+					<!-- logo -->
+					<include content="EmbInfo_Logo">
+						<param name="top" value="-60" />
+					</include>
+					<!-- facts -->
+					<include content="EmbInfo_Facts" />
+				</control>
+				
+			</control>
+
+			<!-- cast -->
+			<include content="EmbInfo_ContentContainer">
+				<param name="id" value="10052" />
+				<param name="header" value="$LOCALIZE[206]" />
+				<param name="onup" value="100" />
+				<param name="ondown" value="10056" />
+			</include>
+			<!-- crew -->
+			<include content="EmbInfo_ContentContainer">
+				<param name="id" value="10056" />
+				<param name="header" value="$VAR[EmbInfo_ContentHeader]" />
+				<param name="onup" value="10052" />
+				<param name="ondown" value="10057" />
+			</include>
+			<!-- collection -->
+			<include content="EmbInfo_ContentContainer">
+				<param name="id" value="10057" />
+				<param name="header" value="$ADDON[script.embuary.info 32037]: $INFO[Container(10051).ListItem.Property(collection)]" />
+				<param name="onup" value="10056" />
+				<param name="ondown" value="10058" />
+			</include>
+			<!-- seasons  label 1 = title -->
+			<include content="EmbInfo_ContentContainer">
+				<param name="id" value="10058" />
+				<param name="header" value="$ADDON[script.embuary.info 32016]" />
+				<param name="onup" value="10057" />
+				<param name="ondown" value="10053" />
+			</include>
+			<!-- similar -->
+			<include content="EmbInfo_ContentContainer">
+				<param name="id" value="10053" />
+				<param name="header" value="$ADDON[script.embuary.info 32009]" />
+				<param name="onup" value="10058" />
+				<param name="ondown" value="10054" />
+				<param name="ondown" value="10054" />
+			</include>
+			<!-- studios -->
+			<!-- visible condition fail 
+			!String.IsEmpty(Container(10051).ListItem.Property(studio.0))
+			-->
+			<include content="EmbInfo_ContentContainer">
+				<param name="id" value="10099" />
+				<param name="header" value="Studios" />
+				<param name="layout" value="fanart" />
+				<param name="type_height" value="455" />
+				<param name="type_pos_top" value="70" />
+				<param name="visible" value="false" />
+				<param name="load_studiocontent" value="true" />
+				<param name="layout_height" value="410" />
+				<param name="layout_width" value="410" />
+				<param name="itemheight" value="340" />
+				<param name="itemwidth" value="340" />
+				<param name="aspectratio" value="keep" />
+				<param name="onup" value="10053" />
+				<param name="ondown" value="10054" />
+			</include>
+			
+			<!-- youtube -->
+			<include content="EmbInfo_ContentContainer">
+				<param name="id" value="10054" />
+				<param name="header" value="YouTube" />
+				<param name="type_height" value="410" />
+				<param name="layout" value="fanart" />
+				<param name="visible" value="true" />
+				<param name="layout_height" value="410" />
+				<param name="layout_width" value="600" />
+				<param name="itemheight" value="340" />
+				<param name="itemwidth" value="578" />
+				<param name="item_artwork_name" value="fanart" />
+				<param name="onup" value="10053" />
+				<param name="ondown" value="10055" />
+			</include>
+			<!-- images -->
+			<include content="EmbInfo_ContentContainer">
+				<param name="id" value="10055" />
+				<param name="header" value="$ADDON[script.embuary.info 32010]" />
+				<param name="type_height" value="400" />
+				<param name="item_infotags_visible" value="false" />
+				<param name="visible" value="true" />
+				<param name="layout_height" value="400" />
+				<param name="layout_width" value="700" />
+				<param name="itemheight" value="400" />
+				<param name="itemwidth" value="680" />
+				<param name="layout" value="fanart" />
+				<param name="item_artwork_diffuse_themed" value="true" />
+				<param name="item_artwork_diffuse_override" value="false" />
+				<param name="onup" value="10054" />
+				<param name="ondown" value="10059" />
+			</include>
+			
+			<!-- posters -->
+			<include content="EmbInfo_ContentContainer">
+				<param name="id" value="10059" />
+				<param name="header" value="$LOCALIZE[20021]" />
+				<param name="item_infotags_visible" value="false" />
+				<param name="layout_height" value="400" />
+				<param name="layout_width" value="270" />
+				<param name="itemheight" value="400" />
+				<param name="itemwidth" value="267" />
+				<param name="onup" value="10055" />
+				<param name="ondown" value="100" />
+				<param name="item_artwork_diffuse_themed" value="true" />
+				<param name="item_artwork_diffuse_override" value="false" />
+			</include>
+		</control>
+		
+		<include condition="Skin.HasSetting(SwanDebug)" content="swan_debug_overlay">
+			<param name="nested_debuginfo" value="
+helper  ListItem.Property(tmdb_id) $INFO[ListItem.Property(tmdb_id)]
+helper  ListItem.Property(tvshow.tmdb_id) $INFO[ListItem.Property(tvshow.tmdb_id)]
+Collection_id $INFO[Container(10051).ListItem.Property(Collection_id)]
+native container(10051).listitem.uniquiid() • imdb :  $INFO[container(10051).listitem.uniqueid(imdb)]  -  themoviedb :  $INFO[container(10051).listitem.uniqueid(themoviedb)]  -  tmdb :  $INFO[container(10051).listitem.uniqueid(tmdb)]  -  anidb :  $INFO[container(10051).listitem.uniqueid(anidb)]  -  tvdb :  $INFO[container(10051).listitem.uniqueid(tvdb)]  -  trakt :  $INFO[container(10051).listitem.uniqueid(trakt)]  - tvrage :  $INFO[container(10051).listitem.uniqueid(tvrage)]  -  tvmaze :  $INFO[listitem.uniqueid(container(10051).tvmaze)]
+"/>
+</include>
+	</controls>
+</window>

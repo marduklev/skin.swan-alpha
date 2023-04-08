@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<window>
+    <include content="media_window_attributes">
+       <param name="view_ids" value="50,51,52,53,54,56,58,502,503,504,510,511,512,513,520" />
+    </include>
+	<include condition="!$EXP[IsOfflineMode]" content="TMDB_helper_toggleservices" />
+	
+
+	<controls>
+		
+		<include condition="system.hasaddon(script.embuary.helper) + system.addonisenabled(script.embuary.helper) + String.IsEmpty(Window(home).Property(shortcutaction_inprogress))" content="embuaryhelper_getbyid_container" />
+		
+		<control type="image" id="2005">
+			<description>get uniqueid for studio img, but keep ability having footer in view ctrls</description>
+			<visible>!Window.IsActive(movieinformation) + [Skin.HasSetting(show_studio_flag) + !String.IsEmpty(ListItem.Studio)]</visible>
+			<left>-3000</left>
+			<top>-3000</top>
+			<width>2</width>
+			<height>2</height>
+			<texture background="true">$VAR[image_StudioLogo]</texture>
+		</control>
+		
+		<!-- native GUI Ctrls
+			8	button	<label>$LOCALIZE[137]</label>	Search for a string anywhere in the Kodi video database
+			12	label	Number of items in the list
+			15	label	Filter label
+			18	label	Warning to the user to turn off library mode when no scanned media is found
+		-->
+		
+		<control type="button" id="2">
+			<description>Select viewtype</description>
+			<include content="HiddenObject" />
+		</control>
+		<control type="button" id="3">
+			<description>Select sort method (sort by: name, date size, etc...)</description>
+			<visible>Control.IsEnabled(3)</visible>
+			<include content="HiddenObject" />
+		</control>
+		<control type="togglebutton" id="4">
+			<description>Select sortmode (ascending or descending)</description>
+			<visible>Control.IsEnabled(4)</visible>
+			<include content="HiddenObject" />
+		</control>
+		
+		<control type="button" id="10">
+			<description>Show only watched, unwatched or all videos</description>
+			<visible>Container.Content(movies) | Container.Content(sets) | Container.Content(tvshows) | Container.content(seasons) | Container.Content(episodes)</visible>
+			<include content="HiddenObject" />
+		</control>
+		
+		<include content="mediawindow_layout">
+			<param name="window" value="videos" />
+		</include>
+		
+		<include condition="Skin.HasSetting(SwanDebug)" content="swan_debug_overlay">
+			<param name="nested_debuginfo" value="
+ListItem.Property(WatchedEpisodePercent) $INFO[ListItem.Property(WatchedEpisodePercent)]
+TotalSeasons $INFO[ListItem.Property(TotalSeasons)]
+TotalEpisodes $INFO[ListItem.Property(TotalEpisodes)]
+ListItem.Season  $INFO[ListItem.Property(Season)]
+ListItem.Status $INFO[ListItem.Status]
+
+cast = $VAR[content_cast]
+"/>
+		</include>
+	</controls>
+</window>
